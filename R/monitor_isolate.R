@@ -1,0 +1,41 @@
+#' @keywords ws_monitor
+#' @export
+#' @title Isolate Individual Monitors
+#' @param ws_monitor data list of class \code{ws_monitor}
+#' @param xlim optional longitude lim with lo and hi longitude values
+#' @param ylim optional latitude lim with lo and hi latitude values
+#' @param tlim optional time lim with lo and hi time values (POSIXct)
+#' @param stateCodes optional vector of stateCodes
+#' @param monitorIDs optional vector of monitorIDs
+#' @description The incoming monitoring data list is filtered according to the parameters
+#' passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
+#' 
+#' After filtering, each monitorID found in the \code{ws_monitor} object is extracted
+#' and its \code{data} dataframe is restricted to the times from when that monitor first
+#' datapoint until its last datapoint.
+#' 
+#' This function is useful when \code{ws_monitor} objects are created for
+#' mobile monitors that are deployed to different locations in different years.
+#' @return A List of isolated \code{ws_monitor} objects.
+#' @seealso \link{monitor_subset}
+#' @examples
+#' \dontrun{
+#' setSmokeDataDir('~/Data/Smoke')
+#' airsis <- airsis_load(20140101, 20151231)
+#' monitorList <- monitor_isolate(airsis)
+#' names(monitorList)
+#' }
+
+monitor_isolate <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL,
+                            monitorIDs=NULL, stateCodes=NULL) {
+  
+  # Isolate individual monitors
+  monList <- list()
+  for (monitorID in names(ws_monitor$data)[-1]) {
+    mon <- monitor_subset(ws_monitor, xlim=xlim, ylim=ylim, tlim=tlim,
+                          monitorIDs=monitorID, dropMonitors=TRUE)
+    monList[[monitorID]] <- monitor_trim(mon)
+  }
+  
+  return(monList)
+}

@@ -1,0 +1,48 @@
+Type: Package
+Package: PWFSLSmoke
+Version: 0.7.0
+Title: Utilities for Working with PM2.5 Monitoring Data
+Authors@R: c(
+    person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
+    person("Rohan", "Aras", email="rohana@uw.edu", role=c("aut")),
+    person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("aut")),
+    person("Jimin", "Kim", email="jk55@uw.edu", role=c("aut")),
+    person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("aut"))
+    )
+Author: Jonathan Callahan [aut, cre],
+    Rohan Aras [aut],
+    Zach Dingels [aut],
+    Jimin Kim [aut],
+    Jon Hagg [aut]
+Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
+Depends:
+    R (>= 3.1.0),
+    maps,
+    MazamaSpatialUtils (>= 0.4.4)
+Imports:
+    cluster,
+    dplyr,
+    dygraphs,
+    ggmap,
+    httr,
+    leaflet,
+    lubridate,
+    maptools,
+    openair,
+    RCurl,
+    readr,
+    reshape2,
+    sp,
+    stringr,
+    xts,
+    zoo
+Suggests:
+    knitr
+SystemRequirements: netcdf
+Description: Utilities for working with PM2.5 monitoring data available
+    from the US EPA, AirNow, AIRSIS, WRCC and others.
+License: GPL-2
+VignetteBuilder: knitr
+Repository: CRAN
+LazyData: true
+RoxygenNote: 5.0.1
