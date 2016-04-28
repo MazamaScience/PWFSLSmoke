@@ -60,6 +60,6 @@ directory on github. This directory is not part of the package.
 
 ----
 
-This project is being funded by the UFS Pacific Wildland Fire Sciences laboratory.
+This project is being funded by the USFS Pacific Wildland Fire Sciences laboratory.
 
 
