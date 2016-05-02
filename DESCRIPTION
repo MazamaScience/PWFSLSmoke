@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.7.0
+Version: 0.7.1
 Title: Utilities for Working with PM2.5 Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -41,7 +41,7 @@ Suggests:
 SystemRequirements: netcdf
 Description: Utilities for working with PM2.5 monitoring data available
     from the US EPA, AirNow, AIRSIS, WRCC and others.
-License: GPL-2
+License: GPL-3
 VignetteBuilder: knitr
 Repository: CRAN
 LazyData: true
