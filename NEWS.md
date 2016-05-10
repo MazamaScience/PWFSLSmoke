@@ -13,7 +13,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
  * Added data model vignette.
  * Documentation improvements.
- * Examples found in [localExamples](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localExamples) directory.
+ * New example in [localExamples](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localExamples) directory.
  
 ### PWFSLSmoke 0.7.0
 
