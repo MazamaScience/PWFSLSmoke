@@ -118,7 +118,6 @@ data <- Spokane_daily_3hr$data[,-1] # omit the 'datetime' column
 cor(data, use='complete.obs')
 ```
 
-
 ----
 
 This introduction to the `ws_monitor`  data model should be enough to get you started.
