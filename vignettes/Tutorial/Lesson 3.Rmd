@@ -1,5 +1,5 @@
 ---
-title: "PWFSLSmoke Tutorial"
+title: "Obtaining Data"
 author: "Mazama Science"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -13,24 +13,52 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Obtaining Data
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The PWFSLSmoke package currently has 4 different sources of data for creating monitor objects:
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+ * [Air Now](https://www.airnow.gov/)
+ * [airsis](http://usfs.airsis.com)
+ * [EPA](http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html)
+ * [WRCC](http://smoke.airfire.org/RData/AirNowTech/)
+ 
+ Below we will go over how to work with each source to get a `ws_monitor` object.
+ 
+ ## Air Now
+ 
+ To work with Air Now data we are going to use the `airnow_load` function. Let's take a look at the funtcion
+ 
 ```
+?airnow_load
 
-## Including Plots
+> 
+...
+Usage
 
-You can also embed plots, for example:
+  airnow_load(startdate, enddate, monitorIDs = NULL, parameter = "PM2.5",
+              baseUrl = "http://smoke.airfire.org/RData/AirNowTech/")
+Arguments
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+  startdate	
+    desired start date (integer or character representing YYYYMMDD[HH])
+  enddate	
+    desired end date (integer or character representing YYYYMMDD[HH])
+  monitorIDs	
+    The set of monitor IDs to be subsetted. When set to NULL, the function returns      all the monitor IDs available in the metadata
+  parameter	
+    The parameter of interest
+  baseUrl	
+    base URL for AirNow meta and data files
+...
+
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+ 
+ ## airsis
+ 
+ ## EPA
+ 
+ ## WRCC
+ 
+ 
 ---
 [Next (Dataframes and Simple Plots)](Lesson_02_DataframesAndSimplePlots.html) #TODO ALIGN [Index](Index.RMD)

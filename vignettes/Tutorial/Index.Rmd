@@ -38,6 +38,14 @@ The package includes functionality to make it easier to:
  * download and work with monitoring data
  * create maps and timeseries plots of monitoring data
  * convert between local and GMT times
+ 
+## Table of Contents
+* Installation
+* 1: A Crash Course in R
+* 2: PWFSLSmoke's Data Model
+* 3: Obtaining Data
+* 4: Manipulating Data
+* 5: Visualizing Data 
 
 ## Installation
 
@@ -66,10 +74,5 @@ curl -O http://smoke.airfire.org/RData/Spatial.tar.gz
 tar -xzf Spatial.tar.gz
 ```
 
-## Table of Contents
 
-* 1: Crash course in R
-* 2: PWFSLSmoke's Data Model
-* 3: Obtaining Data
-* 4: Manipulating Data
-* 5: Visualizing Data
+Best of luck exploring and understanding PM 2.5 values associated with wildfire smoke!
