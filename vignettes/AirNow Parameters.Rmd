@@ -1,0 +1,60 @@
+---
+title: "AirNow Parameter Codes"
+author: "Mazama Science"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##All currently supported AirNow parameter codes:
+
+* BARPR
+* BARPR_Raw
+* BC
+* BC_Raw
+* CO
+* CO_Raw
+* EC
+* EC_Raw
+* NO
+* NO2
+* NO2Y
+* NO2Y_Raw
+* NO2_Raw
+* NOX
+* NOX_Raw
+* NOY
+* NOY_Raw
+* NO_Raw
+* OC
+* OC_Raw
+* OZONE
+* OZONE_Raw
+* PM10
+* PM10_Raw
+* PM2.5
+* PM2.5_Raw
+* PM2.5_SitesMetadata
+* PRECIP
+* PRECIP_Raw
+* QCInfoList
+* RHUM
+* RHUM_Raw
+* SO2
+* SO2_Raw
+* SRAD
+* SRAD_Raw
+* TEMP
+* TEMP_Raw
+* UV-AETH
+* UV-AETH_Raw
+* WD
+* WD_Raw
+* WS
+* WS_Raw
