@@ -1,10 +1,10 @@
 ---
-title: "Obtaining Data"
+title: "Obtaining ws_monitor Data"
 author: "Mazama Science"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Model}
+  %\VignetteIndexEntry{Obtaining ws_monitor Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

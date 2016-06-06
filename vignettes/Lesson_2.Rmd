@@ -1,10 +1,10 @@
 ---
-title: "PWFSLSmoke's Data Model"
+title: "ws_monitor Data Model"
 author: "Mazama Science"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Model}
+  %\VignetteIndexEntry{ws_monitor Data Model}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
