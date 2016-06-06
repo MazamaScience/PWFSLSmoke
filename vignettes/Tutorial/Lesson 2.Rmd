@@ -1,5 +1,5 @@
 ---
-title: "Data Models"
+title: "PWFSLSmoke's Data Model"
 author: "Mazama Science"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -8,6 +8,10 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 The **PWFSLSmoke** package is designed to provide a compact, full-featured suite of utilities for
 working with PM 2.5 data used to monitor wildfire smoke. Uniform data models
@@ -25,9 +29,30 @@ expect objects of class `ws_monitor` as their first argument. (*Note that 'ws_' 
 Monitoring data will typically be obtained from an agency charged with archiving data
 acquired at monitoring sites. For wildifre smoke, the primary pollutant is PM 2.5 and the
 sites archiving this data include [AirNow](http://www.airnow.gov), [WRCC](http://www.wrcc.dri.edu) and
-[AIRSIS](http://app.airsis.com/USFS/).
+[AIRSIS](http://app.airsis.com/USFS/). For this tutorial we will be getting out data from WRCC. 
 
-The data model for monitoring data consists of an **R** `list` with two dataframes: `data` and `meta`.
+We can begin by creating a `ws_monitor` and looking at how it's made. Once we get a general look at a `ws_monitor` object we will start do some examples to get more in depth knowledge of them. Try out the following code to get started:
+
+```
+library(PWFSLSmoke)
+
+monitor_data <- wrcc_load('20150801', '20150810')
+```
+
+This is going to load wrcc monitor data from August 1-10 from 2015. We can look at what `monitor_data` is by exploring it's class:
+
+```
+class(monitor_data)
+> [1] "ws_monitor" "list"
+
+class(monitor_data$data)
+> [1] "data.frame"
+
+class(monitor_data$meta)
+[1] "data.frame"
+```
+
+We can see that `monitor_data` is a list containing two dataframes: `data` and `meta`.
 
 The `data` dataframe contains all hourly measurements organized with rows (the 'unlimited' dimension) as unique timestamps and
 columns as unique monitors. The very first column is always named `datetime` and contains the `POSIXct` datetime
@@ -44,23 +69,31 @@ in the `meta` dataframe:
  * `timezone` -- Olson timezone
  * `countryCode` -- ISO 3166-1 alpha-2 code
  * `stateCode` -- ISO 3166-2 alpha-2 code
-
+ 
 *(The [MazamaSpatialUtils](https://github.com/MazamaScience/MazamaSpatialUtils) package is used to assign timezones and state and country codes.)*
+ 
+Let's look and see what columns out `monitor_data` has:
+```
+names(monitor_data$meta)
+> [1] "AQSID"          "siteCode"       "siteName"       "status"        
+> [5] "agencyID"       "agencyName"     "EPARegion"      "latitude"      
+> [9] "longitude"      "elevation"      "timezone"       "GMTOffsetHours"
+>[13] "countryCode"    "FIPSMSACode"    "MSAName"        "FIPSStateCode" 
+>[17] "stateCode"      "GNISCountyCode" "countyName"     "monitorID"  
+```
 
-Additional columns may be available in the `meta` dataframe and these will depend on the source of the
-data.
+As we can see, we have all the guaranteed columns and then some!
 
 It is important to note that the `monitorID` acts as a unique key that connects data with metadata.
 The `monitorID` is used for column names in the `data` dataframe and for row names in the `meta` dataframe.
-So the following will always be true:
+So the following will always be true for any `ws_monitor`:
 
     rownames(ws_monitor$meta) = ws_monitor$meta$monitorID
     colnames(ws_monitor$data) = c('datetime',ws_monitor$meta$monitorID)
-
+ 
 **Example 1: Exploring `ws_monitor` Objects**
 
-We will use the `airnow_load()` and `monitor_subset()` functions to download and subset a `ws_monitor` object
-which we can then explore.
+We will now create and manipulate a new `ws_monitor` object with data from airnow: 
 
 ```{r}
 library(PWFSLSmoke)
@@ -121,6 +154,11 @@ cor(data, use='complete.obs')
 ----
 
 This introduction to the `ws_monitor`  data model should be enough to get you started.
-Lots more documentation and examples are available in the package documentation.
+There are additional tutorials that will go more in depth of how to obtain, manipulate and visualilze `ws_monitor` that can be used to learn more about the  PWFSLSmoke package as well as also serve as a reference. 
 
-Best of luck exploring and understanding PM 2.5 values associated with wildfire smoke!
+
+----
+ 
+ 
+next >
+[Obtaining Data](Obtaining Data)

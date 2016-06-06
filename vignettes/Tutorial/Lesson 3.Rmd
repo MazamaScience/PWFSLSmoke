@@ -1,0 +1,156 @@
+---
+title: "Obtaining Data"
+author: "Mazama Science"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Obtaining Data
+
+The PWFSLSmoke package currently has 4 different sources of data for creating monitor objects:
+
+ * [Air Now](https://www.airnow.gov/)
+ * [airsis](http://usfs.airsis.com)
+ * [EPA](http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html)
+ * [WRCC](http://smoke.airfire.org/RData/AirNowTech/)
+ 
+ Below we will look at how to use each of these methods. 
+ 
+## Air Now
+ 
+ To work with Air Now data we are going to use the `airnow_load` function. Let's take a look at the funtcion
+ 
+```
+?airnow_load
+
+> 
+...
+Usage
+
+  airnow_load(startdate, enddate, monitorIDs = NULL, parameter = "PM2.5",
+              baseUrl = "http://smoke.airfire.org/RData/AirNowTech/")
+Arguments
+
+  startdate	
+    desired start date (integer or character representing YYYYMMDD[HH])
+  enddate	
+    desired end date (integer or character representing YYYYMMDD[HH])
+  monitorIDs	
+    The set of monitor IDs to be subsetted. When set to NULL, the function returns      
+    all the monitor IDs available in the metadata
+  parameter	
+    The parameter of interest
+  baseUrl	
+    base URL for AirNow meta and data files
+...
+
+```
+
+  Like most functions that load data, we need a `startdate` and an `enddate`. The rest of the arguments are optional. If we know what monitors we want and have their ID's, we can specify that with the `monitorIDs` paramater. We can also choose to get data other then PM 2.5 with the `parameter` parameter. [Here is a complete lits of all available parameter codes](AirNow\ Parameters.html). Finally, we can pick a base URL. This would be used to download RData from somewhere other than [http://smoke.airfire.org/RData/AirNowTech/](http://smoke.airfire.org/RData/AirNowTech/).
+  
+Heres an example of how this function could be used to map temperature data in the state of Washington for the first 10 days of August, 2015:
+```
+> data <- airnow_load(20150801, 20150810, parameter = 'TEMP')
+> data <- monitor_subsetBy(data, stateCode == 'WA')
+> monitor_leaflet(data, breaks = c(30, 32, 37, 40, 42, 45, 50))
+```
+  
+## airsis 
+ To work with Air Now data we are going to use the `airnow_load` function. Let's take a look at the funtcion
+ 
+```
+?airsis_load
+
+> 
+...
+Usage
+
+  airsis_load(startdate, enddate, monitorIDs = NULL, stateCodes = NULL,
+              url = "http://smoke.airfire.org/RData/AIRSIS/AIRSIS_monitors.RData")
+Arguments
+
+  startdate	
+    desired start date (integer or character representing YYYYMMDD[HH])
+  enddate	
+    desired end date (integer or character representing YYYYMMDD[HH])
+  monitorIDs	
+    optional vector of monitorIDs used to subset the data
+  stateCodes	
+    optional vector of stateCodes used to subset the data
+  url	
+    The location of the meta and data files (Default = 'http://smoke.airfire.org/RData/AirNowTech/')
+...
+
+```
+ 
+ 
+## EPA 
+ To work with Air Now data we are going to use the `airnow_load` function. Let's take a look at the funtcion
+ 
+```
+?epa_createMonitorObject
+
+> 
+...
+Usage
+
+  epa_createMonitorObject(parameterName = "PM2.5", parameterCode = 88101,
+                          year = 2013, verbose = TRUE,
+                          baseUrl = "http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/")
+Arguments
+
+  parameterName	
+    name of parameterName.
+  parameterCode	
+    specific parameter code (e.g. PM2.5 could be 88101 or 88502)
+  year	
+    year
+  verbose	
+    logical flag to generate verbose output
+  baseUrl	
+    base URL for archived hourly data
+...
+
+```
+ 
+ 
+## WRCC 
+ To work with Air Now data we are going to use the `wrcc_load` function. Let's take a look at the funtcion
+ 
+```
+?wrcc_load
+
+> 
+...
+Usage
+
+  wrcc_load(startdate, enddate, monitorIDs = NULL, stateCodes = NULL,
+            url = "http://smoke.airfire.org/RData/WRCC/WRCC_monitors.RData")
+Arguments
+
+  startdate	
+    desired start date (integer or character representing YYYYMMDD[HH])
+  enddate	
+    desired end date (integer or character representing YYYYMMDD[HH])
+  monitorIDs	
+    optional vector of monitorIDs used to subset the data
+  stateCodes	
+    optional vector of stateCodes used to subset the data
+  url	
+    The location of the meta and data files (Default = 'http://smoke.airfire.org/RData/AirNowTech/')
+...
+
+```
+ 
+ 
+ 
+---
+[Next (Dataframes and Simple Plots)](Lesson_02_DataframesAndSimplePlots.html) #TODO ALIGN [Index](Index.RMD)
