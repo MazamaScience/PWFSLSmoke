@@ -57,7 +57,7 @@ monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="
   # Check if official AQI level name is provided
   if ( typeof(threshold) == "character" ) {
     index <- which(AQI$names == threshold)
-    threshold <- AQI$breaks_1_3[index]
+    threshold <- AQI$breaks_24[index]
   }
   
   # NOTE:  We will generate only a single timeInfo dataframe to guarantee that we apply

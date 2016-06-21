@@ -4,16 +4,14 @@
 \alias{monitor_map}
 \title{Create Map of Monitoring Stations}
 \usage{
-monitor_map(ws_monitor, slice = get("max"), AQIStyle = "1_3",
-  breaks = NULL, paletteFunc = NULL, showCounties = TRUE,
-  showLegend = TRUE, add = FALSE, ...)
+monitor_map(ws_monitor, slice = get("max"), breaks = 7,
+  paletteFunc = colorRampPalette(c("gray90", "antiquewhite", "yellow", "red",
+  "firebrick")), showCounties = TRUE, showLegend = TRUE, add = FALSE, ...)
 }
 \arguments{
 \item{ws_monitor}{data list of class \code{ws_monitor}}
 
 \item{slice}{either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}}
-
-\item{AQIStyle}{AQI breaks and colors to use ('1_3'|'8'|'24') -- defaults to '1_3'}
 
 \item{breaks}{set of breaks used to assign colors or a single integer used to provide quantile based breaks}
 
@@ -39,17 +37,10 @@ If \code{slice} is a function (not a function name) it will be used with argumen
 collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as a parameter.
 }
 \details{
-The colors used for the monitors will be chosen based on the AQIStyle which should match the
-width of any rolling mean that was applied to the data. Note that the AQI colors used for 1-hr and 3-hr
-rolling means are the same.
-
-Both breaks and paletteFunc must both be specified in order to use them.
-
 Using a single number for the \code{breaks} argument will cause the algorithm to use
-quantiles to determine breaks. This is reasonable behavior when coloring by size, or
-fire radiative power. In the case of coloring by 'datetime' or some other
-attribute where you need linear breaks you will have to create those breaks
-manually and pass them into the breaks argument.
+quantiles to determine breaks.
+
+You can use AQI colors and 24-hr, daily average breaks by specifying \code{breaks=NULL, paletteFunc=Null}.
 }
 \examples{
 \dontrun{

@@ -11,6 +11,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 0.7.1
 
+ * Removed AQI breaks for 1-3 hr and 8hr. Now only using 24-hr, daily avg. breaks. The package now only supports 24-hour AQI breaks.
+ * Modified function signatures for `monitor_timeseriesPlot()`, `monitor_map()` and `monitor_leaflet()` to remove/modify
+ their use of the `AQIStyle` argument.
+
+### PWFSLSmoke 0.7.1
+
  * Added data model vignette.
  * Documentation improvements.
  * New example in [localExamples](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localExamples) directory.

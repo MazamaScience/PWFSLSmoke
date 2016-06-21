@@ -3,7 +3,7 @@
 # This example explores montoring data available during the intense fires
 # in north-central Washington State during August of 2015.
 
-library(wildfireSmoke)
+library(PWFSLSmoke)
 
 
 # ---- AirNow monitors ----
@@ -15,11 +15,11 @@ airnow_wa <- monitor_subset(airnow, stateCodes = 'WA')
 # Interactive plot of maximum values with monitor_leaflet(),
 monitor_leaflet(airnow_wa)
 
-# Subset based on value >= AQI "very unhealthy" for 3-hour rolling means
+# Subset based on value >= AQI "very unhealthy"
 # * create value limits ('vlim') extending from 'unhealthy' levels to Infinity
 # * apply 3-hour rolling mean
 # * subset the rolling mean data with 'unhealthy' levels
-bad_limits <- c(AQI$breaks_1_3[which(AQI$names == 'unhealthy')], Inf)
+bad_limits <- c(AQI$breaks_24[which(AQI$names == 'unhealthy')], Inf)
 airnow_wa_3hr <- monitor_rollingMean(airnow_wa, width = 3)
 airnow_wa_unhealthy <- monitor_subset(airnow_wa_3hr, vlim = bad_limits)
 
@@ -70,12 +70,12 @@ monitor_leaflet(merged_worst, providerTiles="Stamen.Terrain")
 monitor_dygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
 
 # Plot with monitor_timeseriesPlot
-monitor_timeseriesPlot(merged_worst, AQIStyle="1_3")
+monitor_timeseriesPlot(merged_worst, AQIStyle=TRUE)
 legend('topleft', legend=rev(AQI$names), pch=16, col=rev(AQI$colors))
 title('Terrible Smoke in late August')
 
 # Create a new ws_monitor object by appling 24hr right-aligned rolling mean
-merged_worst_24hr <- monitor_rollingMean(merged_worst, width = 24, align = "right")
+merged_worst_24hr <- monitor_rollingMean(merged_worst, width=24, align="right")
 
 # Plot map and timeseries
 monitor_dygraph(merged_worst_24hr, title='24 Hour Average PM2.5')

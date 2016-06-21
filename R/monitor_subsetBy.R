@@ -12,7 +12,7 @@
 #' # that have measured hazardous pm2.5 levels. 
 #' wrcc <- wrcc_load(20100101, 20160101)
 #' mySubset <- monitor_subsetBy(wrcc, timezone == 'America/Los_Angeles')
-#' hazardousSubset <- monitor_subsetBy(mySubset, data > AQI$breaks_1_3[6])
+#' hazardousSubset <- monitor_subsetBy(mySubset, data > AQI$breaks_24[6])
 #' monitor_leaflet(hazardousSubset,
 #'                 popupInfo=c('siteName', 'agencyName', 'elevation','monitorID'))
 #' }

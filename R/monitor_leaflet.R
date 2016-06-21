@@ -3,8 +3,8 @@
 #' @title Leaflet Interactive Map of Monitoring Stations
 #' @param ws_monitor data list of class \code{ws_monitor}
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
-#' @param AQIStyle AQI breaks and colors to use ('1_3'|'8'|'24') -- defaults to '1_3'
-#' @param breaks 7 levels used instead of AQI break levels
+#' @param breaks set of breaks used to assign colors or a single integer used to provide quantile based breaks
+#' @param paletteFunc a palette generating function as returned by \code{colorRampPalette}
 #' @param radius radius of monitor circles
 #' @param opacity opacity of monitor circles
 #' @param providerTiles optional name of leaflet ProviderTiles to use, e.g. "Stamen.Terrain"
@@ -13,24 +13,28 @@
 #' Individual monitor timeseries are reduced to 
 #' a single value by applying \code{statistic}to the entire timeseries of each monitor with \code{na.rm=TRUE}.
 #' These values are then plotted over a map of the United States.
-#' @details The colors used for the monitors will be chosen based on the AQIStyle which should match the
-#' width of any rolling mean that was applied to the data. Note that the AQI colors used for 1-hr and 3-hr
-#' rolling means are the same.
 #' 
 #' If \code{slice} is a function (not a function name) it will be used with argument \code{na.rm=TRUE} to
 #' collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as a parameter.
+#' @details Using a single number for the \code{breaks} argument will cause the algorithm to use
+#' quantiles to determine breaks.
 #' 
-#' See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles".
+#' You can use AQI colors and 24-hr, daily average breaks by specifying \code{breaks=NULL, paletteFunc=Null}.
+#' 
+#' See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles"
+#' to use as the background map..
 #' @return Initiates the interactive dygraph plot in Rstudio's 'Viewer' tab.
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20140913, 20141010)
-#' v_low <- AQI$breaks_1_3[4]
+#' v_low <- AQI$breaks_24[4]
 #' CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
 #' monitor_leaflet(CA_unhealthy_monitors, providerTiles="Stamen.Terrain")
 #' }
 
-monitor_leaflet <- function(ws_monitor, slice=get('max'), AQIStyle='1_3', breaks=NULL,
+monitor_leaflet <- function(ws_monitor, slice=get('max'),
+                            breaks=7,
+                            paletteFunc=colorRampPalette(c('gray90','antiquewhite','yellow','red','firebrick')),
                             radius=10, opacity=0.7, providerTiles=NULL,
                             popupInfo=c('siteName','monitorID','elevation')) {
   
@@ -40,36 +44,52 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'), AQIStyle='1_3', breaks
   
   # BEGIN verbatim from monitor_map.R -----------------------------------------
   
-  # Colors
-  AQIStyle <- as.character(AQIStyle)
-  
-  # Sanity check
-  if ( !(AQIStyle  %in% c('1_3','8','24')) )
-    stop(paste0('AQIStyle "',AQIStyle,'" is not recognized. Please use "1_3", "8" or "24".'))
-  
-  # If custom breaks are missing or improperly defined, choose breaks based on AQIStyle
-  if ( is.null(breaks) || (length(breaks) != 7) ) {
-    breaks <- AQI[[ paste0("breaks_", AQIStyle) ]]
-  }
-  
-  # Always set the lowest and highest breaks so that everything is included
-  breaks[1] <- -1e12
-  breaks[length(breaks)] <- 1e12
-  
-  # Classify AQI level based on statistic at each station
-  if ( is.null(slice) ) {
-    stop("Need to specify a slice")
-  } else if ( class(slice) == "function" ) {
+  # Create the 'slice'
+  if ( class(slice) == "function" ) {
     # NOTE:  Need as.matrix in case we only have a single monitor
     allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
     data <- as.matrix(ws_monitor$data[,-1])
-    pm25 <- apply(as.matrix(data[,!allMissingMask]), 2, slice, na.rm=TRUE)
+    pm25 <- apply(data[,!allMissingMask], 2, slice, na.rm=TRUE)
   } else if (class(slice) == "integer" || class(slice) == "numeric") {
     pm25 <- ws_monitor$data[,as.integer(slice)]
   } else {
     stop("Improper use of slice parameter")
   }
-  levels <- .bincode(pm25, breaks)
+  
+  # If the user only specifies breaks and not the paletteFunc or vice versa then complain
+  if (xor(is.null(breaks), is.null(paletteFunc))) {
+    stop(paste0("The breaks paramater ", ifelse(is.null(breaks), "wasn't", "was"),
+                " specified but the paletteFunc ", ifelse(is.null(paletteFunc), "wasn't", "was"),
+                " specified. You must specify both paramaters or neither."))
+  }
+  
+  # ----- Figure out names for a legend and colors for each point ---- 
+  
+  # If the user didn't use custom breaks then use AQI names and colors
+  if ( is.null(breaks) ) {
+    breaks <- AQI$breaks_24
+    legendColors <- AQI$colors
+    legendLabels <- AQI$names
+    legendTitle <- 'AQI Levels'
+  } else {
+    # If they used a scalar for the breaks then use that many quantiles for breaks
+    if ( length(breaks) == 1 ) {
+      probs <- seq(0,1,length.out=(breaks+1))
+      breaks <- quantile(pm25, probs=probs, na.rm=TRUE)
+    }
+    # For each break, use the lower number as the name in the legend.
+    legendColors <- paletteFunc(length(breaks) - 1)
+    legendLabels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
+    legendTitle <- 'Custom Levels'
+  }
+  
+  # Create levels and use them to create a color mask
+  levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
+  cols <- legendColors[levels]
+  
+  # END verbatim from monitor_map.R -------------------------------------------
+  
+  # Create popup
   
   # If there are no column names in the popupInfo, then don't make descriptions
   if ( !any(popupInfo %in% names(ws_monitor$meta)) ) {
@@ -96,11 +116,6 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'), AQIStyle='1_3', breaks
   }
   ws_monitor$meta$popupText <- popupText
   
-  
-  # Assign colors based on levels
-  cols <- AQI$colors[levels]
-  
-  # END verbatim from monitor_map.R -------------------------------------------
   
   # Extract view information
   lonRange <- range(ws_monitor$meta$longitude)
@@ -146,10 +161,10 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'), AQIStyle='1_3', breaks
         popup=ws_monitor$meta$popupText) %>%
       leaflet::addLegend(
         position='bottomright',
-        colors=rev(AQI$colors), # show low levels at the bottom
-        labels=rev(AQI$names),  # show low levels at the bottom
+        colors=rev(legendColors), # show low levels at the bottom
+        labels=rev(legendLabels),  # show low levels at the bottom
         opacity = 1,
-        title='AQI Levels')
+        title=legendTitle)
     
   } else {
     
@@ -165,10 +180,10 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'), AQIStyle='1_3', breaks
         popup=ws_monitor$meta$popupText) %>%
       leaflet::addLegend(
         position='bottomright',
-        colors=rev(AQI$colors), # show low levels at the bottom
-        labels=rev(AQI$names),  # show low levels at the bottom
+        colors=rev(legendColors), # show low levels at the bottom
+        labels=rev(legendLabels),  # show low levels at the bottom
         opacity = 1,
-        title='AQI Levels')
+        title=legendTitle)
     
   }
   

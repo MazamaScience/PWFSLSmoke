@@ -4,8 +4,9 @@
 \alias{monitor_leaflet}
 \title{Leaflet Interactive Map of Monitoring Stations}
 \usage{
-monitor_leaflet(ws_monitor, slice = get("max"), AQIStyle = "1_3",
-  breaks = NULL, radius = 10, opacity = 0.7, providerTiles = NULL,
+monitor_leaflet(ws_monitor, slice = get("max"), breaks = 7,
+  paletteFunc = colorRampPalette(c("gray90", "antiquewhite", "yellow", "red",
+  "firebrick")), radius = 10, opacity = 0.7, providerTiles = NULL,
   popupInfo = c("siteName", "monitorID", "elevation"))
 }
 \arguments{
@@ -13,9 +14,9 @@ monitor_leaflet(ws_monitor, slice = get("max"), AQIStyle = "1_3",
 
 \item{slice}{either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}}
 
-\item{AQIStyle}{AQI breaks and colors to use ('1_3'|'8'|'24') -- defaults to '1_3'}
+\item{breaks}{set of breaks used to assign colors or a single integer used to provide quantile based breaks}
 
-\item{breaks}{7 levels used instead of AQI break levels}
+\item{paletteFunc}{a palette generating function as returned by \code{colorRampPalette}}
 
 \item{radius}{radius of monitor circles}
 
@@ -33,21 +34,23 @@ This function creates interactive maps that will be displayed in RStudio's 'View
 Individual monitor timeseries are reduced to
 a single value by applying \code{statistic}to the entire timeseries of each monitor with \code{na.rm=TRUE}.
 These values are then plotted over a map of the United States.
-}
-\details{
-The colors used for the monitors will be chosen based on the AQIStyle which should match the
-width of any rolling mean that was applied to the data. Note that the AQI colors used for 1-hr and 3-hr
-rolling means are the same.
 
 If \code{slice} is a function (not a function name) it will be used with argument \code{na.rm=TRUE} to
 collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as a parameter.
+}
+\details{
+Using a single number for the \code{breaks} argument will cause the algorithm to use
+quantiles to determine breaks.
 
-See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles".
+You can use AQI colors and 24-hr, daily average breaks by specifying \code{breaks=NULL, paletteFunc=Null}.
+
+See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles"
+to use as the background map..
 }
 \examples{
 \dontrun{
 airnow <- airnow_load(20140913, 20141010)
-v_low <- AQI$breaks_1_3[4]
+v_low <- AQI$breaks_24[4]
 CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
 monitor_leaflet(CA_unhealthy_monitors, providerTiles="Stamen.Terrain")
 }

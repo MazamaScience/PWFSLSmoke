@@ -4,13 +4,13 @@
 \alias{monitor_timeseriesPlot}
 \title{Timeseries Plot for Monitoring Data}
 \usage{
-monitor_timeseriesPlot(ws_monitor, AQIStyle = "", useGMT = FALSE,
+monitor_timeseriesPlot(ws_monitor, AQIStyle = FALSE, useGMT = FALSE,
   shadedNight = FALSE, add = FALSE, ...)
 }
 \arguments{
 \item{ws_monitor}{data list of class \code{ws_monitor}}
 
-\item{AQIStyle}{AQI styling, one of "1_3", "8", or "24"}
+\item{AQIStyle}{boolean flag specifying use of AQI 24-hr, daily average breaks and colors}
 
 \item{useGMT}{If TRUE, \code{monitor_timeseriesPlot} will display time as
 GMT. Otherwise, it will attempt to use local time, provided all monitors
@@ -27,8 +27,7 @@ sunset times.}
 \item{...}{Any additional graphical parameters that can be passed in to the function}
 }
 \description{
-Plots a time series with colors representing the relevant AQI
-values as determined by AQIStyle.
+Plots a time series optionally using AQI colors and breaks.
 }
 \examples{
 \dontrun{

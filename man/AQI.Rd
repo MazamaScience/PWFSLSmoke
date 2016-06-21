@@ -14,9 +14,6 @@ Official AQI levels, names and colors are provided in a list for easy coloring a
 \details{
 AQI breaks and associated names and colors
 
-\code{AQI$breaks_1_3} are define breakpoints between AQI levels for 1-3 hour averaging.
-\code{AQI$breaks_8} and \code{AQI$breaks_24} are appropriate for 8 and 24 hour averaging.
-
 AQI breaks were obtained from \url{http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf}
 
 AQI colors were copied from \url{http://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/}

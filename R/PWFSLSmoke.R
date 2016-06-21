@@ -10,8 +10,6 @@
 #' @description
 #' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
 #' @details
-#' \code{AQI$breaks_1_3} are define breakpoints between AQI levels for 1-3 hour averaging.
-#' \code{AQI$breaks_8} and \code{AQI$breaks_24} are appropriate for 8 and 24 hour averaging.
 #' 
 #' AQI breaks were obtained from \url{http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf}
 #' 
@@ -19,9 +17,7 @@
 #' @note
 #' The low end of each break category is used as the breakpoint.
 
-AQI <- list(breaks_1_3=c(-1e12, 39, 89,  139,   352,   526,   1e12),
-            breaks_8=c(0, 23, 51,   80,   200,   300,   10000),
-            breaks_24=c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000),
+AQI <- list(breaks_24=c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000),
             colors=c("#009966","#FFDE33","#FF9933","#CC0033","#660099","#730023"),
             names=c('good','moderate','USG','unhealthy','very unhealthy','extreme'))
 
