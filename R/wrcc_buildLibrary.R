@@ -31,9 +31,13 @@ wrcc_buildLibrary <- function(dataDir='~/Data/WRCC', outputDir='~/Data/WRCC',
   # TODO:  Make sure transcript=NULL sends output to the console
   
   # Set up a new transcript file
-  if (!is.null(transcript)) {
+  if (is.null(transcript)) {
+    futile.logger::flog.appender(futile.logger::appender.console())
+  } else {
     transcriptPath <- file.path(outputDir,transcript)
-    file.remove(transcriptPath)
+    if ( file.exists(transcriptPath) ) {
+      file.remove(transcriptPath)
+    }
     futile.logger::flog.appender(futile.logger::appender.file(transcriptPath))
   }
   
