@@ -1,10 +1,8 @@
 #' @export
 #' @title No Data Plot
-#' @param ws_monitor
+#' @param ws_monitor ws_monitor object
+#' @param monitorID id for a specific monitor in the ws_monitor
 #' @description Plot that indicates there is no data
-#' @examples
-#' \dontrun{
-#' }
 
 monitor_noDataPlot <- function(ws_monitor, monitorID) {
 

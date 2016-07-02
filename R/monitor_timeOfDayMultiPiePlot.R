@@ -1,7 +1,7 @@
 #' @export
 #' @title Time of Day Multi Pie Plot
 #' @param ws_monitor a ws_monitor object
-#' @param monitorID a id for a specific monitor in the ws_monitor
+#' @param monitorID id for a specific monitor in the ws_monitor
 #' @description Pie plot that shows 9 PM 2.5 levels based on time of day. 
 #' @examples
 #' \dontrun{
@@ -10,9 +10,9 @@
 #' monitor_timeOfDayMultiPiePlot(ws_monitor, monitor)
 #' }
 
-library(dplyr)
-
 monitor_timeOfDayMultiPiePlot <- function(ws_monitor, monitorID) {
+  
+  # TODO:  Use builtin AQI object below
   
   # Plot Style
   

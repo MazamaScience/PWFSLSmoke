@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.7.2
+Version: 0.8.0
 Title: Utilities for Working with PM2.5 Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -10,19 +10,20 @@ Authors@R: c(
     person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("aut"))
     )
 Author: Jonathan Callahan [aut, cre],
-    Rohan Aras [aut],
     Zach Dingels [aut],
+    Rohan Aras [aut],
     Jimin Kim [aut],
     Jon Hagg [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
     R (>= 3.1.0),
+    dplyr,
     maps,
     MazamaSpatialUtils (>= 0.4.4)
 Imports:
     cluster,
-    dplyr,
     dygraphs,
+    futile.logger,
     ggmap,
     httr,
     leaflet,

@@ -1,7 +1,7 @@
 #' @export
 #' @title timeOfDayPlot
-#' @param ws_monitor a ws_monitor object
-#' @param monitorID a id for a specific monitor in the ws_monitor
+#' @param ws_monitor ws_monitor object
+#' @param monitorID id for a specific monitor in the ws_monitor
 #' @description Pie plot that shows PM 2.5 levels based on time of day. 
 #' @examples
 #' \dontrun{
@@ -10,12 +10,12 @@
 #' monitor_timeOfDayPlot(ws_monitor, monitor)
 #' }
 
-library(dplyr)
-
 monitor_timeOfDayPlot <- function(ws_monitor, monitorID) {
   
-  # Plot Style
+  # TODO:  Use builtin AQI object below
   
+  # Plot Style
+
   # Latest aqiBreaks from http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf
   # NOTE:  The low end of each break category is used as the breakpoint.
   # Latest aqiColors from http://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/

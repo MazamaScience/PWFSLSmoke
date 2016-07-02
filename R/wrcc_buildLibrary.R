@@ -101,7 +101,7 @@ wrcc_buildLibrary <- function(dataDir='~/Data/WRCC', outputDir='~/Data/WRCC',
     
     if ( class(result)[1] == "try-error" ) {
       err_msg <- geterrmessage()
-      futile.logger::flog.warn('Skipping file %s: %s', unitID, err_msg)
+      futile.logger::flog.warn('Skipping file %s: %s', file, err_msg)
       next
     } else {
       instrumentID <- stringr::str_sub(ws_monitor$meta$monitorID[1],1,-6) # strip off trailing "__###" (deployment id)

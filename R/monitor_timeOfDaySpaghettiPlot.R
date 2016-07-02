@@ -1,7 +1,7 @@
 #' @export
 #' @title Time of Day Spaghetti Plot
-#' @param ws_monitor a ws_monitor object
-#' @param monitorID a id for a specific monitor in the ws_monitor
+#' @param ws_monitor ws_monitor object
+#' @param monitorID id for a specific monitor in the ws_monitor
 #' @description Spaghetti Plot that shows PM 2.5 levels by hours for 10 days. 
 #' The plot also has takes and draws a mean. 
 #' @examples
@@ -10,8 +10,6 @@
 #' monitor <- ws_monitor$meta$monitorID[1]
 #' monitor_timeOfDaySpaghettiPlot(ws_monitor, monitor)
 #' }
-
-library(dplyr)
 
 monitor_timeOfDaySpaghettiPlot <- function(ws_monitor, monitorID) {
   
