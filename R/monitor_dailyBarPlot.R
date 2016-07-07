@@ -2,12 +2,13 @@
 #' @title dailyBarPlot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
-#' @description Pie plot that shows PM 2.5 levels based on time of day. 
+#' @description A bar graph showing daily average PM 2.5 values for
+#' a specific monitor. Each graph is colored with AQI Breaks.  
 #' @examples
 #' \dontrun{
-#' ws_monitor <- wrcc_load(20150801, 20150802)
+#' ws_monitor <- wrcc_load(20150801, 20150820)
 #' monitor <- ws_monitor$meta$monitorID[1]
-#' monitor_timeOfDayPlot(ws_monitor, monitor)
+#' monitor_dailyBarPlot(ws_monitor, monitor)
 #' }
 
 monitor_dailyBarPlot <- function(ws_monitor, monitorID) {
@@ -30,7 +31,7 @@ monitor_dailyBarPlot <- function(ws_monitor, monitorID) {
   # NOTE:  to get the average time and average value for each day.
   
   # Convert to local time
-  localTime <- lubridate::with_tz(GMTTime, stationMetadata$timezone)
+  localTime <- lubridate::with_tz(GMTTime, stationMetadata$timezone[index])
   
   # Create a vector of Julian day numbers
   dayNum <- lubridate::yday(localTime)
@@ -49,6 +50,10 @@ monitor_dailyBarPlot <- function(ws_monitor, monitorID) {
   
   # Subset to only have full days
   dfMean <- dfMean[fullDayMask,]
+  
+  if (nrow(dfMean) == 0) {
+    futile.logger::flog.warn('There are no full days to plot in monitor_dailyBarPlot. Try a ws_monitor that covers more days.')
+  }
   
   
   # Plotting ------------------------------------------------------------------
