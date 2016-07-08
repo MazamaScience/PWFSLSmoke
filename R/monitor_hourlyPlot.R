@@ -19,6 +19,9 @@ monitor_hourlyPlot <- function(ws_monitor, monitorID) {
     aqiBreaks_24  <- c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000)
     
     # Plot
+    # NOTE -- No clue what insituTime/PM25 is. I checked thru the
+    # smokeMonitoring package and it's loaded from "_PM2.5_","Latest.RData"
+    # This is a little to ambiguous for me so I'll be comeing back to this. 
     plot(insituTime, insituPM25,
          ylim=ylim,
          pch=pch, col=col, cex=cex,
