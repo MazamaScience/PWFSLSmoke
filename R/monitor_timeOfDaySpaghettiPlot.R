@@ -11,7 +11,12 @@
 #' monitor_timeOfDaySpaghettiPlot(ws_monitor, monitor)
 #' }
 
-monitor_timeOfDaySpaghettiPlot <- function(ws_monitor, monitorID) {
+monitor_timeOfDaySpaghettiPlot <- function(ws_monitor, monitorID=NULL) {
+  
+  # Allow single monitor objects to be used without specifying monitorID
+  if ( is.null(monitorID) && nrow(ws_monitor$meta) == 1 ) {
+    monitorID <- ws_monitor$meta$monitorID[1]
+  }
   
   # Plot Style ----------------------------------------------------------------
   

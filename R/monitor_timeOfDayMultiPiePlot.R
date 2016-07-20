@@ -10,21 +10,17 @@
 #' monitor_timeOfDayMultiPiePlot(ws_monitor, monitor)
 #' }
 
-monitor_timeOfDayMultiPiePlot <- function(ws_monitor, monitorID) {
+monitor_timeOfDayMultiPiePlot <- function(ws_monitor, monitorID=NULL) {
   
-  # TODO:  Use builtin AQI object below
+  # Allow single monitor objects to be used without specifying monitorID
+  if ( is.null(monitorID) && nrow(ws_monitor$meta) == 1 ) {
+    monitorID <- ws_monitor$meta$monitorID[1]
+  }
   
   # Plot Style
   
-  # Latest aqiBreaks from http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf
-  # NOTE:  The low end of each break category is used as the breakpoint.
-  # Latest aqiColors from http://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/
-  aqiBreaks_24  <- c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000)
-  
-  aqiColors <- c("#009966","#FFDE33","#FF9933","#CC0033","#660099","#730023")
-  aqiColors <- adjustcolor(aqiColors, 0.5)
-  aqiNames <- c('good','moderate','USG','unhealthy','very unhealthy','extreme')
-  
+  aqiColors <- adjustcolor(AQI$colors, 0.5)
+
   cex_pie = 1.0
   lwd_pie = 3
   col_pieLines = 'white'
@@ -75,7 +71,7 @@ monitor_timeOfDayMultiPiePlot <- function(ws_monitor, monitorID) {
     # Plotting ------------------------------------------------------------------
     
     # Colors come from pm25Daily values
-    cols <- aqiColors[ .bincode(dayChunkMean$pm25, aqiBreaks_24, include.lowest=TRUE) ]
+    cols <- aqiColors[ .bincode(dayChunkMean$pm25, AQI$breaks_24, include.lowest=TRUE) ]
     
     # Handle incomplete days
     if (length(cols) < 8) {
@@ -110,7 +106,8 @@ monitor_timeOfDayMultiPiePlot <- function(ws_monitor, monitorID) {
     
   }
   
-  # Return to default setting
+  # Return to default settings
+  layout(1)
   par(mar=c(5,4,4,2)+.1)
   
 }

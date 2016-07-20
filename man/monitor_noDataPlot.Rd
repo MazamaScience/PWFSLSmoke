@@ -4,7 +4,7 @@
 \alias{monitor_noDataPlot}
 \title{No Data Plot}
 \usage{
-monitor_noDataPlot(ws_monitor, monitorID)
+monitor_noDataPlot(ws_monitor, monitorID = NULL)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}

@@ -2,6 +2,9 @@
 #' @title dailyBarPlot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
+#' @param width width of window (in hours) used to calculate means
+#' @param data.thresh minimum number of observations as a percent of width required, or NA is returned
+#' @param align alignment of averaging window relative to point being calculated ["left"|"center"|"right"]
 #' @description A bar graph showing daily average PM 2.5 values for
 #' a specific monitor. Each graph is colored with AQI Breaks.  
 #' @examples
@@ -11,14 +14,18 @@
 #' monitor_rollingMeanPlot(ws_monitor, monitor)
 #' }
 
-monitor_rollingMeanPlot <- function(ws_monitor, monitorID, width = 24, data.thresh=75, align="center") {
+monitor_rollingMeanPlot <- function(ws_monitor, monitorID=NULL, width=24, data.thresh=75, align="center") {
   
-  rollingMeans <- monitor_rollingMean(ws_monitor, width = width, data.thresh = data.thresh, align = align)
+  # Allow single monitor objects to be used without specifying monitorID
+  if ( is.null(monitorID) && nrow(ws_monitor$meta) == 1 ) {
+    monitorID <- ws_monitor$meta$monitorID[1]
+  }
+  
+  rollingMeans <- monitor_rollingMean(ws_monitor, width=width, data.thresh=data.thresh, align=align)
   
   # de-emphasize the points
   col <- adjustcolor('black',0.2)
-  aqiBreaks <- c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000)
-  
+
   # Grid lines
   lty_grid <- 'dotted'
   col_grid <- 'gray80'
@@ -35,14 +42,6 @@ monitor_rollingMeanPlot <- function(ws_monitor, monitorID, width = 24, data.thre
   plot(ws_monitor$data$datetime, ws_monitor$data[[monitorID]],
        col=col,
        xlab = 'Datetime', ylab = 'PM2.5')
-  
-  # # Background colors
-  # if (infoList$useAQIColors) {
-  #   addAQIColors(aqiBreaks)
-  #   points(insituTime, insituPM25,
-  #          pch=pch, col=col, cex=cex)
-  #   addAQILabels(aqiBreaks)
-  # }
   
   # Grid
   grid(nx=NA,ny=NULL, col=col_grid, lwd=lwd_grid, lty=lty_grid)

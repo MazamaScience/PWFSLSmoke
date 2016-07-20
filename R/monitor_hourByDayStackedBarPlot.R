@@ -2,6 +2,7 @@
 #' @title Hour by Day Bar Plot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
+#' @param stacks number of stacks in a 24 hour period
 #' @description A bar plot.
 #' @examples
 #' \dontrun{
@@ -10,16 +11,18 @@
 #' monitor_hourByDayStackedBarPlot(ws_monitor, monitor)
 #' }
 
-monitor_hourByDayStackedBarPlot <- function(ws_monitor, monitorID, stacks = 4) {
-  # Latest aqiBreaks from http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf
-  # NOTE:  The low end of each break category is used as the breakpoint.
-  # Latest aqiColors from http://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/
-  aqiBreaks_24  <- c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000)
+# TODO:  Remove stacks?
+# TODO:  Use internal AQI object
+
+monitor_hourByDayStackedBarPlot <- function(ws_monitor, monitorID=NULL, stacks=4) {
+
+  # Allow single monitor objects to be used without specifying monitorID
+  if ( is.null(monitorID) && nrow(ws_monitor$meta) == 1 ) {
+    monitorID <- ws_monitor$meta$monitorID[1]
+  }
   
-  aqiColors <- c("#009966","#FFDE33","#FF9933","#CC0033","#660099","#730023")
-  aqiColors <- adjustcolor(aqiColors, 0.5)
-  aqiNames <- c('good','moderate','USG','unhealthy','very unhealthy','extreme')
-  
+  aqiColors <- adjustcolor(AQI$colors, 0.5)
+
   # Create a DF
   pm25 <- ws_monitor$data[[monitorID]]
   GMTTime <- ws_monitor$data$datetime 
@@ -38,7 +41,7 @@ monitor_hourByDayStackedBarPlot <- function(ws_monitor, monitorID, stacks = 4) {
   
   # Create a new dataframe for local use
   df <- data.frame(localTime,averagePM25,day,hour)
-  df$cols <- aqiColors[ .bincode(df$averagePM25, aqiBreaks_24, include.lowest=TRUE) ]
+  df$cols <- aqiColors[ .bincode(df$averagePM25, AQI$breaks_24, include.lowest=TRUE) ]
   
   dayRange <- seq(ws_monitor$data$datetime[1], tail(ws_monitor$data$datetime, 1), by=paste0(24 / stacks, ' hour'))
   dayRange <- dayRange[1:length(dayRange) - length(dayRange) %% 4]

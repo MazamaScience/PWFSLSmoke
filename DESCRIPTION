@@ -1,11 +1,11 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.8.0
+Version: 0.8.1
 Title: Utilities for Working with PM2.5 Monitoring Data
 Authors@R: c(
+    person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("aut")),
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
     person("Rohan", "Aras", email="rohana@uw.edu", role=c("aut")),
-    person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("aut")),
     person("Jimin", "Kim", email="jk55@uw.edu", role=c("aut")),
     person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("aut"))
     )

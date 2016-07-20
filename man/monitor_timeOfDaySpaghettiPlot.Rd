@@ -4,7 +4,7 @@
 \alias{monitor_timeOfDaySpaghettiPlot}
 \title{Time of Day Spaghetti Plot}
 \usage{
-monitor_timeOfDaySpaghettiPlot(ws_monitor, monitorID)
+monitor_timeOfDaySpaghettiPlot(ws_monitor, monitorID = NULL)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}

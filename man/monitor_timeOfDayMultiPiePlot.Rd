@@ -4,7 +4,7 @@
 \alias{monitor_timeOfDayMultiPiePlot}
 \title{Time of Day Multi Pie Plot}
 \usage{
-monitor_timeOfDayMultiPiePlot(ws_monitor, monitorID)
+monitor_timeOfDayMultiPiePlot(ws_monitor, monitorID = NULL)
 }
 \arguments{
 \item{ws_monitor}{a ws_monitor object}

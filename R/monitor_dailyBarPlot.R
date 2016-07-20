@@ -11,10 +11,15 @@
 #' monitor_dailyBarPlot(ws_monitor, monitor)
 #' }
 
-monitor_dailyBarPlot <- function(ws_monitor, monitorID) {
+monitor_dailyBarPlot <- function(ws_monitor, monitorID=NULL) {
   # Data Preparation ----------------------------------------------------------
   
   # NOTE:  Incomting insituTime is GMT
+  
+  # Allow single monitor objects to be used without specifying monitorID
+  if ( is.null(monitorID) && nrow(ws_monitor$meta) == 1 ) {
+    monitorID <- ws_monitor$meta$monitorID[1]
+  }
   
   # Insitu data requested 
   pm25 <- ws_monitor$data[[monitorID]]
@@ -57,18 +62,10 @@ monitor_dailyBarPlot <- function(ws_monitor, monitorID) {
   
   
   # Plotting ------------------------------------------------------------------
-  
-  # Latest aqiBreaks from http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf
-  # NOTE:  The low end of each break category is used as the breakpoint.
-  # Latest aqiColors from http://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/
-  aqiBreaks_24  <- c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000)
-  
-  aqiColors <- c("#009966","#FFDE33","#FF9933","#CC0033","#660099","#730023")
-  aqiColors <- adjustcolor(aqiColors, 0.5)
-  aqiNames <- c('good','moderate','USG','unhealthy','very unhealthy','extreme')
-  
-  # Colors come from pm25Daily values
-  cols <- aqiColors[ .bincode(dfMean$pm25, aqiBreaks_24, include.lowest=TRUE) ]
+
+  # Colors come from pm25Daily means
+  aqiColors <- adjustcolor(AQI$colors, 0.5)
+  cols <- aqiColors[ .bincode(dfMean$pm25, AQI$breaks_24, include.lowest=TRUE) ]
   
   # Create time labels we can use for the X axis
   dayLabels <- strftime(dfMean$localTime, "%b %d")

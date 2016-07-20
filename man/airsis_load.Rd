@@ -16,14 +16,14 @@ airsis_load(startdate, enddate, monitorIDs = NULL, stateCodes = NULL,
 
 \item{stateCodes}{optional vector of stateCodes used to subset the data}
 
-\item{url}{The location of the meta and data files (Default = 'http://smoke.airfire.org/RData/AirNowTech/')}
+\item{url}{local file path or url containing the \code{ws_monitor} object to be loaded}
 }
 \value{
-ws_monitor object with subsetted time, monitorIDs and parameter
+ws_monitor object
 }
 \description{
-When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves
-data from the archive url and returns the subsetted ws_monitor object.
+When given the startdate, enddate, monitorIDs and stateCodes, the function retrieves
+data from url and returns the subsetted ws_monitor object.
 }
 \examples{
 \dontrun{
