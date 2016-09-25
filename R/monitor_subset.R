@@ -34,7 +34,9 @@ monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NUL
   # sanity check
   if ( is.null(meta) ) {
     warning("No matching monitors found")
-    return (list(data=NULL, meta=NULL))
+    ws_monitor <- list(meta=NULL, data=NULL)
+    ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
+    return (ws_monitor)
   }
   
   # Determine potentially reduced subset of monitorIDs
@@ -46,6 +48,8 @@ monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NUL
   # Sanity check -- accept numeric values for tlim
   if ( !is.null(tlim) ) {
     if (class(tlim)[1] == 'numeric') tlim <- parseDatetime(tlim)
+    # Convert any GMT to UTC
+    tlim <- lubridate::ymd_hms(tlim)
   }
    
   # Subset data based on time, values and monitorIDs
@@ -64,8 +68,9 @@ monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NUL
   # subset metadata one more time
   meta <- monitor_subsetMeta(ws_monitor$meta, monitorIDs=validMonIDs)
   
-  ws_monitor <- list(data=data, meta=meta)
+  ws_monitor <- list(meta=meta, data=data)
+  ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
-  return( structure(ws_monitor, class = c("ws_monitor", "list")) )
+  return(ws_monitor)
   
 }

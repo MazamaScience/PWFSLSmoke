@@ -13,6 +13,7 @@
 #' monitor_timeseriesPlot(bsLocal, col='red')
 #' addShadedNights(timeInfo)
 #' }
+#' @seealso \link{addBullseye}
 
 addShadedNights <- function(timeInfo, col=adjustcolor('black',0.1)) {
   

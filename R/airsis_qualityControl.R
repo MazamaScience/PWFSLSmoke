@@ -2,95 +2,44 @@
 #' @export
 #' @title Apply Quality Control to Raw AIRSIS Dataframe
 #' @param df single site dataframe created by airsis_downloadData()
-#' @param verbose logical flag to generate verbose output
-#' @description Perform various QC measures on AIRSIS data.
+#' @description Various QC steps are taken to clean up the incoming raw dataframe including:
 #' 
+#' \enumerate{
+#' \item{Ensure GPS location data are included in each measurement record.}
+#' \item{Remove GPS location records.}
+#' \item{Remove measurement records with values outside of valid ranges.}
+#' }
+#' 
+#' See the individual \code{airsis_~QualityControl()} functions for details.
 #' @return  Cleaned up dataframe of AIRSIS monitor data.
+#' @seealso \code{\link{airsis_EBAMQualityControl}}
 
+airsis_qualityControl <- function(df) {
+  
+  monitorTypeList <- airsis_identifyMonitorType(df)
+  monitorType <- monitorTypeList$monitorType
 
-airsis_qualityControl <- function(df, verbose=FALSE) {
+  logger.debug('Applying %s QC rules', monitorType)
   
-  #   > names(df)
-  #    [1] "MasterTable_ID" "Alias"          "Latitude"       "Longitude"      "Date.Time.GMT" 
-  #    [6] "COncRT"         "ConcHr"         "Flow"           "W.S"            "W.D"           
-  #   [11] "AT"             "RHx"            "RHi"            "BV"             "FT"            
-  #   [16] "Alarm"          "Type"           "Serial.Number"  "Version"        "Sys..Volts"    
-  #   [21] "TimeStamp"      "PDate"          "monitorName"
-  
-  monitorName <- df$monitorName[1]
-  
-  # ----- Missing Values ------------------------------------------------------
-  
-  # Handle various missing value flags
-  
-  
-  # ----- Location ------------------------------------------------------------
-  
-  # Latitude and longitude must be in range and non-zero
-  lonMask <- df$Longitude >= -180 & df$Longitude <= 180 & df$Longitude != 0 & !is.na(df$Longitude)
-  latMask <- df$Latitude >= -90 & df$Latitude <= 90 & df$Latitude != 0 & !is.na(df$Latitude)
-  df <- df[lonMask & latMask,]
-  
-  # ----- Time ----------------------------------------------------------------
-  
-  # TODO:  Times are in local time so we need to extract the timezone and know the location
-  # TODO:  before we can procede.
-  
-  # Add a POSIXct datetime
-  df$datetime <- lubridate::mdy_hms(df$Date.Time.GMT)
-  
-  
-  # ----- Type ----------------------------------------------------------------
-  
-  df <- df[df$Type == "PM 2.5",]
-  
-  if (nrow(df) < 1) stop(paste0(monitorName,' has no valid records'))
-  
-  ebamDF <- df[df$Type == "PM 2.5",]
-  
-  
-  # Leland Tarnay QC -----------------------------------------------------------
-  
-  ###tmp.2014_YOSE_ebam1_ftp$concQA <- with(tmp.2014_YOSE_ebam1_ftp,
-  ###                              ifelse(Flow < 16.7 * .95, "FlowLow",
-  ###                              ifelse(Flow > 16.7 * 1.05, "FlowHigh",
-  ###                              ifelse(AT > 45, "HighTemp",
-  ###                              ifelse(RHi > 45,"HighRHi",
-  ###                              ifelse(ConcHr < 0, "Negative",
-  ###                              ifelse(ConcHr > .984, "HighConc", 'OK')))))))
-  ###  
-  ###tmp.2014_YOSE_ebam1_ftp$concHR <- with(tmp.2014_YOSE_ebam1_ftp,
-  ###                              ifelse(concQA == 'Negative', 0,
-  ###                              ifelse(concQA == 'OK', ConcHr * 1000 , NA)))
-  
-  goodFlow <- !is.na(ebamDF$Flow) & ebamDF$Flow >= 16.7*0.95 & ebamDF$Flow <= 16.7*1.05
-  goodAT <- !is.na(ebamDF$AT) & ebamDF$AT <= 45
-  goodRHi <- !is.na(ebamDF$RHi) & ebamDF$RHi <= 45
-  goodConcHr <- !is.na(ebamDF$ConcHr) & ebamDF$ConcHr <= 0.984
-  gooddatetime <- !is.na(ebamDF$datetime) & ebamDF$datetime < lubridate::now("UTC") # saw a future date once
-  
-  if (verbose) {
-    print(paste0('Flow has ',sum(!goodFlow,na.rm=TRUE),' missing or out of range values.'))
-    print(paste0('AT has ',sum(!goodAT,na.rm=TRUE),' missing or out of range values.'))
-    print(paste0('RHi has ',sum(!goodRHi,na.rm=TRUE),' missing or out of range values.'))
-    print(paste0('ConcHr has ',sum(!goodConcHr,na.rm=TRUE),' missing or out of range values.'))
-    print(paste0('datetime has ',sum(!gooddatetime,na.rm=TRUE),' missing or out of range values.'))
+  if ( monitorType == 'BAM1020' ) {
+    
+    logger.warn('Dataframe contains %s data -- no QC available, original dataframe being returned', monitorType)
+    
+  } else if ( monitorType == 'EBAM' ) {
+    
+    df <- airsis_EBAMQualityControl(df)
+    
+  } else if ( monitorType == 'ESAM' ) {
+    
+    # NOTE:  Conversation with Sim and Lee on 2015-07-09. Accept all values of RHi for now
+    df <- airsis_ESAMQualityControl(df, valid_RHi=c(-Inf,Inf))
+    
+  } else {
+    
+    logger.warn('Dataframe contains %s data -- no QC available, original dataframe being returned', monitorType)
+    
   }
   
-  goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
-  
-  ebamDF <- ebamDF[goodMask,]
-  
-  
-  # ----- More QC -------------------------------------------------------------
-  
-  # Bind the ebam and esampler dataframes back together
-  ###df <- rbind(ebamDF, esamplerDF)
-  df <- ebamDF
-  
-  # TODO:  Other QC?
-  
-
   return(df)
   
 }

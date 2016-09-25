@@ -50,7 +50,7 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, moni
   }
   
   if (!is.null(monitorIDs)) {
-    meta <- dplyr::filter(meta, meta$monitorID %in% monitorIDs)
+    meta <- dplyr::filter(meta, meta$monitorID %in% as.character(monitorIDs)) # allow for numeric monitorIDs
   }
   
   if (nrow(meta) == 0) {

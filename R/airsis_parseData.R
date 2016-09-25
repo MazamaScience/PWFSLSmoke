@@ -2,9 +2,22 @@
 #' @export
 #' @title Parse AIRSIS Data String
 #' @param fileString character string containing AIRSIS data as a csv
-#' @description Request data from a particular station for the desired time period.
-#' Data are returned as a dataframe. 
-#' @return Dataframe of AIRSIS monitor data.
+#' @description Raw character data from AIRSIS are parsed into a dataframe.
+#' The incoming \code{fileString}
+#' can be read in directly from AIRSIS using \code{airsis_downloadData()} or from a local
+#' file using \code{readr::read_file()}.
+#' 
+#' The type of monitor represented by this fileString is inferred from the column names
+#' using \code{airsis_identifyMonitorType()} and appropriate column types are assigned.
+#' The character data are then read into a dataframe and augmented in the following ways:
+#' \enumerate{
+#' \item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
+#' propagated foward using a last-observation-carry-forward algorithm'}
+#' \item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
+#' propagated backwords using a first-observation-carry-backward algorithm'}
+#' \item{GPS timestamp rows are removed'}
+#' }
+#' @return Dataframe of AIRSIS raw monitor data.
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
@@ -14,87 +27,57 @@
 
 airsis_parseData <- function(fileString) {
   
-  #     Different header styles     -------------------------------------------
+  # Identify monitor type
+  monitorTypeList <- airsis_identifyMonitorType(fileString)
   
-  # provider=USFS, unitID=49, year=2010
-  bam1020_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc (\u00B5g/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),TimeStamp,PDate"
+  monitorType <- monitorTypeList$monitorType
+  rawNames <- monitorTypeList$rawNames
+  columnNames <- monitorTypeList$columnNames
+  columnTypes <- monitorTypeList$columnTypes
   
-  # provider=USFS, unitID=1026, year=2010
-  ebam_header <- "MasterTable_ID,Alias,Latitude,Longitude,Date/Time/GMT,Start Date/Time (GMT),COncRT,ConcHr,Flow,W/S,W/D,AT,RHx,RHi,BV,FT,Alarm,Type,Serial Number,Version,Sys. Volts,TimeStamp,PDate"
-  
-  # provider=USFS, unitID=1002, year=2010
-  esam_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc(mg/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Start Date/Time (GMT),Serial Number,System Volts,Data 1,Data 2,TimeStamp,PDate"
-    
-  # provider=USFS, unitID=70, year=2010
-  olderEbam_header_1 <- "MasterTable_ID,Alias,Latitude,Longitude,Time,DataCol1,eBam,TimeStamp,PDate"
-  
-  # provider=APCD, unitID=4, year=2010
-  olderEbam_header_2 <- "MasterTable_ID,Alias,Latitude,Longitude,TimeStamp,PDate"
-  
-  
-  #     Determine file type     -----------------------------------------------
-  
+  # Convert the fileString into individual lines
   lines <- readr::read_lines(fileString)
   
-  if ( lines[1] == bam1020_header ) {
-    
-    # BAM1020
-    
-    # TODO:  Need to have uniform column names for all file types
-    col_names <- c('MasterTable_ID','Alias','Latitude','Longitude','Conc..\u00B5g.m3.',
-                   'Qtot..m3.','WS..KTS.','Ozone..ppb.','RTM09..mg3.','RH....',
-                   'Ambient.Temp..C.','TimeStamp','PDate')
-    col_types <- ''
+  if ( monitorType == "BAM1020" ) {
     
     # TODO:  How to assign data with to-the-minute timestamps to a particular hour? floor?
+    logger.warn('BAM1020 file parsing is not supported')
+    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
     stop(paste0('BAM1020 file parsing is not supported'), call.=FALSE)
-  
     
-  } else if ( lines[1] == ebam_header ) {
+  } else if ( monitorType == "EBAM" ) {
     
-    # EBAM
+    logger.debug('Parsing EBAM data...')
     
-    col_names <- c('MasterTable_ID','Alias','Latitude','Longitude','Date.Time.GMT','Start.Date.Time..GMT.',
-                   'COncRT','ConcHr','Flow','W.S','W.D',
-                   'AT','RHx','RHi','BV','FT',
-                   'Alarm','Type','Serial.Number','Version','Sys..Volts',
-                   'TimeStamp','PDate')
-    col_types <- 'ccddccddddddddddicccdcc'
+  } else if ( monitorType == "ESAM" ) {
     
-
-  } else if ( lines[1] == esam_header ) {
+    logger.debug('Parsing E-Sampler data...')
     
-    # ESampler
+    # NOTE:  Some E-Sampler files from AIRSIS (USFS 1050) have internal rows messed up with header line information
+    # NOTE:  We need to remove these first. It seems they can be identified by searching for '%'.
+    # NOTE:  Of course, we have to retain the first header line.
+    internalHeaderLines <- which(stringr::str_detect(lines,'%'))[-1]
     
-    # TODO:  Need to have uniform column names for all file types
-    col_names <- c('MasterTable_ID','Alias','Latitude','Longitude','Conc.mg.m3.','Flow.l.m.','AT.C.',
-                   'BP.PA.','RHx...','RHi...','WS.M.S.','WD.Deg.','BV.V.','Alarm','Start.Date.Time..GMT.',
-                   'Serial.Number','System.Volts','Data.1','Data.2','TimeStamp','PDate')
-    col_types <- ''
+    logger.debug("Removing %d 'internal header line' records from raw data", length(internalHeaderLines))
+    lines <- lines[-internalHeaderLines]
     
-    # TODO:  Need to look at these.
-    stop(paste0('ESampler file parsing is not supported'), call.=FALSE)
-
-        
-  } else if ( lines[1] == olderEbam_header_1 ) {
+  } else if ( monitorType == "OTHER_1" ) {
     
-    # Older EBAM
+    logger.warn('Older EBAM 1 file parsing is not supported')
+    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
+    stop(paste0('Older EBAM 1 file parsing is not supported', call.=FALSE))
     
-    stop(paste0('Unrecognized format parsing is not supported -- header line = \n', lines[1]), call.=FALSE)
-    ###col_names <- c('MasterTable_ID','Alias','Latitude','Longitude','Time','DataCol1','eBam','TimeStamp','PDate')
-    ###col_types <- ''
+  } else if ( monitorType == "OTHER_2" ) {
     
-  } else if ( lines[1] == olderEbam_header_2 ) {
-    
-    # Older EBAM
-
-        stop(paste0('Unrecognized format parsing is not supported -- header line = \n', lines[1]), call.=FALSE)
-    ###col_names <- c('MasterTable_ID','Alias','Latitude','Longitude','TimeStamp','PDate')
-    ###col_types <- ''
+    logger.warn('Older EBAM 2 file parsing is not supported')
+    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
+    stop(paste0('Older EBAM 2 file parsing is not supported', call.=FALSE))
     
   } else {
     
-    stop(paste0('Unrecognized format parsing is not supported -- header line = \n', lines[1]), call.=FALSE)
+    logger.warn('Unkown file parsing is not supported')
+    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
+    stop(paste0('Unknown file parsing is not supported', call.=FALSE))
     
   }
   
@@ -104,8 +87,22 @@ airsis_parseData <- function(fileString) {
   # Remove header line, leaving only data
   fakeFile <- paste0(lines[-1], collapse='\n')
   
-  df <- readr::read_csv(fakeFile, col_names=col_names, col_types=col_types)
+  df <- readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes)
   
+  
+  #     E-Sampler fixes     ---------------------------------------------------
+  
+  if ( monitorType == "ESAM" ) {
+    
+    # UnitID=1050 in July, 2016 has extra rows with some sort of metadata in columns Serial.Number and Data.1
+    # We remove those here.
+    
+    serialNumberMask <- !is.na(df$Serial.Number)
+    logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
+    
+    df <- df[!serialNumberMask,]
+    
+  }
   
   #     Various fixes     -----------------------------------------------------
   
@@ -113,23 +110,32 @@ airsis_parseData <- function(fileString) {
   # NOTE:  as separate GPS entries in the dataframe. They need to be carried
   # NOTE:  forward so they appear in all rows.
   
+  gpsMask <- !is.na(df$Longitude)
+  
   # Carry data forward to fill in all missing values
   df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE)
   df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE)
-  df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE)
+  if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
+  if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE)
+  if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
   
   # Now fill in any missing values at the front end
   df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE, fromLast=TRUE)
   df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE, fromLast=TRUE)
-  df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE, fromLast=TRUE)
+  if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
+  if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE, fromLast=TRUE)
+  if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
   
-  # Now remove GPS entry where Type == "" so as to avoid duplicate timestamps.
-  # These cause problems when reshaping the data in airsis_createDataDataframe().
-  df <- df[df$Type != "",]
+  logger.debug("Removing %d 'GPS' records from raw data", sum(gpsMask))
   
-  # Add monitor name
+  df <- df[!gpsMask,]
+  
+  # Add monitor name and type
   df$monitorName <- df$Alias
+  df$monitorType <- monitorType
   
- 
+  logger.debug('Retaining %d rows of raw %s measurements', nrow(df), monitorType)
+  
+  
   return(df)
 }

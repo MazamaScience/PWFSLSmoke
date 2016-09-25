@@ -25,26 +25,32 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, drop
   
   # Subset based on monitorID column names first as that is the quickest
   if (!is.null(monitorIDs)) {
-    data <- data[,c("datetime", monitorIDs)]
+    data <- data[,c("datetime", as.character(monitorIDs))] # allow for numeric monitorIDs
   }
   
-  if (!is.null(tlim)) {
+  if ( !is.null(tlim) ) {
     data <- dplyr::filter(data, data$datetime >= tlim[1], data$datetime <= tlim[2])
   }
   
   # Sanity check
-  if (length(data[,-1]) < 1) {
+  if ( length(data[,-1]) < 1 ) {
     warning("No matching monitors found")
-    return (NULL)    
+    return(NULL)    
   }
   
   # If specified, remove any data columns that have no valid data after time range subsetting
-  if (dropMonitors & !is.null(dim(data[,-1]))) {    
+  if ( dropMonitors & !is.null(dim(data[,-1])) ) {    
     
     anyMask <- c(TRUE, apply(data[,-1],2,function(x) { any(!is.na(x),na.rm=TRUE) }))
+    # Sanity check
+    if ( sum(anyMask) == 1 ) {
+      # All data missing, only 'datetime' has valid values
+      warning("All data are missing values.")
+      return(NULL)
+    }
     data <- data[,anyMask]
     
-    if (!is.null(vlim)) {
+    if ( !is.null(vlim) ) {
       # NOTE:  The apply() function converts the first argument to a matrix.
       # NOTE:  If we pass in a dataframe whose first column is POSIXct then things fail (Is it converting all subsequent columns to POSIXct?)
       # NOTE:  Therefore, we strip off the first column when we use apply() and then add it back
@@ -57,7 +63,7 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, drop
     anyLogical <- c(TRUE, any(!is.na(data[,-1]),na.rm=TRUE))
     data <- data[,anyLogical]
     
-    if(!is.null(vlim)) {
+    if ( !is.null(vlim) ) {
       
       dataParam <- data[,-1]
             
@@ -73,7 +79,7 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, drop
   # NOTE: If no monitors are returned, we are only left with a time vector,
   # which has no names attached. We set data to NULL in this case
   # since it's easy to test for as the result of a calculation. 
-  if (is.null(names(data))) {
+  if ( is.null(names(data)) ) {
     warning("No matching monitors found")
     return (NULL)
   }

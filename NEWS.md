@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.8 -- Plotting Functions
 
+### PWFSLSmoke 0.8.3
+
+ * All new AIRSIS data processing
+
 ### PWFSLSmoke 0.8.1
 
  * Cleanup and regularization of plotting functions.

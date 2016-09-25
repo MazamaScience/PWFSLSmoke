@@ -2,7 +2,7 @@
 #' @export
 #' @title Timeseries Plot for Monitoring Data
 #' @param ws_monitor data list of class \code{ws_monitor}
-#' @param AQIStyle boolean flag specifying use of AQI 24-hr, daily average breaks and colors
+#' @param AQIStyle AQI styling, one of "1_3", "8", or "24"
 #' @param useGMT If TRUE, \code{monitor_timeseriesPlot} will display time as
 #' GMT. Otherwise, it will attempt to use local time, provided all monitors
 #' are in the same timezone. There will be an error if \code{useGMT} is FALSE but
@@ -13,7 +13,8 @@
 #' sunset times.
 #' @param add A logical whether you want to add the plot on top of the other timeseries plot
 #' @param ... Any additional graphical parameters that can be passed in to the function
-#' @description Plots a time series optionally using AQI colors and breaks.
+#' @description Plots a time series with colors representing the relevant AQI 
+#' values as determined by AQIStyle.
 #' @examples
 #' \dontrun{ 
 #' airnow <- airnow_load(20150801, 20150831)
@@ -21,7 +22,7 @@
 #' monitor_timeseriesPlot(Roseburg)
 #' }
 
-monitor_timeseriesPlot <- function(ws_monitor, AQIStyle=FALSE, useGMT=FALSE, shadedNight=FALSE, add=FALSE,
+monitor_timeseriesPlot <- function(ws_monitor, AQIStyle='', useGMT=FALSE, shadedNight=FALSE, add=FALSE,
                                    ...) {
   
   data <- ws_monitor$data
@@ -44,7 +45,6 @@ monitor_timeseriesPlot <- function(ws_monitor, AQIStyle=FALSE, useGMT=FALSE, sha
   # set range for plotting
   if ( !('ylim' %in% names(list(...))) ){
     ymax <- max(data[,-1], na.rm=TRUE)
-    ymax <- min(ymax,2000)
     ylim <- c(0, ymax*1.1)
   } else {
     ylim <- list(...)$ylim
@@ -74,9 +74,9 @@ monitor_timeseriesPlot <- function(ws_monitor, AQIStyle=FALSE, useGMT=FALSE, sha
   }
   
   # choose AQI breaks 
-  if ( AQIStyle ) {
-    
-    breaks <- AQI$breaks_24
+  if (AQIStyle !='') {
+    style <- paste0("breaks_", as.character(AQIStyle))
+    breaks <- AQI[[style]]
     
     for (id in meta$monitorID) {
       # set style options 
@@ -86,17 +86,17 @@ monitor_timeseriesPlot <- function(ws_monitor, AQIStyle=FALSE, useGMT=FALSE, sha
       cols <- adjustcolor(cols, alpha.f=transparency)
       cexs <- values / 200 + .3
       cexs <- pmin(cexs,2)
+      
       points(times, values, type='p', pch=16, cex=cexs, col=cols)
     }
-    
   } else {
     
     for (id in meta$monitorID) {
       # set style options 
       values <- data[[id]] # same as data[,id]
+      
       points(times, values, ...)
     }
-    
   }
   
   # shade nighttime hours 

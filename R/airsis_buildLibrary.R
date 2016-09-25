@@ -42,9 +42,7 @@ airsis_buildLibrary <- function(provider='USFS', unitIDs=NULL, years=2000:2015,
     futile.logger::flog.appender(futile.logger::appender.console())
   } else {
     transcriptPath <- file.path(outputDir,transcript)
-    if ( file.exists(transcriptPath) ) {
-      file.remove(transcriptPath)
-    }
+    file.remove(transcriptPath)
     futile.logger::flog.appender(futile.logger::appender.file(transcriptPath))
   }
   
@@ -91,7 +89,7 @@ airsis_buildLibrary <- function(provider='USFS', unitIDs=NULL, years=2000:2015,
       # 
       # eBamNews <- c(45:96) # with a few missing
       
-      #earlyEbams <- c(1:99) # with other flavors mixed in
+      earlyEbams <- c(1:99) # with other flavors mixed in
       
       IridiumEbams <- c(1000:1055,2000) # with other flavors mixed in
       IridiumEbams <- c(1000:1005) # DELETEME
@@ -118,20 +116,20 @@ airsis_buildLibrary <- function(provider='USFS', unitIDs=NULL, years=2000:2015,
       startdate <- paste0(year,'0101')
       enddate <- paste0(year, '1231')
       
-      result <- try( fileString <- airsis_fileString(provider, unitID, startdate, enddate),
+      result <- try( fileString <- airsis_downloadData(provider, unitID, startdate, enddate),
                      silent=TRUE )
 
       if ( class(result)[1] == "try-error" ) {
         err_msg <- geterrmessage()
         futile.logger::flog.warn('Skipping unitID %s: %s', unitID, err_msg)
-        next
+        break
       }
       
       # When no data is available, only a single line is found
       lines <- readr::read_lines(fileString)
       if (length(lines) == 1) {
         futile.logger::flog.debug('Skipping %s for unitID %s: no data found', year, unitID)
-        next
+        break
       }
       
       # Parse data into a dataframe
@@ -146,7 +144,7 @@ airsis_buildLibrary <- function(provider='USFS', unitIDs=NULL, years=2000:2015,
         err_msg <- geterrmessage()
         if (stringr::str_detect(err_msg,'parsing is not supported')) {
           futile.logger::flog.warn('Skipping unitID %s: %s', unitID, err_msg)
-          next
+          break
         } else if (stringr::str_detect(err_msg,'No data returned')) {
           futile.logger::flog.debug('Skipping %s for unitID %s: no data found', year, unitID)
           next
