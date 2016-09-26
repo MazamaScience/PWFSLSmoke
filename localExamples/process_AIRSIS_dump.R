@@ -14,7 +14,7 @@ loadSpatialData('NaturalEarthAdm1')
 logger.setup()
 logger.setLevel(DEBUG)
 
-USFS_ebam_file <- '~/Data/monitors/USFS_ebam.csv'
+USFS_ebam_file <- '~/Data/monitors/USFS_esam.csv'
 
 logger.info('Reading data...')
 fileString <- readr::read_file(USFS_ebam_file)
@@ -76,5 +76,4 @@ for (singleAlias in names(dataList)[-1]) {
 ws_monitor <- list(meta=as.data.frame(meta), data=as.data.frame(data))
 ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
 
-debugPoint <- True
 

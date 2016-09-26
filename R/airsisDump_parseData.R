@@ -97,7 +97,7 @@ airsisDump_parseData <- function(fileString) {
     # UnitID=1050 in July, 2016 has extra rows with some sort of metadata in columns Serial.Number and Data.1
     # We remove those here.
     
-    serialNumberMask <- !is.na(df$Serial.Number)
+    serialNumberMask <- df$Serial.Number != ""
     logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
     df <- df[!serialNumberMask,]
     
@@ -113,8 +113,6 @@ airsisDump_parseData <- function(fileString) {
   # NOTE:  as separate GPS entries in the dataframe. They need to be carried
   # NOTE:  forward so they appear in all rows.
   
-  ###gpsMask <- !is.na(df$Longitude)
-  
   # Carry data forward to fill in all missing values
   df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE)
   df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE)
@@ -128,11 +126,6 @@ airsisDump_parseData <- function(fileString) {
   if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
   if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE, fromLast=TRUE)
   if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
-  
-  ###logger.debug("Removing %d 'GPS' records from raw data", sum(gpsMask))
-  
-  ###df <- df[!gpsMask,]
-  
   
   # Add monitor name and type
   df$monitorName <- df$Alias
