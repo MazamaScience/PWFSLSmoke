@@ -2,8 +2,8 @@
 #' @export
 #' @title Identify AIRSIS Dump File Monitor Type
 #' @param df dataframe or raw character string containing AIRSIS data
-#' @description Examine the column names of the incoming dataframe (or first line
-#' of raw text) to identify different types of monitor data provided by AIRSIS.
+#' @description Examine the column names of the incoming dataframe or the first line
+#' of raw text to identify different types of monitor data provided by AIRSIS.
 #' 
 #' The return is a list includes everything needed to identify and parse the raw
 #' data using \code{readr::read_csv()}:
@@ -11,7 +11,7 @@
 #' \itemize{
 #' \item{\code{monitorType}}{ -- identification string}
 #' \item{\code{rawNames}}{ -- column names from the data (including special characters)}
-#' \item{\code{columnNames}}{ -- assigned column names (special characters repaced with '.')}}
+#' \item{\code{columnNames}}{ -- assigned column names (special characters repaced with '.')}
 #' \item{\code{columnTypes}}{ -- column type string for use with \code{readr::read_csv()}}
 #' }
 #' 

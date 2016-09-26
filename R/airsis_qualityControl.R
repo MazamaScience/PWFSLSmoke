@@ -16,8 +16,21 @@
 
 airsis_qualityControl <- function(df) {
   
-  monitorTypeList <- airsis_identifyMonitorType(df)
-  monitorType <- monitorTypeList$monitorType
+  # Sanity check -- df must have a monitorType
+  if ( !'monitorType' %in% names(df) ) {
+    logger.error("No 'monitorType' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
+    stop(paste0("No 'monitorType' column found in 'df' dataframe."))
+  }
+  
+  monitorType <- unique(df$monitorType)
+  
+  # Sanity check -- df must have only one monitorType
+  if ( length(monitorType) > 1 ) {
+    logger.error("Multilpe monitor types found in 'df' dataframe: %s", paste0(monitorType, collapse=", "))
+    stop(paste0("Multiple monitor types found in 'df' dataframe."))
+  }
+  
+  monitorType <- monitorType[1]
 
   logger.debug('Applying %s QC rules', monitorType)
   

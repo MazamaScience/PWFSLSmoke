@@ -16,26 +16,25 @@
 
 airsis_createDataDataframe <- function(df, meta) {
   
-  
-  # Sanity check -- df must have a monitorType
-  if ( !'monitorType' %in% names(df) ) {
-    logger.error("No 'monitorType' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
-    stop(paste0("No 'monitorType' column found in 'df' dataframe."))
-  }
-  
   # Sanity check -- df must have deploymentID
   if ( !'deploymentID' %in% names(df) ) {
     logger.error("No 'deploymentID' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
     stop(paste0("No 'deploymentID' column found in 'df' dataframe.  Have you run addClustering()?"))
   }
 
-  # Sanity check -- df must have deploymentID
+  # Sanity check -- df must have datetime
   if ( !'datetime' %in% names(df) ) {
     logger.error("No 'datetime' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
     stop(paste0("No 'datetime' column found in 'df' dataframe."))
   }
   
-  monitorType <- meta$monitorType
+  # Sanity check -- meta must have a monitorType
+  if ( !'monitorType' %in% names(meta) ) {
+    logger.error("No 'monitorType' column found in 'meta' dataframe with columns: %s", paste0(names(meta), collapse=", "))
+    stop(paste0("No 'monitorType' column found in 'meta' dataframe."))
+  }
+  
+  monitorType <- unique(meta$monitorType)
   
   # Sanity checkk -- only a single monitorType is allowed
   if ( length(monitorType) > 1 ) {

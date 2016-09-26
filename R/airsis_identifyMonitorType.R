@@ -11,7 +11,7 @@
 #' \itemize{
 #' \item{\code{monitorType}}{ -- identification string}
 #' \item{\code{rawNames}}{ -- column names from the data (including special characters)}
-#' \item{\code{columnNames}}{ -- assigned column names (special characters repaced with '.')}}
+#' \item{\code{columnNames}}{ -- assigned column names (special characters repaced with '.')}
 #' \item{\code{columnTypes}}{ -- column type string for use with \code{readr::read_csv()}}
 #' }
 #' 
