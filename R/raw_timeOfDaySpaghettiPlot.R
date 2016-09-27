@@ -3,6 +3,7 @@
 #' @param df dataframe with \code{datetime} column in GMT
 #' @param dataVar variable to be plotted
 #' @param tzone timezone where data were collected
+#' @param col color used for each daily line
 #' @param meanCol color used for the mean line (use NA to omit the mean)
 #' @param meanLwd line width used for th mean line
 #' @param highlightDates dates to be highlighted in YYYYMMDD format
@@ -54,7 +55,7 @@ raw_timeOfDaySpaghettiPlot <- function(df, dataVar, tzone=NULL,
     
     dayDF <- dplyr::filter(df, datestamp == singleDay)
     
-    if ( singleDay %in% highlightDayStamps ) {
+    if ( singleDay %in% highlightDates ) {
       lines(dayDF$data ~ dayDF$hour, col=highlightCol, ...)
     } else {
       lines(dayDF$data ~ dayDF$hour, col=col, ...)

@@ -1,6 +1,14 @@
 ###############################################################################
 # Create merged dataframe from AIRSIS dump file
 #
+# > names(EBAM_SitesMetadata)
+# [1] "AQSID"          "siteCode"       "siteName"       "status"        
+# [5] "agencyID"       "agencyName"     "EPARegion"      "latitude"      
+# [9] "longitude"      "elevation"      "timezone"       "GMTOffsetHours"
+#[13] "countryCode"    "FIPSMSACode"    "MSAName"        "FIPSStateCode" 
+#[17] "stateCode"      "GNISCountyCode" "countyName"     "monitorID"     
+#[21] "has_PM2.5"     
+#
 ###############################################################################
 
 library(PWFSLSmoke)
@@ -12,68 +20,47 @@ loadSpatialData('NaturalEarthAdm1')
 
 # Set up logging and log to the console all DEBUG and higher logging statements
 logger.setup()
-logger.setLevel(DEBUG)
+logger.setLevel(INFO)
 
-USFS_ebam_file <- '~/Data/monitors/USFS_esam.csv'
+# ebamFiles=c('APCD_ebam_bam.csv','ARB2.csv','mrpsa_ebam.csv','TCAPCD_ebam.csv','USFS_ebam_bam.csv'),
+# # HACK -- temporarily remove ARB2.csv
 
-logger.info('Reading data...')
-fileString <- readr::read_file(USFS_ebam_file)
 
-# Special parsing for dump files as the format is different from the AIRSIS CSV webservice
-logger.info('Parsing data...')
-df <- airsisDump_parseData(fileString)
+# APCD_esam.csv
+# ARB2.csv
+### GBUAPCD.csv
+### ODEQ.csv
+# TCAPCD_ebam.csv
+### USFS_bam1020.csv
+# USFS_ebam.csv
+# USFS_esam.csv
+### WASHOE.csv
+# mrpsa_ebam.csv
 
-# At this point df has multiple monitors in it.
+dumpFiles <- c('~/Data/monitors/ARB2.csv',        # EBAM
+               '~/Data/monitors/TCAPCD_ebam.csv', # EBAM
+               '~/Data/monitors/USFS_ebam.csv',   # EBAM
+               '~/Data/monitors/mrpsa_ebam.csv',  # EBAM
+               '~/Data/monitors/APCD_esam.csv',   # E-Sampler
+               '~/Data/monitors/USFS_esam.csv')   # E-Sampler
 
-# Standard quality control still works
-logger.info('Applying QC logic...')
-df <- airsis_qualityControl(df)
-
-# Change the name here so that we can continue to use 'df' in the loop to match code in airsis_createMonitorObject.R.
-dfCombined <- df
-
-# Loop through df$Alias and run each chunk through further data processing
-metaList <- list()
-dataList <- list()
-for (singleAlias in unique(dfCombined$Alias)) {
-  # NOTE:  You cannot assign the alias name to "Alias" in each loop as the dplyr expression
-  # NOTE:  "Alias == Alias" will always evaluate to TRUE.
-  logger.info('Processing data for %s...', singleAlias)
-  df <- dplyr::filter(dfCombined, Alias == singleAlias)
-  
-  # Add clustering information to identify unique deployments
-  logger.info('Clustering...')
-  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
-  
-  # Create 'meta' dataframe of site properties organized as monitorID-by-property
-  # NOTE:  This step will create a uniformly named set of properties and will
-  # NOTE:  add site-specific information like timezone, elevation, address, etc.
-  logger.info('Creating \'meta\' dataframe...')
-  meta <- airsis_createMetaDataframe(df)
-  
-  # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
-  logger.info('Creating \'data\' dataframe...')
-  data <- airsis_createDataDataframe(df, meta)
-  
-  metaList[[singleAlias]] <- meta
-  dataList[[singleAlias]] <- data
+monitorList <- list()
+for (filepath in dumpFiles) {
+  logger.info('Ingesting %s', filepath)
+  result <- try( ws_monitor <- airsisDump_createMonitorObject(filepath),
+                 silent=TRUE)
+  if ( class(result)[1] == "try-error") {
+    err_msg <- geterrmessage()
+    if (stringr::str_detect(err_msg, "No valid PM2.5 data")) {
+      logger.debug('No data -- skipping %s', filepath)
+    } else {
+      logger.error('Unable to parse %s', filepath)
+    }
+  } else {
+   monitorList[[basename(filepath)]] <- ws_monitor 
+  }
 }
 
-# NOTE:  Could have done this inside the loop but leaving metaList and dataList in tact
-# NOTE:  for debugging purposes.
-
-# Create combined 'meta'
-meta <- dplyr::bind_rows(metaList)
-
-# Create combined 'data'
-singleAlias <- names(dataList[1])
-data <- dataList[[singleAlias]]
-for (singleAlias in names(dataList)[-1]) {
-  data <- dplyr::full_join(data,dataList[[singleAlias]],by="datetime")
-}
-
-# Create the 'ws_monitor' object
-ws_monitor <- list(meta=as.data.frame(meta), data=as.data.frame(data))
-ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
+airsisNew <- monitor_combine(monitorList)
 
 

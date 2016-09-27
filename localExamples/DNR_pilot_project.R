@@ -71,8 +71,10 @@ legend('topleft', "24-hour average", col=col_24, lwd=4)
 
 # This could be rolled up into a separate "airsis_createQCDataframe()" or some such.
 ###fileString <- airsis_downloadData('USFS', '1031', 20160701, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
-fileString <- airsis_downloadData('USFS', '1033', 20160701, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+###fileString <- airsis_downloadData('USFS', '1033', 20160701, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
 ###fileString <- airsis_downloadData('APCD', '1013', 20160701, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+fileString <- airsis_downloadData('ARB2', '1023', 20160601, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+
 df <- airsis_parseData(fileString)
 df <- airsis_qualityControl(df)
 df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
@@ -102,14 +104,14 @@ plot(df[,c('ConcHr', 'W.S','W.D','AT','RHx','FT', 'localHour')])
 # but that sometimes it starts in the N and then backs through E and S before
 # ending up NW in the evening
 
-highlights <- df_getHighlightDayStamps(df, 'ConcHr', 'America/Los_Angeles', c(.05,Inf))
+highlights <- raw_getHighlightDates(df, 'ConcHr', 'America/Los_Angeles', c(.10,Inf))
 
 # Other by-hour-of-day plots
 layout(matrix(seq(4),nrow=2))
-df_timeOfDaySpaghettiPlot(df, 'W.S', 'America/Los_angeles', highlightDates=highlights)
-df_timeOfDaySpaghettiPlot(df, 'ConcHr', 'America/Los_angeles', highlightDates=highlights)
-df_timeOfDaySpaghettiPlot(df, 'AT', 'America/Los_angeles', highlightDates=highlights)
-df_timeOfDaySpaghettiPlot(df, 'RHx', 'America/Los_angeles', highlightDates=highlights)
+raw_timeOfDaySpaghettiPlot(df, 'W.S', 'America/Los_angeles', highlightDates=highlights)
+raw_timeOfDaySpaghettiPlot(df, 'ConcHr', 'America/Los_angeles', highlightDates=highlights)
+raw_timeOfDaySpaghettiPlot(df, 'AT', 'America/Los_angeles', highlightDates=highlights)
+raw_timeOfDaySpaghettiPlot(df, 'RHx', 'America/Los_angeles', highlightDates=highlights)
 layout(1)
 
 

@@ -8,7 +8,7 @@ airsis_createMonitorObject(provider = "USFS", unitID = NULL,
   startdate = 20020101, enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz
   = "GMT"), clusterDiameter = 1000,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-  saveFile = NULL, returnQCDataframe = FALSE)
+  saveFile = NULL)
 }
 \arguments{
 \item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}

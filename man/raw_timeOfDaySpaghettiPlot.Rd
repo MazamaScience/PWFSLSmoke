@@ -15,6 +15,8 @@ raw_timeOfDaySpaghettiPlot(df, dataVar, tzone = NULL, col = "salmon",
 
 \item{tzone}{timezone where data were collected}
 
+\item{col}{color used for each daily line}
+
 \item{meanCol}{color used for the mean line (use NA to omit the mean)}
 
 \item{meanLwd}{line width used for th mean line}
