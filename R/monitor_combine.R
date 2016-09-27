@@ -1,36 +1,41 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Combine ws_monitor Objects
-#' @param ws_monitor1 data list of class \code{ws_monitor}
-#' @param ws_monitor2 a \code{ws_monitor} object to be merged with ws_monitor1
-#' @return A ws_monitor object where the ws_monitor1 and ws_monitor2 are combined
-#' @description When given two ws_monitor objects, the function generates a single ws_monitor object 
-#' by merging both of their meta and data
+#' @param monitorList list containing \code{ws_monitor} objects
+#' @return A ws_monitor object.
+#' @description Given a list of \code{ws_monitor} objects, the function generates a single ws_monitor object 
+#' by merging the 'meta' and 'data' dataframes from each object.
 #' @examples
 #' \dontrun{
 #' setSmokeDataDir('~/Data/Smoke/')
-#' # Smokey days in the Okanagan
-#' airnow <- airnow_load(startdate=2015081900, enddate=2015082200)
-#' Omak <- monitor_subset(airnow, monitorIDs='530470013')
-#' bs <- bluesky_load(modelRun=2015081900)
-#' bs_near_Omak <- grid_subsetByDistance(bs, lon=Omak$meta$longitude, lat=Omak$meta$latitude, radius=5)
-#' bs_Omak <- monitor_collapse(bs_near_Omak, monitorID='bs_Omak')
-#' Omak_both <- monitor_combine(Omak, bs_Omak)
-#' monitor_dygraph(Omak_both)
+#' monitorList <- list()
+#' monitorList[[1]] <- airsis_createMonitorObject('USFS', '1031', 20160701, 20161231)
+#' monitorList[[2]] <- airsis_createMonitorObject('USFS', '1032', 20160701, 20161231)
+#' monitorList[[3]] <- airsis_createMonitorObject('USFS', '1033', 20160701, 20161231)
+#' monitorList[[4]] <- airsis_createMonitorObject('USFS', '1034', 20160701, 20161231)
+#' ws_monitor <- monitor_combine(monitorList)
+#' monitor_dygraph(ws_monitor)
 #' } 
 
-monitor_combine <- function(ws_monitor1, ws_monitor2) {
+monitor_combine <- function(monitorList) {
   
-  # Merge data and meta dataframes separately
-  newData <- merge(ws_monitor1$data, ws_monitor2$data, all=TRUE)
+  # Extract lists of 'meta' and 'data' dataframes
+  metaList <- lapply(monitorList, function(x) { return(x$meta) })
+  dataList <- lapply(monitorList, function(x) { return(x$data) })
   
-  newMeta <- merge(ws_monitor1$meta, ws_monitor2$meta, all=TRUE)
-  rownames(newMeta) <- newMeta$monitorID
+  # Create combined 'meta'
+  meta <- dplyr::bind_rows(metaList)
   
-  # Create a new ws_monitor object
-  ws_monitor <- list(meta=newMeta, data=newData)
+  # Create combined 'data'
+  data <- dataList[[1]]
+  for (i in 2:length(dataList)) {
+    data <- dplyr::full_join(data,dataList[[i]],by="datetime")
+  }
+  
+  # Create the 'ws_monitor' object
+  ws_monitor <- list(meta=as.data.frame(meta), data=as.data.frame(data))
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
-
+  
   return(ws_monitor)
   
 }
