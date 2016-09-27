@@ -55,13 +55,25 @@ airsisDump_identifyMonitorType <- function(df) {
   ebam_names_2 <- make.names(ebam_rawNames_2)
   ebam_types_2 <- 'ccddddddddddicccdccddc'
   
+  # WASHOE.csv
+  ebam_header_3 <- "Date/Time/GMT,Conc (\xb5g/m3),Qtot (m3),COncRT,ConcHr,WS (KTS),Ozone (ppb),Flow,W/S,RTM09 (mg3),RH (%),W/D,AT,Ambient Temp (C),RHx,RHi,BV,FT,Alarm,Type,Serial Number,Version,Start Date/Time (GMT),Sys. Volts,UnitID,Alias,Latitude,Longitude,TimeStamp"
+  # NOTE:  make.names() complains with "invalid multibyte string 2" when unicode variables are present
+  # NOTE:  Replace HTML hex entitity for 'MICRO' found in some header lines with 'u'
+  ebam_header_3 <- stringr::str_replace(ebam_header_3,'\xb5','u')
+  ebam_rawNames_3 <- unlist(stringr::str_split(ebam_header_3, ','))
+  ebam_names_3 <- make.names(ebam_rawNames_3)
+  ebam_types_3 <- 'cdddddddddddddddddiccccdccddc'
+  
   
   #     Determine file type     -----------------------------------------------
   
   # Get data column names from dataframe or character string
   if ( class(df)[1] == "character" ) {
     lines <- readr::read_lines(df)
-    colNames <- make.names(unlist(stringr::str_split(lines[1],',')))
+    # NOTE:  make.names() complains with "invalid multibyte string 2" when unicode variables are present
+    # NOTE:  Replace HTML hex entitity for 'MICRO' found in some header lines with 'u'
+    line1 <- stringr::str_replace(lines[1],'\xb5','u')
+    colNames <- make.names(unlist(stringr::str_split(line1,',')))
   } else {
     colNames <- make.names(names(df))
   }
@@ -89,6 +101,11 @@ airsisDump_identifyMonitorType <- function(df) {
     rawNames <- ebam_rawNames_2
     columnNames <- ebam_names_2
     columnTypes <- ebam_types_2
+  } else if ( dplyr::setequal(ebam_names_3, colNames) ) {
+    monitorType <- "EBAM"
+    rawNames <- ebam_rawNames_3
+    columnNames <- ebam_names_3
+    columnTypes <- ebam_types_3
   }
   
   monitorTypeList <- list(monitorType=monitorType,

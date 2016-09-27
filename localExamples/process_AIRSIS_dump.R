@@ -39,7 +39,9 @@ logger.setLevel(INFO)
 
 dumpFiles <- c('~/Data/monitors/ARB2.csv',        # EBAM
                '~/Data/monitors/TCAPCD_ebam.csv', # EBAM
+               '~/Data/monitors/GBUAPCD.csv',     # EBAM
                '~/Data/monitors/USFS_ebam.csv',   # EBAM
+               '~/Data/monitors/WASHOE.csv',      # EBAM
                '~/Data/monitors/mrpsa_ebam.csv',  # EBAM
                '~/Data/monitors/APCD_esam.csv',   # E-Sampler
                '~/Data/monitors/USFS_esam.csv')   # E-Sampler
@@ -62,5 +64,15 @@ for (filepath in dumpFiles) {
 }
 
 airsisNew <- monitor_combine(monitorList)
+
+# TODO:  read in airsisOLD meta, data
+
+# TODO:  create empty data dataframe with appropriate time axis
+
+# TODO:  join old data to new axis, join new data to new axis, subset any valid data
+
+# TODO:  join all meta, subset to only include sites with valid data
+
+# TODO:  save both, and combined ws_monitor object
 
 

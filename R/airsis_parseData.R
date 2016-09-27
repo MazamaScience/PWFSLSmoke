@@ -42,7 +42,7 @@ airsis_parseData <- function(fileString) {
     
     # TODO:  How to assign data with to-the-minute timestamps to a particular hour? floor?
     logger.warn('BAM1020 file parsing is not supported')
-    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
+    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
     stop(paste0('BAM1020 file parsing is not supported'), call.=FALSE)
     
   } else if ( monitorType == "EBAM" ) {
@@ -64,19 +64,19 @@ airsis_parseData <- function(fileString) {
   } else if ( monitorType == "OTHER_1" ) {
     
     logger.warn('Older EBAM 1 file parsing is not supported')
-    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
+    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
     stop(paste0('Older EBAM 1 file parsing is not supported', call.=FALSE))
     
   } else if ( monitorType == "OTHER_2" ) {
     
     logger.warn('Older EBAM 2 file parsing is not supported')
-    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
+    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
     stop(paste0('Older EBAM 2 file parsing is not supported', call.=FALSE))
     
   } else {
     
     logger.warn('Unkown file parsing is not supported')
-    logger.debug('Header line:\n\t%s', pasete0(rawNames,collapse=','))
+    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
     stop(paste0('Unknown file parsing is not supported', call.=FALSE))
     
   }
