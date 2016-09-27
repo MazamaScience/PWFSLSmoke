@@ -37,7 +37,8 @@ airsis_createMonitorObject <- function(provider='USFS', unitID=NULL,
                                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
                                        clusterDiameter=1000,
                                        baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-                                       saveFile=NULL) {
+                                       saveFile=NULL,
+                                       returnQCDataframe=FALSE) {
 
   # Sanity checks
   if ( is.null(unitID) ) {

@@ -4,31 +4,28 @@
 \alias{monitor_combine}
 \title{Combine ws_monitor Objects}
 \usage{
-monitor_combine(ws_monitor1, ws_monitor2)
+monitor_combine(monitorList)
 }
 \arguments{
-\item{ws_monitor1}{data list of class \code{ws_monitor}}
-
-\item{ws_monitor2}{a \code{ws_monitor} object to be merged with ws_monitor1}
+\item{monitorList}{list containing \code{ws_monitor} objects}
 }
 \value{
-A ws_monitor object where the ws_monitor1 and ws_monitor2 are combined
+A ws_monitor object.
 }
 \description{
-When given two ws_monitor objects, the function generates a single ws_monitor object 
-by merging both of their meta and data
+Given a list of \code{ws_monitor} objects, the function generates a single ws_monitor object 
+by merging the 'meta' and 'data' dataframes from each object.
 }
 \examples{
 \dontrun{
 setSmokeDataDir('~/Data/Smoke/')
-# Smokey days in the Okanagan
-airnow <- airnow_load(startdate=2015081900, enddate=2015082200)
-Omak <- monitor_subset(airnow, monitorIDs='530470013')
-bs <- bluesky_load(modelRun=2015081900)
-bs_near_Omak <- grid_subsetByDistance(bs, lon=Omak$meta$longitude, lat=Omak$meta$latitude, radius=5)
-bs_Omak <- monitor_collapse(bs_near_Omak, monitorID='bs_Omak')
-Omak_both <- monitor_combine(Omak, bs_Omak)
-monitor_dygraph(Omak_both)
+monitorList <- list()
+monitorList[[1]] <- airsis_createMonitorObject('USFS', '1031', 20160701, 20161231)
+monitorList[[2]] <- airsis_createMonitorObject('USFS', '1032', 20160701, 20161231)
+monitorList[[3]] <- airsis_createMonitorObject('USFS', '1033', 20160701, 20161231)
+monitorList[[4]] <- airsis_createMonitorObject('USFS', '1034', 20160701, 20161231)
+ws_monitor <- monitor_combine(monitorList)
+monitor_dygraph(ws_monitor)
 } 
 }
 \keyword{ws_monitor}

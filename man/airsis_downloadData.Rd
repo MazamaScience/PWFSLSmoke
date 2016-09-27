@@ -26,6 +26,12 @@ String containing AIRSIS output.
 Request data from a particular station for the desired time period.
 Data are returned as a single character string containing the AIRIS output.
 }
+\examples{
+\dontrun{
+fileString <- airsis_downloadData('USFS',unitID='1026',startdate=20150701,enddate=20151231)
+df <- airsis_parseData(fileString)
+}
+}
 \references{
 \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 }

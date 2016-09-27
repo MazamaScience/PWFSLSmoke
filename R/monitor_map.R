@@ -28,7 +28,7 @@
 #' airnow <- airnow_load(20150901, 20150930)
 #' airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
 #' monitor_map(airnow_conus)
-#' title('Max PM2.5 Levels in September, 2015)
+#' title('Max PM2.5 Levels in September, 2015')
 #'}
 
 monitor_map <- function(ws_monitor, slice=get('max'),

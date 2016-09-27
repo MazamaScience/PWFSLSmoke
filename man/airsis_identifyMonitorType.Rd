@@ -34,6 +34,12 @@ The \code{monitorType} will be one of:
 \item{"\code{UNKOWN}"}{ -- ???}
 }
 }
+\examples{
+\dontrun{
+fileString <- airsis_downloadData('USFS',unitID='1026',startdate=20150701,enddate=20151231)
+monitorTypeList <- airsis_identifyMonitorType(fileString)
+}
+}
 \references{
 \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 }

@@ -34,6 +34,12 @@ The \code{monitorType} will be one of:
 \item{"\code{UNKOWN}"}{ -- ???}
 }
 }
+\examples{
+\dontrun{
+fileString <- readr::read_file('/home/monitors/USFS_ebam.csv')
+monitorTypeList <- airsisDump_identifyMonitorType(fileString)
+}
+}
 \references{
 \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 }

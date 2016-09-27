@@ -42,5 +42,13 @@ quantiles to determine breaks.
 
 You can use AQI colors and 24-hr, daily average breaks by specifying \code{breaks=NULL, paletteFunc=Null}.
 }
+\examples{
+\dontrun{
+airnow <- airnow_load(20150901, 20150930)
+airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
+monitor_map(airnow_conus)
+title('Max PM2.5 Levels in September, 2015')
+}
+}
 \keyword{ws_monitor}
 

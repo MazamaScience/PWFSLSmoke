@@ -29,7 +29,7 @@
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
-#' fileString <- readr::read_file(/home/monitors/USFS_ebam.csv')
+#' fileString <- readr::read_file('/home/monitors/USFS_ebam.csv')
 #' monitorTypeList <- airsisDump_identifyMonitorType(fileString)
 #' }
 

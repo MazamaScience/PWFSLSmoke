@@ -53,20 +53,6 @@ Curlew_24 <- monitor_rollingMean(Curlew, 24, align="right")
 KettleFalls <- airsis_createMonitorObject('USFS', unitID='1050', startdate=20160701, enddate=20161231)
 KettleFalls_24 <- monitor_rollingMean(KettleFalls, 24, align="right")
 
-# -- OR --
-
-monitorList <- list()
-monitorList[[1]] <- airsis_createMonitorObject('USFS', '1012', 20160701, 20161231)
-monitorList[[2]] <- airsis_createMonitorObject('APCD', '1013', 20160701, 20161231)
-monitorList[[3]] <- airsis_createMonitorObject('USFS', '1031', 20160701, 20161231)
-monitorList[[4]] <- airsis_createMonitorObject('USFS', '1032', 20160701, 20161231)
-monitorList[[5]] <- airsis_createMonitorObject('USFS', '1033', 20160701, 20161231)
-monitorList[[6]] <- airsis_createMonitorObject('USFS', '1034', 20160701, 20161231)
-monitorList[[7]] <- airsis_createMonitorObject('USFS', '1050', 20160701, 20161231)
-ws_monitor <- monitor_combine(monitorList)
-
-
-
 monitor_timeseriesPlot(Plain, AQIStyle="24", shadedNight=TRUE)
 col_24 <- adjustcolor('purple', 0.5)
 monitor_timeseriesPlot(Plain_24, type='l', col=col_24, lwd=4, add=TRUE)
@@ -80,3 +66,93 @@ title("Hourly PM2.5 -- Kettle Falls, Washington")
 legend('topleft', "24-hour average", col=col_24, lwd=4)
 
 
+# -----------------------------------------------------------------------------
+# BEGIN Work with "engineering" data
+
+# This could be rolled up into a separate "airsis_createQCDataframe()" or some such.
+###fileString <- airsis_downloadData('USFS', '1031', 20160701, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+fileString <- airsis_downloadData('USFS', '1033', 20160701, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+###fileString <- airsis_downloadData('APCD', '1013', 20160701, 20161231, baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+df <- airsis_parseData(fileString)
+df <- airsis_qualityControl(df)
+df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
+
+# Check number of deployments -- only 1
+unique(df$deploymentID)
+
+# Data varaibles in columns 7:16
+plot(df[,7:16])
+
+# Interesting ... For Plain (1033) it looks like high smoke is associated with
+# * low wind
+# * wind direction ~0
+# * low temp
+# * high humidity
+# * low FT
+plot(df[,c('ConcHr', 'W.S','W.D','AT','RHx','FT')])
+
+# Let's add local time to examine hour-of-day
+df$datetime <- lubridate::mdy_hms(df$Date.Time.GMT)
+df$localtime <- lubridate::with_tz(df$datetime, 'America/Los_Angeles')
+df$localHour <- lubridate::hour(df$localtime)
+
+plot(df[,c('ConcHr', 'W.S','W.D','AT','RHx','FT', 'localHour')])
+
+# Nice! From this we see that most hours, the wind is out of the N or NW
+# but that sometimes it starts in the N and then backs through E and S before
+# ending up NW in the evening
+
+highlights <- df_getHighlightDayStamps(df, 'ConcHr', 'America/Los_Angeles', c(.05,Inf))
+
+# Other by-hour-of-day plots
+layout(matrix(seq(4),nrow=2))
+df_timeOfDaySpaghettiPlot(df, 'W.S', 'America/Los_angeles', highlightDates=highlights)
+df_timeOfDaySpaghettiPlot(df, 'ConcHr', 'America/Los_angeles', highlightDates=highlights)
+df_timeOfDaySpaghettiPlot(df, 'AT', 'America/Los_angeles', highlightDates=highlights)
+df_timeOfDaySpaghettiPlot(df, 'RHx', 'America/Los_angeles', highlightDates=highlights)
+layout(1)
+
+
+
+
+
+
+# END engineering data
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
+# BEGIN Work with all monitors in a single ws_monitor object
+
+if (FALSE) {
+  # Create a list of ws_monitor objects
+  monitorList <- list()
+  monitorList[[1]] <- airsis_createMonitorObject('USFS', '1012', 20160701, 20161231)
+  monitorList[[2]] <- airsis_createMonitorObject('APCD', '1013', 20160701, 20161231)
+  monitorList[[3]] <- airsis_createMonitorObject('USFS', '1031', 20160701, 20161231)
+  monitorList[[4]] <- airsis_createMonitorObject('USFS', '1032', 20160701, 20161231)
+  monitorList[[5]] <- airsis_createMonitorObject('USFS', '1033', 20160701, 20161231)
+  monitorList[[6]] <- airsis_createMonitorObject('USFS', '1034', 20160701, 20161231)
+  monitorList[[7]] <- airsis_createMonitorObject('USFS', '1050', 20160701, 20161231)
+  
+  # Combine into a single monitor object
+  ws_monitor <- monitor_combine(monitorList)
+  
+  # Sitenames show that two deployments are associated with PWFSL testing in Seattle
+  #   4           Seattle-Fremont Avenue North        Usk.WA..1032.__001
+  #   7              Seattle-North 34th Street     Curlew.WA..1034.__001
+  ws_monitor$meta[,c('siteName', 'monitorID')]
+  
+  # Remove the Seattle deployments
+  monitorIDs <- ws_monitor$meta$monitorID
+  badIDs <- c('Usk.WA..1032.__001', 'Curlew.WA..1034.__001')
+  monitorIDs <- setdiff(monitorIDs, badIDs)
+  ws_monitor <- monitor_subset(ws_monitor, monitorIDs=monitorIDs)
+  
+  # Find the maxima of the data columns (omitting 'datetime')
+  sort(apply(ws_monitor$data[,-1], 2, max, na.rm=TRUE))
+  
+}
+
+# END single ws_monitor_object
+# -----------------------------------------------------------------------------
