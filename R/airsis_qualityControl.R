@@ -2,6 +2,7 @@
 #' @export
 #' @title Apply Quality Control to Raw AIRSIS Dataframe
 #' @param df single site dataframe created by airsis_downloadData()
+#' @param ... additional parameters are passed to type-specific QC functions
 #' @description Various QC steps are taken to clean up the incoming raw dataframe including:
 #' 
 #' \enumerate{
@@ -13,8 +14,9 @@
 #' See the individual \code{airsis_~QualityControl()} functions for details.
 #' @return  Cleaned up dataframe of AIRSIS monitor data.
 #' @seealso \code{\link{airsis_EBAMQualityControl}}
+#' @seealso \code{\link{airsis_ESAMQualityControl}}
 
-airsis_qualityControl <- function(df) {
+airsis_qualityControl <- function(df, ...) {
   
   # Sanity check -- df must have a monitorType
   if ( !'monitorType' %in% names(df) ) {
@@ -40,12 +42,11 @@ airsis_qualityControl <- function(df) {
     
   } else if ( monitorType == 'EBAM' ) {
     
-    df <- airsis_EBAMQualityControl(df)
+    df <- airsis_EBAMQualityControl(df, ...)
     
   } else if ( monitorType == 'ESAM' ) {
     
-    # NOTE:  Conversation with Sim and Lee on 2015-07-09. Accept all values of RHi for now
-    df <- airsis_ESAMQualityControl(df, valid_RHi=c(-Inf,Inf))
+    df <- airsis_ESAMQualityControl(df, ...)
     
   } else {
     

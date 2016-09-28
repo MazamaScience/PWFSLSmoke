@@ -19,8 +19,9 @@ setSpatialDataDir('~/Data/Spatial')
 loadSpatialData('NaturalEarthAdm1')
 
 # Set up logging and log to the console all DEBUG and higher logging statements
-logger.setup()
-logger.setLevel(DEBUG)
+logger.setup(debugLog='debug.log', infoLog='info.log', errorLog='error.log')
+###logger.setup()
+###logger.setLevel(DEBUG)
 
 # ebamFiles=c('APCD_ebam_bam.csv','ARB2.csv','mrpsa_ebam.csv','TCAPCD_ebam.csv','USFS_ebam_bam.csv'),
 # # HACK -- temporarily remove ARB2.csv

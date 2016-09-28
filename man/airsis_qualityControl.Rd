@@ -4,10 +4,12 @@
 \alias{airsis_qualityControl}
 \title{Apply Quality Control to Raw AIRSIS Dataframe}
 \usage{
-airsis_qualityControl(df)
+airsis_qualityControl(df, ...)
 }
 \arguments{
 \item{df}{single site dataframe created by airsis_downloadData()}
+
+\item{...}{additional parameters are passed to type-specific QC functions}
 }
 \value{
 Cleaned up dataframe of AIRSIS monitor data.
@@ -25,6 +27,8 @@ See the individual \code{airsis_~QualityControl()} functions for details.
 }
 \seealso{
 \code{\link{airsis_EBAMQualityControl}}
+
+\code{\link{airsis_ESAMQualityControl}}
 }
 \keyword{AIRSIS}
 

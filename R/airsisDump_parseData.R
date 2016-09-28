@@ -37,6 +37,11 @@ airsisDump_parseData <- function(fileString) {
   
   # Convert the fileString into individual lines
   lines <- readr::read_lines(fileString)
+
+  if ( length(lines) == 1 ) {
+    logger.warn('No valid PM2.5 data')
+    stop(paste0('No valid PM2.5 data'))
+  }
   
   if ( monitorType == "BAM1020" ) {
     
@@ -87,8 +92,17 @@ airsisDump_parseData <- function(fileString) {
   # Remove header line, leaving only data
   fakeFile <- paste0(lines[-1], collapse='\n')
   
-  df <- readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes)
+  df <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
   
+  # Print out any problems encountered by readr::read_csv
+  problemsDF <- readr::problems(df)
+  if ( dim(problemsDF)[1] > 0 ) {
+    logger.debug('Records skipped with parsing errors:')
+    problems <- utils::capture.output(format(problemsDF))
+    for (i in 1:length(problems)) {
+      logger.debug("%s",problems[i])
+    }
+  }
   
   #     E-Sampler fixes     ---------------------------------------------------
   

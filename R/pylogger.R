@@ -348,6 +348,11 @@ stopIfNotInitialized <- function() {
 # ----- Constants -------------------------------------------------------------
 
 # Verbatim values from futile.logger::constants
+#' @docType data
+#' @name logLevels
+#' @aliases FATAL ERROR WARN INFO DEBUG TRACE
+#' @title Log Levels
+#' @description Log levels matching those found in \pkg{futile.logger}.
 #' @export
 FATAL <- 1L
 names(FATAL) <- "FATAL"

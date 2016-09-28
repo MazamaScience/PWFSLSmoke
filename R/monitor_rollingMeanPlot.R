@@ -1,4 +1,5 @@
 #' @export
+#' @import graphics
 #' @title dailyBarPlot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
@@ -34,7 +35,7 @@ monitor_rollingMeanPlot <- function(ws_monitor, monitorID=NULL, width=24, data.t
   
   # Grid line locations
   minTime <- ws_monitor$data$datetime[1]
-  maxTime <- tail(ws_monitor$data$datetime, 1)
+  maxTime <- utils::tail(ws_monitor$data$datetime, 1)
   xGrid24Hour <- seq(minTime,maxTime,"day")
   xGrid3Hour <- seq(minTime,maxTime,"3 hour")
   

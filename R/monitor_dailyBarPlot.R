@@ -1,4 +1,5 @@
 #' @export
+#' @import graphics
 #' @title dailyBarPlot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor

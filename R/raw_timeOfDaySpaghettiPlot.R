@@ -1,4 +1,5 @@
 #' @export
+#' @import graphics
 #' @title Time of Day Spaghetti Plot
 #' @param df dataframe with \code{datetime} column in GMT
 #' @param dataVar variable to be plotted
@@ -53,7 +54,7 @@ raw_timeOfDaySpaghettiPlot <- function(df, dataVar, tzone=NULL,
   # Simple line plot for each day
   for ( singleDay in unique(df$datestamp) ) {
     
-    dayDF <- dplyr::filter(df, datestamp == singleDay)
+    dayDF <- dplyr::filter(df, df$datestamp == singleDay)
     
     if ( singleDay %in% highlightDates ) {
       lines(dayDF$data ~ dayDF$hour, col=highlightCol, ...)

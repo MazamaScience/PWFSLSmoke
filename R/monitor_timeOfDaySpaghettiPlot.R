@@ -1,4 +1,5 @@
 #' @export
+#' @import graphics
 #' @title Time of Day Spaghetti Plot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
@@ -53,7 +54,7 @@ monitor_timeOfDaySpaghettiPlot <- function(ws_monitor, monitorID=NULL) {
   mtext('PM 2.5',2,line=3)
   mtext(paste0('Hour'),1,line=3)
   title(paste0('Daily PM2.5 values and 10-day Mean\n', strftime(GMTTime[1], '%b. %d - '),
-               strftime(tail(GMTTime, 1), '%b. %d %Y')))
+               strftime(utils::tail(GMTTime, 1), '%b. %d %Y')))
   
   # Simple line plot for each day
   lastDays <- unique(day)

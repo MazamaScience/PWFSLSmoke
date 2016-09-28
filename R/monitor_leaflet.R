@@ -1,5 +1,6 @@
 #' @keywords ws_monitor
 #' @export
+#' @importFrom grDevices colorRampPalette
 #' @title Leaflet Interactive Map of Monitoring Stations
 #' @param ws_monitor data list of class \code{ws_monitor}
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
@@ -75,7 +76,7 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'),
     # If they used a scalar for the breaks then use that many quantiles for breaks
     if ( length(breaks) == 1 ) {
       probs <- seq(0,1,length.out=(breaks+1))
-      breaks <- quantile(pm25, probs=probs, na.rm=TRUE)
+      breaks <- stats::quantile(pm25, probs=probs, na.rm=TRUE)
     }
     # For each break, use the lower number as the name in the legend.
     legendColors <- paletteFunc(length(breaks) - 1)

@@ -38,7 +38,12 @@ airsisDump_createMonitorObject <- function(filepath) {
   
   # Standard quality control still works
   logger.debug('Applying QC logic...')
-  df <- airsis_qualityControl(df)
+  if ( df$monitorType[1] == 'ESAM' ) {
+    # NOTE:  Conversation with Sim and Lee on 2015-07-09. Accept all values of RHi for E-Samplers
+    df <- airsis_ESAMQualityControl(df, valid_RHi=c(-Inf,Inf))
+  } else {
+    df <- airsis_qualityControl(df)
+  }
   
   # Change the name here so that we can continue to use 'df' in the loop to match code in airsis_createMonitorObject.R.
   dfCombined <- df
@@ -46,11 +51,9 @@ airsisDump_createMonitorObject <- function(filepath) {
   # Loop through df$Alias and run each chunk through further data processing
   metaList <- list()
   dataList <- list()
-  for (singleAlias in unique(dfCombined$Alias)) {
-    # NOTE:  You cannot assign the alias name to "Alias" in each loop as the dplyr expression
-    # NOTE:  "Alias == Alias" will always evaluate to TRUE.
-    logger.info('Processing data for %s...', singleAlias)
-    df <- dplyr::filter(dfCombined, Alias == singleAlias)
+  for (alias in unique(dfCombined$Alias)) {
+    logger.info('Processing data for %s...', alias)
+    df <- dplyr::filter(dfCombined, dfCombined$Alias == alias)
     
     # Add clustering information to identify unique deployments
     logger.debug('Clustering...')
@@ -66,8 +69,8 @@ airsisDump_createMonitorObject <- function(filepath) {
     logger.debug('Creating \'data\' dataframe...')
     data <- airsis_createDataDataframe(df, meta)
     
-    metaList[[singleAlias]] <- meta
-    dataList[[singleAlias]] <- data
+    metaList[[alias]] <- meta
+    dataList[[alias]] <- data
   }
   
   # NOTE:  Could have done this inside the loop but leaving metaList and dataList in tact
@@ -79,10 +82,10 @@ airsisDump_createMonitorObject <- function(filepath) {
   
   # Create combined 'data'
   logger.debug('Combining \'data\' dataframes ...')
-  singleAlias <- names(dataList[1])
-  data <- dataList[[singleAlias]]
-  for (singleAlias in names(dataList)[-1]) {
-    data <- dplyr::full_join(data,dataList[[singleAlias]],by="datetime")
+  alias <- names(dataList[1])
+  data <- dataList[[alias]]
+  for (alias in names(dataList)[-1]) {
+    data <- dplyr::full_join(data,dataList[[alias]],by="datetime")
   }
   
   # Create the 'ws_monitor' object
