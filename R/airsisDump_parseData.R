@@ -43,6 +43,12 @@ airsisDump_parseData <- function(fileString) {
     stop(paste0('No valid PM2.5 data'))
   }
   
+  # Sanity check -- more than just the header line
+  if ( length(lines) == 1 ) {
+    logger.info("No data available")
+    stop("No data avaialble")
+  }
+  
   if ( monitorType == "BAM1020" ) {
     
     # TODO:  How to assign data with to-the-minute timestamps to a particular hour? floor?
