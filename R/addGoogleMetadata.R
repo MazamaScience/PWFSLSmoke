@@ -1,5 +1,6 @@
 #' @keywords internal
 #' @export
+#' @importFrom utils installed.packages
 #' @title Add Elevation and Address Information to a Dataframe
 #' @param df dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)
 #' @param lonVar name of longitude variable in the incoming dataframe

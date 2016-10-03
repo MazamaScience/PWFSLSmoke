@@ -1,5 +1,6 @@
 #' @keywords ws_monitor 
 #' @export
+#' @importFrom utils download.file
 #' @title Download and Convert Hourly EPA Air Quality Data
 #' @param parameterName name of parameterName.
 #' @param parameterCode specific parameter code (e.g. PM2.5 could be 88101 or 88502)
@@ -42,7 +43,7 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   download.file(url,zipFile,quiet=!verbose)
   
   if (verbose) cat(paste0('   Uncompressing ',fileBase,'.zip ...\n'))
-  unzip(zipFile,exdir=getSmokeDataDir())
+  utils::unzip(zipFile,exdir=getSmokeDataDir())
   if (verbose) cat(paste0('   Finished uncompressing\n'))
   
   

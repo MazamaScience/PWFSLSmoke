@@ -1,5 +1,6 @@
 #' @keywords internal AirNow
 #' @export
+#' @importFrom utils read.table
 #' @title Download Hourly Data from AirNow
 #' @param user username
 #' @param pass password

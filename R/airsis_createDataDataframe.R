@@ -1,5 +1,6 @@
 #' @keywords AIRSIS
 #' @export
+#' @importFrom stats median
 #' @title Create Data Dataframe
 #' @param df single site AIRSIS dataframe created by airsis_clustering()
 #' @param meta AIRSIS meta dataframe created by airsis_createMetaDataframe()

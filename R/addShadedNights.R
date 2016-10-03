@@ -1,4 +1,6 @@
 #' @export
+#' @importFrom grDevices adjustcolor
+#' @importFrom graphics rect par
 #' @title Add Nighttime Shading on an Existing Plot
 #' @param timeInfo dataframe with local time, sunrise, and sunset
 #' @param col color used to shade nights -- defaults to \code{adjustcolor('black',0.2)}

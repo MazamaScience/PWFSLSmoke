@@ -21,7 +21,7 @@
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
-#' fileString <- airsis_downloadData(USFS',unitID='1026',startdate=20150701,enddate=20151231)
+#' fileString <- airsis_downloadData('USFS',unitID='1026',startdate=20150701,enddate=20151231)
 #' df <- airsis_parseData(fileString)
 #' }
 
@@ -38,13 +38,12 @@ airsis_parseData <- function(fileString) {
   # Convert the fileString into individual lines
   lines <- readr::read_lines(fileString)
   
-  # Sanity check -- more than just the header line
   if ( length(lines) == 1 ) {
-    logger.info("No data available")
-    stop("No data avaialble")
+    logger.warn('No valid PM2.5 data')
+    stop(paste0('No valid PM2.5 data'))
   }
-
-    if ( monitorType == "BAM1020" ) {
+  
+  if ( monitorType == "BAM1020" ) {
     
     # TODO:  How to assign data with to-the-minute timestamps to a particular hour? floor?
     logger.warn('BAM1020 file parsing is not supported')
@@ -93,8 +92,17 @@ airsis_parseData <- function(fileString) {
   # Remove header line, leaving only data
   fakeFile <- paste0(lines[-1], collapse='\n')
   
-  df <- readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes)
+  df <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
   
+  # Print out any problems encountered by readr::read_csv
+  problemsDF <- readr::problems(df)
+  if ( dim(problemsDF)[1] > 0 ) {
+    logger.debug('Records skipped with parsing errors:')
+    problems <- utils::capture.output(format(problemsDF))
+    for (i in 1:length(problems)) {
+      logger.debug("%s",problems[i])
+    }
+  }
   
   #     E-Sampler fixes     ---------------------------------------------------
   

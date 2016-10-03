@@ -95,9 +95,9 @@ monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="
   # NOTE:  so as to have an "average" POSIXct for each grouping. Then we'll convert
   # NOTE:  it to numeric so that it can be operated on by the likes of 'sum'. Finally
   # NOTE:  we'll restore the average datetime.
-  meanDF <- aggregate(data, by=list(day), FUN=get('mean'), na.rm=na.rm)
+  meanDF <- stats::aggregate(data, by=list(day), FUN=get('mean'), na.rm=na.rm)
   data$datetime <- as.numeric(data$datetime)
-  df <- aggregate(data, by=list(day), FUN=get('sum'), na.rm=na.rm)
+  df <- stats::aggregate(data, by=list(day), FUN=get('sum'), na.rm=na.rm)
   # Now divide by the number of hours available for each day
   df <- df / table(day)
   df$datetime <- meanDF$datetime

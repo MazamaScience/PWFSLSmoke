@@ -1,5 +1,6 @@
 #' @keywords WRCC
 #' @export
+#' @importFrom stats median
 #' @title Create Data Dataframe
 #' @param df single site WRCC dataframe created by wrcc_clustering()
 #' @param meta WRCC meta dataframe created by wrcc_createMetaDataframe()

@@ -9,6 +9,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.8 -- Plotting Functions
 
+### PWFSLSmoke 0.8.4
+
+ * `monitor_combine()` now accepts a list of monitors instead of just two.
+ * New `df_timeOfDaySpaghettiPlot()` for working with "df_" data (raw "engineering" data but cleaned up and augmented).
+ * New `df_getHighlightDates()` function to find dates with unusual values in the "engineering" data.
+
 ### PWFSLSmoke 0.8.3
 
  * All new AIRSIS data processing

@@ -71,8 +71,8 @@ airsis_ESAMQualityControl <- function(df,
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {
     logger.info('Discarding %s rows with invalid location information', badRowCount)
-    logger.debug('Bad location Longitudes:  %s', paste0(df$Longitude[badRows], collapse=", "))
-    logger.debug('Bad location Latitudes:  %s', paste0(df$Latitude[badRows], collapse=", "))
+    logger.debug('Bad location Longitudes:  %s', paste0(sort(df$Longitude[badRows]), collapse=", "))
+    logger.debug('Bad location Latitudes:  %s', paste0(sort(df$Latitude[badRows]), collapse=", "))
   }
   
   df <- df[goodLonMask & goodLatMask,]
@@ -110,15 +110,15 @@ airsis_ESAMQualityControl <- function(df,
   gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
   
   logger.debug('Flow has %s missing or out of range values', sum(!goodFlow))
-  if (sum(!goodFlow) > 0) logger.debug('Bad Flow values:  %s', paste0(df$Flow.l.m.[!goodFlow], collapse=", "))
+  if (sum(!goodFlow) > 0) logger.debug('Bad Flow values:  %s', paste0(sort(df$Flow.l.m.[!goodFlow]), collapse=", "))
   logger.debug('AT has %s missing or out of range values', sum(!goodAT))
-  if (sum(!goodAT) > 0) logger.debug('Bad AT values:  %s', paste0(df$AT.C.[!goodAT], collapse=", "))
+  if (sum(!goodAT) > 0) logger.debug('Bad AT values:  %s', paste0(sort(df$AT.C.[!goodAT]), collapse=", "))
   logger.debug('RHi has %s missing or out of range values', sum(!goodRHi))
-  if (sum(!goodRHi) > 0) logger.debug('Bad RHi values:  %s', paste0(df$RHi...[!goodRHi], collapse=", "))
+  if (sum(!goodRHi) > 0) logger.debug('Bad RHi values:  %s', paste0(sort(df$RHi...[!goodRHi]), collapse=", "))
   logger.debug('Conc has %s missing or out of range values', sum(!goodConcHr))
-  if (sum(!goodConcHr) > 0) logger.debug('Bad Conc values:  %s', paste0(df$Conc.mg.m3.[!goodConcHr], collapse=", "))
+  if (sum(!goodConcHr) > 0) logger.debug('Bad Conc values:  %s', paste0(sort(df$Conc.mg.m3.[!goodConcHr]), collapse=", "))
   logger.debug('datetime has %s missing or out of range values', sum(!gooddatetime))
-  if (sum(!gooddatetime) > 0) logger.debug('Bad datetime values:  %s', paste0(df$datetime[!gooddatetime], collapse=", "))
+  if (sum(!gooddatetime) > 0) logger.debug('Bad datetime values:  %s', paste0(sort(df$datetime[!gooddatetime]), collapse=", "))
   
   goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
   

@@ -1,4 +1,5 @@
 #' @export
+#' @import graphics
 #' @title Hour by Day Bar Plot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
@@ -43,7 +44,7 @@ monitor_hourByDayStackedBarPlot <- function(ws_monitor, monitorID=NULL, stacks=4
   df <- data.frame(localTime,averagePM25,day,hour)
   df$cols <- aqiColors[ .bincode(df$averagePM25, AQI$breaks_24, include.lowest=TRUE) ]
   
-  dayRange <- seq(ws_monitor$data$datetime[1], tail(ws_monitor$data$datetime, 1), by=paste0(24 / stacks, ' hour'))
+  dayRange <- seq(ws_monitor$data$datetime[1], utils::tail(ws_monitor$data$datetime, 1), by=paste0(24 / stacks, ' hour'))
   dayRange <- dayRange[1:length(dayRange) - length(dayRange) %% 4]
   barPlotFrame <- matrix(dayRange, nrow = stacks, )
   barplot(barPlotFrame, space = 0, col = df$cols)

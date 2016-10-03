@@ -1,6 +1,7 @@
 #' @keywords ws_monitor
-#' @import maps
 #' @export
+#' @import maps
+#' @importFrom grDevices colorRampPalette
 #' @title Create Map of Monitoring Stations
 #' @param ws_monitor data list of class \code{ws_monitor}
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
@@ -28,7 +29,7 @@
 #' airnow <- airnow_load(20150901, 20150930)
 #' airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
 #' monitor_map(airnow_conus)
-#' title('Max PM2.5 Levels in September, 2015)
+#' title('Max PM2.5 Levels in September, 2015')
 #'}
 
 monitor_map <- function(ws_monitor, slice=get('max'),
@@ -71,7 +72,7 @@ monitor_map <- function(ws_monitor, slice=get('max'),
     # If they used a scalar for the breaks then use that many quantiles for breaks
     if ( length(breaks) == 1 ) {
       probs <- seq(0,1,length.out=(breaks+1))
-      breaks <- quantile(pm25, probs=probs, na.rm=TRUE)
+      breaks <- stats::quantile(pm25, probs=probs, na.rm=TRUE)
     }
     # For each break, use the lower number as the name in the legend.
     levelColors <- paletteFunc(length(breaks) - 1)

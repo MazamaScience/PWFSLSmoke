@@ -1,4 +1,5 @@
 #' @export
+#' @import graphics
 #' @title No Data Plot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor

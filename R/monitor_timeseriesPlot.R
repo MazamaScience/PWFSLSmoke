@@ -1,5 +1,6 @@
 #' @keywords ws_monitor
 #' @export
+#' @import graphics
 #' @title Timeseries Plot for Monitoring Data
 #' @param ws_monitor data list of class \code{ws_monitor}
 #' @param AQIStyle AQI styling, one of "1_3", "8", or "24"

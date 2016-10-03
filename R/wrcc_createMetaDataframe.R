@@ -1,5 +1,6 @@
 #' @keywords WRCC
 #' @export
+#' @importFrom utils installed.packages
 #' @title Create Sites Metadata Dataframe
 #' @param df single site WRCC dataframe created by wrcc_clustering()
 #' @param verbose logical flag to generate verbose output

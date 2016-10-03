@@ -1,4 +1,5 @@
 #' @export
+#' @import graphics
 #' @title Time of Day Multi Pie Plot
 #' @param ws_monitor a ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
