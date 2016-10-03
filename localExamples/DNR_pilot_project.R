@@ -42,7 +42,7 @@ Usk <- airsis_createMonitorObject('USFS', unitID='1032', startdate=20160701, end
 Usk_24 <- monitor_rollingMean(Usk, 24, align="right")
 
 # Plain (Fire Station) -- USFS1033
-Plain <- airsis_createMonitorObject('USFS', unitID='1033', startdate=20160701, enddate=20161231)
+Plain <- airsis_createMonitorObject('USFS', unitID='1033', startdate=20160901, enddate=20161031)
 Plain_24 <- monitor_rollingMean(Plain, 24, align="right")
 
 # Curlew -- USFS1034
