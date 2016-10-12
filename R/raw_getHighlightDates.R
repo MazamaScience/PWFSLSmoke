@@ -29,7 +29,7 @@ raw_getHighlightDates <- function(df, dataVar, tzone=NULL,
   df <- df[,c('localTime',dataVar,'date')]
   names(df) <- c('localTime','data','date')
   
-  subDF <- dplyr::filter(df, data >= highlightRange[1] & data <= highlightRange[2])
+  subDF <- dplyr::filter(df, df$data >= highlightRange[1] & df$data <= highlightRange[2])
   
   highlightDates <- unique(subDF$date)
   
