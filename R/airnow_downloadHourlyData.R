@@ -27,15 +27,8 @@ airnow_downloadHourlyData <- function(user='', pass='', datestamp='', tries=6, v
   # Create URLs
   datestamp <- as.character(datestamp)  
   yearstamp <- stringr::str_sub(datestamp,1,4)
-  url=sprintf(baseUrl,'%s/%s.dat', yearstamp, datestamp)
+  url=sprintf('%s%s/%s.dat', baseUrl, yearstamp, datestamp)
   ftp_url <- paste0('ftp://',user,':',pass,'@',url)
-  
-  # Define the column names and their classes that will be used for the converted data 
-  colNames <- c('ValidDate', 'ValidTime', 'AQSID', 'SiteName', 'GMTOffset', 'ParameterName', 'ReportingUnits',
-                'Value', 'DataSource')
-  
-  colClasses <- c('character','character','character','character','numeric','character','character',
-                  'numeric','character')
   
   # NOTE:  Typically, this function is called repeatedly within a loop with the curl handle
   # NOTE:  created outside the loop and reused.  We only create one here if none was passed in.
@@ -73,11 +66,10 @@ airnow_downloadHourlyData <- function(user='', pass='', datestamp='', tries=6, v
     
   }
   
-  # Read in text as a dataframe, utilizing various arguments to handle the format.
-  df <- read.table(textConnection(fileText),
-                   col.names=colNames, colClasses=colClasses,
-                   sep='|', quote="", comment.char="", na.strings="N/A", strip.white=TRUE)
-  
+  # Read in text as a dataframe
+  col_names <- c('ValidDate', 'ValidTime', 'AQSID', 'SiteName', 'GMTOffset',
+                 'ParameterName', 'ReportingUnits', 'Value', 'DataSource')
+  df <- readr::read_delim(fileText, delim='|', col_names=col_names, col_types='cccciccdc')
   
   return(df) 
 }

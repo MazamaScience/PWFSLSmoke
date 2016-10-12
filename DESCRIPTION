@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.8.5
+Version: 0.8.6
 Title: Utilities for Working with PM2.5 Monitoring Data
 Authors@R: c(
     person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("aut")),
