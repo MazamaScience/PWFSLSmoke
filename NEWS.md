@@ -9,6 +9,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.8 -- Plotting Functions
 
+### PWFSLSmoke 0.8.6
+
+ * improved airsis_downloadHourlyData() now uses readr::read_delim() 
+
+### PWFSLSmoke 0.8.5
+
 ### PWFSLSmoke 0.8.4
 
  * `monitor_combine()` now accepts a list of monitors instead of just two.
