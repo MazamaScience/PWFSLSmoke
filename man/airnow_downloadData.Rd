@@ -4,13 +4,15 @@
 \alias{airnow_downloadData}
 \title{Download and Aggregate Multiple Hourly Data Files from AirNow}
 \usage{
-airnow_downloadData(user = "", pass = "", startdate = "", hours = 24,
-  tries = 6, verbose = FALSE, curl = NULL)
+airnow_downloadData(user = "", pass = "", parameter = "PM2.5",
+  startdate = "", hours = 24, tries = 6, verbose = FALSE, curl = NULL)
 }
 \arguments{
 \item{user}{user name}
 
 \item{pass}{password}
+
+\item{parameter}{name of desired pollutant}
 
 \item{startdate}{desired staring date (integer or character representing YYYYMMDDHH)}
 
@@ -18,7 +20,7 @@ airnow_downloadData(user = "", pass = "", startdate = "", hours = 24,
 
 \item{tries}{number of download attempts in the face of timeouts}
 
-\item{verbose}{logical flag to generate verbose output}
+\item{verbose}{logical flag to generate verbose web connection output}
 
 \item{curl}{previously initialized CURL context/handle (see RCurl::getURL())}
 }
@@ -30,10 +32,35 @@ This function makes repeated calls to \link{airnow_downloadHourlyData}
 to obtain data from AirNow. A single curl handle is created and reused to improve 
 peformance and avoid errors like "Maximum login connections". All data obtained are then
 combined into a single dataframe and returned.
+
+Parameters included in AirNow data include at least the following list:
+\enumerate{
+\item{BARPR}
+\item{BC}
+\item{CO}
+\item{NO}
+\item{NO2}
+\item{NO2Y}
+\item{NO2X}
+\item{NOX}
+\item{NOOY}
+\item{OC}
+\item{OZONE}
+\item{PM10}
+\item{PM2.5}
+\item{PRECIP}
+\item{RHUM}
+\item{SO2}
+\item{SRAD}
+\item{TEMP}
+\item{UV-AETH}
+\item{WD}
+\item{WS}
+}
 }
 \examples{
 \dontrun{
-df <- airnow_downloadData(USER, PASS, 2015070112, hours=48)
+df <- airnow_downloadData(USER, PASS, "PM2.5", 2015070112, hours=48)
 }
 }
 \seealso{
