@@ -21,7 +21,7 @@ airsis_downloadData <- function(provider='USFS', unitID=NULL, startdate=20020101
                                 baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?") {
   
   # Sanity check
-  if (is.null(unitID)) {
+  if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")
     stop(paste0("Required parameter 'unitID' is missing."))
   }

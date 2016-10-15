@@ -4,19 +4,21 @@
 \alias{airnow_downloadMonthlyData}
 \title{Download and Aggregate a Month of Hourly Data Files from AirNow}
 \usage{
-airnow_downloadMonthlyData(user = "", pass = "", yearMonth = "",
-  tries = 6, verbose = FALSE)
+airnow_downloadMonthlyData(user = "", pass = "", parameter = "PM2.5",
+  yearMonth = "", tries = 6, verbose = FALSE)
 }
 \arguments{
 \item{user}{user name}
 
 \item{pass}{password}
 
+\item{parameter}{name of desired pollutant}
+
 \item{yearMonth}{desired year and month  (integer or character representing YYYYMM)}
 
 \item{tries}{number of download attempts in the face of timeouts}
 
-\item{verbose}{logical flag to generate verbose output}
+\item{verbose}{logical flag to generate verbose web connection output}
 }
 \value{
 Dataframe of aggregated AirNow data.
@@ -24,6 +26,31 @@ Dataframe of aggregated AirNow data.
 \description{
 This function is a convenience wrapper for \link{airnow_downloadData}
 which automatically determines the number of hours of data to download for a particular month.
+
+Parameters included in AirNow data include at least the following list:
+\enumerate{
+\item{BARPR}
+\item{BC}
+\item{CO}
+\item{NO}
+\item{NO2}
+\item{NO2Y}
+\item{NO2X}
+\item{NOX}
+\item{NOOY}
+\item{OC}
+\item{OZONE}
+\item{PM10}
+\item{PM2.5}
+\item{PRECIP}
+\item{RHUM}
+\item{SO2}
+\item{SRAD}
+\item{TEMP}
+\item{UV-AETH}
+\item{WD}
+\item{WS}
+}
 }
 \examples{
 \dontrun{

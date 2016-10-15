@@ -41,7 +41,9 @@ airnow_downloadHourlyData <- function(user='', pass='', datestamp='', tries=6, v
                   verbose=verbose)
     curl=RCurl::getCurlHandle(.opts=.opts)
   }
-    
+
+  logger.debug('Downloading data from %s', ftp_url)
+  
   # NOTE:  The monitoring_site_locations.dat file has an encoding of CP437 "Non-ISO extended-ASCII".
   # NOTE:  In order to propery convert to UTF-8 we must first lie to getURL() and say that it is UTF-8.
   # NOTE:  Then we use iconv to really convert it.
@@ -58,10 +60,12 @@ airnow_downloadHourlyData <- function(user='', pass='', datestamp='', tries=6, v
     
     # NOTE:  If we fail with only "Timeout" errors, create a fake fileText with a single record of all missing
     if (stringr::str_detect(err_msg,'retryURL() failed after')) {
-      warning('Unable to download ',ftp_url,'\tafter ',tries,' tries.')
+      logger.warn("Unable to download %s after %d tries", ftp_url, tries)
       fileText <- '||||||||'
     } else {
-      stop(err_msg)
+      logger.debug(err_msg)
+      logger.warn("Unable to download %s after %d tries", ftp_url, tries)
+      fileText <- '||||||||'
     }
     
   }
