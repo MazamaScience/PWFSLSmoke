@@ -12,7 +12,7 @@ airnow_downloadMonthlyData(user = "", pass = "", parameter = "PM2.5",
 
 \item{pass}{password}
 
-\item{parameter}{name of desired pollutant}
+\item{parameter}{name of desired pollutant or NULL for all pollutants}
 
 \item{yearMonth}{desired year and month  (integer or character representing YYYYMM)}
 
@@ -51,6 +51,8 @@ Parameters included in AirNow data include at least the following list:
 \item{WD}
 \item{WS}
 }
+
+Setting \code{parameter=NULL} will generate a dataframe with all parameters.
 }
 \examples{
 \dontrun{

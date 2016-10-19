@@ -4,42 +4,65 @@
 \alias{airnow_createDataDataframe}
 \title{Return Reshaped, Monthly Dataframes of AirNow Data}
 \usage{
-airnow_createDataDataframe(user, pass, yearMonth, tries = 6,
-  verbose = FALSE, debug = FALSE)
+airnow_createDataDataframe(user, pass, parameter = "PM2.5", yearMonth,
+  tries = 6, verbose = FALSE)
 }
 \arguments{
 \item{user}{user name}
 
 \item{pass}{pass}
 
+\item{parameter}{name of desired pollutant or NULL for all pollutants}
+
 \item{yearMonth}{desired year and month  (integer or character representing YYYYMM)}
 
 \item{tries}{number of download attempts in the face of timeouts}
 
 \item{verbose}{logical requesting verbose output from libcurl}
-
-\item{debug}{logical specyfing whether to print out additional debugging lines}
 }
 \value{
-Both raw and processed list of data frames where each of them is the data table for the unique parameter (e.g: PM2.5, NOX)
+Returns a list of data frames where each dataframe is contains all data for a unique parameter (e.g: PM2.5, NOX)
 }
 \description{
 The airnow_createDataDataframe() function uses the \link{airnow_downloadData} function 
 to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 with the PWFSLSmoke package \emph{ws_monitor} data model.
 
-The function also has built in 
-post-processing script that returns both raw and processed data.
+
+Parameters included in AirNow data include at least the following list:
+\enumerate{
+\item{BARPR}
+\item{BC}
+\item{CO}
+\item{NO}
+\item{NO2}
+\item{NO2Y}
+\item{NO2X}
+\item{NOX}
+\item{NOOY}
+\item{OC}
+\item{OZONE}
+\item{PM10}
+\item{PM2.5}
+\item{PRECIP}
+\item{RHUM}
+\item{SO2}
+\item{SRAD}
+\item{TEMP}
+\item{UV-AETH}
+\item{WD}
+\item{WS}
+}
+
+Setting \code{parameter=NULL} will generate a dataframe with all parameters.
 }
 \examples{
 \dontrun{
-AirnowData <- airnow_createDataDataframe(user, pass, 201507)
+AirnowData <- airnow_createDataDataframe(user, pass, "PM2.5", 201507)
 }
 }
 \seealso{
 \link{airnow_downloadData}
-
-\link{airnow_downloadMonthlyData}
 }
 \keyword{AirNow}
 
