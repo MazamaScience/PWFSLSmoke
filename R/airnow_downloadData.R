@@ -3,7 +3,7 @@
 #' @title Download and Aggregate Multiple Hourly Data Files from AirNow
 #' @param user user name
 #' @param pass password
-#' @param parameter name of desired pollutant
+#' @param parameter name of desired pollutant or NULL for all pollutants
 #' @param startdate desired staring date (integer or character representing YYYYMMDDHH)
 #' @param hours desired number of hours of data to assemble
 #' @param tries number of download attempts in the face of timeouts
@@ -38,6 +38,8 @@
 #' \item{WD}
 #' \item{WS}
 #' }
+#' 
+#' Setting \code{parameter=NULL} will generate a dataframe with all parameters.
 #' @return Dataframe of aggregated AirNow data.
 #' @seealso \link{airnow_downloadMonthlyData}
 #' @examples
@@ -78,12 +80,14 @@ airnow_downloadData <- function(user='', pass='', parameter="PM2.5", startdate='
     # NOTE:  Filter inside the loop to avoid generating very large dataframes in memory
     
     # Sanity check the parameter name
-    if ( !parameter %in% unique(df$ParameterName) ) {
-      logger.warning('parameter argument %s is not found in the data', parameter)
-    } else {
-      df <- filter(df, df$ParameterName == parameter)
+    if ( !is.null(parameter) ) {
+      if ( !parameter %in% unique(df$ParameterName) ) {
+        logger.warn('parameter argument %s is not found in the data', parameter)
+      } else {
+        df <- filter(df, df$ParameterName == parameter)
+      }
+      dfList[[i]] <- df
     }
-    dfList[[i]] <- df
   }
   
   if (verbose) cat('\n')
