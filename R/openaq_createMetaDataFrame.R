@@ -22,7 +22,17 @@
 
 
 openaq_createMetaDataframe <- function(df){
+  
+  # Sanity check -- df must have a monitorID
+  if ( !'monitorID' %in% names(df) ) {
+    logger.error("No 'monitorID' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
+    stop(paste0("No 'monitorID' column found in 'df' dataframe."))
+  }
+  
   df <- df[!duplicated(df$monitorID),]
+  
+  logger.debug('Dataframe contains %d unique monitorID(s)', nrow(df))
+  
   meta <- data.frame(matrix(nrow = nrow(df), ncol = 7), row.names = df$monitorID)
   
   names(meta) <- c('siteName', 'latitude', 'longitude', 'timezone',
@@ -35,5 +45,7 @@ openaq_createMetaDataframe <- function(df){
   meta$countryCode <- 'US'
   meta$timezone <- MazamaSpatialUtils::getTimezone(meta$longitude,meta$latitude,useBuffering = T)
 
+  logger.debug("'meta' dataframe has %d rows and %d columns", nrow(meta), ncol(meta))
+  
   return(meta)
 }

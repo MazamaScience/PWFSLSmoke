@@ -16,6 +16,19 @@
 
 
 openaq_createDataDataframe <- function(df){
+  
+  # Sanity check -- df must have a monitorID
+  if ( !'monitorID' %in% names(df) ) {
+    logger.error("No 'monitorID' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
+    stop(paste0("No 'monitorID' column found in 'df' dataframe."))
+  }
+  
+  # Sanity check -- df must have datetime
+  if ( !'datetime' %in% names(df) ) {
+    logger.error("No 'datetime' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
+    stop(paste0("No 'datetime' column found in 'df' dataframe."))
+  }
+  
   subDF <- df[,c("datetime","value","monitorID")]
   melted <- reshape2::melt(subDF,id.vars=c("datetime","monitorID"))
   
@@ -34,6 +47,8 @@ openaq_createDataDataframe <- function(df){
   # combine the two dataframes together by doing a left join
   data <- dplyr::left_join(hourlyDF,pm25DF,by="datetime")
   rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="GMT")
+  
+  logger.debug("'data' dataframe has %d rows and %d columns", nrow(data), ncol(data))
   
   return(data)
 }

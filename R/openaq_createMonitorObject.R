@@ -6,6 +6,7 @@
 #' @param startdate desired staring date (integer or character representing YYYYMMDD)
 #' @param days desired number of days of data to assemble
 #' @param verbose logical flag to generate verbose output
+#' @param saveFile optional filename where raw CSV will be written
 #' @description Obtains monitor data from OPENAQ and converts
 #' it into a metadata enhanced \code{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
@@ -30,10 +31,34 @@
 #' }
 
 openaq_createMonitorObject <- function(countryCode='US', parameter='pm25',
-                                       startdate='', days=1, verbose=FALSE) {
+                                       startdate='', days=1, verbose=FALSE,
+                                       saveFile=NULL) {
+  
+  # Sanity check: format of startdate
+  if ( is.null(startdate) | startdate == '') {
+    logger.error("Required parameter 'startdate' is missing")
+    stop(paste0("Required parameter 'startdate' is missing.")) 
+  } else if ( (as.numeric(startdate) + days) > stringr::str_replace_all(Sys.Date(),'-','') ) {
+    logger.error("Parameter 'startdate' has to be an earlier date.")
+    stop(paste0("Parameter 'startdate' has to be an earlier date."))
+  }
   
   # download the openaq data as a dataframe
+  logger.info('Downloading data...')
   df <- openaq_downloadData(countryCode, parameter, startdate, days, verbose)
+  
+  # Optionally save as a raw .csv file
+  if ( !is.null(saveFile) ) {
+    result <- try(write.csv(df,saveFile),silent = TRUE)
+    if ( class(result)[1] == "try-error" ) {
+      err_msg <- geterrmessage()
+      logger.warn('Unable to save data to local file %s: %s', saveFile, err_msg)
+    }
+    # NOTE:  Processing continues even if we fail to write the local file
+  }
+  
+  # add additional columns to the dataframe
+  logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')
   
   # add datetime and monitorID column
   df$datetime <- lubridate::ymd_hms(df$local)
@@ -62,9 +87,11 @@ openaq_createMonitorObject <- function(countryCode='US', parameter='pm25',
   df$monitorID <- with(df,paste(location,city,stateCode,sep=', '))
   
   # create metadata for the data frame
+  logger.info('Creating \'meta\' dataframe...')
   meta <- openaq_createMetaDataframe(df)
   
   # create datadata for the data frame
+  logger.info('Creating \'data\' dataframe...')
   data <- openaq_createDataDataframe(df)
   
   # create the ws_monitor object
