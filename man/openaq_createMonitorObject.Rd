@@ -5,7 +5,7 @@
 \title{Obtain OpenAQ Data and Create ws_monitor Object}
 \usage{
 openaq_createMonitorObject(countryCode = "US", parameter = "pm25",
-  startdate = "", days = 1, verbose = FALSE)
+  startdate = "", days = 1, verbose = FALSE, saveFile = NULL)
 }
 \arguments{
 \item{countryCode}{two-character country code (ISO 3166-1 alpha-2)}
@@ -17,6 +17,8 @@ openaq_createMonitorObject(countryCode = "US", parameter = "pm25",
 \item{days}{desired number of days of data to assemble}
 
 \item{verbose}{logical flag to generate verbose output}
+
+\item{saveFile}{optional filename where raw CSV will be written}
 }
 \value{
 ws_monitor object with a unique `monitorID`.
