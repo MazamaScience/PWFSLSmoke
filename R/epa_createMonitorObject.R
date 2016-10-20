@@ -23,24 +23,30 @@
 #' mon <- get(load(file))
 #' }
 
-epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, year=2013,
+epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, year=NULL,
                                     verbose=TRUE,
                                     baseUrl='http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/') {
   
   dataSource <- 'EPA'
   
+  # Sanity check: year is supplied
+  if(is.null(year)){
+    logger.error("Reuiqred parameter 'year' is missing"))
+    stop(paste0("Reuiqred parameter 'year' is missing"))
+  }
+  
   # Sanity check
   if ( requireNamespace('MazamaSpatialUtils', quietly=TRUE) ) {
     dummy <- getSpatialDataDir()
   }
-    
+  
   # Set up file names and paths
   fileBase <- paste("hourly",parameterCode,year,sep="_")
   url <- paste0(baseUrl,fileBase,".zip")
   zipFile <- paste0(getSmokeDataDir(),'/',fileBase,".zip")
   csvFile <- paste0(getSmokeDataDir(),'/',fileBase,".csv")
   
-  download.file(url,zipFile,quiet=!verbose)
+  utils::download.file(url,zipFile,quiet=!verbose)
   
   if (verbose) cat(paste0('   Uncompressing ',fileBase,'.zip ...\n'))
   utils::unzip(zipFile,exdir=getSmokeDataDir())
@@ -93,79 +99,11 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   # Create a column with the datetime
   df$datetime <- lubridate::ymd_hms(paste0(df$`Date GMT`,' ',df$`Time GMT`,':00'))
   
+  # Create 'meta' dataframe
+  meta <- epa_createMetaDataframe(df, verbose)
   
-  # Create meta dataframe -----------------------------------------------------
-  
-  if (verbose) cat(paste0('   Creating meta dataframe ...\n'))
-  
-  # The metadata file will strictly involve the data that doesn't involve the parameterNames.
-  
-  # Create a vector of column names. Create vector from df by inputing default x values and columns as the y values.
-  columns <- c('Site Num','Parameter Code','POC','Latitude','Longitude','Units of Measure','MDL',
-               'Method Type','Method Name','State Name','County Name','monitorID')
-  dfSub <- df[,columns]
-  
-  # Create a new dataframe containing a single row for each monitorID
-  # Create a mask that limits multiple readings from a single instruments with the !dupplicated() command.
-  uniqueMonitorIDMask <- !duplicated(dfSub$monitorID)
-  meta <- dfSub[uniqueMonitorIDMask,]
-  
-  # Add common metadata columns share among all PM2.5 datasets
-  # latitude, longitude, elevation, monitorID, timezone, has_pm25
-  meta$latitude <- meta$Latitude
-  meta$longitude <- meta$Longitude
-
-  # TODO:  code to get elevation from a location
-  meta$elevation <- as.numeric(NA)
-  meta$timezone <- as.character(NA)
-  meta$stateCode <- as.character(NA)
-  meta$siteName <- as.character(NA)
-
-  # Add timezones only if the MazamaSpatialUtils package exists. This way we can compile and load this
-  # package even if the MazamaSpatialUtils package is not present.
-  
-  if ( requireNamespace('MazamaSpatialUtils', quietly = TRUE) ) {
-    
-    dummy <- getSpatialDataDir()
-    if (verbose) cat(paste0('   Determining timezones and stateCodes...\n')) 
-    
-    meta$timezone <- MazamaSpatialUtils::getTimezone(meta$longitude, meta$latitude, useBuffering=TRUE)
-
-    meta$stateCode <- MazamaSpatialUtils::getStateCode(meta$longitude, meta$latitude, countryCodes=c('CA','US','MX'), useBuffering=TRUE)
-
-  }
-  
-  
-  # Create a vector of column names to be included in meta in the order of their inclusion
-  columns <- c('monitorID','siteName','latitude','longitude','elevation','timezone','stateCode','Site Num','Parameter Code',
-               'POC','Units of Measure','MDL','Method Type','Method Name','State Name','County Name')
-  meta <- meta[,columns]
-  rownames(meta) <- meta$monitorID
-  
-  # Make end users lives easier by using normal R names for the columns. (No more "meta$`Parameter Code`")
-  names(meta) <- make.names(names(meta))
-  
-  # Remove the "tbl_df" class
-  meta <- as.data.frame(meta)
-  
-  # Create data dataframe -----------------------------------------------------
-  
-  if (verbose) cat(paste0('   Creating data dataframe ...\n'))
-  
-  # The data file will refer to any of the original instrument's readings, the bulk of the information.
-  
-  # "melt" the data frame into long-format data
-  # The "melt" function will turn the column names into their own column and the rest of the data into a second.
-  molten <- reshape2::melt(data=df, id.vars = c("datetime","monitorID"), measure.vars="Sample Measurement")
-  
-  # "cast" the data frame into wide-format data with country code column names
-  # The "cast" function will take the melted version of the data and and move desired columns out of their 
-  # Original column and into their own columns.
-  data <- reshape2::dcast(molten, datetime ~ monitorID)
-  
-  # Add rownames
-  # TODO:  Figure out what is up with non-unique %Y%m%d%H
-  # TODO:  rownames(data) <- strftime(data$datetime,"%Y%m%d%H") ### ERROR:  non-unique row names 2013110301 (daylight savings issue?)
+  #Create 'data' dataframe
+  data <- epa_createDataDataframe(df, verbose)
   
   # Create the 'ws_monitor' data list
   ws_monitor <- list(meta=meta,
@@ -174,10 +112,10 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
   # Create appropriate data object and file name and write the data to disk
-  dfName <- paste(dataSource,parameterName,parameterCode,year,sep='_')  
-  assign(dfName,ws_monitor)
-  fileName <- paste0(getSmokeDataDir(),'/',dfName,'.RData')
-  save(list=dfName,file=fileName)
+  dfName <- paste(dataSource, parameterName, parameterCode, year,sep='_')  
+  assign(dfName, ws_monitor)
+  fileName <- paste0(getSmokeDataDir(), '/', dfName, '.RData')
+  save(list=dfName, file=fileName)
   
   if (verbose) cat(paste0('   Finished creating ws_monitor object\n'))
   
