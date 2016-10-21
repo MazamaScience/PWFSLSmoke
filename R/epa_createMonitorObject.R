@@ -31,7 +31,7 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   
   # Sanity check: year is supplied
   if(is.null(year)){
-    logger.error("Reuiqred parameter 'year' is missing"))
+    logger.error("Reuiqred parameter 'year' is missing")
     stop(paste0("Reuiqred parameter 'year' is missing"))
   }
   
@@ -98,6 +98,14 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   
   # Create a column with the datetime
   df$datetime <- lubridate::ymd_hms(paste0(df$`Date GMT`,' ',df$`Time GMT`,':00'))
+  
+  # check if MazamaSpatialUtils data are loaded 
+  if ( !exists('NaturalEarthAdm1') ) {
+    # NOTE:  Timezone, countryCode and stateCode information is mandatory for ws_monitor objects.
+    logger.error("MazamaSpatialUtils package was not properly initialized -- no Mazama metadata added")
+    stop(paste0("MazamaSpatialUtils package was not properly initialized.\n",
+                "Please run:  library(MazamaSpatialUtils); setSpatialDataDir('~/Data/Spatial'); loadSpatialData('NaturalEarthAdm1')"))
+  }
   
   # Create 'meta' dataframe
   meta <- epa_createMetaDataframe(df, verbose)

@@ -1,3 +1,19 @@
+#' @keywords ws_monitor
+#' @export
+#' @importFrom stats median
+#' @title Create Data Dataframe
+#' @param df an EPA dataframe after metadata enhancement
+#' @description After addtional columns(i.e. \code{'datetime'}, and \code{'monitorID'}) 
+#' have been applied to an EPA dataframe,
+#' we can extract the PM2.5 values and store them in a \code{'data'} dataframe
+#' organized as hour-by-monitor.
+#' 
+#' The first column of the returned dataframe is named \code{'datetime'} and
+#' contains a \code{POSIXct} time in UTC. Additional columns contain data
+#' for each separate monitorID. 
+#' 
+#' @return A \code{'data'} dataframe for use in a \code{ws_monitor} object.
+
 epa_createDataDataframe <- function(df, verbose){
   if (verbose) cat(paste0('   Creating data dataframe ...\n'))
   
@@ -27,13 +43,4 @@ epa_createDataDataframe <- function(df, verbose){
   logger.debug("'data' dataframe has %d rows and %d columns", nrow(data), ncol(data))
   
   return(data)
-  
-  # # "cast" the data frame into wide-format data with country code column names
-  # # The "cast" function will take the melted version of the data and and move desired columns out of their 
-  # # Original column and into their own columns.
-  # data <- reshape2::dcast(molten, datetime ~ monitorID)
-  # 
-  # # Add rownames
-  # # TODO:  Figure out what is up with non-unique %Y%m%d%H
-  # # TODO:  rownames(data) <- strftime(data$datetime,"%Y%m%d%H") ### ERROR:  non-unique row names 2013110301 (daylight savings issue?)
 }

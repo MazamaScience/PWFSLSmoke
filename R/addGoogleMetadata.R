@@ -14,7 +14,7 @@
 #' @references \url{https://maps.googleapis.com/maps/api/elevation}
 
 addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
-
+  
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df)
   
@@ -29,7 +29,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
   lats = df[[latVar]]
   
   # ----- Add elevation data (meters) from Google API ---------------------------
-
+  
   # Create url
   urlBase <- 'https://maps.googleapis.com/maps/api/elevation/json?locations='
   locations <- paste(lats, lons, sep=',', collapse='|')
@@ -87,7 +87,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
           df$siteName[i] <- paste(address$locality,address$route,sep='-')
           # NOTE:  administrative_area_level_2 is not always present
           try( df$countyName[i] <- stringr::str_replace(address$administrative_area_level_2,' County',''),
-               silent=FALSE )
+               silent=TRUE ) ## not to show the errors
         }
         
       }

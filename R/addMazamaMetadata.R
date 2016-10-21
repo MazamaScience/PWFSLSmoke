@@ -22,7 +22,7 @@
 #' @return Input dataframe with additional columns: timezone, countryCode, stateCode.
 #' @references \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 
-addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude",countryCodes) {
+addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", countryCodes=NULL) {
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df)
@@ -39,9 +39,9 @@ addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude",countryC
   if ( exists('NaturalEarthAdm1') ) {
     
     logger.debug("Getting Mazama spatial data for %s location(s)", nrow(df))
-    df$timezone <- MazamaSpatialUtils::getTimezone(lons, lats, countryCodes, useBuffering=TRUE)
-    df$countryCode <- MazamaSpatialUtils::getCountryCode(lons, lats, countryCodes, useBuffering=TRUE)
-    df$stateCode <- MazamaSpatialUtils::getStateCode(lons, lats, countryCodes, useBuffering=TRUE)
+    df$timezone <- MazamaSpatialUtils::getTimezone(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
+    df$countryCode <- MazamaSpatialUtils::getCountryCode(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
+    df$stateCode <- MazamaSpatialUtils::getStateCode(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
     
   } else {
     

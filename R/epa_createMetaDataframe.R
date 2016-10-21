@@ -42,8 +42,13 @@ epa_createMetaDataframe <- function(df, verbose){
   meta$latitude <- meta$Latitude
   meta$longitude <- meta$Longitude
   
-  meta <- MazamaSpatialUtils::addGoogleMetadata(meta)
-  meta <- MazamaSpatialUtils::addMazamaMetadata(meta)
+  logger.debug("Using addGoogleMetaData to get elevation, siteName, and countyName.")
+  meta <- addGoogleMetadata(meta) 
+  logger.debug("Finished appending elevation, siteName and countyName to the dataframe.")
+  
+  logger.debug("Using addMazamaMetaData to get timezone, countryCode and stateCode.")
+  meta <- addMazamaMetadata(meta, countryCodes = 'US')
+  logger.debug("Finished appending timezone, countryCode and stateCode columns to the dataframe")
   meta$countyName <- NULL
 
   # Add timezones only if the MazamaSpatialUtils package exists. This way we can compile and load this
