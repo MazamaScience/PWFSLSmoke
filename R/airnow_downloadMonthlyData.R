@@ -3,7 +3,7 @@
 #' @title Download and Aggregate a Month of Hourly Data Files from AirNow
 #' @param user user name
 #' @param pass password
-#' @param parameter name of desired pollutant
+#' @param parameter name of desired pollutant or NULL for all pollutants
 #' @param yearMonth desired year and month  (integer or character representing YYYYMM)
 #' @param tries number of download attempts in the face of timeouts
 #' @param verbose logical flag to generate verbose web connection output
@@ -34,6 +34,8 @@
 #' \item{WD}
 #' \item{WS}
 #' }
+#' 
+#' Setting \code{parameter=NULL} will generate a dataframe with all parameters.
 #' @return Dataframe of aggregated AirNow data.
 #' @seealso \link{airnow_downloadData}
 #' @examples

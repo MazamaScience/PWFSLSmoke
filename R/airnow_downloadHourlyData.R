@@ -59,13 +59,16 @@ airnow_downloadHourlyData <- function(user='', pass='', datestamp='', tries=6, v
     err_msg <- paste('ERROR getting: ',ftp_url,'\n',geterrmessage())
     
     # NOTE:  If we fail with only "Timeout" errors, create a fake fileText with a single record of all missing
+    
+    # NOTE:  readr::read_delim() requires at least one newline for fileText to be interpreted as literal data.
+    
     if (stringr::str_detect(err_msg,'retryURL() failed after')) {
       logger.warn("Unable to download %s after %d tries", ftp_url, tries)
-      fileText <- '||||||||'
+      fileText <- '||||||||\n'
     } else {
       logger.debug(err_msg)
       logger.warn("Unable to download %s after %d tries", ftp_url, tries)
-      fileText <- '||||||||'
+      fileText <- '||||||||\n'
     }
     
   }
