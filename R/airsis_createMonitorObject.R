@@ -68,6 +68,12 @@ airsis_createMonitorObject <- function(provider='USFS', unitID=NULL,
   logger.info('Applying QC logic...')
   df <- airsis_qualityControl(df)
   
+  # See if anything gets through QC
+  if ( nrow(df) == 0 ) {
+    logger.warn('No data remaining after QC.')
+    stop('No data remaining after QC.')
+  }
+  
   # Add clustering information to identify unique deployments
   logger.info('Clustering...')
   df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
