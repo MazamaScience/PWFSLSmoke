@@ -11,8 +11,10 @@
 #' @param highlightCol color used for highlighted days
 #' @param ... additional graphical parameters are passed to the lines() function
 #' @description Spaghetti Plot that shows data by hour-of-day. 
+#' @note TODO: Fill in working example
 #' @examples
 #' \dontrun{
+#' # This should have a working exmaple
 #' }
 
 raw_timeOfDaySpaghettiPlot <- function(df, dataVar, tzone=NULL,

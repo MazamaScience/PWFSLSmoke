@@ -30,8 +30,12 @@ raw_timeOfDaySpaghettiPlot(df, dataVar, tzone = NULL, col = "salmon",
 \description{
 Spaghetti Plot that shows data by hour-of-day.
 }
+\note{
+TODO: Fill in working example
+}
 \examples{
 \dontrun{
+# This should have a working exmaple
 }
 }
 

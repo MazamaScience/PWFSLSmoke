@@ -5,7 +5,7 @@
 \title{Download and Convert Hourly EPA Air Quality Data}
 \usage{
 epa_createMonitorObject(parameterName = "PM2.5", parameterCode = 88101,
-  year = 2013, verbose = TRUE,
+  year = NULL, verbose = TRUE,
   baseUrl = "http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/")
 }
 \arguments{

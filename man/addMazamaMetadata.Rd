@@ -4,7 +4,8 @@
 \alias{addMazamaMetadata}
 \title{Add Elevation and Address Information to a Dataframe}
 \usage{
-addMazamaMetadata(df, lonVar = "longitude", latVar = "latitude")
+addMazamaMetadata(df, lonVar = "longitude", latVar = "latitude",
+  countryCodes = NULL)
 }
 \arguments{
 \item{df}{dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)}
@@ -12,6 +13,8 @@ addMazamaMetadata(df, lonVar = "longitude", latVar = "latitude")
 \item{lonVar}{name of longitude variable in the incoming dataframe}
 
 \item{latVar}{name of the latitude variable in the incoming dataframe}
+
+\item{countryCodes}{vector of countryCodes}
 }
 \value{
 Input dataframe with additional columns: timezone, countryCode, stateCode.
