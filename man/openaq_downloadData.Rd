@@ -4,20 +4,17 @@
 \alias{openaq_downloadData}
 \title{Download and Aggregate Multiple Daily Data Files from OpenAQ}
 \usage{
-openaq_downloadData(countryCode = "US", parameter = "pm25",
-  startdate = "", days = 1, verbose = FALSE,
-  baseUrl = "http://openaq-data.s3.amazonaws.com/")
+openaq_downloadData(parameter = "pm25", startdate = "", days = 1,
+  countryCode = "US", baseUrl = "http://openaq-data.s3.amazonaws.com/")
 }
 \arguments{
-\item{countryCode}{two-character country code (ISO 3166-1 alpha-2)}
-
 \item{parameter}{pollutant name}
 
 \item{startdate}{desired staring date (integer or character representing YYYYMMDD)}
 
 \item{days}{desired number of days of data to assemble}
 
-\item{verbose}{logical flag to generate verbose output}
+\item{countryCode}{two-character country code (ISO 3166-1 alpha-2)}
 
 \item{baseUrl}{base URL for archived daily data}
 }
