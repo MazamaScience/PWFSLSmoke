@@ -1,11 +1,10 @@
 #' @keywords OpenAQ
 #' @export
 #' @title Obtain OpenAQ Data and Create ws_monitor Object
-#' @param countryCode two-character country code (ISO 3166-1 alpha-2)
 #' @param parameter pollutant name
 #' @param startdate desired staring date (integer or character representing YYYYMMDD)
 #' @param days desired number of days of data to assemble
-#' @param verbose logical flag to generate verbose output
+#' @param countryCode two-character country code (ISO 3166-1 alpha-2)
 #' @param saveFile optional filename where raw CSV will be written
 #' @description Obtains monitor data from OPENAQ and converts
 #' it into a metadata enhanced \code{ws_monitor} object
@@ -30,8 +29,8 @@
 #' df <- openaq_downloadData(20160901, days=7)
 #' }
 
-openaq_createMonitorObject <- function(countryCode='US', parameter='pm25',
-                                       startdate='', days=1, verbose=FALSE,
+openaq_createMonitorObject <- function(parameter='pm25',
+                                       startdate='', days=1, countryCode='US',
                                        saveFile=NULL) {
   
   # Sanity check: format of startdate
@@ -45,7 +44,7 @@ openaq_createMonitorObject <- function(countryCode='US', parameter='pm25',
   
   # download the openaq data as a dataframe
   logger.info('Downloading data...')
-  df <- openaq_downloadData(countryCode, parameter, startdate, days, verbose)
+  df <- openaq_downloadData(parameter, startdate, days, countryCode)
   
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {
