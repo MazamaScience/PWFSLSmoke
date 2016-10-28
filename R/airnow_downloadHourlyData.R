@@ -13,8 +13,8 @@
 #' argument to create a URL into the Airnow archive at \url{'ftp.airnowapi.org/HourlyData/Archive}.
 #' The associated ASCII hourly data file is downloaded and converted into a dataframe.
 #' @return Data frame of the AirNow hourly data.
-# @seealso \link{airnow_aggregateHourlyData}
-# @seealso \link{airnow_getMonthlyData}
+#' @seealso \link{airnow_createDataDataframes}
+#' @seealso \link{airnow_downloadData}
 #' @examples
 #' \dontrun{
 #' df <- airnow_downloadHourlyData(USER, PASS, 2015070112)
@@ -41,7 +41,7 @@ airnow_downloadHourlyData <- function(user='', pass='', datestamp='', tries=6, v
                   verbose=verbose)
     curl=RCurl::getCurlHandle(.opts=.opts)
   }
-
+  
   logger.debug('Downloading data from %s', ftp_url)
   
   # NOTE:  The monitoring_site_locations.dat file has an encoding of CP437 "Non-ISO extended-ASCII".
@@ -59,12 +59,14 @@ airnow_downloadHourlyData <- function(user='', pass='', datestamp='', tries=6, v
     err_msg <- paste('ERROR getting: ',ftp_url,'\n',geterrmessage())
     
     # NOTE:  If we fail with only "Timeout" errors, create a fake fileText with a single record of all missing
-    
     # NOTE:  readr::read_delim() requires at least one newline for fileText to be interpreted as literal data.
     
     if (stringr::str_detect(err_msg,'retryURL() failed after')) {
       logger.warn("Unable to download %s after %d tries", ftp_url, tries)
       fileText <- '||||||||\n'
+    } else if (stringr::str_detect(err_msg,'Connection refused')) {
+      logger.fatal("Connection refused from AirNow for ", ftp_url)
+      stop("Connection refused from AirNow.  Too many requests in a short period of time might look like a DOS attack.")
     } else {
       logger.debug(err_msg)
       logger.warn("Unable to download %s after %d tries", ftp_url, tries)

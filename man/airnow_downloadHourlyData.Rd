@@ -36,6 +36,11 @@ The associated ASCII hourly data file is downloaded and converted into a datafra
 df <- airnow_downloadHourlyData(USER, PASS, 2015070112)
 }
 }
+\seealso{
+\link{airnow_createDataDataframes}
+
+\link{airnow_downloadData}
+}
 \keyword{AirNow}
 \keyword{internal}
 

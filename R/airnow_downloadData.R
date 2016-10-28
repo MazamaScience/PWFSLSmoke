@@ -3,8 +3,8 @@
 #' @title Download and Aggregate Multiple Hourly Data Files from AirNow
 #' @param user user name
 #' @param pass password
-#' @param parameter name of desired pollutant or NULL for all pollutants
-#' @param startdate desired staring date (integer or character representing YYYYMMDDHH)
+#' @param parameters vector of names of desired pollutants or NULL for all pollutants
+#' @param startdate desired staring date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
 #' @param tries number of download attempts in the face of timeouts
 #' @param verbose logical flag to generate verbose web connection output
@@ -39,15 +39,18 @@
 #' \item{WS}
 #' }
 #' 
-#' Setting \code{parameter=NULL} will generate a dataframe with all parameters.
+#' Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
+#' dataframe to be filtered to contain only records for those parameters.
+#' 
 #' @return Dataframe of aggregated AirNow data.
-#' @seealso \link{airnow_downloadMonthlyData}
+#' @seealso \link{airnow_createDataDataframes}
+#' @seealso \link{airnow_downloadHourlyData}
 #' @examples
 #' \dontrun{
 #' df <- airnow_downloadData(USER, PASS, "PM2.5", 2015070112, hours=48)
 #' }
 
-airnow_downloadData <- function(user='', pass='', parameter="PM2.5", startdate='', hours=24, tries=6, verbose=FALSE,
+airnow_downloadData <- function(user='', pass='', parameters=NULL, startdate='', hours=24, tries=6, verbose=FALSE,
                                 curl=NULL) {
   
   # Format the startdate integer using lubridate
@@ -72,25 +75,36 @@ airnow_downloadData <- function(user='', pass='', parameter="PM2.5", startdate='
   
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {
+    
     datetime <- starttime + lubridate::dhours(i-1)
     datestamp <- strftime(datetime, "%Y%m%d%H", tz="UTC")
     
     df <- airnow_downloadHourlyData(user, pass, datestamp, tries=tries, curl=curl)
     
-    # NOTE:  Filter inside the loop to avoid generating very large dataframes in memory
-    
-    # Sanity check the parameter name
-    if ( !is.null(parameter) ) {
-      if ( !parameter %in% unique(df$ParameterName) ) {
-        logger.warn('parameter argument %s is not found in the data', parameter)
-      } else {
-        df <- filter(df, df$ParameterName == parameter)
-      }
+    if ( is.null(parameters) ) {
+
       dfList[[i]] <- df
+      
+    } else {
+
+      # NOTE:  Filter inside the loop to avoid generating very large dataframes in memory
+      
+      logger.debug('Filtering to retain only data for: %s', paste(parameters, collapse=", "))
+      # Generate a mask of records to retain
+      parametersMask <- rep(FALSE, nrow(df))
+      for (parameter in parameters) {
+        if ( !parameter %in% unique(df$ParameterName) ) {
+          logger.warn('parameters argument %s is not found in the data', parameters)
+        } else {
+          parametersMask <- parametersMask | df$ParameterName == parameter
+        }
+      }
+      # Mask is complete, now apply it
+      dfList[[i]] <- df[parametersMask,]
+      
     }
+    
   }
-  
-  if (verbose) cat('\n')
   
   # Combine all dataframes
   df <- dplyr::bind_rows(dfList)
@@ -98,7 +112,11 @@ airnow_downloadData <- function(user='', pass='', parameter="PM2.5", startdate='
   # Remove any duplicate rows
   df <- dplyr::distinct(df)
   
-  logger.info('Downloaded %d rows of AirNow %s data', nrow(df), parameter)
+  if (is.null(parameters)) {
+    logger.info('Downloaded %d rows of AirNow data', nrow(df))
+  } else {
+    logger.info('Downloaded %d rows of AirNow data for: %s', nrow(df), paste(parameters, collapse=", "))
+  }
   
   return(df)
   

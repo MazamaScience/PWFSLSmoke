@@ -4,7 +4,7 @@
 \alias{airnow_downloadData}
 \title{Download and Aggregate Multiple Hourly Data Files from AirNow}
 \usage{
-airnow_downloadData(user = "", pass = "", parameter = "PM2.5",
+airnow_downloadData(user = "", pass = "", parameters = NULL,
   startdate = "", hours = 24, tries = 6, verbose = FALSE, curl = NULL)
 }
 \arguments{
@@ -12,9 +12,9 @@ airnow_downloadData(user = "", pass = "", parameter = "PM2.5",
 
 \item{pass}{password}
 
-\item{parameter}{name of desired pollutant or NULL for all pollutants}
+\item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
 
-\item{startdate}{desired staring date (integer or character representing YYYYMMDDHH)}
+\item{startdate}{desired staring date (integer or character representing YYYYMMDD[HH])}
 
 \item{hours}{desired number of hours of data to assemble}
 
@@ -58,7 +58,8 @@ Parameters included in AirNow data include at least the following list:
 \item{WS}
 }
 
-Setting \code{parameter=NULL} will generate a dataframe with all parameters.
+Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
+dataframe to be filtered to contain only records for those parameters.
 }
 \examples{
 \dontrun{
@@ -66,7 +67,9 @@ df <- airnow_downloadData(USER, PASS, "PM2.5", 2015070112, hours=48)
 }
 }
 \seealso{
-\link{airnow_downloadMonthlyData}
+\link{airnow_createDataDataframes}
+
+\link{airnow_downloadHourlyData}
 }
 \keyword{AirNow}
 
