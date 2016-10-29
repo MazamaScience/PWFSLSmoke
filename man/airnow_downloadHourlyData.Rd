@@ -6,7 +6,7 @@
 \usage{
 airnow_downloadHourlyData(user = "", pass = "", datestamp = "",
   tries = 6, verbose = FALSE,
-  baseUrl = "ftp.airnowapi.org/HourlyData/Archive/", curl = NULL)
+  baseUrl = "ftp.airnowapi.org/HourlyData/Archive", curl = NULL)
 }
 \arguments{
 \item{user}{username}

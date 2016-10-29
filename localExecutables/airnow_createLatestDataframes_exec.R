@@ -2,17 +2,24 @@
 
 # October, 2016 update:
 #
-# This script will download one month of hourly data from AirNow archives and generate a
+# This script will download the most recent 10 days of hourly data from AirNow and generate a
 # suite of "data" dataframes appropriate for use in "ws_monitor" objects defined by the
 # PWFSLSmoke package. One dataframe will be created for each parameter availabe in the
 # downloaded data.
+# 
+# These 10-day dataframes will be merged with LATEST dataframes containing 45 days
+# of data.The LATEST dataframes will always contain the most recent 45 days worth of 
+# data. Retaining 45 days of data in the LATEST dataframes gives AirNow enough time to
+# complete updates to their archival data which can be processed with another script:
 #
-# This script can be onece a month in a run in a cron job as in the example below:
+#   airnow_createMonthlyDataframes_exec.R
+#
+# This script is intended to be run hourly in a run in a cron job as in the example below:
 # 
 # # m h  dom mon dow   command
 # 
 # # Update AirNow monitoring data
-# 00 01  12   *   *    /home/bluesky/monitoring/bin/airnow_createMonthlyDataframes_exec.R --user=USER --pass=PASS --yearMonth=LAST_MONTH --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
+#  15 *    *   *   *  /home/bluesky/monitoring/bin/airnow_createLatestDataframes_exec.R --user=USER --pass=PASS --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
 
 VERSION = "0.1.0"
 
@@ -27,20 +34,53 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 createDataDataframes <- function(opt) {
   
-  # Download, separate and reshape data for all parameters
-  dfList <- airnow_createDataDataframes(user=opt$user, pass=opt$pass, yearMonth=opt$yearMonth)
+  # Download, separate and reshape the latest data for all parameters
+  dfList <- airnow_createLatestDataDataframes(user=opt$user, pass=opt$pass)
   
-  # Assign dataframes to their parameter name and save them
+  # Assign dataframes to their parameter name and merge them with the previous version
   for (parameter in names(dfList)) {
     
-    # Assign the dataframe associated with "parameter" to an environment variable named after that parameter
-    dfName <- paste0(parameter)
-    assign(dfName, dfList[[parameter]])
+    filename <- paste0("AirNowTech_",parameter,"_LATEST.RData")
+    filepath <- file.path(opt$outputDir,filename)
+    
+    # Get the latest dataframe for this parameter
+    latestDF <- dfList[[parameter]]
+    
+    # Get the previous dataframe for this prameter from disk if it exists
+    if ( file.exists(filepath) ) {
+      previousDF <- get(load(filepath))
+    }
+    
+    # NOTE:  Sadly, none of the dplyr::~_join() functions allow you to join-with-replacement
+    # NOTE:  when values are found in both the same cell of x and y. This is precisely what
+    # NOTE:  we need to do here so that newer data can replace older data. We'll have to
+    # NOTE:  create our own merge-with-overwrite logic.
+    
+    # TODO:  merge-with-overwrite
+    
+    # create new timeAxis and emptyDF
+    # join oldDF with emptyDF
+    # join newDF with emptyDF
+    # Now everything has the same time axis
+    # Go through every column of newDF where !is.na and stick those variables in oldDF
+    
+  }
+  
+  
+  
+  #############################################################################
+  #############################################################################
+  #############################################################################
+  
+  
+  
+  
+  for (parameter in names(dfList)) {
     
     # NOTE:  Now the environment variable "parameter" is a character string, e.g. "PM2.5"
     # NOTE:  while the einvironment variable "PM2.5" is a dataframe.
     
-    filename <- paste0("AirNowTech_",parameter,"_",opt$yearMonth,".RData")
+    filename <- paste0("AirNowTech_",parameter,"_LATEST.RData")
     filepath <- file.path(opt$outputDir,filename)
     
     logger.debug('Writing %s...', filepath)
@@ -109,7 +149,6 @@ option_list <- list(
   make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default\"%default\"]"),
   make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default\"%default\"]"),
   make_option(c("--spatialDataDir"), default="~/Data/Spatial", help="Directory containing spatial datasets used by MazamaSpatialUtils [default\"%default\"]"),
-  make_option(c("--meta"), action="store_true", default=FALSE, help="Also create metadata dataframes [default\"%default\"]"),
   make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default\"%default\"]")
 )
 
@@ -128,7 +167,6 @@ if (FALSE) {
   VERSION = "0.1.0"
   opt <- list(user='USER',
               pass='PASS',
-              yearMonth='201601',
               outputDir=paste0(getwd()),
               logDir=paste0(getwd()),
               spatialDataDir='~/Data/Spatial')
@@ -144,9 +182,9 @@ if ( stringr::str_detect(opt$yearMonth, 'LAST_MONTH') ) {
 }
 
 # Assign log file names
-debugLog <- file.path(opt$logDir, paste0('airnow_createMonthlyDataframes_',opt$yearMonth,'_DEBUG.log'))
-infoLog  <- file.path(opt$logDir, paste0('airnow_createMonthlyDataframes_',opt$yearMonth,'_INFO.log'))
-errorLog <- file.path(opt$logDir, paste0('airnow_createMonthlyDataframes_',opt$yearMonth,'_ERROR.log'))
+debugLog <- file.path(opt$logDir, paste0('airnow_createLATESTDataframes_',opt$yearMonth,'_DEBUG.log'))
+infoLog  <- file.path(opt$logDir, paste0('airnow_createLATESTDataframes_',opt$yearMonth,'_INFO.log'))
+errorLog <- file.path(opt$logDir, paste0('airnow_createLATESTDataframes_',opt$yearMonth,'_ERROR.log'))
 
 # Set up logging
 logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
@@ -157,22 +195,18 @@ options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 # Set up MazamaSpatialUtils
 setSpatialDataDir(opt$spatialDataDir)
 
-logger.info('Running airnow_createMonthlyDataframes_exec.R version %s',VERSION)
+logger.info('Running airnow_createLATESTDataframes_exec.R version %s',VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse='\n')
 logger.debug('R session:\n\n%s\n', sessionString)
 
 
-# ----- Optionally create AirNow "meta" dataframes ----------------------------
+# ----- Always create AirNow "meta" dataframes --------------------------------
 
-if ( opt$meta ) {
-  
-  result <- try( createMetaDataframes(opt) )
-  
-  if ( class(result)[1] == "try-error" ) {
-    msg <- paste("Error creating AirNow 'meta' dataframes: ", geterrmessage())
-    logger.fatal(msg)
-  }
-  
+result <- try( createMetaDataframes(opt) )
+
+if ( class(result)[1] == "try-error" ) {
+  msg <- paste("Error creating AirNow 'meta' dataframes: ", geterrmessage())
+  logger.fatal(msg)
 }
 
 

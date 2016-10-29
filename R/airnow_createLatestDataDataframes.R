@@ -1,16 +1,14 @@
 #' @keywords AirNow
 #' @export
-#' @title Return Reshaped, Monthly Dataframes of AirNow Data
+#' @title Return Reshaped, Monthly Dataframes of the Latest AirNow Data
 #' @param user user name
 #' @param pass pass
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
-#' @param yearMonth desired year and month  (integer or character representing YYYYMM)
 #' @param tries number of download attempts in the face of timeouts
 #' @param verbose logical requesting verbose output from libcurl
-#' @description The airnow_createDataDataframes() function uses the \link{airnow_downloadData} function 
-#' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
+#' @description The airnow_createLatestDataDataframes() function uses the \link{airnow_downloadLatestData} function 
+#' to download dataframes of the most recent AirNow data and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
-#' 
 #' 
 #' AirNow data parameters include at least the following list:
 #' \enumerate{
@@ -39,30 +37,25 @@
 #' 
 #' Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
 #' @return Returns a list of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
-#' @seealso \link{airnow_downloadData}
+#' @seealso \link{airnow_downloadLatestData}
 #' @seealso \link{airnow_qualityControl}
 #' @examples
 #' \dontrun{
-#' airnow_data <- airnow_createDataDataframe(user, pass, "PM2.5", 201507)
+#' airnow_latestData <- airnow_createLatestDataDataframe(user, pass, "PM2.5")
 #' }
 
-airnow_createDataDataframes <- function(user, pass, parameters=NULL, yearMonth, tries=6, verbose=FALSE) {
+airnow_createLatestDataDataframes <- function(user, pass, parameters=NULL, tries=6, verbose=FALSE) {
   
   # ----- Data Download -------------------------------------------------------
   
-  logger.info('Downloading AirNow data for %s...',yearMonth)
-  
-  # Calculate the number of hours in the month of the interest
-  startdate <- paste0(yearMonth, '0100')
-  starttime <- lubridate::ymd_h(startdate)
-  hours <- 24 * as.numeric(lubridate::days_in_month(starttime))
+  logger.info('Downloading latest AirNow data...')
   
   # Create the data frame that holds a month worth of AirNow data
-  airnowRaw <- airnow_downloadData(user, pass, parameters=parameters, startdate=startdate, hours=hours, tries=tries, verbose=verbose)
+  airnowRaw <- airnow_downloadLatestData(user, pass, parameters=parameters, tries=tries, verbose=verbose)
   
   # ----- Data Reshaping ------------------------------------------------------
   
-  logger.debug('Reshaping AirNow data for %s...',yearMonth)
+  logger.debug('Reshaping latest AirNow data...')
   
   # NOTE:  Example lines from the aggregated dataframe:
   # NOTE:
@@ -107,10 +100,14 @@ airnow_createDataDataframes <- function(user, pass, parameters=NULL, yearMonth, 
   
   # NOTE:  Some parameters, especially those with few monitors, may not have measurements for
   # NOTE:  for every single hour. Here we guarantee that the reshaped dataframes we return will
-  # NOTE:  have a row for every single hour in a month, even if that row is filled with NAs.
+  # NOTE:  have a row for every single hour, even if that row is filled with NAs.
+  
+  # Extract starttime and endtime from PM2.5
+  starttime <- min(dfList[['PM2.5']]$datetime)
+  endtime <- max(dfList[['PM2.5']]$datetime)
   
   # Guarantee that all times are present by starting with a dataframe containing only a uniform time axis.
-  timeAxis <- seq(starttime, starttime + lubridate::dhours(hours), by='hours')
+  timeAxis <- seq(starttime, endtime, by='hours')
   timeDF <- data.frame(datetime=timeAxis)
   
   logger.info('Putting data on a uniform time axis...')

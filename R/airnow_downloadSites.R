@@ -4,7 +4,7 @@
 #' @param user user name
 #' @param pass password
 #' @param tries number of download attempts in the face of timeouts
-#' @param verbose logical flag to generate verbose output
+#' @param verbose logical requesting verbose output from libcurl
 #' @param url location of the monitoring_site_locations.data file
 #' @description The \url{http://airnowtech.org} site provides both air pollution
 #' monitoring data as well as monitoring site location metadata. The airnow_downloadSites()
@@ -18,33 +18,20 @@
 #' "CP437" (aka "Non-ISO extended-ASCII" or "IBMPC 437") and will be converted to "UTF-8"
 #' so that French and Spanish language place names are properly encoded in the returned dataframe.
 #' @return Dataframe of site location metadata.
-#' @seealso \link{airnow_createMetaDataframe}
+#' @seealso \link{airnow_createMetaDataframes}
 #' @examples
 #' \dontrun{
 #' sites <- airnow_downloadSites('USER','PASS')
-#' meta <- airnow_createMetaDataframe(sites, parameter='PM2.5')
+#' meta <- airnow_createMetaDataframes(sites, parameter='PM2.5')
 #' }
 
 airnow_downloadSites <- function(user='', pass='', tries=6, verbose=FALSE,
                                  url='ftp.airnowapi.org/Locations/monitoring_site_locations.dat') {
-
+  
   # Location of monitoring site metadata file at AirNow
   ftp_url <- paste0('ftp://',user,':',pass,'@',url)
   
-  if (verbose) cat(paste0("Downloading site location metadata from:\n\t",ftp_url,"\n\n"))
-
-  # NOTE:  Information on the strucutre of this file come from the Monitoring Site Factsheet.
-  # NOTE:    http://www.airnowapi.org/docs/MonitoringSiteFactSheet.pdf
-  
-  colNames <- c('AQSID','parameterName','siteCode','siteName','status','agencyID','agencyName',
-                'EPARegion','latitude','longitude','elevation','GMTOffsetHours','countryCode',
-                'FIPSCMSACode','CMSAName','FIPSMSACode','MSAName','FIPSStateCode','stateCode',
-                'GNISCountyCode','countyName','GNISCityCode','cityName')
-  
-  colClasses <- c('character','factor','character','character','factor','factor','factor',
-                  'factor','numeric','numeric','numeric','numeric','factor',
-                  'factor','factor','factor','factor','factor','factor',
-                  'factor','factor','factor','factor')
+  logger.debug('Downloading site location metadata from %s', url)
   
   # Create a curl handle with appropriate options
   .opts <- list(ftp.use.epsv=FALSE,
@@ -58,15 +45,28 @@ airnow_downloadSites <- function(user='', pass='', tries=6, verbose=FALSE,
   result <- try( fileText <- iconv( retryURL(ftp_url, curl=curl, .encoding="UTF-8", tries=tries),
                                     from="CP437", to="UTF-8") )
   
-  if ( class(result) == "try-error" ) {
-    err_msg <- paste('ERROR getting: ',ftp_url,'\n',geterrmessage())
-    stop(err_msg)
+  # Print out the error message if there is an error
+  if ( class(result)[1] == "try-error" ) {
+    
+    err_msg <- paste('ERROR getting: ',url,'\n',geterrmessage())
+    logger.debug(err_msg)
+    logger.warn("Unable to download %s after %d tries", url, tries)
+    stop(paste0("Unable to download ",url," after ",tries," tries"))
+    
   }
   
-  # Read in text as a dataframe, utilizing various arguments to handle the format.
-  df <- read.table(textConnection(fileText),
-                   col.names=colNames, colClasses=colClasses,
-                   sep='|', quote="", comment.char="", na.strings="N/A", strip.white=TRUE)
+  # NOTE:  Information on the strucutre of this file come from the Monitoring Site Factsheet.
+  # NOTE:    http://www.airnowapi.org/docs/MonitoringSiteFactSheet.pdf
+  
+  col_names <- c('AQSID','parameterName','siteCode','siteName','status','agencyID','agencyName',
+                'EPARegion','latitude','longitude','elevation','GMTOffsetHours','countryCode',
+                'FIPSCMSACode','CMSAName','FIPSMSACode','MSAName','FIPSStateCode','stateCode',
+                'GNISCountyCode','countyName','GNISCityCode','cityName')
+  
+  col_types <- c('ccccccccdddcccccccccccc')
+  
+  # Read in text as a dataframe
+  df <- readr::read_delim(fileText, delim='|', col_names=col_names, col_types=col_types)
   
   return(df)
 }

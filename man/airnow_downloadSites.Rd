@@ -14,7 +14,7 @@ airnow_downloadSites(user = "", pass = "", tries = 6, verbose = FALSE,
 
 \item{tries}{number of download attempts in the face of timeouts}
 
-\item{verbose}{logical flag to generate verbose output}
+\item{verbose}{logical requesting verbose output from libcurl}
 
 \item{url}{location of the monitoring_site_locations.data file}
 }
@@ -39,11 +39,11 @@ so that French and Spanish language place names are properly encoded in the retu
 \examples{
 \dontrun{
 sites <- airnow_downloadSites('USER','PASS')
-meta <- airnow_createMetaDataframe(sites, parameter='PM2.5')
+meta <- airnow_createMetaDataframes(sites, parameter='PM2.5')
 }
 }
 \seealso{
-\link{airnow_createMetaDataframe}
+\link{airnow_createMetaDataframes}
 }
 \keyword{AirNow}
 
