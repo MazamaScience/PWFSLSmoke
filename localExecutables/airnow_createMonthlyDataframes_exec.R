@@ -106,11 +106,11 @@ option_list <- list(
   make_option(c("--user"), default='USER', help="User ID for AirNowTech"),
   make_option(c("--pass"), default='PASS', help="Password for AirNowTech"),
   make_option(c("--yearMonth"), default='201601', help="Year and month in YYYYMM format"),
-  make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default\"%default\"]"),
-  make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default\"%default\"]"),
-  make_option(c("--spatialDataDir"), default="~/Data/Spatial", help="Directory containing spatial datasets used by MazamaSpatialUtils [default\"%default\"]"),
-  make_option(c("--meta"), action="store_true", default=FALSE, help="Also create metadata dataframes [default\"%default\"]"),
-  make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default\"%default\"]")
+  make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default=\"%default\"]"),
+  make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
+  make_option(c("--spatialDataDir"), default="~/Data/Spatial", help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
+  make_option(c("--meta"), action="store_true", default=FALSE, help="Also create metadata dataframes [default=\"%default\"]"),
+  make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default=\"%default\"]")
 )
 
 # Parse arguments

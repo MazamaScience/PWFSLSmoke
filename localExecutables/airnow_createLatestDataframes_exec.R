@@ -64,6 +64,7 @@ createDataDataframes <- function(opt) {
     # Now everything has the same time axis
     # Go through every column of newDF where !is.na and stick those variables in oldDF
     
+    # Or, we could try to mask values in oldDF where values exist in newDF and then full_join would work
   }
   
   
@@ -146,10 +147,10 @@ option_list <- list(
   make_option(c("--user"), default='USER', help="User ID for AirNowTech"),
   make_option(c("--pass"), default='PASS', help="Password for AirNowTech"),
   make_option(c("--yearMonth"), default='201601', help="Year and month in YYYYMM format"),
-  make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default\"%default\"]"),
-  make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default\"%default\"]"),
-  make_option(c("--spatialDataDir"), default="~/Data/Spatial", help="Directory containing spatial datasets used by MazamaSpatialUtils [default\"%default\"]"),
-  make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default\"%default\"]")
+  make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default=\"%default\"]"),
+  make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
+  make_option(c("--spatialDataDir"), default="~/Data/Spatial", help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
+  make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default=\"%default\"]")
 )
 
 # Parse arguments
