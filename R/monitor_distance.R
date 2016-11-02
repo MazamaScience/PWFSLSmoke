@@ -1,7 +1,7 @@
 #' @keywords monitor
 #' @export
 #' @title Calculate Distances from Target Location
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @param ws_monitor object
 #' @param lon longitude of the location of interest
 #' @param lat latitude of the location of interest
 #' @description This function returns the distances (km) between monitoring sites and

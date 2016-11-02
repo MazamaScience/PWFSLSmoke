@@ -12,6 +12,6 @@ monitor_noDataPlot(ws_monitor, monitorID = NULL)
 \item{monitorID}{id for a specific monitor in the ws_monitor}
 }
 \description{
-Plot that indicates there is no data
+Plot that indicates there is no data for the monitor of interest
 }
 

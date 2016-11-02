@@ -1,10 +1,10 @@
 #' @keywords monitor
 #' @export
-#' @title Calculate Daily Statistics from Monitor Data
-#' @param ws_monitor data list of class \code{ws_monitor}
-#' @param FUN function used to collapse a day's worth of data into a single number
-#' @param dayStart one of "sunset|midnight|sunrise"
-#' @param na.rm logical value indicating whether NA values should be ignored
+#' @title Calculate Daily Statistics for each Monitor in a ws_monitor Object
+#' @param ws_monitor ws_monitor object
+#' @param FUN function used to collapse a day's worth of data into a single number for each monitor
+#' @param dayStart one of "sunset | midnight | sunrise"
+#' @param na.rm logical value indicating whether NA values should be ignored (na.rm = TRUE --> ignore NAs)
 #' @description Calculate daily statistics for each monitor in the \code{ws_monitor} data list.
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors

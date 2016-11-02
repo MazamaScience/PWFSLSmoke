@@ -9,7 +9,7 @@ monitor_map(ws_monitor, slice = get("max"), breaks = 7,
   "firebrick")), showCounties = TRUE, showLegend = TRUE, add = FALSE, ...)
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{ws_monitor object}
 
 \item{slice}{either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}}
 

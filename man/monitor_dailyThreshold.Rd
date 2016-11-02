@@ -2,30 +2,37 @@
 % Please edit documentation in R/monitor_dailyThreshold.R
 \name{monitor_dailyThreshold}
 \alias{monitor_dailyThreshold}
-\title{Calculate Daily Fraction Over Threshold from Monitor Data}
+\title{Calculate Daily Counts of Values At or Above a Threshold}
 \usage{
 monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
   dayStart = "midnight", na.rm = TRUE)
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{ws_monitor object}
 
-\item{threshold}{AQI level name (e.g. 'unhealthy') or threshold value at or above which a measurement is counted}
+\item{threshold}{AQI level name (e.g. 'unhealthy') or numerical threshold at or above which a measurement is counted}
 
-\item{dayStart}{one of "sunset|midnight|sunrise"}
+\item{dayStart}{one of "sunset | midnight | sunrise"}
 
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 }
 \value{
-Monitor data list with daily threshold statistics.
+\code{ws_monitor} object with daily count of hours at or above threshold
 }
 \description{
-Calculate daily threshold statistics for each monitor in the \code{ws_monitor} data list.
+Calculate the number of hours per day each monitor in a \code{ws_monitor} object was at or above a given threshold
 }
 \details{
 Sunrise and sunset times are calculated based on the first monitor encountered.
 This should be accurate enough for all use cases involving co-located monitors. Monitors
 from different regions should have daily statistics calculated separately.
+}
+\note{
+AQI levels for \code{threshold} argument = 'good', 'moderate', 'USG', 'unhealthy', 'very unhealthy', 'extreme'
+
+The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
+For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
+very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.
 }
 \examples{
 \dontrun{

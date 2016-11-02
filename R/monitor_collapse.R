@@ -1,15 +1,16 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Collapse a ws_monitor Object into a ws_monitor with a Single Monitor
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @title Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor
+#' @param ws_monitor ws_monitor object
 #' @param lon The custom longitude of the collapsed monitoring station. (Default = mean of the longitudes)
 #' @param lat The custom latitude of the collapsed monitoring station. (Default = mean of the latitudes)
 #' @param monitorID The custom monitorID of the collapsed monitoring station. (Default = 'generated_id')
 #' @param FUN The function to be applied to all the monitors at a single time index. (Default = mean)
 #' @param ... Any additional argument to be passed on to the apply() function
 #' @return A ws_monitor object with meta and data that corresponds to the collapsed single monitor
-#' @description When given a ws_monitor object, the function collapses all the monitors into a single monitor using the function
-#' provided in the FUN argument. The collapse applies to both meta and data.
+#' @description Collapses all the monitors from a given ws_monitor object into a single-monitor ws_monitor object using
+#' the function provided in the FUN argument. The collapse applies to both ws_monitor$meta and ws_monitor$data. Intended 
+#' for use with gridded model data, rather than actual monitor data itself (meta data is largely chopped; NAs propagate).
 #' @examples
 #' \dontrun{
 #' setSmokeDataDir('~/Data/Smoke/')

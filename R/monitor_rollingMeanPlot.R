@@ -1,13 +1,13 @@
 #' @export
 #' @import graphics
-#' @title dailyBarPlot
+#' @title Hourly and Rolling Mean Plot
 #' @param ws_monitor ws_monitor object
-#' @param monitorID id for a specific monitor in the ws_monitor
+#' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional
+#' if only one monitor in the ws_monitor object)
 #' @param width width of window (in hours) used to calculate means
 #' @param data.thresh minimum number of observations as a percent of width required, or NA is returned
 #' @param align alignment of averaging window relative to point being calculated ["left"|"center"|"right"]
-#' @description A bar graph showing daily average PM 2.5 values for
-#' a specific monitor. Each graph is colored with AQI Breaks.  
+#' @description A graph showing hourly and rolling mean PM2.5 values for a specific monitor (default = 24-hour).
 #' @examples
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150725, 20150805)

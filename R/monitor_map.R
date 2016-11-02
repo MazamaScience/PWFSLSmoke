@@ -3,7 +3,7 @@
 #' @import maps
 #' @importFrom grDevices colorRampPalette
 #' @title Create Map of Monitoring Stations
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @param ws_monitor ws_monitor object
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
 #' @param breaks set of breaks used to assign colors or a single integer used to provide quantile based breaks
 #' @param paletteFunc a palette generating function as returned by \code{colorRampPalette}
