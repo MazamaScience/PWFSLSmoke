@@ -3,12 +3,12 @@
 #' @importFrom stats median
 #' @title Create Data Dataframe
 #' @param df an EPA dataframe after metadata enhancement
-#' @description After addtional columns(i.e. \code{'datetime'}, and \code{'monitorID'}) 
+#' @description After addtional columns(i.e. \code{datetime}, and \code{monitorID}) 
 #' have been applied to an EPA dataframe,
-#' we can extract the PM2.5 values and store them in a \code{'data'} dataframe
+#' we can extract the PM2.5 values and store them in a \code{data} dataframe
 #' organized as hour-by-monitor.
 #' 
-#' The first column of the returned dataframe is named \code{'datetime'} and
+#' The first column of the returned dataframe is named \code{datetime} and
 #' contains a \code{POSIXct} time in UTC. Additional columns contain data
 #' for each separate monitorID. 
 #' 

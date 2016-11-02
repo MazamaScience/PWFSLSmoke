@@ -3,7 +3,7 @@
 #' @title Create Sites Metadata Dataframe
 #' @param df an EPA dataframe after metadata enhancement
 #' @description After an EPA dataframe has been enhanced with 
-#' additional columns including \code{'datetime'},\code{'monitorID'} we are ready to 
+#' additional columns including \code{datetime},\code{monitorID} we are ready to 
 #' pull out site information associated with unique monitorID.
 #' 
 #' These will be rearranged into a dataframe organized as site-by-property
@@ -18,7 +18,7 @@
 #' [1] "monitorID"        "siteName"         "latitude"         "longitude"        "elevation"        "timezone"         "stateCode"       
 #' [8] "Site.Num"         "Parameter.Code"   "POC"              "Units.of.Measure" "MDL"              "Method.Type"      "Method.Name"     
 #' [15] "State.Name"       "County.Name" 
-#' 
+#' }
 #' @return A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
 
 epa_createMetaDataframe <- function(df, verbose){

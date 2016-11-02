@@ -31,7 +31,7 @@ retryURL <- function(url, curl=RCurl::getCurlHandle(),
   attempt <- 1
   while ( attempt <= tries ) {
     result <- try( fileText <- RCurl::getURL(url, curl=curl, .opts=.opts, .encoding="UTF-8") )
-    if ( class(result) == "try-error" ) {
+    if ( class(result)[1] == "try-error" ) {
       err_msg <- geterrmessage()
       if ( stringr::str_detect(err_msg, 'Timeout was reached') ) {
         Sys.sleep(attempt)
@@ -45,7 +45,7 @@ retryURL <- function(url, curl=RCurl::getCurlHandle(),
     }
   }
   
-  if ( class(result) == "try-error" ) {
+  if ( class(result)[1] == "try-error" ) {
     err_msg <- paste('retryURL(...) failed after',tries,'tries')
     stop(err_msg)
   } else {
