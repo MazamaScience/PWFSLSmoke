@@ -2,19 +2,19 @@
 % Please edit documentation in R/monitor_dailyStatistic.R
 \name{monitor_dailyStatistic}
 \alias{monitor_dailyStatistic}
-\title{Calculate Daily Statistics from Monitor Data}
+\title{Calculate Daily Statistics for each Monitor in a ws_monitor Object}
 \usage{
 monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
   na.rm = TRUE)
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{ws_monitor object}
 
-\item{FUN}{function used to collapse a day's worth of data into a single number}
+\item{FUN}{function used to collapse a day's worth of data into a single number for each monitor}
 
-\item{dayStart}{one of "sunset|midnight|sunrise"}
+\item{dayStart}{one of "sunset | midnight | sunrise"}
 
-\item{na.rm}{logical value indicating whether NA values should be ignored}
+\item{na.rm}{logical value indicating whether NA values should be ignored (na.rm = TRUE --> ignore NAs)}
 }
 \value{
 Monitor data list with daily statistics.

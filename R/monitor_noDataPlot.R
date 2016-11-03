@@ -3,7 +3,7 @@
 #' @title No Data Plot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor
-#' @description Plot that indicates there is no data
+#' @description Plot that indicates there is no data for the monitor of interest
 
 monitor_noDataPlot <- function(ws_monitor, monitorID=NULL) {
 

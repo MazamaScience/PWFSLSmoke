@@ -2,13 +2,13 @@
 % Please edit documentation in R/monitor_collapse.R
 \name{monitor_collapse}
 \alias{monitor_collapse}
-\title{Collapse a ws_monitor Object into a ws_monitor with a Single Monitor}
+\title{Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor}
 \usage{
 monitor_collapse(ws_monitor, lon = NULL, lat = NULL,
   monitorID = "generated_id", FUN = mean, ...)
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{ws_monitor object}
 
 \item{lon}{The custom longitude of the collapsed monitoring station. (Default = mean of the longitudes)}
 
@@ -24,8 +24,9 @@ monitor_collapse(ws_monitor, lon = NULL, lat = NULL,
 A ws_monitor object with meta and data that corresponds to the collapsed single monitor
 }
 \description{
-When given a ws_monitor object, the function collapses all the monitors into a single monitor using the function
-provided in the FUN argument. The collapse applies to both meta and data.
+Collapses all the monitors from a given ws_monitor object into a single-monitor ws_monitor object using
+the function provided in the FUN argument. The collapse applies to both ws_monitor$meta and ws_monitor$data. Intended 
+for use with gridded model data, rather than actual monitor data itself (meta data is largely chopped; NAs propagate).
 }
 \examples{
 \dontrun{

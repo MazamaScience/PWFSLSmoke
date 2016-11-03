@@ -1,6 +1,6 @@
 #' @keywords monitor
 #' @export
-#' @title Subset Monitoring 'meta' Dataframe
+#' @title Subset ws_monitoring Object 'meta' Dataframe
 #' @param meta 'meta' dataframe from a \code{ws_monitor} data list
 #' @param xlim optional longitude lim with lo and hi longitude values
 #' @param ylim optional latitude lim with lo and hi latitude values

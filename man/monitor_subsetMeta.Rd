@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_subsetMeta.R
 \name{monitor_subsetMeta}
 \alias{monitor_subsetMeta}
-\title{Subset Monitoring 'meta' Dataframe}
+\title{Subset ws_monitoring Object 'meta' Dataframe}
 \usage{
 monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
   monitorIDs = NULL)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_rollingMeanPlot.R
 \name{monitor_rollingMeanPlot}
 \alias{monitor_rollingMeanPlot}
-\title{dailyBarPlot}
+\title{Hourly and Rolling Mean Plot}
 \usage{
 monitor_rollingMeanPlot(ws_monitor, monitorID = NULL, width = 24,
   data.thresh = 75, align = "center")
@@ -10,7 +10,8 @@ monitor_rollingMeanPlot(ws_monitor, monitorID = NULL, width = 24,
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{monitorID}{id for a specific monitor in the ws_monitor}
+\item{monitorID}{monitor ID for a specific monitor in the ws_monitor object (optional
+if only one monitor in the ws_monitor object)}
 
 \item{width}{width of window (in hours) used to calculate means}
 
@@ -19,8 +20,7 @@ monitor_rollingMeanPlot(ws_monitor, monitorID = NULL, width = 24,
 \item{align}{alignment of averaging window relative to point being calculated ["left"|"center"|"right"]}
 }
 \description{
-A bar graph showing daily average PM 2.5 values for
-a specific monitor. Each graph is colored with AQI Breaks.
+A graph showing hourly and rolling mean PM2.5 values for a specific monitor (default = 24-hour).
 }
 \examples{
 \dontrun{

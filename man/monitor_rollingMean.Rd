@@ -8,7 +8,7 @@ monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
   align = "center")
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{object}
 
 \item{width}{width of window (in hours) used to calculate means}
 
@@ -17,10 +17,10 @@ monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
 \item{align}{alignment of averaging window relative to point being calculated ["left"|"center"|"right"]}
 }
 \value{
-monitor data list with rolling mean data
+\code{ws_monitor} object with rolling mean data
 }
 \description{
-Calculate rolling means for each monitor in the \code{ws_monitor} data list using the
+Calculate rolling means for each monitor in the \code{ws_monitor} object using the
 \code{openair::rollingMean()} function
 }
 \examples{

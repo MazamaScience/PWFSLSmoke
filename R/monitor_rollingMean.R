@@ -1,13 +1,13 @@
 #' @keywords monitor
 #' @export
 #' @title Compute Rolling Means of Monitor Data
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @param ws_monitor object
 #' @param width width of window (in hours) used to calculate means
 #' @param data.thresh minimum number of observations as a percent of width required, or NA is returned
 #' @param align alignment of averaging window relative to point being calculated ["left"|"center"|"right"]
-#' @description Calculate rolling means for each monitor in the \code{ws_monitor} data list using the
+#' @description Calculate rolling means for each monitor in the \code{ws_monitor} object using the
 #' \code{openair::rollingMean()} function
-#' @return monitor data list with rolling mean data 
+#' @return \code{ws_monitor} object with rolling mean data 
 #' @examples 
 #' \dontrun{
 #' airnow <- airnow_load(20150801, 20150808)
