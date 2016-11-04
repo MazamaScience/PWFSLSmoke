@@ -1,4 +1,4 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
 #' @title Subset Monitoring 'data' Dataframe
 #' @param data 'data' dataframe from a \code{ws_monitor} data list

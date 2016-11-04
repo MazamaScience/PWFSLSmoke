@@ -1,12 +1,12 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
-#' @title Calculate Distances from Target Location
-#' @param ws_monitor object
+#' @title Calculate Distances From ws_monitor Monitors to Location of Interest
+#' @param ws_monitor ws_monitor object
 #' @param lon longitude of the location of interest
 #' @param lat latitude of the location of interest
 #' @description This function returns the distances (km) between monitoring sites and
-#' the location of interest. These distances can be used to create a mask identifying
-#' monitors within a certain radius of the target location.
+#' a location of interest. These distances can be used to create a mask identifying
+#' monitors within a certain radius of the location of interest.
 #' @return vector of of distances (km)
 #' @seealso distance
 #' @examples 

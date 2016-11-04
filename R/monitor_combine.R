@@ -1,10 +1,10 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Combine ws_monitor Objects
-#' @param monitorList list containing \code{ws_monitor} objects
+#' @title Combine List of ws_monitor Objects into Single ws_monitor Object
+#' @param monitorList list containing ws_monitor objects
 #' @return A ws_monitor object.
-#' @description Given a list of \code{ws_monitor} objects, the function generates a single ws_monitor object 
-#' by merging the 'meta' and 'data' dataframes from each object.
+#' @description Combines a list of ws_monitor objects into a single ws_monitor object 
+#' by merging the 'meta' and 'data' dataframes from each object in the given list.
 #' @examples
 #' \dontrun{
 #' setSmokeDataDir('~/Data/Smoke/')

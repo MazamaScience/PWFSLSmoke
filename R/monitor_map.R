@@ -11,7 +11,7 @@
 #' @param showCounties logical specifying whether to plot county boundaries -- defaults to \code{FALSE}
 #' @param showLegend logical specifying whether to add a legend -- defaults to \code{TRUE}
 #' @param ... additional arguments passed to points() such as 'col' or 'pch'
-#' @description Creates a map of monitoring stations in the US. Individual monitor timeseries are reduced to 
+#' @description Creates a map of monitoring stations in a given ws_monitor object. Individual monitor timeseries are reduced to 
 #' a single value by applying the function passed in as \code{slice} to the entire timeseries of each monitor
 #' with \code{na.rm=TRUE}. These values are then plotted over a map of the United States. All arguments specified in '...' are passed
 #' on to the points() function.

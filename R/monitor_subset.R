@@ -1,21 +1,22 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Subset Monitoring Data
-#' @param ws_monitor data list of class \code{ws_monitor}
-#' @param xlim optional longitude lim with lo and hi longitude values
-#' @param ylim optional latitude lim with lo and hi latitude values
-#' @param tlim optional time lim with lo and hi time values (POSIXct)
-#' @param vlim optional data lim with lo and hi data values
-#' @param stateCodes optional vector of stateCodes
-#' @param monitorIDs optional vector of monitorIDs
+#' @title Create a Subset of a ws_monitor Object
+#' @param ws_monitor ws_monitor object
+#' @param xlim vector with low and high longitude limit values
+#' @param ylim vector with low and high latitude limit values
+#' @param tlim vector with start and end date/time limit values (POSIXct)
+#' @param vlim vector with low and high PM2.5 data limit values
+#' @param stateCodes vector of state codes to include
+#' @param monitorIDs vector of monitor IDs to include
 #' @param dropMonitors flag specifying whether to remove monitors with no data
-#' @description The incoming monitoring data list is filtered according to the parameters
-#' passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
-#' @details By default, filtering by tlim or vlim will always return a 'data' dataframe with the
-#'     same number of columns as the incoming dataframe. Some columns may consist sof all \code{NA}s.
-#'     If \code{dropMonitors=TRUE}, columns
-#'     will be removed if there are not valid data for a specific monitor after subsetting.
-#' @return monitoring data list filtered as specified
+#' @description Creates a subset of a ws_monitor object based on one or more optional input parameters.
+#' If any input parameter is not specified, that parameter will not be used to subset the ws_monitor object.
+#' @details By default, this function will return a ws_monitor$data dataframe with the
+#'     same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s, 
+#'     in which case such columns will be removed (e.g. if there are no valid data for a specific monitor 
+#'     after subsetting by tlim or vlim).
+#'     If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
+#' @return ws_monitor object as a subset of the input ws_monitor object
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20140913, 20141010)
@@ -24,6 +25,8 @@
 #' Olympic_Peninsula <- monitor_subset(airnow, xlim, ylim)
 #' monitor_map(Olympic_Peninsula)
 #' }
+
+# TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting
 
 monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NULL,
                            monitorIDs=NULL, stateCodes=NULL, dropMonitors=TRUE) {
