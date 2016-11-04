@@ -22,61 +22,111 @@
 
 DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
                                fireDistance=25,
-                               ...) {
+                               ylim_pm25=NULL,
+                               showShadedNight=TRUE,
+                               show1Hr=TRUE,
+                               show3Hr=FALSE,
+                               show24Hr=TRUE,
+                               showDaily=TRUE,
+                               showPrescribedNonPilotBurns=TRUE,
+                               showPrescribedPilotBurns=TRUE,
+                               showBlueskyEvents=TRUE,
+                               showAQILevels=TRUE) {
   
   # ----- Style ---------------------------------------------------------------
   
-  col_1 <- adjustcolor('black',0.5)
-  col_3 <- 'transparent' #adjustcolor('goldenrod', 0.9)
-  col_24 <- adjustcolor('purple', 0.5)
+  oldPar <- par()
+  
+  col_aqi <- adjustcolor(AQI$colors[2:6], 0.4)
+  col_1 <- adjustcolor('black', 0.5)
+  col_3 <- adjustcolor('black', 0.5)
+  col_24 <- adjustcolor('purple', 0.3)
+  col_daily <- adjustcolor('purple', 0.5)
+  
+  col_nonPilotBurns <- 'orange'
+  col_pilotBurns <- 'red'
+  col_events <- 'gray50'
   
   pch_1 <- 16
-  cex_1 <- 1
+  pch_events <- 17
   
+  cex_1 <- 1
+  cex_events <- 3
+  
+  lwd_aqi <- 4
   lwd_3 <- 2
-  lwd_24 <- 6
+  lwd_24 <- 4
+  lwd_daily <- 6
   
   # ----- Data Preparation ----------------------------------------------------
   
-  monitorID <- monitorDict[monitorName]
+  # Pull out a single monitor
+  monitorID <- monitorDict[[monitorName]]
   if ( monitorID %in% rownames(airsis_monitors$meta) ) {
     title <- paste0("Temporary Monitor in ",monitorName," Washington")
     ws_monitor <- monitor_subset(airsis_monitors, monitorIDs=monitorID)
   } else {
-    title <- paste0("Temporary Monitor in ",monitorName," Washington")
+    # TODO:  Remove this time trimming
+    tlim[2] <- min(tlim[2],20160930)
+    title <- paste0("Permanent Monitor in ",monitorName," Washington")
     ws_monitor <- monitor_subset(airnow_monitors, monitorIDs=monitorID)
   }
   
+  # Temporal subset
   ws_monitor <- monitor_subset(ws_monitor, tlim=tlim)
+  
+  # Create 3hr-rolling, 24hr-rolling and daily averages
   ws_monitor_3hr <- monitor_rollingMean(ws_monitor, width=3, align="center")
   ws_monitor_24hr <- monitor_rollingMean(ws_monitor, width=24, align="right")
+  ws_monitor_daily <- monitor_dailyStatistic(ws_monitor, FUN=mean, dayStart='midnight')
   
-  # Get nearby prescribed burns and create a localtime column
+  # Local timezone tlo and thi
+  tlo <- parseDatetime(tlim[1], timezone=ws_monitor$meta$timezone)
+  thi <- parseDatetime(tlim[2], timezone=ws_monitor$meta$timezone)
+  
+  # Get nearby prescribed burns
   prescribedDistance <- distance(ws_monitor$meta$longitude, ws_monitor$meta$latitude, janice_SMA$Longitude, janice_SMA$Latitude)
-  prescribedBurns <- janice_SMA[prescribedDistance <= fireDistance,]
-  ###prescribedBurns$localtime <- lubridate::with_tz(prescribedBurns$datetime, ws_monitor$meta$timezone)
-  timeInfo <- timeInfo(prescribedBurns$datetime, lon=ws_monitor$meta$longitude, lat=ws_monitor$meta$latitude)
-  prescribedBurns$sunset <- timeInfo$sunset
+  distanceMask <- prescribedDistance <= fireDistance
+  localTime <- lubridate::with_tz(janice_SMA$datetime, ws_monitor$meta$timezone)
+  timeMask <- localTime >= tlo & localTime <= thi
+  mask <- distanceMask & timeMask
+  prescribedBurns <- janice_SMA[mask,]
+  if ( nrow(prescribedBurns) > 0 ) {
+    timeInfo <- timeInfo(prescribedBurns$datetime, ws_monitor$meta$longitude, ws_monitor$meta$latitude, ws_monitor$meta$timezone)
+    prescribedBurns$sunset <- timeInfo$sunset
+    # Separate non-pilot vs. pilot burns
+    prescribedNonPilotBurns <- prescribedBurns[!prescribedBurns$DNR_Pilot.24.Hr.Advance,]
+    prescribedPilotBurns <- prescribedBurns[prescribedBurns$DNR_Pilot.24.Hr.Advance,]
+    burn_ylim <- c(0,max(prescribedBurns$Accomplished.Tons, na.rm=TRUE))
+  } else {
+    prescribedNonPilotBurns <- prescribedPilotBurns <- prescribedBurns
+    burn_ylim <- c(0,100)
+  }
   
-  # Get nearby events and create a localtime column
+  
+  # Get nearby events
   eventsDistance <- distance(ws_monitor$meta$longitude, ws_monitor$meta$latitude, bluesky_events$longitude, bluesky_events$latitude)
-  events <- bluesky_events[eventsDistance <= fireDistance,]
-  events$localtime <- lubridate::with_tz(events$datetime, ws_monitor$meta$timezone)
-  timeInfo <- timeInfo(as.POSIXct(events$datetime), ws_monitor$meta$longitude, ws_monitor$meta$latitude)
-  events$solarnoon <- timeInfo$solarnoon
-
+  distanceMask <- eventsDistance <= fireDistance
+  localTime <- parseDatetime(bluesky_events$datestamp, timezone=ws_monitor$meta$timezone)
+  timeMask <-  localTime >= tlo & localTime <= thi
+  mask <- distanceMask & timeMask
+  events <- bluesky_events[mask,]
+  if ( nrow(events) > 0 ) {
+    timeInfo <- timeInfo(as.POSIXct(events$datetime), ws_monitor$meta$longitude, ws_monitor$meta$latitude, ws_monitor$meta$timezone)
+    events$solarnoon <- timeInfo$solarnoon
+  }
+  
   # ----- Plotting ------------------------------------------------------------
   
-  monitor_timeseriesPlot(ws_monitor, shadedNight=TRUE, pch=pch_1, cex=cex_1, col=col_1)#, ...)
-  monitor_timeseriesPlot(ws_monitor_3hr, type='l', col=col_3, lwd=lwd_3, add=TRUE)
-  monitor_timeseriesPlot(ws_monitor_24hr, type='l', col=col_24, lwd=lwd_24, add=TRUE)
-  
-  # Daily average
-  ws_monitor_daily <- monitor_dailyStatistic(ws_monitor, FUN=mean, dayStart='midnight')
-  # move time axis from noon to previous midnight start for plotting with type='s'
-  x <- ws_monitor_daily$data$datetime - lubridate::dhours(12)
-  y <- ws_monitor_daily$data[,2]
-  points(x, y, type='s', col='purple', lwd=3)
+  # Blank plot to get the axes
+  x <- lubridate::with_tz(ws_monitor$data[,1], ws_monitor$meta$timezone)
+  y <- ws_monitor$data[,2]
+  if ( is.null(ylim_pm25) ) {
+    plot(x, y, col='transparent', xlab='', ylab='', las=1)
+  } else {
+    plot(x, y, col='transparent', xlab='', ylab='', las=1, ylim=ylim_pm25)
+    
+  }
   
   # Get useful plot measures
   usr <- par('usr')
@@ -87,22 +137,69 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   xrange <- xhi - xlo
   yrange <- yhi - ylo
   
-  # PrescribedBurn rectangles
-  xleft <- prescribedBurns$Ignition.time
-  xright <- prescribedBurns$sunset
-  ybottom <- 0
-  yval <- prescribedBurns$Accomplished.Tons
-  ytop <- yval * ((0.95*yhi)/max(yval, na.rm=TRUE))
-  col <- ifelse(prescribedBurns$DNR_Pilot.24.Hr.Advance, 'red', 'orange')
-  angle <- ifelse(prescribedBurns$DNR_Pilot.24.Hr.Advance, 45, -45)
-  rect(xleft, ybottom, xright, ytop, density=20, angle=angle,
-       col=col, border=col, lty='solid', lwd=2)
+  if ( showShadedNight ) {
+    timeInfo <- timeInfo(ws_monitor$data[,1], lon=ws_monitor$meta$longitude, lat=ws_monitor$meta$latitude)
+    addShadedNights(timeInfo)
+  }
 
-  # Bluesky events
-  ###text(events$solarnoon, (ylo + 0.02*yrange), labels='*', cex=3, col='firebrick')
-  x <- events$solarnoon
-  y <- rep((ylo+0.00*yrange), length(x)) 
-  points(x, y, pch=17, cex=3, col='firebrick')
+  # AQI levels
+  if ( showAQILevels ) {
+    abline(h=AQI$breaks_24[2:6], col=col_aqi, lwd=lwd_aqi)
+  }
+  
+  if ( showPrescribedNonPilotBurns ) {
+    if ( nrow(prescribedNonPilotBurns) > 0 ) {
+      # PrescribedBurn rectangles
+      xleft <- prescribedNonPilotBurns$Ignition.time
+      xright <- prescribedNonPilotBurns$sunset
+      ybottom <- 0
+      yval <- prescribedNonPilotBurns$Accomplished.Tons
+      ytop <- yval * ((0.95*yhi)/burn_ylim[2])
+      rect(xleft, ybottom, xright, ytop, density=20, angle=45,
+           col=col_nonPilotBurns, border=col_nonPilotBurns, lty='solid', lwd=2)
+    }
+  }
+  
+  if ( showPrescribedPilotBurns ) {
+    if ( nrow(prescribedPilotBurns) > 0 ) {
+      # PrescribedBurn rectangles
+      xleft <- prescribedPilotBurns$Ignition.time
+      xright <- prescribedPilotBurns$sunset
+      ybottom <- 0
+      yval <- prescribedPilotBurns$Accomplished.Tons
+      ytop <- yval * ((0.95*yhi)/burn_ylim[2])
+      rect(xleft, ybottom, xright, ytop, density=20, angle=45,
+           col=col_pilotBurns, border=col_pilotBurns, lty='solid', lwd=2)
+    }
+  }
+  
+  if ( show1Hr ) {
+    monitor_timeseriesPlot(ws_monitor, add=TRUE, pch=pch_1, cex=cex_1, col=col_1)
+  }
+  
+  if ( show3Hr ) {
+    monitor_timeseriesPlot(ws_monitor_3hr, add=TRUE, type='l', col=col_3, lwd=lwd_3)
+  }
+  
+  if ( show24Hr ) {
+    monitor_timeseriesPlot(ws_monitor_24hr, add=TRUE, type='l', col=col_24, lwd=lwd_24)
+  }
+  
+  if ( showDaily ) {
+    # move time axis from noon to previous midnight for plotting with type='s'
+    x <- ws_monitor_daily$data$datetime - lubridate::dhours(12)
+    y <- ws_monitor_daily$data[,2]
+    points(x, y, type='s', col=col_daily, lwd=lwd_daily)
+  }
+  
+  if ( showBlueskyEvents ) {
+    # Bluesky events
+    ###text(events$solarnoon, (ylo + 0.02*yrange), labels='*', cex=3, col='firebrick')
+    x <- events$solarnoon
+    y <- rep((ylo+0.00*yrange), length(x)) 
+    points(x, y, pch=pch_events, cex=cex_events, col=col_events)
+  }
+  
   
   # Annotations
   title(title)
@@ -111,7 +208,8 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
          col=c(col_3, col_24),
          lwd=c(lwd_3, lwd_24))
   
-#   abline(v=prescribedBurns$localtime, lwd=2, col='firebrick')
-#   abline(v=events$localtime, lwd=2, col='orange')
+  
+  
+  par(oldPar)
   
 }

@@ -73,6 +73,7 @@ for (i in 1:length(airsis_monitorList)) {
 airsis_monitors <- monitor_combine(airsis_monitorList)
 
 bluesky_events <- dplyr::bind_rows(bluesky_eventsList)
+# TODO:  Fix this in DNR_downloadData.R
 
 # ----- Load hand-edited Excel Spreadsheet from Janice Peterson ---------------
 

@@ -47,9 +47,9 @@ monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NUL
   
   # Sanity check -- accept numeric values for tlim
   if ( !is.null(tlim) ) {
-    if (class(tlim)[1] == 'numeric') tlim <- parseDatetime(tlim)
-    # Convert any GMT to UTC
-    tlim <- lubridate::ymd_hms(tlim)
+    if (class(tlim)[1] == 'numeric' || class(tlim)[1] == 'character') {
+      tlim <- parseDatetime(tlim)
+    }
   }
    
   # Subset data based on time, values and monitorIDs

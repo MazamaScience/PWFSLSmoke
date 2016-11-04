@@ -4,7 +4,7 @@
 \alias{parseDatetime}
 \title{Parse Datetime Strings}
 \usage{
-parseDatetime(datetime)
+parseDatetime(datetime, timezone = "UTC")
 }
 \arguments{
 \item{datetime}{character or integer datetimes in YYYYMMDD[HHMMSS] format}
