@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Subset ws_monitoring Object 'meta' Dataframe
-#' @param meta 'meta' dataframe from a \code{ws_monitor} data list
+#' @param meta 'meta' dataframe from a \code{ws_monitor} object
 #' @param xlim optional longitude lim with lo and hi longitude values
 #' @param ylim optional latitude lim with lo and hi latitude values
 #' @param stateCodes optional vector of stateCodes

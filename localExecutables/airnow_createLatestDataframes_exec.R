@@ -109,7 +109,7 @@ createLatestDataDataframes <- function(opt) {
     # Assign the dataframe associated with "parameter" to an environment variable named after that parameter
     dfName <- paste0(parameter)
     assign(dfName, latestDF)
-    
+
     # NOTE:  Now the environment variable "parameter" is a character string, e.g. "PM2.5"
     # NOTE:  while the einvironment variable "PM2.5" is a dataframe.
     result <- try( save(list=dfName, file=filepath),

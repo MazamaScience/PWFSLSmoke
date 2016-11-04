@@ -8,7 +8,7 @@ monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
   monitorIDs = NULL)
 }
 \arguments{
-\item{meta}{'meta' dataframe from a \code{ws_monitor} data list}
+\item{meta}{'meta' dataframe from a \code{ws_monitor} object}
 
 \item{xlim}{optional longitude lim with lo and hi longitude values}
 
