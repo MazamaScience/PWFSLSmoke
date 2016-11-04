@@ -1,13 +1,13 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Isolate Individual Monitors
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @param ws_monitor ws_monitor object
 #' @param xlim optional longitude lim with lo and hi longitude values
 #' @param ylim optional latitude lim with lo and hi latitude values
 #' @param tlim optional time lim with lo and hi time values (POSIXct)
 #' @param stateCodes optional vector of stateCodes
 #' @param monitorIDs optional vector of monitorIDs
-#' @description The incoming monitoring data list is filtered according to the parameters
+#' @description Filters the incoming ws_monitor object according to the parameters
 #' passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
 #' 
 #' After filtering, each monitorID found in the \code{ws_monitor} object is extracted

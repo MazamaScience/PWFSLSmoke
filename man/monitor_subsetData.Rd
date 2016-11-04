@@ -2,13 +2,13 @@
 % Please edit documentation in R/monitor_subsetData.R
 \name{monitor_subsetData}
 \alias{monitor_subsetData}
-\title{Subset ws_monitoring Object 'data' Dataframe}
+\title{Subset Monitoring 'data' Dataframe}
 \usage{
 monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
   dropMonitors = FALSE)
 }
 \arguments{
-\item{data}{'data' dataframe from a \code{ws_monitor} object}
+\item{data}{'data' dataframe from a \code{ws_monitor} data list}
 
 \item{tlim}{optional time range with lo and hi time values (POSIXct)}
 
@@ -37,5 +37,5 @@ By default, filtering by tlim or vlim will always return a dataframe with the
     
      \code{x > vlim[1] & x <= vlim[2]}
 }
-\keyword{monitor}
+\keyword{ws_monitor}
 

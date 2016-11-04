@@ -1,5 +1,5 @@
-#' @keywords monitor
-# @export
+#' @keywords ws_monitor
+#' @export
 #' @title Subset ws_monitoring Object 'meta' Dataframe
 #' @param meta 'meta' dataframe from a \code{ws_monitor} object
 #' @param xlim optional longitude lim with lo and hi longitude values

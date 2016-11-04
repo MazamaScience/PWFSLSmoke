@@ -2,41 +2,42 @@
 % Please edit documentation in R/monitor_subset.R
 \name{monitor_subset}
 \alias{monitor_subset}
-\title{Subset Monitoring Data}
+\title{Create a Subset of a ws_monitor Object}
 \usage{
 monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
   vlim = NULL, monitorIDs = NULL, stateCodes = NULL,
   dropMonitors = TRUE)
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{ws_monitor object}
 
-\item{xlim}{optional longitude lim with lo and hi longitude values}
+\item{xlim}{vector with low and high longitude limit values}
 
-\item{ylim}{optional latitude lim with lo and hi latitude values}
+\item{ylim}{vector with low and high latitude limit values}
 
-\item{tlim}{optional time lim with lo and hi time values (POSIXct)}
+\item{tlim}{vector with start and end date/time limit values (POSIXct)}
 
-\item{vlim}{optional data lim with lo and hi data values}
+\item{vlim}{vector with low and high PM2.5 data limit values}
 
-\item{monitorIDs}{optional vector of monitorIDs}
+\item{monitorIDs}{vector of monitor IDs to include}
 
-\item{stateCodes}{optional vector of stateCodes}
+\item{stateCodes}{vector of state codes to include}
 
 \item{dropMonitors}{flag specifying whether to remove monitors with no data}
 }
 \value{
-monitoring data list filtered as specified
+ws_monitor object as a subset of the input ws_monitor object
 }
 \description{
-The incoming monitoring data list is filtered according to the parameters
-passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
+Creates a subset of a ws_monitor object based on one or more optional input parameters.
+If any input parameter is not specified, that parameter will not be used to subset the ws_monitor object.
 }
 \details{
-By default, filtering by tlim or vlim will always return a 'data' dataframe with the
-    same number of columns as the incoming dataframe. Some columns may consist sof all \code{NA}s.
-    If \code{dropMonitors=TRUE}, columns
-    will be removed if there are not valid data for a specific monitor after subsetting.
+By default, this function will return a ws_monitor$data dataframe with the
+    same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s, 
+    in which case such columns will be removed (e.g. if there are no valid data for a specific monitor 
+    after subsetting by tlim or vlim).
+    If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
 }
 \examples{
 \dontrun{

@@ -1,11 +1,10 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
-#' @title Trim a Monitor Time Axis
-#' @param ws_monitor data list of class \code{ws_monitor}
-#' @description The incoming \code{ws_monitor} object has its time axis trimmed
-#' to include everything from the first to last valid datapoints for any monitor
-#' in the object. All timesteps before or after any valid data are removed
-#' @return A \code{ws_monitor} objects.
+#' @title Trim ws_monitor Time Axis to Remove NA Periods From Beginning and End
+#' @param ws_monitor ws_monitor object
+#' @description Trims the time axis of a ws_monitor object to exclude timestamps prior to the first and
+#' after the last valid datapoint for any monitor.
+#' @return ws_monitor object
 
 monitor_trim <- function(ws_monitor) {
   

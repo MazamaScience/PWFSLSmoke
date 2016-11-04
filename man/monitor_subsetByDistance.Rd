@@ -43,5 +43,5 @@ monitor_leaflet(King_Fire)
 \seealso{
 monitorDistance
 }
-\keyword{monitor}
+\keyword{ws_monitor}
 

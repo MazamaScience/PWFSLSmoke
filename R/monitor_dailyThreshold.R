@@ -1,19 +1,19 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
 #' @title Calculate Daily Counts of Values At or Above a Threshold
 #' @param ws_monitor ws_monitor object
-#' @param threshold AQI level name (e.g. 'unhealthy') or numerical threshold at or above which a measurement is counted
-#' @param dayStart one of "sunset | midnight | sunrise"
+#' @param threshold AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted
+#' @param dayStart one of \code{"sunset|midnight|sunrise"}
 #' @param na.rm logical value indicating whether NA values should be ignored
-#' @note AQI levels for \code{threshold} argument = 'good', 'moderate', 'USG', 'unhealthy', 'very unhealthy', 'extreme'
-#' @note The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
+#' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
 #' For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
 #' very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.
-#' @description Calculate the number of hours per day each monitor in a \code{ws_monitor} object was at or above a given threshold
+#' @details AQI levels for \code{threshold} argument = one of \code{"good|moderate|USG|unhealthy|very unhealthy|extreme"}
+#' @description Calculates the number of hours per day each monitor in a ws_monitor object was at or above a given threshold
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
-#' @return \code{ws_monitor} object with daily count of hours at or above threshold
+#' @return ws_monitor object with daily count of hours at or above threshold
 #' @examples 
 #' \dontrun{
 #' AirNow <- airnow_load(20150801, 20150930)

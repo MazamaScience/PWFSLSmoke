@@ -1,11 +1,12 @@
+#' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Daily Bar Plot
+#' @title Create Daily Bar Plot
 #' @param ws_monitor ws_monitor object
-#' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional
+#' @param monitorID monitor ID for a specific monitor in the given ws_monitor object (optional
 #' if only one monitor in the ws_monitor object)
-#' @description A bar graph showing daily average PM 2.5 values for
-#' a specific monitor. Each bar is colored according to its AQI category.
+#' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor in a ws_monitor object.
+#' Each bar is colored according to its AQI category.
 #' @examples
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150801, 20150820)

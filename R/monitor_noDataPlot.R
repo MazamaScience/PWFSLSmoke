@@ -1,9 +1,10 @@
+#' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title No Data Plot
+#' @title Creates Blank Plot with "No Data" Message
 #' @param ws_monitor ws_monitor object
-#' @param monitorID id for a specific monitor in the ws_monitor
-#' @description Plot that indicates there is no data for the monitor of interest
+#' @param monitorID id for a specific monitor in the given ws_monitor object
+#' @description Creates a blank plot that indicates there is no data for the monitor of interest
 
 monitor_noDataPlot <- function(ws_monitor, monitorID=NULL) {
 

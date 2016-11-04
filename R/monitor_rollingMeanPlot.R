@@ -1,13 +1,16 @@
+#' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Hourly and Rolling Mean Plot
+#' @title Create Individual Value and Rolling Mean Plot
 #' @param ws_monitor ws_monitor object
-#' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional
-#' if only one monitor in the ws_monitor object)
-#' @param width width of window (in hours) used to calculate means
-#' @param data.thresh minimum number of observations as a percent of width required, or NA is returned
-#' @param align alignment of averaging window relative to point being calculated ["left"|"center"|"right"]
-#' @description A graph showing hourly and rolling mean PM2.5 values for a specific monitor (default = 24-hour).
+#' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
+#' in the ws_monitor object)
+#' @param width number of periods to average (e.g. for hourly data, \code{width = 24} plots 24-hour rolling means)
+#' @param data.thresh minimum number of valid observations required as a percent of \code{width};
+#' NA is returned if insufficicnet valid data to calculate mean
+#' @param align alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}
+#' @description Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a specific monitor.
+#' @details \code{align = "left"} and \code{align = "right"} calculate backward and forward rolling averages, respectively (e.g. current period and prior/subsequent \code{width - 1} periods)
 #' @examples
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150725, 20150805)

@@ -2,19 +2,19 @@
 % Please edit documentation in R/monitor_combine.R
 \name{monitor_combine}
 \alias{monitor_combine}
-\title{Combine ws_monitor Objects}
+\title{Combine List of ws_monitor Objects into Single ws_monitor Object}
 \usage{
 monitor_combine(monitorList)
 }
 \arguments{
-\item{monitorList}{list containing \code{ws_monitor} objects}
+\item{monitorList}{list containing ws_monitor objects}
 }
 \value{
 A ws_monitor object.
 }
 \description{
-Given a list of \code{ws_monitor} objects, the function generates a single ws_monitor object 
-by merging the 'meta' and 'data' dataframes from each object.
+Combines a list of ws_monitor objects into a single ws_monitor object 
+by merging the 'meta' and 'data' dataframes from each object in the given list.
 }
 \examples{
 \dontrun{

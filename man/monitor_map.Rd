@@ -26,7 +26,7 @@ monitor_map(ws_monitor, slice = get("max"), breaks = 7,
 \item{...}{additional arguments passed to points() such as 'col' or 'pch'}
 }
 \description{
-Creates a map of monitoring stations in the US. Individual monitor timeseries are reduced to 
+Creates a map of monitoring stations in a given ws_monitor object. Individual monitor timeseries are reduced to 
 a single value by applying the function passed in as \code{slice} to the entire timeseries of each monitor
 with \code{na.rm=TRUE}. These values are then plotted over a map of the United States. All arguments specified in '...' are passed
 on to the points() function.

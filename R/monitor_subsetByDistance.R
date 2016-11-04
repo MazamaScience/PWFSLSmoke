@@ -1,4 +1,4 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
 #' @title Subset Monitor Data by Distance from Location
 #' @param ws_monitor data list of class \code{ws_monitor}
