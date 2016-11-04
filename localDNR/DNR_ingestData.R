@@ -113,6 +113,8 @@ approval <- stringr::str_replace( stringr::str_replace(janice_SMA$Approval,"Y","
 pilot <- stringr::str_replace( stringr::str_replace(janice_SMA$DNR_Pilot.24.Hr.Advance,"1","T"), "0","F")
 janice_SMA$Approval <- as.logical(approval)
 janice_SMA$DNR_Pilot.24.Hr.Advance <- as.logical(pilot)
+# NOTE:  For now, consider Pilot project NAs to be FALSE
+janice_SMA$DNR_Pilot.24.Hr.Advance <- ifelse( is.na(janice_SMA$DNR_Pilot.24.Hr.Advance), FALSE, janice_SMA$DNR_Pilot.24.Hr.Advance)
 
 # Converting time columns to PWFSLSmoke internal standards: remove 'datestamp', 'datetime' should have POSIXct
 janice_SMA$datestamp <- NULL

@@ -17,19 +17,20 @@
 # This DNR_timeseriesPlot.R script defines a function for creating timeseries plots
 # for a named monitor with markers for nearby fires.
 
-# Load and clean up all required data
-source('localDNR/DNR_ingestData.R')
+# Load and clean up all required data with:
+###source('localDNR/DNR_ingestData.R')
 
 DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
-                               fireDistance=25, ...) {
+                               fireDistance=25,
+                               ...) {
   
   # ----- Style ---------------------------------------------------------------
   
-  col_1 <- adjustcolor('black',0.9)
-  col_3 <- adjustcolor('goldenrod', 0.9)
+  col_1 <- adjustcolor('black',0.5)
+  col_3 <- 'transparent' #adjustcolor('goldenrod', 0.9)
   col_24 <- adjustcolor('purple', 0.5)
   
-  pch_1 <- 1
+  pch_1 <- 16
   cex_1 <- 1
   
   lwd_3 <- 2
@@ -53,18 +54,29 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   # Get nearby prescribed burns and create a localtime column
   prescribedDistance <- distance(ws_monitor$meta$longitude, ws_monitor$meta$latitude, janice_SMA$Longitude, janice_SMA$Latitude)
   prescribedBurns <- janice_SMA[prescribedDistance <= fireDistance,]
-  prescribedBurns$localtime <- lubridate::with_tz(prescribedBurns$datetime, ws_monitor$meta$timezone)
+  ###prescribedBurns$localtime <- lubridate::with_tz(prescribedBurns$datetime, ws_monitor$meta$timezone)
+  timeInfo <- timeInfo(prescribedBurns$datetime, lon=ws_monitor$meta$longitude, lat=ws_monitor$meta$latitude)
+  prescribedBurns$sunset <- timeInfo$sunset
   
   # Get nearby events and create a localtime column
   eventsDistance <- distance(ws_monitor$meta$longitude, ws_monitor$meta$latitude, bluesky_events$longitude, bluesky_events$latitude)
   events <- bluesky_events[eventsDistance <= fireDistance,]
   events$localtime <- lubridate::with_tz(events$datetime, ws_monitor$meta$timezone)
-  
+  timeInfo <- timeInfo(as.POSIXct(events$datetime), ws_monitor$meta$longitude, ws_monitor$meta$latitude)
+  events$solarnoon <- timeInfo$solarnoon
+
   # ----- Plotting ------------------------------------------------------------
   
   monitor_timeseriesPlot(ws_monitor, shadedNight=TRUE, pch=pch_1, cex=cex_1, col=col_1)#, ...)
   monitor_timeseriesPlot(ws_monitor_3hr, type='l', col=col_3, lwd=lwd_3, add=TRUE)
   monitor_timeseriesPlot(ws_monitor_24hr, type='l', col=col_24, lwd=lwd_24, add=TRUE)
+  
+  # Daily average
+  ws_monitor_daily <- monitor_dailyStatistic(ws_monitor, FUN=mean, dayStart='midnight')
+  # move time axis from noon to previous midnight start for plotting with type='s'
+  x <- ws_monitor_daily$data$datetime - lubridate::dhours(12)
+  y <- ws_monitor_daily$data[,2]
+  points(x, y, type='s', col='purple', lwd=3)
   
   # Get useful plot measures
   usr <- par('usr')
@@ -75,6 +87,23 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   xrange <- xhi - xlo
   yrange <- yhi - ylo
   
+  # PrescribedBurn rectangles
+  xleft <- prescribedBurns$Ignition.time
+  xright <- prescribedBurns$sunset
+  ybottom <- 0
+  yval <- prescribedBurns$Accomplished.Tons
+  ytop <- yval * ((0.95*yhi)/max(yval, na.rm=TRUE))
+  col <- ifelse(prescribedBurns$DNR_Pilot.24.Hr.Advance, 'red', 'orange')
+  angle <- ifelse(prescribedBurns$DNR_Pilot.24.Hr.Advance, 45, -45)
+  rect(xleft, ybottom, xright, ytop, density=20, angle=angle,
+       col=col, border=col, lty='solid', lwd=2)
+
+  # Bluesky events
+  ###text(events$solarnoon, (ylo + 0.02*yrange), labels='*', cex=3, col='firebrick')
+  x <- events$solarnoon
+  y <- rep((ylo+0.00*yrange), length(x)) 
+  points(x, y, pch=17, cex=3, col='firebrick')
+  
   # Annotations
   title(title)
   legend('topleft',
@@ -82,8 +111,7 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
          col=c(col_3, col_24),
          lwd=c(lwd_3, lwd_24))
   
-  abline(v=prescribedBurns$localtime, lwd=2, col='firebrick')
-  abline(v=events$localtime, lwd=2, col='orange')
-  
+#   abline(v=prescribedBurns$localtime, lwd=2, col='firebrick')
+#   abline(v=events$localtime, lwd=2, col='orange')
   
 }
