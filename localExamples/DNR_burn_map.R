@@ -1,11 +1,14 @@
 ###############################################################
 ##                                                           ##
-## TODO: add timewindow(hour), legend, title                 ##
+## TODO: add timewindow(hour), legend, title,                ##
+##       color by 24-hr notice                               ##
 ##                                                           ##
 ###############################################################
+
 library(magrittr)
 library(maps)
 library(PWFSLSmoke)
+# run the last four lines in DNR_ingestData.R to get janice_SMA
 
 # SMAsizeBy can take 'proposed', 'accomplished' and 'accomplishedFS'
 
@@ -39,7 +42,7 @@ DNR_burn_map <- function(startdate = 20160915, SMAsizeBy = 'accomplished') {
     airsisMonitorDF$latitude[i] <- airsis_monitorList[[i]]$meta$latitude
     airsisIndexes <- intersect(which(airsis_monitorList[[i]]$data$datetime >= startDate),
                          which(airsis_monitorList[[i]]$data$datetime <= endDate))
-    airsisMonitorDF$MaxPm25[i] <- max(airsis_monitorList[[i]]$data[,2][airsisIndexes], na.rm=T)
+    airsisMonitorDF$MaxPm25[i] <- max(airsis_monitorList[[i]]$data[,2][airsisIndexes], na.rm=TRUE)
   }
   
   ##### process airnow #####
@@ -63,7 +66,7 @@ DNR_burn_map <- function(startdate = 20160915, SMAsizeBy = 'accomplished') {
   # blueskyDF$datetime <- strptime(blueskyDF$datestamp,'%Y%m%d', tz='UTC') + 7*60*60
   
   ##### process SMA #####
-  ignitionTime <- as.numeric(janice_SMA$`Ignition time`)
+  ignitionTime <- suppressWarnings(as.numeric(janice_SMA$`Ignition time`))
   ignitionTime[is.na(ignitionTime)] <- 0
   ignitionHour <- floor(ignitionTime/100)
   ignitionMinute <- (floor(ignitionTime/10) - ignitionHour*10)*10
@@ -89,8 +92,6 @@ DNR_burn_map <- function(startdate = 20160915, SMAsizeBy = 'accomplished') {
   airnowColIndexes <- .bincode(airnowMonitorDF$MaxPm25, breaks=AQI$breaks_24)
   points(airnowMonitorDF$longitude, airnowMonitorDF$latitude, pch=16, cex=1.5, lwd=2, col=AQI$colors[airnowColIndexes])
   text(airnowMonitorDF$longitude, airnowMonitorDF$latitude, labels=airnowMonitorDF$MaxPm25, pos=4)
-  
-
   
   # plot SMA points: open triangle sized by SMAsizeBy 
   bSMA <- quantile(janice_SMA[SMAsizeBy][[1]], na.rm=TRUE)

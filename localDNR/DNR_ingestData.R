@@ -44,7 +44,7 @@ load('localData/bluesky_eventsList.RData')
 
 # ----- Load hand-edited Excel Spreadsheet from Janice Peterson ---------------
 
-filepath=paste0(getwd(),'/xlsx/DNR\ SM\ eastside\ accomplishments\ fall\ 2016.xlsx')
+filepath=paste0(getwd(),'/localData/DNR\ SM\ eastside\ accomplishments\ fall\ 2016.xlsx')
 janice_SMA <- readxl::read_excel(filepath, na="NA")
 
 # remove rows with all missing
