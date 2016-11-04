@@ -1,7 +1,7 @@
 #' @keywords monitor
-#' @export
-#' @title Subset Monitoring 'data' Dataframe
-#' @param data 'data' dataframe from a \code{ws_monitor} data list
+# @export
+#' @title Subset ws_monitoring Object 'data' Dataframe
+#' @param data 'data' dataframe from a \code{ws_monitor} object
 #' @param tlim optional time range with lo and hi time values (POSIXct)
 #' @param vlim optional data range with lo and hi data values
 #' @param monitorIDs optional vector of monitorIDs

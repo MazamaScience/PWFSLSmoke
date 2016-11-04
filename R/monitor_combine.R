@@ -25,6 +25,7 @@ monitor_combine <- function(monitorList) {
   
   # Create combined 'meta'
   meta <- dplyr::bind_rows(metaList)
+  rownames(meta) <- meta$monitorID
   
   # Create combined 'data'
   data <- dataList[[1]]

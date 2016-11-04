@@ -1,7 +1,7 @@
 #' @keywords monitor
 #' @export
 #' @title Compute Rolling Means of Monitor Data
-#' @param ws_monitor object
+#' @param ws_monitor ws_monitor object
 #' @param width width of window (in hours) used to calculate means
 #' @param data.thresh minimum number of observations as a percent of width required, or NA is returned
 #' @param align alignment of averaging window relative to point being calculated ["left"|"center"|"right"]
