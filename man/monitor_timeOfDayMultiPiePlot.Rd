@@ -2,17 +2,19 @@
 % Please edit documentation in R/monitor_timeOfDayMultiPiePlot.R
 \name{monitor_timeOfDayMultiPiePlot}
 \alias{monitor_timeOfDayMultiPiePlot}
-\title{Time of Day Multi Pie Plot}
+\title{Create 9 Daily Time of Day Pie Plots}
 \usage{
 monitor_timeOfDayMultiPiePlot(ws_monitor, monitorID = NULL)
 }
 \arguments{
-\item{ws_monitor}{a ws_monitor object}
+\item{ws_monitor}{ws_monitor object}
 
-\item{monitorID}{id for a specific monitor in the ws_monitor}
+\item{monitorID}{id for a specific monitor in the ws_monitor object (optional if only one monitor
+in the ws_monitor object)}
 }
 \description{
-Pie plot that shows 9 PM 2.5 levels based on time of day.
+Creates pie plots of 3-hour average PM2.5 concentrations over 9 consecutive days for a single monitor.
+3-hour pie pieces are colored according to AQI category. Day/night is approximated using shading.
 }
 \examples{
 \dontrun{
@@ -21,4 +23,5 @@ monitor <- ws_monitor$meta$monitorID[1]
 monitor_timeOfDayMultiPiePlot(ws_monitor, monitor)
 }
 }
+\keyword{ws_monitor}
 

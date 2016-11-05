@@ -2,13 +2,13 @@
 % Please edit documentation in R/monitor_dygraph.R
 \name{monitor_dygraph}
 \alias{monitor_dygraph}
-\title{Dygraph Interactive Timeseries}
+\title{Create Interactive Time Series Plot}
 \usage{
 monitor_dygraph(ws_monitor, title = "title", ylab = "PM2.5 Concentration",
   dateWindow = NULL, rollPeriod = 1, showLegend = TRUE)
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{ws_monitor object}
 
 \item{title}{title text}
 

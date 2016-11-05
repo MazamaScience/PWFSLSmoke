@@ -31,5 +31,5 @@ If any parameter is not specified, that parameter will not be used in the filter
 \details{
 Longitudes must be specified in the domain [-180,180].
 }
-\keyword{monitor}
+\keyword{ws_monitor}
 

@@ -1,3 +1,4 @@
+#' @keywords ws_monitor
 #' @export
 #' @import graphics
 #' @title Time of Day Spaghetti Plot

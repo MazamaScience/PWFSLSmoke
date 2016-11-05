@@ -22,4 +22,5 @@ monitor <- ws_monitor$meta$monitorID[1]
 monitor_timeOfDaySpaghettiPlot(ws_monitor, monitor)
 }
 }
+\keyword{ws_monitor}
 

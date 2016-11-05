@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Dygraph Interactive Timeseries
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @title Create Interactive Time Series Plot
+#' @param ws_monitor ws_monitor object
 #' @param title title text
 #' @param ylab title for the y axis
 #' @param dateWindow initial time range (POSIXct)

@@ -1,8 +1,9 @@
+#' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Hour by Day Bar Plot
+#' @title Create Hour by Day Bar Plot
 #' @param ws_monitor ws_monitor object
-#' @param monitorID id for a specific monitor in the ws_monitor
+#' @param monitorID id for a specific monitor in the given ws_monitor
 #' @param stacks number of stacks in a 24 hour period
 #' @description A bar plot.
 #' @examples

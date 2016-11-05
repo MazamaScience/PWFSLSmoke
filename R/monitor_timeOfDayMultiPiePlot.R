@@ -1,9 +1,12 @@
+#' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Time of Day Multi Pie Plot
-#' @param ws_monitor a ws_monitor object
-#' @param monitorID id for a specific monitor in the ws_monitor
-#' @description Pie plot that shows 9 PM 2.5 levels based on time of day. 
+#' @title Create 9 Daily Time of Day Pie Plots
+#' @param ws_monitor ws_monitor object
+#' @param monitorID id for a specific monitor in the ws_monitor object (optional if only one monitor
+#' in the ws_monitor object)
+#' @description Creates pie plots of 3-hour average PM2.5 concentrations over 9 consecutive days for a single monitor.
+#' 3-hour pie pieces are colored according to AQI category. Day/night is approximated using shading.
 #' @examples
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150801, 20150810)

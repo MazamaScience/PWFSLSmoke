@@ -2,16 +2,17 @@
 % Please edit documentation in R/monitor_noDataPlot.R
 \name{monitor_noDataPlot}
 \alias{monitor_noDataPlot}
-\title{No Data Plot}
+\title{Creates Blank Plot with "No Data" Message}
 \usage{
 monitor_noDataPlot(ws_monitor, monitorID = NULL)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{monitorID}{id for a specific monitor in the ws_monitor}
+\item{monitorID}{id for a specific monitor in the given ws_monitor object}
 }
 \description{
-Plot that indicates there is no data for the monitor of interest
+Creates a blank plot that indicates there is no data for the monitor of interest
 }
+\keyword{ws_monitor}
 

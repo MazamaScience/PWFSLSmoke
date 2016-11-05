@@ -2,19 +2,19 @@
 % Please edit documentation in R/monitor_dailyBarPlot.R
 \name{monitor_dailyBarPlot}
 \alias{monitor_dailyBarPlot}
-\title{Daily Bar Plot}
+\title{Create Daily Bar Plot}
 \usage{
 monitor_dailyBarPlot(ws_monitor, monitorID = NULL)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{monitorID}{monitor ID for a specific monitor in the ws_monitor object (optional
+\item{monitorID}{monitor ID for a specific monitor in the given ws_monitor object (optional
 if only one monitor in the ws_monitor object)}
 }
 \description{
-A bar graph showing daily average PM 2.5 values for
-a specific monitor. Each bar is colored according to its AQI category.
+Creates a bar plot showing daily average PM 2.5 values for a specific monitor in a ws_monitor object.
+Each bar is colored according to its AQI category.
 }
 \examples{
 \dontrun{
@@ -24,4 +24,5 @@ monitorID <- ws_monitor$meta$monitorID[1]
 monitor_dailyBarPlot(ws_monitor, monitorID)
 }
 }
+\keyword{ws_monitor}
 
