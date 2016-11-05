@@ -48,8 +48,11 @@ monitor_subsetBy <- function(ws_monitor, filter) {
   } else if ( any(stringr::str_detect(filterString, 'data')) ) {
     
     FUN <- function(list) { any(eval(condition_call, data.frame(data = list))) }
-    # omit the first 'datetime' column
-    data <- ws_monitor$data[,-1]
+    # Omit the first 'datetime' column
+    # NOTE:  We must do extra work to avoid conversion to numeric in the case 
+    # NOTE:  where there is only a single column of data.
+    data <- as.data.frame(ws_monitor$data[,-1])
+    colnames(data) <- colnames(ws_monitor$data)[-1]
     dataMask <- apply(data, 2, FUN)
     dataMask <- replace(dataMask, is.na(dataMask), FALSE)
     monitorIDs <- names(data[dataMask])

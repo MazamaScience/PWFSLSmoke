@@ -8,18 +8,46 @@
 library(magrittr)
 library(maps)
 library(PWFSLSmoke)
-# run the last four lines in DNR_ingestData.R to get janice_SMA
+library(classInt)
 
+# REMINDER: run DNR_ingestData.R to get janice_SMA
 # SMAsizeBy can take 'proposed', 'accomplished' and 'accomplishedFS'
 
-DNR_burn_map <- function(startdate = 20160915, SMAsizeBy = 'accomplished') {
+DNR_burn_map <- function(startdate = 20160915, timeWindow = 48, FUN = max,
+                         show_airsis = TRUE, show_airnow = TRUE, show_SMA = TRUE, show_bluesky = TRUE,
+                         SMAsizeBy='accomplished') {
   
+  #------------------------------------------ styles ----------------------------------------------
+  #--------- airsis ---------
+  breaks_airsis = AQI$breaks_24
+  pch_airsis = 16
+  cex_airsis = 3
+  lwd_airsis = 1
+  col_airsis = AQI$colors
+  #-------- airnow -----------
+  breaks_airnow = AQI$breaks_24
+  pch_airnow = 16
+  cex_airnow = 1.5
+  lwd_airnow = 1
+  col_airnow = AQI$colors
+  #---------- SMA ------------
+  SMA_breaksBy = 'quantile'
+  pch_SMA = 2
+  lwd_SMA = 3
+  col_SMA = 'red'
+  #-------- satelite ---------
+  pch_bluesky = 17
+  cex_bluesky = 1
+  lwd_bluesky = 1
+  col_bluesky = 'grey50'
+  
+  #------------------------------------------ data processing ----------------------------------------------
   if(SMAsizeBy == 'proposed'){
-    SMAsizeBy = "Proposed Tons"
+    SMAsizeBy = "Proposed.Tons"
   } else if (SMAsizeBy == 'accomplished') {
-    SMAsizeBy = "Accomplished Tons"
+    SMAsizeBy = "Accomplished.Tons"
   } else if (SMAsizeBy == "accomplishedFS") {
-    SMAsizeBy = "Accomplished Tons from FS fireportal"
+    SMAsizeBy = "Accomplished.Tons.from.FS.fireportal"
   } else {
     stop(paste("Incorrect value for parameter 'SMAsizeBy'."))
   }
@@ -28,12 +56,11 @@ DNR_burn_map <- function(startdate = 20160915, SMAsizeBy = 'accomplished') {
   load("localData/airsis_monitorList.RData")  #mobile monitors
   load("localData/airnow_monitors.RData")  #permanent monitors     
   load("localData/bluesky_eventsList.RData")  #satelite detectors
-  # run DNR_ingestData to get SMA dataframe
 
   startDate <- strptime(as.character(startdate),'%Y%m%d', tz='UTC') + 7*60*60
-  endDate <- startDate + 48*60*60
+  endDate <- startDate + timeWindow*60*60
 
-  ### process airsis ###### 
+  #---------- process airsis ----------
   airsisMonitorDF <- data.frame(matrix(nrow = length(airsis_monitorList), ncol = 3))
   names(airsisMonitorDF) <- c("longitude", "latitude", "MaxPm25")
   row.names(airsisMonitorDF) <- names(airsis_monitorList)
@@ -42,10 +69,10 @@ DNR_burn_map <- function(startdate = 20160915, SMAsizeBy = 'accomplished') {
     airsisMonitorDF$latitude[i] <- airsis_monitorList[[i]]$meta$latitude
     airsisIndexes <- intersect(which(airsis_monitorList[[i]]$data$datetime >= startDate),
                          which(airsis_monitorList[[i]]$data$datetime <= endDate))
-    airsisMonitorDF$MaxPm25[i] <- max(airsis_monitorList[[i]]$data[,2][airsisIndexes], na.rm=TRUE)
+    airsisMonitorDF$MaxPm25[i] <- FUN(airsis_monitorList[[i]]$data[,2][airsisIndexes], na.rm=TRUE)
   }
   
-  ##### process airnow #####
+  #---------- process airnow ---------
   airnowMonitorDF <- data.frame(matrix(NA, nrow=nrow(airnow_monitors$meta), ncol=3))
   names(airnowMonitorDF) <- c("longitude", "latitude", "MaxPm25")
   row.names(airnowMonitorDF) <- row.names(airnow_monitors$meta)
@@ -54,50 +81,78 @@ DNR_burn_map <- function(startdate = 20160915, SMAsizeBy = 'accomplished') {
   airnowIndexes <- intersect(which(airnow_monitors$data$datetime >= startDate),
                              which(airnow_monitors$data$datetime <= endDate))
   for (i in 1:nrow(airnowMonitorDF)){
-    airnowMonitorDF$MaxPm25[i] <- max(airnow_monitors$data[,i+1][airnowIndexes], na.rm=TRUE)
+    airnowMonitorDF$MaxPm25[i] <- FUN(airnow_monitors$data[,i+1][airnowIndexes], na.rm=TRUE)
   }
   
-  ##### process satelite #####
+  #---------- process satelite ----------
   blueskyIndex <- which(names(bluesky_eventsList) == as.character(startdate))
   blueskyDF <- rbind(bluesky_eventsList[[blueskyIndex]],
                      bluesky_eventsList[[blueskyIndex+1]],
                      bluesky_eventsList[[blueskyIndex+2]])
   blueskyDF <- as.data.frame(blueskyDF[which(blueskyDF$state == 'WA'),])
-  # blueskyDF$datetime <- strptime(blueskyDF$datestamp,'%Y%m%d', tz='UTC') + 7*60*60
-  
-  ##### process SMA #####
-  ignitionTime <- suppressWarnings(as.numeric(janice_SMA$`Ignition time`))
-  ignitionTime[is.na(ignitionTime)] <- 0
-  ignitionHour <- floor(ignitionTime/100)
-  ignitionMinute <- (floor(ignitionTime/10) - ignitionHour*10)*10
-  ignitionSecond <- ignitionTime - ignitionHour*100 - ignitionMinute
-  janice_SMA$datetimeAltered <- as.POSIXct(janice_SMA$datetime, tz='UTC') + 
-    ignitionHour*60*60 + ignitionMinute*60 + ignitionSecond
-  
-  subJaniceSMA <- janice_SMA[intersect(which(janice_SMA$datetimeAltered >= startDate), 
-                        which(janice_SMA$datetimeAltered <= endDate)),]
+
+  #---------- process SMA ----------
+  janice_SMA$ignitionUTC <- as.POSIXct(format(janice_SMA$Ignition.time,tz='UTC'),tz='UTC')
+  subJaniceSMA <- janice_SMA[intersect(which(janice_SMA$ignitionUTC >= startDate), 
+                        which(janice_SMA$ignitionUTC <= endDate)),]
   subJaniceSMA <- as.data.frame(subJaniceSMA[!is.na(subJaniceSMA$Latitude),])
   
-  ### plotting ###
-  # par(mar = c(0,0,0,0))
+  
+  #----------------------------------------------- plotting ---------------------------------------------------
   par(mar=c(15,14,13,13))
   map('county', 'wa', col='grey')
   
-  # plot airsis points: filled dots colored by AQI
-  airsisColIndexes <- .bincode(airsisMonitorDF$MaxPm25, breaks=AQI$breaks_24)
-  points(airsisMonitorDF$longitude, airsisMonitorDF$latitude, pch=16, cex=3, col=AQI$colors[airsisColIndexes])
-  text(airsisMonitorDF$longitude, airsisMonitorDF$latitude, labels=airsisMonitorDF$MaxPm25, pos=c(3,rep(4,7)))
+  # plot airsis points, default: filled dots colored by AQI
+  if (show_airsis) {
+    airsisColIndexes <- .bincode(airsisMonitorDF$MaxPm25, breaks=breaks_airsis)
+    points(airsisMonitorDF$longitude, airsisMonitorDF$latitude, pch=pch_airsis, cex=cex_airsis, 
+           col=col_airsis[airsisColIndexes])
+    text(airsisMonitorDF$longitude, airsisMonitorDF$latitude, labels=airsisMonitorDF$MaxPm25, pos=c(3,rep(4,7)))
+  }
   
-  # plot airnow points: open dots colored by AQI
-  airnowColIndexes <- .bincode(airnowMonitorDF$MaxPm25, breaks=AQI$breaks_24)
-  points(airnowMonitorDF$longitude, airnowMonitorDF$latitude, pch=16, cex=1.5, lwd=2, col=AQI$colors[airnowColIndexes])
-  text(airnowMonitorDF$longitude, airnowMonitorDF$latitude, labels=airnowMonitorDF$MaxPm25, pos=4)
+  # plot airnow points, default: open dots colored by AQI
+  if (show_airnow) {
+    airnowColIndexes <- .bincode(airnowMonitorDF$MaxPm25, breaks=breaks_airnow)
+    points(airnowMonitorDF$longitude, airnowMonitorDF$latitude, pch=pch_airnow, cex=cex_airnow, 
+           lwd=lwd_airnow, col=col_airnow[airnowColIndexes])
+    text(airnowMonitorDF$longitude, airnowMonitorDF$latitude, labels=airnowMonitorDF$MaxPm25, pos=4)
+  }
   
-  # plot SMA points: open triangle sized by SMAsizeBy 
-  bSMA <- quantile(janice_SMA[SMAsizeBy][[1]], na.rm=TRUE)
-  SMAsizeIndex <- .bincode(subJaniceSMA[SMAsizeBy][[1]], breaks=bSMA)
-  points(subJaniceSMA$Longitude, subJaniceSMA$Latitude, pch=2, lwd=4, col='red', cex=SMAsizeIndex)
+  # plot SMA points, default: open triangle sized by SMAsizeBy 
+  if (show_SMA) {
+    breaks_SMA <- classIntervals(na.omit(janice_SMA[[SMAsizeBy]]), n=4, style=SMA_breaksBy)$brks
+    SMA_sizeIndex <- .bincode(subJaniceSMA[[SMAsizeBy]], breaks=breaks_SMA)
+    points(subJaniceSMA$Longitude, subJaniceSMA$Latitude, pch=pch_SMA, lwd=lwd_SMA, col=col_SMA, cex=SMA_sizeIndex)
+  }
   
-  # plot satelite poits: small filled triangle
-  points(blueskyDF$longitude, blueskyDF$latitude, pch=17, cex=1, col='grey50')
+  # plot satelite poits, default: small filled triangle
+  if (show_bluesky) {
+    points(blueskyDF$longitude, blueskyDF$latitude, pch=pch_bluesky, cex=cex_bluesky, col=col_bluesky)
+  }
+  
+  # legend and title
+  legend(x='topleft', pch=(rep(pch_airsis, )))
+  
+  # #--------- airsis ---------
+  # breaks_airsis = AQI$breaks_24
+  # pch_airsis = 16
+  # cex_airsis = 3
+  # lwd_airsis = 1
+  # col_airsis = AQI$colors
+  # #-------- airnow -----------
+  # breaks_airnow = AQI$breaks_24
+  # pch_airnow = 16
+  # cex_airnow = 1.5
+  # lwd_airnow = 1
+  # col_airnow = AQI$colors
+  # #---------- SMA ------------
+  # SMA_breaksBy = 'quantile'
+  # pch_SMA = 2
+  # lwd_SMA = 3
+  # col_SMA = 'red'
+  # #-------- satelite ---------
+  # pch_bluesky = 17
+  # cex_bluesky = 1
+  # lwd_bluesky = 1
+  # col_bluesky = 'grey50'
 }

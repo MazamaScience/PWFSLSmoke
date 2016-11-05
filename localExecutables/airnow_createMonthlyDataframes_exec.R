@@ -129,11 +129,15 @@ if (FALSE) {
   opt <- list(user='USER',
               pass='PASS',
               yearMonth='201601',
-              outputDir=paste0(getwd()),
-              logDir=paste0(getwd()),
+              outputDir='~/Data/AirNow',
+              logDir='~/Data/Logs',
               spatialDataDir='~/Data/Spatial')
   
 }
+
+# Sanity checks
+if ( !file.exists(opt$outputDir) ) stop(paste0("outputDir not found:  ",opt$outputDir))
+if ( !file.exists(opt$logDir) ) stop(paste0("logDir not found:  ",opt$logDir))
 
 # Clean up arguments
 if ( stringr::str_detect(opt$yearMonth, 'LAST_MONTH') ) {
@@ -150,6 +154,7 @@ errorLog <- file.path(opt$logDir, paste0('airnow_createMonthlyDataframes_',opt$y
 
 # Set up logging
 logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
+print("after logger.setup")
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
@@ -160,7 +165,6 @@ setSpatialDataDir(opt$spatialDataDir)
 logger.info('Running airnow_createMonthlyDataframes_exec.R version %s',VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse='\n')
 logger.debug('R session:\n\n%s\n', sessionString)
-
 
 # ----- Optionally create AirNow "meta" dataframes ----------------------------
 

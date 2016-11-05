@@ -103,16 +103,6 @@ readBlueskyEmissions <- function(url) {
   df$utc <- lubridate::with_tz(df$localtime, 'UTC')
 }
 
-monitorList_cleanup <- function(monitorList) {
-  
-  # Convert negative values to zero
-  for (i in 1:length(monitorList)) {
-    monitorList[[i]]$data[,2] <- ifelse(monitorList[[i]]$data[,2] > 0, monitorList[[i]]$data[,2], 0)
-  }
-  
-  # Anything else?
-  
-}
 
 DNR_averagesPlot <- function(ws_monitor, title) {
   layout(matrix(seq(2)))
@@ -121,27 +111,3 @@ DNR_averagesPlot <- function(ws_monitor, title) {
 }
 
 
-DNR_read_Janice_file <- function(filepath=paste0(getwd(),'/xlsx/DNR\ SM\ eastside\ accomplishments\ fall\ 2016.xlsx')) {
- 
-  df <- readxl::read_excel(filepath, na="NA")
-  allMissingMask <- apply( df, 1, function(x) { all(is.na(x)) } )
-  df <- df[!allMissingMask,]
-  
-  proposedRange <- range(df$`Proposed Tons`, na.rm=TRUE)
-  accomplishedRange <- range(df$`Accomplished Tons`, na.rm=TRUE)
-   
-  map('county','wa')
-  
-  cex = 4*df$`Proposed Tons`/proposedRange[2]
-  points(df$Longitude, df$Latitude, cex=cex)
-  
-  cex = 4*df$`Accomplished Tons`/accomplishedRange[2]
-  points(df$Longitude, df$Latitude, cex=cex, col='firebrick')
-  
-  # Can subset this for each location
-  time <- lubridate::ymd_hms(df$datetime)
-  plot(time, df$`Proposed Tons`, type='h', col='orange', lwd=12)
-  points(time, df$`Accomplished Tons`, type='h', col='firebrick', lwd=4)
-  
-
-}
