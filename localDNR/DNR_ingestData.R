@@ -123,7 +123,7 @@ janice_SMA$datestamp <- NULL
 janice_SMA$datetime <- lubridate::ymd_hms(janice_SMA$datetime, tz="UTC")
 
 # Make Ignition.Time a POSIXct in the "America/Los_Angeles" timezone
-datestamp <- as.character(lubridate::date(janice_SMA$datetime))
+datestamp <- strftime(janice_SMA$datetime, "%y-%m-%d")
 janice_SMA$Ignition.time <- toupper(janice_SMA$Ignition.time)   # convert "na" to "NA"
 timestamp <- paste0('0',janice_SMA$Ignition.time)               # guarantee 4 digits
 timestamp <- ifelse(stringr::str_detect(timestamp,"NA"), NA, timestamp)
