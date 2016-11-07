@@ -11,7 +11,7 @@
 #' @param dropMonitors flag specifying whether to remove monitors with no data
 #' @description Creates a subset of a ws_monitor object based on one or more optional input parameters.
 #' If any input parameter is not specified, that parameter will not be used to subset the ws_monitor object.
-#' @details By default, this function will return a ws_monitor$data dataframe with the
+#' @details By default, this function will return a ws_monitor object whose 'data' dataframe has the
 #'     same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s, 
 #'     in which case such columns will be removed (e.g. if there are no valid data for a specific monitor 
 #'     after subsetting by tlim or vlim).

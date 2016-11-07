@@ -1,11 +1,11 @@
 #' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Time of Day Spaghetti Plot
+#' @title Create Time of Day Spaghetti Plot
 #' @param ws_monitor ws_monitor object
-#' @param monitorID id for a specific monitor in the ws_monitor
-#' @description Spaghetti Plot that shows PM 2.5 levels by hours for 10 days. 
-#' The plot also has takes and draws a mean. 
+#' @param monitorID id for a specific monitor in the ws_monitor object
+#' @description Creates a spaghetti plot of PM2.5 levels by hour for one or more days. The average by hour over 
+#' the period is also calculated and plotted as a thick black line.
 #' @examples
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150801, 20150810)

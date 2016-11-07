@@ -1,9 +1,9 @@
 #' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Timeseries Plot for Monitoring Data
-#' @param ws_monitor data list of class \code{ws_monitor}
-#' @param AQIStyle AQI styling, one of "1_3", "8", or "24"
+#' @title Create a Timeseries Plot of ws_monitor Object PM2.5 Data
+#' @param ws_monitor ws_monitor object
+#' @param AQIStyle AQI styling, one of \code{"1_3|8|24"}
 #' @param useGMT If TRUE, \code{monitor_timeseriesPlot} will display time as
 #' GMT. Otherwise, it will attempt to use local time, provided all monitors
 #' are in the same timezone. There will be an error if \code{useGMT} is FALSE but
@@ -12,16 +12,22 @@
 #' This is because we only allow shading for multiple monitors if they are in
 #' the same timezone; in this case, they have approximately the same sunrise and
 #' sunset times.
-#' @param add A logical whether you want to add the plot on top of the other timeseries plot
+#' @param add A logical specifying whether you want to add the plot on top of an existing time series plot
 #' @param ... Any additional graphical parameters that can be passed in to the function
-#' @description Plots a time series with colors representing the relevant AQI 
-#' values as determined by AQIStyle.
+#' @description Creates a time series plot of PM2.5 data from a ws_monitor object (see note below). Optional arguments
+#' color code by AQI index, add shading to indicate nighttime, and adjust the time display (GMT vs. local).
+#' @note Remember that a ws_monitor object can contain data from more than one monitor, and thus, this function may produce
+#' a time series of data from multiple monitors. To plot a time series of an individual monitor's data, use the monitor_subset
+#' function (see example below).
 #' @examples
 #' \dontrun{ 
 #' airnow <- airnow_load(20150801, 20150831)
 #' Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
 #' monitor_timeseriesPlot(Roseburg)
 #' }
+
+#TODO: Looks like the first two AQI styles aren't working...AQI doesn't appear to have 1_3 or 8 style configured.
+#TODO: 
 
 monitor_timeseriesPlot <- function(ws_monitor, AQIStyle='', useGMT=FALSE, shadedNight=FALSE, add=FALSE,
                                    ...) {

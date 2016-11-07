@@ -1,16 +1,16 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Subset Monitoring 'data' Dataframe
-#' @param data 'data' dataframe from a \code{ws_monitor} data list
-#' @param tlim optional time range with lo and hi time values (POSIXct)
-#' @param vlim optional data range with lo and hi data values
+#' @title Subset ws_monitor Object 'data' Dataframe
+#' @param data ws_monitor object 'data' dataframe
+#' @param tlim optional vector with start and end times (POSIXct)
+#' @param vlim optional vector with low and high data values to include
 #' @param monitorIDs optional vector of monitorIDs
 #' @param dropMonitors flag specifying whether to remove columns -- defaults to \code{FALSE}
-#' @description The incoming 'data' dataframe is filtered to remove any monitors that
+#' @description Subsets a ws_monitor object's 'data' dataframe by removing any monitors that
 #'     lie outisde the specified range of time and values and that are not mentioned
 #'     in the list of monitorIDs.
-#'     
-#' If any parameter is not specified, that parameter will not be used in the filtering
+#' @description If any parameter is not specified, that parameter will not be used in the subsetting.
+#' @description Intended for use by the monitor_subset function.
 #' @details By default, filtering by tlim or vlim will always return a dataframe with the
 #'     same number of columns as the incoming dataframe. If \code{dropMonitors=TRUE}, columns
 #'     will be removed if there are not valid data for a specific monitor after subsetting.
@@ -19,7 +19,7 @@
 #'     
 #'      \code{x > vlim[1] & x <= vlim[2]}
 #'       
-#' @return monitoring 'data' dataframe or \code{NULL} if filtering removes all monitors
+#' @return ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors
 
 monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, dropMonitors=FALSE) {
   

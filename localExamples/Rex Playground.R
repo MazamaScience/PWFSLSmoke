@@ -20,4 +20,4 @@ plot(rawList$Plain$COncRT, col = "blue")
 points(rawList$Plain$ConcHr)
 
 plot(rawList$Plain[7:12])
-
+names(rawList$Plain)

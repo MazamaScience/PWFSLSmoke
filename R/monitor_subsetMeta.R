@@ -1,19 +1,19 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Subset ws_monitoring Object 'meta' Dataframe
-#' @param meta 'meta' dataframe from a \code{ws_monitor} object
-#' @param xlim optional longitude lim with lo and hi longitude values
-#' @param ylim optional latitude lim with lo and hi latitude values
+#' @title Subset ws_monitor Object 'meta' Dataframe
+#' @param meta ws_monitor object 'meta' dataframe
+#' @param xlim optional vector with low and high longitude values
+#' @param ylim optional vector with low and high latitude values
 #' @param stateCodes optional vector of stateCodes
 #' @param monitorIDs optional vector of monitorIDs
-#' @description The incoming 'meta' dataframe is filtered to remove any monitors that
-#'     lie outisde the specified range of longitudes and latitudes and that are not mentioned
-#'     in the list of monitorIDs.
-#'     
-#' If any parameter is not specified, that parameter will not be used in the filtering 
+#' @description Subsets a ws_monitor object's 'meta' dataframe by removing any monitors that
+#'     lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
+#'     latitudes and/or states) and that are not mentioned in the list of monitorIDs.
+#' @description If any parameter is not specified, that parameter will not be used in the subsetting.
+#' @description Intended for use by the monitor_subset function.
 #' @details Longitudes must be specified in the domain [-180,180].
 #' 
-#' @return monitoring 'meta' dataframe or \code{NULL} if filtering removes all monitors
+#' @return ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors
 
 monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, monitorIDs=NULL) {
   
