@@ -92,7 +92,10 @@ if ( !file.exists('localData/airsis_monitorList.RData') ) {
   airsis_monitorList[['Nile']] <- airsis_createMonitorObject('USFS', '1049', start, end)          # Naches-Washington 410
   airsis_monitorList[['KettleFalls']] <- airsis_createMonitorObject('USFS', '1050', start, end)   # Kettle Falls-West 11th Avenue
   
-  save(airsis_monitorList, file='localData/airsis_monitorList.RData')
+  # Combine airsis_monitorList into a single ws_monitor object
+  airsis_monitors <- monitor_combine(airsis_monitorList)
+  
+  save(airsis_monitors, file='localData/airsis_monitors.RData')
   
 }
 
@@ -246,7 +249,10 @@ if ( !file.exists('localData/bluesky_eventsList.RData') ) {
     
   }
   
+  # Now combine all event-days into a single dataframe
+  bluesky_events <- dplyr::bind_rows(bluesky_eventsList)
+  
   # Save output as CSV to share with other folks
-  save(bluesky_eventsList, file="localData/bluesky_eventsList.RData")
+  save(bluesky_events, file="localData/bluesky_events.RData")
   
 } 

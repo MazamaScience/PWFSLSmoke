@@ -18,7 +18,7 @@
 # for a named monitor with markers for nearby fires.
 
 # Load and clean up all required data with:
-###source('localDNR/DNR_ingestData.R')
+#   source('localDNR/DNR_ingestData.R')
 
 DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
                                fireDistance=25,
@@ -35,12 +35,10 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   # ----- Style ---------------------------------------------------------------
   
-  oldPar <- par()
-  
   col_aqi <- adjustcolor(AQI$colors[2:6], 0.4)
   col_1 <- adjustcolor('black', 0.5)
   col_3 <- adjustcolor('black', 0.5)
-  col_24 <- adjustcolor('purple', 0.3)
+  col_24 <- adjustcolor('purple', 0.5)
   col_daily <- adjustcolor('purple', 0.5)
   
   col_nonPilotBurns <- 'orange'
@@ -207,9 +205,5 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
          c("3-hr average (centered)","24-hr average (lagged)"),
          col=c(col_3, col_24),
          lwd=c(lwd_3, lwd_24))
-  
-  
-  
-  par(oldPar)
   
 }

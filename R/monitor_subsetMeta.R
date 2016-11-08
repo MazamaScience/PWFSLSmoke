@@ -42,6 +42,8 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, moni
   }
   
   if (!is.null(stateCodes)) {
+    # Guarantee upper case statecodes
+    stateCodes <- stringr::str_to_upper(stateCodes)
     if ( 'stateCode' %in% names(meta) ) {
       meta <- dplyr::filter(meta, meta$stateCode %in% stateCodes)
     } else {

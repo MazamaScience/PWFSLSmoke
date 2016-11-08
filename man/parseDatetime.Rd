@@ -8,6 +8,8 @@ parseDatetime(datetime, timezone = "UTC")
 }
 \arguments{
 \item{datetime}{character or integer datetimes in YYYYMMDD[HHMMSS] format}
+
+\item{timezone}{Olson timezone at the location of interest}
 }
 \value{
 POSIXct datetimes.
