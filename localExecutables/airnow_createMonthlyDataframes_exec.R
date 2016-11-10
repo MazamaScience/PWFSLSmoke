@@ -20,7 +20,8 @@ library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
-suppressPackageStartupMessages( library(PWFSLSmoke) )
+###suppressPackageStartupMessages( library(PWFSLSmoke) )
+library(PWFSLSmoke)
 suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 ################################################################################

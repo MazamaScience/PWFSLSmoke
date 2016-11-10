@@ -4,7 +4,7 @@
 \alias{epa_createMetaDataframe}
 \title{Create Sites Metadata Dataframe}
 \usage{
-epa_createMetaDataframe(df, verbose)
+epa_createMetaDataframe(df)
 }
 \arguments{
 \item{df}{an EPA dataframe after metadata enhancement}

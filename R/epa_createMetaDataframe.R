@@ -21,9 +21,9 @@
 #' }
 #' @return A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
 
-epa_createMetaDataframe <- function(df, verbose){
+epa_createMetaDataframe <- function(df){
   
-  if (verbose) cat(paste0('   Creating meta dataframe ...\n'))
+  logger.debug(paste0('   Creating meta dataframe ...\n'))
   
   # The metadata file will strictly involve the data that doesn't involve the parameterNames.
   
@@ -42,14 +42,24 @@ epa_createMetaDataframe <- function(df, verbose){
   meta$latitude <- meta$Latitude
   meta$longitude <- meta$Longitude
   
-  logger.debug("Using addGoogleMetaData to get elevation, siteName, and countyName.")
-  meta <- addGoogleMetadata(meta) 
-  logger.debug("Finished appending elevation, siteName and countyName to the dataframe.")
+  meta1 <- meta[1:floor(nrow(meta)/2),]
+  meta2 <- meta[ceiling(nrow(meta)/2):nrow(meta),]
+  
+  logger.debug("Cannot pass all locations to google at once, will split 'meta' into two halves")
+  
+  logger.debug("Using addGoogleMetaData to get elevation, siteName, and countyName for the first half of 'meta'.")
+  meta1 <- addGoogleMetadata(meta1) 
+  logger.debug("Finished appending elevation, siteName and countyName to the first half of 'meta'.")
+  
+  logger.debug("Using addGoogleMetaData to get elevation, siteName, and countyName for the second half of 'meta'.")
+  meta2 <- addGoogleMetadata(meta2) 
+  logger.debug("Finished appending elevation, siteName and countyName to the second half of 'meta'.")
+  
+  meta <- rbind(meta1, meta2)
   
   logger.debug("Using addMazamaMetaData to get timezone, countryCode and stateCode.")
   meta <- addMazamaMetadata(meta, countryCodes = 'US')
   logger.debug("Finished appending timezone, countryCode and stateCode columns to the dataframe")
-  meta$countyName <- NULL
 
   # Add timezones only if the MazamaSpatialUtils package exists. This way we can compile and load this
   # package even if the MazamaSpatialUtils package is not present.
@@ -57,7 +67,7 @@ epa_createMetaDataframe <- function(df, verbose){
   # if ( requireNamespace('MazamaSpatialUtils', quietly = TRUE) ) {
   #   
   #   dummy <- getSpatialDataDir()
-  #   if (verbose) cat(paste0('   Determining timezones and stateCodes...\n')) 
+  #   logger.debug(paste0('   Determining timezones and stateCodes...\n')) 
   #   
   #   meta$timezone <- MazamaSpatialUtils::getTimezone(meta$longitude, meta$latitude, useBuffering=TRUE)
   #   

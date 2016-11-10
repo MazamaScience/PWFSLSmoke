@@ -35,7 +35,7 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 createLatestDataDataframes <- function(opt) {
   
   # Download, separate and reshape the latest data for all parameters
-  dfList <- airnow_createLatestDataDataframes(user=opt$user, pass=opt$pass)
+  dfList <- airnow_createLatestDataDataframe(user=opt$user, pass=opt$pass)
   
   # Assign dataframes to their parameter name and merge them with any previous version
   for (parameter in names(dfList)) {
@@ -132,7 +132,7 @@ createLatestDataDataframes <- function(opt) {
 createMetaDataframes <- function(opt) {
   
   # Download, separate and reshape data for all parameters
-  dfList <- airnow_createMetaDataframes(user=opt$user, pass=opt$pass)
+  dfList <- airnow_createMetaDataframe(user=opt$user, pass=opt$pass)
   
   # Assign dataframes to their parameter name and save them
   for (parameter in names(dfList)) {

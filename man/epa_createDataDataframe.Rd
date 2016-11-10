@@ -4,7 +4,7 @@
 \alias{epa_createDataDataframe}
 \title{Create Data Dataframe}
 \usage{
-epa_createDataDataframe(df, verbose)
+epa_createDataDataframe(df)
 }
 \arguments{
 \item{df}{an EPA dataframe after metadata enhancement}

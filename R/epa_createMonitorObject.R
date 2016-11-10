@@ -5,7 +5,6 @@
 #' @param parameterName name of parameterName.
 #' @param parameterCode specific parameter code (e.g. PM2.5 could be 88101 or 88502)
 #' @param year year
-#' @param verbose logical flag to generate verbose output
 #' @param baseUrl base URL for archived hourly data
 #' @description Convert EPA data into a ws_monitor object, ready for use with all monitor_~ functions.
 #' @note Before running this function you must first enable spatial data capabilities as in the example.
@@ -19,12 +18,18 @@
 #' library(MazamaSpatialUtils)
 #' setSpatialDataDir('~/Data/Spatial')
 #' loadSpatialData('NaturalEarthAdm1') # stateCodes dataset
-#' file <- epa_createMonitorObject("PM2.5", 88101, 2015, verbose=TRUE)
+#' file <- epa_createMonitorObject("PM2.5", 88101, 2015)
 #' mon <- get(load(file))
 #' }
 
+# if (false){
+#   parameterName="PM2.5"
+#   parameterCode=88101
+#   year=NULL
+#   baseUrl='http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/'
+# }
+
 epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, year=NULL,
-                                    verbose=TRUE,
                                     baseUrl='http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/') {
   
   dataSource <- 'EPA'
@@ -46,18 +51,18 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   zipFile <- paste0(getSmokeDataDir(),'/',fileBase,".zip")
   csvFile <- paste0(getSmokeDataDir(),'/',fileBase,".csv")
   
-  utils::download.file(url,zipFile,quiet=!verbose)
+  utils::download.file(url,zipFile)
   
-  if (verbose) cat(paste0('   Uncompressing ',fileBase,'.zip ...\n'))
+  logger.debug(paste0('   Uncompressing ',fileBase,'.zip ...\n'))
   utils::unzip(zipFile,exdir=getSmokeDataDir())
-  if (verbose) cat(paste0('   Finished uncompressing\n'))
+  logger.debug(paste0('   Finished uncompressing\n'))
   
   
   # Here are the column names from an EPA hourly dataset:
   
   #   [1] "State Code"          "County Code"         "Site Num"            "Parameter Code"      "POC"                
   #   [6] "Latitude"            "Longitude"           "Datum"               "Parameter Name"      "Date Local"         
-  #   [11] "Time Local"          "Date GMT"            "Time GMT"            "Sample Measurement"  "Units of Measure"   
+   #   [11] "Time Local"          "Date GMT"            "Time GMT"            "Sample Measurement"  "Units of Measure"   
   #   [16] "MDL"                 "Uncertainty"         "Qualifier"           "Method Type"         "Method Code"        
   #   [21] "Method Name"         "State Name"          "County Name"         "Date of Last Change"
   
@@ -65,9 +70,9 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   col_types <- paste0("ccccc","ddccc","cccdc","ddccc","cccc")
   
   # Read in the data
-  if (verbose) cat(paste0('Reading in ',csvFile,'\n'))
-  df <- readr::read_csv(csvFile, col_types=col_types, progress=verbose)
-  if (verbose) cat(paste0('Finished reading in ',csvFile,'\n'))
+  logger.debug(paste0('Reading in ',csvFile,'\n'))
+  df <- readr::read_csv(csvFile, col_types=col_types)
+  logger.debug(paste0('Finished reading in ',csvFile,'\n'))
   
   # NOTE:  Unique MonitorID values are described at: http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/FileFormats.html#_format_3
   # NOTE:  
@@ -108,10 +113,10 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   }
   
   # Create 'meta' dataframe
-  meta <- epa_createMetaDataframe(df, verbose)
+  meta <- epa_createMetaDataframe(df)
   
   #Create 'data' dataframe
-  data <- epa_createDataDataframe(df, verbose)
+  data <- epa_createDataDataframe(df)
   
   # Create the 'ws_monitor' data list
   ws_monitor <- list(meta=meta,
@@ -125,7 +130,7 @@ epa_createMonitorObject <- function(parameterName="PM2.5", parameterCode=88101, 
   fileName <- paste0(getSmokeDataDir(), '/', dfName, '.RData')
   save(list=dfName, file=fileName)
   
-  if (verbose) cat(paste0('   Finished creating ws_monitor object\n'))
+  logger.debug(paste0('   Finished creating ws_monitor object\n'))
   
   # Cleanup
   file.remove(zipFile, csvFile)

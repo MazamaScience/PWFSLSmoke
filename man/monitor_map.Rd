@@ -46,8 +46,9 @@ of quantiles to determine a set of breaks appropriate for the number of colors.
 \dontrun{
 airnow <- airnow_load(20150901, 20150930)
 nw <- monitor_subset(airnow, stateCodes=c('WA','OR'))
-airnow_conus_daily <- monitor_dailyStatistic(airnow_conus, FUN=mean)
-monitor_map(airnow_conus_daily)
+nw_daily <- monitor_dailyStatistic(nw, FUN=mean)
+map('county',c('WA','OR'))
+monitor_map(nw_daily, add=TRUE)
 title('Max Daily PM2.5 Levels in September, 2015')
 }
 }
