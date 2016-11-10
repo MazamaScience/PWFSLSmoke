@@ -30,18 +30,18 @@
 #' @seealso \code{\link{addClustering}}
 
 airsis_createRawDataframe <- function(provider='USFS', unitID=NULL,
-                                       startdate=20020101,
-                                       enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                       clusterDiameter=1000,
-                                       baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-                                       saveFile=NULL) {
-
+                                      startdate=20020101,
+                                      enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                                      clusterDiameter=1000,
+                                      baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
+                                      saveFile=NULL) {
+  
   # Sanity checks
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")
     stop(paste0("Required parameter 'unitID' is missing."))
   }
-
+  
   # Read in AIRSIS .csv data
   logger.info('Downloading data...')
   fileString <- airsis_downloadData(provider, unitID=unitID, startdate, enddate, baseUrl)
