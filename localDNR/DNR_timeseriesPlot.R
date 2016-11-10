@@ -41,7 +41,7 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   col_1 <- adjustcolor('black', 0.5)
   col_3 <- adjustcolor('black', 0.5)
   col_24 <- adjustcolor('purple', 0.3)
-  col_daily <- adjustcolor('purple', 0.5)
+  col_daily <- adjustcolor('black', 1.0)
   
   col_nonPilotBurns <- 'orange'
   col_pilotBurns <- 'red'
@@ -203,13 +203,24 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   # Annotations
   title(title)
-  legend('topleft',
-         c("3-hr average (centered)","24-hr average (lagged)"),
-         col=c(col_3, col_24),
-         lwd=c(lwd_3, lwd_24))
+#   legend('topleft',
+#          c("3-hr average (centered)",
+#            "24-hr average (lagged)"),
+#          col=c(col_3, col_24),
+#          lwd=c(lwd_3, lwd_24))
   
   
   
   par(oldPar)
   
 }
+
+
+# 1) timeseris plot should only show hourly points above ~20,
+#    prescribed burns, regulatory 24-hr and satellite detects
+#    also need tons accomplished scale
+# 2) terrain map over 1-3 days focused on a monitor and
+#    nearby prescribed burns and wildfires
+# 3) csv dumps of all data used
+
+

@@ -13,12 +13,17 @@
 #' 
 #' AQI breaks were obtained from \url{http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf}
 #' 
-#' AQI colors were copied from \url{http://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/}
+#' AQI colors are defined in \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-dec2013.pdf}
 #' @note
 #' The low end of each break category is used as the breakpoint.
 
 AQI <- list(breaks_24=c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000),
-            colors=c("#009966","#FFDE33","#FF9933","#CC0033","#660099","#730023"),
+            colors=c(grDevices::rgb(0,228/255,0),
+                     grDevices::rgb(255/255,255/255,0),
+                     grDevices::rgb(255/255,126/255,0),
+                     grDevices::rgb(255/255,0,0),
+                     grDevices::rgb(143/255,63/255,151/255),
+                     grDevices::rgb(126/255,0,35/255)),
             names=c('good','moderate','USG','unhealthy','very unhealthy','extreme'))
 
 # ----- State codes in the lower 48 ---------------------------------------------------

@@ -4,6 +4,9 @@
 ## andpermanent monitors in WA                                                           
 ###############################################################
 
+# TODO:  monitor colors should be maximum daily average
+# TODO:  monitor numeric value should be maximum hourly value
+
 library(magrittr)
 library(maps)
 library(PWFSLSmoke)
@@ -14,18 +17,22 @@ library(classInt)
 
 # Variable definition for debugging
 if ( FALSE) {
+  
   startdate = 20160915
-  timeWindow = 48
+  timeWindow = 72
   FUN = max
+  SMAsizeBy='accomplishedFS'
   show_airsis = TRUE
   show_airnow = TRUE
   show_SMA = TRUE
   show_bluesky = TRUE
-  SMAsizeBy='accomplished'
+  show_monitorLegend = TRUE
+  show_burnLegend = TRUE
+  show_title = TRUE
   
 }
 
-DNR_burn_map <- function(startdate = 20160915, timeWindow = 48, FUN = max, SMAsizeBy='accomplished',
+DNR_burnMap <- function(startdate = 20160915, timeWindow = 48, FUN = max, SMAsizeBy='accomplishedFS',
                          show_airsis = TRUE, show_airnow = TRUE, show_SMA = TRUE, show_bluesky = TRUE,
                          show_monitorLegend = TRUE, show_burnLegend = TRUE, show_title = TRUE) {
   
@@ -74,6 +81,18 @@ DNR_burn_map <- function(startdate = 20160915, timeWindow = 48, FUN = max, SMAsi
   load("localData/airsis_monitorList.RData")  #mobile monitors
   load("localData/airnow_monitors.RData")  #permanent monitors     
   load("localData/bluesky_eventsList.RData")  #satelite detectors
+  
+  #####
+  if (FALSE) {
+    airsis_monitors <- monitor_combine(airsis_monitorList)
+    airsis_dailyMean <- monitor_dailyStatistic(airsis_monitors, FUN=mean, dayStart="midnight")
+    enddate <- strftime(parseDatetime(startdate) + lubridate::ddays(3), "%Y%m%d")
+    a <- monitor_subset(airsis_monitors, tlim=c(startdate,enddate))
+    amax <- apply(a$data[,-1], 2, max)
+    b <- monitor_subset(airsis_dailyMean, tlim=c(startdate,enddate))
+    bmax <- apply(b$data[,-1], 2, max)
+  }
+  #####
   
   startDate <- strptime(as.character(startdate),'%Y%m%d', tz='UTC') + 7*60*60
   endDate <- startDate + timeWindow*60*60
