@@ -16,19 +16,6 @@
 
 # This DNR_ingestData.R script ingests and cleans up previously downloaded data.
 
-library(PWFSLSmoke)
-
-# Set up MazamaSpatialUtils for metadata creation
-library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial')
-loadSpatialData('NaturalEarthAdm1')
-
-# Set up logging and log to the console all DEBUG and higher logging statements
-logger.setup()
-logger.setLevel(INFO)
-
-start <- 20160901
-end <- 20161015
 
 # ----- Create a dictionary of monitor names and IDs --------------------------
 
@@ -53,27 +40,19 @@ monitorDict <- list(
   Omak="530470013",
   Wenatchee="530070011",
   Chelan="530070007"
-  )
+)
 
 # ----- Load data created by DNR_downloadData.R -------------------------------
 
-load('localData/airnow_monitors.RData')
 load('localData/airsis_rawList.RData')
-load('localData/airsis_monitorList.RData')
-load('localData/bluesky_eventsList.RData')
+load('localData/airsis_monitors.RData')
+load('localData/airnow_monitors.RData')
+load('localData/bluesky_events.RData')
 
 # Assign negative PM2.5 to zero for airnow_monitors, airsis_monitorList
 airnow_monitors <- monitor_replaceData(airnow_monitors, data < 0, 0)
+airsis_monitors <- monitor_replaceData(airsis_monitors, data < 0, 0)
 
-for (i in 1:length(airsis_monitorList)) {
-  airsis_monitorList[[i]] <- monitor_replaceData(airsis_monitorList[[i]], data < 0, 0)
-}
-
-# Combine airsis_monitorList and bluesky_eventsList for convenience
-airsis_monitors <- monitor_combine(airsis_monitorList)
-
-bluesky_events <- dplyr::bind_rows(bluesky_eventsList)
-# TODO:  Fix this in DNR_downloadData.R
 
 # ----- Load hand-edited Excel Spreadsheet from Janice Peterson ---------------
 
@@ -96,8 +75,8 @@ col_types <- c('text','text','text',
                'text')
 
 filepath=paste0(getwd(),'/localData/DNR\ SM\ eastside\ accomplishments\ fall\ 2016.xlsx')
-janice_SMA <- readxl::read_excel(filepath, na="NA",
-                                 col_types=col_types)
+janice_SMA <- suppressWarnings( readxl::read_excel(filepath, na="NA",
+                                                   col_types=col_types) )
 
 # remove rows with all missing
 allMissingMask <- apply( janice_SMA, 1, function(x) { all(is.na(x)) } )
@@ -138,14 +117,11 @@ rm(allMissingMask)
 rm(approval)
 rm(col_types)
 rm(datestamp)
-rm(end)
 rm(filepath)
 rm(h)
-rm(i)
 rm(ignition_timestamp)
 rm(m)
 rm(pilot)
-rm(start)
 rm(timestamp)
 
 

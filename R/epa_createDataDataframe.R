@@ -14,8 +14,8 @@
 #' 
 #' @return A \code{'data'} dataframe for use in a \code{ws_monitor} object.
 
-epa_createDataDataframe <- function(df, verbose){
-  if (verbose) cat(paste0('   Creating data dataframe ...\n'))
+epa_createDataDataframe <- function(df){
+  logger.debug(paste0('   Creating data dataframe ...\n'))
   
   subDF <- df[,c("monitorID","datetime","Sample Measurement")]
   # The data file will refer to any of the original instrument's readings, the bulk of the information.

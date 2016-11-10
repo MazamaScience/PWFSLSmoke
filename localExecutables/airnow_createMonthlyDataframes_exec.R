@@ -20,7 +20,8 @@ library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
-suppressPackageStartupMessages( library(PWFSLSmoke) )
+###suppressPackageStartupMessages( library(PWFSLSmoke) )
+library(PWFSLSmoke)
 suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 ################################################################################
@@ -154,7 +155,6 @@ errorLog <- file.path(opt$logDir, paste0('airnow_createMonthlyDataframes_',opt$y
 
 # Set up logging
 logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
-print("after logger.setup")
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
