@@ -140,6 +140,24 @@ airsis_EBAMQualityControl <- function(df,
   }
   
   
+  # ----- Duplicate Hours -----------------------------------------------------
+  
+  # For hours with multiple records, discard all but the one with the latest processing date/time
+  # NOTE: Current setup for this section assumes that the last entry will be the latest one.  May 
+  # NOTE: want to build in functionality to ensure that the last is picked if more than one exists
+  # NOTE: (for example, if the data is not in order by timestamp for whatever reason)
+  
+  dupHrMask <- duplicated(df$datetime,fromLast = TRUE)
+  dupHrCount <- sum(dupHrMask)
+  uniqueHrMask <- !dupHrMask
+  
+  if (dupHrCount > 0) {
+    logger.info('Discarding %s duplicate time entries', dupHrCount)
+    logger.debug('Dupliace Hours (may be >1 per timestamp):  %s', paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
+  }
+
+  df <- df[uniqueHrMask,]
+    
   # ----- More QC -------------------------------------------------------------
   
   # TODO:  Other QC?
