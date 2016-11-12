@@ -144,7 +144,7 @@ airsis_EBAMQualityControl <- function(df,
   
   # For hours with multiple records, discard all but the one with the latest processing date/time
   # NOTE: Current setup for this section assumes that the last entry will be the latest one.  May 
-  # NOTE: want to build in functionality to ensure that the last is picked if more than one exists
+  # NOTE: want to build in functionality to ensure that the latest is picked if more than one exists
   # NOTE: (for example, if the data is not in order by timestamp for whatever reason)
   
   dupHrMask <- duplicated(df$datetime,fromLast = TRUE)
