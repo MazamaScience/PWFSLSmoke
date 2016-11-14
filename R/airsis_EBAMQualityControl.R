@@ -77,8 +77,15 @@ airsis_EBAMQualityControl <- function(df,
   # ----- Time ----------------------------------------------------------------
   
   # Add a POSIXct datetime
-  df$datetime <- lubridate::mdy_hms(df$Date.Time.GMT)
+  df$datetime <- lubridate::floor_date(mdy_hms(df$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
   
+  # NOTE: The time above truncates the timestamp to the top of an hour, and then subtracts one hour,
+  # NOTE: since the measurement that comes in at a few minutes past the hour is actually representative
+  # NOTE: of the data over the previous hour (e.g. reading received at 12:04 is actually the average of 
+  # NOTE: the data during Hour 11). This allows for a simpler understanding of the averages, since an
+  # NOTE: hour's average will be representative of the data within that hour (this is similar to
+  # NOTE: how an average over a year, such as 2016, is referred to as 2016's value, not 2017's, even
+  # NOTE: though the average wasn't available until the beginning of 2017).
   
   # ----- Type ----------------------------------------------------------------
   

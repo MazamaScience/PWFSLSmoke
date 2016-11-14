@@ -86,11 +86,19 @@ airsis_ESAMQualityControl <- function(df,
   
   # NOTE: It appears the ESAM "TimeStamp" data drifts throughout the day, with >60 minutes between timestamps during most
   # NOTE: hours in the day, and then a daily re-synch. For now we are assuming this is a communication issue rather than
-  # NOTE: an issue in the actual sampling period (for example, we are assuming that a record that is received at 4:44pm is 
-  # NOTE: actually a record for 4:00pm). As such, we are simply chopping the mins/secs when assigning the datetime column.
+  # NOTE: an issue in the actual sampling period. For example, we are assuming that a record that is received at 4:44pm is 
+  # NOTE: actually a record for 4:00pm (which is really representative of data during the 3:00 hour -- see NOTE below).
   
   # Add a POSIXct datetime
-  df$datetime <- lubridate::floor_date(lubridate::mdy_hms(df$TimeStamp), unit="hour")
+  df$datetime <- lubridate::floor_date(lubridate::mdy_hms(df$TimeStamp), unit="hour") - lubridate::dhours(1)
+  
+  # NOTE: The time above truncates the timestamp to the top of an hour, and then subtracts one hour,
+  # NOTE: since the measurement that comes in at a few minutes past the hour is actually representative
+  # NOTE: of the data over the previous hour (e.g. reading received at 12:04 is actually the average of 
+  # NOTE: the data during Hour 11). This allows for a simpler understanding of the averages, since an
+  # NOTE: hour's average will be representative of the data within that hour (this is similar to
+  # NOTE: how an average over a year, such as 2016, is referred to as 2016's value, not 2017's, even
+  # NOTE: though the average wasn't available until the beginning of 2017).
   
   # Leland Tarnay QC -----------------------------------------------------------
   

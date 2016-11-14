@@ -68,7 +68,7 @@ The EBAM and ESAM raw data includes various date/time fields. Below is a summary
 * `TimeStamp` - date/time the data was received by AIRSIS
 * `PDate` - date/time the data was processed by AIRSIS
 
-For the EBAM monitors, the `Date.Time.GMT` data is always at the top of an hour, and we more or less take it at face value to represent the time associated with the data (in actuality we use the floor of the `TimeStamp` data, though maybe we should revisit the appropriateness of this decision to protect against assigning data to the wrong time in case the data ever comes in more than an hour after the time for which it is representative). However, this nice clean `Date.Time.GMT` field is not provided for the ESAM monitors. For the ESAM monitors, we use the floor of the `TimeStamp` data to assign a clean `datetime` field.
+For the EBAM monitors, the `Date.Time.GMT` data is always at the top of an hour, and we more or less take it at face value to represent the time associated with the data (in actuality we use the floor of the `TimeStamp` data minus an hour, though maybe we should revisit the appropriateness of this decision to protect against assigning data to the wrong time in case the data ever comes in more than an hour after the time for which it is representative). However, this nice clean `Date.Time.GMT` field is not provided for the ESAM monitors. For the ESAM monitors, we use the floor of the `TimeStamp` data, minus one hour, to assign a clean `datetime` field (see the Hourly Time Stamp Standard section below for a discussion on why we subtract one hour from both monitor types' time stamps).
 
 While the EBAM monitors' `TimeStamp` data is typically just a few minutes after the top of an hour, this is not the case with the ESAM monitors. The ESAM monitors' `TimeStamp` data is observed to drift by a few minutes more than 60 between readings (60 is the inteval we would excpet between hourly readings), except for once a day when the readings appear to "reset" to being captured just a few minutes past the top of the hour. For example, the following plot shows the number of minutes __*after*__ the top of the hour of each `TimeStamp` row for USFS monitor ID 1049 (ESAM) in September 2016.
 
@@ -79,7 +79,17 @@ plot(tsESAM,minsESAM,xlab="TimeStamp",ylab="TimeStamp Minute",ylim=c(0,25))
 title("Minutes Past the Top of the Hour\nUSFS Monitor ID 1050 TimeStamp Data\nSeptember 2016")
 ```
 
-Similar patterns were observed on other ESAM monitors as well. In some cases, the time offset was observed to become quite large (up to 55 minutes) before resetting; for example, see USFS Monitor ID 1049 data in September 2016. But, importantly, it appears the data offset never gets so large as to carry over to the next full hour (though it might not hurt to periodically check for this occurrence). As such, we are able to simply take the floor of the `TimeStamp` data in order to assign the data to unique hours. This is the approach we have implemented in the `airsis_qualityControl` function to create a new `datetime` field in the QC'd dataframe.
+Similar patterns were observed on other ESAM monitors as well. In some cases, the time offset was observed to become quite large (up to 55 minutes) before resetting; for example, see USFS Monitor ID 1049 data in September 2016. But, importantly, it appears the data offset never gets so large as to carry over to the next full hour (though it might not hurt to periodically check for this occurrence). As such, we are able to simply take the floor of the `TimeStamp` data (minus one hour) in order to assign the data to unique hours. This is the approach we have implemented in the `airsis_EBAMQualityControl` and `airsis_ESAMQualityControl` functions to create a new `datetime` field in the QC'd dataframe.
+
+#### Hourly Time Stamp Standard
+
+For both monitor types' `datetime` field, we currently subtract one hour from the floor of the reported time stamp. For example, for a reading with a time stamp of 12:04, we assign a `datetime` of 11:00. This is because the data that came in at 12:04 is (presumably) an average of the data in Hour 11. This approach, while somewhat confusing at first glance when working with raw data, makes for better clarity and consistency in downstream applications. For example, to calculate a daily average, the user can simply filter on `datetime` data that has a certain day value, and the displayed data will be representative of the data for that day.
+
+If this approach is confusing, it might help to think about it from the perspective of years. Suppose you wanted to know the average temperature for a location over the year 2016. To find this value you would average the individual measurements for the location of interest from 1/1/16 - 12/31/16. Thus, it follows that you wouldn't be able to calculate the full year's average until the year was over; that is, the 2016 average wouldn't materialize until the beginning of 2017. But, it would be inappropriate to say that this average "belongs" to 2017. In fact, it is 2016's annual average temperature, since it consists of an average of all temperature data recorded during 2016. The same pattern can be applied to days (Tuesday's average doesn't materialize until Wednesday), and finally, to hours (Hour 11's average doesn't materialize until Hour 12).
+
+Please note that a different approach may be warranted for different configurations, such as if the readings are representative of an instantaneous measurement at the reported time stamp (e.g. temperature at 12:04), rather than averages (e.g. average temperature from 11:00-11:59). Over time we hope to build a more thorough understanding of the meaning of each data point and timestamp so we can more appropriately label the data for comparison against itself and other data sets.
+
+The aforementioned hourly time label standard is consistent with federal monitoring requirements (at least when working with averages).
 
 ### Data Type (EBAM Monitors Only)
 
@@ -87,7 +97,7 @@ The `airsis_EBAMQualityControl` function includes a check to ensure that the `Ty
 
 ### Missing Data and Value Checks
 
-The QC functions screen the data for missing values and check the existing values against acceptable limits. The following table summarizes the parameters that are checked, along with default limit thresholds. When calling the QC functions on their own, the user can specify alternate threshold values.
+The QC functions screen the data for missing values and check the existing values against acceptable limits. The following table summarizes the parameters that are checked, along with default limits. When calling the QC functions on their own, the user can specify alternate limit values.
 
 | Parameter                  | EBAM Name  | EBAM Limits      | ESAM Name     | ESAM Limits |
 |:-------------:|:-----------:|:-----------:|:-----------:|:-----------:|
@@ -99,7 +109,7 @@ The QC functions screen the data for missing values and check the existing value
 
 ### Duplicte Hours
 
-The last step in the AIRSIS QC functions is to go through the data and remove any duplicate records. Occasionally, the data will include more than one record for the same time period. In many cases this is observed as two records with the same `TimeStamp` times, but different `PDate` times, which implies that the data was reprocessed (in reality, the duplicate check is based on the values in the `datetime` field. In such cases, we assume the data was reprocessed for a reason and therefore we choose to retain the entry with the latest processing time (currently we simply retain the last record as the data always appears to be in order; could rigorize by actually adding logic to take the duplicate with the latest processing time). All prior rows with duplicate `TimeStamp` values are removed from the QC'd dataframe.
+The last step in the AIRSIS QC functions is to remove any records with duplicate time stamps. Occasionally, the data will include more than one record for the same time period. In many cases this is observed as two records with the same `Date.Time.GMT` (for EBAMS) / `TimeStamp` (for ESAMs) times, but different `PDate` times, which implies that the data was reprocessed (in reality, the duplicate check is based on the values in the `datetime` field). In such cases, we assume the data was reprocessed for a reason and therefore we choose to retain the entry with the latest processing time (currently we simply retain the last record as the data always appears to be in order; could rigorize with logic by incorporating processing time). All prior rows with duplicate `datetime` values are removed from the QC'd dataframe.
 
 ## Clustering
 
