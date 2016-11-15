@@ -6,7 +6,7 @@
 \usage{
 wrcc_downloadData(stationID = NULL, startdate = 20100101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
-  url = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl")
+  baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl")
 }
 \arguments{
 \item{stationID}{station identifier (will be upcased)}
@@ -15,20 +15,21 @@ wrcc_downloadData(stationID = NULL, startdate = 20100101,
 
 \item{enddate}{integer or character representing end date as YYYYMMDD (GMT)}
 
-\item{url}{base URL for data queries}
+\item{baseUrl}{base URL for data queries}
 }
 \value{
-Dataframe of WRCC monitor data.
+String containing WRCC output.
 }
 \description{
-Create an HTTPPOST request to the WRCC data service to request
-data from a particular station for the desired time period. Raw data are
-returned as both a dataframe and a character string. Character data are in 
-tab-separated-value format.
+Request data from a particular station for the desired time period.
+Data are returned as a single character string containing the WRCC output. 
+
+Monitor stationIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
 }
 \examples{
 \dontrun{
-df <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+fileString <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+df <- wrcc_parseData(fileString)
 }
 }
 \references{

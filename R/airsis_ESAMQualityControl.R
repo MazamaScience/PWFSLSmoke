@@ -155,7 +155,7 @@ airsis_ESAMQualityControl <- function(df,
   
   if (dupHrCount > 0) {
     logger.info('Discarding %s duplicate time entries', dupHrCount)
-    logger.debug('Dupliace Hours (may be >1 per timestamp):  %s', paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
+    logger.debug('Duplicate times being removed:  %s', paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
   }
 
   df <- df[uniqueHrMask,]
