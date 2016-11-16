@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.8.8
+Version: 0.8.9
 Title: Utilities for Working with PM2.5 Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -44,7 +44,7 @@ Imports:
 Suggests:
     knitr
 Description: Utilities for working with PM2.5 monitoring data available
-    from the US EPA, AirNow, AIRSIS, WRCC and others.
+    from the US EPA, AirNow, AIRSIS, WRCC, OpenAQ and others.
 License: GPL-3
 VignetteBuilder: knitr
 Repository: CRAN

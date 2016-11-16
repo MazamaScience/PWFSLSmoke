@@ -9,13 +9,10 @@
 #' 
 #' The type of monitor represented by this fileString is inferred from the column names
 #' using \code{wrcc_identifyMonitorType()} and appropriate column types are assigned.
-#' The character data are then read into a dataframe and augmented in the following ways:
+#' The character data are then processed, read into a dataframe and augmented in the following ways:
 #' \enumerate{
-#' \item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-#' propagated foward using a last-observation-carry-forward algorithm'}
-#' \item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-#' propagated backwords using a first-observation-carry-backward algorithm'}
-#' \item{GPS timestamp rows are removed'}
+#' \item{Spaces at the beginning and end of each line are moved.}
+#' \item{All header lines beginning with ':' are removed.}
 #' }
 #' @return Dataframe of WRCC raw monitor data.
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
@@ -43,7 +40,7 @@ wrcc_parseData <- function(fileString) {
     stop(paste0('No valid PM2.5 data'))
   }
   
-  # NOTE:  Here is what things look like:
+  # NOTE:  Here is an example header from WRCC ASCII output:
   # NOTE:  
   # NOTE:  [1] " Smoke #11 "                                                                                                                                                
   # NOTE:  [2] ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\t Unk \t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t     "                                
@@ -53,7 +50,7 @@ wrcc_parseData <- function(fileString) {
   # NOTE:  It appears that, after 1024 lines, the 3 header lines are repeated.
   # NOTE:  Sometimes (always?) an empty string appears in the last line.
   
-  # 1) Strip spaces from the beginning and end but retain "\t" (This is why we can't use stringr::str_trim)
+  # Strip spaces from the beginning and end but retain "\t" (This is why we can't use stringr::str_trim)
   lines <- stringr::str_replace(lines,'^ *','')
   lines <- stringr::str_replace(lines,' *$','')
   
@@ -63,12 +60,39 @@ wrcc_parseData <- function(fileString) {
   
   # Remove header lines beginning with ":", leaving only data
   goodLines <- !is.na(lines) & !stringr::str_detect(lines,'^:')
+  
+  # Read the data into a dataframe
   fakeFile <- paste0(lines[goodLines], collapse='\n')
-  
   df <- readr::read_tsv(fakeFile, col_names=columnNames, col_types=columnTypes)
+
+  # Add monitor name
+  df$monitorName <- monitorName
   
-  # TODO:  deail with missing_flags <- c(-99899,-9999,-998.9) # TODO
+  # Add monitor type (determined from the 'Type' column after reading in the data)
+  monitorTypeCode <- unique(df$Type)
+  # NOTE:  Drop all negative values to get rid of -9999 or other missing value flags.
+  # NOTE:  Conversion of -9999 to NA happens in the ~QualityControl scripts so that
+  # NOTE:  all raw data modifications can be found in one place.
+  monitorTypeCode <- monitorTypeCode[monitorTypeCode >= 0]
+  # Sanity check
+  if ( length(monitorTypeCode) > 1 ) {
+    logger.error('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", "))
+    stop(paste0('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", ")))
+  }
   
+  # 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
+  if ( monitorTypeCode == 0 ) {
+    df$monitorType <- 'EBAM'
+  } else if ( monitorTypeCode == 9 ) {
+    df$monitorType <- 'ESAM'
+  } else if ( monitorTypeCode == 1 ) {
+    logger.error('EBAM PM10 data parsing is not supported')
+    stop(paste0('EBAM PM10 data parsing is not supported'))
+  } else {
+    logger.error('Unsupported monitor type code: %d',monitorTypeCode)
+    stop(paste0('Unsupported monitor type code: %d',monitorTypeCode))
+  }
+
   return(df)
   
 }

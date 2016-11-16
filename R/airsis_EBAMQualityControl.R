@@ -1,7 +1,7 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Apply Quality Control to Raw AIRSIS EBAM Dataframe
-#' @param df single site dataframe created by airsis_downloadData()
+#' @param df single site dataframe created by airsis_parseData()
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values
 #' @param remove_Lon_zero flag to remove rows where Longitude == 0
@@ -48,7 +48,6 @@ airsis_EBAMQualityControl <- function(df,
   
   # Handle various missing value flags
   
-  
   # ----- Location ------------------------------------------------------------
   
   # Latitude and longitude must be in range
@@ -68,8 +67,8 @@ airsis_EBAMQualityControl <- function(df,
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {
     logger.info('Discarding %s rows with invalid location information', badRowCount)
-    logger.debug('Bad location Longitudes:  %s', paste0(sort(df$Longitude[badRows]), collapse=", "))
-    logger.debug('Bad location Latitudes:  %s', paste0(sort(df$Latitude[badRows]), collapse=", "))
+    badLocations <- paste('(',df$Longitude[badRows],',',df$Latitude[badRows],')',sep='')
+    logger.debug('Bad locations: %s', paste0(badLocations, collapse=", "))
   }
   
   df <- df[goodLonMask & goodLatMask,]
@@ -77,7 +76,7 @@ airsis_EBAMQualityControl <- function(df,
   # ----- Time ----------------------------------------------------------------
   
   # Add a POSIXct datetime
-  df$datetime <- lubridate::floor_date(mdy_hms(df$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
+  df$datetime <- lubridate::floor_date(lubridate::mdy_hms(df$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
   
   # NOTE: The time above truncates the timestamp to the top of an hour, and then subtracts one hour,
   # NOTE: since the measurement that comes in at a few minutes past the hour is actually representative

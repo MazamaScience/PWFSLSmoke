@@ -35,7 +35,7 @@ airsis_ESAMQualityControl <- function(df,
                                       valid_RHi = c(-Inf,55),
                                       valid_Conc = c(-Inf,984)) {
   
-  # TODO:  What about Alarm?, 
+  # TODO:  What about Alarm?
   
   #   > names(df)
   #    [1] "MasterTable_ID"        "Alias"                 "Latitude"              "Longitude"            
@@ -71,8 +71,8 @@ airsis_ESAMQualityControl <- function(df,
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {
     logger.info('Discarding %s rows with invalid location information', badRowCount)
-    logger.debug('Bad location Longitudes:  %s', paste0(sort(df$Longitude[badRows]), collapse=", "))
-    logger.debug('Bad location Latitudes:  %s', paste0(sort(df$Latitude[badRows]), collapse=", "))
+    badLocations <- paste('(',df$Longitude[badRows],',',df$Latitude[badRows],')',sep='')
+    logger.debug('Bad locations: %s', paste0(badLocations, collapse=", "))
   }
   
   df <- df[goodLonMask & goodLatMask,]

@@ -20,13 +20,10 @@ file using \code{readr::read_file()}.
 
 The type of monitor represented by this fileString is inferred from the column names
 using \code{wrcc_identifyMonitorType()} and appropriate column types are assigned.
-The character data are then read into a dataframe and augmented in the following ways:
+The character data are then processed, read into a dataframe and augmented in the following ways:
 \enumerate{
-\item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-propagated foward using a last-observation-carry-forward algorithm'}
-\item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-propagated backwords using a first-observation-carry-backward algorithm'}
-\item{GPS timestamp rows are removed'}
+\item{Spaces at the beginning and end of each line are moved.}
+\item{All header lines beginning with ':' are removed.}
 }
 }
 \examples{

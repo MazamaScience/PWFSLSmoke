@@ -4,20 +4,24 @@
 \alias{wrcc_createDataDataframe}
 \title{Create Data Dataframe}
 \usage{
-wrcc_createDataDataframe(df, meta, verbose = FALSE)
+wrcc_createDataDataframe(df, meta)
 }
 \arguments{
 \item{df}{single site WRCC dataframe created by wrcc_clustering()}
 
 \item{meta}{WRCC meta dataframe created by wrcc_createMetaDataframe()}
-
-\item{verbose}{logical flag to generate verbose output}
 }
 \value{
-ws_monitor object with a unique `monitorID` for each unique location
+A \code{'data'} dataframe for use in a \code{ws_monitor} object.
 }
 \description{
-Explain this function
+After quality control has been applied to an WRCC dataframe,
+we can extract the PM2.5 values and store them in a \code{'data'} dataframe
+organized as hour-by-deployment (aka hour-by-site).
+
+The first column of the returned dataframe is named \code{'datetime'} and
+contains a \code{POSIXct} time in UTC. Additional columns contain data
+for each separate deployment of a monitor.
 }
 \keyword{WRCC}
 

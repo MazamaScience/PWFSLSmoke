@@ -4,18 +4,30 @@
 \alias{wrcc_qualityControl}
 \title{Apply Quality Control to Raw WRCC Dataframe}
 \usage{
-wrcc_qualityControl(df, verbose = FALSE)
+wrcc_qualityControl(df, ...)
 }
 \arguments{
-\item{df}{single site dataframe created by wrcc_readData()}
+\item{df}{single site dataframe created by wrcc_downloadData()}
 
-\item{verbose}{logical flag to generate verbose output}
+\item{...}{additional parameters are passed to type-specific QC functions}
 }
 \value{
 Cleaned up dataframe of WRCC monitor data.
 }
 \description{
-Perform various QC measures on WRCC data.
+Various QC steps are taken to clean up the incoming raw dataframe including:
+
+\enumerate{
+\item{Convert numeric missing value flags to \code{NA}.}
+\item{Remove measurement records with values outside of valid ranges.}
+}
+
+See the individual \code{wrcc_~QualityControl()} functions for details.
+}
+\seealso{
+\code{\link{wrcc_EBAMQualityControl}}
+
+\code{\link{wrcc_ESAMQualityControl}}
 }
 \keyword{WRCC}
 
