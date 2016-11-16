@@ -53,7 +53,7 @@ if ( !file.exists('localData/airsis_rawList.RData') ) {
   airsis_rawList[['KennedMeadows']] <- airsis_createRawDataframe('APCD', '1013', start, end) # Manson-Totem Pole Road
   airsis_rawList[['Naches']] <- airsis_createRawDataframe('EPA', '1014', start, end)         # Naches-U.S. 12
   airsis_rawList[['Liberty']] <- airsis_createRawDataframe('USFS', '1031', start, end)       # Cle Elum-Liberty Road
-  ###airsis_rawList[['Usk']] <- airsis_createRawDataframe('USFS', '1032', start, end)        # NO DATA SURVIVES QC!
+  airsis_rawList[['Usk']] <- wrcc_createRawDataframe('smf1', start, end)                     # Cusick-Le Clerc Road North
   airsis_rawList[['Plain']] <- airsis_createRawDataframe('USFS', '1033', start, end)         # Leavenworth-Beaver Valley Road
   airsis_rawList[['Curlew']] <- airsis_createRawDataframe('USFS', '1034', start, end)        # Curlew-Customs Road
   airsis_rawList[['Nile']] <- airsis_createRawDataframe('USFS', '1049', start, end)          # Naches-Washington 410
@@ -74,7 +74,7 @@ if ( !file.exists('localData/airsis_monitorList.RData') ) {
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1012 -- EBAM
   #   http://apcd.airsis.com/vision/UnitHistory.aspx?uid=1013 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1031 -- EBAM
-  #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1032 -- EBAM
+  #XXXhttp://usfs.airsis.com/vision/UnitHistory.aspx?uid=1032 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1033 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1034 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1049 -- ESAM
@@ -86,11 +86,14 @@ if ( !file.exists('localData/airsis_monitorList.RData') ) {
   airsis_monitorList[['KennedMeadows']] <- airsis_createMonitorObject('APCD', '1013', start, end) # Manson-Totem Pole Road
   airsis_monitorList[['Naches']] <- airsis_createMonitorObject('EPA', '1014', start, end)         # Naches-U.S. 12
   airsis_monitorList[['Liberty']] <- airsis_createMonitorObject('USFS', '1031', start, end)       # Cle Elum-Liberty Road
-  ###airsis_monitorList[['Usk']] <- airsis_createMonitorObject('USFS', '1032', start, end)        # NO DATA SURVIVES QC!
+  airsis_monitorList[['Usk']] <- wrcc_createMonitorObject('smf1', start, end)                     # Cusick-Le Clerc Road North
   airsis_monitorList[['Plain']] <- airsis_createMonitorObject('USFS', '1033', start, end)         # Leavenworth-Beaver Valley Road
   airsis_monitorList[['Curlew']] <- airsis_createMonitorObject('USFS', '1034', start, end)        # Curlew-Customs Road
   airsis_monitorList[['Nile']] <- airsis_createMonitorObject('USFS', '1049', start, end)          # Naches-Washington 410
   airsis_monitorList[['KettleFalls']] <- airsis_createMonitorObject('USFS', '1050', start, end)   # Kettle Falls-West 11th Avenue
+  
+  # WRCC monitor 'smf1' had three deployments, the last of which was in Usk
+  airsis_monitorList[['Usk']] <- monitor_subset(airsis_monitorList[['Usk']], monitorIDs='FWS.Smoke..1__003')
   
   # Combine airsis_monitorList into a single ws_monitor object
   airsis_monitors <- monitor_combine(airsis_monitorList)
