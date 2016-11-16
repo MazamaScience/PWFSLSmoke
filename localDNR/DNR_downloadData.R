@@ -114,7 +114,7 @@ if ( !file.exists('localData/airnow_monitors.RData') ) {
                   '530070007', # Chelan-Woodin Ave
                   '530470009', # Twisp-Glover St
                   '530470010', # Winthrop-Chewuch Rd
-                  '530470013' # Omak-Colville Tribe
+                  '530470013'  # Omak-Colville Tribe
   )
   
   airnow_monitors <- monitor_subset(us, monitorIDs=monitorIDs)
