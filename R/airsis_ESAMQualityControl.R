@@ -35,7 +35,7 @@ airsis_ESAMQualityControl <- function(df,
                                       valid_RHi = c(-Inf,55),
                                       valid_Conc = c(-Inf,984)) {
   
-  # TODO:  What about Alarm?, 
+  # TODO:  What about Alarm?
   
   #   > names(df)
   #    [1] "MasterTable_ID"        "Alias"                 "Latitude"              "Longitude"            
@@ -71,8 +71,8 @@ airsis_ESAMQualityControl <- function(df,
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {
     logger.info('Discarding %s rows with invalid location information', badRowCount)
-    logger.debug('Bad location Longitudes:  %s', paste0(sort(df$Longitude[badRows]), collapse=", "))
-    logger.debug('Bad location Latitudes:  %s', paste0(sort(df$Latitude[badRows]), collapse=", "))
+    badLocations <- paste('(',df$Longitude[badRows],',',df$Latitude[badRows],')',sep='')
+    logger.debug('Bad locations: %s', paste0(badLocations, collapse=", "))
   }
   
   df <- df[goodLonMask & goodLatMask,]
@@ -84,9 +84,21 @@ airsis_ESAMQualityControl <- function(df,
   # TODO:  Should we use TimeStampm or PDate?
   # TODO:  Are these data in GMT?
   
-  # Add a POSIXct datetime
-  df$datetime <- lubridate::round_date(lubridate::mdy_hms(df$TimeStamp), unit="hour")
+  # NOTE: It appears the ESAM "TimeStamp" data drifts throughout the day, with >60 minutes between timestamps during most
+  # NOTE: hours in the day, and then a daily re-synch. For now we are assuming this is a communication issue rather than
+  # NOTE: an issue in the actual sampling period. For example, we are assuming that a record that is received at 4:44pm is 
+  # NOTE: actually a record for 4:00pm (which is really representative of data during the 3:00 hour -- see NOTE below).
   
+  # Add a POSIXct datetime
+  df$datetime <- lubridate::floor_date(lubridate::mdy_hms(df$TimeStamp), unit="hour") - lubridate::dhours(1)
+  
+  # NOTE: The time above truncates the timestamp to the top of an hour, and then subtracts one hour,
+  # NOTE: since the measurement that comes in at a few minutes past the hour is actually representative
+  # NOTE: of the data over the previous hour (e.g. reading received at 12:04 is actually the average of 
+  # NOTE: the data during Hour 11). This allows for a simpler understanding of the averages, since an
+  # NOTE: hour's average will be representative of the data within that hour (this is similar to
+  # NOTE: how an average over a year, such as 2016, is referred to as 2016's value, not 2017's, even
+  # NOTE: though the average wasn't available until the beginning of 2017).
   
   # Leland Tarnay QC -----------------------------------------------------------
   
@@ -131,26 +143,22 @@ airsis_ESAMQualityControl <- function(df,
   
   
   # ----- Duplicate Hours -----------------------------------------------------
-
-  # NOTE: Imported this section from the equivalent EBAMs QC R file, but ran into issue with a large number of 
-  # NOTE: duplicate hours due to the datetime field rounding up uneven time stamps.  Need to revisit how to apply
-  # NOTE: the datetime field to ESAM data, which appears to come in at irregular intervals (at least once a day). 
     
   # For hours with multiple records, discard all but the one with the latest processing date/time
   # NOTE: Current setup for this section assumes that the last entry will be the latest one.  May 
-  # NOTE: want to build in functionality to ensure that the last is picked if more than one exists
+  # NOTE: want to build in functionality to ensure that the latest is picked if more than one exists
   # NOTE: (for example, if the data is not in order by timestamp for whatever reason)
-  # 
-  # dupHrMask <- duplicated(df$datetime,fromLast = TRUE)
-  # dupHrCount <- sum(dupHrMask)
-  # uniqueHrMask <- !dupHrMask
-  # 
-  # if (dupHrCount > 0) {
-  #   logger.info('Discarding %s duplicate time entries', dupHrCount)
-  #   logger.debug('Dupliace Hours (may be >1 per timestamp):  %s', paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
-  # }
-  # 
-  # df <- df[uniqueHrMask,]
+   
+  dupHrMask <- duplicated(df$datetime,fromLast = TRUE)
+  dupHrCount <- sum(dupHrMask)
+  uniqueHrMask <- !dupHrMask
+  
+  if (dupHrCount > 0) {
+    logger.info('Discarding %s duplicate time entries', dupHrCount)
+    logger.debug('Duplicate times being removed:  %s', paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
+  }
+
+  df <- df[uniqueHrMask,]
   
   
   # ----- More QC -------------------------------------------------------------

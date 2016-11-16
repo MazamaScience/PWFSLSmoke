@@ -1,15 +1,15 @@
 #' @keywords WRCC
 #' @export
-#' @title Obtain WRCC Data and Create ws_monitor Object
+#' @title Obtain WRCC Data and Parse into a Dataframe
 #' @param stationID station identifier (will be upcased)
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
-#' @description Obtains monitor data from an WRCC webservice and converts
-#' it into a quality controlled, metadata enhanced \code{ws_monitor} object
-#' ready for use with all \code{monitor_~} functions.
+#' @description Obtains monitor data from a WRCC webservice and converts
+#' it into a quality controlled, metadata enhanced "raw" dataframe
+#' ready for use with all \code{raw_~} functions.
 #' 
 #' Steps involved include:
 #' 
@@ -19,7 +19,6 @@
 #'  \item{apply quality control}
 #'  \item{apply clustering to determine unique deployments}
 #'  \item{enhance metadata to include: elevation, timezone, state, country, site name}
-#'  \item{reshape data into deployment-by-property 'meta' and and time-by-deployment 'data' dataframes}
 #' }
 #' 
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
@@ -28,17 +27,14 @@
 #' @seealso \code{\link{wrcc_parseData}}
 #' @seealso \code{\link{wrcc_qualityControl}}
 #' @seealso \code{\link{addClustering}}
-#' @seealso \code{\link{wrcc_createMetaDataframe}}
-#' @seealso \code{\link{wrcc_createDataDataframe}}
 
-wrcc_createMonitorObject <- function(stationID=NULL,
-                                     startdate=20020101,
-                                     enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                     clusterDiameter=1000,
-                                     baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
-                                     saveFile=NULL) {
+wrcc_createRawDataframe <- function(stationID=NULL, startdate=20100101,
+                                    enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                                    clusterDiameter=1000,
+                                    baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
+                                    saveFile=NULL) {
   
-  # Sanity checks
+  # Sanity check
   if ( is.null(stationID) ) {
     logger.error("Required parameter 'stationID' is missing")
     stop(paste0("Required parameter 'stationID' is missing."))
@@ -67,30 +63,10 @@ wrcc_createMonitorObject <- function(stationID=NULL,
   logger.info('Applying QC logic...')
   df <- wrcc_qualityControl(df)
   
-  # See if anything gets through QC
-  if ( nrow(df) == 0 ) {
-    logger.warn('No data remaining after QC.')
-    stop('No data remaining after QC.')
-  }
-  
   # Add clustering information to identify unique deployments
   logger.info('Clustering...')
   df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=1000)
   
-  # Create 'meta' dataframe of site properties organized as monitorID-by-property
-  # NOTE:  This step will create a uniformly named set of properties and will
-  # NOTE:  add site-specific information like timezone, elevation, address, etc.
-  logger.info('Creating \'meta\' dataframe...')
-  meta <- wrcc_createMetaDataframe(df)
-  
-  # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
-  logger.info('Creating \'data\' dataframe...')
-  data <- wrcc_createDataDataframe(df, meta)
-  
-  # Create the 'ws_monitor' object
-  ws_monitor <- list(meta=meta, data=data)
-  ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
-  
-  return(ws_monitor)
+  return(df)
   
 }

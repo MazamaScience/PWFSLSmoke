@@ -45,7 +45,6 @@ airsis_parseData <- function(fileString) {
   
   if ( monitorType == "BAM1020" ) {
     
-    # TODO:  How to assign data with to-the-minute timestamps to a particular hour? floor?
     logger.warn('BAM1020 file parsing is not supported')
     logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
     stop(paste0('BAM1020 file parsing is not supported'), call.=FALSE)

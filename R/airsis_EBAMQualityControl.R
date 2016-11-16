@@ -1,7 +1,7 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Apply Quality Control to Raw AIRSIS EBAM Dataframe
-#' @param df single site dataframe created by airsis_downloadData()
+#' @param df single site dataframe created by airsis_parseData()
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values
 #' @param remove_Lon_zero flag to remove rows where Longitude == 0
@@ -48,7 +48,6 @@ airsis_EBAMQualityControl <- function(df,
   
   # Handle various missing value flags
   
-  
   # ----- Location ------------------------------------------------------------
   
   # Latitude and longitude must be in range
@@ -68,8 +67,8 @@ airsis_EBAMQualityControl <- function(df,
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {
     logger.info('Discarding %s rows with invalid location information', badRowCount)
-    logger.debug('Bad location Longitudes:  %s', paste0(sort(df$Longitude[badRows]), collapse=", "))
-    logger.debug('Bad location Latitudes:  %s', paste0(sort(df$Latitude[badRows]), collapse=", "))
+    badLocations <- paste('(',df$Longitude[badRows],',',df$Latitude[badRows],')',sep='')
+    logger.debug('Bad locations: %s', paste0(badLocations, collapse=", "))
   }
   
   df <- df[goodLonMask & goodLatMask,]
@@ -77,8 +76,15 @@ airsis_EBAMQualityControl <- function(df,
   # ----- Time ----------------------------------------------------------------
   
   # Add a POSIXct datetime
-  df$datetime <- lubridate::mdy_hms(df$Date.Time.GMT)
+  df$datetime <- lubridate::floor_date(lubridate::mdy_hms(df$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
   
+  # NOTE: The time above truncates the timestamp to the top of an hour, and then subtracts one hour,
+  # NOTE: since the measurement that comes in at a few minutes past the hour is actually representative
+  # NOTE: of the data over the previous hour (e.g. reading received at 12:04 is actually the average of 
+  # NOTE: the data during Hour 11). This allows for a simpler understanding of the averages, since an
+  # NOTE: hour's average will be representative of the data within that hour (this is similar to
+  # NOTE: how an average over a year, such as 2016, is referred to as 2016's value, not 2017's, even
+  # NOTE: though the average wasn't available until the beginning of 2017).
   
   # ----- Type ----------------------------------------------------------------
   
@@ -144,7 +150,7 @@ airsis_EBAMQualityControl <- function(df,
   
   # For hours with multiple records, discard all but the one with the latest processing date/time
   # NOTE: Current setup for this section assumes that the last entry will be the latest one.  May 
-  # NOTE: want to build in functionality to ensure that the last is picked if more than one exists
+  # NOTE: want to build in functionality to ensure that the latest is picked if more than one exists
   # NOTE: (for example, if the data is not in order by timestamp for whatever reason)
   
   dupHrMask <- duplicated(df$datetime,fromLast = TRUE)

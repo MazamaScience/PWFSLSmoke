@@ -1,4 +1,5 @@
 library(PWFSLSmoke)
+library(openair)
 setwd("~/Projects/PWFSLSmoke/localData")
 
 load("DNR_monitorList.RData")
@@ -21,3 +22,6 @@ points(rawList$Plain$ConcHr)
 
 plot(rawList$Plain[7:12])
 names(rawList$Plain)
+
+# CONVERT TO POSIXct
+ts <- lubridate::mdy_hms(df$TimeStamp)

@@ -37,7 +37,7 @@ airsis_createDataDataframe <- function(df, meta) {
   
   monitorType <- unique(meta$monitorType)
   
-  # Sanity checkk -- only a single monitorType is allowed
+  # Sanity check -- only a single monitorType is allowed
   if ( length(monitorType) > 1 ) {
     logger.error("Multiple monitor types found in 'meta' dataframe: %s", paste0(monitorType, collapse=", "))
     stop(paste0("Multiple monitor types found in 'meta' dataframe."))
@@ -58,7 +58,7 @@ airsis_createDataDataframe <- function(df, meta) {
   # Create minimal subset with the the variables we need for rows, columns and data
   subDF <- df[,c('datetime','monitorID',pm25Var)]
   melted <- reshape2::melt(subDF, id.vars=c('datetime','monitorID'), measure.vars=pm25Var)
-  
+
   # Unit conversion as needed (mg/m3 ==> ug/m3)
   if ( monitorType == 'EBAM' ) melted$value <- melted$value * 1000
   if ( monitorType == 'ESAM' ) melted$value <- melted$value * 1000
