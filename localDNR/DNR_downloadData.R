@@ -106,7 +106,7 @@ if ( !file.exists('localData/airsis_monitorList.RData') ) {
 
 if ( !file.exists('localData/airnow_monitors.RData') ) {
   
-  us <- airnow_load(start, 20160930) # TODO:  Expand date range to end)
+  us <- airnow_load(start, end)
   
   monitorIDs <- c('530770015', # Toppenish-Yakima Tribe
                   '530770016', # White Swan-Yakima Tribe

@@ -25,6 +25,7 @@ monitorDict <- list(
   Manson="Manson.WA.apcd1013__001",
   Naches="CRO...Naches..WA__001",
   Liberty="Liberty.WA..1031.__001",
+  Usk='FWS.Smoke..1__003', # actually a WRCC monitor
   Plain="Plain.WA..1033.__001",
   Curlew="Curlew.WA..1034.__001",
   Nile="Nile.Pinecliff.1049__001",
