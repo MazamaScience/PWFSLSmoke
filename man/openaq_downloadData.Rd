@@ -4,8 +4,8 @@
 \alias{openaq_downloadData}
 \title{Download and Aggregate Multiple Daily Data Files from OpenAQ}
 \usage{
-openaq_downloadData(parameter = "pm25", startdate = "", days = 1,
-  countryCode = "US", baseUrl = "http://openaq-data.s3.amazonaws.com/")
+openaq_downloadData(parameter = NULL, startdate = "", days = 1,
+  countryCode = NULL, baseUrl = "http://openaq-data.s3.amazonaws.com/")
 }
 \arguments{
 \item{parameter}{pollutant name}
@@ -26,8 +26,7 @@ This function downloads data from the OpenAQ Data Backups page
 hosted on Amazon S3. All data obtained are then combined into a single dataframe
 and returned.
 
-Available parameters are limited to:
-PM2.5, PM10, ozone, sulfur dioxide, nitrogen dioxide, carbon monoxide, and black carbon
+Available parameters include:
 \enumerate{
 \item{pm25}{ -- PM2.5}
 \item{pm10}{ -- PM10}
