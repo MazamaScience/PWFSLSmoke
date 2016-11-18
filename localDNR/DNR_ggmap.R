@@ -23,7 +23,7 @@ library(ggmap)
 # SETTINGS -------------
 
 size <- 5
-zoom <- 8
+zoom <- 9
 
 # Temporary variables for testing. Eventually will call in variables using function.
 tlim<-c(20160916,20160920)

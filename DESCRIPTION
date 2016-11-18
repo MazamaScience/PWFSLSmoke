@@ -30,7 +30,7 @@ Imports:
     futile.logger,
     ggmap,
     httr,
-    leaflet,
+    leaflet (>= 1.0.0),
     lubridate,
     maptools,
     openair,

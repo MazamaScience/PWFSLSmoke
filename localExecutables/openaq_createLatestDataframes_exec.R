@@ -2,18 +2,17 @@
 
 # November, 2016 update:
 #
-# This script will download the most recent 1 day of hourly data from openAQ and merge it with 
+# This script will download the most recent 3 day of hourly data from openAQ and merge it with 
 # pre-downloaded LATEST 31 days of data by chopping off the oldest day and adding the newly downloaded 
-# 1 day of data. This csript generates a suite of "data" dataframes appropriate for use in 
-# "ws_monitor" objects defined by the PWFSLSmoke package. One dataframe will be created 
-# for each parameter availabe in the downloaded data.
+# 1 day of data as well as updating the past two days of data. This csript generates a suite of 
+# "data" dataframes appropriate for use in "ws_monitor" objects defined by the PWFSLSmoke package.
 #
-# This script is intended to be run hourly in a run in a cron job as in the example below:
+# This script is intended to be run daily in a cron job as in the example below:
 # 
 # # m h  dom mon dow   command
 # 
-# # Update AirNow monitoring data
-#  15 *    *   *   *  /home/bluesky/monitoring/bin/airnow_createLatestDataframes_exec.R --user=USER --pass=PASS --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
+# # Update openAQ monitoring data
+#  15 *    *   *   *  /home/bluesky/monitoring/bin/openaq_createLatestDataframes_exec.R --outputDir=/Users/aliceyang/Data/openAQ --logDir=/Users/aliceyang/Data/Logs
 
 VERSION = "0.1.0"
 
@@ -28,11 +27,10 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 createLatestDataDataframes <- function(df,outputDir) {
   
-  # Download, separate and reshape the latest data for all parameters
-  currentDF <- openaq_createDataDataframe(df)
+  # Create a 'data' dataframe for the latest data for the past 3 days
+  latestDF <- openaq_createDataDataframe(df)
   
-  # Assign dataframes to their parameter name and merge them with any previous version
-  # Get the latest dataframe for this parameter
+  # Get the previously-saved data for the latest 31 days 
   filename <- paste0("openAQ_PM2.5_LATEST_31days.RData")
   filepath <- file.path(outputDir,filename)
   
@@ -40,7 +38,7 @@ createLatestDataDataframes <- function(df,outputDir) {
     
     # ----- Merge latest data with previous data ----------------------------
     
-    logger.debug('Merging latest %s data with previous data...', parameter)
+    logger.debug('Merging latest PM2.5 data with previous data...')
     
     # NOTE:  Sadly, none of the dplyr::~_join() functions allow you to join-with-replacement
     # NOTE:  when values are found in the same cell of both x and y. This is precisely what
@@ -49,20 +47,14 @@ createLatestDataDataframes <- function(df,outputDir) {
     
     previousDF <- get(load(filepath))
     
-    #########
-    #### TODO: update the day before yesterday's data #####
-    #########
+    # Get rid of the oldest day in the previousDF
+    deleteDate <- lubridate::with_tz(as.POSIXct(lubridate::today() - lubridate::ddays(3)), 'UTC')
+    previousDF <- previousDF[-c(which(previousDF$datetime==deleteDate):nrow(previousDF)),]
     
-    # Get rid of the oldest day in previous DF
-    previousDF <- previousDF[-c(1:24),]
-    
-    timeDF[,1] <- seq(as.POSIXct(as.character(Sys.Date()-31)),as.POSIXct(as.character(Sys.Date()))+23*60*60,by='hours')
-    
-
-    # Create a uniform timeAxis (45 days ago until tomorrow)
-    startdate <- as.POSIXct(lubridate::today() - lubridate::ddays(45))
-    enddate <- as.POSIXct(lubridate::today() + lubridate::ddays(1))
-    timeAxis <- seq(startdate, enddate, by='hours')
+    # Create a uniform timeAxis (31 days ago until yesterday)
+    startdate <- as.POSIXct(lubridate::today() - lubridate::ddays(31))
+    enddate <- as.POSIXct(lubridate::today())
+    timeAxis <- seq(startdate, enddate-60*60, by='hours')
     timeDF <- data.frame(datetime=lubridate::with_tz(timeAxis, 'UTC'))
     
     # Put latestDF and previousDF on new, uniform time axis
@@ -104,61 +96,66 @@ createLatestDataDataframes <- function(df,outputDir) {
     
     logger.debug('Writing %s...', filepath)
     
-    # Assign the dataframe associated with "parameter" to an environment variable named after that parameter
-    dfName <- paste0(parameter)
+    dfName <- paste0("PM2.5")
     assign(dfName, latestDF)
     
-    # NOTE:  Now the environment variable "parameter" is a character string, e.g. "PM2.5"
-    # NOTE:  while the einvironment variable "PM2.5" is a dataframe.
     result <- try( save(list=dfName, file=filepath),
                    silent=TRUE )
     
     if ( class(result)[1] == "try-error" ) {
-      msg <- paste("Error writing AirNow 'data' dataframes: ", geterrmessage())
+      msg <- paste("Error writing openAQ 'data' dataframes: ", geterrmessage())
       logger.error(msg)
     }
+  } else {
     
-    
-  } # END of paremter in dfList loop
+    stop(sprintf("The file %s doesn't exist", filepath))
+    logger.error("The file %s doesn't exist", filepath)
+  }
   
-  logger.info("Finished writing AirNow 'data' dataframes for %s", opt$yearMonth)
+  logger.info("Finished writing 31 days of openAQ 'data' dataframes starting from %s to %s", min(latestDF$datetime), max(latestDF$datetime))
   
 }
 
 ################################################################################
 
-createMetaDataframes <- function(opt) {
+createMetaDataframes <- function(df, outputDir) {
   
   # Download, separate and reshape data for all parameters
-  dfList <- airnow_createMetaDataframe(user=opt$user, pass=opt$pass)
+  latestMeta <- openaq_createMetaDataframe(df)
   
-  # Assign dataframes to their parameter name and save them
-  for (parameter in names(dfList)) {
+  #--------- Append newly added monitors to previous monitors ------------------------------
+  
+  filename <- paste0("openAQ_PM2.5_Sites_LATEST_Metadata.RData") 
+  filepath <- file.path(outputDir,filename)
+  
+  if( file.exists(filepath) ){
+    previousMeta <- get(load(filepath))
     
+    latestOnlyMonitors <- dplyr::setdiff(rownames(latestMeta), rownames(previousMeta))
+    latestMeta <- dplyr::bind_rows(previousMeta, latestMeta[latestOnlyMonitors,])
+    rownames(latestMeta) <- latestMeta$monitorID
+    
+    #--------- save dataframe --------------------------------------------------------------------
     # Assign the dataframe associated with "parameter" to an environment variable named after that parameter
-    dfName <- paste0(parameter,"_sites")
-    assign(dfName, dfList[[parameter]])
-    
-    # NOTE:  Now the environment variable "parameter" is a character string, e.g. "PM2.5"
-    # NOTE:  while the einvironment variable "PM2.5_sites" is a dataframe.
-    
-    filename <- paste0("AirNowTech_",parameter,"_SitesMetadata.RData")
-    filepath <- file.path(opt$outputDir,filename)
+    dfName <- paste0("PM2.5_sites.RData")
+    assign(dfName, latestMeta)
     
     logger.debug('Writing %s...', filepath)
     
-    result <- try( save(list=dfName, file=filepath),
+    result <- try( save(list=dfName, file=file.path(filepath)),
                    silent=TRUE )
     
     if ( class(result)[1] == "try-error" ) {
-      msg <- paste("Error writing AirNow 'meta' dataframes: ", geterrmessage())
+      msg <- paste("Error writing openAQ 'meta' dataframes: ", geterrmessage())
       logger.error(msg)
     }
+  } else {
     
+    stop(sprintf("The file %s doesn't exist", filepath))
+    logger.error("The file %s doesn't exist", filepath)
   }
   
-  logger.info("Finished writing AirNow 'meta' dataframes")
-  
+  logger.info("Finished writing openAQ 'meta' dataframes")
 }
 
 
@@ -190,9 +187,9 @@ if (FALSE) {
   
   VERSION = "0.1.0"
   opt <- list(
-    outputDir=paste0(getwd())
-    logDir=paste0(getwd()),
-    spatialDataDir='~/Data/Spatial')
+    outputDir="/Users/aliceyang/Data/openAQ",
+    logDir="/Users/aliceyang/Data/Logs",
+    spatialDataDir='/Users/aliceyang/Data/Spatial' )
   
 }
 
@@ -215,10 +212,11 @@ logger.info('Running openaq_createLatestDataframes_exec.R version %s',VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse='\n')
 logger.debug('R session:\n\n%s\n', sessionString)
 
+
 # ------- downloading and processing openAQ data -----------------------------------
 
 logger.info('Downloading data...')
-df <- openaq_downloadData(startdate=format(Sys.Date(),"%Y%m%d"), days=1)
+df <- openaq_downloadData(startdate=format(Sys.Date()-3,"%Y%m%d"), days=3)
 
 # add additional columns to the dataframe
 logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')
@@ -249,9 +247,10 @@ for (i in 1:nrow(df)) {
 # create a monitorID column as unique identifier 
 df$monitorID <- with(df,paste(location,city,stateCode,sep=', '))
 
-# ----- Optionally create openAQ "meta" dataframes --------------------------------
 
-result <- try( createMetaDataframes(df) )
+# ----- Always create openAQ "meta" dataframes --------------------------------
+
+result <- try( createMetaDataframes(df, opt$outputDir) )
 
 if ( class(result)[1] == "try-error" ) {
   msg <- paste("Error creating openAQ 'meta' dataframes: ", geterrmessage())
@@ -271,6 +270,5 @@ if ( class(result)[1] == "try-error" ) {
   if ( !file.exists(errorLog) ) dummy <- file.create(errorLog)
   logger.info('Completed successfully!')
 }
-
 
 

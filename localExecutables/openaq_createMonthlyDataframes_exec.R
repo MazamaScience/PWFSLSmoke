@@ -53,7 +53,7 @@ createMetaDataframes <- function(df, startdate, outputDir) {
   # Download, separate and reshape data for all parameters
   metaDataframe <- openaq_createMetaDataframe(df)
   
-  filename <- "openAQ_PM2.5_SitesMetadata.RData"
+  filename <- paste("openAQ_PM2.5_Sites_",startdate,"_Metadata.RData")
   filepath <- file.path(outputDir,filename)
   
   logger.debug('Writing %s...', filepath)
@@ -165,7 +165,7 @@ for (i in 1:nrow(df)) {
 # create a monitorID column as unique identifier 
 df$monitorID <- with(df,paste(location,city,stateCode,sep=', '))
 
-# ----- Optionally create openAQ "meta" dataframes ----------------------------
+# ----- Always create openAQ "meta" dataframes ----------------------------
 
 if ( opt$meta ) {
   
