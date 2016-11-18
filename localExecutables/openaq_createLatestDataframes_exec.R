@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/opt/local/bin/Rscript
 
 # November, 2016 update:
 #
@@ -80,10 +80,17 @@ createLatestDataDataframes <- function(df,outputDir) {
       logger.debug('New monitors not found in previous data: %s', paste0(latestOnlyMonitors, collapse=", "))
     }
     
-    previousOnlyDF <- previousDF[,previousOnlyMonitors]
-    latestOnlyDF <- latestDF[,latestOnlyMonitors]
-    sharedPreviousDF <- previousDF[,sharedMonitors]
-    sharedLatestDF <- latestDF[,sharedMonitors]
+    previousOnlyDF <- data.frame(previousDF[,previousOnlyMonitors])
+    names(previousOnlyDF) <- previousOnlyMonitors
+    
+    latestOnlyDF <- data.frame(latestDF[,latestOnlyMonitors])
+    names(latestOnlyDF) <- latestOnlyMonitors
+    
+    sharedPreviousDF <- data.frame(previousDF[,sharedMonitors])
+    names(sharedPreviousDF) <- sharedMonitors
+    
+    sharedLatestDF <- data.frame(latestDF[,sharedMonitors])
+    names(sharedLatestDF) <- sharedMonitors
     
     # Replace values in sharedPreviousDF with new data from sharedLatestDF
     newDataMask <- !is.na(sharedLatestDF)
