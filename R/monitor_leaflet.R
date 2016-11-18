@@ -158,7 +158,6 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'),
         fillColor=cols, 
         stroke=stroke, 
         fillOpacity=opacity,
-        label=label,
         popup=ws_monitor$meta$popupText) %>%
       leaflet::addLegend(
         position='bottomright',
@@ -177,7 +176,6 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'),
         fillColor=cols, 
         stroke=stroke, 
         fillOpacity=opacity,
-        label=label,
         popup=ws_monitor$meta$popupText) %>%
       leaflet::addLegend(
         position='bottomright',
