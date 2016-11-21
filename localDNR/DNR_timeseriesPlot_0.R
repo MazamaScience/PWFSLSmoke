@@ -20,57 +20,28 @@
 # Load and clean up all required data with:
 #   source('localDNR/DNR_ingestData.R')
 
-# * hourly values at USG or above
-# * daily 'S' as black line
-# * all pilot burns as bars
-# * events as baseline triangles
-# * optional day/night
-# * legend
-# * two y-axes
-
-# 1) timeseries plot should only show hourly points above ~20,
-#    prescribed burns, regulatory 24-hr and satellite detects
-#    also need tons accomplished scale
-# 2) terrain map over 1-3 days focused on a monitor and
-#    nearby prescribed burns and wildfires
-# 3) csv dumps of all data used
-
-
-if (FALSE) {
-  
-  for (name in names(monitorDict)) {
-    png(filename=paste0(name,'.png'), width=1200, height=900)
-    DNR_timeseriesPlot(name)
-    dev.off()
-  }
-  
-}
-
 DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
                                fireDistance=25,
-                               ylim_pm25=c(0,120),
-                               ylim_burnTons=c(0,2000),
-                               showShadedNight=FALSE,
+                               ylim_pm25=NULL,
+                               showShadedNight=TRUE,
                                show1Hr=TRUE,
-                               show3Hr=TRUE,
-                               show24Hr=FALSE,
+                               show3Hr=FALSE,
+                               show24Hr=TRUE,
                                showDaily=TRUE,
                                showPrescribedNonPilotBurns=TRUE,
                                showPrescribedPilotBurns=TRUE,
                                showBlueskyEvents=TRUE,
-                               showAQILevels=TRUE,
-                               showAQIBackground=FALSE,
-                               hourlyThreshold=AQI$breaks_24[2]) {
+                               showAQILevels=TRUE) {
   
   # ----- Style ---------------------------------------------------------------
   
   col_aqi <- adjustcolor(AQI$colors[2:6], 0.4)
-  col_1 <- adjustcolor('black', 0.4)
-  col_3 <- adjustcolor('black', 0.2)
+  col_1 <- adjustcolor('black', 0.5)
+  col_3 <- adjustcolor('black', 0.5)
   col_24 <- adjustcolor('purple', 0.3)
   col_daily <- adjustcolor('black', 1.0)
   
-  col_nonPilotBurns <- 'wheat4'
+  col_nonPilotBurns <- 'orange'
   col_pilotBurns <- 'red'
   col_events <- 'gray50'
   
@@ -83,17 +54,19 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   lwd_aqi <- 4
   lwd_3 <- 2
   lwd_24 <- 4
-  lwd_daily <- 4
+  lwd_daily <- 6
   
   # ----- Data Preparation ----------------------------------------------------
   
   # Pull out a single monitor
   monitorID <- monitorDict[[monitorName]]
   if ( monitorID %in% rownames(airsis_monitors$meta) ) {
-    title <- paste0(monitorName," Washington Smoke and Burns (within ",fireDistance," km)")
+    title <- paste0("Temporary Monitor in ",monitorName," Washington")
     ws_monitor <- monitor_subset(airsis_monitors, monitorIDs=monitorID)
   } else {
-    title <- paste0(monitorName," Washington Smoke and Burns (within ",fireDistance," km)")
+    # TODO:  Remove this time trimming
+    tlim[2] <- min(tlim[2],20160930)
+    title <- paste0("Permanent Monitor in ",monitorName," Washington")
     ws_monitor <- monitor_subset(airnow_monitors, monitorIDs=monitorID)
   }
   
@@ -122,11 +95,10 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
     # Separate non-pilot vs. pilot burns
     prescribedNonPilotBurns <- prescribedBurns[!prescribedBurns$DNR_Pilot.24.Hr.Advance,]
     prescribedPilotBurns <- prescribedBurns[prescribedBurns$DNR_Pilot.24.Hr.Advance,]
-    if ( is.null(ylim_burnTons) ) {
-      ylim_burnTons <- c(0,max(prescribedBurns$Accomplished.Tons, na.rm=TRUE))
-    }
+    burn_ylim <- c(0,max(prescribedBurns$Accomplished.Tons, na.rm=TRUE))
   } else {
     prescribedNonPilotBurns <- prescribedPilotBurns <- prescribedBurns
+    burn_ylim <- c(0,100)
   }
   
   
@@ -144,25 +116,20 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   # ----- Plotting ------------------------------------------------------------
   
-  old_mar <- c(5.1,4.1,4.1,2.1)
-  par(mar=c(5.1,7.1,4.1,7.1))
-  
   # Blank plot to get the axes
   x <- lubridate::with_tz(ws_monitor$data[,1], ws_monitor$meta$timezone)
   y <- ws_monitor$data[,2]
   if ( is.null(ylim_pm25) ) {
-    plot(x, y, col='transparent', xlab='Date', ylab='', las=1)
+    plot(x, y, col='transparent', xlab='', ylab='', las=1)
   } else {
-    plot(x, y, col='transparent', xlab='Date', ylab='', las=1, ylim=ylim_pm25)
+    plot(x, y, col='transparent', xlab='', ylab='', las=1, ylim=ylim_pm25)
+    
   }
-  
-  # Zero line is nice
-  abline(h=0, lwd=2, col=col_events)
   
   # Get useful plot measures
   usr <- par('usr')
-  xlo <- as.POSIXct(usr[1], tz=ws_monitor$meta$timezone, origin=lubridate::origin)
-  xhi <- as.POSIXct(usr[2], tz=ws_monitor$meta$timezone, origin=lubridate::origin)
+  xlo <- usr[1]
+  xhi <- usr[2]
   ylo <- usr[3]
   yhi <- usr[4]
   xrange <- xhi - xlo
@@ -172,39 +139,20 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
     timeInfo <- timeInfo(ws_monitor$data[,1], lon=ws_monitor$meta$longitude, lat=ws_monitor$meta$latitude)
     addShadedNights(timeInfo)
   }
-  
-  # AQI background
-  if ( showAQIBackground ) {
-    for (i in 1:6) {
-      rect(xlo, AQI$breaks_24[i], xhi, AQI$breaks_24[i+1], col=adjustcolor(AQI$colors[i], 0.1), border=NULL)
-    }
-  }
-  
+
   # AQI levels
   if ( showAQILevels ) {
     abline(h=AQI$breaks_24[2:6], col=col_aqi, lwd=lwd_aqi)
   }
   
-  # Show daily average underneath the pilot burns
-  if ( showDaily ) {
-    # move time axis from noon to previous midnight for plotting with type='s'
-    x <- ws_monitor_daily$data$datetime - lubridate::dhours(12)
-    y <- ws_monitor_daily$data[,2]
-    points(x, y, type='s', col=col_daily, lwd=lwd_daily)
-    x <- ws_monitor_daily$data$datetime + lubridate::dhours(12)
-    points(x, y, type='S', col=col_daily, lwd=lwd_daily)
-  }
-  
-  
   if ( showPrescribedNonPilotBurns ) {
     if ( nrow(prescribedNonPilotBurns) > 0 ) {
       # PrescribedBurn rectangles
       xleft <- prescribedNonPilotBurns$Ignition.time
-      ###xright <- prescribedNonPilotBurns$sunset # sunset
-      xright <- lubridate::ceiling_date(xleft, "day") # midnight
+      xright <- prescribedNonPilotBurns$sunset
       ybottom <- 0
       yval <- prescribedNonPilotBurns$Accomplished.Tons
-      ytop <- yval * ((0.95*yhi)/ylim_burnTons[2])
+      ytop <- yval * ((0.95*yhi)/burn_ylim[2])
       rect(xleft, ybottom, xright, ytop, density=20, angle=45,
            col=col_nonPilotBurns, border=col_nonPilotBurns, lty='solid', lwd=2)
     }
@@ -214,22 +162,17 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
     if ( nrow(prescribedPilotBurns) > 0 ) {
       # PrescribedBurn rectangles
       xleft <- prescribedPilotBurns$Ignition.time
-      ###xright <- prescribedPilotBurns$sunset # sunset
-      xright <- lubridate::ceiling_date(xleft, "day") # midnight
+      xright <- prescribedPilotBurns$sunset
       ybottom <- 0
       yval <- prescribedPilotBurns$Accomplished.Tons
-      ytop <- yval * ((0.95*yhi)/ylim_burnTons[2])
-      rect(xleft, ybottom, xright, ytop, density=20, angle=-45,
+      ytop <- yval * ((0.95*yhi)/burn_ylim[2])
+      rect(xleft, ybottom, xright, ytop, density=20, angle=45,
            col=col_pilotBurns, border=col_pilotBurns, lty='solid', lwd=2)
     }
   }
   
   if ( show1Hr ) {
-    ws_monitor_highValues <- monitor_subset(ws_monitor, vlim=c(hourlyThreshold,Inf)) # USG is level 3
-    if ( any(!is.na(ws_monitor_highValues$data[,2])) ) {
-      monitor_timeseriesPlot(ws_monitor_highValues, add=TRUE, pch=pch_1, cex=cex_1, col=col_1)
-    }
-    ###monitor_timeseriesPlot(ws_monitor, add=TRUE, pch=pch_1, cex=cex_1, col=col_1)
+    monitor_timeseriesPlot(ws_monitor, add=TRUE, pch=pch_1, cex=cex_1, col=col_1)
   }
   
   if ( show3Hr ) {
@@ -238,6 +181,13 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   if ( show24Hr ) {
     monitor_timeseriesPlot(ws_monitor_24hr, add=TRUE, type='l', col=col_24, lwd=lwd_24)
+  }
+  
+  if ( showDaily ) {
+    # move time axis from noon to previous midnight for plotting with type='s'
+    x <- ws_monitor_daily$data$datetime - lubridate::dhours(12)
+    y <- ws_monitor_daily$data[,2]
+    points(x, y, type='s', col=col_daily, lwd=lwd_daily)
   }
   
   if ( showBlueskyEvents ) {
@@ -251,54 +201,21 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   # Annotations
   title(title)
-
-  # Top label for axis 2
-  text(xlo, yhi*1.05, labels='PM2.5', pos=2, xpd=NA)
-  text(xlo, yhi*1.02, labels='(ug/m3)', pos=2, xpd=NA)
-
-  # AQI labels  
-  if ( showAQILevels ) {
-    text(xlo, AQI$breaks[2:6]+2, labels=AQI$names[2:6], pos=4)
-  }
+#   legend('topleft',
+#          c("3-hr average (centered)",
+#            "24-hr average (lagged)"),
+#          col=c(col_3, col_24),
+#          lwd=c(lwd_3, lwd_24))
   
-  # Add a second Y axis for burnTons
-  if ( showPrescribedPilotBurns || showPrescribedNonPilotBurns ) {
-    burnTicks <- pretty(ylim_burnTons)
-    at <- burnTicks * (ylim_pm25[2]/ylim_burnTons[2])
-    labels <- as.character(burnTicks)
-    axis(side=4, at=at, labels=labels, las=1)
-    # Top label for axis 2
-    text(xhi, yhi*1.05, labels='Tons', pos=4, xpd=NA)
-    text(xhi, yhi*1.02, labels='Accomplished', pos=4, xpd=NA)
-  }
   
-  # Satellite Detects
-  if ( showBlueskyEvents ) {
-    # ylo should always be a negative number
-    text(xlo,ylo+1.5,'Satellite Detects',pos=4, col=col_events)
-  }
-  
-  # Legend for pm25
-  if ( show1Hr && show3Hr && showDaily) {
-    legend('topleft', title="Smoke",
-           c("Hourly (high values)",
-             "Rolling mean (3hr)",
-             "Daily mean"),
-           col=c(col_1, col_3, col_daily),
-           pch=c(pch_1, NA, NA),
-           lwd=c(NA, lwd_3, lwd_daily))
-  }
-  
-  # Legend for burns
-  if ( showPrescribedPilotBurns || showPrescribedNonPilotBurns ) {
-    legend('topright', title="Prescribed Burns",
-           c("Non-24 hour",
-             "24-hr"),
-           fill=c(col_nonPilotBurns, col=col_pilotBurns),
-           density=20, angle=c(45,-45))
-  }
-  
-  # Reset margins
-  par(mar=old_mar)
 }
+
+
+# 1) timeseris plot should only show hourly points above ~20,
+#    prescribed burns, regulatory 24-hr and satellite detects
+#    also need tons accomplished scale
+# 2) terrain map over 1-3 days focused on a monitor and
+#    nearby prescribed burns and wildfires
+# 3) csv dumps of all data used
+
 

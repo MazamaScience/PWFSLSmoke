@@ -42,45 +42,44 @@ epa_createMetaDataframe <- function(df){
   meta$latitude <- meta$Latitude
   meta$longitude <- meta$Longitude
   
-  meta1 <- meta[1:floor(nrow(meta)/2),]
-  meta2 <- meta[ceiling(nrow(meta)/2):nrow(meta),]
+  # check and loop to see if we need to use addGoogleMetadata multiple times due to google's limit
+  loopNum <- nrow(meta) %/% 300
+  if ( nrow(meta) %% 300 > 0) {
+    loopNum <- loopNum + 1
+  }
   
-  logger.debug("Cannot pass all locations to google at once, will split 'meta' into two halves")
+  # logger.debug("Using addGoogleMetaData to get elevation, siteName, and countyName for 'meta'.")
+  for (i in 1:loopNum) {
+    startIndex <- (i-1) * 300 + 1
+    if (i != loopNum) {
+      endIndex <- i * 300
+    } else {
+      endIndex <- nrow(meta)
+    }
+    metaSub <- addGoogleMetadata(meta[startIndex:endIndex,])
+    metaName <- paste("meta",i, sep="")
+    assign(metaName, metaSub)
+  }
+  # logger.debug("Finished appending elevation, siteName and countyName to 'meta'.")
   
-  logger.debug("Using addGoogleMetaData to get elevation, siteName, and countyName for the first half of 'meta'.")
-  meta1 <- addGoogleMetadata(meta1) 
-  logger.debug("Finished appending elevation, siteName and countyName to the first half of 'meta'.")
+  meta <- get(paste("meta", 1, sep=""))
   
-  logger.debug("Using addGoogleMetaData to get elevation, siteName, and countyName for the second half of 'meta'.")
-  meta2 <- addGoogleMetadata(meta2) 
-  logger.debug("Finished appending elevation, siteName and countyName to the second half of 'meta'.")
-  
-  meta <- rbind(meta1, meta2)
+  # combine all the sub-meta's together if any
+  if (loopNum > 1) {
+    for (i in 2:loopNum) {
+      meta <- rbind(meta, get(paste("meta", i, sep="")))
+    }
+  }
   
   logger.debug("Using addMazamaMetaData to get timezone, countryCode and stateCode.")
   meta <- addMazamaMetadata(meta, countryCodes = 'US')
   logger.debug("Finished appending timezone, countryCode and stateCode columns to the dataframe")
 
-  # Add timezones only if the MazamaSpatialUtils package exists. This way we can compile and load this
-  # package even if the MazamaSpatialUtils package is not present.
-  
-  # if ( requireNamespace('MazamaSpatialUtils', quietly = TRUE) ) {
-  #   
-  #   dummy <- getSpatialDataDir()
-  #   logger.debug(paste0('   Determining timezones and stateCodes...\n')) 
-  #   
-  #   meta$timezone <- MazamaSpatialUtils::getTimezone(meta$longitude, meta$latitude, useBuffering=TRUE)
-  #   
-  #   meta$stateCode <- MazamaSpatialUtils::getStateCode(meta$longitude, meta$latitude, countryCodes=c('CA','US','MX'), useBuffering=TRUE)
-  #   
-  # }
-  
-  
   # Create a vector of column names to be included in meta in the order of their inclusion
   columns <- c('monitorID','siteName','latitude','longitude','elevation','timezone','stateCode','Site Num','Parameter Code',
                'POC','Units of Measure','MDL','Method Type','Method Name','State Name','County Name')
   meta <- meta[,columns]
-  rownames(meta) <- meta$monitorID
+  # rownames(meta) <- meta$monitorID
   
   # Make end users lives easier by using normal R names for the columns. (No more "meta$`Parameter Code`")
   names(meta) <- make.names(names(meta))

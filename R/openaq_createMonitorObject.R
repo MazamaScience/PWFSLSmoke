@@ -33,8 +33,14 @@ openaq_createMonitorObject <- function(parameter='pm25',
                                        startdate='', days=1, countryCode='US',
                                        saveFile=NULL) {
   
+  # Sanity check: only one parameter allowed
+  if ( is.null(parameter) || length(parameter) > 1 ) {
+    logger.error("parameter must be one of:  'pm25','pm10','o3','so2','no2','co','bc'")
+    stop(paste0("parameter must be one of:  'pm25','pm10','o3','so2','no2','co','bc'")) 
+  }
+  
   # Sanity check: format of startdate
-  if ( is.null(startdate) | startdate == '') {
+  if ( is.null(startdate) || startdate == '') {
     logger.error("Required parameter 'startdate' is missing")
     stop(paste0("Required parameter 'startdate' is missing.")) 
   } else if ( (as.numeric(startdate) + days) > stringr::str_replace_all(Sys.Date(),'-','') ) {
@@ -46,15 +52,15 @@ openaq_createMonitorObject <- function(parameter='pm25',
   logger.info('Downloading data...')
   df <- openaq_downloadData(parameter, startdate, days, countryCode)
   
-  # Optionally save as a raw .csv file
-  if ( !is.null(saveFile) ) {
-    result <- try(write.csv(df,saveFile),silent = TRUE)
-    if ( class(result)[1] == "try-error" ) {
-      err_msg <- geterrmessage()
-      logger.warn('Unable to save data to local file %s: %s', saveFile, err_msg)
-    }
-    # NOTE:  Processing continues even if we fail to write the local file
+  # Remove any records missing latitude or longitude
+  badLocationMask <- is.na(df$longitude) | is.na(df$latitude)
+  badLocationCount <- sum(badLocationMask)
+  if ( badLocationCount > 0 ) {
+    logger.info('Discarding %s rows with invalid location information', badLocationCount)
+    badLocations <- paste('(',df$longitude[badLocationMask],',',df$latitude[badLocationMask],')',sep='')
+    logger.debug('Bad locations: %s', paste0(badLocations, collapse=", "))
   }
+  df <- df[!badLocationMask,]
   
   # add additional columns to the dataframe
   logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')

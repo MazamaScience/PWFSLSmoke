@@ -22,6 +22,7 @@
 monitorName<-'Plain'
 tlim <- c(20160916,20160920)
 zoom <- 8
+size <- 5
 
 # FUNCTION ------------
 

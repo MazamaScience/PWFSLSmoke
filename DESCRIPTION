@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.8.9
+Version: 0.8.10
 Title: Utilities for Working with PM2.5 Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -30,7 +30,7 @@ Imports:
     futile.logger,
     ggmap,
     httr,
-    leaflet,
+    leaflet (>= 1.0.0),
     lubridate,
     maptools,
     openair,

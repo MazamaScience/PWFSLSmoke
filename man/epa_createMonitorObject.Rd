@@ -4,8 +4,8 @@
 \alias{epa_createMonitorObject}
 \title{Download and Convert Hourly EPA Air Quality Data}
 \usage{
-epa_createMonitorObject(parameterName = "PM2.5", parameterCode = 88101,
-  year = NULL, baseUrl = "http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/")
+epa_createMonitorObject(parameterName = NULL, parameterCode = NULL,
+  year = NULL, baseUrl = "https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/")
 }
 \arguments{
 \item{parameterName}{name of parameterName.}

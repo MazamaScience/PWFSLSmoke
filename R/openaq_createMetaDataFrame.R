@@ -29,6 +29,7 @@ openaq_createMetaDataframe <- function(df){
     stop(paste0("No 'monitorID' column found in 'df' dataframe."))
   }
   
+  # Pull out unique monitors
   df <- df[!duplicated(df$monitorID),]
   
   logger.debug('Dataframe contains %d unique monitorID(s)', nrow(df))
@@ -36,7 +37,7 @@ openaq_createMetaDataframe <- function(df){
   meta <- data.frame(matrix(nrow = nrow(df), ncol = 7), row.names = df$monitorID)
   
   names(meta) <- c('siteName', 'latitude', 'longitude', 'timezone',
-                'countryCode', 'stateCode', 'monitorID')
+                   'countryCode', 'stateCode', 'monitorID')
   
   for (name in names(meta)[-c(1,4,5)]) {
     meta[[name]] <- df[[name]]
@@ -44,7 +45,7 @@ openaq_createMetaDataframe <- function(df){
   meta$siteName <- df$location
   meta$countryCode <- 'US'
   meta$timezone <- MazamaSpatialUtils::getTimezone(meta$longitude,meta$latitude,useBuffering = T)
-
+  
   logger.debug("'meta' dataframe has %d rows and %d columns", nrow(meta), ncol(meta))
   
   return(meta)
