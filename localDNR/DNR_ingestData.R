@@ -112,6 +112,12 @@ m <- stringr::str_sub(timestamp, -2,-1)
 ignition_timestamp <- paste0(datestamp,' ',h,':',m,':00')
 ignition_timestamp <- ifelse(stringr::str_detect(ignition_timestamp,"NA"), NA, ignition_timestamp)
 janice_SMA$Ignition.time <- lubridate::ymd_hms(ignition_timestamp, tz="America/Los_Angeles")
+# Some Ignition times are missing. For these we borrow the datetime, change timezones and set hours to 12:00
+missingMask <- which(is.na(janice_SMA$Ignition.time))
+ignitionTimes <- janice_SMA$datetime[missingMask]
+lubridate::tz(ignitionTimes) <- "America/Los_Angeles"
+lubridate::hour(ignitionTimes) <- 12
+janice_SMA$Ignition.time[missingMask] <- ignitionTimes
 
 # Clean up
 rm(allMissingMask)
@@ -121,7 +127,9 @@ rm(datestamp)
 rm(filepath)
 rm(h)
 rm(ignition_timestamp)
+rm(ignitionTimes)
 rm(m)
+rm(missingMask)
 rm(pilot)
 rm(timestamp)
 
