@@ -42,7 +42,6 @@ if (monitorID %in% names(airsis_monitors$data)) {
 } else {
   # stop warnings message
 }
-source
 
 # Assign lat/lon for map center, based on monitor name passed in
 lon <- mon$meta$longitude
