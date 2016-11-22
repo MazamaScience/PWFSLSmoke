@@ -25,17 +25,42 @@ library(ggmap)
 # Temporary variables for testing. Eventually will call in variables using function.
 if ( FALSE ) {
   
-  name <- "Plain"
-  lon <- airsis_monitors$meta[monitorDict[[name]],'longitude']
-  lat <- airsis_monitors$meta[monitorDict[[name]],'latitude']
-  zoom <- 10
-  local_tlim <- c(20160912, 20160918)
+  unique_unit <- paste0(janice_SMA$Unit,'_',strftime(janice_SMA$Ignition.time,"%Y%m%d"))
   
+  for ( row in 1:nrow(janice_SMA) ) {
+    
+    unit <- make.names(unique_unit[row])
+    lon <- janice_SMA$Longitude[row]
+    lat <- janice_SMA$Latitude[row]
+    tons <- janice_SMA$Accomplished.Tons.from.FS.fireportal[row]
+    ignitionTime <- janice_SMA$Ignition.time[row]
+    ignitionTitleString <- strftime(ignitionTime,"%b %d + 4 days")
+    tlim_start <- strftime(ignitionTime,"%Y%m%d")
+    tlim_end <- strftime(ignitionTime + lubridate::ddays(5),"%Y%m%d")
+    local_tlim <- as.numeric(c(tlim_start,tlim_end))
+    title <- paste0(unit,' (',tons,' tons): ',ignitionTitleString)
+    zoom <- 10
+    map_source <- 'google'
+    map_type <- 'terrain'
+    
+    filename <- file.path(getwd(),paste0(unit,'.png'))
+    ###png(filename=unit, width=1280, height=1280)
+    finalMap <- DNR_ggmapJC(title, lon, lat, zoom, local_tlim, map_source, map_type)
+    ###print(finalMap)
+    ###dev.off()
+    
+    ggsave(filename, finalMap, device="png", width=6, height=6)
+    
+  }
+  
+
 }
 
 # FUNCTION ------------
 
-DNR_ggmapJC <- function(name="Plain", lon=-121, lat=48, zoom=10, local_tlim=c(20160916,20160920)) {
+DNR_ggmapJC <- function(title="Title", lon=-121, lat=48, zoom=10,
+                        local_tlim=c(20160916,20160920),
+                        map_source='google', map_type='terrain') {
   
   # Get UTC version of local tlim
   tlim <- parseDatetime(local_tlim)
@@ -73,7 +98,7 @@ DNR_ggmapJC <- function(name="Plain", lon=-121, lat=48, zoom=10, local_tlim=c(20
   # NOTE: There appears to be an issue with stamen maps, presumably because the URL actually returns
   # NOTE: a png instead of a jpg, which breaks the get_map function... So, just use google for now.
   
-  initialMap <- get_map(location=c(lon,lat), source="google",maptype="terrain", zoom=zoom)
+  initialMap <- get_map(location=c(lon,lat), source=map_source, maptype=map_type, zoom=zoom)
   initialMap <- ggmap(initialMap)
   
   #coordBounds <- initialMap$data
@@ -81,13 +106,14 @@ DNR_ggmapJC <- function(name="Plain", lon=-121, lat=48, zoom=10, local_tlim=c(20
   # CREATE FINAL MAP -----------------
   
   eventSize <- .bincode(zoom,c(0,8:18)) # TODO: Improve event pixel sizing
-  janiceSize <- .bincode(janice_SMASubset$Accomplished.Tons.from.FS.fireportal,c(0,250,500,1000,1500,4000))+6
+  ###janiceSize <- .bincode(janice_SMASubset$Accomplished.Tons.from.FS.fireportal,c(0,250,500,1000,1500,4000))+6
   col_airsisDaily <- AQI$colors[.bincode(airsis_maxDailyMean, AQI$breaks_24)]
   col_airnowDaily <- AQI$colors[.bincode(airnow_maxDailyMean, AQI$breaks_24)]
+  shape_prescribedBurn <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,17,2)
   
   finalMap <- initialMap +
     
-    ggtitle(paste("Fires Near",name,"\n",local_tlim[1],"thru",local_tlim[2]-1)) +
+    ggtitle(title) +
     
     geom_point(data=airsis$meta, # AIRSIS
                aes(x=longitude, y=latitude),
@@ -112,8 +138,8 @@ DNR_ggmapJC <- function(name="Plain", lon=-121, lat=48, zoom=10, local_tlim=c(20
                size=eventSize, shape=0, color="red") +
     
     geom_point(data=janice_SMASubset, # Rx burns from Janice's database, sized by tons consumed
-               aes(x=Longitude, y=Latitude, size=janiceSize),
-               shape=17, color="orange")
+               aes(x=Longitude, y=Latitude),
+               size=6, shape=shape_prescribedBurn, color="red")
     
     
   
@@ -127,8 +153,8 @@ DNR_ggmapJC <- function(name="Plain", lon=-121, lat=48, zoom=10, local_tlim=c(20
   
   #scale_size_area(breaks=c(250,500,750,1000),labels = c(250,500,750,1000), name = "Legend Title...") #legend
   
-  finalMap
+  ###suppressWarnings( print(finalMap) )
+  return(finalMap)
   
-  # suppressWarnings(expr)
-  
+
 }
