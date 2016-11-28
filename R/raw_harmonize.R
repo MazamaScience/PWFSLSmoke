@@ -8,25 +8,29 @@
 
 # TEMP BACKGROUND FILES FOR TESTING, ETC =================
 
-library(PWFSLSmoke)
-library(openair)
-setwd("~/Projects/PWFSLSmoke/")
-
-load("localData/airsis_rawList.RData")
-
-names(airsis_rawList)
-lapply(airsis_rawList, names)
-
-#raw <- airsis_rawList$Plain #EBAM AIRSIS
-#raw <- airsis_rawList$Naches #ESAM AIRSIS
-raw <- airsis_rawList$Usk #ESAM WRCC
-
-rawSource <- "WRCC"
-
-threeExamples <- list(airsis_rawList$Plain,airsis_rawList$KettleFalls,airsis_rawList$Usk)
-names(threeExamples) <- c("EBAM_AIRSIS","ESAM_AIRSIS","ESAM_WRCC")
-lapply(threeExamples, names)
-lapply(threeExamples, head)
+if ( FALSE ) {
+ 
+  library(PWFSLSmoke)
+  library(openair)
+  setwd("~/Projects/PWFSLSmoke/")
+  
+  load("localData/airsis_rawList.RData")
+  
+  names(airsis_rawList)
+  lapply(airsis_rawList, names)
+  
+  #raw <- airsis_rawList$Plain #EBAM AIRSIS
+  #raw <- airsis_rawList$Naches #ESAM AIRSIS
+  raw <- airsis_rawList$Usk #ESAM WRCC
+  
+  rawSource <- "WRCC"
+  
+  threeExamples <- list(airsis_rawList$Plain,airsis_rawList$KettleFalls,airsis_rawList$Usk)
+  names(threeExamples) <- c("EBAM_AIRSIS","ESAM_AIRSIS","ESAM_WRCC")
+  lapply(threeExamples, names)
+  lapply(threeExamples, head)
+  
+}
 
 
 # FUNCTION ================================
