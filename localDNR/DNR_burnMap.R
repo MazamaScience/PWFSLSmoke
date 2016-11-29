@@ -106,7 +106,9 @@ DNR_burnMap <- function(title="Title", lon=-121, lat=48, zoom=10,
   col_airnowDaily <- AQI$colors[airnow$meta$maxAQILevel]
   col_blueskyEvents <- rep("red",nrow(bluesky_eventsSubset))
   col_janiceSMA <- rep("red", nrow(janice_SMASubset))
-  pch_janiceSMA <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,17,2)
+  pch_janiceSMA <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,2,2)
+  lwd_janiceSMA <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,4,2)
+  lwd_events <- 1.5
   
   # ----- Generate map ----------------------------------------------
   
@@ -116,7 +118,7 @@ DNR_burnMap <- function(title="Title", lon=-121, lat=48, zoom=10,
   # AIRSIS max daily mean
   PlotOnStaticMap(myMap, airsis$meta$latitude, airsis$meta$longitude,
                   add=FALSE, # First plot uses add=FALSE
-                  mar=c(2,2,4,6),
+                  mar=c(1,1,4,10),
                   cex=5, pch=16, col=col_airsisDaily)
   
   # AIRSIS max hourly values
@@ -139,14 +141,27 @@ DNR_burnMap <- function(title="Title", lon=-121, lat=48, zoom=10,
   # Bluesky events as red squares
   PlotOnStaticMap(myMap, bluesky_eventsSubset$latitude, bluesky_eventsSubset$longitude,
                   add=TRUE,
-                  cex=cex_events, pch=0, col="red", lwd=1)
+                  cex=cex_events, pch=0, col="red", lwd=lwd_events)
   
   # Rx burns from Janice's database
   PlotOnStaticMap(myMap, janice_SMASubset$Latitude, janice_SMASubset$Longitude,
                   add=TRUE,
-                  cex=cex_janiceSMA, pch=pch_janiceSMA, col="red", lwd=2)
+                  cex=cex_janiceSMA, pch=pch_janiceSMA, col="red", lwd=lwd_janiceSMA)
   
   # ----- Annotations ---------------------------------------------------------
   
+  title(title)
+  
+  legend(330, 320, bty='n', title="Max Daily AQI", xpd=NA,
+         pch=16, pt.cex=2, col=AQI$colors[1:3],
+         legend=AQI$names[1:3])
+  
+  legend(330, 200, bty='n', title="Max Hourly PM2.5", xpd=NA,
+         pch='#',
+         legend=c('over daily AQI'))
+  
+  legend(330, 120, bty='n', title="Fires", xpd=NA,
+         pch=c(0,2,2), pt.cex=1.5, pt.lwd=c(1.5,2,4), col="red",
+         legend=c('Satellite','Prescribed','Prescribed 24hr'))
   
 }
