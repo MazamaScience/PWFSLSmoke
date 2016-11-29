@@ -117,10 +117,10 @@ DNR_ggmap <- function(title="Title", lon=-121, lat=48, zoom=10,
   col_blueskyEvents <- rep("red",nrow(bluesky_eventsSubset))
   col_janiceSMA <- rep("red", nrow(janice_SMASubset))
   shape_prescribedBurn <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,17,2)
-  
-  # Needed for discrete_scale
-#  AQIColorPalette <- function(n) { return(AQI$colors[1:n]) }
-  
+
+  # Neeeded for legend
+  maxLevels <- max(c(airsis$meta$maxAQILevel,airnow$meta$maxAQILevel), na.rm=TRUE)
+
   finalMap <- initialMap +
     
     ggtitle(title) +
@@ -159,16 +159,16 @@ DNR_ggmap <- function(title="Title", lon=-121, lat=48, zoom=10,
     # Rx burns from Janice's database, sized by tons consumed
     geom_point(data=janice_SMASubset,
                aes(x=Longitude, y=Latitude),
-               size=6, shape=shape_prescribedBurn, col="red", stroke=2) +
+               size=6, shape=shape_prescribedBurn, col="red", stroke=2)
     
     # Legend
     ###theme(legend.title = element_text(colour="chocolate", size=16, face="bold"))
     # guides(color = guide_legend(override.aes = list(size = 5))) +
     # scale_fill_manual(values = c('lightskyblue1', 'lightpink'),
     #                   labels = c('HQ', 'LQ')) +
-    scale_fill_discrete(name="Max Daily AQI",
-                        ###palette=AQIColorPalette,
-                        labels=AQI$names)
+    # scale_colour_manual(name="Max Daily AQI",
+    #                     values=AQI$colors[1:maxLevels],
+    #                     labels=AQI$names[1:maxLevels])
   
     
     return(finalMap)
