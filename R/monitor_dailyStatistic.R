@@ -19,9 +19,8 @@
 #' monitor_timeseriesPlot(WA_smoky_dailyMean, type='s')
 #' }
 
-# TODO:  Add an argument specifying the minimum number of hours required per day
-
-monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE) {
+monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,
+                                   minHours=24) {
   
   # Pull out dataframes
   data <- ws_monitor$data
@@ -39,7 +38,7 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   timeInfo <- timeInfo(data[,1], meta$longitude[1], meta$latitude[1], meta$timezone[1])
   
   # Create the day vector
-  day <- 0
+  day <- rep(0,nrow(timeInfo))
   dayNum <- 1
   for ( i in 1:nrow(timeInfo) ) {
     
@@ -68,6 +67,13 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   df <- stats::aggregate(data, by=list(day), FUN=FUN, na.rm=na.rm)
   df$datetime <- meanDF$datetime
   
+  # Check on the number of hours per day
+  # NOTE:  The table will use day # as the names. We create hoursPerday
+  # NOTE:  which is a named vector whose names will match df$Group.1.
+  hoursPerDay <- unlist(table(day))
+  fullDayMask <- hoursPerDay[as.character(df$Group.1)] >= minHours
+  df[!fullDayMask,names(data)] <- NA
+  
   # Only retain the original columns (omit "Group.1", etc.)
   df <- df[,names(data)]
   
@@ -75,7 +81,6 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   lubridate::hour(df$datetime) <- 12
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00
-  
 
   # Create a new ws_monitor object
   ws_monitor <- list(meta=meta, data=df)
