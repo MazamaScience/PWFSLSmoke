@@ -3,13 +3,13 @@
 # outline:
 # get dataframe in hand
 # look at dataframe to determine monitor type and structure
-# create new dataframe with select columns and data formatted to consistent standard
+# add new columns to dataframe with select columns and data formatted to consistent standard
 # return new dataframe
 
 # TEMP BACKGROUND FILES FOR TESTING, ETC =================
 
 if ( FALSE ) {
- 
+  
   library(PWFSLSmoke)
   library(openair)
   setwd("~/Projects/PWFSLSmoke/")
@@ -19,100 +19,94 @@ if ( FALSE ) {
   names(airsis_rawList)
   lapply(airsis_rawList, names)
   
-  #raw <- airsis_rawList$Plain #EBAM AIRSIS
-  #raw <- airsis_rawList$Naches #ESAM AIRSIS
-  raw <- airsis_rawList$Usk #ESAM WRCC
-  
-  rawSource <- "WRCC"
-  
   threeExamples <- list(airsis_rawList$Plain,airsis_rawList$KettleFalls,airsis_rawList$Usk)
   names(threeExamples) <- c("EBAM_AIRSIS","ESAM_AIRSIS","ESAM_WRCC")
   lapply(threeExamples, names)
   lapply(threeExamples, head)
   
+  raw <- airsis_rawList$Plain; rawSource <- "AIRSIS" #EBAM AIRSIS
+  #raw <- airsis_rawList$Naches; rawSource <- "AIRSIS" #ESAM AIRSIS
+  #raw <- airsis_rawList$Usk; rawSource <- "WRCC" #ESAM WRCC
+  
+  # PLAYIMG W/ OPENAIR PLOTS
+  
+  head(df)
+  
+  windRose(df,ws = "windSpeed",wd = "windDir")
+  
+  #pollutionRose()
+  
 }
-
 
 # FUNCTION ================================
 
 raw_harmonize <- function(raw,rawSource="AIRSIS") {
-
-# dataframe is in hand; let's go about identifying the type
-monType <- paste0(raw$monitorType[1],"_",rawSource,sep="")
-
-df <- data.frame()
-
-# NOTE: NEED TO CHECK UNITS OF MEASURE!!!!
-# NOTE: should add check to ensure that data matches the type passed in (e.g. EBAM_AIRSIS); check col names
-
-if (monType=="EBAM_AIRSIS") {
-  # add line here to check for data consistency
-  df <- data.frame(raw$Alias,
-                   raw$datetime,
-                   raw$AT,
-                   raw$RHx,
-                   raw$W.S,
-                   raw$W.D,
-                   raw$Flow,
-                   raw$RHi,
-                   raw$BV,
-                   raw$Alarm,
-                   raw$COncRT,
-                   raw$monitorType,
-                   raw$Serial.Number,
-                   raw$deploymentID,
-                   raw$medoidLon,
-                   raw$medoidLat,
-                   "AIRSIS")
-} else if (monType=="ESAM_AIRSIS") {
-  # add line here to check for data consistency
-  df <- data.frame(raw$Alias,
-                   raw$datetime,
-                   raw$AT.C.,
-                   raw$RHx...,
-                   raw$WS.M.S.,
-                   raw$WD.Deg.,
-                   raw$Flow.l.m.,
-                   raw$RHi...,
-                   raw$BV.V.,
-                   raw$Alarm,
-                   raw$Conc.mg.m3.,
-                   raw$monitorType,
-                   raw$Serial.Number,
-                   raw$deploymentID,
-                   raw$medoidLon,
-                   raw$medoidLat,
-                   "AIRSIS")
-} else if (monType=="ESAM_WRCC") {
-  # add line here to check for data consistency
-  df <- data.frame(raw$monitorName,
-                   raw$datetime,
-                   raw$AvAirTemp,
-                   raw$RelHumidity,
-                   raw$WindSpeed,
-                   raw$WindDir,
-                   raw$AvAirFlw,
-                   raw$SensorIntRH,
-                   raw$BatteryVoltage,
-                   raw$Alarm,
-                   raw$ConcRT,
-                   raw$monitorType,
-                   raw$SerialNumber,
-                   raw$deploymentID,
-                   raw$medoidLon,
-                   raw$medoidLat,
-                   "WRCC")
-} else {
+  
+  # dataframe is in hand; let's go about identifying the type
+  monType <- paste0(raw$monitorType[1],"_",rawSource,sep="")
+  
+  df <- raw
+  
+  # NOTE: NEED TO CHECK UNITS OF MEASURE!!!!
+  # NOTE: should add check to ensure that data matches the type passed in (e.g. EBAM_AIRSIS); check col names
+  # NOTE: If names don't match expected, we'll get NULL values for an entire field, which isn't ideal.
+  
+  # NOTE: Could improve logic below to automate a determination as to what kind of data we're working with...
+  # NOTE: doing so would eliminate the need to pass in the source; instead just determine source based on type and fields
+  
+  if (monType=="EBAM_AIRSIS") {
+    # add line here to check for data consistency
+    
+    df$airTemp <- raw$AT
+    df$relHum <- raw$RHx
+    df$windSpeed <- raw$W.S
+    df$windDir <- raw$W.D
+    df$pm25 <- raw$COncRT #NOTE: Need to review this field for appropriateness, and units
+    df$longitude <- raw$medoidLon
+    df$latitude <- raw$medoidLat
+    #df$barPress <- NULL
+    df$dataSource <- "AIRSIS"
+    
+  } else if (monType=="ESAM_AIRSIS") {
+    # add line here to check for data consistency
+    
+    df$airTemp <- raw$AT.C.
+    df$relHum <- raw$RHx...
+    df$windSpeed <- raw$WS.M.S.
+    df$windDir <- raw$WD.Deg.
+    df$pm25 <- raw$Conc.mg.m3. #NOTE: Need to review this field for appropriateness, and units
+    df$longitude <- raw$medoidLon
+    df$latitude <- raw$medoidLat
+    df$barPress <- (raw$BP.PA.)/100
+    df$dataSource <- "AIRSIS"
+    
+  } else if (monType=="ESAM_WRCC") {
+    # add line here to check for data consistency
+    
+    df$airTemp <- raw$AvAirTemp
+    df$relHum <- raw$RelHumidity
+    df$windSpeed <- raw$WindSpeed
+    df$windDir <- raw$WindDir
+    df$pm25 <- raw$ConcRT #NOTE: Need to review this field for appropriateness, and units
+    df$longitude <- raw$medoidLon
+    df$latitude <- raw$medoidLat
+    df$barPress <- raw$BaromPress
+    df$dataSource <- "WRCC"
+    
+  } else {
     print("Warning - Type not supported")
+  }
+  
+  # could possibly pull out last six columns (meta data) into a $meta field like the ws_monitor object.
+  # Could call it raw_monitor (as opposed to ws_monitor). Only difference is that there is more than one
+  # column of data for each monitor, so this type would not be as amendable to combining with other monitors
+  # in the same way as the ws_monitor object.
+  
+  # NOTE: There is other data available for most (but not all monitors) that could be included, if we are 
+  # NOTE: OK with some monitor types always having NULLS in certain fields.
+  
+  return(df)
+  
 }
 
-names(df) <- c("MonitorName","DateTime","AirTemperature(C)","RH_External(%)","WindSpeed(m/s)",
-               "WindDirection(deg)","FlowRate(l/m)","RH_Internal(%)","Voltage(V)","AlarmStatus",
-               "RTConc(mg/m3)","MonitorType","SerialNumber","DeploymentID","Longitude","Latitude",
-               "DataSource")
 
-# could possibly pull out last six columns (meta data) into a $meta field like the ws_monitor object
-
-return(df)
-
-}

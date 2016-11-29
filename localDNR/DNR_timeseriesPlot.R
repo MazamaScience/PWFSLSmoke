@@ -38,9 +38,9 @@
 
 if (FALSE) {
   
-  for (monitorName in names(monitorDict)) {
-    png(filename=paste0(monitorName,'.png'), width=1200, height=900)
-    DNR_timeseriesPlot(monitorName)
+  for (name in names(monitorDict)) {
+    png(filename=paste0(name,'.png'), width=1200, height=900)
+    DNR_timeseriesPlot(name)
     dev.off()
   }
   
@@ -87,9 +87,6 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   # ----- Data Preparation ----------------------------------------------------
   
-  # Cardinal Directions for use with bearings (0=N, clockwise)
-  cardinalDirections <- c('N','NE','E','SE','S','SW','W','NW')
-
   # Pull out a single monitor
   monitorID <- monitorDict[[monitorName]]
   if ( monitorID %in% rownames(airsis_monitors$meta) ) {
@@ -114,15 +111,6 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   # Get nearby prescribed burns
   prescribedDistance <- distance(ws_monitor$meta$longitude, ws_monitor$meta$latitude, janice_SMA$Longitude, janice_SMA$Latitude)
-  janice_SMA$distanceToMonitor <- prescribedDistance
-  # Get the bearing
-  p1 <- as.matrix(janice_SMA[,c('Longitude','Latitude')])
-  p2 <- c(ws_monitor$meta$longitude, ws_monitor$meta$latitude)
-  bearing <- geosphere::bearing(p1,p2)
-  janice_SMA$bearingToMonitor <- bearing
-  direction <- cardinalDirections[ .bincode(bearing-22.5, seq(-23,360,45))]
-  janice_SMA$directionToMonitor <- direction
-  # Subset based on distance
   distanceMask <- prescribedDistance <= fireDistance
   localTime <- lubridate::with_tz(janice_SMA$datetime, ws_monitor$meta$timezone)
   timeMask <- localTime >= tlo & localTime <= thi
@@ -144,15 +132,6 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
   
   # Get nearby events
   eventsDistance <- distance(ws_monitor$meta$longitude, ws_monitor$meta$latitude, bluesky_events$longitude, bluesky_events$latitude)
-  bluesky_events$distanceToMonitor <- eventsDistance
-  # Get the bearing
-  p1 <- as.matrix(bluesky_events[,c('longitude','latitude')])
-  p2 <- c(ws_monitor$meta$longitude, ws_monitor$meta$latitude)
-  bearing <- geosphere::bearing(p1,p2)
-  bluesky_events$bearingToMonitor <- bearing
-  direction <- cardinalDirections[ .bincode(bearing-22.5, seq(-23,360,45))]
-  bluesky_events$directionToMonitor <- direction
-  # Subset based on distance
   distanceMask <- eventsDistance <= fireDistance
   localTime <- parseDatetime(bluesky_events$datestamp, timezone=ws_monitor$meta$timezone)
   timeMask <-  localTime >= tlo & localTime <= thi
@@ -162,11 +141,6 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
     timeInfo <- timeInfo(as.POSIXct(events$datetime), ws_monitor$meta$longitude, ws_monitor$meta$latitude, ws_monitor$meta$timezone)
     events$solarnoon <- timeInfo$solarnoon
   }
-  
-  # ----- Save CSV version of burns and events displayed in the plot ----------
-  
-  readr::write_csv(prescribedBurns, paste0(monitorName,'_prescribd_burns.csv'))
-  readr::write_csv(events, paste0(monitorName,'_event_detects.csv'))
   
   # ----- Plotting ------------------------------------------------------------
   
