@@ -28,14 +28,6 @@ if ( FALSE ) {
   #raw <- airsis_rawList$Naches; rawSource <- "AIRSIS" #ESAM AIRSIS
   #raw <- airsis_rawList$Usk; rawSource <- "WRCC" #ESAM WRCC
   
-  # PLAYIMG W/ OPENAIR PLOTS
-  
-  head(df)
-  
-  windRose(df,ws = "windSpeed",wd = "windDir")
-  
-  #pollutionRose()
-  
 }
 
 # FUNCTION ================================
