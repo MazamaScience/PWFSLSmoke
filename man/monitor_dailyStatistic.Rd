@@ -5,7 +5,7 @@
 \title{Calculate Daily Statistics for each Monitor in a ws_monitor Object}
 \usage{
 monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
-  na.rm = TRUE)
+  na.rm = TRUE, minHours = 24)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}

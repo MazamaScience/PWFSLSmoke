@@ -1,188 +1,167 @@
-###############################################################
-## By setting a customized time window, this script will show
-## prescribed burns, satelite-detected burns, temporary monitors
-## andpermanent monitors in WA                                                           
-###############################################################
+###############################################################################
+# DNR Pilot Burn Pojrect (2928)
+#
+# The R code for the DNR pilot burn project data analysis is broken down into 
+# the following steps, each associated with a separate file:
+#
+# * DNR_downloadData.R   -- download, QC, reshape and convert into .RData format
+# * DNR_ingestData.R     -- ingest previously converted data and peroform any cleanup
+#                           (e.g. convert negative values of PM2.5 to 0.0)
+#
+# Once all of this work is done, we are ready for the plotting scripts:
+#
+# * DNR_timeseriesPlot.R -- timeseries plot for a monitor of interest
+# * DNR_burMap.R         -- map for a burn of interest
+###############################################################################
 
-# TODO:  monitor colors should be maximum daily average
-# TODO:  monitor numeric value should be maximum hourly value
+# This DNR_burnMap.R script defines a function for creating maps for a named
+# prescribed burn with markers for nearby fires and monitoring locations.
 
-library(magrittr)
-library(maps)
-library(PWFSLSmoke)
-library(classInt)
+# Load and clean up all required data with:
+#   source('localDNR/DNR_ingestData.R')
 
-# REMINDER: run DNR_ingestData.R to get janice_SMA
-# SMAsizeBy can take 'proposed', 'accomplished' and 'accomplishedFS'
 
-# Variable definition for debugging
-if ( FALSE) {
+if ( FALSE ) {
   
-  startdate = 20160915
-  timeWindow = 72
-  FUN = max
-  SMAsizeBy='accomplishedFS'
-  show_airsis = TRUE
-  show_airnow = TRUE
-  show_SMA = TRUE
-  show_bluesky = TRUE
-  show_monitorLegend = TRUE
-  show_burnLegend = TRUE
-  show_title = TRUE
+  library(PWFSLSmoke)
+  library(RgoogleMaps)
+  
+  unique_unit <- paste0(janice_SMA$Unit,'_',strftime(janice_SMA$Ignition.time,"%Y%m%d"))
+  
+  for ( row in 1:nrow(janice_SMA) ) {
+    
+    unit <- make.names(unique_unit[row])
+    lon <- janice_SMA$Longitude[row]
+    lat <- janice_SMA$Latitude[row]
+    tons <- janice_SMA$Accomplished.Tons.from.FS.fireportal[row]
+    ignitionTime <- janice_SMA$Ignition.time[row]
+    ignitionTitleString <- strftime(ignitionTime,"%b %d + 4 days")
+    tlim_start <- strftime(ignitionTime,"%Y%m%d")
+    tlim_end <- strftime(ignitionTime + lubridate::ddays(5),"%Y%m%d")
+    local_tlim <- as.numeric(c(tlim_start,tlim_end))
+    title <- paste0(unit,' (',tons,' tons): ',ignitionTitleString)
+    zoom <- 10
+    maptype <- 'terrain'
+    
+    filename <- file.path(getwd(),paste0(unit,'.png'))
+    basemap <- stringr::str_replace(filename,"\\.png","_base.png")
+    png(filename=filename, width=640, height=640)
+    DNR_burnMap(title, lon, lat, zoom, local_tlim, maptype, basemap)
+    dev.off()
+    
+  }
+  
   
 }
 
-DNR_burnMap <- function(startdate = 20160915, timeWindow = 48, FUN = max, SMAsizeBy='accomplishedFS',
-                         show_airsis = TRUE, show_airnow = TRUE, show_SMA = TRUE, show_bluesky = TRUE,
-                         show_monitorLegend = TRUE, show_burnLegend = TRUE, show_title = TRUE) {
+# FUNCTION ------------
+
+DNR_burnMap <- function(title="Title", lon=-121, lat=48, zoom=10,
+                        local_tlim=c(20160916,20160920),
+                        maptype='terrain',
+                        basemap) {
   
-  #------------------------------------------ styles ----------------------------------------------
+  # Get UTC version of local tlim
+  tlim <- parseDatetime(local_tlim)
+  utc_start <- tlim[1]
+  utc_end <- tlim[2]
+  lubridate::tz(tlim) <- "America/Los_Angeles"
+  tlim <- strftime(tlim, "%Y%m%d%H", tz="UTC")
   
-  # color palette for both airsis and airnow monitors
-  col_monitor <- AQI$colors  # can delet this since only use AQI colors
+  # NOTE:  tlim[2] is the day after the last full day of data
   
-  #--------- airsis ---------
-  breaks_airsis = AQI$breaks_24
-  pch_airsis = 16
-  cex_airsis = 3
-  lwd_airsis = 1
+  # NOTE:  monitor data has "UTC" timestamps
+  airsis <- monitor_subset(airsis_monitors, tlim=tlim)
+  airnow <- monitor_subset(airnow_monitors, tlim=tlim)
   
-  #-------- airnow -----------
-  breaks_airnow = AQI$breaks_24
-  pch_airnow = 16
-  cex_airnow = 1.5
-  lwd_airnow = 1
+  airsis_daily <- monitor_dailyStatistic(airsis, mean, dayStart="midnight")
+  airnow_daily <- monitor_dailyStatistic(airnow, mean, dayStart="midnight")
   
-  #---------- SMA ------------
-  SMA_breaksBy = 'quantile'
-  pch_SMA = 2
-  lwd_SMA = 3
-  col_SMA = 'red'
+  # Add daily and hourly max to metadata
+  airsis$meta$maxHourly <- apply(airsis$data[,-1], 2, max, na.rm=TRUE)
+  airsis$meta$maxDailyMean <- apply(airsis_daily$data[,-1], 2, max, na.rm=TRUE)
+  airsis$meta$maxAQILevel <- .bincode(airsis$meta$maxDailyMean, AQI$breaks_24)
   
-  #-------- satelite ---------
-  pch_bluesky = 17
-  cex_bluesky = 1
-  lwd_bluesky = 1
-  col_bluesky = 'grey50'
+  # Add daily and hourly max to metadata
+  airnow$meta$maxHourly <- apply(airnow$data[,-1], 2, max, na.rm=TRUE)
+  airnow$meta$maxDailyMean <- apply(airnow_daily$data[,-1], 2, max, na.rm=TRUE)
+  airnow$meta$maxAQILevel <- .bincode(airnow$meta$maxDailyMean, AQI$breaks_24)
   
+  # NOTE:  events data has "UTC" timestamps
+  afterStart <- as.POSIXct(bluesky_events$datetime, tz="UTC") >= utc_start
+  beforeEnd <- as.POSIXct(bluesky_events$datetime, tz="UTC") <= utc_end
+  bluesky_eventsSubset <- bluesky_events[afterStart & beforeEnd, ]
   
-  #------------------------------------------ data processing ----------------------------------------------
-  if(SMAsizeBy == 'proposed'){
-    SMAsizeBy = "Proposed.Tons"
-  } else if (SMAsizeBy == 'accomplished') {
-    SMAsizeBy = "Accomplished.Tons"
-  } else if (SMAsizeBy == "accomplishedFS") {
-    SMAsizeBy = "Accomplished.Tons.from.FS.fireportal"
-  } else {
-    stop(paste("Incorrect value for parameter 'SMAsizeBy'."))
-  }
+  # NOTE:  janice_SMA has "UTC" timestamps
+  afterStart <- janice_SMA$datetime >= utc_start
+  beforeEnd <- janice_SMA$datetime <= utc_end
+  janice_SMASubset <- janice_SMA[afterStart & beforeEnd, ]
   
-  # load necessary data objects
-  load("localData/airsis_monitorList.RData")  #mobile monitors
-  load("localData/airnow_monitors.RData")  #permanent monitors     
-  load("localData/bluesky_eventsList.RData")  #satelite detectors
+  eventSize <- .bincode(zoom,c(0,8:18)) # TODO: Improve event pixel sizing
+  cex_events <- 1.5 # for zoom level 10
+  cex_janiceSMA <- 4
+  ###janiceSize <- .bincode(janice_SMASubset$Accomplished.Tons.from.FS.fireportal,c(0,250,500,1000,1500,4000))+6
+  col_airsisDaily <- AQI$colors[airsis$meta$maxAQILevel]
+  airsis$meta$AQIColor <- col_airsisDaily
+  col_airnowDaily <- AQI$colors[airnow$meta$maxAQILevel]
+  col_blueskyEvents <- rep("red",nrow(bluesky_eventsSubset))
+  col_janiceSMA <- rep("red", nrow(janice_SMASubset))
+  pch_janiceSMA <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,2,2)
+  lwd_janiceSMA <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,4,2)
+  lwd_events <- 1.5
   
-  #####
-  if (FALSE) {
-    airsis_monitors <- monitor_combine(airsis_monitorList)
-    airsis_dailyMean <- monitor_dailyStatistic(airsis_monitors, FUN=mean, dayStart="midnight")
-    enddate <- strftime(parseDatetime(startdate) + lubridate::ddays(3), "%Y%m%d")
-    a <- monitor_subset(airsis_monitors, tlim=c(startdate,enddate))
-    amax <- apply(a$data[,-1], 2, max)
-    b <- monitor_subset(airsis_dailyMean, tlim=c(startdate,enddate))
-    bmax <- apply(b$data[,-1], 2, max)
-  }
-  #####
+  # ----- Generate map ----------------------------------------------
   
-  startDate <- strptime(as.character(startdate),'%Y%m%d', tz='UTC') + 7*60*60
-  endDate <- startDate + timeWindow*60*60
+  myMap <- GetMap(center=c(lat,lon), zoom=zoom, maptype=maptype,
+                  destfile=basemap);
   
-  #---------- process airsis ----------
-  airsisMonitorDF <- data.frame(matrix(nrow = length(airsis_monitorList), ncol = 3))
-  names(airsisMonitorDF) <- c("longitude", "latitude", "MaxPm25")
-  row.names(airsisMonitorDF) <- names(airsis_monitorList)
-  for (i in 1:nrow(airsisMonitorDF)) {
-    airsisMonitorDF$longitude[i] <- airsis_monitorList[[i]]$meta$longitude
-    airsisMonitorDF$latitude[i] <- airsis_monitorList[[i]]$meta$latitude
-    airsisIndexes <- intersect(which(airsis_monitorList[[i]]$data$datetime >= startDate),
-                               which(airsis_monitorList[[i]]$data$datetime <= endDate))
-    airsisMonitorDF$MaxPm25[i] <- FUN(airsis_monitorList[[i]]$data[,2][airsisIndexes], na.rm=TRUE)
-  }
+  # AIRSIS max daily mean
+  PlotOnStaticMap(myMap, airsis$meta$latitude, airsis$meta$longitude,
+                  add=FALSE, # First plot uses add=FALSE
+                  mar=c(1,1,4,10),
+                  cex=5, pch=16, col=col_airsisDaily)
   
-  #---------- process airnow ---------
-  airnowMonitorDF <- data.frame(matrix(NA, nrow=nrow(airnow_monitors$meta), ncol=3))
-  names(airnowMonitorDF) <- c("longitude", "latitude", "MaxPm25")
-  row.names(airnowMonitorDF) <- row.names(airnow_monitors$meta)
-  airnowMonitorDF$longitude <- airnow_monitors$meta$longitude
-  airnowMonitorDF$latitude <- airnow_monitors$meta$latitude
-  airnowIndexes <- intersect(which(airnow_monitors$data$datetime >= startDate),
-                             which(airnow_monitors$data$datetime <= endDate))
-  for (i in 1:nrow(airnowMonitorDF)){
-    airnowMonitorDF$MaxPm25[i] <- FUN(airnow_monitors$data[,i+1][airnowIndexes], na.rm=TRUE)
-  }
+  # AIRSIS max hourly values
+  TextOnStaticMap(myMap, airsis$meta$latitude, airsis$meta$longitude,
+                  add=TRUE,
+                  labels=,round(airsis$meta$maxHourly),
+                  col='black')
   
-  #---------- process satelite ----------
-  blueskyIndex <- which(names(bluesky_eventsList) == as.character(startdate))
-  blueskyDF <- rbind(bluesky_eventsList[[blueskyIndex]],
-                     bluesky_eventsList[[blueskyIndex+1]],
-                     bluesky_eventsList[[blueskyIndex+2]])
-  blueskyDF <- as.data.frame(blueskyDF[which(blueskyDF$state == 'WA'),])
+  # AirNow max daily mean
+  PlotOnStaticMap(myMap, airnow$meta$latitude, airnow$meta$longitude,
+                  add=TRUE,
+                  cex=5, pch=16, col=col_airnowDaily)
   
-  #---------- process SMA ----------
-  janice_SMA$ignitionUTC <- as.POSIXct(format(janice_SMA$Ignition.time,tz='UTC'),tz='UTC')
-  subJaniceSMA <- janice_SMA[intersect(which(janice_SMA$ignitionUTC >= startDate), 
-                                       which(janice_SMA$ignitionUTC <= endDate)),]
-  subJaniceSMA <- as.data.frame(subJaniceSMA[!is.na(subJaniceSMA$Latitude),])
+  # AirNow max hourly values
+  TextOnStaticMap(myMap, airnow$meta$latitude, airnow$meta$longitude,
+                  add=TRUE,
+                  labels=,round(airnow$meta$maxHourly),
+                  col='black')
   
+  # Bluesky events as red squares
+  PlotOnStaticMap(myMap, bluesky_eventsSubset$latitude, bluesky_eventsSubset$longitude,
+                  add=TRUE,
+                  cex=cex_events, pch=0, col="red", lwd=lwd_events)
   
-  #----------------------------------------------- plotting ---------------------------------------------------
-  par(oma=c(1,1,1,1))
-  par(mar=c(10, 10, 13, 10))
-  map('county', 'wa', col='grey')
+  # Rx burns from Janice's database
+  PlotOnStaticMap(myMap, janice_SMASubset$Latitude, janice_SMASubset$Longitude,
+                  add=TRUE,
+                  cex=cex_janiceSMA, pch=pch_janiceSMA, col="red", lwd=lwd_janiceSMA)
   
-  # plot airsis points, default: filled dots colored by AQI
-  if (show_airsis) {
-    airsisColIndexes <- .bincode(airsisMonitorDF$MaxPm25, breaks=breaks_airsis)
-    points(airsisMonitorDF$longitude, airsisMonitorDF$latitude, pch=pch_airsis, cex=cex_airsis, 
-           col=col_monitor[airsisColIndexes])
-    text(airsisMonitorDF$longitude, airsisMonitorDF$latitude, labels=airsisMonitorDF$MaxPm25, pos=c(3,rep(4,7)))
-  }
+  # ----- Annotations ---------------------------------------------------------
   
-  # plot airnow points, default: open dots colored by AQI
-  if (show_airnow) {
-    airnowColIndexes <- .bincode(airnowMonitorDF$MaxPm25, breaks=breaks_airnow)
-    points(airnowMonitorDF$longitude, airnowMonitorDF$latitude, pch=pch_airnow, cex=cex_airnow, 
-           lwd=lwd_airnow, col=col_monitor[airnowColIndexes])
-    text(airnowMonitorDF$longitude, airnowMonitorDF$latitude, labels=airnowMonitorDF$MaxPm25, pos=4)
-  }
+  title(title)
   
-  # plot SMA points, default: open triangle sized by SMAsizeBy 
-  if (show_SMA) {
-    breaks_SMA <- classIntervals(na.omit(janice_SMA[[SMAsizeBy]]), n=4, style=SMA_breaksBy)$brks
-    SMA_sizeIndex <- .bincode(subJaniceSMA[[SMAsizeBy]], breaks=breaks_SMA)
-    pch_SMA <- rep(6, nrow(subJaniceSMA))
-    pch_SMA[which(subJaniceSMA$DNR_Pilot.24.Hr.Advance)] <- 2
-    points(subJaniceSMA$Longitude, subJaniceSMA$Latitude, pch=pch_SMA, lwd=lwd_SMA, col=col_SMA, cex=SMA_sizeIndex)
-  }
+  legend(330, 320, bty='n', title="Max Daily AQI", xpd=NA,
+         pch=16, pt.cex=2, col=AQI$colors[1:3],
+         legend=AQI$names[1:3])
   
-  # plot satelite poits, default: small filled triangle
-  if (show_bluesky) {
-    points(blueskyDF$longitude, blueskyDF$latitude, pch=pch_bluesky, cex=cex_bluesky, col=col_bluesky)
-  }
+  legend(330, 200, bty='n', title="Max Hourly PM2.5", xpd=NA,
+         pch='#',
+         legend=c('over daily AQI'))
   
-  # legend and title
-  if (show_monitorLegend){
-    legend(x='bottomleft', legend=AQI$names, col=AQI$colors, pch=16, title='Monitors', bg='transparent', 
-           cex=0.9, bty='n')
-  }
+  legend(330, 120, bty='n', title="Fires", xpd=NA,
+         pch=c(0,2,2), pt.cex=1.5, pt.lwd=c(1.5,2,4), col="red",
+         legend=c('Satellite','Prescribed','Prescribed 24hr'))
   
-  if (show_burnLegend) {
-    legend(x='topleft', legend=c('24hr-SMA', 'SMA', 'bluesky'), col=c(col_SMA, col_SMA, col_bluesky),
-           cex=0.9, pch=c(2, 6, 17), title="Burns", bg='transparent', bty='n')
-  }
-  
-  if (show_title) {
-    title(sprintf("Burns and Monitor Detects from %s to %s", format(startDate, '%Y-%m-%d'), 
-                  format(endDate, '%Y-%m-%d')), line=1)
-  }
 }

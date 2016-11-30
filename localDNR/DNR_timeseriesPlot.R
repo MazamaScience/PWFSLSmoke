@@ -123,7 +123,7 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
     prescribedNonPilotBurns <- prescribedBurns[!prescribedBurns$DNR_Pilot.24.Hr.Advance,]
     prescribedPilotBurns <- prescribedBurns[prescribedBurns$DNR_Pilot.24.Hr.Advance,]
     if ( is.null(ylim_burnTons) ) {
-      ylim_burnTons <- c(0,max(prescribedBurns$Accomplished.Tons, na.rm=TRUE))
+      ylim_burnTons <- c(0,max(prescribedBurns$Accomplished.Tons.from.FS.fireportal, na.rm=TRUE))
     }
   } else {
     prescribedNonPilotBurns <- prescribedPilotBurns <- prescribedBurns
@@ -203,7 +203,7 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
       ###xright <- prescribedNonPilotBurns$sunset # sunset
       xright <- lubridate::ceiling_date(xleft, "day") # midnight
       ybottom <- 0
-      yval <- prescribedNonPilotBurns$Accomplished.Tons
+      yval <- prescribedNonPilotBurns$Accomplished.Tons.from.FS.fireportal
       ytop <- yval * ((0.95*yhi)/ylim_burnTons[2])
       rect(xleft, ybottom, xright, ytop, density=20, angle=45,
            col=col_nonPilotBurns, border=col_nonPilotBurns, lty='solid', lwd=2)
@@ -217,7 +217,7 @@ DNR_timeseriesPlot <- function(monitorName, tlim=c(20160901,20161015),
       ###xright <- prescribedPilotBurns$sunset # sunset
       xright <- lubridate::ceiling_date(xleft, "day") # midnight
       ybottom <- 0
-      yval <- prescribedPilotBurns$Accomplished.Tons
+      yval <- prescribedPilotBurns$Accomplished.Tons.from.FS.fireportal
       ytop <- yval * ((0.95*yhi)/ylim_burnTons[2])
       rect(xleft, ybottom, xright, ytop, density=20, angle=-45,
            col=col_pilotBurns, border=col_pilotBurns, lty='solid', lwd=2)

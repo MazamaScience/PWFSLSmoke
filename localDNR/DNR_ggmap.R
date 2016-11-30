@@ -1,91 +1,176 @@
-# This function should use the ggmap package to create a map with the following features:
-#   arguments = (monitorName='Plain', tlim=c(20160916,20160920))
-#   terrain map centered on a monitor
-#   display monitor as a filled circle with a color indicating highest daily average during tlim
-#   display monitor highest hourly value during tlim as text to the right of monitor circle
-#   display prescribed burn locations from janice_SMA during tlim as open red triangles sized by Tons Consumed (FS)
-#   display bluesky_events hotspots during tlim as small open orange(?) triangles
+###############################################################################
+# DNR Pilot Burn Pojrect (2928)
+#
+# The R code for the DNR pilot burn project data analysis is broken down into 
+# the following steps, each associated with a separate file:
+#
+# * DNR_downloadData.R   -- download, QC, reshape and convert into .RData format
+# * DNR_ingestData.R     -- ingest previously converted data and peroform any cleanup
+#                           (e.g. convert negative values of PM2.5 to 0.0)
+#
+# Once all of this work is done, we are ready for the plotting scripts:
+#
+# * DNR_timeseriesPlot.R -- timeseries plot for a monitor of interest
+# * DNR_ggmap.R          -- map for a burn of interest
+###############################################################################
 
-# THOUGHTS ----------
+# This DNR_ggmap.R script defines a function for creating maps for a named
+# prescribed burn with markers for nearby fires and monitoring locations.
 
-# Should we center on a specific fire, rather than on a specific monitor?
-# Let's include monitor IDs
-
-library(PWFSLSmoke)
-library(ggmap)
-
-# LOAD DATA ------------
-# Need to manually load data for now, per the following:
-
-# setwd("~/Projects/PWFSLSmoke")
-# source("/localDNR/DNR_ingestData.R") #DOESN'T WORK...?!?!?! Do this manually for now...
-
-# SETTINGS -------------
-
-size <- 5
-zoom <- 9
-
-# Temporary variables for testing. Eventually will call in variables using function.
-tlim<-c(20160916,20160920)
-
-# Assign lat/lon for map center, based on monitor name passed in
-monitorName<-'Plain'
-monLat <- airsis_monitors$meta$latitude[which(monitorDict[[monitorName]]==airsis_monitors$meta$monitorID)]
-monLon <- airsis_monitors$meta$longitude[which(monitorDict[[monitorName]]==airsis_monitors$meta$monitorID)]
-
-# monitorID <- monitorDict[[monitorName]] # in case this is needed later...
-
-monitorLocation <- c(-120.66450,47.76862) # Lon/Lat (rather than Lat/Lon)
-#monLat <- monitorLocation[2]
-#monLon <- monitorLocation[1]
+# Load and clean up all required data with:
+#   source('localDNR/DNR_ingestData.R')
 
 
-
-
-
-
-# CREATE RAW MAP RASTER -------------
-initialMap <- get_map(location=c(monLon,monLat), maptype="terrain", zoom=zoom)
-initialMap <- ggmap(initialMap)
-
-coordBounds <- initialMap$data
-
-# SUBSET DATA BY MAP SCALE -------------
-
-# for each of the subset lines below, may want to add some logic to warn or handle data a certain way
-# if no data is found within the given bounds...
-
-subset_bluesky_events <- subset(bluesky_events,
-                                bluesky_events$latitude<max(coordBounds$lat)&
-                                bluesky_events$latitude>min(coordBounds$lat)&
-                                bluesky_events$longitude<max(coordBounds$lon)&
-                                bluesky_events$longitude>min(coordBounds$lon))
-
-subset_janice_SMA <- subset(janice_SMA,
-                            janice_SMA$Latitude<max(coordBounds$lat)&
-                            janice_SMA$Latitude>min(coordBounds$lat)&
-                            janice_SMA$Longitude<max(coordBounds$lon)&
-                            janice_SMA$Longitude>min(coordBounds$lon))
-
-subset_airnow_monitors <- monitor_subset(airnow_monitors,
-                                         xlim=c(min(coordBounds$lon),max(coordBounds$lon)),
-                                         ylim=c(min(coordBounds$lat),max(coordBounds$lat)))
-
-subset_airsis_monitors <- monitor_subset(airsis_monitors,
-                                         xlim=c(min(coordBounds$lon),max(coordBounds$lon)),
-                                         ylim=c(min(coordBounds$lat),max(coordBounds$lat)))
-
-# CREATE FINAL MAP
-finalMap <- initialMap+
-  ggtitle("Here's a Title")+
-  #geom_point(aes(x=monLon,y=monLat,color="red", size=size)) + # plot center (will eventuall be monitor)
+if ( FALSE ) {
   
-  geom_point(aes(x=longitude, y=latitude),data=subset(subset_bluesky_events,subset_bluesky_events$type=="RX"),size=2,shape=2,color="red")+
-  geom_point(aes(x=longitude, y=latitude),data=subset(subset_bluesky_events,subset_bluesky_events$type!="RX"),size=2,shape=2,color="brown")+
-  geom_point(aes(x=Longitude, y=Latitude),data=subset_janice_SMA,size=2,color="yellow")+
-  geom_point(aes(x=longitude, y=latitude),data=subset_airsis_monitors$meta,size=4,color="blue")+
-  geom_point(aes(x=longitude, y=latitude),data=subset_airnow_monitors$meta,size=4,color="green")
-  #geom_text(aes(x=monLon,y=monLat,label = "  words"), angle = 45, hjust = 0, color = "orange")+
-  #scale_size_area(breaks = 2, labels = "Here's a label", name = "Legend Title...") #legend
+  library(PWFSLSmoke)
+  library(ggmap)
+  
+  unique_unit <- paste0(janice_SMA$Unit,'_',strftime(janice_SMA$Ignition.time,"%Y%m%d"))
+  
+  for ( row in 1:nrow(janice_SMA) ) {
+    
+    unit <- make.names(unique_unit[row])
+    lon <- janice_SMA$Longitude[row]
+    lat <- janice_SMA$Latitude[row]
+    tons <- janice_SMA$Accomplished.Tons.from.FS.fireportal[row]
+    ignitionTime <- janice_SMA$Ignition.time[row]
+    ignitionTitleString <- strftime(ignitionTime,"%b %d + 4 days")
+    tlim_start <- strftime(ignitionTime,"%Y%m%d")
+    tlim_end <- strftime(ignitionTime + lubridate::ddays(5),"%Y%m%d")
+    local_tlim <- as.numeric(c(tlim_start,tlim_end))
+    title <- paste0(unit,' (',tons,' tons): ',ignitionTitleString)
+    zoom <- 10
+    map_source <- 'google'
+    map_type <- 'terrain'
+    
+    filename <- file.path(getwd(),paste0(unit,'.png'))
+    finalMap <- DNR_ggmap(title, lon, lat, zoom, local_tlim, map_source, map_type)
+    
+    ggsave(filename, finalMap, device="png", width=6, height=6)
+    
+  }
+  
+  
+}
 
-finalMap
+# FUNCTION ------------
+
+DNR_ggmap <- function(title="Title", lon=-121, lat=48, zoom=10,
+                      local_tlim=c(20160916,20160920),
+                      map_source='google', map_type='terrain') {
+  
+  # Get UTC version of local tlim
+  tlim <- parseDatetime(local_tlim)
+  utc_start <- tlim[1]
+  utc_end <- tlim[2]
+  lubridate::tz(tlim) <- "America/Los_Angeles"
+  tlim <- strftime(tlim, "%Y%m%d%H", tz="UTC")
+  
+  # NOTE:  tlim[2] is the day after the last full day of data
+  
+  # NOTE:  monitor data has "UTC" timestamps
+  airsis <- monitor_subset(airsis_monitors, tlim=tlim)
+  airnow <- monitor_subset(airnow_monitors, tlim=tlim)
+  
+  airsis_daily <- monitor_dailyStatistic(airsis, mean, dayStart="midnight")
+  airnow_daily <- monitor_dailyStatistic(airnow, mean, dayStart="midnight")
+  
+  # Add daily and hourly max to metadata
+  airsis$meta$maxHourly <- apply(airsis$data[,-1], 2, max, na.rm=TRUE)
+  airsis$meta$maxDailyMean <- apply(airsis_daily$data[,-1], 2, max, na.rm=TRUE)
+  airsis$meta$maxAQILevel <- factor(.bincode(airsis$meta$maxDailyMean, AQI$breaks_24))
+  
+  # Add daily and hourly max to metadata
+  airnow$meta$maxHourly <- apply(airnow$data[,-1], 2, max, na.rm=TRUE)
+  airnow$meta$maxDailyMean <- apply(airnow_daily$data[,-1], 2, max, na.rm=TRUE)
+  airnow$meta$maxAQILevel <- factor(.bincode(airnow$meta$maxDailyMean, AQI$breaks_24))
+  
+  # NOTE:  events data has "UTC" timestamps
+  afterStart <- as.POSIXct(bluesky_events$datetime, tz="UTC") >= utc_start
+  beforeEnd <- as.POSIXct(bluesky_events$datetime, tz="UTC") <= utc_end
+  bluesky_eventsSubset <- bluesky_events[afterStart & beforeEnd, ]
+  
+  # NOTE:  janice_SMA has "UTC" timestamps
+  afterStart <- janice_SMA$datetime >= utc_start
+  beforeEnd <- janice_SMA$datetime <= utc_end
+  janice_SMASubset <- janice_SMA[afterStart & beforeEnd, ]
+  
+  # CREATE RAW MAP RASTER -------------
+  # NOTE: There appears to be an issue with stamen maps, presumably because the URL actually returns
+  # NOTE: a png instead of a jpg, which breaks the get_map function... So, just use google for now.
+  
+  initialMap <- get_map(location=c(lon,lat), source=map_source, maptype=map_type, zoom=zoom)
+  initialMap <- ggmap(initialMap) +
+    theme(axis.title.x=element_blank(),
+          axis.title.y=element_blank())
+  
+  #coordBounds <- initialMap$data
+  
+  # CREATE FINAL MAP -----------------
+  
+  eventSize <- .bincode(zoom,c(0,8:18)) # TODO: Improve event pixel sizing
+  ###janiceSize <- .bincode(janice_SMASubset$Accomplished.Tons.from.FS.fireportal,c(0,250,500,1000,1500,4000))+6
+  col_airsisDaily <- AQI$colors[airsis$meta$maxAQILevel]
+  airsis$meta$AQIColor <- col_airsisDaily
+  col_airnowDaily <- AQI$colors[airnow$meta$maxAQILevel]
+  col_blueskyEvents <- rep("red",nrow(bluesky_eventsSubset))
+  col_janiceSMA <- rep("red", nrow(janice_SMASubset))
+  shape_prescribedBurn <- ifelse(janice_SMASubset$DNR_Pilot.24.Hr.Advance,17,2)
+
+  # Neeeded for legend
+  maxLevels <- max(c(airsis$meta$maxAQILevel,airnow$meta$maxAQILevel), na.rm=TRUE)
+
+  finalMap <- initialMap +
+    
+    ggtitle(title) +
+    
+    # AIRSIS monitors
+    geom_point(data=airsis$meta, # AIRSIS
+               aes(x=longitude, y=latitude, fill=maxAQILevel),
+               size=8) +
+    #          aes(x=longitude, y=latitude),
+    #          size=8, color=col_airsisDaily) +
+  
+    # AIRSIS max hourly values
+    geom_text(data=airsis$meta,
+              aes(x=longitude, y=latitude),
+              label=round(airsis_maxHourly),
+              color="black") +
+    
+    # AirNow monitors
+    geom_point(data=airnow$meta,
+               aes(x=longitude, y=latitude, fill=maxAQILevel),
+               size=8) +
+               # aes(x=longitude, y=latitude),
+               # size=8, color=col_airnowDaily) +
+               
+    # AirNow max hourly values
+    geom_text(data=airnow$meta,
+              aes(x=longitude, y=latitude),
+              label=round(airnow_maxHourly),
+              color="black") +
+    
+    # Bluesky events as red squares
+    geom_point(data=bluesky_eventsSubset,
+               aes(x=longitude, y=latitude),
+               size=eventSize, shape=0, color="red", stroke=1) +
+    
+    # Rx burns from Janice's database, sized by tons consumed
+    geom_point(data=janice_SMASubset,
+               aes(x=Longitude, y=Latitude),
+               size=6, shape=shape_prescribedBurn, col="red", stroke=2)
+    
+    # Legend
+    ###theme(legend.title = element_text(colour="chocolate", size=16, face="bold"))
+    # guides(color = guide_legend(override.aes = list(size = 5))) +
+    # scale_fill_manual(values = c('lightskyblue1', 'lightpink'),
+    #                   labels = c('HQ', 'LQ')) +
+    # scale_colour_manual(name="Max Daily AQI",
+    #                     values=AQI$colors[1:maxLevels],
+    #                     labels=AQI$names[1:maxLevels])
+  
+    
+    return(finalMap)
+  
+}
