@@ -21,7 +21,9 @@ weightFactor <- function(cByHour, weightFactorMin) {
   max <- max(cByHour)
   if(!is.na(weightFactorMin)) {
     weightFactor <- min/max
-    if (weightFactor > weightFactorMin) {
+    if (is.na(weightFactor)) {
+      return(weightFactorMin)
+    } else if (weightFactor > weightFactorMin) {
       return(weightFactor)
     } else {
       return(weightFactorMin)
@@ -49,21 +51,21 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   if (version =='pm') {
     numHrs <- 12
     weightFactorMin <- 0.5
-    digits <- 2
+    digits <- 1
 
   } else if (version =='pmAsian') {
     numHrs <- 3
     weightFactorMin <- 0.1
-    digits <- 2
+    digits <- 1
     
   } else if (version == 'ozone') {
     numHrs <- 8
     weightFactorMin <- NA
-    digits <- 4
+    digits <- 3
   }
   n <- ncol(ws_monitor$data)
   ws_monitor$data[,2:n] <- apply(ws_monitor$data[,2:n], 2, function(x)(nowcast(x, numHrs, weightFactorMin)))
-  ws_monitor$data[,2:n] <- signif(ws_monitor$data[,2:n], digits = digits)
+  ws_monitor$data[,2:n] <- round(ws_monitor$data[,2:n], digits = digits)
   return(ws_monitor)
 }
 
