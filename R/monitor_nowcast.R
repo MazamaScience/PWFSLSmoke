@@ -1,42 +1,71 @@
+#' @keywords nowcast
+#' @export
+#' @title applies nowcast algorithm to ws_monitor objects
+#' @param ws_monitor the monitor object that nowcast will be applied to
+#' @param version determines the minimum weight factor and number of hours to be calculated
+#' @description Applies nowcast algorithm to ws_monitor objects, the version option 
+#' will use corresponding minimum weight factor and number of hours for different air-quality data. 
+#' This script is based on the javascript: 
+#' https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
+#' 
+#' Available versions are: 'pm', 'pmAsian', 'ozone'
+#' @return ws_monitor object with data that have been proccessed by nowcast
+#' @examples
+#' \dontrun{
+#' ozone <- monitor_nowcast(ozone, 'ozone')
+#' }
+#' 
 
-# Nowcast URLs:
-#
-# * https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)
-# * https://airnow.zendesk.com/hc/en-us/articles/212303177-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-
-# * https://www.arb.ca.gov/carpa/iascpresentations/2015/nowcastaqiforpm25overview.pdf ("nowcast")
-# * https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf ("new nowcast" or "Reff method")
-# * http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/
-#
-# Javascript implementation of nowcast:
-#
-# * https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
-#
-# Here is an implementation of a "nowcast" function for a vector of pm2.5 values
-#
-#
-# .nowCast <- function(x)
-# {
-#  returnVal = as.numeric(NA)
-#  
-#  if ( !all(is.na(x)) ) {
-#    
-#     weightFac <- 1 - (diff(range(x, na.rm = TRUE)) / max(x, na.rm = TRUE))
-#     weightFac <- if (is.infinite(weightFac)) {
-#       NA
-#     } else if (weightFac > 1) {
-#       1 
-#     } else if (weightFac < 0.5) {
-#       0.5
-#     } else {
-#       weightFac
-#     }
-#     
-#     if (length(na.omit(x[11:12])) > 1) {
-#       returnVal = weighted.mean(x, weightFac^(11 : 0), na.rm = TRUE)
-#     }
-#     
-#   }
-#   
-#   return(returnVal)
-# }
-# 
+weightFactor <- function(cByHour, weightFactorMin) {
+  min <- min(cByHour)
+  max <- max(cByHour)
+  if(!is.na(weightFactorMin)) {
+    weightFactor <- min/max
+    if (is.na(weightFactor)) {
+      return(weightFactorMin)
+    } else if (weightFactor > weightFactorMin) {
+      return(weightFactor)
+    } else {
+      return(weightFactorMin)
+    }
+  } else {
+    return(min/max)
+  }
+}
+
+nowcast <- function(oneMonitorData, numHrs, weightFactorMin) {
+  for(i in length(oneMonitorData):(numHrs+1)){
+    cByHour <- oneMonitorData[(i-1):(i-numHrs)]
+    weightFactor <- weightFactor(cByHour, weightFactorMin)
+    sumHourlyByWeightFactor <- sumWeightFactor <- 0
+    for (j in 1:numHrs) {
+      sumHourlyByWeightFactor <- sumHourlyByWeightFactor + cByHour[j] * weightFactor^(j-1)
+      sumWeightFactor <- sumWeightFactor + weightFactor^(j-1)
+    }
+    oneMonitorData[i] <- sumHourlyByWeightFactor/sumWeightFactor
+  }
+  return(oneMonitorData)
+}
+
+monitor_nowcast <- function(ws_monitor, version='pm') {
+  if (version =='pm') {
+    numHrs <- 12
+    weightFactorMin <- 0.5
+    digits <- 1
+
+  } else if (version =='pmAsian') {
+    numHrs <- 3
+    weightFactorMin <- 0.1
+    digits <- 1
+    
+  } else if (version == 'ozone') {
+    numHrs <- 8
+    weightFactorMin <- NA
+    digits <- 3
+  }
+  n <- ncol(ws_monitor$data)
+  ws_monitor$data[,2:n] <- apply(ws_monitor$data[,2:n], 2, function(x)(nowcast(x, numHrs, weightFactorMin)))
+  ws_monitor$data[,2:n] <- round(ws_monitor$data[,2:n], digits = digits)
+  return(ws_monitor)
+}
+

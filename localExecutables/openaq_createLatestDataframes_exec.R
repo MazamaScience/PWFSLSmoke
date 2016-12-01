@@ -149,7 +149,7 @@ createMetaDataframes <- function(df, outputDir) {
     
     logger.debug('Writing %s...', filepath)
     
-    result <- try( save(list=dfName, file=file.path(filepath)),
+    result <- try( save(list=dfName, file=filepath),
                    silent=TRUE )
     
     if ( class(result)[1] == "try-error" ) {
@@ -176,7 +176,6 @@ option_list <- list(
   make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default=\"%default\"]"),
   make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
   make_option(c("--spatialDataDir"), default='~/Data/Spatial', help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
-  make_option(c("--meta"), action="store_true", default=FALSE, help="Also create metadata dataframes [default=\"%default\"]"),
   make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default=\"%default\"]")
 )
 
@@ -223,7 +222,7 @@ logger.debug('R session:\n\n%s\n', sessionString)
 # ------- downloading and processing openAQ data -----------------------------------
 
 logger.info('Downloading data...')
-df <- openaq_downloadData(startdate=format(Sys.Date()-3,"%Y%m%d"), days=3)
+df <- openaq_downloadData(parameter='pm25',startdate=format(Sys.Date()-3,"%Y%m%d"), days=3,countryCode='US')
 
 # add additional columns to the dataframe
 logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')
@@ -235,7 +234,7 @@ df$datetime <- lubridate::ymd_hms(df$local)
 uniqueLatLon <- unique(paste(df$latitude, df$longitude))
 uniqueLatLon <- stringr::str_split_fixed(uniqueLatLon, ' ', 2)
 colnames(uniqueLatLon) <- c("latitude", "longitude")
-uniqueLatLon <- apply(uniqueLatLon,2,as.numeric)
+uniqueLatLon <- na.omit(apply(uniqueLatLon,2,as.numeric))
 stateCodes <- getStateCode(uniqueLatLon[,"longitude"], uniqueLatLon[,"latitude"], useBuffering = TRUE) 
 
 # correct non-US state codes  

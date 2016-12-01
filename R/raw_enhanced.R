@@ -28,19 +28,11 @@ if ( FALSE ) {
   #raw <- airsis_rawList$Naches; rawSource <- "AIRSIS" #ESAM AIRSIS
   #raw <- airsis_rawList$Usk; rawSource <- "WRCC" #ESAM WRCC
   
-  # PLAYIMG W/ OPENAIR PLOTS
-  
-  head(df)
-  
-  windRose(df,ws = "windSpeed",wd = "windDir")
-  
-  #pollutionRose()
-  
 }
 
 # FUNCTION ================================
 
-raw_harmonize <- function(raw,rawSource="AIRSIS") {
+raw_enhanced <- function(raw,rawSource="AIRSIS") {
   
   # dataframe is in hand; let's go about identifying the type
   monType <- paste0(raw$monitorType[1],"_",rawSource,sep="")
