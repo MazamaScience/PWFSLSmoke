@@ -14,7 +14,9 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
 
 \item{dayStart}{one of \code{sunset|midnight|sunrise}}
 
-\item{na.rm}{logical value indicating whether NA values should be ignored (\code{na.rm = TRUE} --> ignore NAs)}
+\item{na.rm}{logical value indicating whether NA values should be ignored}
+
+\item{minHours}{minimum number of valid data hours required to calculate each daily statistic}
 }
 \value{
 ws_monitor object with daily statistics

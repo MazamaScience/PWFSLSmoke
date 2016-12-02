@@ -9,7 +9,7 @@ monitor_nowcast(ws_monitor, version = "pm")
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{version}{character identify specifying the type of nowcast algorithm to be used}
+\item{version}{character identity specifying the type of nowcast algorithm to be used}
 }
 \value{
 ws_monitor object with data that have been proccessed by the Nowcast algorithm.
@@ -21,14 +21,25 @@ considered in the calculation.
 
 Available versions include:
 \enumerate{
-\item{pm}
-\item{pmAsian}
-\item{ozone}
+\item{pm}{hours=12, weight=0.5}
+\item{pmAsian}{hours=3, weight=0.1}
+\item{ozone}{hours=8, weight=NA}
 }
+
+See the references for details. The default, \code{version='pm'}, is appropriate
+for typical usage.
+}
+\note{
+Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
+.001 for 'ozone' regardless of the precision of the data in the incoming \code{ws_monitor} object.
 }
 \examples{
 \dontrun{
-ozone <- monitor_nowcast(ozone, 'ozone')
+airnow <- airnow_load(20160801, 20160815)
+salinas <- monitor_subset(airnow, monitorIDs='060531003')
+salinas_nowcast <- monitor_nowcast(salinas)
+monitor_timeseriesPlot(salinas, type='l')
+monitor_timeseriesPlot(salinas_nowcast, add=TRUE, type='l', col='red')
 }
 }
 \references{

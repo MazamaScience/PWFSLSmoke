@@ -4,7 +4,8 @@
 #' @param ws_monitor ws_monitor object
 #' @param FUN function used to collapse a day's worth of data into a single number for each monitor in the ws_monitor object
 #' @param dayStart one of \code{sunset|midnight|sunrise}
-#' @param na.rm logical value indicating whether NA values should be ignored (\code{na.rm = TRUE} --> ignore NAs)
+#' @param na.rm logical value indicating whether NA values should be ignored
+#' @param minHours minimum number of valid data hours required to calculate each daily statistic
 #' @description Calculates daily statistics for each monitor in the \code{ws_monitor} data list.
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors

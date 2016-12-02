@@ -17,13 +17,19 @@
 #' See the references for details. The default, \code{version='pm'}, is appropriate
 #' for typical usage.
 #' 
+#' @note Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
+#' .001 for 'ozone' regardless of the precision of the data in the incoming \code{ws_monitor} object.
 #' @return ws_monitor object with data that have been proccessed by the Nowcast algorithm.
 #' @references \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
 #' @references \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 #' @references \url{http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 #' @examples
 #' \dontrun{
-#' ozone <- monitor_nowcast(ozone, 'ozone')
+#' airnow <- airnow_load(20160801, 20160815)
+#' salinas <- monitor_subset(airnow, monitorIDs='060531003')
+#' salinas_nowcast <- monitor_nowcast(salinas)
+#' monitor_timeseriesPlot(salinas, type='l')
+#' monitor_timeseriesPlot(salinas_nowcast, add=TRUE, type='l', col='red')
 #' }
 
 # NOTE:  This script is based on the javascript code at: 
@@ -48,58 +54,74 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   }
   
   # Apply nowcast to each data column in ws_monitor
+  # NOTE:  We need as.data.frame for when there is only a single column of data
   n <- ncol(ws_monitor$data)
-  ws_monitor$data[,2:n] <- apply(ws_monitor$data[,2:n], 2, function(x) { nowcast(x, numHrs, weightFactorMin) })
-  ws_monitor$data[,2:n] <- round(ws_monitor$data[,2:n], digits = digits)
+  ws_monitor$data[,2:n] <- apply(as.data.frame(ws_monitor$data[,2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin) })
+  ws_monitor$data[,2:n] <- round(as.data.frame(ws_monitor$data[,2:n]), digits = digits)
   
   return(ws_monitor)
 }
 
 # ----- Helper Functions ------------------------------------------------------
 
-nowcast <- function(x, numHrs, weightFactorMin) {
+.nowcast <- function(x, numHrs, weightFactorMin) {
+  
+  # Start at the end end of the data (most recent hour) and work backwards
+  # The oldest hour for which we can calculate nowcast is numHrs+1
   for ( i in length(x):(numHrs+1) ) {
-    # Apply nowcast algorithm from the end of the data vector
-    cByHour <- x[(i-1):(i-numHrs)]
+    
+    # Apply nowcast algorithm to numHrs data points in recent-older order
+    concByHour <- x[(i-1):(i-numHrs)]
     
     # If two or more of the most recent 3 hours are missing, no valid Nowcast will be reported
-    if ( sum( is.na(cByHour[1:3]) ) >= 2 ) {
+    if ( sum( is.na(concByHour[1:3]) ) >= 2 ) {
       x[i] <- NA
       
     } else {
       # Calculate the weight factor according to the type of air quality data
-      weightFactor <- weightFactor(cByHour, weightFactorMin)
+      weightFactor <- .weightFactor(concByHour, weightFactorMin)
       
-      sumHourlyByWeightFactor <- sumWeightFactor <- 0
+      weightedConcSum <- weightFactorSum <- 0
       
-      # Looping to calculate the denominator and numerator
+      # Loop to calculate the denominator and numerator
       for (j in 1:numHrs) {
-        sumHourlyByWeightFactor <- sum( sumHourlyByWeightFactor, cByHour[j] * weightFactor^(j-1), na.rm=TRUE)
-        sumWeightFactor <- sum( sumWeightFactor + weightFactor^(j-1), na.rm=TRUE)
+        weightedConcSum <- sum( weightedConcSum, concByHour[j] * weightFactor^(j-1), na.rm=TRUE)
+        weightFactorSum <- sum( weightFactorSum + weightFactor^(j-1), na.rm=TRUE)
       }
       
-      x[i] <- sumHourlyByWeightFactor/sumWeightFactor
+      x[i] <- weightedConcSum/weightFactorSum
       
     }
   }
   
-  # Set hour that don't have enough preceding hours' data as missing
+  # Set missing values when there are not enough preceding hours'
   x[1:numHrs] <- NA
   
   return(x)
 }
 
 # Calculate the weight factor ('w' in the nowcast formula)
-#  cByHour: list of concentrations by hour
-#  weightFactorMin (optional): weight factor raised to this min if calculated less then this
-weightFactor <- function(cByHour, weightFactorMin) {
-  min <- min(cByHour, na.rm=TRUE)
-  max <- max(cByHour, na.rm=TRUE)
+#  concByHour: vector of hourly concentration values
+#  weightFactorMin (optional): wight factor minimum
+.weightFactor <- function(concByHour, weightFactorMin) {
+  min <- min(concByHour, na.rm=TRUE)
+  max <- max(concByHour, na.rm=TRUE)
   
-  weightFactor <- min/max
+  # NOTE:  The official Nowcast algorithm has no mention of (aphysical) 
+  # NOTE:  negative values. But they are not uncommon in actual data.
+  # NOTE:  We hande them here.
   
-  # Ozone data don't have a minimum weight factor
-  if ( is.na(weightFactorMin) ){
+  # Handle zero and negative values
+  if ( min < 0 ) { # negative values -- unknowable instrument bias: less weighting
+    weightFactor <- weightFactorMin
+  } else if ( min == 0 && max == 0 ) { # all zeroes -- consistent: full weighting
+    weightFactor = 1
+  } else { # all positive: normal calculation
+    weightFactor <- min/max
+  }
+    
+  # Nowcast for ozone doesn't use a minimum weight factor
+  if ( is.na(weightFactorMin) ) {
     return(weightFactor)
   
   # For pm data, if the min/max ratio is less than min weight factor we use the latter  
@@ -110,20 +132,4 @@ weightFactor <- function(cByHour, weightFactorMin) {
     return(weightFactorMin)
     
   }
-}
-
-# Example test code
-if (FALSE) {
-  
-  a <- c(1,5,6,5,6,7,6,7,6,5,6,12)
-  b <- c(6,5,6,5,6,7,6,7,6,5,6,5)
-  c <- c(6,5,6,5,6,NA,6,7,6,5,6,5)
-  d <- c(6,5,6,5,6,7,6,7,6,5,NA,5)
-  e <- c(6,5,6,5,6,7,6,7,6,5,6,NA)
-  
-  f <- c(NA,NA,1,2,3,4,5,6,7,8,9)
-  g <- c(NA,1,NA,2,3,4,NA,6,7,NA)
-  
-  # More to come...
-  
 }
