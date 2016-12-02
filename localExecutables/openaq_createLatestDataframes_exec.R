@@ -14,7 +14,7 @@
 # # Update openAQ monitoring data
 #  15 *    *   *   *  /home/bluesky/monitoring/bin/openaq_createLatestDataframes_exec.R --outputDir=/Users/aliceyang/Data/openAQ --logDir=/Users/aliceyang/Data/Logs
 
-VERSION = "0.1.0"
+VERSION <- "0.1.0"
 
 library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
@@ -28,7 +28,7 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 createLatestDataDataframes <- function(df,outputDir) {
   
   # Create a 'data' dataframe for the latest data for the past 3 days
-  latestDF <- openaq_createDataDataframe(df)
+  latestDF <- suppressMessages(openaq_createDataDataframe(df))
   
   # Get the previously-saved data for the latest 31 days 
   filename <- paste0("openAQ_PM2.5_LATEST_31days.RData")
@@ -119,7 +119,7 @@ createLatestDataDataframes <- function(df,outputDir) {
     logger.error("The file %s doesn't exist", filepath)
   }
   
-  logger.info("Finished writing 31 days of openAQ 'data' dataframes starting from %s to %s", min(latestDF$datetime), max(latestDF$datetime))
+  logger.info(sprintf("Finished writing 31 days of openAQ 'data' dataframe starting from %s to %s", min(latestDF$datetime), max(latestDF$datetime)))
   
 }
 
@@ -128,7 +128,7 @@ createLatestDataDataframes <- function(df,outputDir) {
 createMetaDataframes <- function(df, outputDir) {
   
   # Download, separate and reshape data for all parameters
-  latestMeta <- openaq_createMetaDataframe(df)
+  latestMeta <- suppressMessages(openaq_createMetaDataframe(df))
   
   #--------- Append newly added monitors to previous monitors ------------------------------
   
@@ -162,7 +162,7 @@ createMetaDataframes <- function(df, outputDir) {
     logger.error("The file %s doesn't exist", filepath)
   }
   
-  logger.info("Finished writing openAQ 'meta' dataframes")
+  logger.info("Finished writing openAQ 'meta' dataframe")
 }
 
 
@@ -235,7 +235,7 @@ uniqueLatLon <- unique(paste(df$latitude, df$longitude))
 uniqueLatLon <- stringr::str_split_fixed(uniqueLatLon, ' ', 2)
 colnames(uniqueLatLon) <- c("latitude", "longitude")
 uniqueLatLon <- na.omit(apply(uniqueLatLon,2,as.numeric))
-stateCodes <- getStateCode(uniqueLatLon[,"longitude"], uniqueLatLon[,"latitude"], useBuffering = TRUE) 
+stateCodes <- suppressMessages(getStateCode(uniqueLatLon[,"longitude"], uniqueLatLon[,"latitude"], useBuffering = TRUE) )
 
 # correct non-US state codes  
 stateCodes[which(stateCodes == '')] <- 'PR'

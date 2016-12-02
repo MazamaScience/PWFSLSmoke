@@ -20,7 +20,7 @@ library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
 ###suppressPackageStartupMessages( library(PWFSLSmoke) )
-library(PWFSLSmoke)
+suppressPackageStartupMessages(library(PWFSLSmoke))
 suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 ################################################################################
@@ -28,7 +28,7 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 createDataDataframes <- function(df, startdate, outputDir) {
   
   # Download, separate and reshape data for all parameters
-  dataDataframe <- openaq_createDataDataframe(df)
+  dataDataframe <- suppressMessages(openaq_createDataDataframe(df))
   
   filename <- paste0("openAQ_PM2.5_",startdate,".RData")
   filepath <- file.path(outputDir,filename)
@@ -51,7 +51,7 @@ createDataDataframes <- function(df, startdate, outputDir) {
 createMetaDataframes <- function(df, startdate, outputDir) {
   
   # Download, separate and reshape data for all parameters
-  metaDataframe <- openaq_createMetaDataframe(df)
+  metaDataframe <- suppressMessages(openaq_createMetaDataframe(df))
   
   filename <- paste("openAQ_PM2.5_Sites_",startdate,"_Metadata.RData")
   filepath <- file.path(outputDir,filename)
@@ -134,7 +134,7 @@ logger.debug('R session:\n\n%s\n', sessionString)
 # ------- downloading and processing openAQ data -----------------------------------
 
 logger.info('Downloading data...')
-df <- openaq_downloadData(startdate=opt$startdate, days=opt$days)
+df <- openaq_downloadData(startdate=opt$startdate, days=as.numeric(opt$days) )
 
 # add additional columns to the dataframe
 logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')
@@ -147,12 +147,12 @@ uniqueLatLon <- unique(paste(df$latitude, df$longitude))
 uniqueLatLon <- stringr::str_split_fixed(uniqueLatLon, ' ', 2)
 colnames(uniqueLatLon) <- c("latitude", "longitude")
 uniqueLatLon <- apply(uniqueLatLon,2,as.numeric)
-stateCodes <- getStateCode(uniqueLatLon[,"longitude"], uniqueLatLon[,"latitude"], useBuffering = TRUE) 
+stateCodes <- suppressMessages(getStateCode(uniqueLatLon[,"longitude"], uniqueLatLon[,"latitude"], useBuffering = TRUE) )
 
-# correct non-US state codes  
-stateCodes[which(stateCodes == '')] <- 'PR'
-stateCodes[which(stateCodes == 'TM' | stateCodes == 'CH')] <- 'TX'
-stateCodes[which(stateCodes == 'BC')] <- 'ID'
+# # correct non-US state codes  
+# stateCodes[which(stateCodes == '')] <- 'PR'
+# stateCodes[which(stateCodes == 'TM' | stateCodes == 'CH')] <- 'TX'
+# stateCodes[which(stateCodes == 'BC')] <- 'ID'
 
 # assign state codes accordingly
 df$stateCode <- NA

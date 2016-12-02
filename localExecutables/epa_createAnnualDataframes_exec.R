@@ -14,7 +14,7 @@ library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
 ###suppressPackageStartupMessages( library(PWFSLSmoke) )
-library(PWFSLSmoke)
+suppressPackageStartupMessages( library(PWFSLSmoke) )
 suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 # Set up OptionParser
@@ -66,6 +66,7 @@ logger.debug('R session:\n\n%s\n', sessionString)
 
 # ------Downloading and processing data --------------------------
 
+logger.info("Downloading epa data...")
 df <- epa_downloadData(opt$parameterName, opt$parameterCode, opt$year, opt$baseUrl)
 
 dataSource <- 'EPA'
@@ -77,12 +78,15 @@ df$monitorID <- paste(df$`State Code`,df$`County Code`,df$`Site Num`,df$`Paramet
 df$datetime <- lubridate::ymd_hms(paste0(df$`Date GMT`,' ',df$`Time GMT`,':00'))
 
 # Create 'meta' dataframe
-meta <- epa_createMetaDataframe(df)
+logger.info("Creating meta dataframe...")
+meta <- suppressMessages(epa_createMetaDataframe(df))
 
 #Create 'data' dataframe
-data <- epa_createDataDataframe(df)
+logger.info("Creating data dataframe...")
+data <- suppressMessages(epa_createDataDataframe(df))
 
 # Create the 'ws_monitor' data list
+logger.info("Creating ws_monitor object...")
 ws_monitor <- list(meta=meta,
                    data=data)
 
@@ -95,4 +99,4 @@ fileName <- paste0(opt$outputDir, '/', dfName, '.RData')
 save(list=dfName, file=fileName)
 
 logger.debug(paste0('   Finished creating ws_monitor object\n'))
-
+logger.info('Completed successfully!')
