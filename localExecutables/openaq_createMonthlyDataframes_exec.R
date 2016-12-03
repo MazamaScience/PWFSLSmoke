@@ -192,7 +192,7 @@ df$latlon <- NULL
 df$X1 <- NULL
 df$X2 <- NULL
 
-enddate <- as.numeric(opt$startdate) + as.numeric(opt$days)
+enddate <- as.numeric(opt$startdate) + as.numeric(opt$days) - 1
 
 # ----- Always create openAQ "meta" dataframes ----------------------------
 
