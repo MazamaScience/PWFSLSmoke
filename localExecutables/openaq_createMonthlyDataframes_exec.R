@@ -25,12 +25,12 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 ################################################################################
 
-createDataDataframes <- function(df, startdate, outputDir) {
+createDataDataframes <- function(df, startdate, enddate, outputDir) {
   
   # Download, separate and reshape data for all parameters
   dataDataframe <- suppressMessages(openaq_createDataDataframe(df))
   
-  filename <- paste0("openAQ_PM2.5_",startdate,".RData")
+  filename <- paste0("openAQ_", startdate, "_", enddate, "_Datadata.RData")
   filepath <- file.path(outputDir,filename)
   
   logger.debug('Writing %s...', filepath)
@@ -48,12 +48,12 @@ createDataDataframes <- function(df, startdate, outputDir) {
 
 ################################################################################
 
-createMetaDataframes <- function(df, startdate, outputDir) {
+createMetaDataframes <- function(df, startdate, enddate, outputDir) {
   
   # Download, separate and reshape data for all parameters
   metaDataframe <- suppressMessages(openaq_createMetaDataframe(df))
   
-  filename <- paste("openAQ_PM2.5_Sites_",startdate,"_Metadata.RData")
+  filename <- paste0("openAQ_", startdate, "_", enddate, "_Metadata.RData")
   filepath <- file.path(outputDir,filename)
   
   logger.debug('Writing %s...', filepath)
@@ -82,7 +82,6 @@ option_list <- list(
   make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default=\"%default\"]"),
   make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
   make_option(c("--spatialDataDir"), default='~/Data/Spatial', help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
-  make_option(c("--meta"), action="store_true", default=FALSE, help="Also create metadata dataframes [default=\"%default\"]"),
   make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default=\"%default\"]")
 )
 
@@ -139,49 +138,77 @@ df <- openaq_downloadData(startdate=opt$startdate, days=as.numeric(opt$days) )
 # add additional columns to the dataframe
 logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')
 
-# add datetime and monitorID column
+df$monitorID <- apply(df[,1:3], 1, function(x) { paste(x[1], x[2], x[3], sep=',') } )
+
+if ( sum( is.na(df$latitude) ) > 0) {
+  # add missing latitudes and longitudes
+  logger.info('Fill in latitudes and longitudes where they are missing')
+  
+  missingIndex <- is.na(df$latitude)
+  
+  # create a new column that combines location, city and country to be used for google later
+  
+  
+  # pull out the unique locations where lat/lon doesn't exist
+  missingLatLon <- df$monitorID[missingIndex]
+  missingLatLonUnique <- unique(missingLatLon)
+  
+  # Use geocode from ggmap to find the latitudes and longitudes
+  findLatLon <- suppressMessages( ggmap::geocode(missingLatLonUnique) )
+  findLatLon <- cbind(missingLatLonUnique, findLatLon)
+  names(findLatLon)[1] <- "monitorID"
+  
+  # Append the newly found latitudes and longitudes to the dataframe
+  df <- dplyr::left_join(df, findLatLon, by="monitorID")
+  
+  # Replacing NA in original lat/lon by new lat/lon found by google
+  df$latitude[missingIndex] <- df$lat[missingIndex]
+  df$longitude[missingIndex] <- df$lon[missingIndex]
+  
+  # get rid of the extra lon and lat columns
+  df$lat <- NULL
+  df$lon <- NULL
+} 
+
+
 df$datetime <- lubridate::ymd_hms(df$local)
 
-# extract unique combinations of latitudes and longitudes for faster buffering process
-uniqueLatLon <- unique(paste(df$latitude, df$longitude))
-uniqueLatLon <- stringr::str_split_fixed(uniqueLatLon, ' ', 2)
-colnames(uniqueLatLon) <- c("latitude", "longitude")
-uniqueLatLon <- apply(uniqueLatLon,2,as.numeric)
-stateCodes <- suppressMessages(getStateCode(uniqueLatLon[,"longitude"], uniqueLatLon[,"latitude"], useBuffering = TRUE) )
+# pull out unique combinations of latitudes and longitudes
+df$latlon <- paste(df$latitude, df$longitude, sep=',')
+latlonUnique <- unique(df$latlon)
+latlonStateCode <- stringr::str_split_fixed(latlonUnique, ',', 2)
+latlonStateCode <- data.frame( apply(latlonStateCode, 2, as.numeric) )
 
-# # correct non-US state codes  
-# stateCodes[which(stateCodes == '')] <- 'PR'
-# stateCodes[which(stateCodes == 'TM' | stateCodes == 'CH')] <- 'TX'
-# stateCodes[which(stateCodes == 'BC')] <- 'ID'
+# get state codes for these unique combinations of lat and lon
+latlonStateCode$stateCode <- suppressMessages( 
+  getStateCode( latlonStateCode[,2], latlonStateCode[,1], useBuffering=TRUE ) )
+latlonStateCode$latlon <- latlonUnique
 
-# assign state codes accordingly
-df$stateCode <- NA
-for (i in 1:nrow(df)) {
-  latIndex <- which(uniqueLatLon[, 1] == df$latitude[i])
-  lonIndex <- which(uniqueLatLon[, 2] == df$longitude[i])
-  df$stateCode[i] <- stateCodes[intersect(latIndex,lonIndex)]
-}
+# append state codes column to the data frame
+df <- dplyr::left_join(df, latlonStateCode, by="latlon")
 
-# create a monitorID column as unique identifier 
-df$monitorID <- with(df,paste(location,city,stateCode,sep=', '))
+# get rid of extra columns 
+df$latlon <- NULL
+df$X1 <- NULL
+df$X2 <- NULL
+
+enddate <- as.numeric(opt$startdate) + as.numeric(opt$days) - 1
 
 # ----- Always create openAQ "meta" dataframes ----------------------------
 
-if ( opt$meta ) {
-  
-  result <- try( createMetaDataframes(df, opt$startdate, opt$outputDir) )
+
+  result <- try( createMetaDataframes(df, opt$startdate, enddate, opt$outputDir) )
   
   if ( class(result)[1] == "try-error" ) {
     msg <- paste("Error creating openAQ 'meta' dataframes: ", geterrmessage())
     logger.fatal(msg)
   }
   
-}
 
 
 # ----- Always create openAQ "data" dataframes --------------------------------
 
-result <- try( createDataDataframes(df, opt$startdate, opt$outputDir) )
+result <- try( createDataDataframes(df, opt$startdate, enddate, opt$outputDir) )
 
 if ( class(result)[1] == "try-error" ) {
   msg <- paste("Error creating openAQ 'data' dataframes: ", geterrmessage())
