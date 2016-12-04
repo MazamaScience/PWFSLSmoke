@@ -20,6 +20,11 @@
 # Load and clean up all required data with:
 #   source('localDNR/DNR_ingestData.R')
 
+# icon hints:
+#   http://gis.stackexchange.com/questions/118286/is-it-possible-to-create-a-scatterplot-with-icons-svg-or-png-instead-of-points
+#   https://ryouready.wordpress.com/2014/09/12/using-colorized-png-pictograms-in-r-base-plots/
+#   http://is-r.tumblr.com/post/33700919594/flag-space-a-scatter-plot-of-raster-images
+
 
 if ( FALSE ) {
   
