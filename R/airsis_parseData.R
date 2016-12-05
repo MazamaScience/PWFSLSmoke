@@ -110,7 +110,7 @@ airsis_parseData <- function(fileString) {
     # UnitID=1050 in July, 2016 has extra rows with some sort of metadata in columns Serial.Number and Data.1
     # We remove those here.
     
-    serialNumberMask <- !is.na(df$Serial.Number)
+    serialNumberMask <- (df$Serial.Number != "") & !is.na(df$Serial.Number)
     logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
     
     df <- df[!serialNumberMask,]

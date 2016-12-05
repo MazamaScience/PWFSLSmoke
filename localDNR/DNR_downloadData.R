@@ -41,7 +41,6 @@ if ( !file.exists('localData/airsis_rawList.RData') ) {
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1012 -- EBAM
   #   http://apcd.airsis.com/vision/UnitHistory.aspx?uid=1013 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1031 -- EBAM
-  #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1032 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1033 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1034 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1049 -- ESAM
@@ -74,7 +73,6 @@ if ( !file.exists('localData/airsis_monitorList.RData') ) {
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1012 -- EBAM
   #   http://apcd.airsis.com/vision/UnitHistory.aspx?uid=1013 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1031 -- EBAM
-  #XXXhttp://usfs.airsis.com/vision/UnitHistory.aspx?uid=1032 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1033 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1034 -- EBAM
   #   http://usfs.airsis.com/vision/UnitHistory.aspx?uid=1049 -- ESAM
