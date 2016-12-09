@@ -5,7 +5,7 @@
 \title{Obtain OpenAQ Data and Create ws_monitor Object}
 \usage{
 openaq_createMonitorObject(parameter = "pm25", startdate = "", days = 1,
-  countryCode = "US", saveFile = NULL)
+  countryCode = NULL)
 }
 \arguments{
 \item{parameter}{pollutant name}

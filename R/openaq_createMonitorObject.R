@@ -30,8 +30,7 @@
 #' }
 
 openaq_createMonitorObject <- function(parameter='pm25',
-                                       startdate='', days=1, countryCode='US',
-                                       saveFile=NULL) {
+                                       startdate='', days=1, countryCode=NULL) {
   
   # Sanity check: only one parameter allowed
   if ( is.null(parameter) || length(parameter) > 1 ) {
@@ -52,6 +51,8 @@ openaq_createMonitorObject <- function(parameter='pm25',
   logger.info('Downloading data...')
   df <- openaq_downloadData(parameter, startdate, days, countryCode)
   
+  # ----- Quality Control begin -----------------------------------------------
+  
   # Remove any records missing latitude or longitude
   badLocationMask <- is.na(df$longitude) | is.na(df$latitude)
   badLocationCount <- sum(badLocationMask)
@@ -62,35 +63,18 @@ openaq_createMonitorObject <- function(parameter='pm25',
   }
   df <- df[!badLocationMask,]
   
+  # ----- Quality Control end -------------------------------------------------
+  
   # add additional columns to the dataframe
-  logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')
+  logger.info('Adding \'datetime\', \'countryCode\', \'stateCode\', \'monitorID\' columns...')
   
-  # add datetime and monitorID column
-  df$datetime <- lubridate::ymd_hms(df$local)
+  df$datetime <- lubridate::ymd_hms(df$utc)
+  df$countryCode <- df$country
+  df <- openaq_assignStateCode(df)
   
-  # extract unique combinations of latitudes and longitudes for faster buffering process
-  uniqueLatLon <- unique(paste(df$latitude, df$longitude))
-  uniqueLatLon <- stringr::str_split_fixed(uniqueLatLon, ' ', 2)
-  colnames(uniqueLatLon) <- c("latitude", "longitude")
-  uniqueLatLon <- apply(uniqueLatLon,2,as.numeric)
-  stateCodes <- getStateCode(uniqueLatLon[,"longitude"], uniqueLatLon[,"latitude"], useBuffering = TRUE) 
-  
-  # correct non-US state codes  
-  stateCodes[which(stateCodes == '')] <- 'PR'
-  stateCodes[which(stateCodes == 'TM' | stateCodes == 'CH')] <- 'TX'
-  stateCodes[which(stateCodes == 'BC')] <- 'ID'
-  
-  # assign state codes accordingly
-  df$stateCode <- NA
-  for (i in 1:nrow(df)) {
-    latIndex <- which(uniqueLatLon[, 1] == df$latitude[i])
-    lonIndex <- which(uniqueLatLon[, 2] == df$longitude[i])
-    df$stateCode[i] <- stateCodes[intersect(latIndex,lonIndex)]
-  }
-  
-  # create a monitorID column as unique identifier 
-  df$monitorID <- with(df,paste(location,city,stateCode,sep=', '))
-  
+  # The monitorID column is composed of four lication elements as the unique identifier 
+  df$monitorID <- make.names( with(df, paste(location,city,stateCode,countryCode) ) )
+
   # create metadata for the data frame
   logger.info('Creating \'meta\' dataframe...')
   meta <- openaq_createMetaDataframe(df)

@@ -39,12 +39,13 @@ openaq_createMetaDataframe <- function(df){
   names(meta) <- c('siteName', 'latitude', 'longitude', 'timezone',
                    'countryCode', 'stateCode', 'monitorID')
   
-  for (name in names(meta)[-c(1,4,5)]) {
+  for (name in names(meta)[-c(1,4)]) {
     meta[[name]] <- df[[name]]
   }
+  
   meta$siteName <- df$location
-  meta$countryCode <- 'US'
-  meta$timezone <- MazamaSpatialUtils::getTimezone(meta$longitude,meta$latitude,useBuffering = T)
+  meta$timezone <- suppressMessages( 
+    MazamaSpatialUtils::getTimezone(meta$longitude,meta$latitude,useBuffering = T) )
   
   logger.debug("'meta' dataframe has %d rows and %d columns", nrow(meta), ncol(meta))
   
