@@ -19,7 +19,6 @@ library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
-###suppressPackageStartupMessages( library(PWFSLSmoke) )
 suppressPackageStartupMessages(library(PWFSLSmoke))
 suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
@@ -135,75 +134,74 @@ logger.debug('R session:\n\n%s\n', sessionString)
 logger.info('Downloading data...')
 df <- openaq_downloadData(startdate=opt$startdate, days=as.numeric(opt$days) )
 
+# ----- Quality Control begin -----------------------------------------------
+
+# Remove any records missing latitude or longitude
+badLocationMask <- is.na(df$longitude) | is.na(df$latitude)
+badLocationCount <- sum(badLocationMask)
+if ( badLocationCount > 0 ) {
+  logger.info('Discarding %s rows with invalid location information', badLocationCount)
+  badLocations <- paste('(',df$longitude[badLocationMask],',',df$latitude[badLocationMask],')',sep='')
+  logger.debug('Bad locations: %s', paste0(badLocations, collapse=", "))
+}
+df <- df[!badLocationMask,]
+
+# ----- Quality Control end -------------------------------------------------
+
 # add additional columns to the dataframe
-logger.info('Adding \'datetime\', \'stateCode\', \'monitorID\' columns...')
+logger.info('Adding \'datetime\', \'countryCode\', \'stateCode\', \'monitorID\' columns...')
 
-df$monitorID <- apply(df[,1:3], 1, function(x) { paste(x[1], x[2], x[3], sep=',') } )
+df$datetime <- lubridate::ymd_hms(df$utc)
+df$countryCode <- df$country
+df <- openaq_assignStateCode(df)
 
-if ( sum( is.na(df$latitude) ) > 0) {
-  # add missing latitudes and longitudes
-  logger.info('Fill in latitudes and longitudes where they are missing')
-  
-  missingIndex <- is.na(df$latitude)
-  
-  # create a new column that combines location, city and country to be used for google later
-  
-  
-  # pull out the unique locations where lat/lon doesn't exist
-  missingLatLon <- df$monitorID[missingIndex]
-  missingLatLonUnique <- unique(missingLatLon)
-  
-  # Use geocode from ggmap to find the latitudes and longitudes
-  findLatLon <- suppressMessages( ggmap::geocode(missingLatLonUnique) )
-  findLatLon <- cbind(missingLatLonUnique, findLatLon)
-  names(findLatLon)[1] <- "monitorID"
-  
-  # Append the newly found latitudes and longitudes to the dataframe
-  df <- dplyr::left_join(df, findLatLon, by="monitorID")
-  
-  # Replacing NA in original lat/lon by new lat/lon found by google
-  df$latitude[missingIndex] <- df$lat[missingIndex]
-  df$longitude[missingIndex] <- df$lon[missingIndex]
-  
-  # get rid of the extra lon and lat columns
-  df$lat <- NULL
-  df$lon <- NULL
-} 
+# The monitorID column is composed of four lication elements as the unique identifier 
+df$monitorID <- make.names( with(df, paste(location,city,stateCode,countryCode) ) )
 
-
-df$datetime <- lubridate::ymd_hms(df$local)
-
-# pull out unique combinations of latitudes and longitudes
-df$latlon <- paste(df$latitude, df$longitude, sep=',')
-latlonUnique <- unique(df$latlon)
-latlonStateCode <- stringr::str_split_fixed(latlonUnique, ',', 2)
-latlonStateCode <- data.frame( apply(latlonStateCode, 2, as.numeric) )
-
-# get state codes for these unique combinations of lat and lon
-latlonStateCode$stateCode <- suppressMessages( 
-  getStateCode( latlonStateCode[,2], latlonStateCode[,1], useBuffering=TRUE ) )
-latlonStateCode$latlon <- latlonUnique
-
-# append state codes column to the data frame
-df <- dplyr::left_join(df, latlonStateCode, by="latlon")
-
-# get rid of extra columns 
-df$latlon <- NULL
-df$X1 <- NULL
-df$X2 <- NULL
+## NOTE: Get rid of latitudes and longitudes that are NAs instead of using Google
+#
+# if ( sum( is.na(df$latitude) ) > 0) {
+#   # add missing latitudes and longitudes
+#   logger.info('Fill in latitudes and longitudes where they are missing')
+#   
+#   missingIndex <- is.na(df$latitude)
+#   
+#   # create a new column that combines location, city and country to be used for google later
+#   
+#   
+#   # pull out the unique locations where lat/lon doesn't exist
+#   missingLatLon <- df$monitorID[missingIndex]
+#   missingLatLonUnique <- unique(missingLatLon)
+#   
+#   # Use geocode from ggmap to find the latitudes and longitudes
+#   findLatLon <- suppressMessages( ggmap::geocode(missingLatLonUnique) )
+#   findLatLon <- cbind(missingLatLonUnique, findLatLon)
+#   names(findLatLon)[1] <- "monitorID"
+#   
+#   # Append the newly found latitudes and longitudes to the dataframe
+#   df <- dplyr::left_join(df, findLatLon, by="monitorID")
+#   
+#   # Replacing NA in original lat/lon by new lat/lon found by google
+#   df$latitude[missingIndex] <- df$lat[missingIndex]
+#   df$longitude[missingIndex] <- df$lon[missingIndex]
+#   
+#   # get rid of the extra lon and lat columns
+#   df$lat <- NULL
+#   df$lon <- NULL
+# } 
 
 enddate <- as.numeric(opt$startdate) + as.numeric(opt$days) - 1
 
 # ----- Always create openAQ "meta" dataframes ----------------------------
 
 
-  result <- try( createMetaDataframes(df, opt$startdate, enddate, opt$outputDir) )
-  
-  if ( class(result)[1] == "try-error" ) {
-    msg <- paste("Error creating openAQ 'meta' dataframes: ", geterrmessage())
-    logger.fatal(msg)
-  }
-  
+result <- try( createMetaDataframes(df, opt$startdate, enddate, opt$outputDir) )
+
+if ( class(result)[1] == "try-error" ) {
+  msg <- paste("Error creating openAQ 'meta' dataframes: ", geterrmessage())
+  logger.fatal(msg)
+}
+
 
 
 # ----- Always create openAQ "data" dataframes --------------------------------
