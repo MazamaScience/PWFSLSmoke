@@ -5,7 +5,6 @@
 #' @param startdate desired staring date (integer or character representing YYYYMMDD)
 #' @param days desired number of days of data to assemble
 #' @param countryCode two-character country code (ISO 3166-1 alpha-2)
-#' @param saveFile optional filename where raw CSV will be written
 #' @description Obtains monitor data from OPENAQ and converts
 #' it into a metadata enhanced \code{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.

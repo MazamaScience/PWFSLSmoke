@@ -22,7 +22,7 @@
 #' }
 
 skill_ROCPlot <- function(predicted, observed, t1Range=c(0,100), t2s=seq(10,100,10), n=101,
-                          colors=rainbow(length(t2s))) {
+                          colors=grDevices::rainbow(length(t2s))) {
   
   # Extract data from ws_monitor objects
   if ( 'ws_monitor' %in% class(predicted) ) {

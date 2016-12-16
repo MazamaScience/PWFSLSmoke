@@ -5,7 +5,7 @@
 \title{ROC Plot}
 \usage{
 skill_ROCPlot(predicted, observed, t1Range = c(0, 100), t2s = seq(10, 100,
-  10), n = 101, colors = rainbow(length(t2s)))
+  10), n = 101, colors = grDevices::rainbow(length(t2s)))
 }
 \arguments{
 \item{predicted}{vector of predicted values (or a \code{ws_monitor} object with a single location)}

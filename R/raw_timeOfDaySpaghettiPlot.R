@@ -67,8 +67,8 @@ raw_timeOfDaySpaghettiPlot <- function(df, dataVar, tzone=NULL,
   }
   
   # Add mean line
-  df %>% group_by(as.factor(hour)) %>%
-    summarize(data=mean(data,na.rm=TRUE)) ->
+  df %>% group_by(as.factor(df$hour)) %>%
+    summarize(data=mean(df$data,na.rm=TRUE)) ->
     hourMeanDF
   
   lines(hourMeanDF$data ~ seq(0,23,1), col=meanCol, lwd=meanLwd)

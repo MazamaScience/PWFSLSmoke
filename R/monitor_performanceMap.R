@@ -85,7 +85,7 @@ monitor_performanceMap <- function(predicted, observed,
   if ( !is.null(colorBy) && colorBy %in% names(performanceDF) ) {
     if ( length(breaks) == 1 ) {
       probs <- seq(0,1,length.out=(breaks+1))
-      breaks <- quantile(performanceDF[[colorBy]], probs=probs, na.rm=TRUE)
+      breaks <- stats::quantile(performanceDF[[colorBy]], probs=probs, na.rm=TRUE)
     }
     indices <- .bincode(performanceDF[[colorBy]], breaks=breaks, include.lowest=TRUE)
     colors <- paletteFunc(max(indices,na.rm=TRUE))
