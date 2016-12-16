@@ -33,4 +33,4 @@ airnow_dailyRollingAvg_m2 <- monitor_subset(airnow_dailyRollingAvg_m2, stateCode
 #                           threshold=AQI$breaks_24[3])
 # }
 
-monitor_performanceMap( airnow_dailyAvg_m1, airnow_dailyAvg)
+monitor_performanceMap( airnow_dailyAvg_m2, airnow_dailyAvg)
