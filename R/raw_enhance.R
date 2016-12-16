@@ -10,24 +10,19 @@
 # 
 # # ==============================
 # 
-# # outline:
-# # get dataframe in hand
-# # look at dataframe to determine monitor type and structure
-# # add new columns to dataframe with select columns and data formatted to consistent standard
-# # return new dataframe
+# # NOTES: ===================
+# # Should add check to ensure that data matches the type passed in (e.g. EBAM_AIRSIS); check col names
+# # If names don't match expected, we'll get NULL values for an entire field, which isn't ideal.
 # 
-# # NOTE:  should add check to ensure that data matches the type passed in (e.g. EBAM_AIRSIS); check col names
-# # NOTE:  If names don't match expected, we'll get NULL values for an entire field, which isn't ideal.
-# 
-# # NOTE: Future work and other ideas:
+# # Future work and other ideas:
 # 
 # # could possibly pull out last six columns (meta data) into a $meta field like the ws_monitor object.
 # # Could call it raw_monitor (as opposed to ws_monitor). Only difference is that there is more than one
 # # column of data for each monitor, so this type would not be as amendable to combining with other monitors
 # # in the same way as the ws_monitor object.
 # 
-# # NOTE:  There is other data available for most (but not all monitors) that could be included, if we are
-# # NOTE:  OK with some monitor types always having NULLs in certain fields.
+# # There is other data available for most (but not all monitors) that could be included, if we are
+# # OK with some monitor types always having NULLs in certain fields.
 # 
 # # TEMP BACKGROUND FILES FOR TESTING, ETC =================
 # 
@@ -48,26 +43,23 @@
 #   lapply(threeExamples, names)
 #   lapply(threeExamples, head)
 # 
-#   raw <- airsis_rawList$Plain; rawSource <- "AIRSIS" #EBAM AIRSIS
-#   #raw <- airsis_rawList$Naches; rawSource <- "AIRSIS" #ESAM AIRSIS
+#   #raw <- airsis_rawList$Plain; rawSource <- "AIRSIS" #EBAM AIRSIS
+#   raw <- airsis_rawList$Naches; rawSource <- "AIRSIS" #ESAM AIRSIS
 #   #raw <- airsis_rawList$Usk; rawSource <- "WRCC" #ESAM WRCC
 # 
 # }
 # 
 # # FUNCTION ================================
 # 
-# raw_enhance <- function(df, rawSource="AIRSIS") {
+# 
+# # TODO:  have rawSource be added to raw dataframe by createRawDataframe, so don't have to call as argument
+# raw_enhance <- function(raw, rawSource="AIRSIS") {
 # 
 #   # Identify monitor type and source and save to variable
 #   monType <- paste0(raw$monitorType[1],"_",rawSource,sep="")
 # 
-#   df <- raw
-# 
 #   # NOTE:  Could improve logic below to automate a determination as to what kind of data we're working with...
 #   # NOTE:  doing so would eliminate the need to pass in the source; instead just determine source based on type and fields
-# 
-# 
-#   # TODO:  have rawSource be added to raw dataframe by createRawDataframe
 # 
 #   # CREATE NEW FIELDS ==================
 #   # TODO:  NEED TO CHECK UNITS OF MEASURE!!!!
@@ -75,43 +67,43 @@
 # 
 #     # TODO:  add line here to check for data consistency
 # 
-#     df$temperature <- raw$AT
-#     df$humidity <- raw$RHx
-#     df$windSpeed <- raw$W.S
-#     df$windDir <- raw$W.D
-#     df$pm25 <- raw$COncRT # TODO:  Need to review this field for appropriateness, and units
-#     df$longitude <- raw$medoidLon
-#     df$latitude <- raw$medoidLat
-#     df$pressure <- as.numeric(NA)
-#     df$dataSource <- "AIRSIS"
+#     raw$temperature <- raw$AT
+#     raw$humidity <- raw$RHx
+#     raw$windSpeed <- raw$W.S
+#     raw$windDir <- raw$W.D
+#     raw$pm25 <- raw$COncRT # TODO:  Need to review this field for appropriateness, and units
+#     raw$longitude <- raw$medoidLon
+#     raw$latitude <- raw$medoidLat
+#     raw$pressure <- as.numeric(NA)
+#     raw$dataSource <- "AIRSIS"
 # 
 #   } else if ( monType=="ESAM_AIRSIS" ) {
 # 
 #     # TODO:  add line here to check for data consistency
 # 
-#     df$temperature <- raw$AT.C.
-#     df$humidity <- raw$RHx...
-#     df$windSpeed <- raw$WS.M.S.
-#     df$windDir <- raw$WD.Deg.
-#     df$pm25 <- raw$Conc.mg.m3. # TODO:  Need to review this field for appropriateness, and units
-#     df$longitude <- raw$medoidLon
-#     df$latitude <- raw$medoidLat
-#     df$pressure <- (raw$BP.PA.)/100
-#     df$dataSource <- "AIRSIS"
+#     raw$temperature <- raw$AT.C.
+#     raw$humidity <- raw$RHx...
+#     raw$windSpeed <- raw$WS.M.S.
+#     raw$windDir <- raw$WD.Deg.
+#     raw$pm25 <- raw$Conc.mg.m3. # TODO:  Need to review this field for appropriateness, and units
+#     raw$longitude <- raw$medoidLon
+#     raw$latitude <- raw$medoidLat
+#     raw$pressure <- (raw$BP.PA.)/100
+#     raw$dataSource <- "AIRSIS"
 # 
 #   } else if ( monType=="ESAM_WRCC" ) {
 # 
 #     # TODO:  add line here to check for data consistency
 # 
-#     df$temperature <- raw$AvAirTemp
-#     df$humidity <- raw$RelHumidity
-#     df$windSpeed <- raw$WindSpeed
-#     df$windDir <- raw$WindDir
-#     df$pm25 <- raw$ConcRT # TODO:  Need to review this field for appropriateness, and units
-#     df$longitude <- raw$medoidLon
-#     df$latitude <- raw$medoidLat
-#     df$pressure <- raw$BaromPress
-#     df$dataSource <- "WRCC"
+#     raw$temperature <- raw$AvAirTemp
+#     raw$humidity <- raw$RelHumidity
+#     raw$windSpeed <- raw$WindSpeed
+#     raw$windDir <- raw$WindDir
+#     raw$pm25 <- raw$ConcRT # TODO:  Need to review this field for appropriateness, and units
+#     raw$longitude <- raw$medoidLon
+#     raw$latitude <- raw$medoidLat
+#     raw$pressure <- raw$BaromPress
+#     raw$dataSource <- "WRCC"
 # 
 #   } else {
 # 
@@ -119,18 +111,28 @@
 # 
 #   }
 # 
-#   # TODO: Fill in missing periods with nulls!
+#   #FILL MISSING HOURS ===========
+#   df <- as.data.frame(seq(raw$datetime[1],raw$datetime[nrow(raw)],by=3600))
+#   names(df) <- "datetime"
+#   df <- dplyr::left_join(df,raw,by="datetime")
 #   
-#     
-#   # TODO: Assign timezones here! Should only do this for each unique pair of lat/lons. Or use deployment ID.
-#   # NOTE: use !duplicated, e.g. raw$Latitude[!duplicated(raw$deploymentID)]
-#   
-#   df$timezone <- "N/A"
+#   #TIMEZONE ============
+#   df$timezone <- ""
 #   for (i in unique(df$deploymentID)) {
-#     index <- which(df$deploymentID==i)
-#     df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]], countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
+#     if (is.na(i)) { break } else {
+#       index <- which(df$deploymentID==i)
+#       df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]], 
+#                                                             countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
+#     }
 #   }
 #   
+#   #Apply timezone to missing hours based on TZ of last good hour
+#   tz <- df$timezone[1]
+#   for (i in 2:nrow(df)) {
+#     if(df$timezone[i]=="") {df$timezone[i] <- tz}
+#     tz <- df$timezone[i]
+#   }
+# 
 #   return(df)
 # 
 # }

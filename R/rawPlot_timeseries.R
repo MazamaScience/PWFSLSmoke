@@ -1,35 +1,16 @@
-# # NOTE: this is a placeholder for now.  Basic concept is captured, and will develop further at a later date.
+# # PRELIM STUFF ==========
 # 
-# # TASK ================
-# # Create a function that accepts an enhanced raw dataframe and creates a time series plot with the same
-# # features as monitor_timeseriesPlot().
-# 
-# # OVERVIEW ===============
-# 
-# # Let's include functionality to do the following:
-# # Take raw_enhance file as first argument
-# # Get told what parameter to plot
-# # Take in similar arguments to monitor_timeseriesPlot (i.e. AQIStyle='', useGMT=FALSE(?), shadedNight=FALSE(?), add=FALSE)
-# # Take in any additional arguments to the plot command as needed
-# # Other argument may be to shade based on wind speed and/or direction?
+# # TODO: Subset data by time
+# # TODO: Shade based on wind speed and/or direction?
+# # TODO: Add chart titles
 # 
 # # IDEAS
-# # Subset data by time?
 # # Move around title, labels, etc.
-# # change colors?
+# # change colors? e.g. AQI colors if parameter == "pm25"
 # 
-# # OUTLINE ===============
-# 
-# # function call takes in raw_enhance object (df), plus additional argument (as described below/above)
-# #
-# # create plot of selected parameters
-# # 
-# # Need the following to run:
+# # NEEDED TO RUN THIS CODE:
 # # MazamaSpatialUtils
 # # lubridate
-# #
-# 
-# # ACTUAL CODE ==================
 # 
 # # use the following to set up some dummy raw_enhanced data to play with.  Comment out before adding to package.
 # if (FALSE) {
@@ -52,25 +33,17 @@
 # 
 #   rm(raw)
 #   rm(rawSource)
-#   
+# 
 # }
 # 
-# # and here's the actual function
+# # FUNCTION ============================
 # 
-# rawPlot_timeseries <- function(df, parameter="pm25", useGMT=FALSE, shadedNight=FALSE, add=FALSE, ...) {
+# rawPlot_timeseries <- function(df, parameter="pm25", useGMT=FALSE, shadedNight=FALSE, add=FALSE, tlim=NULL, type=NULL, ...) {
 # 
-#   args <- list(...)
-#   type <- args[['type']]
-# 
-#   print(paste("type passed in via dots:",type))
-# 
-#   if(is.null(type)) {type <- "l"; typeSpec <- FALSE} else {typeSpec <- TRUE}
-#   
 #   # General Formatting
-#   xlab <- "Date and Time (local)" #overwritten to say "GMT" at end if useGMT is true -- see time section below
-# 
-#   #TODO: enable AQI colors if parameter == "pm25"
-#   #TODO: include warning if AQI style selected but parameter != "pm25"
+#   xlabLocal <- "Date and Time (local)"
+#   xlabGMT <- "Date and Time (GMT)"
+#   if(is.null(type)) {type <- "l"; typeSpec <- FALSE} else {typeSpec <- TRUE}
 # 
 #   # Parameter-specific formatting
 #   if (parameter == "temperature") {
@@ -86,52 +59,58 @@
 #     ylab <- "PM2.5 (ug/m3)"
 #   } else if (parameter == "pressure") {
 #     ylab <- "Barometric Pressure (hPa)"
+#   } else {
+#     ylab <- parameter
 #   }
 # 
-#   # MISC
-#   lon <- df$longitude[1]
-#   lat <- df$latitude[1]
-# 
-#   # TIME ===========
-# 
-#   # NOTE: Moved timezome assignment to the raw_enhance function.
-#   # NOTE: May still need to check for monitors that have >1 deployment -- see deploymentID field
+#   # TIME ==========
+#   
+#   #default to use GMT if >1 TZ
+#   if (length(unique(df$timezone))>1) {
+#     print("More than one time zone, so forced to plot using GMT")
+#     useGMT <- TRUE
+#   }
 #   
 #   if (useGMT) {
-#     datetime <- df[["datetime"]]
-#     xlab <- "Date and Time (GMT)"
+#     datetime <- df$datetime
+#     xlab <- xlabGMT
 #   } else {
-#     timezone <- MazamaSpatialUtils::getTimezone(lon, lat, countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
-#     datetime <- lubridate::with_tz(df$datetime, tzone=timezone)
+#     datetime <- lubridate::with_tz(df$datetime, tzone=df$timezone[1])
+#     xlab <- xlabLocal
 #   }
-#   
+# 
 #   # PLOT ============
-#   
-#   print(paste("Before plotting, type =",type))
-#   
-#   # # need to merge type back into the ... argument for plot function...
-#   args[['type']] <- type
-#   
-#   print(paste("args:",args))
-#   #do.call(identical, args)
-#   
+# 
 #   param <- df[[parameter]] #used in Plot function below for main item to be plotted
 # 
 #   plot(datetime,param,
 #        xlab=xlab,
 #        ylab=ylab,
-#        ...=args)
+#        type=type,
+#        ...)
 # 
-#   # shade nighttime hours
-#   ###  if(nrow(meta) == 1 & !useGMT & shadedNight) {
-#   if ( shadedNight && !useGMT ) {
-#     timeInfo <- PWFSLSmoke::timeInfo(datetime, lon, lat, timezone)
-#     PWFSLSmoke::addShadedNights(timeInfo)
+#   #SHADED NIGHT ===============
+#   
+#   #apply shaded night based on first deployment lat/lon if >1 deployment.  Breaks if >1 time zone.
+#   if (shadedNight) {
+#     if (length(unique(df$timezone))>1) {
+#       stop("Can't do shaded night for more than one time zone!!")
+#     } else {
+#       lon <- df$longitude[1]
+#       lat <- df$latitude[1]
+#       timezone <- df$timezone[1]
+#       if (useGMT) {
+#         timeInfo <- PWFSLSmoke::timeInfo(df$datetime, lon, lat, timezone)
+#         PWFSLSmoke::addShadedNights(timeInfo)
+#       } else {
+#         timeInfo <- PWFSLSmoke::timeInfo(datetime, lon, lat, timezone)
+#         PWFSLSmoke::addShadedNights(timeInfo)
+#       }
+#     }
 #   }
 # 
-#   #TODO: add shadedBackground in the same manner as above
+#   #SHADED BACKGROUND =============
+#   # TODO: add shadedBackground in the same manner as above
 # 
 # }
-# 
-# 
-# 
+
