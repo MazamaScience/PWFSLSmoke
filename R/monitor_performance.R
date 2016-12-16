@@ -19,6 +19,17 @@
 #' @return Dataframe of monitors vs named measure of performance.
 #' @seealso \link{monitor_performanceMap}
 #' @seealso \link{skill_confusionMatrix}
+#' @examples 
+#' \dontrun{
+#' airnow <- airnow_load(20150101, 20151231)
+#' airnow_dailyAvg <- monitor_dailyStatistic(airnow, mean)
+#' airnow_dailyAvg <- monitor_subset(airnow_dailyAvg, stateCodes='WA')
+#' airnow_m1 <- airnow_load(20141231, 20151230)
+#' airnow_dailyAvg_m1 <- monitor_dailyStatistic(airnow_m1, mean)
+#' airnow_dailyAvg_m1 <- monitor_subset(airnow_dailyAvg_m1, stateCodes='WA')
+#' threshold <- AQI$breaks_24[3]
+#' performanceMetrices <- monitor_performance(airnow_dailyAvg_m1, airnow_dailyAve, threshold, threshold)
+#' }
 
 monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost=1, FNCost=1) {
   

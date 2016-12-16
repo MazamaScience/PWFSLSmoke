@@ -34,7 +34,7 @@
 monitor_performanceMap <- function(predicted, observed,
                                    threshold=AQI$breaks_24[3],
                                    sizeBy=NULL, colorBy="heidikeSkill",
-                                   paletteFunc=colorRampPalette(c('gray80','yellow','orange','red')),
+                                   paletteFunc=colorRampPalette(brewer.pal(6,"Purples")[-1]),
                                    breaks=c(-Inf,.5,.6,.7,.8,.9),
                                    ...) {
 
