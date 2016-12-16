@@ -12,9 +12,9 @@ skill_confusionMatrix(predicted, observed, FPCost = 1, FNCost = 1,
 
 \item{observed}{logical vector of observed values}
 
-\item{FPCost}{cost associated with false positives (type I error)}
+\item{FPCost}{cost associated with false positives (type II error)}
 
-\item{FNCost}{cost associated with false negatives (type II error)}
+\item{FNCost}{cost associated with false negatives (type I error)}
 
 \item{lightweight}{flag specifying creation of a return list without derived metrics}
 }

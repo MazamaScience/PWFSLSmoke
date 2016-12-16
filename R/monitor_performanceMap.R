@@ -49,9 +49,29 @@ monitor_performanceMap <- function(predicted, observed,
   defaultCex <- argsList$cex
   
   # Plot the basemap
-  maps::map("state",
-            xlim=adjustRange(range(predicted$meta$longitude), 1.5, 0.5),
-            ylim=adjustRange(range(predicted$meta$latitude), 1.5, 0.5))    
+  longitudeRange <- range(predicted$meta$longitude)
+  latitudeRange <- range(predicted$meta$latitude)
+  
+  # When only a single monitor is being plotted, i.e. only a single pair of coordinates is
+  # supplied, plot the corresponding state
+  
+  if (longitudeRange[1]==longitudeRange[2] && latitudeRange[1]==latitudeRange[2]){
+    
+    stateCode <- suppressMessages( getStateCode(longitudeRange[1], latitudeRange[1]) )
+    state.fips <- maps::state.fips
+    duplicateIndex <- duplicated(state.fips$abb)
+    state.fips <- state.fips[!duplicateIndex,]
+    stateName <- as.character( state.fips$polyname[ which(state.fips$abb==stateCode) ] )
+    stateName <- stringr::str_split_fixed(stateName, ':', 2)[1]
+    maps::map('state', stateName)
+    
+  } else {
+    
+    maps::map("state",
+              xlim=adjustRange(longitudeRange, 1.5, 0.5),
+              ylim=adjustRange(latitudeRange, 1.5, 0.5)) 
+    
+  }
   # NOTE:  We should probably always show counties. No need for this to be optional.
   showCounties <- TRUE
   if (showCounties) maps::map('county',col='gray90',add=TRUE)  

@@ -6,8 +6,8 @@
 #' @param t1 value used to classify \code{predicted} measurements
 #' @param t2 threshold used to classify \code{observed} measurements
 #' @param metric confusion matrix metric to be used
-#' @param FPCost cost associated with false positives (type I error)
-#' @param FNCost cost associated with false negatives (type II error)
+#' @param FPCost cost associated with false positives (type II error)
+#' @param FNCost cost associated with false negatives (type I error)
 #' @description This function uses "confusion matrix" analysis to calculate
 #' different measures of predictive performance for every timeseries found
 #' in \code{predicted} with respect to the observed values found in the single timeseries
@@ -32,17 +32,32 @@ monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost
     stop(paste0('Metric "',metric,'" is not a recognized confusionMatrix metric.'))
   }
   
-  # Sanity check:  observed must be a single timeseries
-  if ( ncol(observed$data) > 2 ) {
-    observedMonitors <- paste0(names(observed$data[-1]), sep=',')
-    stop(paste0('"observed" must have a single monitor, ',length(observedMonitors),' found: ',observedMonitors))
-  }
+  # # Sanity check:  observed must be a single timeseries
+  # if ( ncol(observed$data) > 2 ) {
+  #   observedMonitors <- paste0(names(observed$data[-1]), sep=',')
+  #   stop(paste0('"observed" must have a single monitor, ',length(observedMonitors),' found: ',observedMonitors))
+  # }
   
   # Extract names and data, omitting the first 'datetime' column
   monitorIDs <- names(predicted$data)[-1]
   predictedData <- as.data.frame(predicted$data[,-1])
-  observedData = as.numeric(observed$data[,-1])
-
+  names(predictedData) <- monitorIDs
+  
+  if ( ncol(observed$data) > 2 ) {
+    
+    monitorIDsObs <- names(observed$data)[-1]
+    
+    if ( sum( duplicated(c(monitorIDs, monitorIDsObs)) ) != length(monitorIDs) ) {
+      stop(paste0("The monitorIDs from predicted data and observed data don't match exactly"))
+      
+    } else {
+      observedData <- as.data.frame(observed$data[,-1])
+    }
+    
+  } else {
+    observedData = as.numeric(observed$data[,-1])
+  } 
+  
   # Create empty 'performance dataframe
   performance <- data.frame(monitorID=monitorIDs)
   rownames(performance) <- monitorIDs
@@ -59,15 +74,19 @@ monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost
   # Calculate confusionMatrix metrics comparing each monitor's data with the observed data
   for (monitorID in monitorIDs) {
     
+    if ( ncol(observed$data) > 2) {
+      cm <- skill_confusionMatrix(predictedData[,monitorID] >= t1, observedData[,monitorID] >= t2, FPCost, FNCost)
+    } else {
+      cm <- skill_confusionMatrix(predictedData[,monitorID] >= t1, observedData >= t2, FPCost, FNCost)
+    }
+    
     if ( is.null(metric) ) {
       # all metrics
-      cm <- skill_confusionMatrix(predictedData[,monitorID] >= t1, observedData >= t2, FPCost, FNCost)
       for (metricName in metricNames) {
         performance[monitorID,metricName] <- cm[[metricName]]
       }
     } else {
       # a single metric
-      cm <- skill_confusionMatrix(predictedData[,monitorID] >= t1, observedData >= t2, FPCost, FNCost)
       performance[monitorID,metric] <- cm[[metric]]
     }
     

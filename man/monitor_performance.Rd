@@ -18,9 +18,9 @@ monitor_performance(predicted, observed, t1, t2, metric = NULL, FPCost = 1,
 
 \item{metric}{confusion matrix metric to be used}
 
-\item{FPCost}{cost associated with false positives (type I error)}
+\item{FPCost}{cost associated with false positives (type II error)}
 
-\item{FNCost}{cost associated with false negatives (type II error)}
+\item{FNCost}{cost associated with false negatives (type I error)}
 }
 \value{
 Dataframe of monitors vs named measure of performance.
