@@ -34,6 +34,7 @@ Imports:
     lubridate,
     maptools,
     openair,
+    RColorBrewer,
     RCurl,
     readr,
     reshape2,

@@ -34,6 +34,18 @@ found in \code{observed}.
 The requested metric is returned in a dataframe organized with one row per monitor,
 all available metrics are returned.
 }
+\examples{
+\dontrun{
+airnow <- airnow_load(20150101, 20151231)
+airnow_dailyAvg <- monitor_dailyStatistic(airnow, mean)
+airnow_dailyAvg <- monitor_subset(airnow_dailyAvg, stateCodes='WA')
+airnow_m1 <- airnow_load(20141231, 20151230)
+airnow_dailyAvg_m1 <- monitor_dailyStatistic(airnow_m1, mean)
+airnow_dailyAvg_m1 <- monitor_subset(airnow_dailyAvg_m1, stateCodes='WA')
+threshold <- AQI$breaks_24[3]
+performanceMetrices <- monitor_performance(airnow_dailyAvg_m1, airnow_dailyAve, threshold, threshold)
+}
+}
 \seealso{
 \link{monitor_performanceMap}
 

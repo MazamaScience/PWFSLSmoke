@@ -115,17 +115,17 @@
 #   df <- as.data.frame(seq(raw$datetime[1],raw$datetime[nrow(raw)],by=3600))
 #   names(df) <- "datetime"
 #   df <- dplyr::left_join(df,raw,by="datetime")
-#   
+# 
 #   #TIMEZONE ============
 #   df$timezone <- ""
 #   for (i in unique(df$deploymentID)) {
 #     if (is.na(i)) { break } else {
 #       index <- which(df$deploymentID==i)
-#       df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]], 
+#       df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]],
 #                                                             countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
 #     }
 #   }
-#   
+# 
 #   #Apply timezone to missing hours based on TZ of last good hour
 #   tz <- df$timezone[1]
 #   for (i in 2:nrow(df)) {

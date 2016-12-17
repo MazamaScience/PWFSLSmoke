@@ -19,6 +19,17 @@
 #' @return Dataframe of monitors vs named measure of performance.
 #' @seealso \link{monitor_performanceMap}
 #' @seealso \link{skill_confusionMatrix}
+#' @examples 
+#' \dontrun{
+#' airnow <- airnow_load(20150101, 20151231)
+#' airnow_dailyAvg <- monitor_dailyStatistic(airnow, mean)
+#' airnow_dailyAvg <- monitor_subset(airnow_dailyAvg, stateCodes='WA')
+#' airnow_m1 <- airnow_load(20141231, 20151230)
+#' airnow_dailyAvg_m1 <- monitor_dailyStatistic(airnow_m1, mean)
+#' airnow_dailyAvg_m1 <- monitor_subset(airnow_dailyAvg_m1, stateCodes='WA')
+#' threshold <- AQI$breaks_24[3]
+#' performanceMetrices <- monitor_performance(airnow_dailyAvg_m1, airnow_dailyAve, threshold, threshold)
+#' }
 
 monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost=1, FNCost=1) {
   
@@ -32,30 +43,38 @@ monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost
     stop(paste0('Metric "',metric,'" is not a recognized confusionMatrix metric.'))
   }
   
-  # # Sanity check:  observed must be a single timeseries
-  # if ( ncol(observed$data) > 2 ) {
-  #   observedMonitors <- paste0(names(observed$data[-1]), sep=',')
-  #   stop(paste0('"observed" must have a single monitor, ',length(observedMonitors),' found: ',observedMonitors))
-  # }
-  
-  # Extract names and data, omitting the first 'datetime' column
-  monitorIDs <- names(predicted$data)[-1]
-  predictedData <- as.data.frame(predicted$data[,-1])
-  names(predictedData) <- monitorIDs
+  # Extract data in different cases
   
   if ( ncol(observed$data) > 2 ) {
+  # one to one relation: monitorIDs must be matched exactly in observed and predicted
+  ## NOTE: the case when there's only a single matching monitorID is not considered
     
+    monitorIDsPred <- names(predicted$data)[-1]
     monitorIDsObs <- names(observed$data)[-1]
+    monitorIDs <- intersect(monitorIDsPred, monitorIDsObs)
+    diff <- setdiff(monitorIDsPred, monitorIDsObs)
     
-    if ( sum( duplicated(c(monitorIDs, monitorIDsObs)) ) != length(monitorIDs) ) {
-      stop(paste0("The monitorIDs from predicted data and observed data don't match exactly"))
+    if ( length(diff) > 0 && length(monitorIDs) != 0 ) {
+      
+      sprintf("%i monitor(s) will be discarded", length(diff))
+      predicted <-monitor_subset(predicted, monitorIDs=monitorIDs)
+      observed <- monitor_subset(observed, monitorIDs=monitorIDs)
       
     } else {
-      observedData <- as.data.frame(observed$data[,-1])
+      stop(paste0("There is no matching monitorIDs at all."))
     }
     
+    predictedData <- as.data.frame(predicted$data[,-1])
+    observedData <- as.data.frame(observed$data[,-1])
+    
   } else {
+  # one to many relation: using others monitors with different IDs to predict a single monitor
+    
+    monitorIDs <- names(predicted$data)[-1]
+    predictedData <- as.data.frame(predicted$data[,-1])
+    names(predictedData) <- monitorIDs
     observedData = as.numeric(observed$data[,-1])
+    
   } 
   
   # Create empty 'performance dataframe
