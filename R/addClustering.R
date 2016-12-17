@@ -31,6 +31,13 @@ addClustering <- function(df, clusterDiameter=1000, minCount=48,
     stop(paste0("Latitudes could not be found.  Did you specify the latVar arguments?"))
   }
   
+  # If we only have a single row, return immediately
+  if ( nrow(df) == 1 ) {
+    df$deploymentID <- 1
+    df$medoidLon <- df[[lonVar]][1]
+    df$medoidLat <- df[[latVar]][1]
+    return(df)
+  }
   
   # NOTE:  A monitor wil be moved around from time to time, sometimes across the country
   # NOTE:  and sometimes across the street.  We need to assign unique identifiers to each

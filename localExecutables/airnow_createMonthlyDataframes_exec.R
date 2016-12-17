@@ -1,20 +1,42 @@
 #!/usr/bin/env Rscript
 
-# October, 2016 update:
+# December, 2016 update:
 #
-# This script will download one month of hourly data from AirNow archives and generate a
-# suite of "data" dataframes appropriate for use in "ws_monitor" objects defined by the
-# PWFSLSmoke package. One dataframe will be created for each parameter availabe in the
-# downloaded data.
+# This script uses regularly updated data found at:  vacuum:/home/monitors
 #
-# This script can be onece a month in a run in a cron job as in the example below:
+# AIRSIS raw dump files are transferred from DRI to vacuum on an hourly basis and
+# processed into three files:
+#
+# * AIRSIS_PM2.5_LatestData.RData -- 'data' dataframe
+# * AIRSIS_PM2.5_LatestMeta.RData -- 'meta' dataframe
+# * AIRSIS_PM2.5_Latest.RData     -- 'ws_monitor' object that combines 'data' and 'meta'
+#
+# This script will be run hourly on vacuum in the 'bluesky' crontab as part of the 'Monitoring' block of instructions:
+#
+# ###############################################################################
+# # Monitoring
 # 
 # # m h  dom mon dow   command
 # 
 # # Update AirNow monitoring data
-# 00 01  12   *   *    /home/bluesky/monitoring/bin/airnow_createMonthlyDataframes_exec.R --user=USER --pass=PASS --yearMonth=LAST_MONTH --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
+# 01 *  *   *   *    /home/bluesky/monitoring/bin/createAirNowDataframes.RScript --meta --PM2.5 --destDir=/home/web_data/monitoring
+# # Create AirNow geojson file
+# 11 *  *   *   *    /home/bluesky/monitoring/bin/createGeoJSON_exec.R --inputDir=/home/web_data/monitoring --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring --dataSource=AirNow
+# # Update AIRSIS (EBAM) monitoring data
+# 21 *  *   *   *    /home/bluesky/monitoring/bin/createAIRSISDataframes_exec.R --inputDir=/home/web_data/monitoring --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
+# # Create AIRSIS (EBAM) geojson file
+# 31 *  *   *   *    /home/bluesky/monitoring/bin/createGeoJSON_exec.R --inputDir=/home/web_data/monitoring --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring --dataSource=AIRSIS 
+# # Update WRCC (GOES) monitoring data
+# 22 *  *   *   *    /home/bluesky/monitoring/bin/createGOESDataframes_exec.R --meta --PM2.5 --destDir=/home/web_data/monitoring
+# # Create WRCC (GOES) geojson file
+# 32 *  *   *   *    /home/bluesky/monitoring/bin/createGeoJSON_exec.R --inputDir=/home/web_data/monitoring --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring --dataSource=WRCC 
+# # Update CSV files from *_Latest.RData files
+# 41 *  *   *   *   /home/bluesky/monitoring/bin/createCSV_exec.R --inputDir=/home/web_data/monitoring --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
+# # Create updateTimes.json file
+# 47 *  *   *   *   /home/bluesky/monitoring/bin/updateTimes.py --inputDir=/home/web_data/monitoring --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
+# 
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
