@@ -1,7 +1,8 @@
 # ===== PRELIM STUFF ==========================
 
 # TODO: Set up "add=TRUE" -- was unable to get this to work in first pass
-# TODO: Shade based on wind speed and/or direction?
+# TODO: update time zone acquisition to eliminate warning for OlsonNames
+# TODO: prohibit user from using both shadedNights and shadedBackground?
 
 # IDEAS
 # Move around title, labels, etc.
@@ -50,17 +51,22 @@
 #   load("localData/airsis_rawList.RData")
 #   source('~/Projects/PWFSLSmoke/R/raw_enhance.R', echo=FALSE)
 # 
+#   rawEnhanceList <- list()
+#   
 #   raw <- airsis_rawList$Plain; rawSource <- "AIRSIS" #EBAM AIRSIS
-#   ebam_airsis <- raw_enhance(raw, rawSource = rawSource)
+#   rawEnhanceList$EBAM_AIRSIS <- raw_enhance(raw, rawSource = rawSource)
 # 
 #   raw <- airsis_rawList$Naches; rawSource <- "AIRSIS" #ESAM AIRSIS
-#   esam_airsis <- raw_enhance(raw, rawSource = rawSource)
+#   rawEnhanceList$ESAM_AIRSIS <- raw_enhance(raw, rawSource = rawSource)
 # 
 #   raw <- airsis_rawList$Usk; rawSource <- "WRCC" #ESAM WRCC
-#   esam_wrcc <- raw_enhance(raw, rawSource = rawSource)
+#   rawEnhanceList$ESAM_WRCC <- raw_enhance(raw, rawSource = rawSource)
 # 
 #   rm(raw)
 #   rm(rawSource)
+#   rm(airsis_rawList)
+#   
+#   lapply(rawEnhanceList,head)
 # 
 # }
 # 
@@ -68,12 +74,14 @@
 #                                parameter="pm25",
 #                                useGMT=FALSE,
 #                                shadedNight=FALSE,
-#                                shadedBackground=FALSE,
+#                                shadedBackground=NULL, #specify parameter to shade
 #                                #add=FALSE,
 #                                tlim=NULL,
 #                                type=NULL,
+#                                linelwd=4,
+#                                sblwd=1,
 #                                ...) {
-#   
+# 
 #   # If passed as argument, check that parameter exists in names of df
 #   if (!(parameter %in% names(df))) {
 #     stop(paste0("'",parameter,"' does not exist in names(",deparse(substitute(df)),")",sep=""))
@@ -84,7 +92,7 @@
 #   # Time axis labels
 #   xlabLocal <- "Date and Time (local)" # used if GMT==FALSE
 #   xlabGMT <- "Date and Time (GMT)" # used if GMT==TRUE, or if time data is in >1 timezone
-#   
+# 
 #   # Line type default (can be overwritten)
 #   if(is.null(type)) {type <- "l"; typeSpec <- FALSE} else {typeSpec <- TRUE}
 # 
@@ -103,8 +111,8 @@
 #     if (!typeSpec) {type <- "p"} # change from line graph to dots unless specifically requested to plot as line
 #     title <- "Wind Direction"
 #   } else if (parameter == "pm25") {
-#     ylab <- "PM2.5 (ug/m3)"
-#     title <- "PM2.5 Concentration"
+#     ylab <- expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")"))
+#     title <- expression("PM"[2.5]*" Concentration")
 #   } else if (parameter == "pressure") {
 #     ylab <- "Barometric Pressure (hPa)"
 #     title <- "Atmospheric Pressure"
@@ -114,13 +122,13 @@
 #   }
 # 
 #   # ----- Data Preparation ----------------------------------------------------
-#   
+# 
 #   # Default to use GMT if >1 timezone in data
 #   if (length(unique(df$timezone))>1) {
 #     print("More than one time zone, so forced to plot using GMT")
 #     useGMT <- TRUE
 #   }
-#   
+# 
 #   # Set time axis data and labels
 #   if (useGMT) {
 #     datetime <- df$datetime
@@ -141,19 +149,21 @@
 #     datetime <- datetime[timeMask]
 #     df <- df[timeMask,]
 #   }
-#   
+# 
 #   # Prep the data to plot, based on parameter selection by user (default = "pm25")
 #   param <- df[[parameter]]
-#   
-#   # ----- Plotting ------------------------------------------------------------
-#   
-#   # Create the plot
-#   plot(datetime,param,
-#        xlab=xlab,
-#        ylab=ylab,
-#        type=type,
-#        ...)
 # 
+#   # ----- Plotting ------------------------------------------------------------
+# 
+#   # Create the plot
+#   
+#   if (shadedNight==TRUE || !is.null(shadedBackground)) {
+#     plot(datetime,param,
+#          type="n",
+#          xlab=xlab,
+#          ylab=ylab)
+#   }
+#   
 #   # Shaded Night: based on first deployment lat/lon if >1 deployment; breaks if >1 time zone
 #   if (shadedNight) {
 #     if (length(unique(df$timezone))>1) {
@@ -174,38 +184,19 @@
 # 
 #   # Shaded Background
 #   # TODO: add shadedBackground in the same manner as above
-#   if (shadedBackground) {
-#     addShadedBackground(param=df$windSpeed, timeAxis=datetime, ...)
+#   if (!is.null(shadedBackground)) {
+#     addShadedBackground(param=df[[shadedBackground]], timeAxis=datetime, lwd=sblwd, ...)
 #   }
+# 
+#   # Create the actual data plot (on top of background shading if it exists)
+#   lines(datetime,param,
+#        #xlab=xlab,
+#        #ylab=ylab,
+#        type=type,
+#        lwd=linelwd,
+#        ...)
 #   
 #   # Add chart title
 #   title(title)
-#   
+# 
 # }
-# 
-# 
-# sample code for wind direction plot
-# double axes from https://www.r-bloggers.com/multiple-y-axis-in-a-r-plot/
-# 
-# windDir <- df$windDir
-# 
-# cols <- rep("black",length(windDir))
-# eMask <- windDir <180 & windDir>=0
-# wMask <- windDir <360 & windDir>=180
-# 
-# cols[which(eMask)] <- "blue"
-# cols[which(wMask)] <- "red"
-# 
-# #par(mar=c(5, 12, 4, 4) + 0.1)
-# 
-# windDir[wMask] <- 360-windDir[wMask]
-# 
-# plot(df$datetime,windDir,col=cols,ylim=c(180,0))
-# title("Wind Direction: Red = from east, Blue = from West") #this really needs a second axis to be legit
-# #axis(4,ylim=c(0,20),col="red",lwd=2)
-# 
-# #basic plot
-# plot(df$datetime,df$windDir,col=cols,ylim=c(180,0))
-# #box()
-# #axis(2, ylim=c(0,180),col="blue",lwd=2)
-# #axis(1)

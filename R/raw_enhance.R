@@ -8,7 +8,7 @@
 # #' processing from various sources.
 # #' @return Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 # 
-# # ==============================
+# ==============================
 # 
 # # NOTES: ===================
 # # Should add check to ensure that data matches the type passed in (e.g. EBAM_AIRSIS); check col names
@@ -48,11 +48,11 @@
 #   #raw <- airsis_rawList$Usk; rawSource <- "WRCC" #ESAM WRCC
 # 
 # }
-# 
-# # FUNCTION ================================
-# 
-# 
-# # TODO:  have rawSource be added to raw dataframe by createRawDataframe, so don't have to call as argument
+# # 
+# # # FUNCTION ================================
+# # 
+# # 
+# # # TODO:  have rawSource be added to raw dataframe by createRawDataframe, so don't have to call as argument
 # raw_enhance <- function(raw, rawSource="AIRSIS") {
 # 
 #   # Identify monitor type and source and save to variable
@@ -71,7 +71,7 @@
 #     raw$humidity <- raw$RHx
 #     raw$windSpeed <- raw$W.S
 #     raw$windDir <- raw$W.D
-#     raw$pm25 <- raw$COncRT # TODO:  Need to review this field for appropriateness, and units
+#     raw$pm25 <- raw$ConcHr*1000 # TODO: Review this field for appropriateness (e.g. could use COncRT?)
 #     raw$longitude <- raw$medoidLon
 #     raw$latitude <- raw$medoidLat
 #     raw$pressure <- as.numeric(NA)
@@ -85,10 +85,10 @@
 #     raw$humidity <- raw$RHx...
 #     raw$windSpeed <- raw$WS.M.S.
 #     raw$windDir <- raw$WD.Deg.
-#     raw$pm25 <- raw$Conc.mg.m3. # TODO:  Need to review this field for appropriateness, and units
+#     raw$pm25 <- raw$Conc.mg.m3.*1000
 #     raw$longitude <- raw$medoidLon
 #     raw$latitude <- raw$medoidLat
-#     raw$pressure <- (raw$BP.PA.)/100
+#     raw$pressure <- (raw$BP.PA.)/100 #Adjust to hPa for consistency w/ ESAM_WRCC
 #     raw$dataSource <- "AIRSIS"
 # 
 #   } else if ( monType=="ESAM_WRCC" ) {
@@ -99,7 +99,7 @@
 #     raw$humidity <- raw$RelHumidity
 #     raw$windSpeed <- raw$WindSpeed
 #     raw$windDir <- raw$WindDir
-#     raw$pm25 <- raw$ConcRT # TODO:  Need to review this field for appropriateness, and units
+#     raw$pm25 <- raw$ConcRT*1000
 #     raw$longitude <- raw$medoidLon
 #     raw$latitude <- raw$medoidLat
 #     raw$pressure <- raw$BaromPress
