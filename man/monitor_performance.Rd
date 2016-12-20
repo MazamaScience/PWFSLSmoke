@@ -43,7 +43,9 @@ airnow_m1 <- airnow_load(20141231, 20151230)
 airnow_dailyAvg_m1 <- monitor_dailyStatistic(airnow_m1, mean)
 airnow_dailyAvg_m1 <- monitor_subset(airnow_dailyAvg_m1, stateCodes='WA')
 threshold <- AQI$breaks_24[3]
-performanceMetrices <- monitor_performance(airnow_dailyAvg_m1, airnow_dailyAve, threshold, threshold)
+performanceMetrices <- monitor_performance(airnow_dailyAvg_m1, 
+                                           airnow_dailyAve,
+                                           threshold, threshold)
 }
 }
 \seealso{
