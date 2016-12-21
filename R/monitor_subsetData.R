@@ -83,7 +83,12 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, drop
     warning("No matching monitors found")
     return (NULL)
   }
-  # TODO:  Add back YYYYmmddHHMM rownames discarded by dplyr::filter
   
+  # TODO:  Add back YYYYmmddHHMM rownames discarded by dplyr::filter
+  # preserve the row names for data dataframe
+  rowNames <- sapply(data$datetime, function(x){ stringr::str_replace_all(x, "-", "") } )
+  rowNames <- sapply(rowNames, function(x){ stringr::str_replace(x, " ", "") } )
+  rowNames <- sapply(rowNames, function(x){ stringr::str_split_fixed(x, ":", 3)[1] } )
+  rownames(data) <- rowNames
   return(data)
 }
