@@ -37,9 +37,11 @@ wrccDump_createMonitorObject <- function(filepath) {
   # empty list for ws_monitor objects
   monitorList <- list()
   
-  # Loop over monitor dataframe list (mostlyverbatim from wrcc_createMonitorObject)
+  # Loop over monitor dataframe list (mostly verbatim from wrcc_createMonitorObject)
   for ( name in names(dfList) ) {
   
+    logger.info('Processing data for %s...', name)
+    
     df <- dfList[[name]]
     
     # Apply monitor-appropriate QC to the dataframe
