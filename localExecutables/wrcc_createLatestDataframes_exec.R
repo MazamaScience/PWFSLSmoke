@@ -1,4 +1,4 @@
-#!/opt/local/bin/Rscript
+#!/usr/local/bin/Rscript
 
 # December, 2016 update:
 #
@@ -14,7 +14,7 @@
 # # Update AIRSIS monitoring data
 # 21 *  *   *   *    /home/bluesky/monitoring/bin/airsis_createLatestDataframes_exec.R --inputDir=/home/web_data/monitoring --outputDir=/home/web_data/monitoring --logDir=/home/web_logs/monitoring
 
-VERSION <- "0.2.0"
+VERSION <- "0.2.1"
 
 library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
@@ -28,7 +28,7 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 createAIRSISDataframes <- function(opt) {
   
   # MazamaSpatialUtils resources for metadata creation
-  setSpatialDataDir('~/Data/Spatial')
+  setSpatialDataDir(opt$spatialDataDir)
   loadSpatialData('NaturalEarthAdm1')
   
   # Loop through all dumpFiles
@@ -154,11 +154,20 @@ if ( opt$version ) {
 # For interactive debugging:
 if (FALSE) {
   
-  VERSION = "0.2.0"
+  # Jon's desktop
+  VERSION = "0.2.1"
   opt <- list(inputDir="/Users/jonathancallahan/Data/monitors",
               outputDir="/Users/jonathancallahan/Data/monitors",
               logDir="/Users/jonathancallahan/Data/Logs",
               spatialDataDir='/Users/jonathancallahan/Data/Spatial',
+              todayGMT="2016-09-27 22:00:00")
+
+  # docker session
+  VERSION = "0.2.1"
+  opt <- list(inputDir="/monitoring/v3/data/monitors",
+              outputDir="/monitoring/v3/data/RData",
+              logDir="/monitoring/v3/logs",
+              spatialDataDir='/monitoring/v3/data/Spatial',
               todayGMT="2016-09-27 22:00:00")
   
 }
