@@ -24,48 +24,62 @@ suppressPackageStartupMessages( library(MazamaSpatialUtils) )
 
 ################################################################################
 
-createDataDataframes <- function(df, startdate, enddate, outputDir) {
+createDataDataframes <- function(df, startdate, outputDir) {
   
   # Download, separate and reshape data for all parameters
-  dataDataframe <- suppressMessages(openaq_createDataDataframe(df))
-  
-  filename <- paste0("openAQ_", startdate, "_", enddate, "_Datadata.RData")
-  filepath <- file.path(outputDir,filename)
-  
-  logger.debug('Writing %s...', filepath)
-  
-  result <- try( save(dataDataframe, file=filepath),
-                 silent=TRUE )
-  
-  if ( class(result)[1] == "try-error" ) {
-    msg <- paste("Error writing openAQ 'data' dataframes: ", geterrmessage())
-    logger.error(msg)
+  dfList <- suppressMessages(openaq_createDataDataframes(df))
+
+  for (parameter in names(dfList)) {
+    
+    # Assign the dataframe associated with "parameter" to an environment variable named after that parameter
+    dfName <- paste0(parameter)
+    assign(dfName, dfList[[parameter]])
+    
+    filename <- paste0("openAQ_", parameter, "_", startdate, "_Datadata.RData")
+    filepath <- file.path(outputDir,filename)
+    
+    logger.debug('Writing %s...', filepath)
+    
+    result <- try( save(list=dfName, file=filepath),
+                   silent=TRUE )
+    
+    if ( class(result)[1] == "try-error" ) {
+      msg <- paste("Error writing openAQ 'data' dataframes: ", geterrmessage())
+      logger.error(msg)
+    }
   }
-  
   logger.info("Finished writing openAQ 'data' dataframes for %s", startdate)
+  
 }
 
 ################################################################################
 
-createMetaDataframes <- function(df, startdate, enddate, outputDir) {
+createMetaDataframes <- function(df, startdate, outputDir) {
   
   # Download, separate and reshape data for all parameters
-  metaDataframe <- suppressMessages(openaq_createMetaDataframe(df))
+  dfList <- suppressMessages(openaq_createMetaDataframes(df))
   
-  filename <- paste0("openAQ_", startdate, "_", enddate, "_Metadata.RData")
-  filepath <- file.path(outputDir,filename)
-  
-  logger.debug('Writing %s...', filepath)
-  
-  result <- try( save(metaDataframe, file=filepath),
-                 silent=TRUE )
-  
-  if ( class(result)[1] == "try-error" ) {
-    msg <- paste("Error writing openAQ 'meta' dataframes: ", geterrmessage())
-    logger.error(msg)
+  for (parameter in names(dfList)) {
+    
+    # Assign the dataframe associated with "parameter" to an environment variable named after that parameter
+    dfName <- paste0(parameter)
+    assign(dfName, dfList[[parameter]])
+    
+    filename <- paste0("openAQ_", parameter, "_", startdate, "_Metadata.RData")
+    filepath <- file.path(outputDir,filename)
+    
+    logger.debug('Writing %s...', filepath)
+    
+    result <- try( save(list=dfName, file=filepath),
+                   silent=TRUE )
+    
+    if ( class(result)[1] == "try-error" ) {
+      msg <- paste("Error writing openAQ 'meta' dataframes: ", geterrmessage())
+      logger.error(msg)
+    }
   }
   
-  logger.info("Finished writing openAQ'meta' dataframes")
+  logger.info("Finished writing openAQ 'meta' dataframes")
 }
 
 
@@ -137,7 +151,7 @@ df <- openaq_downloadData(startdate=opt$startdate, days=as.numeric(opt$days) )
 # ----- Quality Control begin -----------------------------------------------
 
 # Remove any records missing latitude or longitude
-badLocationMask <- is.na(df$longitude) | is.na(df$latitude)
+badLocationMask <- is.na(df$longitude) | is.na(df$latitude) | (df$latitude == 0 & df$longitude ==0)
 badLocationCount <- sum(badLocationMask)
 if ( badLocationCount > 0 ) {
   logger.info('Discarding %s rows with invalid location information', badLocationCount)
@@ -190,12 +204,18 @@ df$monitorID <- make.names( with(df, paste(location,city,stateCode,countryCode) 
 #   df$lon <- NULL
 # } 
 
-enddate <- as.numeric(opt$startdate) + as.numeric(opt$days) - 1
+
+# 201507 has three parts, so change the name to reflect it
+startdate <- as.numeric(opt$startdate)
+if ( (startdate %% 10000 - startdate %% 100)/100 != 7 && startdate %/% 10000 != 2015 ) {
+  startdate <- startdate %/% 100
+}
+
 
 # ----- Always create openAQ "meta" dataframes ----------------------------
 
 
-result <- try( createMetaDataframes(df, opt$startdate, enddate, opt$outputDir) )
+result <- try( createMetaDataframes(df, startdate, opt$outputDir) )
 
 if ( class(result)[1] == "try-error" ) {
   msg <- paste("Error creating openAQ 'meta' dataframes: ", geterrmessage())
@@ -206,7 +226,7 @@ if ( class(result)[1] == "try-error" ) {
 
 # ----- Always create openAQ "data" dataframes --------------------------------
 
-result <- try( createDataDataframes(df, opt$startdate, enddate, opt$outputDir) )
+result <- try( createDataDataframes(df, startdate, opt$outputDir) )
 
 if ( class(result)[1] == "try-error" ) {
   msg <- paste("Error creating openAQ 'data' dataframes: ", geterrmessage())

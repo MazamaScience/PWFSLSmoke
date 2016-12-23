@@ -55,15 +55,22 @@ openaq_downloadData <- function(parameter=NULL,
   logger.info('Downloading %d daily data files from OpenAQ...',days)
   
   # Loop through days and store each datafame in the list
+  
   for (i in 1:days) {
     datetime <- startdate + lubridate::days(i-1)
     datestamp <- strftime(datetime,'%Y-%m-%d', tz='GMT')
     logger.debug("Downloading data for %s", datestamp)
     url <- paste0(baseUrl,datestamp,'.csv')
     df <- suppressMessages( readr::read_csv(url, skip=1, col_names=col_names, col_types=col_types, progress=FALSE) )
+    
     # Subset dataframe here so we don't grow too big if someone asks for many days
     if ( !is.null(countryCode) ) df <- df[df$country == countryCode,]
     if ( !is.null(parameter) ) df <- df[df$parameter == parameter,]
+    
+    # Subset based on time because we sometimes see times that don't match the requested file
+    badIndexes <- which(as.POSIXct(df$utc, tz="UTC") != datetime)
+    df <- df[-badIndexes,]
+    
     dfList[[i]] <- df
   }
 
