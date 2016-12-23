@@ -47,9 +47,12 @@
 
 wrccDump_parseData <- function(fileString) {
   
+  # Configure missing value strings for WRCC dump files
+  na_strings <- c('99999')
+  
   # Convert the fileString into individual lines
   lines <- readr::read_lines(fileString)
-
+  
   if ( length(lines) <= 4 ) {
     logger.warn('No valid PM2.5 data')
     stop(paste0('No valid PM2.5 data'))
@@ -78,9 +81,9 @@ wrccDump_parseData <- function(fileString) {
     if ( lineCount <= 4 ) {
       logger.debug('No valid PM2.5 data for %s', lines[lineIndex])
       next
-    } else {
-      logger.debug('Parsing data for %s', lines[lineIndex])
     }
+    
+    logger.debug('Parsing data for %s', lines[lineIndex])
     
     # For monitors with data, extract associated monitor, header and data lines
     singleMonitorIndices <- seq(lineIndex,length.out=lineCount)
@@ -88,7 +91,7 @@ wrccDump_parseData <- function(fileString) {
     
     # -------------------------------------------------------------------------
     
-    # NOTE:  The next chunk is copied verbatim from wrcc_parseData.R but modified to 
+    # NOTE:  The next chunk is copied mostly verbatim from wrcc_parseData.R but modified to 
     # NOTE:  handle the minor differences between WRCC dump files and WRCC web downloads.
     # NOTE:  These differences include:
     # NOTE:   * comma separated instead of tab separated
@@ -105,9 +108,9 @@ wrccDump_parseData <- function(fileString) {
     if ( monitorType == "UNKNOWN" ) {
       logger.debug('WRCC header type == %s', monitorType)
       next
-    } else {
-      logger.debug('WRCC header type == %s', monitorType)
     }
+    
+    logger.debug('WRCC header type == %s', monitorType)
     
     # Convert the fileString into individual lines
     singleMonitorLines <- readr::read_lines(singleMonitorFileString)
@@ -125,21 +128,29 @@ wrccDump_parseData <- function(fileString) {
     
     # Read the data into a dataframe
     fakeFile <- paste0(singleMonitorLines[goodLines], collapse='\n')
-    df <- readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes)
+    df <- readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes, na=na_strings)
     
     # Add monitor name
     df$monitorName <- monitorName
     
     # Add monitor type (determined from the 'Type' column after reading in the data)
+    
+    # Sometimes we get a solid block of 99999s for non-time-location columns
+    if ( all(is.na(df$Type)) ) {
+      logger.debug('No valid PM2.5 data for %s', monitorName)
+      next
+    }
+    
     monitorTypeCode <- unique(df$Type)
     # NOTE:  Drop all negative values to get rid of -9999 or other missing value flags.
     # NOTE:  Conversion of -9999 to NA happens in the ~QualityControl scripts so that
     # NOTE:  all raw data modifications can be found in one place.
     monitorTypeCode <- monitorTypeCode[monitorTypeCode >= 0]
+    
     # Sanity check
     if ( length(monitorTypeCode) > 1 ) {
       logger.error('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", "))
-      stop(paste0('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", ")))
+      next
     }
     
     # 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
@@ -149,10 +160,10 @@ wrccDump_parseData <- function(fileString) {
       df$monitorType <- 'ESAM'
     } else if ( monitorTypeCode == 1 ) {
       logger.error('EBAM PM10 data parsing is not supported')
-      stop(paste0('EBAM PM10 data parsing is not supported'))
+      next
     } else {
       logger.error('Unsupported monitor type code: %d',monitorTypeCode)
-      stop(paste0('Unsupported monitor type code: %d',monitorTypeCode))
+      next
     }
     
     # -------------------------------------------------------------------------
