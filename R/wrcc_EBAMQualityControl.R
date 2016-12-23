@@ -88,7 +88,7 @@ wrcc_EBAMQualityControl <- function(df,
   
   # ----- Time ----------------------------------------------------------------
   
-  # Add a POSIXct datetime based on YYMMDDhhmm DateTime
+  # Add a POSIXct datetime based on YYmmddHHMM DateTime
   df$datetime <- parseDatetime(paste0('20',df$DateTime))
   
   # ----- Type ----------------------------------------------------------------

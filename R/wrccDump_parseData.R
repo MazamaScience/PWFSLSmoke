@@ -1,145 +1,185 @@
-# #' @keywords WRCC
-# #' @export
-# #' @title Read and Parse Single Monitor Data from WRCC
-# #' @param file either a path to a WRCC data file the contents of the file as a character string
-# #' @param verbose logical flag to generate verbose output
-# #' @description A WRCC monitor data file is read in and parsed.
-# #' @return Dataframe of WRCC monitor data.
-# 
-# wrcc_readData <- function(file, verbose=FALSE) {
-#   
-#   # Data can be downloaded from the DRI website:  http://www.wrcc.dri.edu/cgi-bin/smoke.pl
-#   # The only output type that seems to be working for this site 'HTML' which looks like this:
-#   
-#   #   <!DOCTYPE html
-#   #   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-#   #   "http://www.w3.org/TR/html4/loose.dtd">
-#   #   <html lang="en-US"><head><title>Station Data Listing - Smoke USFS R1-306</title>
-#   #   <script type="text/javascript">
-#   #   <!-- Hide script
-#   #   // End script hiding -->
-#   #   </script>
-#   #   </head>
-#   #   <body>
-#   #   <BODY BGCOLOR="FFFFFF">
-#   #   <CENTER>
-#   #   <H1> Smoke USFS R1-306 </H1>
-#   #   <PRE>
-#   #   :         LST    Deg     Deg            ser #   ug/m3    Unk     l/m    Deg C     %      Unk    deg C     %      m/s     Deg    volts        
-#   #   :   Date/Time   GPS     GPS   Type    Serial  Conc     Misc    Ave.    Av Air   Rel    Misc   Sensor  Sensor    Wind   Wind   Battery Alarm  
-#   #   :YYYYMMDDhhmm   Lat.    Lon.          Number   RT       #1    Air Flw   Temp  Humidty   #2    Int AT  Int RH    Speed  Direc  Voltage        
-#   #   201411062100 46.9271 -114.09       9 -169399       0  -998.9       0    18.1      44   90210  -998.9      40     0.3     205      14       0
-#   #   201411062200 46.9271 -114.09       9 -169399       3  -998.9     1.7    19.9      39   90151  -998.9      34     1.2     283      14       0
-#   #   ...
-#   #   201511172200 45.4118 -116.32       9 -169399       1  -998.9       2     7.6      64   94957  -998.9      48     2.9      14    14.4       0
-#   #   201511172300 45.4118 -116.32       9 -169399       1  -998.9       2     7.5      66   94840  -998.9      48       3       5    14.4       0
-#   #   </PRE></CENTER>
-#   
-#   # Read in file and determine which part is the data:
-#   lines <- readr::read_lines(file)
-#   firstLine <- which(stringr::str_detect(lines,'^<PRE>')) + 1
-#   lastLine <- which(stringr::str_detect(lines,'^</PRE>')) - 1
-#   
-#   # Extract the monitor name
-#   nameLine <- which(stringr::str_detect(lines,'<H1>'))
-#   monitorName <- stringr::str_sub(lines[nameLine],6,-7)
-#   
-#   if (verbose) cat(paste0('Processing data for "',monitorName,'"'))
-#     
-#   if (firstLine == lastLine) stop(paste0('No data found.'))
-#   
-#   
-#   # So far, two kinds of headers have been seen. Most files have the following:
-#   #
-#   # :         LST    Deg     Deg            ser #   ug/m3    Unk     l/m    Deg C     %     mbar    deg C     %      m/s     Deg    volts        
-#   # :   Date/Time   GPS     GPS   Type    Serial  Conc     Misc    Ave.    Av Air   Rel    Barom  Sensor  Sensor    Wind   Wind   Battery Alarm  
-#   # :YYYYMMDDhhmm   Lat.    Lon.          Number   RT       #1    Air Flw   Temp  Humidty  Press  Int AT  Int RH    Speed  Direc  Voltage        
-#   #
-#   # A second type is seen with smn1, smn2 and smn3:
-#   #
-#   # :         LST    Unk    ug/m3    l/m     m/s     Deg    Deg C     %       %     volts    Deg     Deg 
-#   # :   Date/Time  Misc   Conc     Ave.     Wind   Wind    Av Air   Rel   Sensor  Battery   GPS     GPS  
-#   # :YYYYMMDDhhmm   #1     RT     Air Flw   Speed  Direc    Temp  Humidty Int RH  Voltage   Lat.    Lon. 
-#   #
-#   # Note from Readme.rtf that came with the archived data:
-#   #
-#   #   All times are in GMT
-#   #   Unknown Misc #1 head for files starting with e (ebam) indicates hrly value
-#   
-#   
-#   # Prepare header lines
-#   headerLines <- lines[firstLine:(firstLine+2)]
-#   headerLines <- stringr::str_sub(headerLines,2,-1) # Strip off first ':' so they will align with the data
-#   
-#   # Determine col_positions based on the length of first header line.
-#   lineLength <- stringr::str_length(headerLines[1])
-#   
-#   if ( lineLength == 140 ) {
-# 
-#     # The following ruler and sample data line help figure out the start and end positions:
-#     #
-#     #         10        20        30        40        50        60        70        80        90       100       110       120       130       140
-#     # 00000000011111111112222222222333333333344444444445555555555666666666677777777778888888888999999999900000000001111111111222222222233333333334444444444
-#     # 1            4       2       0       8       6       4       2       0       8       6       4       2       0       8       6       4 
-#     # 201511172200 45.4118 -116.32       9 -169399       1  -998.9       2     7.6      64   94957  -998.9      48     2.9      14    14.4       0
-#     
-#     # Prepare positions for fixed width fields (fwf)
-#     start <- c(1,14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 94, 102, 110, 118, 126, 134)
-#     end <- c(start[-1] - 2, lineLength)
-#     col_positions <- readr::fwf_positions(start,end)
-#     
-#   } else if (lineLength == 100 ) {
-#     
-#     # The following ruler and sample data line help figure out the start and end positions:
-#     #
-#     #         10        20        30        40        50        60        70        80        90       100       
-#     # 0000000001111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000
-#     # 1            4       2       0       8       6       4       2       0       8       6       4
-#     # 201406161700    -999    -999   -8189    -999    -999    -999    -999    -999    -999 35.3499 -77.669
-# 
-#     # Prepare positions for fixed width fields (fwf)
-#     start <- c(1,14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 94)
-#     end <- c(start[-1] - 2, lineLength)
-#     col_positions <- readr::fwf_positions(start,end)
-#     
-#   } else {
-#     
-#     cat(paste0(lines[firstLine:(firstLine+2)],collapse='\n'))
-#     stop('File format not supported. First header line != 140 or 10 characters.')
-#     
-#   }
-#     
-#   # Parse header ---------------------
-#   
-#   # Read in the header
-#   headerLines <- paste0(headerLines,collapse='\n')        # Create a single strings with newlines
-#   headerDF <- readr::read_fwf(headerLines, col_positions) # Parse this as a fwf dataframe
-#   
-#   # Create R-friendly column units and names directly from the header data
-#   characterMatrix <- as.matrix(headerDF)
-#   colUnits <- characterMatrix[1,]
-#   colNames <- make.names(paste0(characterMatrix[2,],' ',characterMatrix[3,]))
-#   
-#   # Parse data -----------------------
-#   
-#   # There can be additional header lines beginning with ':' embedded in the data. We pull these out here.
-#   
-#   dataLines <- lines[firstLine:lastLine]
-#   headerMask <- stringr::str_detect(dataLines,'^:')
-#   dataLines <- dataLines[!headerMask]
-# 
-#   dataLines <- paste0(dataLines,collapse='\n')            # Create a single strings with newlines
-#   df <- readr::read_fwf(dataLines, col_positions)         # Parse this as a fwf dataframe
-#   
-#   # Assign column names
-#   names(df) <- colNames
-#   
-#   # Add monitor name
-#   df$monitorName <- monitorName
-#   
-#   # Add E-BAM Type if needed
-#   if (lineLength == 100) df$Type == 0
-#   
-#   return(df)
-#   
-# }
+#' @keywords WRCC
+#' @export
+#' @title Parse WRCC Dump File String
+#' @param fileString character string containing WRCC dump file
+#' @description Raw character data from WRCC are parsed into a dataframe.
+#' The incoming \code{fileString} can be read from a local \code{SmokeMon.csv}
+#' file using \code{readr::read_file()}.
+#' 
+#' This function is intended for internal use at the Pacific Wildland
+#' Fire Sciences Lab.
+#' 
+#' @return List of dataframes of WRCC raw monitor data from multiple monitors.
+
+# Below is an excerpt from a SmokeMon.csv file includes multiple named monitors,
+# some of which contain no header, some of which contain a header but no data
+# and some of which contain a header and data.
+
+# FWS Smoke #1
+# :          ,  LST  , Deg , Deg ,     ,ser #,ug/m3, Unk , l/m ,Deg C,  %  ,mbar ,deg C,  %  , m/s , Deg ,volts,     
+# :   Date   , Time  ,  GPS  ,  GPS  ,Type   ,Serial ,Conc   , Misc  , Ave.  , Av Air,  Rel  , Barom ,Sensor ,Sensor ,  Wind , Wind  ,Battery,Alarm  
+# :MM/DD/YYYY, hh:mm ,  Lat. ,  Lon. ,       ,Number , RT    ,  #1   ,Air Flw,  Temp ,Humidty, Press ,Int AT ,Int RH ,  Speed, Direc ,Voltage,       
+# 09/25/2016,00:00,48.344,-117.26,9,18100,0,99999,2,16.7,0,948.79,99999,24,1.4,165,14.2,0
+# 09/25/2016,01:00,48.344,-117.26,9,18100,0,99999,2,14.5,0,948.4,99999,26,1.2,141,14.2,0
+# 09/25/2016,02:00,48.344,-117.26,9,18100,0,99999,2,15,0,948.6,99999,29,0.80002,27,14.2,0
+# 09/25/2016,03:00,48.344,-117.26,9,18100,1,99999,2,11.9,0,949.18,99999,35,0.70002,66,14.2,0
+# ...
+# 09/27/2016,23:00,48.344,-117.26,9,18100,1,99999,2,25.9,0,940.59,99999,20,1.2,199,14.1,0
+# Smoke #11
+# :          ,  LST  , Deg , Deg ,     ,ser #,ug/m3, Unk , l/m ,Deg C,  %  ,mbar ,deg C,  %  , m/s , Deg ,volts,     
+# :   Date   , Time  ,  GPS  ,  GPS  ,Type   ,Serial ,Conc   , Misc  , Ave.  , Av Air,  Rel  , Barom ,Sensor ,Sensor ,  Wind , Wind  ,Battery,Alarm  
+# :MM/DD/YYYY, hh:mm ,  Lat. ,  Lon. ,       ,Number , RT    ,  #1   ,Air Flw,  Temp ,Humidty, Press ,Int AT ,Int RH ,  Speed, Direc ,Voltage,       
+# Smoke #13
+# Smoke #15
+# :          ,  LST  , Deg , Deg ,     ,ser #,ug/m3, Unk , l/m ,Deg C,  %  ,mbar ,deg C,  %  , m/s , Deg ,volts,     
+# :   Date   , Time  ,  GPS  ,  GPS  ,Type   ,Serial ,Conc   , Misc  , Ave.  , Av Air,  Rel  , Barom ,Sensor ,Sensor ,  Wind , Wind  ,Battery,Alarm  
+# :MM/DD/YYYY, hh:mm ,  Lat. ,  Lon. ,       ,Number , RT    ,  #1   ,Air Flw,  Temp ,Humidty, Press ,Int AT ,Int RH ,  Speed, Direc ,Voltage,       
+# Smoke #16
+# Smoke #17
+# :          ,  LST  , Deg , Deg ,     ,ser #,ug/m3, Unk , l/m ,Deg C,  %  , Unk ,deg C,  %  , m/s , Deg ,volts,     
+# :   Date   , Time  ,  GPS  ,  GPS  ,Type   ,Serial ,Conc   , Misc  , Ave.  , Av Air,  Rel  , Misc  ,Sensor ,Sensor ,  Wind , Wind  ,Battery,Alarm  
+# :MM/DD/YYYY, hh:mm ,  Lat. ,  Lon. ,       ,Number , RT    ,  #1   ,Air Flw,  Temp ,Humidty,  #2   ,Int AT ,Int RH ,  Speed, Direc ,Voltage,       
+# 09/25/2016,00:00,40.733,-106.27,9,871700,930,99999,2,7.6,59,75597,99999,34,2.5001,164,14.4,1
+# 09/25/2016,01:00,40.733,-106.27,9,871700,930,99999,2,6.7,67,75714,99999,35,1.4,164,14.4,1
+# 09/25/2016,02:00,40.733,-106.27,9,871700,931,99999,2,5.5,78,75792,99999,35,1,169,14.4,1
+# 09/25/2016,03:00,40.733,-106.27,9,871700,931,99999,2,4.6,81,75890,99999,35,1.2,169,14.4,1
+# ...
+
+wrccDump_parseData <- function(fileString) {
+  
+  # Convert the fileString into individual lines
+  lines <- readr::read_lines(fileString)
+
+  if ( length(lines) <= 4 ) {
+    logger.warn('No valid PM2.5 data')
+    stop(paste0('No valid PM2.5 data'))
+  }
+  
+  # Remove "FWS " from first line
+  lines[1] <- stringr::str_replace(lines[1],'^FWS Smoke','Smoke')
+  
+  # Find monitor lines and how many lines are associated with each monitor
+  isMonitorLine <- stringr::str_detect(lines,'^Smoke')
+  monitorLineIndices <- which(isMonitorLine)
+  monitorCount <- length(monitorLineIndices)
+  monitorLineCount <- diff(monitorLineIndices, lag=1)
+  # Add final monitorLineCount value
+  monitorLineCount[monitorCount] <- length(lines) - monitorLineIndices[monitorCount] + 1
+  
+  # Create empty list (no pre-allocation needed when lists are referenced by key instead of integer)
+  dfList <- list()
+  
+  # Loop over monitors
+  for ( i in 1:length(monitorLineIndices) ) {
+    
+    lineIndex <- monitorLineIndices[i]
+    lineCount <- monitorLineCount[i]
+    
+    if ( lineCount <= 4 ) {
+      logger.debug('No valid PM2.5 data for %s', lines[lineIndex])
+      next
+    } else {
+      logger.debug('Parsing data for %s', lines[lineIndex])
+    }
+    
+    # For monitors with data, extract associated monitor, header and data lines
+    singleMonitorIndices <- seq(lineIndex,length.out=lineCount)
+    singleMonitorFileString <- paste(lines[singleMonitorIndices], collapse='\n')
+    
+    # -------------------------------------------------------------------------
+    
+    # NOTE:  The next chunk is copied verbatim from wrcc_parseData.R but modified to 
+    # NOTE:  handle the minor differences between WRCC dump files and WRCC web downloads.
+    # NOTE:  These differences include:
+    # NOTE:   * comma separated instead of tab separated
+    # NOTE:   * separate column for Time
+    
+    # Identify monitor type
+    monitorTypeList <- wrccDump_identifyMonitorType(singleMonitorFileString)
+    
+    monitorType <- monitorTypeList$monitorType
+    rawNames <- monitorTypeList$rawNames
+    columnNames <- monitorTypeList$columnNames
+    columnTypes <- monitorTypeList$columnTypes
+    
+    if ( monitorType == "UNKNOWN" ) {
+      logger.debug('WRCC header type == %s', monitorType)
+      next
+    } else {
+      logger.debug('WRCC header type == %s', monitorType)
+    }
+    
+    # Convert the fileString into individual lines
+    singleMonitorLines <- readr::read_lines(singleMonitorFileString)
+    
+    # Strip spaces from the beginning and end
+    singleMonitorLines <- stringr::str_replace(singleMonitorLines,'^ *','')
+    singleMonitorLines <- stringr::str_replace(singleMonitorLines,' *$','')
+    
+    # Get monitorName from first line and then remove that line
+    monitorName <- make.names(singleMonitorLines[1])
+    singleMonitorLines <- singleMonitorLines[-1]
+    
+    # Remove header lines beginning with ":", leaving only data
+    goodLines <- !is.na(singleMonitorLines) & !stringr::str_detect(singleMonitorLines,'^:')
+    
+    # Read the data into a dataframe
+    fakeFile <- paste0(singleMonitorLines[goodLines], collapse='\n')
+    df <- readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes)
+    
+    # Add monitor name
+    df$monitorName <- monitorName
+    
+    # Add monitor type (determined from the 'Type' column after reading in the data)
+    monitorTypeCode <- unique(df$Type)
+    # NOTE:  Drop all negative values to get rid of -9999 or other missing value flags.
+    # NOTE:  Conversion of -9999 to NA happens in the ~QualityControl scripts so that
+    # NOTE:  all raw data modifications can be found in one place.
+    monitorTypeCode <- monitorTypeCode[monitorTypeCode >= 0]
+    # Sanity check
+    if ( length(monitorTypeCode) > 1 ) {
+      logger.error('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", "))
+      stop(paste0('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", ")))
+    }
+    
+    # 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
+    if ( monitorTypeCode == 0 ) {
+      df$monitorType <- 'EBAM'
+    } else if ( monitorTypeCode == 9 ) {
+      df$monitorType <- 'ESAM'
+    } else if ( monitorTypeCode == 1 ) {
+      logger.error('EBAM PM10 data parsing is not supported')
+      stop(paste0('EBAM PM10 data parsing is not supported'))
+    } else {
+      logger.error('Unsupported monitor type code: %d',monitorTypeCode)
+      stop(paste0('Unsupported monitor type code: %d',monitorTypeCode))
+    }
+    
+    # -------------------------------------------------------------------------
+    
+    # Prepare for columns modification
+    fullColumnNames <- names(df)
+    
+    # Combine Date and Time into a single column to match web download dataframes
+    # where the first column is DateTime in YYmmddHHMM format
+    tempDate <- lubridate::mdy(df$Date)
+    HHMM <- stringr::str_replace(df$Time,':','')
+    df$DateTime <- paste0(strftime(tempDate,"%y%m%d"), HHMM) # year without century! to match web downloads
+    # Now remove the Date and Time columns
+    df$Date <- NULL
+    df$Time <- NULL
+    
+    # Modify column names to reflect (Date,Time) --> DateTime
+    newColumnNames <- fullColumnNames[-1] # drop 'Date'
+    newColumnNames[1] <- 'DateTime' # make first column 'DateTime'
+    df <- df[,newColumnNames]
+    
+    # At this point, the dataframe should match what is returned by wrcc_parseData
+    
+    dfList[[monitorName]] <- df
+    
+  } # End of loop over monitors
+  
+  return(dfList)
+  
+}
