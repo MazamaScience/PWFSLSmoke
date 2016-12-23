@@ -64,13 +64,13 @@ openaq_load <- function(startdate, enddate, monitorIDs=NULL, parameter='pm25',
     
     if (stringr::str_sub(baseUrl,1,4) == 'http') {
       
-      joinedData <- get(load(url(paste0(baseUrl,'openAQ_', YearMonth, '_Datadata.RData'))))
-      joinedMeta <- get(load(url(paste0(baseUrl,'openAQ_', YearMonth, '_Metadata.RData'))))
+      joinedData <- get(load(url(paste0(baseUrl,'openAQ_', parameter, "_", YearMonth, '_Datadata.RData'))))
+      joinedMeta <- get(load(url(paste0(baseUrl,'openAQ_', parameter, "_", YearMonth, '_Metadata.RData'))))
       
     } else {
       
-      joinedData <- get(load(paste0(baseUrl, 'openAQ_', YearMonth, '_Datadata.RData')))
-      joinedMeta <- get(load(paste0(baseUrl, 'openAQ_', YearMonth, '_Metadata.RData')))
+      joinedData <- get(load(paste0(baseUrl, 'openAQ_', parameter, "_", YearMonth, '_Datadata.RData')))
+      joinedMeta <- get(load(paste0(baseUrl, 'openAQ_', parameter, "_", YearMonth, '_Metadata.RData')))
       
     }
     
@@ -81,8 +81,8 @@ openaq_load <- function(startdate, enddate, monitorIDs=NULL, parameter='pm25',
       for (time in timeVec) {
         
         YearMonth <- time
-        dataList[[YearMonth]] <- get(load(url(paste0(baseUrl, 'openAQ_',YearMonth, '_Datadata.RData'))))
-        metaList[[YearMonth]] <- get(load(url(paste0(baseUrl, 'openAQ_',YearMonth, '_Metadata.RData'))))
+        dataList[[YearMonth]] <- get(load(url(paste0(baseUrl, 'openAQ_',parameter, "_",YearMonth, '_Datadata.RData'))))
+        metaList[[YearMonth]] <- get(load(url(paste0(baseUrl, 'openAQ_',parameter, "_",YearMonth, '_Metadata.RData'))))
         
       }
       
@@ -91,8 +91,8 @@ openaq_load <- function(startdate, enddate, monitorIDs=NULL, parameter='pm25',
       for (time in timeVec) {
         
         YearMonth <- time
-        dataList[[YearMonth]] <- get(load(paste0(baseUrl,'openAQ_',YearMonth, '_Datadata.RData')))
-        metaList[[YearMonth]] <- get(load(paste0(baseUrl,'openAQ_',YearMonth, '_Metadata.RData')))
+        dataList[[YearMonth]] <- get(load(paste0(baseUrl,'openAQ_',parameter, "_",YearMonth, '_Datadata.RData')))
+        metaList[[YearMonth]] <- get(load(paste0(baseUrl,'openAQ_',parameter, "_",YearMonth, '_Metadata.RData')))
         
       }
       
