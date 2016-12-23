@@ -15,7 +15,7 @@
 #' monitor_dailyBarPlot(ws_monitor, monitorID)
 #' }
 
-monitor_dailyBarPlot <- function(ws_monitor, monitorID=NULL) {
+monitorPlot_dailyBarPlot <- function(ws_monitor, monitorID=NULL) {
   # Data Preparation ----------------------------------------------------------
   
   # NOTE:  Incomting insituTime is GMT
