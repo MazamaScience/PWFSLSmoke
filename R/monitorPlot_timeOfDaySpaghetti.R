@@ -20,16 +20,19 @@
 
 monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
                                            monitorID=NULL,
-                                           #dayCount=10, #redundant with tlim? -- see below
-                                           tlim=NULL, #should instead specify start date or end date?
+                                           tlim=NULL,
                                            ylim=NULL,
                                            aqiLines=TRUE,
                                            shadedNight=TRUE,
                                            ...) {
   
   # Allow single monitor objects to be used without specifying monitorID
-  if ( is.null(monitorID) && nrow(ws_monitor$meta) == 1 ) {
-    monitorID <- ws_monitor$meta$monitorID[1]
+  if ( is.null(monitorID) ) {
+    if ( nrow(ws_monitor$meta) == 1 ) {
+      monitorID <- ws_monitor$meta$monitorID[1]
+    } else {
+      stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
+    }
   }
   
   # Plot Style ----------------------------------------------------------------
@@ -39,8 +42,8 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   lwd_aqi <- 6
   
   # line colors; to futz with transparency later
-  col_day <- adjustcolor('black',.5)
-  col_mean <- 'red'
+  col_day <- adjustcolor('gray50',.5)
+  col_mean <- 'black'
   col_aqi <- adjustcolor(AQI$colors[2:6], 0.6)
   col_shadedNight <- adjustcolor('black',0.1)
   
@@ -94,6 +97,7 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   
   # Sunrise and Sunset times for shaded night
   middleDay <- df$localTime[which(df$day == unique(df$day)[floor(median(seq(dayCount)*100)/100)])][1]
+  print(paste('Sunrise/sunset times based on the middle of the period:',middleDay))
   
   coords <- matrix(c(lon, lat), nrow=1)
   sunrise <- maptools::sunriset(coords, middleDay, direction="sunrise", POSIXct.out=TRUE)[["time"]]
@@ -128,10 +132,12 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   # Complete axes
   axis(1,at=seq(0,24,3))
   axis(2,las=1)
-  mtext('PM 2.5',2,line=3)
+  mtext(expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")")),2,line=2.5)
   mtext(paste0('Hour (local)'),1,line=3)
-  title(paste0('Daily PM2.5 values and ',dayCount,'-day Mean\n', strftime(df$localTime[1], '%b. %d - '),
-               strftime(utils::tail(df$localTime,1), '%b. %d %Y')))
+  #title(paste0('Daily PM2.5 values and ',dayCount,'-day Mean\n', strftime(df$localTime[1], '%b. %d - '),
+  #             strftime(utils::tail(df$localTime,1), '%b. %d %Y')))
+  mtext(bquote(paste('Daily PM'[2.5],' Values and ', .(dayCount),'-day Mean')),line=2,cex = 1.5)
+  mtext(paste(strftime(df$localTime[1], '%b. %d - '),strftime(utils::tail(df$localTime,1), '%b. %d %Y')),line=.7,cex=1.5)
   
   # AQI Lines
   if ( aqiLines ) {
