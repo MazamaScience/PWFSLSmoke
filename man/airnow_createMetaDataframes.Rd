@@ -4,25 +4,16 @@
 \alias{airnow_createMetaDataframes}
 \title{Return Dataframes of AirNow Sites Metadata}
 \usage{
-airnow_createMetaDataframes(user, pass, parameters = NULL, tries = 6,
-  verbose = FALSE)
+airnow_createMetaDataframes(parameters = NULL)
 }
 \arguments{
-\item{user}{user name}
-
-\item{pass}{pass}
-
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
-
-\item{tries}{number of download attempts in the face of timeouts}
-
-\item{verbose}{logical requesting verbose output from libcurl}
 }
 \value{
 Returns a list of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
 }
 \description{
-The airnow_createMetaDataframes() function uses the \link{airnow_downloadSites} function 
+The \code{airnow_createMetaDataframes()} function uses the \link{airnow_downloadSites()} function 
 to download site metadata from AirNow and restructures that data into a format that is compatible
 with the PWFSLSmoke package \emph{ws_monitor} data model.
 
@@ -40,7 +31,7 @@ site locations for a specific parameter and must contain at least the following 
 
 The \code{meta} dataframe will have rownames matching \code{monitorID}.
 
-Thisunction takes a dataframe obtained from AirNowTech's
+This function takes a dataframe obtained from AirNowTech's
 \code{monitoring_site_locations.dat} file, splits it up into separate dataframes,
 one for each parameter, and performs the following cleanup:
 \itemize{
@@ -77,7 +68,7 @@ Setting \code{parameters=NULL} will generate a separate dataframe for each of th
 }
 \examples{
 \dontrun{
-metaList <- airnow_createMetaDataframes('USER','PASS')
+metaList <- airnow_createMetaDataframes(parameters="PM2.5")
 }
 }
 \seealso{
