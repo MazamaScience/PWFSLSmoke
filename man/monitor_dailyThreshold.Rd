@@ -49,9 +49,9 @@ Winthrop <- monitor_subset(WA, monitorIDs='530470010')
 Omak <- monitor_subset(WA, monitorIDs='530470013')
 
 # Generate 
-Twisp_daily <- monitor_dailyThreshold(Twisp, 89, dayStart='midnight')
-Winthrop_daily <- monitor_dailyThreshold(Winthrop, 89, dayStart='midnight')
-Omak_daily <- monitor_dailyThreshold(Omak, 89, dayStart='midnight')
+Twisp_daily <- monitor_dailyThreshold(Twisp, 89, dayStart='midnight', minHours=1)
+Winthrop_daily <- monitor_dailyThreshold(Winthrop, 89, dayStart='midnight', minHours=1)
+Omak_daily <- monitor_dailyThreshold(Omak, 89, dayStart='midnight', minHours=1)
 
 # Plot
 cols <- c(adjustcolor('orange',0.6),
