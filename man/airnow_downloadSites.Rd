@@ -4,19 +4,11 @@
 \alias{airnow_downloadSites}
 \title{Download AirNow Site Location Metadata}
 \usage{
-airnow_downloadSites(user = "", pass = "", tries = 6, verbose = FALSE,
-  url = "ftp.airnowapi.org/Locations/monitoring_site_locations.dat")
+
+  airnow_downloadSites(url = "https://files.airnowtech.org/airnow/yesterday/monitoring_site_locations.dat")
 }
 \arguments{
-\item{user}{user name}
-
-\item{pass}{password}
-
-\item{tries}{number of download attempts in the face of timeouts}
-
-\item{verbose}{logical requesting verbose output from libcurl}
-
-\item{url}{location of the monitoring_site_locations.data file}
+\item{url}{location of the monitoring_site_locations.dat file}
 }
 \value{
 Dataframe of site location metadata.
@@ -25,21 +17,18 @@ Dataframe of site location metadata.
 The \url{http://airnowtech.org} site provides both air pollution
 monitoring data as well as monitoring site location metadata. The airnow_downloadSites()
 function retrieves the most recent version of the site location metadata file and returns it as a dataframe.
-The \code{monitoring_site_locations.dat} file is only available to registered users so the \code{user}
-and \code{pass} arguments are required.
 
 A description of the data format is publicly available at the
-\href{ttp://www.airnowapi.org/docs/MonitoringSiteFactSheet.pdf}{Monitoring Site Fact Sheet}.
+\href{http://www.airnowapi.org/docs/MonitoringSiteFactSheet.pdf}{Monitoring Site Fact Sheet}.
 }
 \note{
-As of January, 2016, the \code{monitoring_site_locations.dat} file has an encoding of 
+As of December, 2016, the \code{monitoring_site_locations.dat} file has an encoding of 
 "CP437" (aka "Non-ISO extended-ASCII" or "IBMPC 437") and will be converted to "UTF-8"
 so that French and Spanish language place names are properly encoded in the returned dataframe.
 }
 \examples{
 \dontrun{
-sites <- airnow_downloadSites('USER','PASS')
-meta <- airnow_createMetaDataframes(sites, parameter='PM2.5')
+sites <- airnow_downloadSites()
 }
 }
 \seealso{

@@ -3,12 +3,8 @@
 #' @import MazamaSpatialUtils
 #' @export
 #' @title Return Dataframes of AirNow Sites Metadata
-#' @param user user name
-#' @param pass pass
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
-#' @param tries number of download attempts in the face of timeouts
-#' @param verbose logical requesting verbose output from libcurl
-#' @description The airnow_createMetaDataframes() function uses the \link{airnow_downloadSites} function 
+#' @description The \code{airnow_createMetaDataframes()} function uses the \link{airnow_downloadSites()} function 
 #' to download site metadata from AirNow and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
 #' 
@@ -26,7 +22,7 @@
 #' 
 #' The \code{meta} dataframe will have rownames matching \code{monitorID}.
 #' 
-#' Thisunction takes a dataframe obtained from AirNowTech's
+#' This function takes a dataframe obtained from AirNowTech's
 #' \code{monitoring_site_locations.dat} file, splits it up into separate dataframes,
 #' one for each parameter, and performs the following cleanup:
 #' \itemize{
@@ -64,17 +60,23 @@
 #' @seealso \link{airnow_downloadSites}
 #' @examples
 #' \dontrun{
-#' metaList <- airnow_createMetaDataframes('USER','PASS')
+#' metaList <- airnow_createMetaDataframes(parameters="PM2.5")
 #' }
 
-airnow_createMetaDataframes <- function(user, pass, parameters=NULL, tries=6, verbose=FALSE) {
+airnow_createMetaDataframes <- function(parameters=NULL) {
   
   # ----- Data Download -------------------------------------------------------
   
   logger.debug('Downloading AirNow sites metadata...')
   
   # Create the data frame that holds a month worth of AirNow data
-  airnowRaw <- airnow_downloadSites(user, pass, tries=tries, verbose=verbose)
+  result <- try( airnowRaw <- airnow_downloadSites(),
+                 silent=TRUE)
+  if ( class(result)[1] == "try-error" ) {
+    err_msg <- geterrmessage()
+    logger.error('Unable to obtain sites dataframe: %s',err_msg)
+    stop(paste0('Unable to obtain sites dataframe: ',err_msg))
+  }
   
   logger.debug('Downloaded %d rows of AirNow sites metadata', nrow(airnowRaw))
   
