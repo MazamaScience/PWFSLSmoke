@@ -5,7 +5,7 @@
 \title{Calculate Daily Counts of Values At or Above a Threshold}
 \usage{
 monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
-  dayStart = "midnight", na.rm = TRUE)
+  dayStart = "midnight", minHours = 0, na.rm = TRUE)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -13,6 +13,8 @@ monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
 \item{threshold}{AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted}
 
 \item{dayStart}{one of \code{"sunset|midnight|sunrise"}}
+
+\item{minHours}{minimum number of hours to be reported}
 
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 }
