@@ -207,7 +207,7 @@ df$monitorID <- make.names( with(df, paste(location,city,stateCode,countryCode) 
 
 # 201507 has three parts, so change the name to reflect it
 startdate <- as.numeric(opt$startdate)
-if ( (startdate %% 10000 - startdate %% 100)/100 != 7 && startdate %/% 10000 != 2015 ) {
+if ( startdate %/% 100 != 201507 ) {
   startdate <- startdate %/% 100
 }
 

@@ -54,8 +54,9 @@ openaq_downloadData <- function(parameter=NULL,
   
   logger.info('Downloading %d daily data files from OpenAQ...',days)
   
-  # Loop through days and store each datafame in the list
+
   
+  # Loop through days and store each datafame in the list
   for (i in 1:days) {
     datetime <- startdate + lubridate::days(i-1)
     datestamp <- strftime(datetime,'%Y-%m-%d', tz='GMT')
@@ -68,9 +69,11 @@ openaq_downloadData <- function(parameter=NULL,
     if ( !is.null(parameter) ) df <- df[df$parameter == parameter,]
     
     # Subset based on time because we sometimes see times that don't match the requested file
-    badIndexes <- which(as.POSIXct(df$utc, tz="UTC") != datetime)
-    df <- df[-badIndexes,]
-    
+    badIndexes <- which( as.POSIXct(df$utc, tz="UTC") != datetime )
+    if ( length(badIndexes) > 0 ) {
+      df <- df[- badIndexes,]
+    }
+
     dfList[[i]] <- df
   }
 

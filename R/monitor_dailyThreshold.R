@@ -4,6 +4,7 @@
 #' @param ws_monitor ws_monitor object
 #' @param threshold AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted
 #' @param dayStart one of \code{"sunset|midnight|sunrise"}
+#' @param minHours minimum number of hours to be reported
 #' @param na.rm logical value indicating whether NA values should be ignored
 #' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
 #' For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
@@ -28,9 +29,9 @@
 #' Omak <- monitor_subset(WA, monitorIDs='530470013')
 #' 
 #' # Generate 
-#' Twisp_daily <- monitor_dailyThreshold(Twisp, 89, dayStart='midnight')
-#' Winthrop_daily <- monitor_dailyThreshold(Winthrop, 89, dayStart='midnight')
-#' Omak_daily <- monitor_dailyThreshold(Omak, 89, dayStart='midnight')
+#' Twisp_daily <- monitor_dailyThreshold(Twisp, 89, dayStart='midnight', minHours=1)
+#' Winthrop_daily <- monitor_dailyThreshold(Winthrop, 89, dayStart='midnight', minHours=1)
+#' Omak_daily <- monitor_dailyThreshold(Omak, 89, dayStart='midnight', minHours=1)
 #' 
 #' # Plot
 #' cols <- c(adjustcolor('orange',0.6),
@@ -46,7 +47,7 @@
 
 # TODO:  Add an argument specifying the minimum number of hours required per day
 
-monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="midnight", na.rm=TRUE) {
+monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="midnight", minHours=0, na.rm=TRUE) {
   
   # Pull out dataframes
   data <- ws_monitor$data
@@ -117,6 +118,7 @@ monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00
   
+  df[,2] <- ifelse(df[,2] >= minHours, df[,2], NA)
 
   # Create a new ws_monitor object
   ws_monitor <- list(meta=meta, data=df)
