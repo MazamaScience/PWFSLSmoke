@@ -4,13 +4,24 @@
 \alias{monitorPlot_dailyBarPlot}
 \title{Create Daily Bar Plot}
 \usage{
-monitorPlot_dailyBarPlot(ws_monitor, monitorID = NULL)
+monitorPlot_dailyBarPlot(ws_monitor, monitorID = NULL, tlim = NULL,
+  title = "Title", cex = 2, aqiColors = TRUE, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
 \item{monitorID}{monitor ID for a specific monitor in the given ws_monitor object (optional
 if only one monitor in the ws_monitor object)}
+
+\item{tlim}{time limit for barplot}
+
+\item{title}{plot title}
+
+\item{cex}{size}
+
+\item{aqiColors}{color code bars based on AQI}
+
+\item{...}{additional arguments to be passed to barplot()}
 }
 \description{
 Creates a bar plot showing daily average PM 2.5 values for a specific monitor in a ws_monitor object.

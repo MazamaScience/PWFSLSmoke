@@ -26,15 +26,6 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
                                            shadedNight=TRUE,
                                            ...) {
   
-  # Allow single monitor objects to be used without specifying monitorID
-  if ( is.null(monitorID) ) {
-    if ( nrow(ws_monitor$meta) == 1 ) {
-      monitorID <- ws_monitor$meta$monitorID[1]
-    } else {
-      stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
-    }
-  }
-  
   # Plot Style ----------------------------------------------------------------
   
   lwd_day <- 2
@@ -48,6 +39,15 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   col_shadedNight <- adjustcolor('black',0.1)
   
   # Data Preparation ----------------------------------------------------------
+  
+  # Allow single monitor objects to be used without specifying monitorID
+  if ( is.null(monitorID) ) {
+    if ( nrow(ws_monitor$meta) == 1 ) {
+      monitorID <- ws_monitor$meta$monitorID[1]
+    } else {
+      stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
+    }
+  }
   
   # NOTE:  Incomting insituTime is GMT
   
@@ -68,35 +68,25 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   df <- data.frame(localTime,pm25,day,hour)
   
   # Time limit application
-  if (!is.null(tlim)) {
+  if ( !is.null(tlim) ) {
     # TODO: add logic to check for tlim format
-    # TODO: warn if tlim is outside range of datetime data
     timeMask <- localTime >= lubridate::ymd(tlim[1]) & localTime < lubridate::ymd(tlim[2])+lubridate::days(1)
-    if (sum(timeMask)==0) {
+    if ( sum(timeMask)==0 ) {
       PWFSLSmoke::monitorPlot_noData(ws_monitor)
       stop("No data contained within specified time limits, please try again.")
     }
     df <- df[timeMask,]
   }
   
-  # Day Color
-  dayCount <- length(unique(df$day)) #may reconcile/combine with lastDays below
-  
-  if (dayCount<=10 && dayCount>1) {
-    # set opacity descending into the past
-    col_day[dayCount] <- adjustcolor(col_day,2)
-    for (i in (dayCount-1):1) {
-      col_day[i] <- adjustcolor(col_day[i+1],.75)
-    }
-  }
-  
   # Set y Limits
-  if (is.null(ylim)) {
+  if ( is.null(ylim) ) {
     ylim <- c(min(0,min(df$pm25,na.rm=TRUE)),max(df$pm25,na.rm=TRUE))
   }
   
   # Sunrise and Sunset times for shaded night
-  middleDay <- df$localTime[which(df$day == unique(df$day)[floor(median(seq(dayCount)*100)/100)])][1]
+  uniqueDays <- unique(df$day)
+  dayCount <- length(uniqueDays)
+  middleDay <- df$localTime[which(df$day == uniqueDays[floor(median(seq(dayCount)*100)/100)])][1]
   print(paste('Sunrise/sunset times based on the middle of the period:',middleDay))
   
   coords <- matrix(c(lon, lat), nrow=1)
@@ -134,8 +124,6 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   axis(2,las=1)
   mtext(expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")")),2,line=2.5)
   mtext(paste0('Hour (local)'),1,line=3)
-  #title(paste0('Daily PM2.5 values and ',dayCount,'-day Mean\n', strftime(df$localTime[1], '%b. %d - '),
-  #             strftime(utils::tail(df$localTime,1), '%b. %d %Y')))
   mtext(bquote(paste('Daily PM'[2.5],' Values and ', .(dayCount),'-day Mean')),line=2,cex = 1.5)
   mtext(paste(strftime(df$localTime[1], '%b. %d - '),strftime(utils::tail(df$localTime,1), '%b. %d %Y')),line=.7,cex=1.5)
   
@@ -144,20 +132,10 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
     abline(h=AQI$breaks_24[2:6], col=col_aqi, lwd=lwd_aqi)
   }
 
-  # Simple line plot for each day
-  lastDays <- unique(df$day)
-  for ( dayIndex in seq(dayCount) ) {
-    
-    thisDay <- lastDays[dayIndex]
-    dayDF <- df[df$day == thisDay,]
-    
-    #for (i in seq(dayIndex)) lines(dayDF$pm25 ~ dayDF$hour, col=col_day)
-    if (dayCount<=10 && dayCount>1) {
-      lines(dayDF$pm25 ~ dayDF$hour, col=col_day[dayIndex], ...)
-    } else {
-      lines(dayDF$pm25 ~ dayDF$hour, col=col_day, ...)
-    }
-  
+  # Lines for each day
+  for (thisDay in uniqueDays) {
+    dayDF <- df[df$day == thisDay,]    
+    lines(dayDF$pm25 ~ dayDF$hour, col=col_day)
   }
   
   # Add mean line

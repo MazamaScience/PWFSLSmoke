@@ -5,7 +5,7 @@
 \title{Download AirNow Site Location Metadata}
 \usage{
 
-  airnow_downloadSites(url = "https://files.airnowtech.org/airnow/yesterday/monitoring_site_locations.dat")
+  airnow_downloadSites(url = "https://files.airnowtech.org/airnow/today/monitoring_site_locations.dat")
 }
 \arguments{
 \item{url}{location of the monitoring_site_locations.dat file}

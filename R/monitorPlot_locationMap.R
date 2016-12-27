@@ -1,20 +1,17 @@
-# TODO: UPDATE DOCUMENTAITON FOR THIS FUNCITON
-
-
-
 #' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Create Time of Day Spaghetti Plot
+#' @title Create Map of ws_monitor Object and Surrounding Events
 #' @param ws_monitor ws_monitor object
-#' @param monitorID id for a specific monitor in the ws_monitor object
-#' @param tlim time limit for plot
-#' @param ylim optional y limits for plot
-#' @param aqiLines horizontal lines indicating AQI levels
-#' @param shadedNight shade nights based on sunrise/sunset times of middle day in selected period
-#' @param ... additional arguments to pass to lines()
-#' @description Creates a spaghetti plot of PM2.5 levels by hour for one or more days. The average by hour over 
-#' the period is also calculated and plotted as a thick red line.
+#' @param monitorIcon optional icon to use in lieu of default blue paddle
+#' @param eventLocations optional dataframe containing longitude and latitude data for events (e.g. fires)
+#' @param eventIcon icon for optional events
+#' @param width width of image, in pixels
+#' @param height height of image, in pixels
+#' @param zoom map zoom level
+#' @param maptype map type
+#' @description Creates a map of a ws_monitor object with icons indicating monitor(s) and surrounding events, if 
+#' specified.
 #' @examples
 #' \dontrun{
 #' ws_monitor <- airsis_load(20150901, 20150930)
