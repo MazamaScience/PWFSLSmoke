@@ -4,7 +4,7 @@
 #' @export
 #' @title Return Dataframes of AirNow Sites Metadata
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
-#' @description The \code{airnow_createMetaDataframes()} function uses the \link{airnow_downloadSites()} function 
+#' @description The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 
 #' to download site metadata from AirNow and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
 #' 

@@ -76,11 +76,11 @@ openaq_createMonitorObject <- function(parameter='pm25',
 
   # create metadata for the data frame
   logger.info('Creating \'meta\' dataframe...')
-  meta <- openaq_createMetaDataframe(df)
+  meta <- openaq_createMetaDataframes(df)
   
   # create datadata for the data frame
   logger.info('Creating \'data\' dataframe...')
-  data <- openaq_createDataDataframe(df)
+  data <- openaq_createDataDataframes(df)
   
   # create the ws_monitor object
   ws_monitor <- list(meta=meta, data=data)

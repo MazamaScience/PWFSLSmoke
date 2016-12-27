@@ -3,7 +3,7 @@
 #' @title Download AirNow Site Location Metadata
 #' @param url location of the monitoring_site_locations.dat file
 #' @description The \url{http://airnowtech.org} site provides both air pollution
-#' monitoring data as well as monitoring site location metadata. The airnow_downloadSites()
+#' monitoring data as well as monitoring site location metadata. The \code{airnow_downloadSites()}
 #' function retrieves the most recent version of the site location metadata file and returns it as a dataframe.
 #' 
 #' A description of the data format is publicly available at the

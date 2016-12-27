@@ -4,22 +4,15 @@
 \alias{airnow_downloadHourlyData}
 \title{Download Hourly Data from AirNow}
 \usage{
-airnow_downloadHourlyData(user = "", pass = "", datestamp = "",
-  tries = 6, verbose = FALSE,
-  baseUrl = "ftp.airnowapi.org/HourlyData/Archive", curl = NULL)
+airnow_downloadHourlyData(datestamp = "",
+  baseUrl = "https://files.airnowtech.org/airnow")
 }
 \arguments{
-\item{user}{username}
-
-\item{pass}{password}
-
 \item{datestamp}{integer or character representing YYYYMMDDHH}
 
-\item{tries}{number of download attempts in the face of timeouts}
-
-\item{verbose}{logical requesting verbose output from libcurl}
-
 \item{baseUrl}{base URL for archived hourly data}
+
+\item{tries}{number of download attempts in the face of timeouts}
 
 \item{curl}{previously initialized CURL context/handle (see RCurl::getURL())}
 }
@@ -27,13 +20,17 @@ airnow_downloadHourlyData(user = "", pass = "", datestamp = "",
 Data frame of the AirNow hourly data.
 }
 \description{
-With the given username and password, airnow_downloadHourlyData() uses the \code{datesteamp}
-argument to create a URL into the Airnow archive at \url{'ftp.airnowapi.org/HourlyData/Archive}.
-The associated ASCII hourly data file is downloaded and converted into a dataframe.
+The \url{http://airnowtech.org} site provides both air pollution
+monitoring data as well as monitoring site location metadata. The \code{airnow_downloadHourlyData()}
+function retrieves a single, hourly data file and returns it as a dataframe.
+}
+\note{
+:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
+not for earlier years.
 }
 \examples{
 \dontrun{
-df <- airnow_downloadHourlyData(USER, PASS, 2015070112)
+df <- airnow_downloadHourlyData(2016070112)
 }
 }
 \seealso{

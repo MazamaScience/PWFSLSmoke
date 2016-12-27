@@ -1,17 +1,11 @@
 #' @keywords AirNow
 #' @export
 #' @title Download and Aggregate Multiple Hourly Data Files from AirNow
-#' @param user user name
-#' @param pass password
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired staring date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
-#' @param tries number of download attempts in the face of timeouts
-#' @param verbose logical flag to generate verbose web connection output
-#' @param curl previously initialized CURL context/handle (see RCurl::getURL())
 #' @description This function makes repeated calls to \link{airnow_downloadHourlyData}
-#' to obtain data from AirNow. A single curl handle is created and reused to improve 
-#' peformance and avoid errors like "Maximum login connections". All data obtained are then
+#' to obtain data from AirNow. All data obtained are then
 #' combined into a single dataframe and returned.
 #' 
 #' Parameters included in AirNow data include at least the following list:
@@ -42,32 +36,21 @@
 #' Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
 #' dataframe to be filtered to contain only records for those parameters.
 #' 
+#' @note:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
+#' not for earlier years.
 #' @return Dataframe of aggregated AirNow data.
 #' @seealso \link{airnow_createDataDataframes}
 #' @seealso \link{airnow_downloadHourlyData}
 #' @examples
 #' \dontrun{
-#' df <- airnow_downloadData(USER, PASS, "PM2.5", 2015070112, hours=48)
+#' df <- airnow_downloadData("PM2.5", 2016070112, hours=24)
 #' }
 
-airnow_downloadData <- function(user='', pass='', parameters=NULL, startdate='', hours=24, tries=6, verbose=FALSE,
-                                curl=NULL) {
+airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
   
   # Format the startdate integer using lubridate
   starttime <- parseDatetime(startdate)
 
-  # NOTE:  The function RCurl::getCurlHandle() must be used 'once' in this function. 
-  # NOTE:  It createas a curl handle which is then passed to the airnow_downloadHourlyData for each iteration. 
-
-  if ( is.null(curl) ) {
-    # Create a curl handle with appriprate options
-    # NOTE:  Specific set of curl options to avoid "421 Maximum login connections"
-    .opts <- list(maxconnects=2,
-                  ftp.use.epsv=FALSE,
-                  verbose=verbose)
-    curl=RCurl::getCurlHandle(.opts=.opts)
-  }
-  
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   dfList <- vector(mode="list", length=hours)
   
@@ -75,13 +58,21 @@ airnow_downloadData <- function(user='', pass='', parameters=NULL, startdate='',
   
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {
-    
+
     datetime <- starttime + lubridate::dhours(i-1)
     datestamp <- strftime(datetime, "%Y%m%d%H", tz="UTC")
+
+    logger.debug('Downloading AirNow data for %s', datestamp)
     
-    df <- airnow_downloadHourlyData(user, pass, datestamp, tries=tries, verbose=verbose,
-                                    curl=curl)
-    
+    # Obtain an hour of AirNow data
+    result <- try( df <- airnow_downloadHourlyData(datestamp),
+                   silent=TRUE)
+    if ( class(result)[1] == "try-error" ) {
+      err_msg <- geterrmessage()
+      logger.error('Unable to obtain data: %s',err_msg)
+      next
+    }
+
     if ( is.null(parameters) ) {
 
       dfList[[i]] <- df
