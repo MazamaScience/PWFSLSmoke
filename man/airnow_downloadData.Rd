@@ -4,33 +4,21 @@
 \alias{airnow_downloadData}
 \title{Download and Aggregate Multiple Hourly Data Files from AirNow}
 \usage{
-airnow_downloadData(user = "", pass = "", parameters = NULL,
-  startdate = "", hours = 24, tries = 6, verbose = FALSE, curl = NULL)
+airnow_downloadData(parameters = NULL, startdate = "", hours = 24)
 }
 \arguments{
-\item{user}{user name}
-
-\item{pass}{password}
-
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
 
 \item{startdate}{desired staring date (integer or character representing YYYYMMDD[HH])}
 
 \item{hours}{desired number of hours of data to assemble}
-
-\item{tries}{number of download attempts in the face of timeouts}
-
-\item{verbose}{logical flag to generate verbose web connection output}
-
-\item{curl}{previously initialized CURL context/handle (see RCurl::getURL())}
 }
 \value{
 Dataframe of aggregated AirNow data.
 }
 \description{
 This function makes repeated calls to \link{airnow_downloadHourlyData}
-to obtain data from AirNow. A single curl handle is created and reused to improve 
-peformance and avoid errors like "Maximum login connections". All data obtained are then
+to obtain data from AirNow. All data obtained are then
 combined into a single dataframe and returned.
 
 Parameters included in AirNow data include at least the following list:
@@ -61,9 +49,13 @@ Parameters included in AirNow data include at least the following list:
 Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
 dataframe to be filtered to contain only records for those parameters.
 }
+\note{
+:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
+not for earlier years.
+}
 \examples{
 \dontrun{
-df <- airnow_downloadData(USER, PASS, "PM2.5", 2015070112, hours=48)
+df <- airnow_downloadData("PM2.5", 2016070112, hours=24)
 }
 }
 \seealso{

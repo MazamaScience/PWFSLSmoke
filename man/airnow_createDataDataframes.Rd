@@ -4,21 +4,14 @@
 \alias{airnow_createDataDataframes}
 \title{Return Reshaped, Monthly Dataframes of AirNow Data}
 \usage{
-airnow_createDataDataframes(user, pass, parameters = NULL, yearMonth,
-  tries = 6, verbose = FALSE)
+airnow_createDataDataframes(parameters = NULL, startdate = "", hours = 24)
 }
 \arguments{
-\item{user}{user name}
-
-\item{pass}{pass}
-
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
 
-\item{yearMonth}{desired year and month  (integer or character representing YYYYMM)}
+\item{startdate}{desired staring date (integer or character representing YYYYMMDD[HH])}
 
-\item{tries}{number of download attempts in the face of timeouts}
-
-\item{verbose}{logical requesting verbose output from libcurl}
+\item{hours}{desired number of hours of data to assemble}
 }
 \value{
 Returns a list of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
@@ -27,7 +20,6 @@ Returns a list of dataframes where each dataframe contains all data for a unique
 The airnow_createDataDataframes() function uses the \link{airnow_downloadData} function 
 to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 with the PWFSLSmoke package \emph{ws_monitor} data model.
-
 
 AirNow data parameters include at least the following list:
 \enumerate{
@@ -56,9 +48,13 @@ AirNow data parameters include at least the following list:
 
 Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
 }
+\note{
+:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
+not for earlier years.
+}
 \examples{
 \dontrun{
-airnow_data <- airnow_createDataDataframe(user, pass, "PM2.5", 201507)
+airnow_data <- airnow_createDataDataframe("PM2.5", 201607)
 }
 }
 \seealso{
