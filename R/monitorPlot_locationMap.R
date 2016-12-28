@@ -45,8 +45,8 @@
 #   maptype <- 'terain'
 # 
 #   # icons (defaults - use readPNG() to define alternates if wish to use icons other than the defaults)
-#   icon_paddle <- readPNG('localData/pin1.png') # from http://www.clker.com/clipart-map-pin-1.html
-#   icon_fires <- readPNG('localData/flame2.png') # from DNR project folder
+#   icon_paddle <- png::readPNG('localData/pin1.png') # from http://www.clker.com/clipart-map-pin-1.html
+#   icon_fires <- png::readPNG('localData/flame2.png') # from DNR project folder
 # 
 # }
 
@@ -67,9 +67,9 @@ monitorPlot_locationMap <- function(ws_monitor,
                                     height=250,
                                     zoom=9,
                                     maptype='terain') {
-
+  
   # ----- Style ---------------------------------------------------------------
-
+  
   # Events as red-outlined, gray triangles (unless otherwise overwritten by icon)
   cex_events <- 1.2
   pch_events <- 17
@@ -77,34 +77,34 @@ monitorPlot_locationMap <- function(ws_monitor,
   pch_eventsBorder <- 2
   col_eventsBorder <- 'red'
   lwd_eventsBorder <- 2
-
+  
   # icons (defaults - use readPNG() to define alternates if wish to use something other than default)
-  icon_paddle <- readPNG('localData/pin1.png') # from http://www.clker.com/clipart-map-pin-1.html
-
+  icon_paddle <- png::readPNG('localData/pin1.png') # from http://www.clker.com/clipart-map-pin-1.html
+  
   # icon expansion
   iconExpansion_monitor <- .1
   iconExpansion_events <- .1
-
+  
   # ----- Data Preparation ----------------------------------------------------
-
-  lat <- mean(ws_monitor$meta$latitude)
-  lon <- mean(ws_monitor$meta$longitude)
-
+  
+  lat <- base::mean(ws_monitor$meta$latitude)
+  lon <- base::mean(ws_monitor$meta$longitude)
+  
   # ----- Generate map --------------------------------------------------------
-
-  myMap <- GetMap(center=c(lat,lon), size=c(height,width), zoom=zoom, maptype=maptype);
-
-  PlotOnStaticMap(myMap)
+  
+  myMap <- RgoogleMaps::GetMap(center=c(lat,lon), size=c(height,width), zoom=zoom, maptype=maptype);
+  
+  RgoogleMaps::PlotOnStaticMap(myMap)
   
   # Plot events first
   if ( !is.null(eventLocations) ) {
     if ( is.null(eventIcon) ) {
-      PlotOnStaticMap(myMap,eventLocations$latitude,eventLocations$longitude,
-                      add=TRUE,
-                      cex=cex_events, pch=pch_events, col=col_events)
-      PlotOnStaticMap(myMap,eventLocations$latitude,eventLocations$longitude,
-                      add=TRUE,
-                      cex=cex_events, pch=pch_eventsBorder, col=col_eventsBorder, lwd=lwd_eventsBorder)
+      RgoogleMaps::PlotOnStaticMap(myMap,eventLocations$latitude,eventLocations$longitude,
+                                   add=TRUE,
+                                   cex=cex_events, pch=pch_events, col=col_events)
+      RgoogleMaps::PlotOnStaticMap(myMap,eventLocations$latitude,eventLocations$longitude,
+                                   add=TRUE,
+                                   cex=cex_events, pch=pch_eventsBorder, col=col_eventsBorder, lwd=lwd_eventsBorder)
     } else { # TODO: add logic to determine WHICH icon to plot, if more than one can be specified
       addIcon(myMap,eventIcon,eventLocations$longitude,eventLocations$latitude)
     }
@@ -116,30 +116,30 @@ monitorPlot_locationMap <- function(ws_monitor,
   } else {
     addIcon(myMap, monitorIcon, ws_monitor$meta$longitude, ws_monitor$meta$latitude, expansion=iconExpansion_monitor, pos=0) #could build in icon expansion, or logic re: pos depending on icon type
   }
-
+  
 }
 
 # ----- Helper Functions ------------------------------------------------------
 
 addIcon <- function(map, icon, lon, lat, expansion=0.1, pos=0) {
-
+  
   # limit lon, lat to those within bounding box
   lon_lo <- map$BBOX$ll[,'lon']
   lon_hi <- map$BBOX$ur[,'lon']
   lat_lo <- map$BBOX$ll[,'lat']
   lat_hi <- map$BBOX$ur[,'lat']
-
+  
   lonMask <- lon >= lon_lo & lon <= lon_hi
   latMask <- lat >= lat_lo & lat <= lat_hi
   goodMask <- lonMask & latMask
-
+  
   lon <- lon[goodMask]
   lat <- lat[goodMask]
-
+  
   # Calculate final icon size
   icon_height <- dim(icon)[1] * expansion
   icon_width <- dim(icon)[2] * expansion
-
+  
   # Calcualte "nudge" based on pos
   nudge_x <- 0
   nudge_y <- 0
@@ -156,16 +156,16 @@ addIcon <- function(map, icon, lon, lat, expansion=0.1, pos=0) {
     nudge_x <- icon_width/2
     nudge_y <- 0
   }
-
+  
   # Get plot coordinates
-  newXY <- LatLon2XY.centered(map, lat, lon)
+  newXY <- RgoogleMaps::LatLon2XY.centered(map, lat, lon)
   x <- newXY$newX
   y <- newXY$newY
-
-  rasterImage(icon,
-              x - icon_width/2 + nudge_x,
-              y - icon_height/2 + nudge_y,
-              x + icon_width/2 + nudge_x,
-              y + icon_height/2 + nudge_y)
-
+  
+  graphics::rasterImage(icon,
+                        x - icon_width/2 + nudge_x,
+                        y - icon_height/2 + nudge_y,
+                        x + icon_width/2 + nudge_x,
+                        y + icon_height/2 + nudge_y)
+  
 }
