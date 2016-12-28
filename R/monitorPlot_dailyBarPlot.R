@@ -8,7 +8,7 @@
 #' @param tlim time limit for barplot
 #' @param title plot title
 #' @param cex size
-#' @param aqiColors color code bars based on AQI
+#' @param barColors bar colors; based on AQI unless specified otherwise
 #' @param ... additional arguments to be passed to barplot()
 #' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor in a ws_monitor object.
 #' Each bar is colored according to its AQI category.
@@ -16,16 +16,16 @@
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150801, 20150820)
 #' # Pull out first monitorID from 'meta' dataframe
-#' monitorID <- ws_monitor$meta$monitorID[1]
-#' monitor_dailyBarPlot(ws_monitor, monitorID)
+#' monitorID <- ws_monitor$meta$monitorID[8]
+#' monitorPlot_dailyBarPlot(ws_monitor, monitorID)
 #' }
 
 monitorPlot_dailyBarPlot <- function(ws_monitor,
                                      monitorID=NULL,
                                      tlim=NULL,
-                                     title="Title",
+                                     title=NULL,
                                      cex=2,
-                                     aqiColors=TRUE,
+                                     barColors=NULL,
                                      ...) {
   
   # Plot style ----------------------------------------------------------------
@@ -39,7 +39,8 @@ monitorPlot_dailyBarPlot <- function(ws_monitor,
     if ( nrow(ws_monitor$meta) == 1 ) {
       monitorID <- ws_monitor$meta$monitorID[1]
     } else {
-      stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
+      stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",
+                  paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
     }
   }
   
@@ -53,10 +54,10 @@ monitorPlot_dailyBarPlot <- function(ws_monitor,
   
   # TODO:  When AirNow timezones are correct and always available we can do this
   
-  # NOTE:  We will functions from the lubridate package to assign an integer
-  # NOTE:  dayNum to each date. These need to be aligned so that each day begins
-  # NOTE:  at midnight in the local timezone.  We can then use functionality
-  # NOTE:  from the dplyr package to group data by dayNum and then summarize
+  # NOTE:  We will use functions from the lubridate package to assign a unique date
+  # NOTE:  string to each date. These need to be aligned so that each day begins
+  # NOTE:  at midnight in the local timezone. We can then use functionality
+  # NOTE:  from the dplyr package to group data by date and then summarize
   # NOTE:  to get the average time and average value for each day.
   
   # Convert to local time
@@ -70,17 +71,18 @@ monitorPlot_dailyBarPlot <- function(ws_monitor,
   
   # Time limit application
   if ( !is.null(tlim) ) {
+    # TODO: Warn if no data for any dates within tlim?
     # TODO: add logic to check for tlim format
     timeMask <- localTime >= lubridate::ymd(tlim[1]) & localTime < lubridate::ymd(tlim[2])+lubridate::days(1)
-    if (sum(timeMask)==0) {
-      PWFSLSmoke::monitorPlot_noData(ws_monitor)
+    if ( sum(timeMask) == 0 ) {
+      monitorPlot_noData(ws_monitor,monitorID)
       stop("No data contained within specified time limits, please try again.")
     }
     df <- df[timeMask,]
   }
   
   # Create a new dataframe with daily means
-  df %>% 
+  df %>%
     group_by(day) %>%
     summarize(localTime=mean(localTime,na.rm=TRUE), pm25=mean(pm25,na.rm=TRUE)) ->
     dfMean
@@ -91,29 +93,42 @@ monitorPlot_dailyBarPlot <- function(ws_monitor,
   # Subset to only have full days
   dfMean <- dfMean[fullDayMask,]
   
-  if (nrow(dfMean) == 0) {
-    futile.logger::flog.warn('There are no full days to plot in monitor_dailyBarPlot. Try a ws_monitor that covers more days.')
+  if ( nrow(dfMean) == 0 ) {
+    monitorPlot_noData(ws_monitor,monitorID)
+    futile.logger::flog.warn('There are no full days to plot in monitor_dailyBarPlot. 
+                             Try a ws_monitor that covers more days.')
   }
-  
   
   # Plotting ------------------------------------------------------------------
 
   # Colors come from pm25Daily means
-  aqiColors <- adjustcolor(AQI$colors, 0.5)
-  cols <- aqiColors[ .bincode(dfMean$pm25, AQI$breaks_24, include.lowest=TRUE) ]
+  if ( is.null(barColors) ) {
+    aqiColors <- adjustcolor(AQI$colors, 0.5)
+    barColors <- aqiColors[ .bincode(dfMean$pm25, AQI$breaks_24, include.lowest=TRUE) ]
+  }
   
   # Create time labels we can use for the X axis
   dayLabels <- strftime(dfMean$localTime, "%b %d")
   
   # Plot
   barplot(dfMean$pm25, las=1,
-          col=cols,
+          col=barColors,
           names.arg=dayLabels,
-          ylab="PM 2.5")
+          xlab="Date",
+          ylab="",
+          ...)
+  
+  # Y Label
+  mtext(expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")")),2,line=2.5)
   
   grid(nx=NA, ny=NULL, col='white', lwd=2)
   
-  # Annotations
-  title('Daily Average PM2.5')
-  
+  # Title
+  if ( is.null(title) ) {
+    mtext(expression(paste("Daily Average PM"[2.5])),line=2,cex = 1.5)
+    mtext(paste(strftime(dfMean$day[1], '%b. %d - '),strftime(utils::tail(dfMean$day,1), '%b. %d %Y')),line=.7,cex=1.5)
+  } else {
+    title(title)
+  }
+    
 }

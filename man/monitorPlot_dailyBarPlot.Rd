@@ -5,7 +5,7 @@
 \title{Create Daily Bar Plot}
 \usage{
 monitorPlot_dailyBarPlot(ws_monitor, monitorID = NULL, tlim = NULL,
-  title = "Title", cex = 2, aqiColors = TRUE, ...)
+  title = NULL, cex = 2, barColors = NULL, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -19,7 +19,7 @@ if only one monitor in the ws_monitor object)}
 
 \item{cex}{size}
 
-\item{aqiColors}{color code bars based on AQI}
+\item{barColors}{bar colors; based on AQI unless specified otherwise}
 
 \item{...}{additional arguments to be passed to barplot()}
 }
@@ -31,8 +31,8 @@ Each bar is colored according to its AQI category.
 \dontrun{
 ws_monitor <- wrcc_load(20150801, 20150820)
 # Pull out first monitorID from 'meta' dataframe
-monitorID <- ws_monitor$meta$monitorID[1]
-monitor_dailyBarPlot(ws_monitor, monitorID)
+monitorID <- ws_monitor$meta$monitorID[8]
+monitorPlot_dailyBarPlot(ws_monitor, monitorID)
 }
 }
 \keyword{ws_monitor}

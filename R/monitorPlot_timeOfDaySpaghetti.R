@@ -69,10 +69,11 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   
   # Time limit application
   if ( !is.null(tlim) ) {
+    # TODO: Warn if no data for any dates within tlim?
     # TODO: add logic to check for tlim format
     timeMask <- localTime >= lubridate::ymd(tlim[1]) & localTime < lubridate::ymd(tlim[2])+lubridate::days(1)
     if ( sum(timeMask)==0 ) {
-      PWFSLSmoke::monitorPlot_noData(ws_monitor)
+      monitorPlot_noData(ws_monitor)
       stop("No data contained within specified time limits, please try again.")
     }
     df <- df[timeMask,]
