@@ -23,11 +23,12 @@
 
 monitorPlot_rollingMean <- function(ws_monitor,
                                     monitorID=NULL,
+                                    width=3,
+                                    align="center",
+                                    data.thresh=75,
                                     tlim=NULL,
                                     ylim=NULL,
-                                    width=24,
-                                    data.thresh=75,
-                                    align="center",
+                                    useGMT=FALSE,
                                     aqiLines=TRUE) {
   
   # ----- Style ---------------------------------------------------------------
@@ -40,12 +41,17 @@ monitorPlot_rollingMean <- function(ws_monitor,
   # rolling mean
   col_mean <- 'black'
   lwd_mean <- 1
+  lty_mean <- 'solid'
     
   # Grid lines
   lty_grid <- 'dotted'
   col_grid <- 'gray80'
   lwd_grid <- 1.6
   lwd_gridLight <- 0.8 # for 3 hour intervals
+  
+  # AQI lines
+  lwd_aqi <- 6
+  col_aqi <- adjustcolor(AQI$colors[2:6], 0.6)
   
   # ----- Data Preparaion ------------------------
   
@@ -63,22 +69,97 @@ monitorPlot_rollingMean <- function(ws_monitor,
   #TODO: tlim application (see spaghetti plot)
   #TODO: review axes to ensure that dates and major/minor lines align with appropriate date/times
   
-  rollingMeans <- monitor_rollingMean(ws_monitor, width=width, data.thresh=data.thresh, align=align)
+  # Pull out hour averages and create rolling means for dataframe prior toplotting
+  hourAvgs <- ws_monitor$data[[monitorID]]
+  rollingMeans <- monitor_rollingMean(ws_monitor, width=width, data.thresh=data.thresh, align=align)$data[[monitorID]]
   
-  # Grid line locations
-  minTime <- ws_monitor$data$datetime[1]
-  maxTime <- utils::tail(ws_monitor$data$datetime, 1)
-  xGrid24Hour <- seq(minTime,maxTime,"day")
-  xGrid3Hour <- seq(minTime,maxTime,"3 hour")
+  # Assign timestamp based on useGMT setting for dataframe prior to plotting
+  if ( useGMT ) {
+    timeStamp <- ws_monitor$data$datetime
+    xlab <- 'Date and Time (UTC)'
+  } else {
+    timeStamp <- lubridate::with_tz(ws_monitor$data$datetime,ws_monitor$meta$timezone)
+    xlab <- 'Date and Time (local)'
+  }
+  
+  # put the pieces of the new dataframe together
+  df <- data.frame(timeStamp,hourAvgs,rollingMeans)
+  
+  # Time limit application
+  if ( !is.null(tlim) ) {
+    # TODO: Warn if no data for any dates within tlim?
+    # TODO: add logic to check for tlim format
+    timeMask <- timeStamp >= lubridate::ymd(tlim[1]) & timeStamp < lubridate::ymd(tlim[2])+lubridate::days(1)
+    if ( sum(timeMask)==0 ) {
+      monitorPlot_noData(ws_monitor)
+      stop("No data contained within specified time limits, please try again.")
+    }
+    df <- df[timeMask,]
+  }
+  
+  # Set y Limits
+  if ( is.null(ylim) ) {
+    ylim <- c(min(0,min(df$hourAvgs,na.rm=TRUE)),max(df$hourAvgs,na.rm=TRUE))
+  }
+  
+  # Date ranges for Grid line locatioins and chart title
+  minTime <- df$timeStamp[1]
+  maxTime <- utils::tail(df$timeStamp, 1)
+  
+  # Find first full day for time axis labels
+  min24Hour <- timeStamp[which(lubridate::hour(timeStamp)==0)[1]]
+  
+  # Find start of first 3-hour period (e.g. Hr 0, 3, 6...)
+  threeHrRemainder <- lubridate::hour(minTime)/3-floor(lubridate::hour(minTime)/3)
+  if ( threeHrRemainder == 0 ) { # first time stamp is right on a 3-hr marker
+    min3Hour <- df$timeStamp[1]
+  } else if ( threeHrRemainder < .5 ) { # first time stamp is one hour after a 3-hr marker
+    min3Hour <- df$timeStamp[1]-lubridate::hours(1)
+  } else {
+    min3Hour <- df$timeStamp[1]-lubridate::hours(2)
+  }
+  
+  # Define grid line locations
+  xGrid24Hour <- seq(min24Hour,maxTime+lubridate::hours(1),"day")
+  xGrid3Hour <- seq(min3Hour,maxTime+lubridate::hours(1),"3 hour")
+  xGrid3Hour <- xGrid3Hour[!(xGrid3Hour %in% xGrid24Hour)]
+  
+  # # Time axis labels
+  # if ( nrow(df) < 72 ) {
+  #   timeLabelFormat <- "%b %d %h :00"
+  # } else {
+     timeLabelFormat <- "%b %d"
+  # }
   
   # ----- Plotting --------------------------------
   
+  # Create blank plot
+  plot(df$timeStamp, df$hourAvgs,
+       type = 'n',
+       xlab = xlab,
+       ylab = '',
+       ylim = ylim
+       #xaxt="n"
+       )
+  
+  #axis.POSIXct(side=1,strptime(df$timeStamp,tz = ws_monitor$meta$timezone,format="%b %d %h"),format=timeLabelFormat)
+       
+  #title(expression("Hourly and Rolling PM2.5\nDate 1 - Date 2"))
+  mtext(expression(paste("Hourly and Rolling Average PM"[2.5])),line=2,cex = 1.5)
+  mtext(paste(strftime(minTime, '%b. %d - '),strftime(maxTime, '%b. %d %Y')),line=.7,cex=1.5)
+       
+  if ( aqiLines ) {
+    abline(h=AQI$breaks_24[2:6], col=col_aqi, lwd=lwd_aqi)
+  }
+  
   # Plot light grey circles for actual PM2.5 data
-  plot(ws_monitor$data$datetime, ws_monitor$data[[monitorID]],
+  points(df$timeStamp, df$hourAvgs,
        col=col_points,
        pch=pch_points,
-       cex=cex_points,
-       xlab = 'Datetime', ylab = 'PM2.5')
+       cex=cex_points)
+  
+  # Vertical axis label
+  mtext(expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")")),2,line=2.5)
   
   # Grid
   grid(nx=NA,ny=NULL, col=col_grid, lwd=lwd_grid, lty=lty_grid)
@@ -86,12 +167,12 @@ monitorPlot_rollingMean <- function(ws_monitor,
   abline(v=xGrid24Hour, col=col_grid, lwd=lwd_grid, lty=lty_grid)
   
   # Add rolling means
-  lines(ws_monitor$data$datetime, rollingMeans$data[[monitorID]], col='black', lwd=2, lty='solid')
+  lines(df$timeStamp, df$rollingMeans, col='black', lwd=lwd_mean, lty=lty_mean)
   
   # Annotations
   legend("topleft",
          legend=paste0(width, "-hour Rolling Mean"),
          cex=par('cex.lab'),
-         col='black', lwd=2, lty='solid')
+         col=col_mean, lwd=lwd_mean, lty=lty_mean)
 
 }
