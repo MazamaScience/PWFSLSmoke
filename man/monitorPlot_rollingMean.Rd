@@ -45,7 +45,8 @@ NA is returned if insufficicnet valid data to calculate mean}
 Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a specific monitor.
 }
 \details{
-\code{align = "left"} and \code{align = "right"} calculate backward and forward rolling averages, respectively (e.g. current period and prior/subsequent \code{width - 1} periods)
+\code{align = 'left'}: Forward roll (e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7) \cr
+\code{align = 'right'}: Backward roll (e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)
 }
 \examples{
 \dontrun{

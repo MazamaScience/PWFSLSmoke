@@ -19,7 +19,8 @@
 #' @param grid3hr add dashed grid lines every 3 hours
 #' @param showLegend include legend in top left
 #' @description Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a specific monitor.
-#' @details \code{align = "left"} and \code{align = "right"} calculate backward and forward rolling averages, respectively (e.g. current period and prior/subsequent \code{width - 1} periods)
+#' @details \code{align = 'left'}: Forward roll (e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7) \cr
+#' \code{align = 'right'}: Backward roll (e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)
 #' @examples
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150725, 20150805)
@@ -27,7 +28,6 @@
 #' monitorPlot_rollingMean(ws_monitor, monitor)
 #' }
 
-# TODO: Revisit time axis labels
 # TODO: Add dots to legend?
 # TODO: Specify roll direction in legend and/or title?
 
