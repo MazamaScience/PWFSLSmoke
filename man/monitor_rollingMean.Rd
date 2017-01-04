@@ -24,7 +24,16 @@ Calculates rolling means for each monitor in the ws_monitor object using the
 \code{openair::rollingMean()} function
 }
 \details{
-\code{align = "left"} and \code{align = "right"} calculate backward and forward rolling averages, respectively (e.g. current period and prior/subsequent \code{width - 1} periods)
+\itemize{
+\item{\code{align = 'left'}: Forward roll, using hour of interest and the (\code{width}-1) subsequent hours 
+(e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7)}
+\item{\code{align = 'right'}: Backwards roll, using hour of interest and the (\code{width}-1) prior hours
+(e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)}
+\item{\code{align = 'center'} for odd \code{width}: Average of hour of interest and (\code{width}-1)/2 on either side
+(e.g. 3-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5 and 6)}
+\item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and 
+\code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
+}
 }
 \examples{
 \dontrun{
