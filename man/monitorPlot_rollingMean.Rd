@@ -4,9 +4,11 @@
 \alias{monitorPlot_rollingMean}
 \title{Create Individual Value and Rolling Mean Plot}
 \usage{
-monitorPlot_rollingMean(ws_monitor, monitorID = NULL, tlim = NULL,
-  ylim = NULL, width = 24, data.thresh = 75, align = "center",
-  aqiLines = TRUE)
+monitorPlot_rollingMean(ws_monitor, monitorID = NULL, width = 3,
+  align = "center", data.thresh = 75, tlim = NULL, ylim = NULL,
+  useGMT = FALSE, shadedNight = FALSE, aqiLines = TRUE,
+  gridHorizontal = FALSE, grid24hr = FALSE, grid3hr = FALSE,
+  showLegend = TRUE)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -14,24 +16,37 @@ monitorPlot_rollingMean(ws_monitor, monitorID = NULL, tlim = NULL,
 \item{monitorID}{monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
 in the ws_monitor object)}
 
-\item{tlim}{time limit for plot}
-
-\item{ylim}{optional y limits for plot}
-
 \item{width}{number of periods to average (e.g. for hourly data, \code{width = 24} plots 24-hour rolling means)}
+
+\item{align}{alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}}
 
 \item{data.thresh}{minimum number of valid observations required as a percent of \code{width};
 NA is returned if insufficicnet valid data to calculate mean}
 
-\item{align}{alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}}
+\item{tlim}{time limit for plot}
+
+\item{ylim}{optional y limits for plot}
+
+\item{useGMT}{Plot w/ time axis in GMT, as opposed to local time.}
+
+\item{shadedNight}{add shaded background during nights}
 
 \item{aqiLines}{horizontal lines indicating AQI levels}
+
+\item{gridHorizontal}{add dashed horizontal grid lines}
+
+\item{grid24hr}{add dashed grid lines at day boundaries}
+
+\item{grid3hr}{add dashed grid lines every 3 hours}
+
+\item{showLegend}{include legend in top left}
 }
 \description{
 Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a specific monitor.
 }
 \details{
-\code{align = "left"} and \code{align = "right"} calculate backward and forward rolling averages, respectively (e.g. current period and prior/subsequent \code{width - 1} periods)
+\code{align = 'left'}: Forward roll (e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7) \cr
+\code{align = 'right'}: Backward roll (e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)
 }
 \examples{
 \dontrun{
