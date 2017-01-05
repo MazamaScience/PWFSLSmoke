@@ -19,17 +19,22 @@
 #' @param grid3hr add dashed grid lines every 3 hours
 #' @param showLegend include legend in top left
 #' @description Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a specific monitor.
-#' @details \code{align = 'left'}: Forward roll (e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7) \cr
-#' \code{align = 'right'}: Backward roll (e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)
+#' @details \itemize{
+#' \item{\code{align = 'left'}: Forward roll, using hour of interest and the (\code{width}-1) subsequent hours 
+#' (e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7)}
+#' \item{\code{align = 'right'}: Backwards roll, using hour of interest and the (\code{width}-1) prior hours
+#' (e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)}
+#' \item{\code{align = 'center'} for odd \code{width}: Average of hour of interest and (\code{width}-1)/2 on either side
+#' (e.g. 3-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5 and 6)}
+#' \item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and 
+#' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
+#' }
 #' @examples
 #' \dontrun{
 #' ws_monitor <- wrcc_load(20150725, 20150805)
 #' monitor <- ws_monitor$meta$monitorID[1]
 #' monitorPlot_rollingMean(ws_monitor, monitor)
 #' }
-
-# TODO: Add dots to legend?
-# TODO: Specify roll direction in legend and/or title?
 
 monitorPlot_rollingMean <- function(ws_monitor,
                                     monitorID=NULL,
@@ -70,6 +75,15 @@ monitorPlot_rollingMean <- function(ws_monitor,
   col_aqi <- adjustcolor(AQI$colors[2:6], 0.6)
   
   # ----- Data Preparaion ------------------------
+  
+  # Roll direction for legend
+  if ( align=='left' ) {
+    direction <- 'Forward-'
+  } else if ( align=='right' ) {
+    direction <- 'Backward-'
+  } else {
+    direction <- 'Centered '
+  }
   
   # Allow single monitor objects to be used without specifying monitorID
   if ( is.null(monitorID) ) {
@@ -223,7 +237,7 @@ monitorPlot_rollingMean <- function(ws_monitor,
   mtext(expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")")),2,line=2.5)
   
   # Title
-  mtext(expression(paste("Hourly and Rolling Average PM"[2.5])),line=2,cex = 1.5)
+  mtext(expression(paste("Hourly and Rolling Mean PM"[2.5])),line=2,cex = 1.5)
   if ( lubridate::date(minTime)==lubridate::date(maxTime) ) {
     mtext(format(minTime, '%b. %d %Y'),line=.7,cex=1.5)
   } else {
@@ -232,10 +246,13 @@ monitorPlot_rollingMean <- function(ws_monitor,
   
   # Legend
   if ( showLegend ) {
-    legend("topleft",
-           legend=paste0(width, "-hour Rolling Mean"),
+    legend("topleft", 
+           legend=c('Hourly Averages',paste0(width, "-hour ",direction,"Rolling Mean")),
            cex=par('cex.lab'),
-           col=col_mean, lwd=lwd_mean, lty=lty_mean)
+           col=c(col_points,col_mean),
+           lwd=c(NA,lwd_mean),
+           lty=c(NA,lty_mean),
+           pch=c(pch_points,NA))
   }
   
 }

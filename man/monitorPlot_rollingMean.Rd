@@ -45,8 +45,16 @@ NA is returned if insufficicnet valid data to calculate mean}
 Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a specific monitor.
 }
 \details{
-\code{align = 'left'}: Forward roll (e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7) \cr
-\code{align = 'right'}: Backward roll (e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)
+\itemize{
+\item{\code{align = 'left'}: Forward roll, using hour of interest and the (\code{width}-1) subsequent hours 
+(e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7)}
+\item{\code{align = 'right'}: Backwards roll, using hour of interest and the (\code{width}-1) prior hours
+(e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)}
+\item{\code{align = 'center'} for odd \code{width}: Average of hour of interest and (\code{width}-1)/2 on either side
+(e.g. 3-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5 and 6)}
+\item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and 
+\code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
+}
 }
 \examples{
 \dontrun{
