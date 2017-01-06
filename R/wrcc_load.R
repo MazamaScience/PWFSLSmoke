@@ -17,7 +17,7 @@
 #' }
 
 wrcc_load <- function(startdate, enddate, monitorIDs=NULL, stateCodes=NULL, 
-                      url='http://smoke.airfire.org/RData/WRCC/WRCC_monitors.RData') {
+                      url='https://smoke.airfire.org/RData/WRCC/WRCC_monitors.RData') {
   
   # Load either from a URL for a local file
   if ( stringr::str_detect(url, '^http://') ) {

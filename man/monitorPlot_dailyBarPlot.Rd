@@ -5,7 +5,7 @@
 \title{Create Daily Bar Plot}
 \usage{
 monitorPlot_dailyBarPlot(ws_monitor, monitorID = NULL, tlim = NULL,
-  title = NULL, cex = 2, barColors = NULL, ...)
+  minHours = 20, title = NULL, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -15,11 +15,9 @@ if only one monitor in the ws_monitor object)}
 
 \item{tlim}{time limit for barplot}
 
+\item{minHours}{minimum number of valid data hours required to calculate each daily average}
+
 \item{title}{plot title}
-
-\item{cex}{size}
-
-\item{barColors}{bar colors; based on AQI unless specified otherwise}
 
 \item{...}{additional arguments to be passed to barplot()}
 }
@@ -29,10 +27,9 @@ Each bar is colored according to its AQI category.
 }
 \examples{
 \dontrun{
-ws_monitor <- wrcc_load(20150801, 20150820)
-# Pull out first monitorID from 'meta' dataframe
-monitorID <- ws_monitor$meta$monitorID[8]
-monitorPlot_dailyBarPlot(ws_monitor, monitorID)
+airnow <- airnow_load(20150701, 20150831)
+title <- "Daily Average PM2.5 for Colleville, WA"
+monitorPlot_dailyBarPlot(airnow, monitorID="530650004", title=title)
 }
 }
 \keyword{ws_monitor}

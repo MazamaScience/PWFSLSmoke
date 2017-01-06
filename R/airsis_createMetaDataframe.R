@@ -67,7 +67,7 @@ airsis_createMetaDataframe <- function(df) {
   #   [25] "datetime"       "deploymentID"   "medoidLon"      "medoidLat"     
   #
   # On 2016-01-31, the following columns were found in:
-  #   http://smoke.airfire.org/RData/AirNowTech/AirNowTech_PM2.5_SitesMetadata.RData
+  #   https://smoke.airfire.org/RData/AirNowTech/AirNowTech_PM2.5_SitesMetadata.RData
   #
   #   > meta <- get(load('~/Downloads/AirNowTech_PM2.5_SitesMetadata.RData'))
   #   > str(meta)

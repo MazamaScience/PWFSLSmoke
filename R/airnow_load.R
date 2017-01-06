@@ -18,7 +18,7 @@
 #' }
 
 airnow_load <- function(startdate, enddate, monitorIDs=NULL, parameter='PM2.5',
-                        baseUrl='http://smoke.airfire.org/RData/AirNowTech/') {
+                        baseUrl='https://smoke.airfire.org/RData/AirNowTech/') {
   
   # Sanity Check
   

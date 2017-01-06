@@ -69,9 +69,6 @@ which we can then explore.
 ```{r}
 library(PWFSLSmoke)
 
-# Set the location of the local data archive
-setSmokeDataDir('~/Data/Smoke')
-
 # Get some airnow data for Washington
 airnow <- airnow_load(startdate=20150801, enddate=20150831)
 WA <- monitor_subset(airnow, stateCodes='WA')

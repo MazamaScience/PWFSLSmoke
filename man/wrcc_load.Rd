@@ -5,7 +5,7 @@
 \title{Load WRCC monitoring data}
 \usage{
 wrcc_load(startdate, enddate, monitorIDs = NULL, stateCodes = NULL,
-  url = "http://smoke.airfire.org/RData/WRCC/WRCC_monitors.RData")
+  url = "https://smoke.airfire.org/RData/WRCC/WRCC_monitors.RData")
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

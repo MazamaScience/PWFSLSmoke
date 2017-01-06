@@ -5,7 +5,7 @@
 \title{Load AirNow Monitoring Data}
 \usage{
 airnow_load(startdate, enddate, monitorIDs = NULL, parameter = "PM2.5",
-  baseUrl = "http://smoke.airfire.org/RData/AirNowTech/")
+  baseUrl = "https://smoke.airfire.org/RData/AirNowTech/")
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
