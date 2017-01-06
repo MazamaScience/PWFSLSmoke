@@ -6,7 +6,7 @@
 \usage{
 monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
   vlim = NULL, monitorIDs = NULL, stateCodes = NULL,
-  dropMonitors = TRUE)
+  dropMonitors = TRUE, timezone = "UTC")
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -15,7 +15,7 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 
 \item{ylim}{vector with low and high latitude limit values}
 
-\item{tlim}{vector with start and end date/time limit values (POSIXct)}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 
 \item{vlim}{vector with low and high PM2.5 data limit values}
 
@@ -24,6 +24,8 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 \item{stateCodes}{vector of state codes to include}
 
 \item{dropMonitors}{flag specifying whether to remove monitors with no data}
+
+\item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
 ws_monitor object as a subset of the input ws_monitor object

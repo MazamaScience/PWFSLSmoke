@@ -50,7 +50,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # TODO: assign local or UTC datetime depending on localTime flag
   #datetime <- mon$data$datetime
   
-  pm25 <- as.numeric(mon_dailyMean$data[,monitorID])
+  pm25 <- as.numeric(mon$data[,monitorID])
   
   # Plot command default arguments ---------------------------------------------
   

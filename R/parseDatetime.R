@@ -1,6 +1,6 @@
 #' @export
 #' @title Parse Datetime Strings
-#' @param datetime character or integer datetimes in YYYYMMDD[HHMMSS] format
+#' @param datetime vector of character or integer datetimes in YYYYMMDD[HHMMSS] format
 #' @param timezone Olson timezone at the location of interest
 #' @description 8-, 10-, 12- and 14-digit formats are understood, e.g: 20150721 to 20150721000000.
 #' Integers will be converted to character before parsing.
