@@ -4,9 +4,10 @@
 #' @param ws_monitor ws_monitor object
 #' @param xlim optional longitude lim with lo and hi longitude values
 #' @param ylim optional latitude lim with lo and hi latitude values
-#' @param tlim optional time lim with lo and hi time values (POSIXct)
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param stateCodes optional vector of stateCodes
 #' @param monitorIDs optional vector of monitorIDs
+#' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
 #' @description Filters the incoming ws_monitor object according to the parameters
 #' passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
 #' 
@@ -27,13 +28,14 @@
 #' }
 
 monitor_isolate <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL,
-                            monitorIDs=NULL, stateCodes=NULL) {
+                            monitorIDs=NULL, stateCodes=NULL,
+                            timezone="UTC") {
   
   # Isolate individual monitors
   monList <- list()
   for (monitorID in names(ws_monitor$data)[-1]) {
     mon <- monitor_subset(ws_monitor, xlim=xlim, ylim=ylim, tlim=tlim,
-                          monitorIDs=monitorID, dropMonitors=TRUE)
+                          monitorIDs=monitorID, dropMonitors=TRUE, timezone=timezone)
     monList[[monitorID]] <- monitor_trim(mon)
   }
   

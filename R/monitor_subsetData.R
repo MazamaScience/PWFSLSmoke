@@ -2,26 +2,30 @@
 #' @export
 #' @title Subset ws_monitor Object 'data' Dataframe
 #' @param data ws_monitor object 'data' dataframe
-#' @param tlim optional vector with start and end times (POSIXct)
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param vlim optional vector with low and high data values to include
 #' @param monitorIDs optional vector of monitorIDs
 #' @param dropMonitors flag specifying whether to remove columns -- defaults to \code{FALSE}
+#' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
 #' @description Subsets a ws_monitor object's 'data' dataframe by removing any monitors that
-#'     lie outisde the specified range of time and values and that are not mentioned
-#'     in the list of monitorIDs.
-#' @description If any parameter is not specified, that parameter will not be used in the subsetting.
-#' @description Intended for use by the monitor_subset function.
+#' lie outisde the specified ranges of time and values and that are not mentioned in the
+#' list of monitorIDs.
+#' 
+#' If \code{tlim} or \code{vlim} is not specified, it will not be used in the subsetting.
+#' 
+#' Intended for use by the monitor_subset function.
 #' @details By default, filtering by tlim or vlim will always return a dataframe with the
-#'     same number of columns as the incoming dataframe. If \code{dropMonitors=TRUE}, columns
-#'     will be removed if there are not valid data for a specific monitor after subsetting.
+#' same number of columns as the incoming dataframe. If \code{dropMonitors=TRUE}, columns
+#' will be removed if there are not valid data for a specific monitor after subsetting.
 #'     
-#'     Filtering by vlim is open on the left and closed on the right, i.e.
+#' Filtering by vlim is open on the left and closed on the right, i.e.
 #'     
-#'      \code{x > vlim[1] & x <= vlim[2]}
+#'  \code{x > vlim[1] & x <= vlim[2]}
 #'       
-#' @return ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors
+#' @return ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors.
 
-monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, dropMonitors=FALSE) {
+monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
+                               dropMonitors=FALSE, timezone="UTC") {
   
   # Subset based on monitorID column names first as that is the quickest
   if (!is.null(monitorIDs)) {
@@ -29,7 +33,23 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, drop
   }
   
   if ( !is.null(tlim) ) {
+    
+    # Accept numeric, character or POSIXct values for tlim
+    if (class(tlim)[1] == 'numeric' || class(tlim)[1] == 'character') {
+      # Parse tlim according to the specified timezone
+      tlim <- parseDatetime(tlim, timezone=timezone)
+    } else if ( "POSIXct" %in% class(tlim) ) {
+      # leave tlim alone
+    } else {
+      stop(paste0("Invalid argument type: class(tlim) = '",paste0(class(tlim),collapse=" "),"'"))
+    }
+    
+    # Convert tlim to the data$datetime timezone (typically 'UTC')
+    tlim <- lubridate::with_tz(tlim, lubridate::tz(data$datetime))
+    
+    # Filter dataframe
     data <- dplyr::filter(data, data$datetime >= tlim[1], data$datetime <= tlim[2])
+    
   }
   
   # Sanity check
@@ -58,7 +78,7 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, drop
       data <- data[,c(TRUE,vlimMask)]
     }
   
-  } else if (dropMonitors & is.null(dim(data[,-1]))) {
+  } else if ( dropMonitors & is.null(dim(data[,-1])) ) {
    
     anyLogical <- c(TRUE, any(!is.na(data[,-1]),na.rm=TRUE))
     data <- data[,anyLogical]
@@ -84,11 +104,14 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL, drop
     return (NULL)
   }
   
-  # TODO:  Add back YYYYmmddHHMM rownames discarded by dplyr::filter
-  # preserve the row names for data dataframe
+  # TODO:  2017-01-06 Are we still using rownames in the 'data' dataframe?
+  
+  # Add back YYYYmmddHHMM rownames discarded by dplyr::filter
   rowNames <- sapply(data$datetime, function(x){ stringr::str_replace_all(x, "-", "") } )
   rowNames <- sapply(rowNames, function(x){ stringr::str_replace(x, " ", "") } )
   rowNames <- sapply(rowNames, function(x){ stringr::str_split_fixed(x, ":", 3)[1] } )
   rownames(data) <- rowNames
+  
   return(data)
+  
 }

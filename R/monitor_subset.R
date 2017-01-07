@@ -4,11 +4,12 @@
 #' @param ws_monitor ws_monitor object
 #' @param xlim vector with low and high longitude limit values
 #' @param ylim vector with low and high latitude limit values
-#' @param tlim vector with start and end date/time limit values (POSIXct)
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param vlim vector with low and high PM2.5 data limit values
 #' @param stateCodes vector of state codes to include
 #' @param monitorIDs vector of monitor IDs to include
 #' @param dropMonitors flag specifying whether to remove monitors with no data
+#' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
 #' @description Creates a subset of a ws_monitor object based on one or more optional input parameters.
 #' If any input parameter is not specified, that parameter will not be used to subset the ws_monitor object.
 #' @details By default, this function will return a ws_monitor object whose 'data' dataframe has the
@@ -29,7 +30,8 @@
 # TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting
 
 monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NULL,
-                           monitorIDs=NULL, stateCodes=NULL, dropMonitors=TRUE) {
+                           monitorIDs=NULL, stateCodes=NULL, dropMonitors=TRUE,
+                           timezone="UTC") {
   
   # subset metadata
   meta <- monitor_subsetMeta(ws_monitor$meta, xlim=xlim, ylim=ylim, stateCodes=stateCodes, monitorIDs=monitorIDs)
@@ -48,16 +50,16 @@ monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NUL
   dataMonIDs <- colnames(ws_monitor$data)[-1]
   validMonIDs <- dplyr::intersect(meta$monitorID, dataMonIDs)
   
-  # Sanity check -- accept numeric values for tlim
-  if ( !is.null(tlim) ) {
-    if (class(tlim)[1] == 'numeric' || class(tlim)[1] == 'character') {
-      tlim <- parseDatetime(tlim)
-    }
-  }
+#   # Sanity check -- accept numeric values for tlim
+#   if ( !is.null(tlim) ) {
+#     if (class(tlim)[1] == 'numeric' || class(tlim)[1] == 'character') {
+#       tlim <- parseDatetime(tlim)
+#     }
+#   }
    
   # Subset data based on time, values and monitorIDs
   data <- monitor_subsetData(ws_monitor$data, tlim=tlim, vlim=vlim,
-                             monitorIDs=validMonIDs, dropMonitors=dropMonitors)
+                             monitorIDs=validMonIDs, dropMonitors=dropMonitors, timezone=timezone)
   
   # sanity check
   if ( is.null(data) ) {

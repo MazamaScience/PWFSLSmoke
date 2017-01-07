@@ -10,10 +10,16 @@
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
-#' @return ws_monitor object with daily statistics
+#' @note Note that the incoming \code{ws_monitor} object should have UTC (GMT)
+#' times and that this function calculates daily statistics based on local (clock) time.
+#' If you choose a date range based on UTC times this may result in an insufficient 
+#' number of hours in the first and last daily records of the returned \code{ws_monitor}
+#' object.
+#' 
+#' This returned object has a dailyi time axis where each time is set to noon, local time.
+#' @return ws_monitor object with daily statistics for the local timezone.
 #' @examples 
 #' \dontrun{
-#' setSmokeDataDir('~/Data/Smoke')
 #' airnow <- airnow_load(20150801, 20150831)
 #' WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(55,Inf))
 #' WA_smoky_dailyMean <- monitor_dailyStatistic(WA_smoky, FUN=get('mean'), dayStart='midnight')
@@ -32,11 +38,15 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   if ( timezoneCount > 1 ) {
     warning(paste0('Found ',timezoneCount,' timezones. Only the first will be used'))      
   }
+  timezone <- meta$timezone[1]
+  
+  # TODO:  For single monitor, 'midnight-to-midnight', the monitorPlot_dailyBarplot in v0.8.16 had
+  # TODO:  a dplyr method that seemed significantly faster than this method.
   
   # NOTE:  We will generate only a single timeInfo dataframe to guarantee that we apply
   # NOTE:  the same daily aggregation logic to all monitors. Otherwise we could potentially
   # NOTE:  have edge cases with different numbers of days for monitors in different timezones.
-  timeInfo <- timeInfo(data[,1], meta$longitude[1], meta$latitude[1], meta$timezone[1])
+  timeInfo <- timeInfo(data[,1], meta$longitude[1], meta$latitude[1], timezone)
   
   # Create the day vector
   day <- rep(0,nrow(timeInfo))
@@ -59,7 +69,7 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   
   # Create the aggregated dataset
   # NOTE:  Some functions don't work on the POSIXct datetime column.
-  # NOTE:  But we still want to keep it. So well start by calculating the mean
+  # NOTE:  But we still want to keep it. So we'll start by calculating the mean
   # NOTE:  so as to have an "average" POSIXct for each grouping. Then we'll convert
   # NOTE:  it to numeric so that it can be operated on by the likes of 'sum'. Finally
   # NOTE:  we'll restore the average datetime.
@@ -73,16 +83,26 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   # NOTE:  which is a named vector whose names will match df$Group.1.
   hoursPerDay <- unlist(table(day))
   fullDayMask <- hoursPerDay[as.character(df$Group.1)] >= minHours
+  
   df[!fullDayMask,names(data)] <- NA
   
   # Only retain the original columns (omit "Group.1", etc.)
   df <- df[,names(data)]
   
+  # NOTE:  It appears that aggregating a day with all NAs will result in NaN
+  # Convert any NaN to NA
+  nanMask <- is.nan(as.matrix(df))
+  df[nanMask] <- NA
+
+  # Restore POSIXct daily datetimes
+  df$datetime <- meanDF$datetime
+  
   # Set df$datetime to noon for each day
   lubridate::hour(df$datetime) <- 12
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00
-
+  lubridate::tz(df$datetime) <- timezone
+  
   # Create a new ws_monitor object
   ws_monitor <- list(meta=meta, data=df)
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))

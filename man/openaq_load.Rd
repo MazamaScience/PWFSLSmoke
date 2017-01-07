@@ -5,7 +5,7 @@
 \title{Load OpenAQ Monitoring Data}
 \usage{
 openaq_load(startdate, enddate, monitorIDs = NULL, parameter = "pm25",
-  baseUrl = "http://smoke.airfire.org/RData/OpenAQ/")
+  baseUrl = "https://smoke.airfire.org/RData/OpenAQ/")
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

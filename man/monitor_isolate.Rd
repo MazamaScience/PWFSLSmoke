@@ -5,7 +5,7 @@
 \title{Isolate Individual Monitors}
 \usage{
 monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
-  monitorIDs = NULL, stateCodes = NULL)
+  monitorIDs = NULL, stateCodes = NULL, timezone = "UTC")
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -14,11 +14,13 @@ monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 
 \item{ylim}{optional latitude lim with lo and hi latitude values}
 
-\item{tlim}{optional time lim with lo and hi time values (POSIXct)}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 
 \item{monitorIDs}{optional vector of monitorIDs}
 
 \item{stateCodes}{optional vector of stateCodes}
+
+\item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
 A List of isolated \code{ws_monitor} objects.

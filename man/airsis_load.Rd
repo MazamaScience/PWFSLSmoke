@@ -6,7 +6,7 @@
 \usage{
 airsis_load(startdate = 20000101, enddate = strftime(lubridate::now(),
   "\%Y\%m\%d", tz = "GMT"), monitorIDs = NULL, stateCodes = NULL,
-  url = "http://smoke.airfire.org/RData/AIRSIS/AIRSIS_monitors.RData")
+  url = "https://smoke.airfire.org/RData/AIRSIS/AIRSIS_monitors.RData")
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

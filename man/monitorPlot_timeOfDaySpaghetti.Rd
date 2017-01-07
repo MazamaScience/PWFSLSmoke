@@ -5,7 +5,7 @@
 \title{Create Time of Day Spaghetti Plot}
 \usage{
 monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
-  ylim = NULL, aqiLines = TRUE, shadedNight = TRUE, ...)
+  ylim = NULL, aqiLines = TRUE, shadedNight = TRUE, title = NULL, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -20,6 +20,8 @@ monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{shadedNight}{shade nights based on sunrise/sunset times of middle day in selected period}
 
+\item{title}{plot title}
+
 \item{...}{additional arguments to pass to lines()}
 }
 \description{
@@ -28,9 +30,8 @@ the period is also calculated and plotted as a thick red line.
 }
 \examples{
 \dontrun{
-ws_monitor <- airsis_load(20150901, 20150930)
-monitor <- ws_monitor$meta$monitorID[3]
-monitorPlot_timeOfDaySpaghetti(ws_monitor, monitor,tlim=c(20150914,20150930))
+CarmelValley <- airnow_load(20160801,20160831, monitorIDs="060530002")
+monitorPlot_timeOfDaySpaghetti(CarmelValley, tlim=c(20160801,20160809))
 }
 }
 \keyword{ws_monitor}

@@ -5,39 +5,41 @@
 \title{Subset ws_monitor Object 'data' Dataframe}
 \usage{
 monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
-  dropMonitors = FALSE)
+  dropMonitors = FALSE, timezone = "UTC")
 }
 \arguments{
 \item{data}{ws_monitor object 'data' dataframe}
 
-\item{tlim}{optional vector with start and end times (POSIXct)}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 
 \item{vlim}{optional vector with low and high data values to include}
 
 \item{monitorIDs}{optional vector of monitorIDs}
 
 \item{dropMonitors}{flag specifying whether to remove columns -- defaults to \code{FALSE}}
+
+\item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
-ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors
+ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors.
 }
 \description{
 Subsets a ws_monitor object's 'data' dataframe by removing any monitors that
-    lie outisde the specified range of time and values and that are not mentioned
-    in the list of monitorIDs.
+lie outisde the specified ranges of time and values and that are not mentioned in the
+list of monitorIDs.
 
-If any parameter is not specified, that parameter will not be used in the subsetting.
+If \code{tlim} or \code{vlim} is not specified, it will not be used in the subsetting.
 
 Intended for use by the monitor_subset function.
 }
 \details{
 By default, filtering by tlim or vlim will always return a dataframe with the
-    same number of columns as the incoming dataframe. If \code{dropMonitors=TRUE}, columns
-    will be removed if there are not valid data for a specific monitor after subsetting.
+same number of columns as the incoming dataframe. If \code{dropMonitors=TRUE}, columns
+will be removed if there are not valid data for a specific monitor after subsetting.
     
-    Filtering by vlim is open on the left and closed on the right, i.e.
+Filtering by vlim is open on the left and closed on the right, i.e.
     
-     \code{x > vlim[1] & x <= vlim[2]}
+ \code{x > vlim[1] & x <= vlim[2]}
 }
 \keyword{ws_monitor}
 

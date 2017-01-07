@@ -40,7 +40,7 @@
 
 
 openaq_load <- function(startdate, enddate, monitorIDs=NULL, parameter='pm25',
-                        baseUrl='http://smoke.airfire.org/RData/OpenAQ/') {
+                        baseUrl='https://smoke.airfire.org/RData/OpenAQ/') {
   
   # Sanity Check
   if ( is.null(startdate) | is.null(enddate) ) {
