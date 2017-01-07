@@ -40,7 +40,7 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   }
   timezone <- meta$timezone[1]
   
-  # TODO:  For single monitor, 'midnight-to-midnight', the monitorPlot_dailyBarPlot in v0.8.16 had
+  # TODO:  For single monitor, 'midnight-to-midnight', the monitorPlot_dailyBarplot in v0.8.16 had
   # TODO:  a dplyr method that seemed significantly faster than this method.
   
   # NOTE:  We will generate only a single timeInfo dataframe to guarantee that we apply

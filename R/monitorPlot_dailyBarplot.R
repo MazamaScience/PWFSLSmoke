@@ -5,20 +5,23 @@
 #' @param ws_monitor ws_monitor object
 #' @param monitorID monitor ID for a specific monitor in the given ws_monitor object (optional
 #' if only one monitor in the ws_monitor object)
-#' @param tlim time limit for barplot
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param minHours minimum number of valid data hours required to calculate each daily average
 #' @param title plot title
 #' @param ... additional arguments to be passed to barplot()
-#' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor in a ws_monitor object.
-#' Each bar is colored according to its AQI category.
+#' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor
+#' in a ws_monitor object. Each bar is colored according to its AQI category.
+#' 
+#' Each 'day' is the midnight-to-midnight period in the monitor local timezone.
+#' When \code{tlim} is used, it is converted to the monitor local timezone.
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20150701, 20150831)
 #' title <- "Daily Average PM2.5 for Colleville, WA"
-#' monitorPlot_dailyBarPlot(airnow, monitorID="530650004", title=title)
+#' monitorPlot_dailyBarplot(airnow, monitorID="530650004", title=title)
 #' }
 
-monitorPlot_dailyBarPlot <- function(ws_monitor,
+monitorPlot_dailyBarplot <- function(ws_monitor,
                                      monitorID=NULL,
                                      tlim=NULL,
                                      minHours=20,
@@ -37,8 +40,20 @@ monitorPlot_dailyBarPlot <- function(ws_monitor,
     }
   }
   
+  # When tlim is specified in whole days we should add hours to get the requsted full days
+  if ( !is.null(tlim) ) {
+    tlimStrings <- as.character(tlim)
+    if ( stringr::str_length(tlimStrings)[1] == 8 ) {
+      tlim[1] <- paste0(tlim[1],'00')
+    }
+    if ( stringr::str_length(tlimStrings)[2] == 8 ) {
+      tlim[2] <- paste0(tlim[2],'23')
+    }
+  }
+  
   # Subset to a single monitor
-  mon <- monitor_subset(ws_monitor, monitorIDs=monitorID, tlim=tlim)
+  timezone <- as.character(ws_monitor$meta[monitorID,'timezone'])
+  mon <- monitor_subset(ws_monitor, monitorIDs=monitorID, tlim=tlim, timezone=timezone)
   
   # Calculate the daily mean
   mon_dailyMean <- monitor_dailyStatistic(mon, FUN=get('mean'), dayStart='midnight',
