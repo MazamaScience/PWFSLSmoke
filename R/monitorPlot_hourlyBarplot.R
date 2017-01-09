@@ -9,6 +9,7 @@
 #' @param localTime logical specifying whether \code{tlim} is in UTC or local time
 #' @param style named style specification ('AirFire')
 #' @param title plot title
+#' @param shadedNight add nighttime shading
 #' @param ... additional arguments to be passed to barplot()
 #' @description Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a ws_monitor object.
 #' Colors are assigned to one of the following styles:
@@ -28,6 +29,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
                                       localTime=TRUE,
                                       style='AirFire',
                                       title=NULL,
+                                      shadedNight=FALSE,
                                       ...) {
   
   # Data Preparation ----------------------------------------------------------
@@ -44,11 +46,18 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   
   # TODO:  handle localTime=TRUE, may require additional localTime argument to monitor_subset
   
+  
+  
   # Subset to a single monitor
   mon <- monitor_subset(ws_monitor, monitorIDs=monitorID, tlim=tlim)
   
   # TODO: assign local or UTC datetime depending on localTime flag
-  #datetime <- mon$data$datetime
+  
+  if ( localTime ) {
+    datetime <- mon$data$datetime
+  } else {
+    datetime <- mon$data$datetime
+  }
   
   pm25 <- as.numeric(mon$data[,monitorID])
   
@@ -73,7 +82,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # X axis labeling
   argsList$xlab <- ifelse('xlab' %in% names(argsList), argsList$xlab, "Date")
   if ( !('names.arg' %in% names(argsList)) ) {
-    argsList$names.arg <- strftime(localTime, "%b %d")
+    argsList$names.arg <- strftime(datetime, "%b %d")
   }
   
   # NOTE:  For mathematical notation in R see:
@@ -90,6 +99,26 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # Plotting ------------------------------------------------------------------
   
   do.call(barplot, argsList)
+  
+  # Shaded Night; breaks if >1 time zone
+  if ( shadedNight ) {
+    if ( length(unique(mon$eta$timezone)) >1) {
+      stop("Can't do shaded night for more than one time zone!!")
+    } else {
+      lon <- mon$meta$longitude
+      lat <- mon$meta$latitude
+      timezone <- mon$meta$timezone
+      if ( localTime ) {
+        timeInfo <- PWFSLSmoke::timeInfo(datetime, lon, lat, timezone)
+        PWFSLSmoke::addShadedNights(timeInfo)
+      } else {
+        timeInfo <- PWFSLSmoke::timeInfo(mon$data$datetime, lon, lat, timezone)
+        PWFSLSmoke::addShadedNights(timeInfo)
+      }
+    }
+  }
+  
+  
   
   # Add horizontal bars
   grid(nx=NA, ny=NULL, col='white', lwd=2)

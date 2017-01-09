@@ -5,7 +5,8 @@
 \title{Create Hourly Barplot}
 \usage{
 monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = "AirFire", title = NULL, ...)
+  localTime = TRUE, style = "AirFire", title = NULL,
+  shadedNight = FALSE, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -20,6 +21,8 @@ if only one monitor in the ws_monitor object)}
 \item{style}{named style specification ('AirFire')}
 
 \item{title}{plot title}
+
+\item{shadedNight}{add nighttime shading}
 
 \item{...}{additional arguments to be passed to barplot()}
 }
