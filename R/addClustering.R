@@ -79,7 +79,7 @@ addClustering <- function(df, clusterDiameter=1000, minCount=48,
       clusterObj <- cluster::clara(df[,c(lonVar,latVar)],clusterCount, samples=50)
     }
     medoidLats <- clusterObj$medoids[,latVar]
-    diameters <- clusterObj$clusinfo[,'diameter'] # decimal degrees
+    diameters <- 2 * clusterObj$clusinfo[,'max_diss'] # decimal degrees
     # NOTE:  We don't know whether distance is pure NS, EW or some combination
     # NOTE:  so we can't accurately convert to meters. We approximate by 
     # NOTE:  assuming a 50-50 split and using 111,320 meters/degree at the equator.

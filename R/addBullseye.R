@@ -6,12 +6,12 @@
 #' @description Draws a bullseye with concentric rings of black and white.
 #' @examples
 #' \dontrun{
-#' setSmokeDataDir("~/Data/Smoke/")
-#' bs <- bluesky_load(model = "PNW-1.33km", modelRun = 2015070600)
-#' xlim <- c(-124.801, -122.801)
-#' ylim <- c(47.004, 48.404)
-#' grid_map(bs, xlim = xlim, ylim = ylim)
-#' addBullseye(-123.801, 47.704)
+#' airnow <- airnow_load(20140913, 20141010)
+#' KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
+#' map('county',region='ca', col='gray80')
+#' monitor_map(KingFire, add=TRUE)
+#' addBullseye(-120.604, 38.782)
+#' text(-120.604, 38.782, "King Fire", pos=4, font=2)
 #' }
 #' @seealso \link{addShadedNights}
 

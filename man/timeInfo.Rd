@@ -40,10 +40,11 @@ and will contain the following columns:
 }
 \examples{
 \dontrun{ 
-setSmokeDataDir("~/Data/Smoke")
-bs <- bluesky_load(model='PNW-1.33km', modelRun='2015070600')
-targetLon <- -123.801 ; targetLat <- 47.704
-timeInfo <- timeInfo(bs$time, targetLon, targetLat)
+CarmelValley <- airnow_load(20160801,20160831, monitorIDs="060530002")
+ti <- timeInfo(CarmelValley$data$datetime,
+               CarmelValley$meta$longitue,
+               CarmelValley$meta$latitude,
+               CarmelValley$meta$timezone)
 }
 }
 

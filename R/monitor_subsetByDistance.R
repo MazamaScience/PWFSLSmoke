@@ -18,10 +18,9 @@
 #' @seealso monitorDistance
 #' @examples
 #' \dontrun{
-#' setSmokeDataDir('~/Data/Smoke')
 #' airnow <- airnow_load(20140913, 20141010)
-#' King_Fire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
-#' monitor_leaflet(King_Fire)
+#' KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
+#' monitor_leaflet(KingFire)
 #' } 
 
 monitor_subsetByDistance <- function(ws_monitor, lon=NULL, lat=NULL, radius=50, count=NULL) {

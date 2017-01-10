@@ -14,18 +14,7 @@ addShadedNights(timeInfo, col = adjustcolor("black", 0.1))
 \description{
 Draw shading rectangles on a plot to indicate nighttime hours.
 }
-\examples{
-\dontrun{
-setSmokeDataDir("~/Data/Smoke")
-bs <- bluesky_load(model='PNW-1.33km', modelRun=2015070600)
-targetLon <- -123.801 ; targetLat <- 47.704
-timeInfo <- timeInfo(bs$time, targetLon, targetLat)
-bsLocal <- grid_subsetByDistance(bs, targetLon, targetLat, 10)
-monitor_timeseriesPlot(bsLocal, col='red')
-addShadedNights(timeInfo)
-}
-}
 \seealso{
-\link{addBullseye}
+\link{timeInfo}
 }
 

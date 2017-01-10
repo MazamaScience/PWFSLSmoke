@@ -21,7 +21,6 @@
 #' @seealso \link{monitor_subset}
 #' @examples
 #' \dontrun{
-#' setSmokeDataDir('~/Data/Smoke')
 #' airsis <- airsis_load(20140101, 20151231)
 #' monitorList <- monitor_isolate(airsis)
 #' names(monitorList)

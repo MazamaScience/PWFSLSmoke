@@ -38,7 +38,6 @@ mobile monitors that are deployed to different locations in different years.
 }
 \examples{
 \dontrun{
-setSmokeDataDir('~/Data/Smoke')
 airsis <- airsis_load(20140101, 20151231)
 monitorList <- monitor_isolate(airsis)
 names(monitorList)
