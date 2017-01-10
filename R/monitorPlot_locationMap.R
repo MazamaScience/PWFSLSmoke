@@ -14,9 +14,8 @@
 #' specified.
 #' @examples
 #' \dontrun{
-#' ws_monitor <- airsis_load(20150901, 20150930)
-#' monitor <- ws_monitor$meta$monitorID[3]
-#' monitorPlot_timeOfDaySpaghetti(ws_monitor, monitor,tlim=c(20150914,20150930))
+#' CarmelValley <- airnow_load(20160801,20160831,monitorIDs="060530002")
+#' monitorPlot_locationMap(CarmelValley)
 #' }
 
 # ===== PRELIM STUFF ==========================

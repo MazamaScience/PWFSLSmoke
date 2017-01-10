@@ -3,7 +3,8 @@
 #' @title Load AirNow Monitoring Data
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
-#' @param monitorIDs The set of monitor IDs to be subsetted.
+#' @param stateCodes vector of state codes passed on to \link{monitor_subset}
+#' @param monitorIDs vector of monitor IDs passed on to \link{monitor_subset}
 #' When set to NULL, the function returns all the monitor IDs available in the metadata
 #' @param parameter The parameter of interest
 #' @param baseUrl base URL for AirNow meta and data files
@@ -17,7 +18,8 @@
 #' monitor_leaflet(airnow_conus)
 #' }
 
-airnow_load <- function(startdate, enddate, monitorIDs=NULL, parameter='PM2.5',
+airnow_load <- function(startdate, enddate, stateCodes=NULL, monitorIDs=NULL,
+                        parameter='PM2.5',
                         baseUrl='https://smoke.airfire.org/RData/AirNowTech/') {
   
   # Sanity Check
@@ -100,7 +102,7 @@ airnow_load <- function(startdate, enddate, monitorIDs=NULL, parameter='PM2.5',
   ws_monitor <- list(meta=meta, data=joinedData)
   tlim <- c(starttime,endtime)
   
-  ws_monitor <- monitor_subset(ws_monitor, tlim=tlim, monitorIDs=monitorIDs)
+  ws_monitor <- monitor_subset(ws_monitor, tlim=tlim, stateCodes=stateCodes, monitorIDs=monitorIDs)
   
   # Return ws_monitor object
   

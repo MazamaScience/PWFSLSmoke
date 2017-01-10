@@ -5,7 +5,8 @@
 \title{Create Daily Bar Plot}
 \usage{
 monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
-  minHours = 20, title = NULL, ...)
+  minHours = 20, grid = "over", gridCol = "white", gridLwd = 2,
+  gridLty = "dotted", ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -17,7 +18,13 @@ if only one monitor in the ws_monitor object)}
 
 \item{minHours}{minimum number of valid data hours required to calculate each daily average}
 
-\item{title}{plot title}
+\item{grid}{add grid lines either 'over', 'under' or '' for no grid lines}
+
+\item{gridCol}{color of grid lines (see graphical parameter 'col')}
+
+\item{gridLwd}{line width of grid lines (see graphical parameter 'lwd')}
+
+\item{gridLty}{type of grid lines (see graphical parameter 'lty')}
 
 \item{...}{additional arguments to be passed to barplot()}
 }
@@ -25,14 +32,17 @@ if only one monitor in the ws_monitor object)}
 Creates a bar plot showing daily average PM 2.5 values for a specific monitor
 in a ws_monitor object. Each bar is colored according to its AQI category.
 
+This function is a wrapper around \code{base::barplot} and any arguments to that 
+function may be used.
+
 Each 'day' is the midnight-to-midnight period in the monitor local timezone.
 When \code{tlim} is used, it is converted to the monitor local timezone.
 }
 \examples{
 \dontrun{
 airnow <- airnow_load(20150701, 20150831)
-title <- "Daily Average PM2.5 for Colleville, WA"
-monitorPlot_dailyBarplot(airnow, monitorID="530650004", title=title)
+main <- "Daily Average PM2.5 for Colleville, WA"
+monitorPlot_dailyBarplot(airnow, monitorID="530650004", main=main)
 }
 }
 \keyword{ws_monitor}

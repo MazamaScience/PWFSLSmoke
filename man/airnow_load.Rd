@@ -4,7 +4,8 @@
 \alias{airnow_load}
 \title{Load AirNow Monitoring Data}
 \usage{
-airnow_load(startdate, enddate, monitorIDs = NULL, parameter = "PM2.5",
+airnow_load(startdate, enddate, stateCodes = NULL, monitorIDs = NULL,
+  parameter = "PM2.5",
   baseUrl = "https://smoke.airfire.org/RData/AirNowTech/")
 }
 \arguments{
@@ -12,7 +13,9 @@ airnow_load(startdate, enddate, monitorIDs = NULL, parameter = "PM2.5",
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
 
-\item{monitorIDs}{The set of monitor IDs to be subsetted.
+\item{stateCodes}{vector of state codes passed on to \link{monitor_subset}}
+
+\item{monitorIDs}{vector of monitor IDs passed on to \link{monitor_subset}
 When set to NULL, the function returns all the monitor IDs available in the metadata}
 
 \item{parameter}{The parameter of interest}

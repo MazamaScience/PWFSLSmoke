@@ -49,8 +49,7 @@ monitorPlot_rollingMean <- function(ws_monitor,
                                     gridHorizontal=FALSE,
                                     grid24hr=FALSE,
                                     grid3hr=FALSE,
-                                    showLegend=TRUE
-) {
+                                    showLegend=TRUE) {
   
   # ----- Style ---------------------------------------------------------------
   

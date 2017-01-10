@@ -19,9 +19,9 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 
 \item{vlim}{vector with low and high PM2.5 data limit values}
 
-\item{monitorIDs}{vector of monitor IDs to include}
+\item{monitorIDs}{vector of monitor IDs used to filter the data}
 
-\item{stateCodes}{vector of state codes to include}
+\item{stateCodes}{vector of state codes used to filter the data}
 
 \item{dropMonitors}{flag specifying whether to remove monitors with no data}
 

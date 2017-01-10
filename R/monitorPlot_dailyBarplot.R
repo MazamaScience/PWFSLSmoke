@@ -7,25 +7,34 @@
 #' if only one monitor in the ws_monitor object)
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param minHours minimum number of valid data hours required to calculate each daily average
-#' @param title plot title
+#' @param grid add grid lines either 'over', 'under' or '' for no grid lines
+#' @param gridCol color of grid lines (see graphical parameter 'col')
+#' @param gridLwd line width of grid lines (see graphical parameter 'lwd')
+#' @param gridLty type of grid lines (see graphical parameter 'lty')
 #' @param ... additional arguments to be passed to barplot()
 #' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor
 #' in a ws_monitor object. Each bar is colored according to its AQI category.
+#' 
+#' This function is a wrapper around \code{base::barplot} and any arguments to that 
+#' function may be used.
 #' 
 #' Each 'day' is the midnight-to-midnight period in the monitor local timezone.
 #' When \code{tlim} is used, it is converted to the monitor local timezone.
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20150701, 20150831)
-#' title <- "Daily Average PM2.5 for Colleville, WA"
-#' monitorPlot_dailyBarplot(airnow, monitorID="530650004", title=title)
+#' main <- "Daily Average PM2.5 for Colleville, WA"
+#' monitorPlot_dailyBarplot(airnow, monitorID="530650004", main=main)
 #' }
 
 monitorPlot_dailyBarplot <- function(ws_monitor,
                                      monitorID=NULL,
                                      tlim=NULL,
                                      minHours=20,
-                                     title=NULL,
+                                     grid='over',
+                                     gridCol='white',
+                                     gridLwd=2,
+                                     gridLty='dotted',
                                      ...) {
   
   # Data Preparation ----------------------------------------------------------
@@ -65,12 +74,18 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   # Plot command default arguments ---------------------------------------------
   
   argsList <- list(...)
-
+  
+  # Remove non-standard arguments from argsList
+  argsList$grid <- NULL
+  argsList$gridCol <- NULL
+  argsList$gridLwd <- NULL
+  argsList$gridLty <- NULL
+  
   argsList$height <- pm25
   
   # Default colors come from pm25Daily means
   if ( !('col' %in% names(argsList)) ) {
-    aqiColors <- adjustcolor(AQI$colors, 0.5)
+    aqiColors <- AQI$colors
     argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
   }
   
@@ -83,7 +98,7 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   # NOTE:  For mathematical notation in R see:
   # NOTE:    http://vis.supstat.com/2013/04/mathematical-annotation-in-r/
 
-    # Y axis labeling
+  # Y axis labeling
   if ( !('ylab' %in% names(argsList)) ) {
     argsList$ylab <- expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")"))
   }
@@ -92,16 +107,24 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   argsList$las <- ifelse('las' %in% names(argsList), argsList$las, 1)
 
   # Plotting ------------------------------------------------------------------
+
+  if ( grid == 'under' ) {
+    do.call(barplot, argsList)
+    abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
+    argsList$add <- TRUE    
+  }  
   
   do.call(barplot, argsList)
 
   # Add horizontal bars
-  grid(nx=NA, ny=NULL, col='white', lwd=2)
-  
-  # Add a title
-  if ( is.null(title) ) {
-    title <- expression(paste("Daily Average PM"[2.5]))
+  if ( grid == 'over' ) {
+    abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
   }
-  title(title)
+  
+  # Add a title if none was specified 
+  if ( !('main' %in% names(argsList)) ) {
+    main <- expression(paste("Daily Average PM"[2.5]))
+    title(main)
+  }
   
 }
