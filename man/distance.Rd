@@ -20,10 +20,8 @@ Vector of distances in km.
 }
 \description{
 This funciton uses the Haversine forumula for calculating great
-    circle distances between points. This formula is purpoted to work better
-    than the spherical law of cosines for very short distances.
-    
-    Distances are named by their monitorID
+circle distances between points. This formula is purpoted to work better
+than the spherical law of cosines for very short distances.
 }
 \references{
 \url{http://www.r-bloggers.com/great-circle-distance-calculations-in-r/}
