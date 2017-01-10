@@ -37,35 +37,34 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # Allow single monitor objects to be used without specifying monitorID
   if ( is.null(monitorID) ) {
     if ( nrow(ws_monitor$meta) == 1 ) {
-      monitorID <- ws_monitor$meta$monitorID[1]
+      monitorID <- ws_monitor$meta$monitorID
     } else {
       stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",
                   paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
     }
   }
   
-  # TODO:  handle localTime=TRUE, may require additional localTime argument to monitor_subset
-  
-  
-  
-  # Subset to a single monitor
-  mon <- monitor_subset(ws_monitor, monitorIDs=monitorID, tlim=tlim)
-  
-  # TODO: assign local or UTC datetime depending on localTime flag
-  
+  # Assign timezone to pass to monitor_subset() below, or use UTC if localTime==FALSE
   if ( localTime ) {
-    datetime <- mon$data$datetime
+    timezone <- ws_monitor$meta[monitorID,"timezone"]
   } else {
-    datetime <- mon$data$datetime
+    timezone <- "UTC"
   }
   
+  # Subset to a single monitor
+  mon <- monitor_subset(ws_monitor, monitorIDs=monitorID, tlim=tlim, timezone=timezone)
+  
+  # Assign datetime based on timezone (i.e. local vs. UTC)
+  datetime <- lubridate::with_tz(mon$data$datetime,timezone)
+  
+  # Pull out monitoring data
   pm25 <- as.numeric(mon$data[,monitorID])
   
   # Plot command default arguments ---------------------------------------------
   
   argsList <- list(...)
   
-  # TODO:  We will eventually need a cople of different choices for assigning colors based on
+  # TODO:  We will eventually need a couple of different choices for assigning colors based on
   # TODO:  hourly, nowcast, AQI, etc.
   
   # 'AirFire' colors use hourly values with 24 hour colors
