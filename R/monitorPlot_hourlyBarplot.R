@@ -8,12 +8,14 @@
 #' @param tlim time limit for barplot
 #' @param localTime logical specifying whether \code{tlim} is in UTC or local time
 #' @param style named style specification ('AirFire')
-#' @param title plot title
 #' @param shadedNight add nighttime shading
 #' @param grid include grid 'under' or 'over' the hour bars
 #' @param gridCol grid color
 #' @param gridLwd grid line width
 #' @param gridLty grid line type
+#' @param dayLwd day boundary line width (only plotted if this value is numeric)
+#' @param hourLwd hour boundary line width (only plotted if this value is numeric)
+#' @param hourInterval interval for hour boundary lines
 #' @param ... additional arguments to be passed to barplot()
 #' @description Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a ws_monitor object.
 #' Colors are assigned to one of the following styles:
@@ -32,18 +34,19 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
                                       tlim=NULL,
                                       localTime=TRUE,
                                       style='AirFire',
-                                      title=NULL,
                                       shadedNight=TRUE,
                                       grid='over',
                                       gridCol='white',
                                       gridLwd=2,
                                       gridLty='dotted',
+                                      dayLwd=3,
+                                      hourLwd=1,
+                                      hourInterval=6,
                                       ...) {
   
   # Style ---------------------------------------------------------------------
   
   shadedNightCol <- 'gray80'
-  markerInterval <- 6
   
   # Data Preparation ----------------------------------------------------------
   
@@ -145,6 +148,11 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   #  argsList$width <- 1
   #}
   
+  # Chart Title
+  if ( !('main' %in% names(argsList)) ) {
+    argsList$main <- expression(paste("Hourly Average PM"[2.5]))
+  }
+  
   # Plotting ------------------------------------------------------------------
   
   # Create and modify second argsList for blank plot slate
@@ -155,6 +163,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   argsList2$names.arg <- NULL
   argsList2$ylab <- NA
   argsList2$xlab <- NA
+  argsList2$main <- NA
   
   do.call(barplot, argsList2)
   argsList$add <- TRUE
@@ -175,7 +184,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
       argsList2$height <- (!timeInfo$day)*max(pm25)
       argsList2$col <- shadedNightCol
       
-      # Set width and spacing to ensure solid block of shaded night
+      # Set shadedNight width and spacing to ensure solid block of color (may remove these)
       argsList2$space <- 0
       argsList2$width <- (1+argsList$space) # * argsList$width
       
@@ -197,10 +206,11 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
     abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
   }
   
-  # Add a title if none was specified
-  if ( is.null(title) ) {
-    title <- expression(paste("Hourly Average PM"[2.5]))
+  # Add vertical lines to denote days and/or hour breaks
+  if ( is.numeric(hourInterval) ) {
+    abline(v=which(as.numeric(strftime(datetime,format="%H",tz=timezone))%%hourInterval==0)-1,lwd=hourLwd)
   }
-  title(title)
-  
+  if ( is.numeric(dayLwd) ) {
+    abline(v=which(as.numeric(strftime(datetime,format="%H",tz=timezone))%%24==0)-1,lwd=dayLwd)
+  }
 }
