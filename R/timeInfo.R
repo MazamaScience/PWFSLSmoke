@@ -37,7 +37,7 @@ timeInfo <- function(time, lon=NULL, lat=NULL, timezone=NULL) {
   # Sanity check
   if ( is.null(lon) || is.null(lat) ) stop('timeInfo cannot be calculated: missing lon or lat.')
   
-  if ( is.null(timezone) ||  !(timezone %in% lubridate::olson_time_zones()) ) {
+  if ( is.null(timezone) ||  !(timezone %in% base::OlsonNames()) ) {
     # get timezone from target location
     timezone <- MazamaSpatialUtils::getTimezone(lon, lat, useBuffering=TRUE)
   }
