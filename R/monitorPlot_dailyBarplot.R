@@ -75,12 +75,6 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   
   argsList <- list(...)
   
-  # Remove non-standard arguments from argsList
-  argsList$grid <- NULL
-  argsList$gridCol <- NULL
-  argsList$gridLwd <- NULL
-  argsList$gridLty <- NULL
-  
   argsList$height <- pm25
   
   # Default colors come from pm25Daily means
