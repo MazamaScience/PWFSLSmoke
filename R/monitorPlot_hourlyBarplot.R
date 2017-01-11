@@ -10,6 +10,10 @@
 #' @param style named style specification ('AirFire')
 #' @param title plot title
 #' @param shadedNight add nighttime shading
+#' @param grid include grid 'under' or 'over' the hour bars
+#' @param gridCol grid color
+#' @param gridLwd grid line width
+#' @param gridLty grid line type
 #' @param ... additional arguments to be passed to barplot()
 #' @description Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a ws_monitor object.
 #' Colors are assigned to one of the following styles:
@@ -29,8 +33,17 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
                                       localTime=TRUE,
                                       style='AirFire',
                                       title=NULL,
-                                      shadedNight=FALSE,
+                                      shadedNight=TRUE,
+                                      grid='over',
+                                      gridCol='white',
+                                      gridLwd=2,
+                                      gridLty='dotted',
                                       ...) {
+  
+  # Style ---------------------------------------------------------------------
+  
+  shadedNightCol <- 'gray80'
+  markerInterval <- 6
   
   # Data Preparation ----------------------------------------------------------
   
@@ -41,6 +54,17 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
     } else {
       stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",
                   paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
+    }
+  }
+  
+  # When tlim is specified in whole days we should add hours to get the requsted full days
+  if ( !is.null(tlim) ) {
+    tlimStrings <- as.character(tlim)
+    if ( stringr::str_length(tlimStrings)[1] == 8 ) {
+      tlim[1] <- paste0(tlim[1],'00')
+    }
+    if ( stringr::str_length(tlimStrings)[2] == 8 ) {
+      tlim[2] <- paste0(tlim[2],'23')
     }
   }
   
@@ -57,6 +81,17 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # Assign datetime based on timezone (i.e. local vs. UTC)
   datetime <- lubridate::with_tz(mon$data$datetime,timezone)
   
+  # Assign lat/lon and localTimeZone for shadedNight
+  lon <- mon$meta$longitude
+  lat <- mon$meta$latitude
+  localTimeZone <- mon$meta$timezone
+  
+  if ( localTime ) {
+    localDateTime <- datetime
+  } else {
+    localDateTime <- lubridate::with_tz(mon$data$datetime,localTimeZone)
+  }
+  
   # Pull out monitoring data
   pm25 <- as.numeric(mon$data[,monitorID])
   
@@ -64,12 +99,13 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   
   argsList <- list(...)
   
+  argsList$height <- pm25
+
   # TODO:  We will eventually need a couple of different choices for assigning colors based on
   # TODO:  hourly, nowcast, AQI, etc.
-  
+    
   # 'AirFire' colors use hourly values with 24 hour colors
   if ( style == 'AirFire' ) {
-    argsList$height <- pm25
     aqiColors <- adjustcolor(AQI$colors, 0.5)
     argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
   } else if ( style == 'NOT_YET_IMPLEMENTED' ) {
@@ -77,11 +113,10 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
     # modify color breaks and levels as needed
   }
   
-  
   # X axis labeling
   argsList$xlab <- ifelse('xlab' %in% names(argsList), argsList$xlab, "Date")
   if ( !('names.arg' %in% names(argsList)) ) {
-    argsList$names.arg <- strftime(datetime, "%b %d")
+    argsList$names.arg <- strftime(datetime, "%b %d", tz = timezone)
   }
   
   # NOTE:  For mathematical notation in R see:
@@ -95,34 +130,74 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # Additional small tweaks
   argsList$las <- ifelse('las' %in% names(argsList), argsList$las, 1)
   
+  # Default = no space between bars
+  if ( !('space' %in% names(argsList)) ) {
+    argsList$space <- 0
+  }
+  
+  # Default = white borders
+  if ( !('border' %in% names(argsList)) ) {
+    argsList$border <- 'white'
+  }
+  
+  ## Default bar width
+  #if ( !('width' %in% names(argsList)) ) {
+  #  argsList$width <- 1
+  #}
+  
   # Plotting ------------------------------------------------------------------
   
-  do.call(barplot, argsList)
+  # Create and modify second argsList for blank plot slate
+  argsList2 <- argsList
+  argsList2$col <- "white"
+  argsList2$border <- NA
+  argsList2$axes <- FALSE
+  argsList2$names.arg <- NULL
+  argsList2$ylab <- NA
+  argsList2$xlab <- NA
   
-  # Shaded Night; breaks if >1 time zone
+  do.call(barplot, argsList2)
+  argsList$add <- TRUE
+  argsList2$add <- TRUE
+  
+  # Add horizontal grid lines (first if grid=='under')
+  if ( grid == 'under' ) {
+    abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
+  }
+  
   if ( shadedNight ) {
-    if ( length(unique(mon$eta$timezone)) >1) {
+    if ( length(unique(mon$meta$timezone))>1 ) {
       stop("Can't do shaded night for more than one time zone!!")
     } else {
-      lon <- mon$meta$longitude
-      lat <- mon$meta$latitude
-      timezone <- mon$meta$timezone
-      if ( localTime ) {
-        timeInfo <- PWFSLSmoke::timeInfo(datetime, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
-      } else {
-        timeInfo <- PWFSLSmoke::timeInfo(mon$data$datetime, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
-      }
+      timeInfo <- PWFSLSmoke::timeInfo(localDateTime, lon, lat, localTimeZone)
+
+      # Set argsList2 for shadedNight plotting
+      argsList2$height <- (!timeInfo$day)*max(pm25)
+      argsList2$col <- shadedNightCol
+      
+      # Set width and spacing to ensure solid block of shaded night
+      argsList2$space <- 0
+      argsList2$width <- (1+argsList$space) # * argsList$width
+      
+      # Plot shadedNight from bottom of plot to top
+      do.call(barplot,argsList2)
+        
+      # Replot in white over same height as colored bars so not visible when color bar opacity < 1
+      argsList2$height <- pm25
+      argsList2$col <- 'white'
+      do.call(barplot,argsList2)
     }
   }
   
+  # Plot the actual colored bars
+  do.call(barplot, argsList)
   
+  # Add horizontal grid lines on top if grid=='over'
+  if ( grid == 'over' ) {
+    abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
+  }
   
-  # Add horizontal bars
-  grid(nx=NA, ny=NULL, col='white', lwd=2)
-  
-  # Add a title
+  # Add a title if none was specified
   if ( is.null(title) ) {
     title <- expression(paste("Hourly Average PM"[2.5]))
   }

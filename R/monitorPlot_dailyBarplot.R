@@ -112,7 +112,7 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
     do.call(barplot, argsList)
     abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
     argsList$add <- TRUE    
-  }  
+  }
   
   do.call(barplot, argsList)
 
@@ -121,7 +121,7 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
     abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
   }
   
-  # Add a title if none was specified 
+  # Add a title if none was specified
   if ( !('main' %in% names(argsList)) ) {
     main <- expression(paste("Daily Average PM"[2.5]))
     title(main)
