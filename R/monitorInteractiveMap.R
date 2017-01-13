@@ -1,14 +1,14 @@
 #' @keywords ws_monitor
 #' @export
-#' @importFrom grDevices colorRampPalette
+#' @importFrom grDevices
 #' @title Leaflet Interactive Map of Monitoring Stations
 #' @param ws_monitor data list of class \code{ws_monitor}
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
 #' @param breaks set of breaks used to assign colors or a single integer used to provide quantile based breaks
-#' @param paletteFunc a palette generating function as returned by \code{colorRampPalette}
+#' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
 #' @param radius radius of monitor circles
 #' @param opacity opacity of monitor circles
-#' @param providerTiles optional name of leaflet ProviderTiles to use, e.g. "Stamen.Terrain"
+#' @param maptype optional name of leaflet ProviderTiles to use, e.g. "terrain"
 #' @param popupInfo a vector of column names from ws_monitor$meta to be shown in a popup window
 #' @description This function creates interactive maps that will be displayed in RStudio's 'Viewer' tab.  
 #' Individual monitor timeseries are reduced to 
@@ -17,10 +17,15 @@
 #' 
 #' If \code{slice} is a function (not a function name) it will be used with argument \code{na.rm=TRUE} to
 #' collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as a parameter.
-#' @details Using a single number for the \code{breaks} argument will cause the algorithm to use
-#' quantiles to determine breaks.
+#' @details You can use AQI colors and 24-hr, daily average breaks by specifying \code{breaks=NULL, colors=Null}.
 #' 
-#' You can use AQI colors and 24-hr, daily average breaks by specifying \code{breaks=NULL, paletteFunc=Null}.
+#' The maptypes that are acceptted:
+#' \enumerate{
+#' \item{roadmap}{ -- "OpenStreetMap"}
+#' \item{satellite}{ -- "Esri.WorldImagery"}
+#' \item{terrain}{ -- "Stamen.Terrain"}
+#' \item{toner}{ -- "Stamen.Toner"}
+#' }
 #' 
 #' See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles"
 #' to use as the background map..
@@ -30,19 +35,29 @@
 #' airnow <- airnow_load(20140913, 20141010)
 #' v_low <- AQI$breaks_24[4]
 #' CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
-#' monitor_leaflet(CA_unhealthy_monitors, providerTiles="Stamen.Terrain")
+#' monitorInteractiveMap(CA_unhealthy_monitors, maptype="toner")
 #' }
 
-monitor_leaflet <- function(ws_monitor, slice=get('max'),
-                            breaks=7,
-                            paletteFunc=colorRampPalette(c('gray90','antiquewhite','yellow','red','firebrick')),
-                            radius=10, opacity=0.7, providerTiles=NULL,
-                            popupInfo=c('siteName','monitorID','elevation')) {
-  
-  # Styling defaults, could be changed
-  stroke <- FALSE
-  label <- paste0(ws_monitor$meta$siteName,' (',ws_monitor$meta$monitorID,')')
-  
+if (FALSE) {
+  slice=get('max')
+  breaks=AQI$breaks_24
+  colors=AQI$colors
+  labels=AQI$names
+  legendTitle='Max AQI Level'
+  radius=10
+  opacity=0.7
+  maptype="terrain"
+  popupInfo=c('siteName','monitorID','elevation')
+}
+
+monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
+                                  breaks=AQI$breaks_24,
+                                  colors=AQI$colors,
+                                  labels=AQI$names,
+                                  legendTitle='Max AQI Level',
+                                  radius=10, opacity=0.7, maptype="terrain",
+                                  popupInfo=c('siteName','monitorID','elevation')) {
+
   # BEGIN verbatim from monitor_map.R -----------------------------------------
   
   # Create the 'slice'
@@ -57,31 +72,29 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'),
     stop("Improper use of slice parameter")
   }
   
-  # If the user only specifies breaks and not the paletteFunc or vice versa then complain
-  if (xor(is.null(breaks), is.null(paletteFunc))) {
+  # If the user only specifies breaks and not the colors or vice versa then complain
+  if (xor(is.null(breaks), is.null(colors))) {
     stop(paste0("The breaks paramater ", ifelse(is.null(breaks), "wasn't", "was"),
-                " specified but the paletteFunc ", ifelse(is.null(paletteFunc), "wasn't", "was"),
+                " specified but the colors ", ifelse(is.null(colors), "wasn't", "was"),
                 " specified. You must specify both paramaters or neither."))
   }
   
   # ----- Figure out names for a legend and colors for each point ---- 
   
   # If the user didn't use custom breaks then use AQI names and colors
-  if ( is.null(breaks) ) {
-    breaks <- AQI$breaks_24
-    legendColors <- AQI$colors
-    legendLabels <- AQI$names
-    legendTitle <- 'AQI Levels'
-  } else {
-    # If they used a scalar for the breaks then use that many quantiles for breaks
-    if ( length(breaks) == 1 ) {
-      probs <- seq(0,1,length.out=(breaks+1))
-      breaks <- stats::quantile(pm25, probs=probs, na.rm=TRUE)
+  if ( ! is.null(breaks) ) {
+    
+    if ( length(breaks) <= 2) {
+      stop("Please specify the correct vector of breaks")
     }
+    
+    if (! (length(breaks) - 1 == length(colors)) ) {
+      stop("The number of colorts provided should be one less than the number of breaks")
+    }
+    
     # For each break, use the lower number as the name in the legend.
-    legendColors <- paletteFunc(length(breaks) - 1)
+    legendColors <- colors
     legendLabels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
-    legendTitle <- 'Custom Levels'
   }
   
   # Create levels and use them to create a color mask
@@ -119,9 +132,9 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'),
   
   
   # Extract view information
-  lonRange <- range(ws_monitor$meta$longitude)
-  latRange <- range(ws_monitor$meta$latitude)
-  maxRange <- max(diff(lonRange),diff(latRange))
+  lonRange <- range(ws_monitor$meta$longitude, na.rm = TRUE)
+  latRange <- range(ws_monitor$meta$latitude, na.rm = TRUE)
+  maxRange <- max(diff(lonRange),diff(latRange), na.rm = TRUE)
   # Determine appropriate zoom level
   if (maxRange > 20) { 
     zoom <- 4
@@ -144,46 +157,36 @@ monitor_leaflet <- function(ws_monitor, slice=get('max'),
   }
   
   # Convert locations to SpatialPointsDataFrame  
+  ws_monitor$meta <- ws_monitor$meta[!is.na(ws_monitor$meta$latitude),]
   SPDF <- sp::SpatialPointsDataFrame(coords=cbind(ws_monitor$meta$longitude,ws_monitor$meta$latitude),
                                      data=ws_monitor$meta)
   
-  # Create leaflet map
-  if ( is.null(providerTiles) ) {
-    
-    leaflet::leaflet(SPDF) %>%
-      leaflet::setView(lng=mean(lonRange), lat=mean(latRange), zoom=zoom) %>%
-      leaflet::addTiles() %>%
-      leaflet::addCircleMarkers(
-        radius=radius, 
-        fillColor=cols, 
-        stroke=stroke, 
-        fillOpacity=opacity,
-        popup=ws_monitor$meta$popupText) %>%
-      leaflet::addLegend(
-        position='bottomright',
-        colors=rev(legendColors), # show low levels at the bottom
-        labels=rev(legendLabels),  # show low levels at the bottom
-        opacity = 1,
-        title=legendTitle)
-    
-  } else {
-    
-    leaflet::leaflet(SPDF) %>%
-      leaflet::setView(lng=mean(lonRange), lat=mean(latRange), zoom=zoom) %>%
-      leaflet::addProviderTiles(providerTiles) %>%
-      leaflet::addCircleMarkers(
-        radius=radius, 
-        fillColor=cols, 
-        stroke=stroke, 
-        fillOpacity=opacity,
-        popup=ws_monitor$meta$popupText) %>%
-      leaflet::addLegend(
-        position='bottomright',
-        colors=rev(legendColors), # show low levels at the bottom
-        labels=rev(legendLabels),  # show low levels at the bottom
-        opacity = 1,
-        title=legendTitle)
-    
+  # Convert maptype to a character string that addProviderTiles can read
+  if ( is.null(maptype) || maptype == 'terrain') {
+    providerTiles <- "Esri.WorldTopoMap"
+  } else if ( maptype == "roadmap" ) {
+    providerTiles <- "OpenStreetMap"
+  } else if ( maptype == "toner" ) {
+    providerTiles <- "Stamen.Toner"
+  } else if (maptype == "satellite" ) {
+    providerTiles <- "Esri.WorldImagery"
   }
   
+  # Create leaflet map
+  leaflet::leaflet(SPDF) %>%
+    leaflet::setView(lng=mean(lonRange), lat=mean(latRange), zoom=zoom) %>%
+    leaflet::addProviderTiles(providerTiles) %>%
+    leaflet::addCircleMarkers(
+      radius=radius, 
+      fillColor=cols, 
+      fillOpacity=opacity,
+      stroke=FALSE,
+      popup=ws_monitor$meta$popupText) %>%
+    leaflet::addLegend(
+      position='bottomright',
+      colors=rev(legendColors), # show low levels at the bottom
+      labels=rev(legendLabels),  # show low levels at the bottom
+      opacity = 1,
+      title=legendTitle)
+
 }
