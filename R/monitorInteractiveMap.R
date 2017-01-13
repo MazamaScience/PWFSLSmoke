@@ -1,54 +1,54 @@
 #' @keywords ws_monitor
 #' @export
-#' @importFrom grDevices
 #' @title Leaflet Interactive Map of Monitoring Stations
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @param ws_monitor ws_monitor object
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
-#' @param breaks set of breaks used to assign colors or a single integer used to provide quantile based breaks
+#' @param breaks set of breaks used to assign colors
 #' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
+#' @param labels a set of text labels, one for each colors
 #' @param radius radius of monitor circles
 #' @param opacity opacity of monitor circles
 #' @param maptype optional name of leaflet ProviderTiles to use, e.g. "terrain"
 #' @param popupInfo a vector of column names from ws_monitor$meta to be shown in a popup window
-#' @description This function creates interactive maps that will be displayed in RStudio's 'Viewer' tab.  
-#' Individual monitor timeseries are reduced to 
-#' a single value by applying \code{statistic}to the entire timeseries of each monitor with \code{na.rm=TRUE}.
-#' These values are then plotted over a map of the United States.
+#' @description This function creates interactive maps that will be displayed in RStudio's 'Viewer' tab.
+#' The \code{slice} argument is used to collapse a \code{ws_monitor} timeseries into a single value.
+#' If \code{slice} is an integer, that row index will be selected from the \code{ws_monitor$data} dataframe.
+#' If \code{slice} is a function (unquoted), that function will be applied to the timeseires with the
+#' argument \code{na.rm=TRUE} (e.g. \code{max(..., na.rm=TRUE)}).
 #' 
-#' If \code{slice} is a function (not a function name) it will be used with argument \code{na.rm=TRUE} to
+#' If \code{slice} is a user defined function it will be used with argument \code{na.rm=TRUE} to
 #' collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as a parameter.
-#' @details You can use AQI colors and 24-hr, daily average breaks by specifying \code{breaks=NULL, colors=Null}.
-#' 
-#' The maptypes that are acceptted:
+#' @details The \code{maptype} argument is mapped onto leaflet "ProviderTile" names. Current mappings include:
 #' \enumerate{
-#' \item{roadmap}{ -- "OpenStreetMap"}
-#' \item{satellite}{ -- "Esri.WorldImagery"}
-#' \item{terrain}{ -- "Stamen.Terrain"}
-#' \item{toner}{ -- "Stamen.Toner"}
+#' \item{"roadmap"}{ -- "OpenStreetMap"}
+#' \item{"satellite"}{ -- "Esri.WorldImagery"}
+#' \item{"terrain"}{ -- ""Esri.WorldTopoMap"}
+#' \item{"toner"}{ -- "Stamen.Toner"}
 #' }
 #' 
+#' If a character string not listed above is provided, it will be used as the underlying map tile if available.
 #' See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles"
 #' to use as the background map..
-#' @return Initiates the interactive dygraph plot in Rstudio's 'Viewer' tab.
+#' @return Initiates the interactive leaflet plot in Rstudio's 'Viewer' tab.
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20140913, 20141010)
-#' v_low <- AQI$breaks_24[4]
+#' v_low <- AQI$breaks_24[4] 
 #' CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
 #' monitorInteractiveMap(CA_unhealthy_monitors, maptype="toner")
 #' }
 
-if (FALSE) {
-  slice=get('max')
-  breaks=AQI$breaks_24
-  colors=AQI$colors
-  labels=AQI$names
-  legendTitle='Max AQI Level'
-  radius=10
-  opacity=0.7
-  maptype="terrain"
-  popupInfo=c('siteName','monitorID','elevation')
-}
+# if (FALSE) {
+#   slice=get('max')
+#   breaks=AQI$breaks_24
+#   colors=AQI$colors
+#   labels=AQI$names
+#   legendTitle='Max AQI Level'
+#   radius=10
+#   opacity=0.7
+#   maptype="terrain"
+#   popupInfo=c('siteName','monitorID','elevation')
+# }
 
 monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
                                   breaks=AQI$breaks_24,
@@ -57,49 +57,55 @@ monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
                                   legendTitle='Max AQI Level',
                                   radius=10, opacity=0.7, maptype="terrain",
                                   popupInfo=c('siteName','monitorID','elevation')) {
-
+  
   # BEGIN verbatim from monitor_map.R -----------------------------------------
   
   # Create the 'slice'
   if ( class(slice) == "function" ) {
     # NOTE:  Need as.matrix in case we only have a single monitor
-  allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
+    allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
     data <- as.matrix(ws_monitor$data[,-1])
     pm25 <- apply(data[,!allMissingMask], 2, slice, na.rm=TRUE)
-  } else if (class(slice) == "integer" || class(slice) == "numeric") {
+  } else if ( class(slice) == "integer" || class(slice) == "numeric" ) {
     pm25 <- ws_monitor$data[,as.integer(slice)]
   } else {
     stop("Improper use of slice parameter")
   }
   
   # If the user only specifies breaks and not the colors or vice versa then complain
-  if (xor(is.null(breaks), is.null(colors))) {
-    stop(paste0("The breaks paramater ", ifelse(is.null(breaks), "wasn't", "was"),
-                " specified but the colors ", ifelse(is.null(colors), "wasn't", "was"),
+  if (xor(missing(breaks), missing(colors))) {
+    stop(paste0("The breaks paramater ", ifelse(missing(breaks), "wasn't", "was"),
+                " specified but the colors ", ifelse(missing(colors), "wasn't", "was"),
                 " specified. You must specify both paramaters or neither."))
   }
   
   # ----- Figure out names for a legend and colors for each point ---- 
   
   # If the user didn't use custom breaks then use AQI names and colors
-  if ( ! is.null(breaks) ) {
+  if ( ! missing(breaks) ) {
     
     if ( length(breaks) <= 2) {
       stop("Please specify the correct vector of breaks")
     }
     
     if (! (length(breaks) - 1 == length(colors)) ) {
-      stop("The number of colorts provided should be one less than the number of breaks")
+      stop("The number of colors provided should be one less than the number of breaks")
     }
     
-    # For each break, use the lower number as the name in the legend.
-    legendColors <- colors
-    legendLabels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
+    if ( missing(labels) ){
+    labels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
+    } else if ( length(labels) != length(colors) ) {
+      stop("The number of labels should be equal to the number of colors")
+    }
+    
   }
   
   # Create levels and use them to create a color mask
   levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
-  cols <- legendColors[levels]
+  if ( ! all( ! is.na(levels)) ) {
+    print("NOTE that there are data points outside of your specified breaks, non-requested color(s) might be displayed on your map.")
+  }
+  cols <- colors[levels]
   
   # END verbatim from monitor_map.R -------------------------------------------
   
@@ -162,7 +168,7 @@ monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
                                      data=ws_monitor$meta)
   
   # Convert maptype to a character string that addProviderTiles can read
-  if ( is.null(maptype) || maptype == 'terrain') {
+  if ( missing(maptype) || maptype == 'terrain') {
     providerTiles <- "Esri.WorldTopoMap"
   } else if ( maptype == "roadmap" ) {
     providerTiles <- "OpenStreetMap"
@@ -170,6 +176,8 @@ monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
     providerTiles <- "Stamen.Toner"
   } else if (maptype == "satellite" ) {
     providerTiles <- "Esri.WorldImagery"
+  } else {
+    providerTiles <- maptype
   }
   
   # Create leaflet map
@@ -184,9 +192,9 @@ monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
       popup=ws_monitor$meta$popupText) %>%
     leaflet::addLegend(
       position='bottomright',
-      colors=rev(legendColors), # show low levels at the bottom
-      labels=rev(legendLabels),  # show low levels at the bottom
+      colors=rev(colors), # show low levels at the bottom
+      labels=rev(labels),  # show low levels at the bottom
       opacity = 1,
       title=legendTitle)
-
+  
 }

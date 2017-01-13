@@ -5,9 +5,9 @@
 \title{Create Hourly Barplot}
 \usage{
 monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = "AirFire", shadedNight = TRUE,
-  grid = "over", gridCol = "white", gridLwd = 2, gridLty = "dotted",
-  dayLwd = 3, hourLwd = 1, hourInterval = 6, ...)
+  localTime = TRUE, style = "AirFire", shadedNight = TRUE, gridPos = "",
+  gridCol = "black", gridLwd = 0.5, gridLty = "solid", dayLwd = 2,
+  hourLwd = 1, hourInterval = 6, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -23,7 +23,7 @@ if only one monitor in the ws_monitor object)}
 
 \item{shadedNight}{add nighttime shading}
 
-\item{grid}{include grid 'under' or 'over' the hour bars}
+\item{gridPos}{position of grid lines either 'over', 'under' ('' for no grid lines)}
 
 \item{gridCol}{grid color}
 
@@ -31,9 +31,9 @@ if only one monitor in the ws_monitor object)}
 
 \item{gridLty}{grid line type}
 
-\item{dayLwd}{day boundary line width (only plotted if this value is numeric)}
+\item{dayLwd}{day boundary line width (set to 0 to omit day lines)}
 
-\item{hourLwd}{hour boundary line width (only plotted if this value is numeric)}
+\item{hourLwd}{hour boundary line width (set to 0 to omit  hour lines)}
 
 \item{hourInterval}{interval for hour boundary lines}
 

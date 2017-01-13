@@ -13,7 +13,7 @@
 #' \dontrun{
 #' wrcc <- wrcc_load(20150901, 20150930)
 #' wrcc_conus <- monitor_subset(wrcc, stateCodes=CONUS)
-#' monitor_leaflet(wrcc_conus)
+#' monitorInteractiveMap(wrcc_conus)
 #' }
 
 wrcc_load <- function(startdate, enddate, monitorIDs=NULL, stateCodes=NULL, 
