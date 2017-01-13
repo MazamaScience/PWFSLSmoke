@@ -63,7 +63,7 @@ monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
   # Create the 'slice'
   if ( class(slice) == "function" ) {
     # NOTE:  Need as.matrix in case we only have a single monitor
-    allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
+  allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
     data <- as.matrix(ws_monitor$data[,-1])
     pm25 <- apply(data[,!allMissingMask], 2, slice, na.rm=TRUE)
   } else if (class(slice) == "integer" || class(slice) == "numeric") {
