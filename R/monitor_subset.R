@@ -6,8 +6,9 @@
 #' @param ylim vector with low and high latitude limit values
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param vlim vector with low and high PM2.5 data limit values
-#' @param stateCodes vector of state codes used to filter the data
 #' @param monitorIDs vector of monitor IDs used to filter the data
+#' @param stateCodes vector of state codes used to filter the data
+#' @param countryCodes vector of country codes used to filter the data
 #' @param dropMonitors flag specifying whether to remove monitors with no data
 #' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
 #' @description Creates a subset of a ws_monitor object based on one or more optional input parameters.
@@ -30,11 +31,12 @@
 # TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting
 
 monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NULL,
-                           monitorIDs=NULL, stateCodes=NULL, dropMonitors=TRUE,
-                           timezone="UTC") {
+                           monitorIDs=NULL, stateCodes=NULL, countryCodes=NULL,
+                           dropMonitors=TRUE, timezone="UTC") {
   
   # subset metadata
-  meta <- monitor_subsetMeta(ws_monitor$meta, xlim=xlim, ylim=ylim, stateCodes=stateCodes, monitorIDs=monitorIDs)
+  meta <- monitor_subsetMeta(ws_monitor$meta, xlim=xlim, ylim=ylim, 
+                             stateCodes=stateCodes, countryCodes=countryCodes,monitorIDs=monitorIDs)
   
   # sanity check
   if ( is.null(meta) ) {

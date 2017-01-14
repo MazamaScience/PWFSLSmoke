@@ -25,7 +25,7 @@ passed in. Either meta data or actual data can be filtered.
 wrcc <- wrcc_load(20100101, 20160101)
 mySubset <- monitor_subsetBy(wrcc, timezone == 'America/Los_Angeles')
 hazardousSubset <- monitor_subsetBy(mySubset, data > AQI$breaks_24[6])
-monitor_leaflet(hazardousSubset,
+monitorInteractiveMap(hazardousSubset,
                 popupInfo=c('siteName', 'agencyName', 'elevation','monitorID'))
 }
 }

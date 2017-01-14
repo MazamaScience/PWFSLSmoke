@@ -50,7 +50,7 @@ Colors are assigned to one of the following styles:
 \dontrun{
 airnow <- airnow_load(20150701, 20150710)
 title <- "Hourly PM2.5 for Colleville, WA"
-monitorPlot_hourlyBarplot(airnow, monitorID="530650004", title=title)
+monitorPlot_hourlyBarplot(airnow, monitorID="530650004")
 }
 }
 \keyword{ws_monitor}

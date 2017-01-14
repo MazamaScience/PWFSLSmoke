@@ -26,7 +26,7 @@
 #' \dontrun{
 #' airnow <- airnow_load(20150701, 20150710)
 #' title <- "Hourly PM2.5 for Colleville, WA"
-#' monitorPlot_hourlyBarplot(airnow, monitorID="530650004", title=title)
+#' monitorPlot_hourlyBarplot(airnow, monitorID="530650004")
 #' }
 
 monitorPlot_hourlyBarplot <- function(ws_monitor,
@@ -164,9 +164,6 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   argsList2$xlab <- NA
   argsList2$main <- NA
   
-  do.call(barplot, argsList2)
-  argsList$add <- TRUE
-  
   if ( shadedNight ) {
     if ( length(unique(mon$meta$timezone))>1 ) {
       stop("Can't do shaded night for more than one time zone!!")
@@ -185,6 +182,8 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
       # Plot shadedNight from bottom of plot to top
       do.call(barplot,argsList2)
     }
+  } else {
+    do.call(barplot,argsList2)
   }
   
   # Add horizontal grid lines (first if grid=='under')
@@ -193,6 +192,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   }
   
   # Plot the actual colored bars
+  argsList$add <- TRUE
   do.call(barplot, argsList)
   
   # Add vertical lines to denote days and/or hour breaks

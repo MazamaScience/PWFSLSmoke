@@ -5,6 +5,7 @@
 #' @param xlim optional vector with low and high longitude values
 #' @param ylim optional vector with low and high latitude values
 #' @param stateCodes optional vector of stateCodes
+#' @param countryCodes optional vector of countryCodes
 #' @param monitorIDs optional vector of monitorIDs
 #' @description Subsets a ws_monitor object's 'meta' dataframe by removing any monitors that
 #'     lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
@@ -15,7 +16,7 @@
 #' 
 #' @return ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors
 
-monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, monitorIDs=NULL) {
+monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, countryCodes=NULL, monitorIDs=NULL) {
   
   if (!is.null(xlim)) {
     # Sanity check -- longitude domain
@@ -39,6 +40,16 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, moni
     }
     ylim <- sort(ylim)
     meta <- dplyr::filter(meta, meta$latitude >= ylim[1] & meta$latitude <= ylim[2])
+  }
+  
+  if (!is.null(countryCodes)) {
+    # Guarantee upper case countrycodes
+    stateCodes <- stringr::str_to_upper(stateCodes)
+    if ( 'countryCode' %in% names(meta) ) {
+      meta <- dplyr::filter(meta, meta$countryCode %in% countryCodes)
+    } else {
+      warning("No 'countryCode' column found in monitor metadata.")
+    }
   }
   
   if (!is.null(stateCodes)) {

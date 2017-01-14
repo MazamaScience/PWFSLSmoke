@@ -29,7 +29,7 @@ data from url and returns the subsetted ws_monitor object.
 \dontrun{
 wrcc <- wrcc_load(20150901, 20150930)
 wrcc_conus <- monitor_subset(wrcc, stateCodes=CONUS)
-monitor_leaflet(wrcc_conus)
+monitorInteractiveMap(wrcc_conus)
 }
 }
 \keyword{wrcc}

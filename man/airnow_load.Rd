@@ -33,7 +33,7 @@ meta and data files from the archive baseUrl (or local directory) and return the
 \dontrun{
 airnow <- airnow_load(20150901, 20150930)
 airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
-monitor_leaflet(airnow_conus)
+monitorInteractiveMap(airnow_conus)
 }
 }
 \keyword{AirNow}
