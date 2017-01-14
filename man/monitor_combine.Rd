@@ -24,7 +24,7 @@ monitorList[[2]] <- airsis_createMonitorObject('USFS', '1032', 20160701, 2016123
 monitorList[[3]] <- airsis_createMonitorObject('USFS', '1033', 20160701, 20161231)
 monitorList[[4]] <- airsis_createMonitorObject('USFS', '1034', 20160701, 20161231)
 ws_monitor <- monitor_combine(monitorList)
-monitor_leaflet(ws_monitor)
+monitorInteractiveMap(ws_monitor)
 } 
 }
 \keyword{ws_monitor}

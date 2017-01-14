@@ -29,7 +29,7 @@ monitorInteractiveMap(ws_monitor, slice = get("max"),
 \item{popupInfo}{a vector of column names from ws_monitor$meta to be shown in a popup window}
 }
 \value{
-Initiates the interactive dygraph plot in Rstudio's 'Viewer' tab.
+Initiates the interactive leaflet plot in Rstudio's 'Viewer' tab.
 }
 \description{
 This function creates interactive maps that will be displayed in RStudio's 'Viewer' tab.
@@ -46,17 +46,18 @@ The \code{maptype} argument is mapped onto leaflet "ProviderTile" names. Current
 \enumerate{
 \item{"roadmap"}{ -- "OpenStreetMap"}
 \item{"satellite"}{ -- "Esri.WorldImagery"}
-\item{"terrain"}{ -- "Stamen.Terrain"}
+\item{"terrain"}{ -- ""Esri.WorldTopoMap"}
 \item{"toner"}{ -- "Stamen.Toner"}
 }
 
+If a character string not listed above is provided, it will be used as the underlying map tile if available.
 See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles"
 to use as the background map..
 }
 \examples{
 \dontrun{
 airnow <- airnow_load(20140913, 20141010)
-v_low <- AQI$breaks_24[4]
+v_low <- AQI$breaks_24[4] 
 CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
 monitorInteractiveMap(CA_unhealthy_monitors, maptype="toner")
 }

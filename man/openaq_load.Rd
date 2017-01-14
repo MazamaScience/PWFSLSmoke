@@ -46,12 +46,5 @@ months with their available days are:
 \item{201512}{:  12/1 - 12/30}
 }
 }
-\examples{
-\dontrun{
-openaq <- openaq_load(20150901, 20150930)
-openaq_conus <- monitor_subset(openaq, stateCodes=CONUS)
-monitor_leaflet(openaq_conus)
-}
-}
 \keyword{OpenAQ}
 
