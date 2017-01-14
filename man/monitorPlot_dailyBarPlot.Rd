@@ -5,8 +5,8 @@
 \title{Create Daily Bar Plot}
 \usage{
 monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
-  minHours = 20, grid = "over", gridCol = "white", gridLwd = 2,
-  gridLty = "dotted", ...)
+  minHours = 20, gridPos = "", gridCol = "black", gridLwd = 0.5,
+  gridLty = "solid", ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -18,7 +18,7 @@ if only one monitor in the ws_monitor object)}
 
 \item{minHours}{minimum number of valid data hours required to calculate each daily average}
 
-\item{grid}{add grid lines either 'over', 'under' or '' for no grid lines}
+\item{gridPos}{position of grid lines either 'over', 'under' ('' for no grid lines)}
 
 \item{gridCol}{color of grid lines (see graphical parameter 'col')}
 

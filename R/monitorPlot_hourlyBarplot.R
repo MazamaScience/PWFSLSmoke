@@ -111,6 +111,11 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   if ( style == 'AirFire' ) {
     aqiColors <- AQI$colors
     argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
+  } else if ( style == 'aqiLevel' ) {
+    # NOTE:  Special use case for creating mini barplots where the ws_monitor object
+    # NOTE:  has been modified so that the pm25 value is just the AQI index level (1:5)
+    aqiColors <- AQI$colors
+    argsList$col <- aqiColors[ pm25 ]
   } else if ( style == 'NOT_YET_IMPLEMENTED' ) {
     # modify pm25 with either nowcast, rolling mean or aqi
     # modify color breaks and levels as needed
