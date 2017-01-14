@@ -6,6 +6,7 @@
 #' @param breaks set of breaks used to assign colors
 #' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
 #' @param labels a set of text labels, one for each colors
+#' @param legendTitle legend title
 #' @param radius radius of monitor circles
 #' @param opacity opacity of monitor circles
 #' @param maptype optional name of leaflet ProviderTiles to use, e.g. "terrain"

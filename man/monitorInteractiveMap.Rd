@@ -20,6 +20,8 @@ monitorInteractiveMap(ws_monitor, slice = get("max"),
 
 \item{labels}{a set of text labels, one for each colors}
 
+\item{legendTitle}{legend title}
+
 \item{radius}{radius of monitor circles}
 
 \item{opacity}{opacity of monitor circles}
