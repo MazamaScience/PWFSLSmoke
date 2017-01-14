@@ -5,7 +5,7 @@
 \title{Subset ws_monitor Object 'meta' Dataframe}
 \usage{
 monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
-  monitorIDs = NULL)
+  countryCodes = NULL, monitorIDs = NULL)
 }
 \arguments{
 \item{meta}{ws_monitor object 'meta' dataframe}
@@ -15,6 +15,8 @@ monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
 \item{ylim}{optional vector with low and high latitude values}
 
 \item{stateCodes}{optional vector of stateCodes}
+
+\item{countryCodes}{optional vector of countryCodes}
 
 \item{monitorIDs}{optional vector of monitorIDs}
 }

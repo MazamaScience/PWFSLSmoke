@@ -6,7 +6,7 @@
 \usage{
 monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
   vlim = NULL, monitorIDs = NULL, stateCodes = NULL,
-  dropMonitors = TRUE, timezone = "UTC")
+  countryCodes = NULL, dropMonitors = TRUE, timezone = "UTC")
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -22,6 +22,8 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 \item{monitorIDs}{vector of monitor IDs used to filter the data}
 
 \item{stateCodes}{vector of state codes used to filter the data}
+
+\item{countryCodes}{vector of country codes used to filter the data}
 
 \item{dropMonitors}{flag specifying whether to remove monitors with no data}
 

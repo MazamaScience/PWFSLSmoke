@@ -34,8 +34,8 @@
 #' @examples
 #' \dontrun{
 #' openaq <- openaq_load(20150901, 20150930)
-#' openaq_conus <- monitor_subset(openaq, stateCodes=CONUS)
-#' monitor_leaflet(openaq_conus)
+#' openaq_conus <- monitor_subset(openaq, stateCodes=CONUS, countryCodes="US)
+#' monitorInteractiveMap(openaq_conus)
 #' }
 
 

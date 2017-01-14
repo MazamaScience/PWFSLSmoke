@@ -21,7 +21,7 @@
 #' 
 #' WA_IDS <- AirNow$meta$monitorID[AirNow$meta$stateCode == 'WA']
 #' WA <- monitor_subset(AirNow, monitorIDs=WA_IDS)
-#' monitor_leaflet(WA)
+#' monitorInteractiveMap(WA)
 #' 
 #' # Pull out specific locations
 #' Twisp <- monitor_subset(WA, monitorIDs='530470009')
