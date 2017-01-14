@@ -1,15 +1,16 @@
 #' @export
 #' @import graphics
-#' @title Time of Day Spaghetti Plot
+#' @title Time of Day Spaghetti Plot for Raw Data
 #' @param df dataframe with \code{datetime} column in GMT
 #' @param dataVar variable to be plotted
-#' @param tzone timezone where data were collected
-#' @param col color used for each daily line
+#' @param tlim time limit
+#' @param shadedNight shade nighttime hours
 #' @param meanCol color used for the mean line (use NA to omit the mean)
-#' @param meanLwd line width used for th mean line
+#' @param meanLwd line width used for the mean line
+#' @param meanLty line type used for the mean line
 #' @param highlightDates dates to be highlighted in YYYYMMDD format
 #' @param highlightCol color used for highlighted days
-#' @param ... additional graphical parameters are passed to the lines() function
+#' @param ... additional graphical parameters are passed to the lines() function for day lines
 #' @description Spaghetti Plot that shows data by hour-of-day. 
 #' @note TODO: Fill in working example
 #' @examples
@@ -17,20 +18,39 @@
 #' # This should have a working exmaple
 #' }
 
-raw_timeOfDaySpaghettiPlot <- function(df, dataVar, tzone=NULL,
-                                       col='salmon',
-                                       meanCol='black', meanLwd=4,
+rawPlot_timeOfDaySpaghetti <- function(df,
+                                       dataVar='pm25',
+                                       tlim=NULL,
+                                       shadedNight=TRUE,
+                                       meanCol='black',
+                                       meanLwd=4,
+                                       meanLty=1,
                                        highlightDates=c(),
                                        highlightCol='dodgerblue',
                                        ...) {
 
-  # Sanity check -- 'datetime' must exist
-  if ( !'datetime' %in% names(df) ) {
-    stop(paste0("Dataframe 'df' has no 'datetime' column."))
-  }
+  # Initial Style
+  
+  dayCol <- 'salmon' #default; can be overwritten w/ col=
+  col_shadedNight <- 'gray90'
   
   # Data Preparation ----------------------------------------------------------
   
+  # Sanity check -- 'datetime' must exist
+  if ( !'datetime' %in% names(df) ) {
+    stop(paste0("Dataframe has no 'datetime' column."))
+  }
+  
+  # Pull out timezone and lat/lon  
+  if( length(unique(df$timezone)) > 1 ) {
+    stop("More than one timezone in the data -- please subset as necessary and try again.")
+  } else {
+    tzone <- df$timezone[1]
+    lat <- df$latitude[1]
+    lon <- df$longitude[1]
+  }
+  
+  # Create new dataframe
   df$localTime <- lubridate::with_tz(df$datetime,tzone)
   df$datestamp <- format(df$localTime,"%Y%m%d")
   df$hour <- lubridate::hour(df$localTime)
@@ -39,39 +59,116 @@ raw_timeOfDaySpaghettiPlot <- function(df, dataVar, tzone=NULL,
   df <- df[,c('localTime',dataVar,'datestamp','hour')]
   names(df) <- c('localTime','data','datestamp','hour')
   
+  # Subset dataframe by tlim
+  if ( !is.null(tlim) ) {
+    
+    # Chop tlim to full days unless hours included in argument
+    tlimStrings <- as.character(tlim)
+    if ( stringr::str_length(tlimStrings)[1] == 8 ) {
+      tlim[1] <- paste0(tlim[1],'00')
+    }
+    if ( stringr::str_length(tlimStrings)[2] == 8 ) {
+      tlim[2] <- paste0(tlim[2],'23')
+    }
+    
+    tlim <- as.POSIXct(tlim,format='%Y%m%d%H')
+    df <- df[(df$localTime>=tlim[1] & df$localTime <= tlim[2]),]
+    
+  }
+  
   # Style  --------------------------------------------------------------------
   
-
+  argsList <- list(...)
+  
+  if ( !('col' %in% names(argsList)) ) {
+    argsList$col <- dayCol
+  }
+  
+  if ( !('ylim' %in% names(argsList)) ) {
+    argsList$ylim <- c(min(df$data),max(df$data))
+  }
+  
+  if ( !('ylab' %in% names(argsList)) ) {
+    if ( dataVar=='pm25' ) {
+      argsList$ylab <- "PM2.5"
+    } else {
+      argsList$ylab <- dataVar
+    }
+  }
+  
+  if ( !('xlab' %in% names(argsList)) ) {
+    argsList$xlab <- "Hour"
+  }
+  
   # Plotting ------------------------------------------------------------------
   
-  # Blank plot to set up limits
-  plot(df$data ~ df$hour, col='transparent',
-       xlab='', ylab='',
-       axes=FALSE)
-  axis(1,at=seq(0,24,3))
+  # Define data for plot bounds
+  argsList$x <- df$hour
+  argsList$y <- df$data
+  
+  # Set up duplicate argsList for blank plot
+  argsListBlank <- argsList
+  
+  # Assign blankness to duplicate argsList
+  argsListBlank$col <- 'transparent'
+  argsListBlank$axes <- FALSE
+  
+  # Plot blank plot
+  do.call(plot,argsListBlank)
+  
+  # Add Shaded Night
+  if ( shadedNight ) {
+    
+    # Get the sunrise/sunset information
+    ti <- timeInfo(df$localTime, lon=lon, lat=lat, timezone=tzone)
+    
+    # Extract the middle row
+    ti <- ti[round(nrow(ti)/2),]
+    
+    # Get sunrise and sunset in units of hours
+    sunrise <- lubridate::hour(ti$sunrise) + lubridate::minute(ti$sunrise)/60
+    sunset <- lubridate::hour(ti$sunset) + lubridate::minute(ti$sunset)/60
+    
+    # Left edge to sunrise
+    rect(par('usr')[1], ybottom=par('usr')[3],
+         xright=sunrise, ytop=par('usr')[4],
+         col=col_shadedNight, lwd=0)
+    
+    # Sunset to right edge
+    rect(xleft=sunset, ybottom=par('usr')[3],
+         xright=par('usr')[2], ytop=par('usr')[4],
+         col=col_shadedNight, lwd=0)
+    
+  }
+  
+  # Annotations
+  axis(1,at=seq(0,23,3))
   axis(2,las=1)
-  mtext(dataVar,2,line=3)
-  mtext(paste0('Hour'),1,line=3)
 
   # Simple line plot for each day
   for ( singleDay in unique(df$datestamp) ) {
     
     dayDF <- dplyr::filter(df, df$datestamp == singleDay)
     
+    argsList$x <- dayDF$hour
+    argsList$y <- dayDF$data
+    
     if ( singleDay %in% highlightDates ) {
-      lines(dayDF$data ~ dayDF$hour, col=highlightCol, ...)
+      argsList$col <- highlightCol
+      do.call(lines,argsList)
+      argsList$col <- dayCol
     } else {
-      lines(dayDF$data ~ dayDF$hour, col=col, ...)
+      do.call(lines,argsList)
     }
     
   }
   
   # Add mean line
-  df %>% group_by(as.factor(df$hour)) %>%
-    summarize(data=mean(df$data,na.rm=TRUE)) ->
+  df %>% group_by(as.factor(hour)) %>%
+    summarize(data=mean(data,na.rm=TRUE)) ->
     hourMeanDF
   
-  lines(hourMeanDF$data ~ seq(0,23,1), col=meanCol, lwd=meanLwd)
+  lines(hourMeanDF$data ~ seq(0,23), col=meanCol, lwd=meanLwd, lty=meanLty)
 
 }
 
