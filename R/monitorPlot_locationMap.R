@@ -91,7 +91,13 @@ monitorPlot_locationMap <- function(ws_monitor,
   
   # ----- Generate map --------------------------------------------------------
   
-  myMap <- RgoogleMaps::GetMap(center=c(lat,lon), size=c(height,width), zoom=zoom, maptype=maptype);
+  # Use markers if no monitorIcon is specified
+  if ( is.null(monitorIcon) ) {
+    markers = paste0("&markers=color:blue|", lat,",", lon)
+    myMap <- RgoogleMaps::GetMap(center=c(lat,lon), size=c(height,width), zoom=zoom, maptype=maptype, markers=markers);
+  } else {
+    myMap <- RgoogleMaps::GetMap(center=c(lat,lon), size=c(height,width), zoom=zoom, maptype=maptype);
+  }
   
   RgoogleMaps::PlotOnStaticMap(myMap)
   
@@ -109,10 +115,8 @@ monitorPlot_locationMap <- function(ws_monitor,
     }
   }
   
-  # Plot monitor(s) on top
-  if ( is.null(monitorIcon) ) {
-    addIcon(myMap, icon_paddle, ws_monitor$meta$longitude, ws_monitor$meta$latitude, expansion=iconExpansion_monitor, pos=3) #could build in icon expansion, or logic re: pos depending on icon type
-  } else {
+  # Plot monitor icons on top
+  if ( !is.null(monitorIcon) ) {
     addIcon(myMap, monitorIcon, ws_monitor$meta$longitude, ws_monitor$meta$latitude, expansion=iconExpansion_monitor, pos=0) #could build in icon expansion, or logic re: pos depending on icon type
   }
   
