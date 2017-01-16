@@ -6,8 +6,8 @@
 \usage{
 monitor_performanceMap(predicted, observed, threshold = AQI$breaks_24[3],
   sizeBy = NULL, colorBy = "heidikeSkill",
-  paletteFunc = colorRampPalette(RColorBrewer::brewer.pal(6, "Purples")[-1]),
-  breaks = c(-Inf, 0.5, 0.6, 0.7, 0.8, 0.9), ...)
+  paletteFunc = grDevices::colorRampPalette(RColorBrewer::brewer.pal(6,
+  "Purples")[-1]), breaks = c(-Inf, 0.5, 0.6, 0.7, 0.8, 0.9), ...)
 }
 \arguments{
 \item{predicted}{data list of class \code{ws_monitor}}
