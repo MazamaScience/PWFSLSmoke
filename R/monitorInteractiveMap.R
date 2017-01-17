@@ -5,7 +5,7 @@
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
 #' @param breaks set of breaks used to assign colors
 #' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
-#' @param labels a set of text labels, one for each colors
+#' @param labels a set of text labels, one for each color
 #' @param legendTitle legend title
 #' @param radius radius of monitor circles
 #' @param opacity opacity of monitor circles
@@ -18,7 +18,7 @@
 #' argument \code{na.rm=TRUE} (e.g. \code{max(..., na.rm=TRUE)}).
 #' 
 #' If \code{slice} is a user defined function it will be used with argument \code{na.rm=TRUE} to
-#' collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as a parameter.
+#' collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as an argument.
 #' @details The \code{maptype} argument is mapped onto leaflet "ProviderTile" names. Current mappings include:
 #' \enumerate{
 #' \item{"roadmap"}{ -- "OpenStreetMap"}
@@ -29,7 +29,7 @@
 #' 
 #' If a character string not listed above is provided, it will be used as the underlying map tile if available.
 #' See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles"
-#' to use as the background map..
+#' to use as the background map.
 #' @return Initiates the interactive leaflet plot in Rstudio's 'Viewer' tab.
 #' @examples
 #' \dontrun{
@@ -38,18 +38,6 @@
 #' CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
 #' monitorInteractiveMap(CA_unhealthy_monitors, maptype="toner")
 #' }
-
-# if (FALSE) {
-#   slice=get('max')
-#   breaks=AQI$breaks_24
-#   colors=AQI$colors
-#   labels=AQI$names
-#   legendTitle='Max AQI Level'
-#   radius=10
-#   opacity=0.7
-#   maptype="terrain"
-#   popupInfo=c('siteName','monitorID','elevation')
-# }
 
 monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
                                   breaks=AQI$breaks_24,

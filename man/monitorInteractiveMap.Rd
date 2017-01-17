@@ -18,7 +18,7 @@ monitorInteractiveMap(ws_monitor, slice = get("max"),
 
 \item{colors}{a set of colors for different levels of air quality data determined by \code{breaks}}
 
-\item{labels}{a set of text labels, one for each colors}
+\item{labels}{a set of text labels, one for each color}
 
 \item{legendTitle}{legend title}
 
@@ -41,7 +41,7 @@ If \code{slice} is a function (unquoted), that function will be applied to the t
 argument \code{na.rm=TRUE} (e.g. \code{max(..., na.rm=TRUE)}).
 
 If \code{slice} is a user defined function it will be used with argument \code{na.rm=TRUE} to
-collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as a parameter.
+collapse the time dimension. Thus, user defined functions must accept \code{na.rm} as an argument.
 }
 \details{
 The \code{maptype} argument is mapped onto leaflet "ProviderTile" names. Current mappings include:
@@ -54,7 +54,7 @@ The \code{maptype} argument is mapped onto leaflet "ProviderTile" names. Current
 
 If a character string not listed above is provided, it will be used as the underlying map tile if available.
 See \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of "provider tiles"
-to use as the background map..
+to use as the background map.
 }
 \examples{
 \dontrun{
