@@ -3,6 +3,7 @@
 # TODO: Set up "add=TRUE" -- was unable to get this to work in first pass
 # TODO: update time zone acquisition to eliminate warning for OlsonNames
 # TODO: prohibit user from using both shadedNights and shadedBackground?
+# TODO: Set up to use do.call(arg, argList) to enable easier passing of arguments to sub-functions
 
 # IDEAS
 # Move around title, labels, etc.
@@ -24,20 +25,24 @@
 #' @keywords raw_enhance
 #' @export
 #' @title Plot Raw Monitoring Data
-#' @param df raw_enhance monitor object, as created by raw_enhance.R
-#' @param parameter OPTIONAL parameter to plot; defaults to "pm25". Other options include
-#' c("temperature","humidity","windSpeed","windDir", pressure), or any of the other raw
+#' @param df raw_enhance monitor object, as created by the raw_enhance() function
+#' @param parameter raw parameter to plot. Default = "pm25". Other options include
+#' c("temperature","humidity","windSpeed","windDir", "pressure"), or any of the other raw
 #' parameters (do "names(df)" to see list of options)
-#' @param useGMT Plot w/ time axis in GMT, as opposed to local time. This is default if >1 time zone in data.
+#' @param localTime use local times; defaults to GMT if >1 time zone in data.
+#' @param tlim A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)
 #' @param shadedNight Shade background based on approximate sunrise/sunset times. Unavailable if >1 time zone in data.
 #' Also note that for multiple deployments, this defaults to use the lat/lon for the first deployment, which in theory
 #' could be somewhat unrepresentative, such as if deployments have a large range in latitude.
-#' @param shadedBackground Add vertical lines corresponding to wind speed, binned into quartiles. Future iterations
+#' @param shadedBackground Add vertical lines corresponding to a second parameter; currently defaults to wind speed binned into quartiles. Future iterations
 #' may include options to choose which parameter to plot, which color to use, which intervals, etc.
-#' @param add (not currently supported) Option to allow overplotting on existing plot landscape
-#' @param tlim A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)
-#' @param type Line type; defaults to best option for each type, unless specified otherwise in this argument.
-#' @description Creates a plot of raw monitoring data as generated using raw_enhance.R.
+#' @param type Line type; defaults to best option for each type, unless specified otherwise in this argument. To replace w/ ...
+# #' @param lineLwd line width for timeseries line; to replace w/ do.call and argsList...
+#' @param sbLwd shaded background line width
+#' @param ... additional arguments to pass to lines() function
+#' @description Creates a plot of raw monitoring data as generated using raw_enhance().
+
+# TODO: Update from useGMT to localTime, and switch logic...
 
 # NOTE:  This next section has to be commented out when you build the package
 # NOTE:  but it's great to keep around for debugging
@@ -72,19 +77,28 @@
 
 rawPlot_timeseries <- function(df,
                                parameter="pm25",
-                               useGMT=FALSE,
-                               shadedNight=FALSE,
-                               shadedBackground=NULL, #specify parameter to shade
-                               #add=FALSE,
+                               localTime=TRUE,
                                tlim=NULL,
+                               shadedNight=TRUE,
+                               shadedBackground='windSpeed', #specify parameter to shade
                                type=NULL,
-                               linelwd=4,
-                               sblwd=1,
+                               sbLwd=1,
+                               #add=FALSE,
+                               # linelwd=1, to replace using argsList logic
                                ...) {
 
-  # If passed as argument, check that parameter exists in names of df
+  # ----- Initial coherency checks -------------
+  
+  # Verify plot parameter exists
   if (!(parameter %in% names(df))) {
     stop(paste0("'",parameter,"' does not exist in names(",deparse(substitute(df)),")",sep=""))
+  }
+  
+  # Verify shadedBackground parameter exists
+  if ( !(is.null(shadedBackground)) ) {
+    if ( !(shadedBackground %in% names(df)) ) {
+      stop(paste0("Shaded background parameter '",parameter,"' does not exist in names(",deparse(substitute(df)),")",sep=""))
+    }
   }
 
   # ----- Style ---------------------------------------------------------------
@@ -93,7 +107,7 @@ rawPlot_timeseries <- function(df,
   xlabLocal <- "Date and Time (local)" # used if GMT==FALSE
   xlabGMT <- "Date and Time (GMT)" # used if GMT==TRUE, or if time data is in >1 timezone
 
-  # Line type default (can be overwritten)
+  # Line type default (can be overwritten) -- to overhaul using do.call and argsList
   if(is.null(type)) {type <- "l"; typeSpec <- FALSE} else {typeSpec <- TRUE}
 
   # Parameter-specific styling
@@ -126,20 +140,20 @@ rawPlot_timeseries <- function(df,
   # Default to use GMT if >1 timezone in data
   if (length(unique(df$timezone))>1) {
     print("More than one time zone, so forced to plot using GMT")
-    useGMT <- TRUE
+    localTime <- FALSE
   }
 
   # Set time axis data and labels
-  if (useGMT) {
-    datetime <- df$datetime
-    xlab <- xlabGMT
-  } else {
+  if ( localTime ) {
     datetime <- lubridate::with_tz(df$datetime, tzone=df$timezone[1])
     xlab <- xlabLocal
+  } else {
+    datetime <- df$datetime
+    xlab <- xlabGMT
   }
 
   # Time limit application
-  if (!is.null(tlim)) {
+  if ( !is.null(tlim) ) {
     # TODO: add logic to check for tlim format
     # TODO: warn if tlim is outside range of datetime data
     timeMask <- datetime >= lubridate::ymd(tlim[1]) & datetime < lubridate::ymd(tlim[2])+lubridate::days(1)
@@ -157,7 +171,7 @@ rawPlot_timeseries <- function(df,
 
   # Create the plot
 
-  if (shadedNight==TRUE || !is.null(shadedBackground)) {
+  if ( shadedNight==TRUE || !is.null(shadedBackground) ) {
     plot(datetime,param,
          type="n",
          xlab=xlab,
@@ -172,11 +186,11 @@ rawPlot_timeseries <- function(df,
       lon <- df$longitude[1]
       lat <- df$latitude[1]
       timezone <- df$timezone[1]
-      if (useGMT) {
-        timeInfo <- PWFSLSmoke::timeInfo(df$datetime, lon, lat, timezone)
+      if ( localTime ) {
+        timeInfo <- PWFSLSmoke::timeInfo(datetime, lon, lat, timezone)
         PWFSLSmoke::addShadedNights(timeInfo)
       } else {
-        timeInfo <- PWFSLSmoke::timeInfo(datetime, lon, lat, timezone)
+        timeInfo <- PWFSLSmoke::timeInfo(df$datetime, lon, lat, timezone)
         PWFSLSmoke::addShadedNights(timeInfo)
       }
     }
@@ -185,7 +199,8 @@ rawPlot_timeseries <- function(df,
   # Shaded Background
   # TODO: add shadedBackground in the same manner as above
   if (!is.null(shadedBackground)) {
-    addShadedBackground(param=df[[shadedBackground]], timeAxis=datetime, lwd=sblwd, ...)
+    # TODO: Polish up addShadedBackground and then uncomment the line below
+    #addShadedBackground(param=df[[shadedBackground]], timeAxis=datetime, lwd=sbLwd, ...)
   }
 
   # Create the actual data plot (on top of background shading if it exists)
@@ -193,7 +208,7 @@ rawPlot_timeseries <- function(df,
        #xlab=xlab,
        #ylab=ylab,
        type=type,
-       lwd=linelwd,
+       lwd=1, # to replace this and other calls using do.call and argsList...
        ...)
 
   # Add chart title
