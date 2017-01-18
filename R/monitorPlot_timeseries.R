@@ -23,13 +23,13 @@
 #' \dontrun{ 
 #' airnow <- airnow_load(20150801, 20150831)
 #' Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
-#' monitor_timeseriesPlot(Roseburg)
+#' monitorPlot_timeseries(Roseburg)
 #' }
 
 #TODO: Looks like the first two AQI styles aren't working...AQI doesn't appear to have 1_3 or 8 style configured.
 #TODO: 
 
-monitor_timeseriesPlot <- function(ws_monitor, AQIStyle='', useGMT=FALSE, shadedNight=FALSE, add=FALSE,
+monitorPlot_timeseries <- function(ws_monitor, AQIStyle='', useGMT=FALSE, shadedNight=FALSE, add=FALSE,
                                    ...) {
   
   data <- ws_monitor$data
