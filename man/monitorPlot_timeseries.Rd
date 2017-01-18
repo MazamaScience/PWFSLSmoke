@@ -4,27 +4,41 @@
 \alias{monitorPlot_timeseries}
 \title{Create a Timeseries Plot of ws_monitor Object PM2.5 Data}
 \usage{
-monitorPlot_timeseries(ws_monitor, AQIStyle = "", useGMT = FALSE,
-  shadedNight = FALSE, add = FALSE, ...)
+monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
+  localTime = TRUE, style = "Airfire", shadedNight = FALSE, add = FALSE,
+  gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
+  dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{AQIStyle}{AQI styling, one of \code{"1_3|8|24"}}
+\item{monitorID}{monitor ID for one or more monitor in the ws_monitor object}
 
-\item{useGMT}{If TRUE, \code{monitor_timeseriesPlot} will display time as
-GMT. Otherwise, it will attempt to use local time, provided all monitors
-are in the same timezone. There will be an error if \code{useGMT} is FALSE but
-monitors are in multiple timezones.}
+\item{tlim}{time limits}
 
-\item{shadedNight}{Shade nighttime values if TRUE, provided \code{useGMT} is FALSE. 
-This is because we only allow shading for multiple monitors if they are in
-the same timezone; in this case, they have approximately the same sunrise and
-sunset times.}
+\item{localTime}{create plot in local time; applies to tlim as well}
 
-\item{add}{A logical specifying whether you want to add the plot on top of an existing time series plot}
+\item{style}{AQI styling, one of \code{'Airfire| | '}... TODO: Fill in other options}
 
-\item{...}{Any additional graphical parameters that can be passed in to the function}
+\item{shadedNight}{Shade nighttime values if TRUE, provided all monitors in the same time zone.}
+
+\item{add}{A logical specifying whether you want to add the data points on top of an existing time series plot}
+
+\item{gridPos}{position of grid lines either 'over', 'under' ('' for no grid lines)}
+
+\item{gridCol}{grid line color}
+
+\item{gridLwd}{grid line width}
+
+\item{gridLty}{grid line type}
+
+\item{dayLwd}{day marker line width}
+
+\item{hourLwd}{hour marker line width}
+
+\item{hourInterval}{interval for grid (max=12)}
+
+\item{...}{additional arguments to be passed to points()}
 }
 \description{
 Creates a time series plot of PM2.5 data from a ws_monitor object (see note below). Optional arguments
