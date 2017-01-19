@@ -44,7 +44,7 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, coun
   
   if (!is.null(countryCodes)) {
     # Guarantee upper case countrycodes
-    stateCodes <- stringr::str_to_upper(stateCodes)
+    countryCodes <- stringr::str_to_upper(countryCodes)
     if ( 'countryCode' %in% names(meta) ) {
       meta <- dplyr::filter(meta, meta$countryCode %in% countryCodes)
     } else {

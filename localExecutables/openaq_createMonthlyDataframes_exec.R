@@ -12,7 +12,7 @@
 # # m h  dom mon dow   command
 # 
 # # Update openAQ monitoring data
-# 00 01  12   *   *   /Users/aliceyang/Projects/PWFSLSmoke/localExecutables/openaq_createMonthlyDataframes_exec.R --startdate=20161001 --days=1 --outputDir=Users/alieyang/Data/openAQ --logDir=Users/aliceyang/Data/Logs --meta
+# 00 01  12   *   * /Users/aliceyang/Projects/PWFSLSmoke/localExecutables/openaq_createMonthlyDataframes_exec.R --startdate=20161001 --days=1 --outputDir=/Users/alieyang/Data/openAQ --logDir=/Users/aliceyang/Data/Logs --spatialDataDir=/Users/aliceyang/Data/Spatial
 VERSION = "0.1.0"
 
 library(methods)       # always included for Rscripts
