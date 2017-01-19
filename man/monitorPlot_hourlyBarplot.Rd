@@ -5,7 +5,7 @@
 \title{Create Hourly Barplot}
 \usage{
 monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = "AirFire", shadedNight = TRUE, gridPos = "",
+  localTime = TRUE, style = "AQI", shadedNight = TRUE, gridPos = "",
   gridCol = "black", gridLwd = 0.5, gridLty = "solid", dayLwd = 2,
   hourLwd = 1, hourInterval = 6, ...)
 }
@@ -43,7 +43,9 @@ if only one monitor in the ws_monitor object)}
 Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a ws_monitor object.
 Colors are assigned to one of the following styles:
 \itemize{
-\item{\code{AirFire} -- hourly values colored by AQI 24-hour breaks}
+\item{\code{AQI} -- hourly values colored with AQI colors using AQI 24-hour breaks}
+\item{\code{brownScaleAQI} -- hourly values colored with brownscale colors using AQI 24-hour breaks}
+\item{\code{grayScaleAQI} -- hourly values colored grayscale colors using AQI 24-hour breaks}
 }
 }
 \examples{

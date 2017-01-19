@@ -33,7 +33,8 @@
 #' title('Max Daily PM2.5 Levels in September, 2015')
 #'}
 
-monitor_map <- function(ws_monitor, slice=get('max'),
+monitor_map <- function(ws_monitor,
+                        slice=get('max'),
                         breaks=AQI$breaks_24,
                         colors=AQI$colors,
                         showCounties=TRUE, showLegend=TRUE,

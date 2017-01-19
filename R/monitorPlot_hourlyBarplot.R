@@ -20,7 +20,9 @@
 #' @description Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a ws_monitor object.
 #' Colors are assigned to one of the following styles:
 #' \itemize{
-#' \item{\code{AirFire} -- hourly values colored by AQI 24-hour breaks}
+#' \item{\code{AQI} -- hourly values colored with AQI colors using AQI 24-hour breaks}
+#' \item{\code{brownScaleAQI} -- hourly values colored with brownscale colors using AQI 24-hour breaks}
+#' \item{\code{grayScaleAQI} -- hourly values colored grayscale colors using AQI 24-hour breaks}
 #' }
 #' @examples
 #' \dontrun{
@@ -33,7 +35,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
                                       monitorID=NULL,
                                       tlim=NULL,
                                       localTime=TRUE,
-                                      style='AirFire',
+                                      style='AQI',
                                       shadedNight=TRUE,
                                       gridPos='',
                                       gridCol='black',
@@ -108,8 +110,16 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # TODO:  hourly, nowcast, AQI, etc.
   
   # 'AirFire' colors use hourly values with 24 hour colors
-  if ( style == 'AirFire' ) {
+  if ( style == 'AQI' ) {
     aqiColors <- AQI$colors
+    argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
+  } else if ( style == 'grayscaleAQI' ) {
+    # NOTE:  Greyscale coded 
+    aqiColors <- RColorBrewer::brewer.pal(6,'Greys')
+    argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
+  } else if ( style == 'brownscaleAQI' ) {
+    # NOTE:  Brownscale coded 
+    aqiColors <- rev(RColorBrewer::brewer.pal(11,'BrBG')[1:6])
     argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
   } else if ( style == 'aqiLevel' ) {
     # NOTE:  Special use case for creating mini barplots where the ws_monitor object
