@@ -17,7 +17,7 @@
 #' @note
 #' The low end of each break category is used as the breakpoint.
 
-AQI <- list(breaks_24=c(0, 12, 35.5, 55.5, 150.5, 250.5, 10000),
+AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
             colors=c(grDevices::rgb(0,228/255,0),
                      grDevices::rgb(255/255,255/255,0),
                      grDevices::rgb(255/255,126/255,0),

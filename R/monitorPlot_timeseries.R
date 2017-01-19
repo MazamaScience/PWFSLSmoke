@@ -33,7 +33,7 @@ monitorPlot_timeseries <- function(ws_monitor,
                                    monitorID=NULL,
                                    tlim=NULL,
                                    localTime=TRUE,
-                                   style='Airfire',
+                                   style='AQI',
                                    shadedNight=FALSE,
                                    add=FALSE,
                                    gridPos='',
@@ -44,11 +44,6 @@ monitorPlot_timeseries <- function(ws_monitor,
                                    hourLwd=0,
                                    hourInterval=6,
                                    ...) {
-  
-  # ----- Style -----------------------
-  
-  # anything to add here?
-  
   
   # ----- Data Preparation ------------
   
@@ -99,7 +94,7 @@ monitorPlot_timeseries <- function(ws_monitor,
   # Pull out time data
   times <- lubridate::with_tz(data$datetime, tzone=timezone)
   
-  # set transparency based on number of points 
+  # Set transparency based on number of points 
   dims <- dim(as.matrix(data[,-1]))
   num_na <- length(which(is.na(data[,-1])))
   size <- dims[1]*dims[2] - num_na
@@ -113,7 +108,6 @@ monitorPlot_timeseries <- function(ws_monitor,
   
   # ----- Args List ----------------------
   
-  #argsList <- list() # TEMPORARY -- to remove once cleaned up...
   argsList <- list(...)
   
   argsList$x=times
@@ -147,7 +141,7 @@ monitorPlot_timeseries <- function(ws_monitor,
   
   argsListBlank$col <- 'transparent'
   argsListBlank$axes <- FALSE
-  argsListBlank$title <- NULL
+  argsListBlank$main <- NULL
   
   # ----- Plotting -----------------------
   
@@ -158,7 +152,6 @@ monitorPlot_timeseries <- function(ws_monitor,
     do.call(plot,argsListBlank)
     
     # Shaded Night
-    # TODO: Decide if we want to allow shadedNight when add=TRUE. Probably not.
     if ( shadedNight ) {
 
       # Lat/lon for shadedNight
@@ -167,7 +160,7 @@ monitorPlot_timeseries <- function(ws_monitor,
       timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
       addShadedNights(timeInfo)
     
-      # # OPTION: Loop for each location
+      # # OPTION: Loop for each location...may need to increase tranparency based on # of monitors
       # for (monitor in mon$meta$monitorID) {
       #   lat <- mon$meta[monitor,"latitude"]
       #   lon <- mon$meta[monitor,"longitude"]
@@ -194,16 +187,15 @@ monitorPlot_timeseries <- function(ws_monitor,
     # Add axes if we are not adding points on top of an existing plot
     axis(2, las=1)
     
-    # TODO:  Nicely formatted time axis
+    # TODO: better x axis smarts, e.g. keep from saying "Monday, Tuesday" etc...
     axis.POSIXct(1, times)
     
   }
   
-  # TODO: Confirm the following is actually the desired color scheme for 'Airfire' style
   # TODO: Add more style options
   
   # choose AQI breaks 
-  if ( style == 'Airfire' ) {
+  if ( style == 'AQI' ) {
     
     breaks <- AQI$breaks_24
     

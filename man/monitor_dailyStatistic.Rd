@@ -36,7 +36,7 @@ If you choose a date range based on UTC times this may result in an insufficient
 number of hours in the first and last daily records of the returned \code{ws_monitor}
 object.
 
-This returned object has a dailyi time axis where each time is set to noon, local time.
+This returned object has a daily time axis where each time is set to noon, local time.
 }
 \examples{
 \dontrun{
