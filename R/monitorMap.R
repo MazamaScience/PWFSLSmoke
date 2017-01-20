@@ -1,33 +1,20 @@
 #' @keywords ws_monitor
 #' @export
-#' @import maps
+#' @import maps mapproj
 #' @title Create Map of Monitoring Stations
 #' @param ws_monitor ws_monitor object
 #' @param slice either a time index or a function used to collapse the time axis
 #' @param breaks set of breaks used to assign colors
 #' @param colors set of colors must be one less than the number of breaks
 #' @param labels a set of text labels, one for each color
-#' @param legenTitle a title for the legend if showLegend=TRUE
-#' @param showLegend logical specifying whether to add a legend -- defaults to \code{TRUE}
+#' @param legendTitle a title for the legend if showLegend=TRUE
+#' @param showLegend logical specifying whether to add a legend (default: \code{TRUE})
 #' @param stateCol color for state outlines on the map
 #' @param stateLwd width for state outlines
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
-#' @param add logical specifying whether to add points to an existing map
-#' @param ... additional arguments passed to points() such as 'col' or 'pch'
-#' # ws_monitor
-# slice=get('max'),
-# breaks=AQI$breaks_24,
-# colors=AQI$colors,
-# labels=AQI$names
-# legendTitle='Max AQI Level'
-# showLegend=TRUE
-# stateCol
-# stateLwd
-# countyCol
-# countyLwd
-# add=FALSE
-# ... (to be passed on to maps::map())
+#' @param add logical flag that specifies whether to add to the current plot
+#' @param ... additional arguments passed to maps::map() such as 'projection' or 'parameters'
 #' @description Creates a map of monitoring stations in a given ws_monitor object. 
 #' Individual monitor timeseries are reduced to a single value by applying the function 
 #' passed in as \code{slice} to the entire timeseries of each monitor with \code{na.rm=TRUE}.
@@ -47,16 +34,30 @@
 #' nw <- monitor_subset(airnow, stateCodes=c('WA','OR'), countryCodes="US")
 #' nw_daily <- monitor_dailyStatistic(nw, FUN=mean)
 #' map('county',c('WA','OR'))
-#' monitor_map(nw_daily, add=TRUE)
+#' monitorMap(nw_daily, add=TRUE)
 #' title('Max Daily PM2.5 Levels in September, 2015')
 #'}
 
-
+# if(FALSE) {
+#   ws_monitor
+#   slice=get('max')
+#   breaks=AQI$breaks_24
+#   colors=AQI$colors
+#   labels=AQI$names
+#   legendTitle="Max AQI Level"
+#   showLegend=TRUE
+#   stateCol="grey60"
+#   stateLwd=2
+#   countyCol="grey70"
+#   countyLwd=1
+#   add=FALSE
+# }
 
 monitorMap <- function(ws_monitor, 
                        slice=get('max'),
                        breaks=AQI$breaks_24,
                        colors=AQI$colors,
+                       cex=par('cex'),  #####TO DO
                        labels=AQI$names,
                        legendTitle="Max AQI Level",
                        showLegend=TRUE,
@@ -84,62 +85,40 @@ monitorMap <- function(ws_monitor,
   
   # ----- Figure out names for a legend and colors for each point ---- 
   
-  # if ( all(breaks == AQI$breaks_24) && all(colors == AQI$colors) ) {
-  #   legendColors <- colors
-  #   legendLabels <- AQI$names
-  #   legendTitle <- 'AQI Levels'
-  # } else {
-  #   # For each break, use the lower number as the name in the legend.
-  #   legendColors <- colors
-  #   legendLabels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
-  #   legendTitle <- 'Custom Levels'
-  # }
-  
   # Create levels and use them to create a set of colors
   levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
   cols <- colors[levels]
   
   # ------------------------------- GRAPHICS --------------------------------------
+
+  # list of states to be plotted as base map
+  stateCode <- as.data.frame(unique(ws_monitor$meta$stateCode))
+  colnames(stateCode) <- "abb"
+  state.fips <- maps::state.fips
+  duplicateIndex <- duplicated(state.fips$abb)
+  state.fips <- state.fips[!duplicateIndex,]
+  suppressWarnings(stateName <- dplyr::left_join(stateCode, state.fips, by="abb"))
+  stateName <- apply(as.data.frame(stateName$polyname),2,function(x){stringr::str_split_fixed(x, ':', 2)})[1:nrow(stateName)]
   
+  # in case map complains multiple col arguments
+  if ( !add ) {
+  # Plot the base map
+  maps::map("state", stateName, col=stateCol, lwd=stateLwd, ...)
+  maps::map('county', stateName, col=countyCol, lwd=countyLwd, add=TRUE, ...)
+  }
+  
+  # Now we add the (potentially projected) monitor points
+
   # Set default graphical parameters unless they are passed in
   argsList <- list(...)
-  argsList$pch <- ifelse('pch' %in% names(argsList), argsList$pch, 16)
-  argsList$cex <- ifelse('cex' %in% names(argsList), argsList$cex, 1)
-  # For some reason using ifelse('col' %in% names(argsList), argsList$col, cols) doesn't work,
-  # Instead of asigning the whole cols vector, it assigns the first value from the col vector.
-  # Also doesn't work for xlim and ylim.... 
-  if( 'xlim' %in% names(argsList) ) {
-    argsList$xlim <- argsList$xlim
+  
+  if( is.null(argsList$projection) ) {
+    points(lon, lat, pch=16, cex=cex, col=cols)
   } else {
-    argsList$xlim <- adjustRange(lon, 1.5, 0.5)
-  }
-  if( 'ylim' %in% names(argsList) ) {
-    argsList$ylim <- argsList$ylim
-  } else {
-    argsList$ylim <- adjustRange(lat, 1.5, 0.5)
-  }
-  if ( !('col' %in% names(argsList)) ) {
-    argsList$col <- cols
+   points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters, argsList$orientation), 
+          pch=16, cex=cex, col=cols )
   }
   
-  # Assign the x and y arguments
-  argsList$x <- lon
-  argsList$y <- lat
-  
-  if ( !add ) {
-    # Plot the base map
-    maps::map("state", xlim=argsList$xlim, ylim=argsList$ylim, col=stateCol, lwd=stateLwd)    
-    maps::map('county',col=countyCol, lwd=countyLwd, add=TRUE)    
-  }
-  
-  # Call the points() function
-  do.call(points, argsList)
-  
-  # Create outlines for each point
-  argsList$pch <- 1
-  argsList$cex <- argsList$cex * 1.2
-  argsList$col <- 'black'
-  do.call(points, argsList)
-  
-  if (showLegend) legend("bottomright", col=rev(colors), legend=rev(labels), title=legendTitle, pch=16, cex=.7)
+  par(xpd=TRUE)
+  if (showLegend) { addLegend(cex=cex, col=rev(colors), legend=rev(labels), title=legendTitle)}
 }

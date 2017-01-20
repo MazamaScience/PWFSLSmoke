@@ -5,7 +5,7 @@
 \title{Create a Timeseries Plot of ws_monitor Object PM2.5 Data}
 \usage{
 monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = "Airfire", shadedNight = FALSE, add = FALSE,
+  localTime = TRUE, style = "AQI", shadedNight = FALSE, add = FALSE,
   gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
   dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }

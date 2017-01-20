@@ -33,6 +33,7 @@ Imports:
     leaflet (>= 1.0.0),
     lubridate,
     maptools,
+    mapproj,
     openair,
     png,
     RColorBrewer,
