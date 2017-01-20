@@ -6,6 +6,7 @@
 #' @param slice either a time index or a function used to collapse the time axis
 #' @param breaks set of breaks used to assign colors
 #' @param colors set of colors must be one less than the number of breaks
+#' @param cex the amount that the points will be magnified on the map
 #' @param labels a set of text labels, one for each color
 #' @param legendTitle a title for the legend if showLegend=TRUE
 #' @param showLegend logical specifying whether to add a legend (default: \code{TRUE})
@@ -57,7 +58,7 @@ monitorMap <- function(ws_monitor,
                        slice=get('max'),
                        breaks=AQI$breaks_24,
                        colors=AQI$colors,
-                       cex=par('cex'),  #####TO DO
+                       cex=par('cex'),  
                        labels=AQI$names,
                        legendTitle="Max AQI Level",
                        showLegend=TRUE,
@@ -120,5 +121,5 @@ monitorMap <- function(ws_monitor,
   }
   
   par(xpd=TRUE)
-  if (showLegend) { addLegend(cex=cex, col=rev(colors), legend=rev(labels), title=legendTitle)}
+  if (showLegend) { addLegend(cex=cex*0.7, col=rev(colors), legend=rev(labels), title=legendTitle)}
 }
