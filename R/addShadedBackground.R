@@ -1,50 +1,35 @@
-# Placeholder for now -- will update with more meat later
+#' @export
+#' @title Add Shaded Background
+#' @param param vector of data to be represented
+#' @param timeAxis vector of times of the same length as param
+#' @param breaks break methodology
+#' @param col color for vertical lines
+#' @param maxOpacity maximum opacity
+#' @param lwd line width
+#' @description Adds vertical lines to an existing plot using any variable that shares the same
+# length as the time axis of the current plot. Line widths corresponds to magnitude of values.
+
+########################################################################################
 #
-# BACKGROUND (from TRAC) =======================
-# Create a function that adds a shading to an existing plot using any variable that shares the same
-# length as the time axis of the current plot. The function signature will look like this:
-#   addShadedBackground <- function(x, timeAxis, breaks=quantile(x), col='blue', maxOpacity=0.5, lwd=1)
-#     Inside of the function you can create bins with:
-#     assignedBin <- .bincode(x, breaks, include.lowest=TRUE)
-#     You will need loop over the number of unique bins (i.e. length(breaks)-1) to create a set of colors
-#     with opacity varying from 0.0 to maxOpacity.
-#     Color will be added with something similar to:
-#       abline(v=timeAxis, col=colors[assignedBin])
+# This function adds shading to an existing plot using any variable that shares the same
+# length as the time axis of the current plot.
 # 
-# addShadedBackground <- function(param, timeAxis, breaks=quantile(param, na.rm = TRUE), col='blue', maxOpacity=0.2, lwd=1) {
-#   
-#   
-#   
-#   assignedBin <- .bincode(param, breaks, include.lowest=TRUE)
-#   colors <- c()
-#   for (i in 1:length(breaks)-1) {
-#     opacity <- maxOpacity*(i-1)/(length(breaks)-1)
-#     colors[i] <- adjustcolor(col,opacity)
-#   }
-# 
-#   abline(v=timeAxis, col=colors[assignedBin], lwd=lwd)
-# 
-# }
-# 
-#
-# # FROM DNR_UTILS.R
-#
-# DNR_stoveWindPlot <- function(ws_monitor, raw,
-#                               tempVar='AT', humidityVar='RHx', windVar='W.S',
-#                               title='', tlim=NULL) {
-#
-#   # Flusing Winds
-#   windBin <- .bincode(raw$W.S, c(-Inf,1,2,5,10,Inf))
-#   for (i in 5) { colors[i] <- adjustcolor('blue',(i-1)/5) }
-#
-#   # Create fancy woodburning index
-#   stoveIndex <- woodStoveIndex(raw, tempVar, humidityVar, rollingWidth=12, rollingAlign='left')
-#   stoveSmoke <- ws_monitor$data[,2]
-#   stoveSmoke[stoveIndex < 0.5] <- NA
-#
-#   monitor_timeseriesPlot(ws_monitor, type='l', shadedNight=FALSE)
-#   points(stoveSmoke ~ ws_monitor$data$datetime, pch=16, col='purple')
-#   abline(v=raw$datetime, col=colors[windBin])
-#   legend('topleft', legend=c("Woodstove Index", "0-1 m/s Wind", "1-2 m/s Wind", "2-5 m/s Wind"), fill=c('purple',colors[1],colors[2],colors[3]))
-#
-# }
+########################################################################################
+
+addShadedBackground <- function(param,
+                                timeAxis,
+                                breaks=quantile(param, na.rm = TRUE),
+                                col='blue',
+                                maxOpacity=0.2,
+                                lwd=1) {
+
+  assignedBin <- .bincode(param, breaks, include.lowest=TRUE)
+  colors <- c()
+  for (i in 1:length(breaks)-1) {
+    opacity <- maxOpacity*(i-1)/(length(breaks)-1)
+    colors[i] <- adjustcolor(col,opacity)
+  }
+
+  abline(v=timeAxis, col=colors[assignedBin], lwd=lwd)
+
+}

@@ -1,27 +1,3 @@
-# ===== PRELIM STUFF ==========================
-
-# TODO: Set up "add=TRUE" -- was unable to get this to work in first pass
-# TODO: update time zone acquisition to eliminate warning for OlsonNames
-# TODO: prohibit user from using both shadedNights and shadedBackground?
-# TODO: Set up to use do.call(arg, argList) to enable easier passing of arguments to sub-functions
-
-# IDEAS
-# Move around title, labels, etc.
-# change colors? e.g. AQI colors if parameter == "pm25"
-
-# NEEDED TO RUN THIS CODE:
-# MazamaSpatialUtils
-# lubridate
-
-# ===== ACTUAL STUFF ==========================
-
-###############################################################################
-#
-# This function creates a plot of raw monitoring data, with various bells and
-# whistles per user input.
-#
-###############################################################################
-
 #' @keywords raw_enhance
 #' @export
 #' @title Plot Raw Monitoring Data
@@ -47,6 +23,13 @@
 #' @param hourInterval interval for grid (max=12)
 #' @param ... additional arguments to pass to lines() function
 #' @description Creates a plot of raw monitoring data as generated using raw_enhance().
+
+###############################################################################
+#
+# This function creates a plot of raw monitoring data, with various bells and
+# whistles per user input.
+#
+###############################################################################
 
 rawPlot_timeseries <- function(df,
                                parameter="pm25",
@@ -76,6 +59,7 @@ rawPlot_timeseries <- function(df,
   if ( !(is.null(shadedBackground)) ) {
     if ( !(shadedBackground %in% names(df)) ) {
       warning(paste0("Shaded background parameter '",shadedBackground,"' does not exist in names(",deparse(substitute(df)),")",sep=""))
+      shadedBackground <- NULL
     }
   }
 
@@ -117,7 +101,7 @@ rawPlot_timeseries <- function(df,
     if ( stringr::str_length(tlimStrings)[2] == 8 ) {
       tlim[2] <- paste0(tlim[2],'23')
     }
-    tlim <- parseDatetime(tlim, timezone=timezone)
+    tlim <- PWFSLSmoke::parseDatetime(tlim, timezone=timezone)
     
     # Create time mask and subset data
     timeMask <- df$datetime >= tlim[1] & df$datetime <= tlim[2]
@@ -173,7 +157,7 @@ rawPlot_timeseries <- function(df,
     }
   }
     
-  # Title (main)
+  # main (Title)
   if ( !('main' %in% names(argsList)) ) {
     if (parameter == "temperature") {
       argsList$main <- "Air Temperature"
@@ -192,7 +176,7 @@ rawPlot_timeseries <- function(df,
     }
   }
   
-  # Type
+  # type
   if ( !('type' %in% names(argsList)) ) {
     if ( parameter== "windDir" ) {
       argsList$type <- "p"
@@ -201,8 +185,7 @@ rawPlot_timeseries <- function(df,
     }
   }
   
-  # ylim
-  # TODO: better ylim smarts
+  # ylim TODO: better ylim smarts
   if ( !('ylim' %in% names(argsList)) ) {
     argsList$ylim <- max(c(data,0), na.rm=TRUE)
     argsList$ylim <- c(0, argsList$ylim*1.1)
@@ -224,14 +207,18 @@ rawPlot_timeseries <- function(df,
     # Shaded Night
     # Based on first deployment lat/lon if >1 deployment; breaks if >1 time zone
     if ( shadedNight ) {
-      if ( length(unique(df$timezone))>1 ) {
-        stop("Can't do shaded night for more than one time zone!!")
+      if ( is.null(shadedBackground) ) {
+        if ( length(unique(df$timezone))>1 ) {
+          stop("Can't do shaded night for more than one time zone!!")
+        } else {
+          # Lat/lon for shadedNight
+          lat <- df$latitude[1]
+          lon <- df$longitude[1]
+          timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
+          addShadedNights(timeInfo)
+        }
       } else {
-        # Lat/lon for shadedNight
-        lat <- df$latitude[1]
-        lon <- df$longitude[1]
-        timeInfo <- PWFSLSmoke::timeInfo(df$datetime, lon, lat, timezone)
-        addShadedNights(timeInfo)
+        warning("Can't do shaded night and shaded background")
       }
     }
     
@@ -251,24 +238,14 @@ rawPlot_timeseries <- function(df,
     
     # Add axes if we are not adding points on top of an existing plot
     axis(2, las=1)
+    axis.POSIXct(1, times) # TODO: better x axis smarts, e.g. keep from saying "Monday, Tuesday" etc...
     
-    # TODO: better x axis smarts, e.g. keep from saying "Monday, Tuesday" etc...
-    axis.POSIXct(1, times)
-    
-    # TODO: SHADED BACKGROUND?
-    # if ( shadedNight==TRUE || !is.null(shadedBackground) ) {
-    #   plot(datetime,param,
-    #        type="n",
-    #        xlab=xlab,
-    #        ylab=ylab)
-    # }
-    # Shaded Background
-    # TODO: add shadedBackground in the same manner as above
-    # if (!is.null(shadedBackground)) {
-    #   # TODO: Polish up addShadedBackground and then uncomment the line below
-    #   #addShadedBackground(param=df[[shadedBackground]], timeAxis=datetime, lwd=sbLwd, ...)
-    # }
-        
+    # Shaded background
+    if ( !is.null(shadedBackground) ) {
+      dataSB <- df[[shadedBackground]]
+      PWFSLSmoke::addShadedBackground(param=dataSB, timeAxis=times, lwd=sbLwd)
+    }
+  
   }
   
   # Add lines
