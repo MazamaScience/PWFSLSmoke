@@ -39,21 +39,21 @@
 #' }
 
 
-if(FALSE) {
-  threshold=AQI$breaks_24[3]
-  cex=par('cex')
-  sizeBy=NULL
-  colorBy="heidikeSkill"
-  breaks=c(-Inf,.5,.6,.7,.8,Inf)
-  paletteFunc=grDevices::colorRampPalette(RColorBrewer::brewer.pal(6,"Purples")[-1])
-  legendTitle="Max AQI Level"
-  showLegend=TRUE
-  stateCol="grey60"
-  stateLwd=2
-  countyCol="grey70"
-  countyLwd=1
-  add=FALSE
-}
+# if(FALSE) {
+#   threshold=AQI$breaks_24[3]
+#   cex=par('cex')
+#   sizeBy=NULL
+#   colorBy="heidikeSkill"
+#   breaks=c(-Inf,.5,.6,.7,.8,Inf)
+#   paletteFunc=grDevices::colorRampPalette(RColorBrewer::brewer.pal(6,"Purples")[-1])
+#   legendTitle="Max AQI Level"
+#   showLegend=TRUE
+#   stateCol="grey60"
+#   stateLwd=2
+#   countyCol="grey70"
+#   countyLwd=1
+#   add=FALSE
+# }
 
 monitorMap_performance <- function (predicted,
                                     observed,

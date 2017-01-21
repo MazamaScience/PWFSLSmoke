@@ -29,189 +29,256 @@
 #' @param parameter raw parameter to plot. Default = "pm25". Other options include
 #' c("temperature","humidity","windSpeed","windDir", "pressure"), or any of the other raw
 #' parameters (do "names(df)" to see list of options)
-#' @param localTime use local times; defaults to GMT if >1 time zone in data.
 #' @param tlim A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)
+#' @param localTime use local times; defaults to GMT if >1 time zone in data.
 #' @param shadedNight Shade background based on approximate sunrise/sunset times. Unavailable if >1 time zone in data.
 #' Also note that for multiple deployments, this defaults to use the lat/lon for the first deployment, which in theory
 #' could be somewhat unrepresentative, such as if deployments have a large range in latitude.
 #' @param shadedBackground Add vertical lines corresponding to a second parameter; currently defaults to wind speed binned into quartiles. Future iterations
 #' may include options to choose which parameter to plot, which color to use, which intervals, etc.
-#' @param type Line type; defaults to best option for each type, unless specified otherwise in this argument. To replace w/ ...
-# #' @param lineLwd line width for timeseries line; to replace w/ do.call and argsList...
 #' @param sbLwd shaded background line width
+#' @param add A logical specifying whether you want to add the data points on top of an existing time series plot
+#' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)
+#' @param gridCol grid line color
+#' @param gridLwd grid line width
+#' @param gridLty grid line type
+#' @param dayLwd day marker line width
+#' @param hourLwd hour marker line width
+#' @param hourInterval interval for grid (max=12)
 #' @param ... additional arguments to pass to lines() function
 #' @description Creates a plot of raw monitoring data as generated using raw_enhance().
 
-# TODO: Update from useGMT to localTime, and switch logic...
-
-# NOTE:  This next section has to be commented out when you build the package
-# NOTE:  but it's great to keep around for debugging
-# 
-# if (FALSE) {
-# 
-#   library(PWFSLSmoke)
-#   library(openair)
-#   setwd("~/Projects/PWFSLSmoke/")
-# 
-#   load("localData/airsis_rawList.RData")
-#   source('~/Projects/PWFSLSmoke/R/raw_enhance.R', echo=FALSE)
-# 
-#   rawEnhanceList <- list()
-# 
-#   raw <- airsis_rawList$Plain; rawSource <- "AIRSIS" #EBAM AIRSIS
-#   rawEnhanceList$EBAM_AIRSIS <- raw_enhance(raw, rawSource = rawSource)
-# 
-#   raw <- airsis_rawList$Naches; rawSource <- "AIRSIS" #ESAM AIRSIS
-#   rawEnhanceList$ESAM_AIRSIS <- raw_enhance(raw, rawSource = rawSource)
-# 
-#   raw <- airsis_rawList$Usk; rawSource <- "WRCC" #ESAM WRCC
-#   rawEnhanceList$ESAM_WRCC <- raw_enhance(raw, rawSource = rawSource)
-# 
-#   rm(raw)
-#   rm(rawSource)
-#   rm(airsis_rawList)
-# 
-#   lapply(rawEnhanceList,head)
-# 
-# }
-
 rawPlot_timeseries <- function(df,
                                parameter="pm25",
-                               localTime=TRUE,
                                tlim=NULL,
+                               localTime=TRUE,
                                shadedNight=TRUE,
-                               shadedBackground='windSpeed', #specify parameter to shade
-                               type=NULL,
+                               shadedBackground=NULL, #specify parameter to shade, e.g. 'windSpeed'
                                sbLwd=1,
-                               #add=FALSE,
-                               # linelwd=1, to replace using argsList logic
+                               add=FALSE,
+                               gridPos='',
+                               gridCol='black',
+                               gridLwd=1,
+                               gridLty='solid',
+                               dayLwd=0,
+                               hourLwd=0,
+                               hourInterval=6,
                                ...) {
 
   # ----- Initial coherency checks -------------
   
   # Verify plot parameter exists
-  if (!(parameter %in% names(df))) {
+  if ( !(parameter %in% names(df)) ) {
     stop(paste0("'",parameter,"' does not exist in names(",deparse(substitute(df)),")",sep=""))
   }
   
   # Verify shadedBackground parameter exists
   if ( !(is.null(shadedBackground)) ) {
     if ( !(shadedBackground %in% names(df)) ) {
-      stop(paste0("Shaded background parameter '",parameter,"' does not exist in names(",deparse(substitute(df)),")",sep=""))
+      warning(paste0("Shaded background parameter '",shadedBackground,"' does not exist in names(",deparse(substitute(df)),")",sep=""))
     }
-  }
-
-  # ----- Style ---------------------------------------------------------------
-
-  # Time axis labels
-  xlabLocal <- "Date and Time (local)" # used if GMT==FALSE
-  xlabGMT <- "Date and Time (GMT)" # used if GMT==TRUE, or if time data is in >1 timezone
-
-  # Line type default (can be overwritten) -- to overhaul using do.call and argsList
-  if(is.null(type)) {type <- "l"; typeSpec <- FALSE} else {typeSpec <- TRUE}
-
-  # Parameter-specific styling
-  if (parameter == "temperature") {
-    ylab <- "Air Temperature (Deg C)"
-    title <- "Air Temperature"
-  } else if (parameter == "humidity") {
-    ylab <- "Relative Humidity (%)"
-    title <- "Relative Humidity"
-  } else if (parameter == "windSpeed") {
-    ylab <- "Wind Speed (m/s)"
-    title <- "Wind Speed"
-  } else if (parameter == "windDir") {
-    ylab <- "Wind Direction (degrees)"
-    if (!typeSpec) {type <- "p"} # change from line graph to dots unless specifically requested to plot as line
-    title <- "Wind Direction"
-  } else if (parameter == "pm25") {
-    ylab <- expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")"))
-    title <- expression("PM"[2.5]*" Concentration")
-  } else if (parameter == "pressure") {
-    ylab <- "Barometric Pressure (hPa)"
-    title <- "Atmospheric Pressure"
-  } else {
-    ylab <- parameter
-    title <- parameter
   }
 
   # ----- Data Preparation ----------------------------------------------------
-
-  # Default to use GMT if >1 timezone in data
-  if (length(unique(df$timezone))>1) {
-    print("More than one time zone, so forced to plot using GMT")
-    localTime <- FALSE
+  
+  # Identify timezone(s)
+  timezone <- unique(df$timezone)
+  
+  # Force timezone to UTC and disable shadedNight if >1 timezone in metadata for monitorIDs
+  if ( length(timezone)>1 ) { # note that we will only enter this condition if localTime==TRUE
+    if ( localTime ) {
+      warning(">1 timezone in data: Timezone (including tlim, if specified) forced to UTC")
+      timezone <- "UTC"
+    }
+    if ( shadedNight ) {
+      warning(">1 timezone in metadata for selected monitorIDs: Shaded Night disabled")
+      shadedNight <- FALSE
+    }    
   }
-
-  # Set time axis data and labels
-  if ( localTime ) {
-    datetime <- lubridate::with_tz(df$datetime, tzone=df$timezone[1])
-    xlab <- xlabLocal
-  } else {
-    datetime <- df$datetime
-    xlab <- xlabGMT
+  
+  # Set timezone to UTC if localTime==FALSE
+  if ( !localTime ) {
+    timezone <- "UTC"
   }
+  
+  # Set time axis data
+  df$datetime <- lubridate::with_tz(df$datetime, tzone=timezone)
 
   # Time limit application
+  # TODO: add logic to check for tlim format
+  # TODO: warn if tlim is outside range of datetime data
   if ( !is.null(tlim) ) {
-    # TODO: add logic to check for tlim format
-    # TODO: warn if tlim is outside range of datetime data
-    timeMask <- datetime >= lubridate::ymd(tlim[1]) & datetime < lubridate::ymd(tlim[2])+lubridate::days(1)
-    if (sum(timeMask)==0) {
+    
+    # When tlim is specified in whole days we add hours to get the requsted full days
+    tlimStrings <- as.character(tlim)
+    if ( stringr::str_length(tlimStrings)[1] == 8 ) {
+      tlim[1] <- paste0(tlim[1],'00')
+    }
+    if ( stringr::str_length(tlimStrings)[2] == 8 ) {
+      tlim[2] <- paste0(tlim[2],'23')
+    }
+    tlim <- parseDatetime(tlim, timezone=timezone)
+    
+    # Create time mask and subset data
+    timeMask <- df$datetime >= tlim[1] & df$datetime <= tlim[2]
+    if ( sum(timeMask)==0 ) {
       stop("No data contained within specified time limits, please try again.")
     }
-    datetime <- datetime[timeMask]
     df <- df[timeMask,]
   }
+  
+  # Pull out key data
+  times <- df$datetime
+  data <- df[[parameter]]
+  
+  # Cap hour interval
+  if ( hourInterval>12 ) {
+    warning("Hour interval capped at 12 hours")
+    hourInterval <- min(hourInterval,12)
+  }
+  
+  # ----- Style / Argument List -----------------------------------------------
+  
+  argsList <- list(...) #TODO: add ... in parens when finished...
 
   # Prep the data to plot, based on parameter selection by user (default = "pm25")
-  param <- df[[parameter]]
-
-  # ----- Plotting ------------------------------------------------------------
-
-  # Create the plot
-
-  if ( shadedNight==TRUE || !is.null(shadedBackground) ) {
-    plot(datetime,param,
-         type="n",
-         xlab=xlab,
-         ylab=ylab)
-  }
-
-  # Shaded Night: based on first deployment lat/lon if >1 deployment; breaks if >1 time zone
-  if (shadedNight) {
-    if (length(unique(df$timezone))>1) {
-      stop("Can't do shaded night for more than one time zone!!")
+  argsList$x <- times
+  argsList$y <- data
+  
+  # xlab
+  if ( !('xlab' %in% names(argsList)) ) {  
+    if ( timezone=="UTC" ) {
+      argsList$xlab <- "Date and Time (UTC)"
     } else {
-      lon <- df$longitude[1]
-      lat <- df$latitude[1]
-      timezone <- df$timezone[1]
-      if ( localTime ) {
-        timeInfo <- PWFSLSmoke::timeInfo(datetime, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
-      } else {
-        timeInfo <- PWFSLSmoke::timeInfo(df$datetime, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
-      }
+      argsList$xlab <- "Date and Time (local)"
     }
   }
-
-  # Shaded Background
-  # TODO: add shadedBackground in the same manner as above
-  if (!is.null(shadedBackground)) {
-    # TODO: Polish up addShadedBackground and then uncomment the line below
-    #addShadedBackground(param=df[[shadedBackground]], timeAxis=datetime, lwd=sbLwd, ...)
+  
+  # ylab
+  if ( !('ylab' %in% names(argsList)) ) {
+    if (parameter == "temperature") {
+      argsList$ylab <- "Air Temperature (Deg C)"
+    } else if (parameter == "humidity") {
+      argsList$ylab <- "Relative Humidity (%)"
+    } else if (parameter == "windSpeed") {
+      argsList$ylab <- "Wind Speed (m/s)"
+    } else if (parameter == "windDir") {
+      argsList$ylab <- "Wind Direction (degrees)"
+    } else if (parameter == "pm25") {
+      argsList$ylab <- expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")"))
+    } else if (parameter == "pressure") {
+      argsList$ylab <- "Barometric Pressure (hPa)"
+    } else {
+      argsList$ylab <- parameter
+    }
   }
+    
+  # Title (main)
+  if ( !('main' %in% names(argsList)) ) {
+    if (parameter == "temperature") {
+      argsList$main <- "Air Temperature"
+    } else if (parameter == "humidity") {
+      argsList$main <- "Relative Humidity"
+    } else if (parameter == "windSpeed") {
+      argsList$main <- "Wind Speed"
+    } else if (parameter == "windDir") {
+      argsList$main <- "Wind Direction"
+    } else if (parameter == "pm25") {
+      argsList$main <- expression("PM"[2.5]*" Concentration")
+    } else if (parameter == "pressure") {
+      argsList$main <- "Atmospheric Pressure"
+    } else {
+      argsList$main <- parameter
+    }
+  }
+  
+  # Type
+  if ( !('type' %in% names(argsList)) ) {
+    if ( parameter== "windDir" ) {
+      argsList$type <- "p"
+    } else {
+      argsList$type <- "l"
+    }
+  }
+  
+  # ylim
+  # TODO: better ylim smarts
+  if ( !('ylim' %in% names(argsList)) ) {
+    argsList$ylim <- max(c(data,0), na.rm=TRUE)
+    argsList$ylim <- c(0, argsList$ylim*1.1)
+  }
+  
+  # ----- Plotting ------------------------------------------------------------
+  
+  if ( !add ) {
+  
+    # Set up argsList for blank plot...review to ensure everything captured
+    argsListBlank <- argsList
 
-  # Create the actual data plot (on top of background shading if it exists)
-  lines(datetime,param,
-       #xlab=xlab,
-       #ylab=ylab,
-       type=type,
-       lwd=1, # to replace this and other calls using do.call and argsList...
-       ...)
+    argsListBlank$col <- 'transparent'
+    argsListBlank$axes <- FALSE
 
-  # Add chart title
-  title(title)
+    # Create blank plot canvas
+    do.call(plot,argsListBlank)
+    
+    # Shaded Night
+    # Based on first deployment lat/lon if >1 deployment; breaks if >1 time zone
+    if ( shadedNight ) {
+      if ( length(unique(df$timezone))>1 ) {
+        stop("Can't do shaded night for more than one time zone!!")
+      } else {
+        # Lat/lon for shadedNight
+        lat <- df$latitude[1]
+        lon <- df$longitude[1]
+        timeInfo <- PWFSLSmoke::timeInfo(df$datetime, lon, lat, timezone)
+        addShadedNights(timeInfo)
+      }
+    }
+    
+    # Add vertical lines to denote days and/or hour breaks
+    hour_indices <- which(as.numeric(strftime(times,format="%H",tz=timezone)) %% hourInterval == 0)
+    day_indices <- which(as.numeric(strftime(times,format="%H",tz=timezone)) %% 24 == 0)
+    abline(v=times[hour_indices], lwd=hourLwd) # at beginning of hour
+    abline(v=times[day_indices], lwd=dayLwd) # at beginning of day
+    
+    # Add horizontal grid lines (before points if grid=='under')
+    if ( gridPos == 'under' ) {
+      abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
+    }
+    
+    # Put a box around the plot area
+    box()
+    
+    # Add axes if we are not adding points on top of an existing plot
+    axis(2, las=1)
+    
+    # TODO: better x axis smarts, e.g. keep from saying "Monday, Tuesday" etc...
+    axis.POSIXct(1, times)
+    
+    # TODO: SHADED BACKGROUND?
+    # if ( shadedNight==TRUE || !is.null(shadedBackground) ) {
+    #   plot(datetime,param,
+    #        type="n",
+    #        xlab=xlab,
+    #        ylab=ylab)
+    # }
+    # Shaded Background
+    # TODO: add shadedBackground in the same manner as above
+    # if (!is.null(shadedBackground)) {
+    #   # TODO: Polish up addShadedBackground and then uncomment the line below
+    #   #addShadedBackground(param=df[[shadedBackground]], timeAxis=datetime, lwd=sbLwd, ...)
+    # }
+        
+  }
+  
+  # Add lines
+  do.call(lines,argsList)
+
+  if ( gridPos == 'over' ) {
+    
+    # Horizontal lines
+    abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
+    
+  }
 
 }

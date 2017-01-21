@@ -4,9 +4,10 @@
 \alias{rawPlot_timeseries}
 \title{Plot Raw Monitoring Data}
 \usage{
-rawPlot_timeseries(df, parameter = "pm25", localTime = TRUE, tlim = NULL,
-  shadedNight = TRUE, shadedBackground = "windSpeed", type = NULL,
-  sbLwd = 1, ...)
+rawPlot_timeseries(df, parameter = "pm25", tlim = NULL, localTime = TRUE,
+  shadedNight = TRUE, shadedBackground = NULL, sbLwd = 1, add = FALSE,
+  gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
+  dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }
 \arguments{
 \item{df}{raw_enhance monitor object, as created by the raw_enhance() function}
@@ -15,9 +16,9 @@ rawPlot_timeseries(df, parameter = "pm25", localTime = TRUE, tlim = NULL,
 c("temperature","humidity","windSpeed","windDir", "pressure"), or any of the other raw
 parameters (do "names(df)" to see list of options)}
 
-\item{localTime}{use local times; defaults to GMT if >1 time zone in data.}
-
 \item{tlim}{A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)}
+
+\item{localTime}{use local times; defaults to GMT if >1 time zone in data.}
 
 \item{shadedNight}{Shade background based on approximate sunrise/sunset times. Unavailable if >1 time zone in data.
 Also note that for multiple deployments, this defaults to use the lat/lon for the first deployment, which in theory
@@ -26,9 +27,23 @@ could be somewhat unrepresentative, such as if deployments have a large range in
 \item{shadedBackground}{Add vertical lines corresponding to a second parameter; currently defaults to wind speed binned into quartiles. Future iterations
 may include options to choose which parameter to plot, which color to use, which intervals, etc.}
 
-\item{type}{Line type; defaults to best option for each type, unless specified otherwise in this argument. To replace w/ ...}
-
 \item{sbLwd}{shaded background line width}
+
+\item{add}{A logical specifying whether you want to add the data points on top of an existing time series plot}
+
+\item{gridPos}{position of grid lines either 'over', 'under' ('' for no grid lines)}
+
+\item{gridCol}{grid line color}
+
+\item{gridLwd}{grid line width}
+
+\item{gridLty}{grid line type}
+
+\item{dayLwd}{day marker line width}
+
+\item{hourLwd}{hour marker line width}
+
+\item{hourInterval}{interval for grid (max=12)}
 
 \item{...}{additional arguments to pass to lines() function}
 }
