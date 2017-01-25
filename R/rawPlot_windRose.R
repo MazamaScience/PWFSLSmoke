@@ -65,13 +65,16 @@ rawPlot_windRose <- function(df,
   argsList <- list(...)
   argsList$mydata <- df
   if ( !('angle' %in% names(argsList)) ) {
-    argsList$angle <- 15
+    argsList$angle <- 45
   }
   if ( !('ws' %in% names(argsList)) ) {
     argsList$ws <- "windSpeed"
   }
   if ( !('wd' %in% names(argsList)) ) {
     argsList$wd <- "windDir"
+  }
+  if ( !('paddle' %in% names(argsList)) ) {
+    argsList$paddle <- FALSE
   }
   
   # ----- Plotting -------------------------

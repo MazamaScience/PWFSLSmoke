@@ -72,7 +72,7 @@ rawPlot_pollutionRose <- function(df,
   argsList$pollutant <- parameter
   argsList$normalise <- normalize
   if ( !('angle' %in% names(argsList)) ) {
-    argsList$angle <- 15
+    argsList$angle <- 45
   }
   if ( !('ws' %in% names(argsList)) ) {
     argsList$ws <- "windSpeed"

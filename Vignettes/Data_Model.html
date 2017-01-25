@@ -12,7 +12,7 @@
 
 <meta name="author" content="Mazama Science" />
 
-<meta name="date" content="2017-01-17" />
+<meta name="date" content="2017-01-24" />
 
 <title>Data Model</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Data Model</h1>
 <h4 class="author"><em>Mazama Science</em></h4>
-<h4 class="date"><em>2017-01-17</em></h4>
+<h4 class="date"><em>2017-01-24</em></h4>
 
 
 
@@ -99,9 +99,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 colnames(ws_monitor$data) = c('datetime',ws_monitor$meta$monitorID)</code></pre>
 <p><strong>Example 1: Exploring <code>ws_monitor</code> Objects</strong></p>
 <p>We will use the <code>airnow_load()</code> and <code>monitor_subset()</code> functions to download and subset a <code>ws_monitor</code> object which we can then explore.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PWFSLSmoke)
-
-<span class="co"># Get some airnow data for Washington</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PWFSLSmoke)</code></pre></div>
+<pre><code>## Loading required package: dplyr</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Loading required package: maps</code></pre>
+<pre><code>## Loading required package: MazamaSpatialUtils</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get some airnow data for Washington</span>
 airnow &lt;-<span class="st"> </span><span class="kw">airnow_load</span>(<span class="dt">startdate=</span><span class="dv">20150801</span>, <span class="dt">enddate=</span><span class="dv">20150831</span>)
 WA &lt;-<span class="st"> </span><span class="kw">monitor_subset</span>(airnow, <span class="dt">stateCodes=</span><span class="st">'WA'</span>)
 
