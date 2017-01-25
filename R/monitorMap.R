@@ -9,6 +9,8 @@
 #' @param cex the amount that the points will be magnified on the map
 #' @param labels a set of text labels, one for each color
 #' @param legendTitle a title for the legend if showLegend=TRUE
+#' @param legendX x coordinate passed on to the legend() command
+#' @param legendY y coordinate passed on to the legend() command
 #' @param showLegend logical specifying whether to add a legend (default: \code{TRUE})
 #' @param stateCol color for state outlines on the map
 #' @param stateLwd width for state outlines
@@ -61,6 +63,8 @@ monitorMap <- function(ws_monitor,
                        cex=par('cex'),  
                        labels=AQI$names,
                        legendTitle="Max AQI Level",
+                       legendX="topright",
+                       legendY=NULL,
                        showLegend=TRUE,
                        stateCol="grey60",
                        stateLwd=2,
@@ -77,7 +81,7 @@ monitorMap <- function(ws_monitor,
   allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
   data <- as.matrix(ws_monitor$data[,-1])
   if (class(slice) == "function") {
-    pm25 <- apply(data[,!allMissingMask], 2, slice, na.rm=TRUE)
+    pm25 <- apply(as.matrix(data[,!allMissingMask]), 2, slice, na.rm=TRUE)
   } else if (class(slice) == "integer" || class(slice) == "numeric") {
     pm25 <- data[as.integer(slice),] # single row
   } else {
@@ -91,7 +95,7 @@ monitorMap <- function(ws_monitor,
   cols <- colors[levels]
   
   # ------------------------------- GRAPHICS --------------------------------------
-
+  
   # list of states to be plotted as base map
   stateCode <- as.data.frame(unique(ws_monitor$meta$stateCode))
   colnames(stateCode) <- "abb"
@@ -103,23 +107,25 @@ monitorMap <- function(ws_monitor,
   
   # in case map complains multiple col arguments
   if ( !add ) {
-  # Plot the base map
-  maps::map("state", stateName, col=stateCol, lwd=stateLwd, ...)
-  maps::map('county', stateName, col=countyCol, lwd=countyLwd, add=TRUE, ...)
+    # Plot the base map
+    maps::map("state", stateName, col=stateCol, lwd=stateLwd, ...)
+    maps::map('county', stateName, col=countyCol, lwd=countyLwd, add=TRUE, ...)
   }
   
   # Now we add the (potentially projected) monitor points
-
+  
   # Set default graphical parameters unless they are passed in
   argsList <- list(...)
   
   if( is.null(argsList$projection) ) {
     points(lon, lat, pch=16, cex=cex, col=cols)
   } else {
-   points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters, argsList$orientation), 
-          pch=16, cex=cex, col=cols )
+    points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters, argsList$orientation), 
+            pch=16, cex=cex, col=cols )
   }
   
-  par(xpd=TRUE)
-  if (showLegend) { addLegend(cex=cex*0.7, col=rev(colors), legend=rev(labels), title=legendTitle)}
+  if ( showLegend ) { 
+    addLegend(legendX, legendY, cex=cex*0.7, col=rev(colors), legend=rev(labels), title=legendTitle)
+  }
+  
 }

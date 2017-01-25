@@ -2,13 +2,15 @@
 % Please edit documentation in R/addLegend.R
 \name{addLegend}
 \alias{addLegend}
-\title{Create Map of Monitoring Stations}
+\title{Add a Legend to a Map of Monitoring Stations}
 \usage{
-addLegend(x = "bottomright", col = rev(AQI$colors),
+addLegend(x = "topright", y = NULL, col = rev(AQI$colors),
   legend = rev(AQI$names), pch = 16, title = "Air Quality Index", ...)
 }
 \arguments{
-\item{x}{position to put the legend}
+\item{x}{x coordinate passed on to the legend() command}
+
+\item{y}{y coordinate passed on to the legend() command}
 
 \item{col}{the color for points/lines in the legend}
 
@@ -21,7 +23,7 @@ addLegend(x = "bottomright", col = rev(AQI$colors),
 \item{...}{additional arguments to be passed to legend()}
 }
 \description{
-This function will be a wrapper around graphics::legend(). It will show the AQI colors and 
+This function is a convenience wrapper around graphics::legend(). It will show the AQI colors and 
 names by default if \code{col} and \code{legend} are not specified.
 }
 \examples{
@@ -29,7 +31,7 @@ names by default if \code{col} and \code{legend} are not specified.
 airnow <- airnow_load(20150901, 20150930)
 nw <- monitor_subset(airnow, stateCodes=c('WA','OR'), countryCodes="US")
 monitorMap(nw, showLegend=FALSE)
-addLegend(x="topleft", bty="n", cex=0.8, inset=c(-0.2,0))
+addLegend(x="left", bty="n", cex=0.8, inset=c(-0.2,0), xpd=TRUE)
 }
 }
 \keyword{legend}

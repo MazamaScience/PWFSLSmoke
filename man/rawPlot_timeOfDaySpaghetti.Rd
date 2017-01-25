@@ -32,13 +32,10 @@ rawPlot_timeOfDaySpaghetti(df, dataVar = "pm25", tlim = NULL,
 \description{
 Spaghetti Plot that shows data by hour-of-day.
 }
-\note{
-TODO: Fill in working example
-}
 \examples{
 \dontrun{
-raw <- airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
-raw <- raw_enhance(raw,rawSource='AIRSIS')
+raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, unitID=1012)
+raw <- raw_enhance(raw, rawSource='AIRSIS')
 rawPlot_timeOfDaySpaghetti(raw)
 }
 }
