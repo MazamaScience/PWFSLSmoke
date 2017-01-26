@@ -12,11 +12,10 @@
 #' @param highlightCol color used for highlighted days
 #' @param ... additional graphical parameters are passed to the lines() function for day lines
 #' @description Spaghetti Plot that shows data by hour-of-day. 
-#' @note TODO: Fill in working example
 #' @examples
 #' \dontrun{
-#' raw <- airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
-#' raw <- raw_enhance(raw,rawSource='AIRSIS')
+#' raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, unitID=1012)
+#' raw <- raw_enhance(raw, rawSource='AIRSIS')
 #' rawPlot_timeOfDaySpaghetti(raw)
 #' }
 
@@ -166,8 +165,8 @@ rawPlot_timeOfDaySpaghetti <- function(df,
   }
   
   # Add mean line
-  df %>% group_by(as.factor(hour)) %>%
-    summarize(data=mean(data,na.rm=TRUE)) ->
+  df %>% group_by(as.factor(df$hour)) %>%
+    summarize(data=mean(df$data,na.rm=TRUE)) ->
     hourMeanDF
   
   lines(hourMeanDF$data ~ seq(0,23), col=meanCol, lwd=meanLwd, lty=meanLty)

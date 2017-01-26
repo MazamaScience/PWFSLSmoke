@@ -8,6 +8,8 @@
 #' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
 #' @param labels a set of text labels, one for each color
 #' @param legendTitle legend title
+#' @param legendX x coordinate passed on to the legend() command
+#' @param legendY y coordinate passed on to the legend() command
 #' @param showLegend logical specifying whether to add a legend
 #' @param width width of image, in pixels
 #' @param height height of image, in pixels
@@ -31,6 +33,8 @@ monitorGoogleMap <- function(ws_monitor,
                              colors=AQI$colors,
                              labels=AQI$names,
                              legendTitle='Max AQI Level',
+                             legendX="topright",
+                             legendY=NULL,
                              showLegend=TRUE,
                              width=640,
                              height=640,
@@ -67,7 +71,7 @@ monitorGoogleMap <- function(ws_monitor,
     # NOTE:  Need as.matrix in case we only have a single monitor
     allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
     data <- as.matrix(ws_monitor$data[,-1])
-    pm25 <- apply(data[,!allMissingMask], 2, slice, na.rm=TRUE)
+    pm25 <- apply(as.matrix(data[,!allMissingMask]), 2, slice, na.rm=TRUE)
   } else if ( class(slice) == "integer" || class(slice) == "numeric" ) {
     pm25 <- ws_monitor$data[as.integer(slice),][-1]
   } else {
@@ -132,6 +136,8 @@ monitorGoogleMap <- function(ws_monitor,
     } else if ( maxRange > 1 ) {
       zoom <- 8
     } else if ( maxRange > 0.5 ) {
+      zoom <- 9
+    } else {
       zoom <- 9
     }
   }

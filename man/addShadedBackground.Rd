@@ -4,8 +4,8 @@
 \alias{addShadedBackground}
 \title{Add Shaded Background}
 \usage{
-addShadedBackground(param, timeAxis, breaks = quantile(param, na.rm = TRUE),
-  col = "blue", maxOpacity = 0.2, lwd = 1)
+addShadedBackground(param, timeAxis, breaks = stats::quantile(param, na.rm =
+  TRUE), col = "blue", maxOpacity = 0.2, lwd = 1)
 }
 \arguments{
 \item{param}{vector of data to be represented}

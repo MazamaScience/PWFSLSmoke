@@ -18,7 +18,7 @@
 
 addShadedBackground <- function(param,
                                 timeAxis,
-                                breaks=quantile(param, na.rm = TRUE),
+                                breaks=stats::quantile(param, na.rm = TRUE),
                                 col='blue',
                                 maxOpacity=0.2,
                                 lwd=1) {
