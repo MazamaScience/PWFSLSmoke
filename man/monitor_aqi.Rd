@@ -9,34 +9,35 @@ monitor_aqi(ws_monitor, parameter = "pm25", hour = 24)
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{parameter}{pollutent type}
+\item{parameter}{pollutant type}
 
-\item{hour}{the concentration time period to be used}
+\item{hour}{the number of hours for concentration values to be averaged}
 }
 \value{
-a ws_monitor object with data replaced by AQI values
+a \code{ws_monitor} object with \code{data} replaced by AQI values
 }
 \description{
-AQI values are calculated for \code{data} in the ws_monitor object for different pollutants.
+AQI values are calculated for \code{data} in the \code{ws_monitor} object for different pollutants.
 
-Available combinations of parameter and hour are:
+Available combinations of \code{parameter} and \code{hour} are:
 \enumerate{
-\item{parameter="o3", hour=8}
-\item{parameter="o3", hour=1}
-\item{parameter="pm25, hour=24}
-\item{parameter="pm10, hour=24}
-\item{parameter="co", hour=8}
-\item{parameter="so2", hour=1}
-\item{parameter="no2", hour=1}
+\item{parameter="o3",  hour=8}
+\item{parameter="o3",  hour=1}
+\item{parameter="pm25,  hour=24}
+\item{parameter="pm10,  hour=24}
+\item{parameter="co",  hour=8}
+\item{parameter="so2",  hour=1}
+\item{parameter="no2",  hour=1}
 }
 
-See references for details of calculation steps.
+See references for calculation details.
 }
 \examples{
 \dontrun{
-openaq <- openaq_load(startdate=201601001, enddate=20161031, baseUrl="~/Data/openAQ/")  #### this example needs to be changed
-openaq_AQI <- monitor_aqi(openaq)
+airnow <- openaq_load(startdate=20161001, enddate=20161031)
+airnow_AQI <- monitor_aqi(airnow)
 }
+
 }
 \references{
 \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
