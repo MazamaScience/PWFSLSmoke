@@ -39,11 +39,11 @@ airsis_createRawDataframe <- function(provider='USFS', unitID=NULL,
   # Sanity checks
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")
-    stop(paste0("Required parameter 'unitID' is missing."))
+    stop(paste0("Required parameter 'unitID' is missing"))
   }
   
   # Read in AIRSIS .csv data
-  logger.info('Downloading data...')
+  logger.info("Downloading AIRSIS data ...")
   fileString <- airsis_downloadData(provider, unitID=unitID, startdate, enddate, baseUrl)
   
   # Optionally save as a raw .csv file
@@ -52,21 +52,21 @@ airsis_createRawDataframe <- function(provider='USFS', unitID=NULL,
                    silent=TRUE )
     if ( class(result)[1] == "try-error" ) {
       err_msg <- geterrmessage()
-      logger.warn('Unable to save data to local file %s: %s', saveFile, err_msg)
+      logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
     }
     # NOTE:  Processing continues even if we fail to write the local file
   }
   
   # Read csv raw data into a dataframe
-  logger.info('Parsing data...')
+  logger.info("Parsing data ...")
   df <- airsis_parseData(fileString)
   
   # Apply monitor-appropriate QC to the dataframe
-  logger.info('Applying QC logic...')
+  logger.info("Applying QC logic ...")
   df <- airsis_qualityControl(df)
   
   # Add clustering information to identify unique deployments
-  logger.info('Clustering...')
+  logger.info("Clustering ...")
   df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
   
   return(df)

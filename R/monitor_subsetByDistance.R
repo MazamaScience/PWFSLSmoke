@@ -56,7 +56,9 @@ monitor_subsetByDistance <- function(ws_monitor, lon=NULL, lat=NULL, radius=50, 
     
     # Sanity check 
     if ( count > withinRadiusCount ) {
-      futile.logger::flog.info("count=%s cells requested but only %s within radius=%s.  Returning %s.", count, withinRadiusCount, radius, withinRadiusCount)
+      message(paste0("count=", count, " cells requested but only", 
+                     withinRadiusCount, "within radius=", radius,
+                     ".  Returning", withinRadiusCount, "."))
       count <- withinRadiusCount
     }
     

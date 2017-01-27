@@ -23,7 +23,7 @@
 #' airnow <- airnow_load(20150801, 20150831)
 #' WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(55,Inf))
 #' WA_smoky_dailyMean <- monitor_dailyStatistic(WA_smoky, FUN=get('mean'), dayStart='midnight')
-#' monitor_timeseriesPlot(WA_smoky_dailyMean, type='s')
+#' monitorPlot_timeseries(WA_smoky_dailyMean, type='s')
 #' }
 
 monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,

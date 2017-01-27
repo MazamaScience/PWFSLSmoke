@@ -35,7 +35,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
   locations <- paste(lats, lons, sep=',', collapse='|')
   url <- paste0(urlBase, locations)
   
-  logger.debug('Getting Google elevation data for %s location(s)', nrow(df))
+  logger.debug("Getting Google elevation data for %s location(s)", nrow(df))
   
   # Get and parse the return which has elements 'results' and 'status'
   googleReturn <- httr::content(httr::GET(url))
@@ -43,7 +43,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
   # Check results
   if ( googleReturn$status != 'OK' ) {
     
-    logger.warn('Google status was %s for URL %s', googleReturn$status, url)
+    logger.warn("Google status was %s for URL %s", googleReturn$status, url)
     df$elevation <- as.numeric(NA)
     
   } else {
@@ -55,7 +55,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
     
     # Sanity check that things came back in the same order
     if ( !all(df[[latVar]] == elevationDF$location.lat) || !all(df[[lonVar]] == elevationDF$location.lon) ) {
-      logger.error('Something is wrong with station elevation ordering')
+      logger.error("Something is wrong with station elevation ordering")
       df$elevation <- as.numeric(NA)
     } else {
       df$elevation <- elevationDF$elevation
@@ -65,7 +65,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
   
   # ----- Add siteName from Google API ---------------------------
   
-  logger.debug('Getting Google address data for %s location(s)', nrow(df))
+  logger.debug("Getting Google address data for %s location(s)", nrow(df))
   
   # When siteName is missing, create one similar to AirNow with "locality-route"
   
@@ -81,7 +81,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
       if ( is.na(df[i,'siteName']) ) {
         
         location <- c(df[i,lonVar],df[i,latVar])
-        logger.trace('\tgoogle address request for location = %s, %s', location[1], location[2])
+        logger.trace("\tgoogle address request for location = %s, %s", location[1], location[2])
         if (!anyNA(location)) {
           address <- suppressMessages( ggmap::revgeocode(location, output='more') )
           df$siteName[i] <- paste(address$locality,address$route,sep='-')

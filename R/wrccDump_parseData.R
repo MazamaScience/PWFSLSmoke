@@ -54,8 +54,8 @@ wrccDump_parseData <- function(fileString) {
   lines <- readr::read_lines(fileString)
   
   if ( length(lines) <= 4 ) {
-    logger.warn('No valid PM2.5 data')
-    stop(paste0('No valid PM2.5 data'))
+    logger.warn("No valid PM2.5 data")
+    stop(paste0("No valid PM2.5 data"))
   }
   
   # Remove "FWS " from first line
@@ -79,11 +79,11 @@ wrccDump_parseData <- function(fileString) {
     lineCount <- monitorLineCount[i]
     
     if ( lineCount <= 4 ) {
-      logger.debug('No valid PM2.5 data for %s', lines[lineIndex])
+      logger.debug("No valid PM2.5 data for %s", lines[lineIndex])
       next
     }
     
-    logger.debug('Parsing data for %s', lines[lineIndex])
+    logger.debug("Parsing data for %s", lines[lineIndex])
     
     # For monitors with data, extract associated monitor, header and data lines
     singleMonitorIndices <- seq(lineIndex,length.out=lineCount)
@@ -106,11 +106,11 @@ wrccDump_parseData <- function(fileString) {
     columnTypes <- monitorTypeList$columnTypes
     
     if ( monitorType == "UNKNOWN" ) {
-      logger.debug('WRCC header type == %s', monitorType)
+      logger.debug("WRCC header type == %s", monitorType)
       next
     }
     
-    logger.debug('WRCC header type == %s', monitorType)
+    logger.debug("WRCC header type == %s", monitorType)
     
     # Convert the fileString into individual lines
     singleMonitorLines <- readr::read_lines(singleMonitorFileString)
@@ -137,7 +137,7 @@ wrccDump_parseData <- function(fileString) {
     
     # Sometimes we get a solid block of 99999s for non-time-location columns
     if ( all(is.na(df$Type)) ) {
-      logger.debug('No valid PM2.5 data for %s', monitorName)
+      logger.debug("No valid PM2.5 data for %s", monitorName)
       next
     }
     
@@ -149,7 +149,7 @@ wrccDump_parseData <- function(fileString) {
     
     # Sanity check
     if ( length(monitorTypeCode) > 1 ) {
-      logger.error('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", "))
+      logger.error("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", "))
       next
     }
     
@@ -159,10 +159,10 @@ wrccDump_parseData <- function(fileString) {
     } else if ( monitorTypeCode == 9 ) {
       df$monitorType <- 'ESAM'
     } else if ( monitorTypeCode == 1 ) {
-      logger.error('EBAM PM10 data parsing is not supported')
+      logger.error("EBAM PM10 data parsing is not supported")
       next
     } else {
-      logger.error('Unsupported monitor type code: %d',monitorTypeCode)
+      logger.error("Unsupported monitor type code: %d",monitorTypeCode)
       next
     }
     

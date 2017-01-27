@@ -38,8 +38,8 @@ Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
 airnow <- airnow_load(20160801, 20160815)
 salinas <- monitor_subset(airnow, monitorIDs='060531003')
 salinas_nowcast <- monitor_nowcast(salinas)
-monitor_timeseriesPlot(salinas, type='l')
-monitor_timeseriesPlot(salinas_nowcast, add=TRUE, type='l', col='red')
+monitorPlot_timeseries(salinas, type='l')
+monitorPlot_timeseries(salinas_nowcast, add=TRUE, type='l', col='red')
 }
 }
 \references{

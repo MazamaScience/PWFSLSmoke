@@ -67,7 +67,7 @@ airsis_createDataDataframe <- function(df, meta) {
   # Sanity check -- only one pm25DF measure per hour
   valueCountPerCell <- reshape2::dcast(melted, datetime ~ monitorID, length)
   maxCount <- max(valueCountPerCell[,-1])
-  if (maxCount > 1) logger.warn('Up to %s measurements per hour -- median used',maxCount)
+  if (maxCount > 1) logger.warn("Up to %s measurements per hour -- median used",maxCount)
   
   # NOTE:  The resulting dataframe is [datetime,monitorID] with an extra first column containing datetime
   pm25DF <- reshape2::dcast(melted, datetime ~ monitorID, stats::median)
@@ -83,7 +83,7 @@ airsis_createDataDataframe <- function(df, meta) {
   data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime') )
   rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="GMT")
   
-  logger.debug("'data' dataframe has %d rows and %d columns", nrow(data), ncol(data))
+  logger.debug("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
   
   return(as.data.frame(data))
   

@@ -58,9 +58,9 @@ cols <- c(adjustcolor('orange',0.6),
           adjustcolor('red',0.6),
           adjustcolor('blue',0.6))
 legend <- c('Twisp','Winthrop','Omak')
-monitor_timeseriesPlot(Twisp_daily, pch=16, col=cols[1])
-monitor_timeseriesPlot(Winthrop_daily, pch=16, col=cols[2], add=TRUE)
-monitor_timeseriesPlot(Omak_daily, pch=16, col=cols[3], add=TRUE)
+monitorPlot_timeseries(Twisp_daily, pch=16, col=cols[1])
+monitorPlot_timeseries(Winthrop_daily, pch=16, col=cols[2], add=TRUE)
+monitorPlot_timeseries(Omak_daily, pch=16, col=cols[3], add=TRUE)
 legend('topright', legend=legend, col=cols, pch=16)
 title('Hours per day Above Threshold (PM 2.5 = 89)')
 }

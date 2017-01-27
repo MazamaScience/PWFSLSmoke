@@ -19,7 +19,7 @@ airsis_load <- function(startdate=20000101,
                         monitorIDs=NULL, stateCodes=NULL, 
                         url='https://smoke.airfire.org/RData/AIRSIS/AIRSIS_monitors.RData') {
   
-  # WRCC data is already stored in a single ws_monitor object
+  # data is already stored in a single ws_monitor object
   if (stringr::str_detect(url,'http:\\/\\/')) {
     ws_monitor <- get(load(url(url)))
   } else {

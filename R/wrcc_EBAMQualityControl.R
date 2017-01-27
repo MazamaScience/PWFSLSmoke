@@ -77,9 +77,9 @@ wrcc_EBAMQualityControl <- function(df,
   badRows <- !(goodLonMask & goodLatMask)
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {
-    logger.info('Discarding %s rows with invalid location information', badRowCount)
+    logger.info("Discarding %s rows with invalid location information", badRowCount)
     badLocations <- paste('(',df$GPSLon[badRows],',',df$GPSLat[badRows],')',sep='')
-    logger.debug('Bad locations: %s', paste0(badLocations, collapse=", "))
+    logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
   }
   
   df <- df[goodLonMask & goodLatMask,]
@@ -98,8 +98,8 @@ wrcc_EBAMQualityControl <- function(df,
   badRows <- !goodTypeMask
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {
-    logger.info('Discarding %s rows with invalid Type information', badRowCount)
-    logger.debug('Bad Types:  %s', paste0(sort(df$Type[badRows]), collapse=", "))
+    logger.info("Discarding %s rows with invalid Type information", badRowCount)
+    logger.debug("Bad Types:  %s", paste0(sort(df$Type[badRows]), collapse=", "))
   }
   
   df <- df[goodTypeMask,]
@@ -124,16 +124,16 @@ wrcc_EBAMQualityControl <- function(df,
   goodConcHr <- !is.na(df$ConcRT) & df$ConcRT >= valid_Conc[1] & df$ConcRT <= valid_Conc[2]
   gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
   
-  logger.debug('Flow has %s missing or out of range values', sum(!goodFlow))
-  if (sum(!goodFlow) > 0) logger.debug('Bad Flow values:  %s', paste0(sort(df$AvAirFlw[!goodFlow]), collapse=", "))
-  logger.debug('AT has %s missing or out of range values', sum(!goodAT))
-  if (sum(!goodAT) > 0) logger.debug('Bad AT values:  %s', paste0(sort(df$AvAirTemp[!goodAT]), collapse=", "))
-  logger.debug('RHi has %s missing or out of range values', sum(!goodRHi))
-  if (sum(!goodRHi) > 0) logger.debug('Bad RHi values:  %s', paste0(sort(df$SensorIntRH[!goodRHi]), collapse=", "))
-  logger.debug('Conc has %s missing or out of range values', sum(!goodConcHr))
-  if (sum(!goodConcHr) > 0) logger.debug('Bad Conc values:  %s', paste0(sort(df$ConcRT[!goodConcHr]), collapse=", "))
-  logger.debug('datetime has %s missing or out of range values', sum(!gooddatetime))
-  if (sum(!gooddatetime) > 0) logger.debug('Bad datetime values:  %s', paste0(sort(df$datetime[!gooddatetime]), collapse=", "))
+  logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
+  if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(df$AvAirFlw[!goodFlow]), collapse=", "))
+  logger.debug("AT has %s missing or out of range values", sum(!goodAT))
+  if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(df$AvAirTemp[!goodAT]), collapse=", "))
+  logger.debug("RHi has %s missing or out of range values", sum(!goodRHi))
+  if (sum(!goodRHi) > 0) logger.debug("Bad RHi values:  %s", paste0(sort(df$SensorIntRH[!goodRHi]), collapse=", "))
+  logger.debug("Conc has %s missing or out of range values", sum(!goodConcHr))
+  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(df$ConcRT[!goodConcHr]), collapse=", "))
+  logger.debug("datetime has %s missing or out of range values", sum(!gooddatetime))
+  if (sum(!gooddatetime) > 0) logger.debug("Bad datetime values:  %s", paste0(sort(df$datetime[!gooddatetime]), collapse=", "))
   
   goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
   
@@ -141,7 +141,7 @@ wrcc_EBAMQualityControl <- function(df,
   
   badQCCount <- sum(!goodMask)
   if (badQCCount > 0) {
-    logger.info('Discarding %s rows because of QC logic', badQCCount)
+    logger.info("Discarding %s rows because of QC logic", badQCCount)
   }
   
   # ----- More QC -------------------------------------------------------------
@@ -150,7 +150,7 @@ wrcc_EBAMQualityControl <- function(df,
   
   # TODO:  Multiply ConcRT by 1000?
   
-  logger.debug('Retaining %d rows of validated measurements', nrow(df))
+  logger.debug("Retaining %d rows of validated measurements", nrow(df))
   
   return(df)
   

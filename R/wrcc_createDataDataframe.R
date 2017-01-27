@@ -16,12 +16,6 @@
 
 wrcc_createDataDataframe <- function(df, meta) {
   
-  # Sanity check -- df must have deploymentID
-  if ( !'deploymentID' %in% names(df) ) {
-    logger.error("No 'deploymentID' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
-    stop(paste0("No 'deploymentID' column found in 'df' dataframe.  Have you run addClustering()?"))
-  }
-  
   # Sanity check -- df must have datetime
   if ( !'datetime' %in% names(df) ) {
     logger.error("No 'datetime' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
@@ -36,10 +30,16 @@ wrcc_createDataDataframe <- function(df, meta) {
   
   monitorType <- unique(meta$monitorType)
   
-  # Sanity check -- only a single monitorType is allowed
+  # Sanity check -- df must have only one monitorType
   if ( length(monitorType) > 1 ) {
     logger.error("Multiple monitor types found in 'meta' dataframe: %s", paste0(monitorType, collapse=", "))
     stop(paste0("Multiple monitor types found in 'meta' dataframe."))
+  }
+  
+  # Sanity check -- df must have deploymentID
+  if ( !'deploymentID' %in% names(df) ) {
+    logger.error("No 'deploymentID' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
+    stop(paste0("No 'deploymentID' column found in 'df' dataframe.  Have you run addClustering()?"))
   }
   
   # Add monitorID to the dataframe
@@ -67,7 +67,7 @@ wrcc_createDataDataframe <- function(df, meta) {
   # Sanity check -- only one pm25DF measure per hour
   valueCountPerCell <- reshape2::dcast(melted, datetime ~ monitorID, length)
   maxCount <- max(valueCountPerCell[,-1])
-  if (maxCount > 1) logger.warn('Up to %s measurements per hour -- median used',maxCount)
+  if (maxCount > 1) logger.warn("Up to %s measurements per hour -- median used",maxCount)
   
   # NOTE:  The resulting dataframe is [datetime,monitorID] with an extra first column containing datetime
   pm25DF <- reshape2::dcast(melted, datetime ~ monitorID, stats::median)
@@ -83,7 +83,7 @@ wrcc_createDataDataframe <- function(df, meta) {
   data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime') )
   rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="GMT")
   
-  logger.debug("'data' dataframe has %d rows and %d columns", nrow(data), ncol(data))
+  logger.debug("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
   
   return(as.data.frame(data))
   

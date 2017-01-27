@@ -37,11 +37,11 @@ wrcc_createRawDataframe <- function(stationID=NULL, startdate=20100101,
   # Sanity check
   if ( is.null(stationID) ) {
     logger.error("Required parameter 'stationID' is missing")
-    stop(paste0("Required parameter 'stationID' is missing."))
+    stop(paste0("Required parameter 'stationID' is missing"))
   }
   
   # Read in WRCC .csv data
-  logger.info('Downloading data...')
+  logger.info("Downloading WRCC data ...")
   fileString <- wrcc_downloadData(stationID, startdate, enddate, baseUrl)
   
   # Optionally save as a raw .csv file
@@ -50,21 +50,21 @@ wrcc_createRawDataframe <- function(stationID=NULL, startdate=20100101,
                    silent=TRUE )
     if ( class(result)[1] == "try-error" ) {
       err_msg <- geterrmessage()
-      logger.warn('Unable to save data to local file %s: %s', saveFile, err_msg)
+      logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
     }
     # NOTE:  Processing continues even if we fail to write the local file
   }
   
   # Read csv raw data into a dataframe
-  logger.info('Parsing data...')
+  logger.info("Parsing data ...")
   df <- wrcc_parseData(fileString)
   
   # Apply monitor-appropriate QC to the dataframe
-  logger.info('Applying QC logic...')
+  logger.info("Applying QC logic ...")
   df <- wrcc_qualityControl(df)
   
   # Add clustering information to identify unique deployments
-  logger.info('Clustering...')
+  logger.info("Clustering ...")
   df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=1000)
   
   return(df)

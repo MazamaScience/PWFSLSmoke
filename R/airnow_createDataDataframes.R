@@ -51,7 +51,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   
   # ----- Data Reshaping ------------------------------------------------------
   
-  logger.debug('Reshaping %d days of AirNow data...', hours/24)
+  logger.debug("Reshaping %d days of AirNow data ...", hours/24)
   
   # NOTE:  Example lines from the aggregated dataframe:
   # NOTE:
@@ -80,7 +80,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   # Use dplyr and reshape2 packages to seprate the data by parameter and restructure each data frame
   for (parameter in parameters) {
     
-    logger.debug('Reshaping data for %s...', parameter)
+    logger.debug("Reshaping data for %s ...", parameter)
     
     # Create datetime variable
     df <- dplyr::filter(airnowRaw, airnowRaw$ParameterName == parameter)
@@ -103,7 +103,8 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   timeAxis <- seq(starttime, starttime + lubridate::dhours(hours), by='hours')
   timeDF <- data.frame(datetime=timeAxis)
   
-  logger.info('Putting data on a uniform time axis...')
+  logger.info("Putting data on a uniform time axis ...")
+
   for (parameter in parameters) {
     # Join data to uniform time axis
     dfList[[parameter]] <- suppressMessages( dplyr::full_join(timeDF, dfList[[parameter]]) )

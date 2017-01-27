@@ -23,7 +23,7 @@ airsis_downloadData <- function(provider='USFS', unitID=NULL, startdate=20020101
   # Sanity check
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")
-    stop(paste0("Required parameter 'unitID' is missing."))
+    stop(paste0("Required parameter 'unitID' is missing"))
   }
   
   # Get UTC times
@@ -41,7 +41,7 @@ airsis_downloadData <- function(provider='USFS', unitID=NULL, startdate=20020101
                 '&StartDate=', strftime(starttime, "%F", tz="GMT"),
                 '&EndDate=', strftime(endtime, "%F", tz="GMT"))
   
-  logger.debug('Downloading data from %s', url)
+  logger.debug("Downloading AIRSIS data from %s", url)
   
   # Read the url output into a string
   fileString <- readr::read_file(url)

@@ -50,7 +50,7 @@ openaq_createDataDataframes <- function(df, parameters=NULL){
     parameters <- dplyr::intersect(parameters, unique(df$parameter))
     invalidParameters <- dplyr::setdiff(parameters, unique(df$parameter))
     if ( length(invalidParameters) > 0 ) {
-      logger.warn("Requested parameters not found in AirNow data: %s", paste0(invalidParameters, collapse=", "))
+      logger.warn("Requested parameters not found in OpenAQ data: %s", paste0(invalidParameters, collapse=", "))
     }
   }
   
@@ -60,7 +60,7 @@ openaq_createDataDataframes <- function(df, parameters=NULL){
   # Use dplyr and reshape2 packages to seprate the data by parameter and restructure each data frame
   for (parameter in parameters) {
     
-    logger.debug('Reshaping data for %s...', parameter)
+    logger.debug("Reshaping data for %s ...", parameter)
     
     # extract the disired parameter and columns from the dataframe
     indexes <- which(df$parameter == parameter)
@@ -73,7 +73,7 @@ openaq_createDataDataframes <- function(df, parameters=NULL){
     # check if it's exactly one measurement per hour at each location
     countValuePerHr <- reshape2::dcast(melted,datetime~monitorID,length)
     maxCount <- max(countValuePerHr[,-1], na.rm=TRUE)
-    if (maxCount>1) logger.warn('Up to %s measurements per hour -- median used',maxCount)
+    if (maxCount>1) logger.warn("Up to %s measurements per hour -- median used",maxCount)
     
     # create a dataframe for hours to be used later
     hourlyDF <- data.frame(seq(min(melted$datetime, na.rm=TRUE), max(melted$datetime, na.rm=TRUE), by="hours"))
@@ -87,7 +87,7 @@ openaq_createDataDataframes <- function(df, parameters=NULL){
     rownames(dataDF) <- format(dataDF$datetime,"%Y%m%d%H",tz="GMT")
     
     dfList[[parameter]] <- dataDF
-    logger.debug("'data' dataframe for parameter %s has %d rows and %d columns", parameter, nrow(dataDF), ncol(dataDF))
+    logger.debug("Created 'data' dataframe for parameter %s with %d rows and %d columns", parameter, nrow(dataDF), ncol(dataDF))
     
   }
 

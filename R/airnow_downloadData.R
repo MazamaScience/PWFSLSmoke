@@ -54,7 +54,7 @@ airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   dfList <- vector(mode="list", length=hours)
   
-  logger.info('Downloading %d hourly data files from AirNow...',hours)
+  logger.info("Downloading %d hourly data files from AirNow ...",hours)
   
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {
@@ -62,14 +62,14 @@ airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
     datetime <- starttime + lubridate::dhours(i-1)
     datestamp <- strftime(datetime, "%Y%m%d%H", tz="UTC")
 
-    logger.debug('Downloading AirNow data for %s', datestamp)
+    logger.debug("Downloading AirNow data for %s", datestamp)
     
     # Obtain an hour of AirNow data
     result <- try( df <- airnow_downloadHourlyData(datestamp),
                    silent=TRUE)
     if ( class(result)[1] == "try-error" ) {
       err_msg <- geterrmessage()
-      logger.error('Unable to obtain data: %s',err_msg)
+      logger.warn("Unable to download data: %s",err_msg)
       next
     }
 
@@ -81,12 +81,12 @@ airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
 
       # NOTE:  Filter inside the loop to avoid generating very large dataframes in memory
       
-      logger.debug('Filtering to retain only data for: %s', paste(parameters, collapse=", "))
+      logger.debug("Filtering to retain only data for: %s", paste(parameters, collapse=", "))
       # Generate a mask of records to retain
       parametersMask <- rep(FALSE, nrow(df))
       for (parameter in parameters) {
         if ( !parameter %in% unique(df$ParameterName) ) {
-          logger.warn('parameters argument %s is not found in the data', parameters)
+          logger.warn("Parameter '%s' is not found in the data", parameter)
         } else {
           parametersMask <- parametersMask | df$ParameterName == parameter
         }
@@ -104,10 +104,10 @@ airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
   # Remove any duplicate rows
   df <- dplyr::distinct(df)
   
-  if (is.null(parameters)) {
-    logger.info('Downloaded %d rows of AirNow data', nrow(df))
+  if ( is.null(parameters) ) {
+    logger.info("Downloaded %d rows of AirNow data", nrow(df))
   } else {
-    logger.info('Downloaded %d rows of AirNow data for: %s', nrow(df), paste(parameters, collapse=", "))
+    logger.info("Downloaded %d rows of AirNow data for: %s", nrow(df), paste(parameters, collapse=", "))
   }
   
   return(df)

@@ -47,8 +47,8 @@ addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", country
     
     # NOTE:  Timezone, countryCode and stateCode information is mandatory for ws_monitor objects.
     logger.error("MazamaSpatialUtils package was not properly initialized -- no Mazama metadata added")
-    stop(paste0("MazamaSpatialUtils package was not properly initialized.\n",
-                "Please run:  library(MazamaSpatialUtils); setSpatialDataDir('~/Data/Spatial'); loadSpatialData('NaturalEarthAdm1')"))
+    stop(paste0("MazamaSpatialUtils package was not properly initialized. Please run:\n",
+                "  library(MazamaSpatialUtils); setSpatialDataDir('~/Data/Spatial'); loadSpatialData('NaturalEarthAdm1')"))
     
   }
   

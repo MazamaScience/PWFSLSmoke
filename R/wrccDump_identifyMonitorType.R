@@ -30,9 +30,10 @@
 
 wrccDump_identifyMonitorType <- function(fileString) {
   
+  # Sanity check
   if ( class(fileString)[1] != "character" ) {
-    logger.error('WRCC fileString is of type %s', class(fileString)[1])
-    stop(paste0('WRCC fileString is of type %s', class(fileString)[1]))
+    logger.error("WRCC fileString is of type %s", class(fileString)[1])
+    stop(paste0("WRCC fileString is of type %s", class(fileString)[1]))
   }
   
   #     Different header styles     -------------------------------------------

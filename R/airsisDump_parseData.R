@@ -39,8 +39,8 @@ airsisDump_parseData <- function(fileString) {
   lines <- readr::read_lines(fileString)
 
   if ( length(lines) == 1 ) {
-    logger.warn('No valid PM2.5 data')
-    stop(paste0('No valid PM2.5 data'))
+    logger.warn("No valid PM2.5 data")
+    stop(paste0("No valid PM2.5 data")) # This can be trapped by the calling function
   }
   
   # Sanity check -- more than just the header line
@@ -52,17 +52,17 @@ airsisDump_parseData <- function(fileString) {
   if ( monitorType == "BAM1020" ) {
     
     # TODO:  How to assign data with to-the-minute timestamps to a particular hour? floor?
-    logger.warn('BAM1020 file parsing is not supported')
-    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
-    stop(paste0('BAM1020 file parsing is not supported'), call.=FALSE)
+    logger.warn("BAM1020 file parsing is not supported")
+    logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    stop(paste0("BAM1020 file parsing is not supported"), call.=FALSE)
     
   } else if ( monitorType == "EBAM" ) {
     
-    logger.debug('Parsing EBAM data...')
+    logger.debug("Parsing EBAM data ...")
     
   } else if ( monitorType == "ESAM" ) {
     
-    logger.debug('Parsing E-Sampler data...')
+    logger.debug("Parsing E-Sampler data ...")
     
     # NOTE:  Some E-Sampler files from AIRSIS (USFS 1050) have internal rows messed up with header line information
     # NOTE:  We need to remove these first. It seems they can be identified by searching for '%'.
@@ -74,21 +74,21 @@ airsisDump_parseData <- function(fileString) {
     
   } else if ( monitorType == "OTHER_1" ) {
     
-    logger.warn('Older EBAM 1 file parsing is not supported')
-    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
-    stop(paste0('Older EBAM 1 file parsing is not supported', call.=FALSE))
+    logger.warn("Older EBAM 1 file parsing is not supported")
+    logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    stop(paste0("Older EBAM 1 file parsing is not supported", call.=FALSE))
     
   } else if ( monitorType == "OTHER_2" ) {
     
-    logger.warn('Older EBAM 2 file parsing is not supported')
-    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
-    stop(paste0('Older EBAM 2 file parsing is not supported', call.=FALSE))
+    logger.warn("Older EBAM 2 file parsing is not supported")
+    logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    stop(paste0("Older EBAM 2 file parsing is not supported", call.=FALSE))
     
   } else {
     
-    logger.warn('Unkown file parsing is not supported')
-    logger.debug('Header line:\n\t%s', paste0(rawNames,collapse=','))
-    stop(paste0('Unknown file parsing is not supported', call.=FALSE))
+    logger.warn("Unkown file parsing is not supported")
+    logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    stop(paste0("Unknown file parsing is not supported", call.=FALSE))
     
   }
   
@@ -103,7 +103,7 @@ airsisDump_parseData <- function(fileString) {
   # Print out any problems encountered by readr::read_csv
   problemsDF <- readr::problems(df)
   if ( dim(problemsDF)[1] > 0 ) {
-    logger.debug('Records skipped with parsing errors:')
+    logger.debug("Records skipped with parsing errors:")
     problems <- utils::capture.output(format(problemsDF))
     for (i in 1:length(problems)) {
       logger.debug("%s",problems[i])

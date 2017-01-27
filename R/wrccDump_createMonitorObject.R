@@ -27,11 +27,11 @@
 
 wrccDump_createMonitorObject <- function(filepath) {
 
-  logger.debug('Reading data...')
+  logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
   
   # Special parsing for dump files as the format is different from the WRCC CSV webservice
-  logger.debug('Parsing data...')
+  logger.debug("Parsing data ...")
   dfList <- wrccDump_parseData(fileString)
   
   # empty list for ws_monitor objects
@@ -40,32 +40,32 @@ wrccDump_createMonitorObject <- function(filepath) {
   # Loop over monitor dataframe list (mostly verbatim from wrcc_createMonitorObject)
   for ( name in names(dfList) ) {
   
-    logger.info('Processing data for %s...', name)
+    logger.info("Processing data for %s ...", name)
     
     df <- dfList[[name]]
     
     # Apply monitor-appropriate QC to the dataframe
-    logger.info('Applying QC logic...')
+    logger.info("Applying QC logic ...")
     df <- wrcc_qualityControl(df)
     
     # See if anything gets through QC
     if ( nrow(df) == 0 ) {
-      logger.warn('No data remaining after QC.')
+      logger.warn("No data remaining after QC")
       next
     }
     
     # Add clustering information to identify unique deployments
-    logger.info('Clustering...')
+    logger.info("Clustering ...")
     df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=1000)
     
     # Create 'meta' dataframe of site properties organized as monitorID-by-property
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
-    logger.info('Creating \'meta\' dataframe...')
+    logger.info("Creating 'meta' dataframe ...")
     meta <- wrcc_createMetaDataframe(df)
     
     # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
-    logger.info('Creating \'data\' dataframe...')
+    logger.info("Creating 'data' dataframe ...")
     data <- wrcc_createDataDataframe(df, meta)
     
     # Create the 'ws_monitor' object

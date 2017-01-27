@@ -44,9 +44,8 @@ openaq_load <- function(startdate, enddate, monitorIDs=NULL, parameter='pm25',
   
   # Sanity Check
   if ( is.null(startdate) | is.null(enddate) ) {
-    
-    stop("The time interval is not defined")
-    
+    logger.error("Requried parameter 'startdate' or 'enddate' is not defined")
+    stop("Required parameter 'startdate' or 'enddate' is not defined")
   }
   
   

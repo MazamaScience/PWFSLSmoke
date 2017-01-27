@@ -34,7 +34,7 @@ wrcc_downloadData <- function(stationID=NULL, startdate=20100101,
   # Sanity check
   if ( is.null(stationID) ) {
     logger.error("Required parameter 'stationID' is missing")
-    stop(paste0("Required parameter 'stationID' is missing."))
+    stop(paste0("Required parameter 'stationID' is missing"))
   }
   
   # Get UTC times
@@ -67,13 +67,13 @@ wrcc_downloadData <- function(stationID=NULL, startdate=20100101,
                   WeHou='24',
                   .cgifields=c('unit','flag','srce'))
   
-  logger.debug('Downloading data from %s', baseUrl)
+  logger.debug("Downloading WRCC data from %s", baseUrl)
   
   rawBytes <- RCurl::postForm(uri=baseUrl, .params=.params)
   
   if ( class(rawBytes) == "character" ) {
-    logger.debug('rawBytes')
-    logger.info('WRCC FTP request returns an error')
+    logger.debug(rawBytes)
+    logger.error("WRCC FTP request returns an error")
     stop(rawBytes)
   }
   

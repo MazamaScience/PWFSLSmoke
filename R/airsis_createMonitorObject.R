@@ -42,11 +42,11 @@ airsis_createMonitorObject <- function(provider='USFS', unitID=NULL,
   # Sanity checks
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")
-    stop(paste0("Required parameter 'unitID' is missing."))
+    stop(paste0("Required parameter 'unitID' is missing"))
   }
 
   # Read in AIRSIS .csv data
-  logger.info('Downloading data...')
+  logger.info("Downloading AIRSIS data ...")
   fileString <- airsis_downloadData(provider, unitID=unitID, startdate, enddate, baseUrl)
   
   # Optionally save as a raw .csv file
@@ -55,37 +55,37 @@ airsis_createMonitorObject <- function(provider='USFS', unitID=NULL,
                    silent=TRUE )
     if ( class(result)[1] == "try-error" ) {
       err_msg <- geterrmessage()
-      logger.warn('Unable to save data to local file %s: %s', saveFile, err_msg)
+      logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
     }
     # NOTE:  Processing continues even if we fail to write the local file
   }
   
   # Read csv raw data into a dataframe
-  logger.info('Parsing data...')
+  logger.info("Parsing data ...")
   df <- airsis_parseData(fileString)
   
   # Apply monitor-appropriate QC to the dataframe
-  logger.info('Applying QC logic...')
+  logger.info("Applying QC logic ...")
   df <- airsis_qualityControl(df)
   
   # See if anything gets through QC
   if ( nrow(df) == 0 ) {
-    logger.warn('No data remaining after QC.')
-    stop('No data remaining after QC.')
+    logger.warn("No data remaining after QC")
+    stop("No data remaining after QC")
   }
   
   # Add clustering information to identify unique deployments
-  logger.info('Clustering...')
+  logger.info("Clustering ...")
   df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
   
   # Create 'meta' dataframe of site properties organized as monitorID-by-property
   # NOTE:  This step will create a uniformly named set of properties and will
   # NOTE:  add site-specific information like timezone, elevation, address, etc.
-  logger.info('Creating \'meta\' dataframe...')
+  logger.info("Creating 'meta' dataframe ...")
   meta <- airsis_createMetaDataframe(df)
   
   # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
-  logger.info('Creating \'data\' dataframe...')
+  logger.info("Creating 'data' dataframe ...")
   data <- airsis_createDataDataframe(df, meta)
   
   # Create the 'ws_monitor' object

@@ -46,16 +46,16 @@ wrcc_createMetaDataframe <- function(df) {
   
   monitorType <- monitorType[1]
   
-  # Sanity check -- deploymentID must exist
+  # Sanity check -- df must have deploymentID
   if ( !'deploymentID' %in% names(df) ) {
-    logger.error("The 'df' dataframe does not have a 'deploymnetID' column")
-    stop(paste0("The 'df' dataframe does not have a 'deploymentID' column.  Have you run addClustering()?"))
+    logger.error("No 'deploymentID' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
+    stop(paste0("No 'deploymentID' column found in 'df' dataframe.  Have you run addClustering()?"))
   }
   
   # Pull out unique deployments
   df <- df[!duplicated(df$deploymentID),]
   
-  logger.debug('Dataframe contains %d unique deployment(s)', nrow(df))
+  logger.debug("Dataframe contains %d unique deployment(s)", nrow(df))
   
   # Our dataframe now contains the following columns:
   #
@@ -155,7 +155,7 @@ wrcc_createMetaDataframe <- function(df) {
     meta[[colName]] <- as.character(meta[[colName]])
   }
   
-  logger.debug("'meta' dataframe has %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   
   return(meta)
   
