@@ -15,7 +15,7 @@ monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
 \item{monitorID}{monitor ID for a specific monitor in the given ws_monitor object (optional
 if only one monitor in the ws_monitor object)}
 
-\item{tlim}{time limit for barplot}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
 \item{localTime}{logical specifying whether \code{tlim} is in UTC or local time}
 

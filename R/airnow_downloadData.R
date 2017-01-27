@@ -2,7 +2,7 @@
 #' @export
 #' @title Download and Aggregate Multiple Hourly Data Files from AirNow
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
-#' @param startdate desired staring date (integer or character representing YYYYMMDD[HH])
+#' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
 #' @description This function makes repeated calls to \link{airnow_downloadHourlyData}
 #' to obtain data from AirNow. All data obtained are then

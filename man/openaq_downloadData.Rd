@@ -10,13 +10,13 @@ openaq_downloadData(parameter = NULL, startdate = "", days = 1,
 \arguments{
 \item{parameter}{pollutant name}
 
-\item{startdate}{desired staring date (integer or character representing YYYYMMDD)}
+\item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{days}{desired number of days of data to assemble}
 
 \item{countryCode}{two-character country code (ISO 3166-1 alpha-2)}
 
-\item{baseUrl}{base URL for archived daily data}
+\item{baseUrl}{base URL for data queries}
 }
 \value{
 Dataframe of aggregated OpenAQ data.

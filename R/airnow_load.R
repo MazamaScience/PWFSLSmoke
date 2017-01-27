@@ -6,7 +6,7 @@
 #' @param stateCodes vector of state codes passed on to \link{monitor_subset}
 #' @param monitorIDs vector of monitor IDs passed on to \link{monitor_subset}
 #' When set to NULL, the function returns all the monitor IDs available in the metadata
-#' @param parameter The parameter of interest
+#' @param parameter parameter of interest
 #' @param baseUrl base URL for AirNow meta and data files
 #' @return ws_monitor object with subsetted time, monitorIDs and parameter
 #' @description When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 

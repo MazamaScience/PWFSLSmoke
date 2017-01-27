@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Creates Blank Plot with "No Data" Message
+#' @title Create Blank Plot with "No Data" Message
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the given ws_monitor object
 #' @param cex text size of "No data for"; monitor ID is one size smaller

@@ -18,7 +18,7 @@ airnow_load(startdate, enddate, stateCodes = NULL, monitorIDs = NULL,
 \item{monitorIDs}{vector of monitor IDs passed on to \link{monitor_subset}
 When set to NULL, the function returns all the monitor IDs available in the metadata}
 
-\item{parameter}{The parameter of interest}
+\item{parameter}{parameter of interest}
 
 \item{baseUrl}{base URL for AirNow meta and data files}
 }

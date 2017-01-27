@@ -1,6 +1,6 @@
 #' @keywords OpenAQ
 #' @export
-#' @title Create Sites Metadata Dataframe
+#' @title Create OpenAQ Site Location Metadata Dataframe
 #' @param df a OpenAQ dataframe after metadata enhancement
 #' @param parameters pollutant name
 #' @description After an OpenAQ dataframe has been enhanced with 
@@ -22,7 +22,7 @@
 #' @return A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
 
 
-openaq_createMetaDataframes <- function(df, parameters = NULL){
+openaq_createMetaDataframes <- function(df, parameters=NULL){
   
   # Sanity check -- df must have a monitorID
   if ( !'monitorID' %in% names(df) ) {

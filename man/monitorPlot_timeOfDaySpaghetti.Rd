@@ -12,9 +12,9 @@ monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{monitorID}{id for a specific monitor in the ws_monitor object}
 
-\item{tlim}{time limit for plot}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{ylim}{optional y limits for plot}
+\item{ylim}{y limits for the plot}
 
 \item{aqiLines}{horizontal lines indicating AQI levels}
 

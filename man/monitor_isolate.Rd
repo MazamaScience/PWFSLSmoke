@@ -10,9 +10,9 @@ monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{xlim}{optional longitude lim with lo and hi longitude values}
+\item{xlim}{optional vector with low and high longitude limits}
 
-\item{ylim}{optional latitude lim with lo and hi latitude values}
+\item{ylim}{optional vector with low and high latitude limits}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 

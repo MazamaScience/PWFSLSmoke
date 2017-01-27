@@ -26,5 +26,5 @@ raw <- raw_enhance(raw,rawSource='AIRSIS')
 View(raw)
 }
 }
-\keyword{raw_enhance}
+\keyword{raw}
 

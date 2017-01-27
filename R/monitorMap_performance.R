@@ -2,8 +2,8 @@
 #' @export
 #' @import maps mapproj
 #' @title Create Map of Monitor Prediction Performance
-#' @param predicted data list of class \code{ws_monitor}
-#' @param observed data list of class \code{ws_monitor}
+#' @param predicted ws_monitor object with predicted values
+#' @param observed ws_monitor object with observed  values
 #' @param threshold value used to classify \code{predicted} and \code{observed} measurements
 #' @param cex the amount that the points will be magnified on the map
 #' @param sizeBy name of the metric used to create relative sizing

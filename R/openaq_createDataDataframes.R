@@ -1,7 +1,6 @@
 #' @keywords OpenAQ
 #' @export
-#' @importFrom stats median
-#' @title Create Data Dataframe
+#' @title Create OpenAQ Data Dataframe
 #' @param df a OpenAQ dataframe after metadata enhancement
 #' @param parameters pollutant name
 #' @description After addtional columns(i.e. \code{'datetime'}, \code{'stateCode'}, and \code{'monitorID'}) 
@@ -29,7 +28,7 @@
 #' @return A \code{'data'} dataframe for use in a \code{ws_monitor} object.
 
 
-openaq_createDataDataframes <- function(df, parameters = NULL){
+openaq_createDataDataframes <- function(df, parameters=NULL){
   
   # Sanity check -- df must have a monitorID
   if ( !'monitorID' %in% names(df) ) {
@@ -81,7 +80,7 @@ openaq_createDataDataframes <- function(df, parameters = NULL){
     names(hourlyDF) <- "datetime"
     
     # create a dataframe for values
-    parameterDF <- reshape2::dcast(melted,datetime~monitorID,median)
+    parameterDF <- reshape2::dcast(melted,datetime~monitorID,stats::median)
     
     # combine the two dataframes together by doing a left join
     dataDF <- dplyr::left_join(hourlyDF,parameterDF,by="datetime")

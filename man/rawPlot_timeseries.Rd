@@ -2,7 +2,7 @@
 % Please edit documentation in R/rawPlot_timeseries.R
 \name{rawPlot_timeseries}
 \alias{rawPlot_timeseries}
-\title{Plot Raw Monitoring Data}
+\title{Create Timeseries Plot from a Raw Dataframe}
 \usage{
 rawPlot_timeseries(df, parameter = "pm25", tlim = NULL, localTime = TRUE,
   shadedNight = TRUE, shadedBackground = NULL, sbLwd = 1, add = FALSE,
@@ -10,13 +10,13 @@ rawPlot_timeseries(df, parameter = "pm25", tlim = NULL, localTime = TRUE,
   dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }
 \arguments{
-\item{df}{raw_enhance monitor object, as created by the raw_enhance() function}
+\item{df}{enhanced, raw dataframe as created by the raw_enhance() function}
 
 \item{parameter}{raw parameter to plot. Default = "pm25". Other options include
 c("temperature","humidity","windSpeed","windDir", "pressure"), or any of the other raw
 parameters (do "names(df)" to see list of options)}
 
-\item{tlim}{A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
 \item{localTime}{use local times; defaults to GMT if >1 time zone in data.}
 
@@ -50,5 +50,5 @@ may include options to choose which parameter to plot, which color to use, which
 \description{
 Creates a plot of raw monitoring data as generated using raw_enhance().
 }
-\keyword{raw_enhance}
+\keyword{raw}
 

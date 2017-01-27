@@ -2,17 +2,17 @@
 % Please edit documentation in R/rawPlot_pollutionRose.R
 \name{rawPlot_pollutionRose}
 \alias{rawPlot_pollutionRose}
-\title{Create a Pollution Rose Plot from raw_enhance Object}
+\title{Create Pollution Rose Plot from a Raw Dataframe}
 \usage{
 rawPlot_pollutionRose(df, parameter = "pm25", tlim = NULL,
   localTime = TRUE, normalize = FALSE, ...)
 }
 \arguments{
-\item{df}{raw_enhance monitor object, as created by the raw_enhance() function}
+\item{df}{enhanced, raw dataframe as created by the raw_enhance() function}
 
 \item{parameter}{parameter to plot}
 
-\item{tlim}{A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
 \item{localTime}{use local times; defaults to GMT if >1 time zone in data.}
 
@@ -31,5 +31,5 @@ df <- raw_enhance(df,rawSource='AIRSIS')
 rawPlot_pollutionRose(df)
 }
 }
-\keyword{raw_enhance}
+\keyword{raw}
 

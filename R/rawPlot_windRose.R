@@ -1,8 +1,9 @@
-#' @keywords raw_enhance
+#' @keywords raw
 #' @export
-#' @title Create a Wind Rose Plot from raw_enhance Object
-#' @param df raw_enhance monitor object, as created by the raw_enhance() function
-#' @param tlim A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)
+#' @import graphics
+#' @title Create Wind Rose Plot from a Raw Dataframe
+#' @param df enhanced, raw dataframe as created by the raw_enhance() function
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime use local times; defaults to GMT if >1 time zone in data.
 #' @param ... additional arguments to pass on to openair::windRose()
 #' @description Create wind rose plot from raw_enhance object. Based on openair::windRose().

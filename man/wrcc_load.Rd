@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_load.R
 \name{wrcc_load}
 \alias{wrcc_load}
-\title{Load WRCC monitoring data}
+\title{Load WRCC Monitoring Data}
 \usage{
 wrcc_load(startdate, enddate, monitorIDs = NULL, stateCodes = NULL,
   url = "https://smoke.airfire.org/RData/WRCC/WRCC_monitors.RData")

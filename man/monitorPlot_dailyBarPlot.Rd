@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitorPlot_dailyBarplot.R
 \name{monitorPlot_dailyBarplot}
 \alias{monitorPlot_dailyBarplot}
-\title{Create Daily Bar Plot}
+\title{Create Daily Barplot}
 \usage{
 monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
   minHours = 20, gridPos = "", gridCol = "black", gridLwd = 0.5,

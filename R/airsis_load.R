@@ -1,11 +1,11 @@
-#' @keywords airsis
+#' @keywords AIRSIS
 #' @export
 #' @title Load AIRSIS Monitoring Data
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param stateCodes optional vector of stateCodes used to subset the data
 #' @param monitorIDs optional vector of monitorIDs used to subset the data
-#' @param url The location of the meta and data files (url or local file)
+#' @param url location of the meta and data files (url or local file)
 #' @return ws_monitor object with subsetted time, monitorIDs and parameter
 #' @description When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves 
 #' data from the archive url and returns the subsetted ws_monitor object.

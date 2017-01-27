@@ -1,7 +1,6 @@
 #' @keywords AIRSIS
 #' @export
-#' @importFrom stats median
-#' @title Create Data Dataframe
+#' @title Create AIRSIS Data Dataframe
 #' @param df single site AIRSIS dataframe created by airsis_clustering()
 #' @param meta AIRSIS meta dataframe created by airsis_createMetaDataframe()
 #' @description After quality control has been applied to an AIRSIS dataframe,
@@ -71,7 +70,7 @@ airsis_createDataDataframe <- function(df, meta) {
   if (maxCount > 1) logger.warn('Up to %s measurements per hour -- median used',maxCount)
   
   # NOTE:  The resulting dataframe is [datetime,monitorID] with an extra first column containing datetime
-  pm25DF <- reshape2::dcast(melted, datetime ~ monitorID, median)
+  pm25DF <- reshape2::dcast(melted, datetime ~ monitorID, stats::median)
   colnames(pm25DF) <- c('datetime',meta$monitorID)
   rownames(pm25DF) <- format(pm25DF$datetime,"%Y%m%d%H",tz="GMT")
   

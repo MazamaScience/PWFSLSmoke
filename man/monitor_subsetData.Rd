@@ -12,7 +12,7 @@ monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 
-\item{vlim}{optional vector with low and high data values to include}
+\item{vlim}{optional vector with low and high data value limits}
 
 \item{monitorIDs}{optional vector of monitorIDs}
 

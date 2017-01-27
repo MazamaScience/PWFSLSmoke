@@ -2,7 +2,7 @@
 % Please edit documentation in R/openaq_createDataDataframes.R
 \name{openaq_createDataDataframes}
 \alias{openaq_createDataDataframes}
-\title{Create Data Dataframe}
+\title{Create OpenAQ Data Dataframe}
 \usage{
 openaq_createDataDataframes(df, parameters = NULL)
 }

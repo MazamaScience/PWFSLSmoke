@@ -2,7 +2,7 @@
 % Please edit documentation in R/openaq_createMetaDataframes.R
 \name{openaq_createMetaDataframes}
 \alias{openaq_createMetaDataframes}
-\title{Create Sites Metadata Dataframe}
+\title{Create OpenAQ Site Location Metadata Dataframe}
 \usage{
 openaq_createMetaDataframes(df, parameters = NULL)
 }

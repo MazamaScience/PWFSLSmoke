@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_createDataDataframe.R
 \name{airsis_createDataDataframe}
 \alias{airsis_createDataDataframe}
-\title{Create Data Dataframe}
+\title{Create AIRSIS Data Dataframe}
 \usage{
 airsis_createDataDataframe(df, meta)
 }

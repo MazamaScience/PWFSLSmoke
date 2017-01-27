@@ -49,7 +49,7 @@ performanceMetrices <- monitor_performance(airnow_dailyAvg_m1,
 }
 }
 \seealso{
-\link{monitor_performanceMap}
+\link{monitorMap_performance}
 
 \link{skill_confusionMatrix}
 }

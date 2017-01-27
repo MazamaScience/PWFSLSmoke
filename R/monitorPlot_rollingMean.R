@@ -9,9 +9,9 @@
 #' @param align alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}
 #' @param data.thresh minimum number of valid observations required as a percent of \code{width};
 #' NA is returned if insufficicnet valid data to calculate mean
-#' @param tlim time limit for plot
-#' @param ylim optional y limits for plot
-#' @param useGMT Plot w/ time axis in GMT, as opposed to local time.
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
+#' @param ylim y limits for the plot
+#' @param useGMT Plot w/ time axis in GMT, as opposed to local time
 #' @param shadedNight add shaded background during nights
 #' @param aqiLines horizontal lines indicating AQI levels
 #' @param gridHorizontal add dashed horizontal grid lines

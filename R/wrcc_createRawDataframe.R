@@ -1,6 +1,6 @@
 #' @keywords WRCC
 #' @export
-#' @title Obtain WRCC Data and Parse into a Dataframe
+#' @title Obtain WRCC Data and Parse into Dataframe
 #' @param stationID station identifier (will be upcased)
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])

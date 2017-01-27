@@ -9,7 +9,7 @@ airnow_downloadData(parameters = NULL, startdate = "", hours = 24)
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
 
-\item{startdate}{desired staring date (integer or character representing YYYYMMDD[HH])}
+\item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{hours}{desired number of hours of data to assemble}
 }

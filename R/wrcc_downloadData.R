@@ -2,8 +2,8 @@
 #' @export
 #' @title Download Data from WRCC
 #' @param stationID station identifier (will be upcased)
-#' @param startdate integer or character representing start date as YYYYMMDD (GMT)
-#' @param enddate integer or character representing end date as YYYYMMDD (GMT)
+#' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
+#' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param baseUrl base URL for data queries
 #' @description Request data from a particular station for the desired time period.
 #' Data are returned as a single character string containing the WRCC output. 

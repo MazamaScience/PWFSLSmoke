@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_createDataDataframe.R
 \name{wrcc_createDataDataframe}
 \alias{wrcc_createDataDataframe}
-\title{Create Data Dataframe}
+\title{Create WRCC Data Dataframe}
 \usage{
 wrcc_createDataDataframe(df, meta)
 }

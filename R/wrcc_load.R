@@ -1,6 +1,6 @@
 #' @keywords wrcc
 #' @export
-#' @title Load WRCC monitoring data
+#' @title Load WRCC Monitoring Data
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param stateCodes optional vector of stateCodes used to subset the data

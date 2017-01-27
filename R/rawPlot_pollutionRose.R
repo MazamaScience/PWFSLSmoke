@@ -1,9 +1,10 @@
-#' @keywords raw_enhance
+#' @keywords raw
 #' @export
-#' @title Create a Pollution Rose Plot from raw_enhance Object
-#' @param df raw_enhance monitor object, as created by the raw_enhance() function
+#' @import graphics
+#' @title Create Pollution Rose Plot from a Raw Dataframe
+#' @param df enhanced, raw dataframe as created by the raw_enhance() function
 #' @param parameter parameter to plot
-#' @param tlim A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime use local times; defaults to GMT if >1 time zone in data.
 #' @param normalize normalize slices to fill entire area, allowing for easier comparison of counts of magnitudes by direction
 #' @param ... additional arguments to pass on to openair::pollutionRose()

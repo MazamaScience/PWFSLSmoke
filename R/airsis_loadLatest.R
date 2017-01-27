@@ -1,4 +1,4 @@
-#' @keywords airsis
+#' @keywords AIRSIS
 #' @export
 #' @title Load Recent AIRSIS Monitoring Data
 #' @param baseUrl The location of the meta and data files

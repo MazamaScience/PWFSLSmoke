@@ -7,7 +7,7 @@
 monitor_subsetBy(ws_monitor, filter)
 }
 \arguments{
-\item{ws_monitor}{data list of class \code{ws_monitor}}
+\item{ws_monitor}{ws_monitor object}
 
 \item{filter}{a filter to use on the ws_monitor}
 }

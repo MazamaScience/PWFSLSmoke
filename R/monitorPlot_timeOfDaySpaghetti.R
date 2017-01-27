@@ -4,8 +4,8 @@
 #' @title Create Time of Day Spaghetti Plot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID id for a specific monitor in the ws_monitor object
-#' @param tlim time limit for plot
-#' @param ylim optional y limits for plot
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
+#' @param ylim y limits for the plot
 #' @param aqiLines horizontal lines indicating AQI levels
 #' @param shadedNight shade nights based on sunrise/sunset times of middle day in selected period
 #' @param title plot title

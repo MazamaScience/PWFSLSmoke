@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Create Daily Bar Plot
+#' @title Create Daily Barplot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID monitor ID for a specific monitor in the given ws_monitor object (optional
 #' if only one monitor in the ws_monitor object)

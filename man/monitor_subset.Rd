@@ -11,19 +11,19 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 \arguments{
 \item{ws_monitor}{ws_monitor object}
 
-\item{xlim}{vector with low and high longitude limit values}
+\item{xlim}{optional vector with low and high longitude limits}
 
-\item{ylim}{vector with low and high latitude limit values}
+\item{ylim}{optional vector with low and high latitude limits}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 
-\item{vlim}{vector with low and high PM2.5 data limit values}
+\item{vlim}{optional vector with low and high data value limits}
 
-\item{monitorIDs}{vector of monitor IDs used to filter the data}
+\item{monitorIDs}{optional vector of monitor IDs used to filter the data}
 
-\item{stateCodes}{vector of state codes used to filter the data}
+\item{stateCodes}{optional vector of state codes used to filter the data}
 
-\item{countryCodes}{vector of country codes used to filter the data}
+\item{countryCodes}{optional vector of country codes used to filter the data}
 
 \item{dropMonitors}{flag specifying whether to remove monitors with no data}
 

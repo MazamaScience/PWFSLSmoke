@@ -2,10 +2,10 @@
 #' @export
 #' @title Download and Aggregate Multiple Daily Data Files from OpenAQ
 #' @param parameter pollutant name
-#' @param startdate desired staring date (integer or character representing YYYYMMDD)
+#' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param days desired number of days of data to assemble
 #' @param countryCode two-character country code (ISO 3166-1 alpha-2)
-#' @param baseUrl base URL for archived daily data
+#' @param baseUrl base URL for data queries
 #' @description This function downloads data from the OpenAQ Data Backups page
 #' hosted on Amazon S3. All data obtained are then combined into a single dataframe
 #' and returned.

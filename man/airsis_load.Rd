@@ -17,7 +17,7 @@ airsis_load(startdate = 20000101, enddate = strftime(lubridate::now(),
 
 \item{stateCodes}{optional vector of stateCodes used to subset the data}
 
-\item{url}{The location of the meta and data files (url or local file)}
+\item{url}{location of the meta and data files (url or local file)}
 }
 \value{
 ws_monitor object with subsetted time, monitorIDs and parameter
@@ -31,5 +31,5 @@ data from the archive url and returns the subsetted ws_monitor object.
 airsis <- airsis_load(20140901, 20141130)
 }
 }
-\keyword{airsis}
+\keyword{AIRSIS}
 

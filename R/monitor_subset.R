@@ -2,13 +2,13 @@
 #' @export
 #' @title Create a Subset of a ws_monitor Object
 #' @param ws_monitor ws_monitor object
-#' @param xlim vector with low and high longitude limit values
-#' @param ylim vector with low and high latitude limit values
+#' @param xlim optional vector with low and high longitude limits
+#' @param ylim optional vector with low and high latitude limits
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
-#' @param vlim vector with low and high PM2.5 data limit values
-#' @param monitorIDs vector of monitor IDs used to filter the data
-#' @param stateCodes vector of state codes used to filter the data
-#' @param countryCodes vector of country codes used to filter the data
+#' @param vlim optional vector with low and high data value limits
+#' @param monitorIDs optional vector of monitor IDs used to filter the data
+#' @param stateCodes optional vector of state codes used to filter the data
+#' @param countryCodes optional vector of country codes used to filter the data
 #' @param dropMonitors flag specifying whether to remove monitors with no data
 #' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
 #' @description Creates a subset of a ws_monitor object based on one or more optional input parameters.

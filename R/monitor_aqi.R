@@ -31,7 +31,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
   colnames(AQIdata) <- "datetime"
   AQIdata$concentration <- NA
   
-  if (parameter = "o3" & hour = 8) {
+  if (parameter == "o3" && hour == 8) {
     
     breakPoints <- list( Good <- c(0.000, 0.054),
                          Moderate <- c(0.055, 0.070),
@@ -41,7 +41,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
     
     #data <- apply(data, 2, function(x){ round(x, 3) })
     
-  } else if (parameter = "o3" & hour = 1) {
+  } else if (parameter == "o3" && hour == 1) {
     
     breakPoints <- list( UnhealthySensitive <- c(0.125, 0.164),
                          Unhealthy <- c(0.165, 0.204),
@@ -51,7 +51,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
     
     #data <- apply(data, 2, function(x){ round(x, 3) })
     
-  } else if (parameter = "pm25") {
+  } else if (parameter == "pm25") {
     
     breakPoints <- list( Good <- c(0.0, 12.0),
                          Moderate <- c(12.1, 35.4),
@@ -63,7 +63,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
     
     data <- apply(data, 2, function(x){ round(x, 1) })
     
-  } else if (parameter = "pm10") {
+  } else if (parameter == "pm10") {
     breakPoints <- list( Good <- c(0, 54),
                          Moderate <- c(55, 154),
                          UnhealthySensitive <- c(155, 254),
@@ -74,7 +74,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
     
     #data <- apply(data, 2, function(x){ round(x, 0) })
     
-  } else if (parameter = "co") {
+  } else if (parameter == "co") {
     breakPoints <- list( Good <- c(0.0, 4.4),
                          Moderate <- c(4.5, 9.4),
                          UnhealthySensitive <- c(9.5, 12.4),
@@ -85,7 +85,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
     
     #data <- apply(data, 2, function(x){ round(x, 1) })
     
-  } else if (parameter = "so2") {
+  } else if (parameter == "so2") {
     breakPoints <- list( Good <- c(0, 35),
                          Moderate <- c(36, 75),
                          UnhealthySensitive <- c(76, 185),
@@ -96,7 +96,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
     
     #data <- apply(data, 2, function(x){ round(x, 0) })
     
-  } else if (parameter = "no2") {
+  } else if (parameter == "no2") {
     breakPoints <- list( Good <- c(0, 53),
                          Moderate <- c(54, 100),
                          UnhealthySensitive <- c(101, 360),

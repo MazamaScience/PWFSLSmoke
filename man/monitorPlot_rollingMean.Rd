@@ -23,11 +23,11 @@ in the ws_monitor object)}
 \item{data.thresh}{minimum number of valid observations required as a percent of \code{width};
 NA is returned if insufficicnet valid data to calculate mean}
 
-\item{tlim}{time limit for plot}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{ylim}{optional y limits for plot}
+\item{ylim}{y limits for the plot}
 
-\item{useGMT}{Plot w/ time axis in GMT, as opposed to local time.}
+\item{useGMT}{Plot w/ time axis in GMT, as opposed to local time}
 
 \item{shadedNight}{add shaded background during nights}
 

@@ -13,9 +13,9 @@ airsis_downloadData(provider = "USFS", unitID = NULL,
 
 \item{unitID}{unit identifier}
 
-\item{startdate}{integer or character representing start date as YYYYMMDD (GMT)}
+\item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
-\item{enddate}{integer or character representing end date as YYYYMMDD (GMT)}
+\item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
 
 \item{baseUrl}{base URL for data queries}
 }

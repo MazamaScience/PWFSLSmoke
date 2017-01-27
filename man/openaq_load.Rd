@@ -12,10 +12,10 @@ openaq_load(startdate, enddate, monitorIDs = NULL, parameter = "pm25",
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
 
-\item{monitorIDs}{The set of monitor IDs to be subsetted.
+\item{monitorIDs}{vector of monitor IDs used for subsetting
 When set to NULL, the function returns all the monitor IDs available in the metadata}
 
-\item{parameter}{The parameter of interest}
+\item{parameter}{parameter of interest}
 
 \item{baseUrl}{base URL for OpenAQ meta and data files (note: the default baseURL cannot be used yet)}
 }

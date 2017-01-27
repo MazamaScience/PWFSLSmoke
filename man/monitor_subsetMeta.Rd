@@ -10,9 +10,9 @@ monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
 \arguments{
 \item{meta}{ws_monitor object 'meta' dataframe}
 
-\item{xlim}{optional vector with low and high longitude values}
+\item{xlim}{optional vector with low and high longitude limits}
 
-\item{ylim}{optional vector with low and high latitude values}
+\item{ylim}{optional vector with low and high latitude limits}
 
 \item{stateCodes}{optional vector of stateCodes}
 

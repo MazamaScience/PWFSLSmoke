@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitorPlot_noData.R
 \name{monitorPlot_noData}
 \alias{monitorPlot_noData}
-\title{Creates Blank Plot with "No Data" Message}
+\title{Create Blank Plot with "No Data" Message}
 \usage{
 monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
 }

@@ -1,11 +1,12 @@
-#' @keywords raw_enhance
+#' @keywords raw
 #' @export
-#' @title Plot Raw Monitoring Data
-#' @param df raw_enhance monitor object, as created by the raw_enhance() function
+#' @import graphics
+#' @title Create Timeseries Plot from a Raw Dataframe
+#' @param df enhanced, raw dataframe as created by the raw_enhance() function
 #' @param parameter raw parameter to plot. Default = "pm25". Other options include
 #' c("temperature","humidity","windSpeed","windDir", "pressure"), or any of the other raw
 #' parameters (do "names(df)" to see list of options)
-#' @param tlim A vector that subsets the raw dataframe by time limits, e.g. c(20160915,20161010)
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime use local times; defaults to GMT if >1 time zone in data.
 #' @param shadedNight Shade background based on approximate sunrise/sunset times. Unavailable if >1 time zone in data.
 #' Also note that for multiple deployments, this defaults to use the lat/lon for the first deployment, which in theory

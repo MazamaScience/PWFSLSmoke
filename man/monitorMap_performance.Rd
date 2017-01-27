@@ -12,9 +12,9 @@ monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
   countyCol = "grey70", countyLwd = 1, add = FALSE, ...)
 }
 \arguments{
-\item{predicted}{data list of class \code{ws_monitor}}
+\item{predicted}{ws_monitor object with predicted values}
 
-\item{observed}{data list of class \code{ws_monitor}}
+\item{observed}{ws_monitor object with observed  values}
 
 \item{threshold}{value used to classify \code{predicted} and \code{observed} measurements}
 

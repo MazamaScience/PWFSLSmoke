@@ -52,16 +52,18 @@
 #' cm <- skill_confusionMatrix(predicted, observed)
 #' print(cm)
 #' 
-skill_confusionMatrix <- function(predicted, observed, FPCost=1, FNCost=1, lightweight=FALSE) {
+skill_confusionMatrix <- function(predicted, observed,
+                                  FPCost=1, FNCost=1,
+                                  lightweight=FALSE) {
   
   # Sanity check
   if ( length(predicted) != length(observed) ) {
-    stop(paste0("Error: The predicted and observed vectors are of different lengths."))
+    stop(paste0("The predicted and observed vectors are of different lengths."))
   }
   
   # Sanity check
   if ( !is.logical(predicted) | !is.logical(observed) ) {
-    stop(paste0("Error: predicted and observed must be logical vectors."))
+    stop(paste0("predicted and observed must be logical vectors."))
   }
   
   # Remove any elements where either predicted or observed has NA

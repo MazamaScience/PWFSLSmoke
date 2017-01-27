@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsisDump_parseData.R
 \name{airsisDump_parseData}
 \alias{airsisDump_parseData}
-\title{Parse AIRSIS Data String}
+\title{Parse AIRSIS Dump File Data String}
 \usage{
 airsisDump_parseData(fileString)
 }

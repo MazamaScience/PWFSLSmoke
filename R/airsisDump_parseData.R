@@ -1,6 +1,6 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Parse AIRSIS Data String
+#' @title Parse AIRSIS Dump File Data String
 #' @param fileString character string containing AIRSIS data as a csv
 #' @description Raw character data from AIRSIS are parsed into a dataframe.
 #' The incoming \code{fileString}

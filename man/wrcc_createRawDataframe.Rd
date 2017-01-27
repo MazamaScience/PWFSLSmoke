@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_createRawDataframe.R
 \name{wrcc_createRawDataframe}
 \alias{wrcc_createRawDataframe}
-\title{Obtain WRCC Data and Parse into a Dataframe}
+\title{Obtain WRCC Data and Parse into Dataframe}
 \usage{
 wrcc_createRawDataframe(stationID = NULL, startdate = 20100101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),

@@ -2,8 +2,8 @@
 #' @export
 #' @title Subset ws_monitor Object 'meta' Dataframe
 #' @param meta ws_monitor object 'meta' dataframe
-#' @param xlim optional vector with low and high longitude values
-#' @param ylim optional vector with low and high latitude values
+#' @param xlim optional vector with low and high longitude limits
+#' @param ylim optional vector with low and high latitude limits
 #' @param stateCodes optional vector of stateCodes
 #' @param countryCodes optional vector of countryCodes
 #' @param monitorIDs optional vector of monitorIDs

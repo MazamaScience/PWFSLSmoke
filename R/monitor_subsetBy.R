@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Subset Monitoring Data
-#' @param ws_monitor data list of class \code{ws_monitor}
+#' @param ws_monitor ws_monitor object
 #' @param filter a filter to use on the ws_monitor 
 #' @description The incoming monitoring data list is filtered according to the filter 
 #' passed in. Either meta data or actual data can be filtered. 

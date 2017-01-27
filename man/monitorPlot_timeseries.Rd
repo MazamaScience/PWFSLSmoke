@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitorPlot_timeseries.R
 \name{monitorPlot_timeseries}
 \alias{monitorPlot_timeseries}
-\title{Create a Timeseries Plot of ws_monitor Object PM2.5 Data}
+\title{Create Timeseries Plot}
 \usage{
 monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
   localTime = TRUE, style = "AQI", shadedNight = FALSE, add = FALSE,
@@ -14,7 +14,7 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{monitorID}{monitor ID for one or more monitor in the ws_monitor object}
 
-\item{tlim}{time limits}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
 \item{localTime}{create plot in local time; applies to tlim as well}
 

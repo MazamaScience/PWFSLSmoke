@@ -21,5 +21,5 @@ at PWFSL and can be loaded with this function.
 airsis <- airsis_loadLatest()
 }
 }
-\keyword{airsis}
+\keyword{AIRSIS}
 

@@ -1,4 +1,4 @@
-#' @keywords raw_enhance
+#' @keywords raw
 #' @export
 #' @title Process Raw Monitoring Data to Create raw_enhance Object
 #' @param raw raw monitor data, as created by airsis_createRawDataframe or wrcc_createRawDataframe

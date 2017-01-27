@@ -11,9 +11,9 @@ wrcc_downloadData(stationID = NULL, startdate = 20100101,
 \arguments{
 \item{stationID}{station identifier (will be upcased)}
 
-\item{startdate}{integer or character representing start date as YYYYMMDD (GMT)}
+\item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
-\item{enddate}{integer or character representing end date as YYYYMMDD (GMT)}
+\item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
 
 \item{baseUrl}{base URL for data queries}
 }

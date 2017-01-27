@@ -2,8 +2,8 @@
 #' @export
 #' @title Isolate Individual Monitors
 #' @param ws_monitor ws_monitor object
-#' @param xlim optional longitude lim with lo and hi longitude values
-#' @param ylim optional latitude lim with lo and hi latitude values
+#' @param xlim optional vector with low and high longitude limits
+#' @param ylim optional vector with low and high latitude limits
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param stateCodes optional vector of stateCodes
 #' @param monitorIDs optional vector of monitorIDs

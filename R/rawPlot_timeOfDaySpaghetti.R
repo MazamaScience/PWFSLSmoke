@@ -1,9 +1,10 @@
+#' @keywords raw
 #' @export
 #' @import graphics
-#' @title Time of Day Spaghetti Plot for Raw Data
-#' @param df dataframe with \code{datetime} column in GMT
+#' @title Create Time of Day Spaghetti Plot from a Raw Dataframe
+#' @param df enhanced, raw dataframe as created by the raw_enhance() function
 #' @param dataVar variable to be plotted
-#' @param tlim time limit
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param shadedNight shade nighttime hours
 #' @param meanCol color used for the mean line (use NA to omit the mean)
 #' @param meanLwd line width used for the mean line

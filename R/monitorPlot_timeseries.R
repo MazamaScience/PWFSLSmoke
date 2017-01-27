@@ -1,10 +1,10 @@
 #' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Create a Timeseries Plot of ws_monitor Object PM2.5 Data
+#' @title Create Timeseries Plot
 #' @param ws_monitor ws_monitor object
 #' @param monitorID monitor ID for one or more monitor in the ws_monitor object
-#' @param tlim time limits
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime create plot in local time; applies to tlim as well
 #' @param style AQI styling, one of \code{'Airfire| | '}... TODO: Fill in other options
 #' @param shadedNight Shade nighttime values if TRUE, provided all monitors in the same time zone.

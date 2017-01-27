@@ -2,18 +2,18 @@
 % Please edit documentation in R/rawPlot_timeOfDaySpaghetti.R
 \name{rawPlot_timeOfDaySpaghetti}
 \alias{rawPlot_timeOfDaySpaghetti}
-\title{Time of Day Spaghetti Plot for Raw Data}
+\title{Create Time of Day Spaghetti Plot from a Raw Dataframe}
 \usage{
 rawPlot_timeOfDaySpaghetti(df, dataVar = "pm25", tlim = NULL,
   shadedNight = TRUE, meanCol = "black", meanLwd = 4, meanLty = 1,
   highlightDates = c(), highlightCol = "dodgerblue", ...)
 }
 \arguments{
-\item{df}{dataframe with \code{datetime} column in GMT}
+\item{df}{enhanced, raw dataframe as created by the raw_enhance() function}
 
 \item{dataVar}{variable to be plotted}
 
-\item{tlim}{time limit}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
 \item{shadedNight}{shade nighttime hours}
 
@@ -39,4 +39,5 @@ raw <- raw_enhance(raw, rawSource='AIRSIS')
 rawPlot_timeOfDaySpaghetti(raw)
 }
 }
+\keyword{raw}
 

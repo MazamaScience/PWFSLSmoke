@@ -3,9 +3,9 @@
 #' @title Load OpenAQ Monitoring Data
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
-#' @param monitorIDs The set of monitor IDs to be subsetted.
+#' @param monitorIDs vector of monitor IDs used for subsetting
 #' When set to NULL, the function returns all the monitor IDs available in the metadata
-#' @param parameter The parameter of interest
+#' @param parameter parameter of interest
 #' @param baseUrl base URL for OpenAQ meta and data files (note: the default baseURL cannot be used yet)
 #' @return ws_monitor object with subsetted time, monitorIDs and parameter
 #' @description When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 

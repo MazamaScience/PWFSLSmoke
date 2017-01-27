@@ -3,7 +3,7 @@
 #' @title Subset ws_monitor Object 'data' Dataframe
 #' @param data ws_monitor object 'data' dataframe
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
-#' @param vlim optional vector with low and high data values to include
+#' @param vlim optional vector with low and high data value limits
 #' @param monitorIDs optional vector of monitorIDs
 #' @param dropMonitors flag specifying whether to remove columns -- defaults to \code{FALSE}
 #' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}

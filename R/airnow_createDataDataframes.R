@@ -2,7 +2,7 @@
 #' @export
 #' @title Return Reshaped, Monthly Dataframes of AirNow Data
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
-#' @param startdate desired staring date (integer or character representing YYYYMMDD[HH])
+#' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
 #' @description The airnow_createDataDataframes() function uses the \link{airnow_downloadData} function 
 #' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
