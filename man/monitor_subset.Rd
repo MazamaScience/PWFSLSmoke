@@ -30,7 +30,7 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 \item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
-ws_monitor object as a subset of the input ws_monitor object
+A ws_monitor object with a subset of the input ws_monitor object.
 }
 \description{
 Creates a subset of a ws_monitor object based on one or more optional input parameters.

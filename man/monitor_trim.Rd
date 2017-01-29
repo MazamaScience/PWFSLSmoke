@@ -10,7 +10,7 @@ monitor_trim(ws_monitor)
 \item{ws_monitor}{ws_monitor object}
 }
 \value{
-ws_monitor object
+A ws_monitor object with missing data trimmed.
 }
 \description{
 Trims the time axis of a ws_monitor object to exclude timestamps prior to the first and

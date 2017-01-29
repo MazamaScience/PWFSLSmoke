@@ -19,7 +19,7 @@ monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 }
 \value{
-ws_monitor object with daily count of hours at or above threshold
+A ws_monitor object with a daily count of hours at or above \code{threshold}.
 }
 \description{
 Calculates the number of hours per day each monitor in a ws_monitor object was at or above a given threshold

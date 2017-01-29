@@ -5,10 +5,10 @@
 #' @param ws_monitor ws_monitor object
 #' @param monitorID monitor ID for one or more monitor in the ws_monitor object
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
-#' @param localTime create plot in local time; applies to tlim as well
-#' @param style AQI styling, one of \code{'Airfire| | '}... TODO: Fill in other options
-#' @param shadedNight Shade nighttime values if TRUE, provided all monitors in the same time zone.
-#' @param add A logical specifying whether you want to add the data points on top of an existing time series plot
+#' @param localTime logical specifying whether \code{tlim} is in local time or UTC
+#' @param shadedNight add nighttime shading
+#' @param style custom styling, one of \code{'aqiDots'}
+#' @param add logical specifying whether to add to the current plot
 #' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)
 #' @param gridCol grid line color
 #' @param gridLwd grid line width
@@ -18,10 +18,16 @@
 #' @param hourInterval interval for grid (max=12)
 #' @param ... additional arguments to be passed to points()
 #' @description Creates a time series plot of PM2.5 data from a ws_monitor object (see note below). Optional arguments
-#' color code by AQI index, add shading to indicate nighttime, and adjust the time display (GMT vs. local).
+#' color code by AQI index, add shading to indicate nighttime, and adjust the time display (local vs. UTC).
+#' 
+#' When a named \code{style} is used, some graphical parameters will be overridden. Available styles include:
+#' 
+#' \itemize{
+#' \item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+#' }
+#' 
 #' @note Remember that a ws_monitor object can contain data from more than one monitor, and thus, this function may produce
-#' a time series of data from multiple monitors. To plot a time series of an individual monitor's data, use the monitor_subset
-#' function (see example below).
+#' a time series of data from multiple monitors. To plot a time series of an individual monitor's data, specify a single \code{monitorID}.
 #' @examples
 #' \dontrun{ 
 #' airnow <- airnow_load(20150801, 20150831)
@@ -33,7 +39,7 @@ monitorPlot_timeseries <- function(ws_monitor,
                                    monitorID=NULL,
                                    tlim=NULL,
                                    localTime=TRUE,
-                                   style='AQI',
+                                   style=NULL,
                                    shadedNight=FALSE,
                                    add=FALSE,
                                    gridPos='',
@@ -67,13 +73,13 @@ monitorPlot_timeseries <- function(ws_monitor,
   timezone <- unique(ws_monitor$meta[monitorID,"timezone"])
   
   # Force timezone to UTC and disable shadedNight if >1 timezone in metadata for monitorIDs
-  if ( length(timezone)>1 ) { # note that we will only enter this condition if localTime==TRUE
+  if ( length(timezone) > 1 ) { # note that we will only enter this condition if localTime==TRUE
     if ( localTime ) {
-      warning(">1 timezone in metadata for selected monitorIDs: Timezone (including tlim, if specified) forced to UTC")
+      warning(">1 timezone in metadata for selected monitorIDs:  timezone forced to UTC")
       timezone <- "UTC"
     }
     if ( shadedNight ) {
-      warning(">1 timezone in metadata for selected monitorIDs: Shaded Night disabled")
+      warning(">1 timezone in metadata for selected monitorIDs:  shadedNight disabled")
       shadedNight <- FALSE
     }    
   }
@@ -87,21 +93,15 @@ monitorPlot_timeseries <- function(ws_monitor,
   mon <- monitor_subset(ws_monitor, monitorIDs=monitorID, tlim=tlim, timezone=timezone)
   # TODO: Consider fixing bug here where a monitor that has no valid data in the tlim (and thus will not be included in subset) will still force timezone='UTC' and shadedNight=FALSE
 
-  # Pull out meta data and hour data
+  # Pull out meta and data
   meta <- mon$meta
   data <- mon$data
   
   # Pull out time data
   times <- lubridate::with_tz(data$datetime, tzone=timezone)
   
-  # Set transparency based on number of points 
-  dims <- dim(as.matrix(data[,-1]))
-  num_na <- length(which(is.na(data[,-1])))
-  size <- dims[1]*dims[2] - num_na
-  transparency <- min(8/log(size), 1)
-  
   # Cap hour interval
-  if ( hourInterval>12 ) {
+  if ( hourInterval > 12 ) {
     warning("Hour interval capped at 12 hours")
     hourInterval <- min(hourInterval,12)
   }
@@ -113,18 +113,18 @@ monitorPlot_timeseries <- function(ws_monitor,
   argsList$x=times
   argsList$y=data[,2]
   
-  # TODO: better ylim smarts
-  # set range for plotting
-  if ( !('ylim' %in% names(argsList)) ) {
-    argsList$ylim <- max(data[,-1], na.rm=TRUE)
-    argsList$ylim <- c(0, argsList$ylim*1.1)
-  }
+  # # TODO: better ylim smarts
+  # # set range for plotting
+  # if ( !('ylim' %in% names(argsList)) ) {
+  #   argsList$ylim <- max(data[,-1], na.rm=TRUE)
+  #   argsList$ylim <- c(0, argsList$ylim*1.1)
+  # }
   
   if ( !('xlab' %in% names(argsList)) ) {
     if ( timezone=='UTC' ) {
-      argsList$xlab <- 'Date and time (UTC)'
+      argsList$xlab <- 'UTC'
     } else {
-      argsList$xlab <- 'Date and time (local)'
+      argsList$xlab <- 'Local Time'
     }
   }
   
@@ -153,21 +153,10 @@ monitorPlot_timeseries <- function(ws_monitor,
     
     # Shaded Night
     if ( shadedNight ) {
-
-      # Lat/lon for shadedNight
       lat <- mean(mon$meta$latitude)
       lon <- mean(mon$meta$longitude)
       timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
       addShadedNights(timeInfo)
-    
-      # # OPTION: Loop for each location...may need to increase tranparency based on # of monitors
-      # for (monitor in mon$meta$monitorID) {
-      #   lat <- mon$meta[monitor,"latitude"]
-      #   lon <- mon$meta[monitor,"longitude"]
-      #   timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
-      #   addShadedNights(timeInfo)
-      # }
-      
     }
     
     # Add vertical lines to denote days and/or hour breaks
@@ -184,7 +173,7 @@ monitorPlot_timeseries <- function(ws_monitor,
     # Put a box around the plot area
     box()
     
-    # Add axes if we are not adding points on top of an existing plot
+    # Add axes
     axis(2, las=1)
     
     # TODO: better x axis smarts, e.g. keep from saying "Monday, Tuesday" etc...
@@ -195,31 +184,54 @@ monitorPlot_timeseries <- function(ws_monitor,
   # TODO: Add more style options
   
   # choose AQI breaks 
-  if ( style == 'AQI' ) {
+  if ( !is.null(style) ) {
     
-    breaks <- AQI$breaks_24
-    
-    for (id in meta$monitorID) {
-      # set style options 
-      argsList$y <- data[[id]] # same as data[,id]
-      levels <- .bincode(argsList$y, breaks)
-      argsList$col <- AQI$colors[levels]
-      argsList$col <- adjustcolor(argsList$col, alpha.f=transparency)
-      argsList$cex <- argsList$y / 200 + .3
-      argsList$cex <- pmin(argsList$cex,2)
+    if ( style == 'aqiDots' ) {
       
-      # Add the points
-      do.call(points,argsList)
+      # # Set opacity based on number of points
+      # dims <- dim(as.matrix(data[,-1]))
+      # num_na <- length(which(is.na(data[,-1])))
+      # size <- dims[1]*dims[2] - num_na
+      # opacity <- min(8/log(size), 1)
+      opacity <- 1
+
+      breaks <- AQI$breaks_24
+      for (id in meta$monitorID) {
+        argsList$y <- data[[id]] # same as data[,id]
+        levels <- .bincode(argsList$y, breaks)
+        argsList$col <- AQI$colors[levels]
+        argsList$col <- adjustcolor(argsList$col, alpha.f=opacity)
+        argsList$cex <- argsList$y / 200 + .3
+        argsList$cex <- pmin(argsList$cex,2)
+        # Add the points
+        do.call(points,argsList)
+      }
+      
+    } else if ( style == 'gnats' ) {
+      
+      # Set opacity based on number of points
+      dims <- dim(as.matrix(data[,-1]))
+      num_na <- length(which(is.na(data[,-1])))
+      size <- dims[1]*dims[2] - num_na
+      opacity <- min(8/log(size), 1)
+
+      for (id in meta$monitorID) {
+        argsList$y <- data[[id]] # same as data[,id]
+        argsList$col <- adjustcolor(argsList$col, alpha.f=opacity)
+        argsList$pch <- 16
+        # Add the points
+        do.call(points,argsList)
+      }
       
     }
-  } else {
+    
+  } else { # No 'style' specified
     
     for (id in meta$monitorID) {
-      # set style options 
       argsList$y <- data[[id]] # same as data[,id]
-      
       do.call(points,argsList)
     }
+    
   }
   
   # Add horizontal grid lines (on top of points if grid=='over')

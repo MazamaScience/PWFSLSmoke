@@ -19,7 +19,7 @@ wrcc_load(startdate, enddate, monitorIDs = NULL, stateCodes = NULL,
 \item{url}{local file path or url containing the \code{ws_monitor} object to be loaded}
 }
 \value{
-ws_monitor object with subsetted time, monitorIDs and parameter
+A ws_monitor object with WRCC data.
 }
 \description{
 When given the startdate, enddate, monitorIDs and stateCodes, the function retrieves 

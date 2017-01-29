@@ -6,13 +6,13 @@
 #' @param tries number of download attempts in the face of timeouts
 #' @param baseUrl base URL for archived hourly data
 #' @param curl previously initialized CURL context/handle (see RCurl::getURL())
+#' @return Dataframe of AirNow hourly data.
 #' @description The \url{http://airnowtech.org} site provides both air pollution
 #' monitoring data as well as monitoring site location metadata. The \code{airnow_downloadHourlyData()}
 #' function retrieves a single, hourly data file and returns it as a dataframe.
 #' 
 #' @note:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
-#' @return Data frame of the AirNow hourly data.
 #' @seealso \link{airnow_createDataDataframes}
 #' @seealso \link{airnow_downloadData}
 #' @examples

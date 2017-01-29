@@ -6,9 +6,9 @@
 #' @param stateCodes optional vector of stateCodes used to subset the data
 #' @param monitorIDs optional vector of monitorIDs used to subset the data
 #' @param url location of the meta and data files (url or local file)
-#' @return ws_monitor object with subsetted time, monitorIDs and parameter
 #' @description When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves 
 #' data from the archive url and returns the subsetted ws_monitor object.
+#' @return A ws_monitor object with AIRSIS data.
 #' @examples
 #' \dontrun{
 #' airsis <- airsis_load(20140901, 20141130)

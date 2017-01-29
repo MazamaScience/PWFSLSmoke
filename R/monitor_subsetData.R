@@ -7,6 +7,7 @@
 #' @param monitorIDs optional vector of monitorIDs
 #' @param dropMonitors flag specifying whether to remove columns -- defaults to \code{FALSE}
 #' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
+#' @return A ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors.
 #' @description Subsets a ws_monitor object's 'data' dataframe by removing any monitors that
 #' lie outisde the specified ranges of time and values and that are not mentioned in the
 #' list of monitorIDs.
@@ -21,8 +22,6 @@
 #' Filtering by vlim is open on the left and closed on the right, i.e.
 #'     
 #'  \code{x > vlim[1] & x <= vlim[2]}
-#'       
-#' @return ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors.
 
 monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
                                dropMonitors=FALSE, timezone="UTC") {

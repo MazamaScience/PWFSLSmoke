@@ -21,7 +21,7 @@ monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
 \item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
-ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors.
+A ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors.
 }
 \description{
 Subsets a ws_monitor object's 'data' dataframe by removing any monitors that

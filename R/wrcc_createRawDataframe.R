@@ -1,12 +1,13 @@
 #' @keywords WRCC
 #' @export
 #' @title Obtain WRCC Data and Parse into Dataframe
-#' @param stationID station identifier (will be upcased)
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
+#' @param stationID station identifier (will be upcased)
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
+#' @return Raw dataframe of WRCC data.
 #' @description Obtains monitor data from a WRCC webservice and converts
 #' it into a quality controlled, metadata enhanced "raw" dataframe
 #' ready for use with all \code{raw_~} functions.
@@ -22,14 +23,14 @@
 #' }
 #' 
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
-#' @return ws_monitor object with a unique `monitorID` for each unique deployment.
 #' @seealso \code{\link{wrcc_downloadData}}
 #' @seealso \code{\link{wrcc_parseData}}
 #' @seealso \code{\link{wrcc_qualityControl}}
 #' @seealso \code{\link{addClustering}}
 
-wrcc_createRawDataframe <- function(stationID=NULL, startdate=20100101,
+wrcc_createRawDataframe <- function(startdate=20100101,
                                     enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                                    stationID=NULL,
                                     clusterDiameter=1000,
                                     baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
                                     saveFile=NULL) {
@@ -42,7 +43,7 @@ wrcc_createRawDataframe <- function(stationID=NULL, startdate=20100101,
   
   # Read in WRCC .csv data
   logger.info("Downloading WRCC data ...")
-  fileString <- wrcc_downloadData(stationID, startdate, enddate, baseUrl)
+  fileString <- wrcc_downloadData(startdate, enddate, stationID, baseUrl)
   
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {

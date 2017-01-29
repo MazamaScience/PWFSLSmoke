@@ -6,7 +6,7 @@
 \usage{
 monitorPlot_rollingMean(ws_monitor, monitorID = NULL, width = 3,
   align = "center", data.thresh = 75, tlim = NULL, ylim = NULL,
-  useGMT = FALSE, shadedNight = FALSE, aqiLines = TRUE,
+  localTime = TRUE, shadedNight = FALSE, aqiLines = TRUE,
   gridHorizontal = FALSE, grid24hr = FALSE, grid3hr = FALSE,
   showLegend = TRUE)
 }
@@ -27,9 +27,9 @@ NA is returned if insufficicnet valid data to calculate mean}
 
 \item{ylim}{y limits for the plot}
 
-\item{useGMT}{Plot w/ time axis in GMT, as opposed to local time}
+\item{localTime}{logical specifying whether \code{tlim} is in local time or UTC}
 
-\item{shadedNight}{add shaded background during nights}
+\item{shadedNight}{add nighttime shading}
 
 \item{aqiLines}{horizontal lines indicating AQI levels}
 
@@ -56,11 +56,15 @@ Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a s
 \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
 }
 }
+\note{
+This function intends to provide a 'publication ready' plot and does pass additional arguments to any
+lower level plotting functions.
+}
 \examples{
 \dontrun{
-ws_monitor <- wrcc_load(20150725, 20150805)
-monitor <- ws_monitor$meta$monitorID[1]
-monitorPlot_rollingMean(ws_monitor, monitor)
+airnow <- airnow_load(20150818, 20150825)
+Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
+monitorPlot_rollingMean(Roseburg)
 }
 }
 \keyword{ws_monitor}

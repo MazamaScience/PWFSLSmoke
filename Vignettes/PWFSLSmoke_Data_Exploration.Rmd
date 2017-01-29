@@ -39,7 +39,7 @@ logger.setLevel(ERROR)
 First we'll gather monitoring data. This is done using one of the "createMonitorObject" functions like the one shown below. See the "E-Sampler_Data_Handling" Vignette for a detailed look at what goes on in the function shown below, including download, parsing, QA/QC and clustering of the data.
 
 ```{r}
-plain <- airsis_createMonitorObject(unitID = 1033, startdate = 20160901,enddate = 20161015)
+plain <- airsis_createMonitorObject(20160901, 20161015, provider='USFS', unitID=1033 )
 ```
 
 This ws_monitor object can be used in a variety of ways. For example, see code and results below.
@@ -54,7 +54,7 @@ The steps above (to be expanded) can be used to create a ws_monitor object that 
 We can also create a raw dataframe. This process is similar.
 
 ```{r raw}
-df <- PWFSLSmoke::airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1033)
+df <- PWFSLSmoke::airsis_createRawDataframe(20160901, 20161015, provider='USFS', unitID=1033)
 ```
 
 Now to clean the data

@@ -17,7 +17,7 @@ airnow_downloadHourlyData(datestamp = "",
 \item{curl}{previously initialized CURL context/handle (see RCurl::getURL())}
 }
 \value{
-Data frame of the AirNow hourly data.
+Dataframe of AirNow hourly data.
 }
 \description{
 The \url{http://airnowtech.org} site provides both air pollution

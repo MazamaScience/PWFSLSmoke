@@ -4,6 +4,7 @@
 #' @export
 #' @title Return Dataframes of AirNow Site Location Metadata
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
+#' @return List of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
 #' @description The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 
 #' to download site metadata from AirNow and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
@@ -56,7 +57,6 @@
 #' }
 #' 
 #' Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
-#' @return Returns a list of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
 #' @seealso \link{airnow_downloadSites}
 #' @examples
 #' \dontrun{

@@ -10,7 +10,7 @@ openaq_assignStateCode(df)
 \item{df}{a dataframe with longitude and latitude columns}
 }
 \value{
-the original df with an additional \code{stateCode} column.
+Input dataframe with additional columns: \code{stateCode}.
 }
 \description{
 Uses function getStateCode() from MazamaSpatialUtils package 

@@ -4,13 +4,14 @@
 #' @title Create Wind Rose Plot from a Raw Dataframe
 #' @param df enhanced, raw dataframe as created by the raw_enhance() function
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
-#' @param localTime use local times; defaults to GMT if >1 time zone in data.
+#' @param localTime logical specifying whether \code{tlim} is in local time or UTC
 #' @param ... additional arguments to pass on to openair::windRose()
 #' @description Create wind rose plot from raw_enhance object. Based on openair::windRose().
+#' @note If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 #' @examples
 #' \dontrun{
-#' df <- PWFSLSmoke::airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
-#' df <- raw_enhance(df,rawSource='AIRSIS')
+#' df <- airsis_createRawDataframe(20160901, 20161015, provider='USFS', unitID=1012)
+#' df <- raw_enhance(df, rawSource='AIRSIS')
 #' rawPlot_windRose(df)
 #' }
 

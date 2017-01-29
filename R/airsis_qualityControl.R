@@ -12,7 +12,7 @@
 #' }
 #' 
 #' See the individual \code{airsis_~QualityControl()} functions for details.
-#' @return  Cleaned up dataframe of AIRSIS monitor data.
+#' @return Cleaned up dataframe of AIRSIS monitor data.
 #' @seealso \code{\link{airsis_EBAMQualityControl}}
 #' @seealso \code{\link{airsis_ESAMQualityControl}}
 

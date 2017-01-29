@@ -14,7 +14,7 @@ addGoogleMetadata(df, lonVar = "longitude", latVar = "latitude")
 \item{latVar}{name of the latitude variable in the incoming dataframe}
 }
 \value{
-Input dataframe with additional columns: elevation, siteName, countyName.
+Input dataframe with additional columns: \code{elevation, siteName, countyName}.
 }
 \description{
 Google APIs are used to determine elevation and

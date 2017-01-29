@@ -15,7 +15,7 @@ rawPlot_timeOfDaySpaghetti(df, dataVar = "pm25", tlim = NULL,
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{shadedNight}{shade nighttime hours}
+\item{shadedNight}{add nighttime shading}
 
 \item{meanCol}{color used for the mean line (use NA to omit the mean)}
 

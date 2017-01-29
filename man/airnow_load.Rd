@@ -23,7 +23,7 @@ When set to NULL, the function returns all the monitor IDs available in the meta
 \item{baseUrl}{base URL for AirNow meta and data files}
 }
 \value{
-ws_monitor object with subsetted time, monitorIDs and parameter
+A ws_monitor object with AirNow data.
 }
 \description{
 When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 

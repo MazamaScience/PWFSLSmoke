@@ -4,7 +4,7 @@
 #' @param ws_monitor ws_monitor object
 #' @param parameter pollutant type
 #' @param hour the number of hours for concentration values to be averaged
-#' @description AQI values are calculated for \code{data} in the \code{ws_monitor} object for different pollutants.
+#' @description AQI values are calculated for data in the ws_monitor object for different pollutants.
 #' 
 #' Available combinations of \code{parameter} and \code{hour} are:
 #' \enumerate{
@@ -18,7 +18,7 @@
 #' }
 #' 
 #' See references for calculation details.
-#' @return a \code{ws_monitor} object with \code{data} replaced by AQI values
+#' @return A ws_monitor object with data replaced by AQI values.
 #' @references \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
 #' @examples 
 #' \dontrun{

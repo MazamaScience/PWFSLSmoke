@@ -4,10 +4,10 @@
 #' @param x vector of numeric values
 #' @param factor scaling factor to be applied
 #' @param minRange minimum range to be returned
+#' @return Vector of low and high values of the adjusted range.
 #' @description Scale the range of values by a given factor. The min and max values of the 
 #' original range of valus are adjusted so that the new range is larger or smaller by \code{factor}.
 #' The returned range will always be equal to or greater than \code{minRange}.
-#' @return low and high values of the adjusted range
 #' @examples
 #' \dontrun{
 #' x <- (1:10)

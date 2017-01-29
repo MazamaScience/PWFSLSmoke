@@ -12,7 +12,7 @@ openaq_createMetaDataframes(df, parameters = NULL)
 \item{parameters}{pollutant name}
 }
 \value{
-A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
+A 'meta' dataframe for use in a ws_monitor object.
 }
 \description{
 After an OpenAQ dataframe has been enhanced with 

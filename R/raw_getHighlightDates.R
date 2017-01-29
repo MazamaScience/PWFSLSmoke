@@ -1,6 +1,6 @@
 #' @export
 #' @title Return Day Stamps for Values Above a Threshold
-#' @param df dataframe with \code{datetime} column in GMT
+#' @param df dataframe with \code{datetime} column in UTC
 #' @param dataVar variable to be evaluated
 #' @param tzone timezone where data were collected
 #' @param highlightRange range of values of to be highlighted

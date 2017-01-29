@@ -11,7 +11,7 @@
 #' }
 #' 
 #' See the individual \code{wrcc_~QualityControl()} functions for details.
-#' @return  Cleaned up dataframe of WRCC monitor data.
+#' @return Cleaned up dataframe of WRCC monitor data.
 #' @seealso \code{\link{wrcc_EBAMQualityControl}}
 #' @seealso \code{\link{wrcc_ESAMQualityControl}}
 

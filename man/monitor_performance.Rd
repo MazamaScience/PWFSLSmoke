@@ -8,9 +8,9 @@ monitor_performance(predicted, observed, t1, t2, metric = NULL, FPCost = 1,
   FNCost = 1)
 }
 \arguments{
-\item{predicted}{data list of class \code{ws_monitor}}
+\item{predicted}{ws_monitor object with predicted data}
 
-\item{observed}{data list of class \code{ws_monitor}}
+\item{observed}{ws_monitor object with observed data}
 
 \item{t1}{value used to classify \code{predicted} measurements}
 

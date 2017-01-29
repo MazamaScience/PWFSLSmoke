@@ -17,7 +17,7 @@ monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
 \item{align}{alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}}
 }
 \value{
-ws_monitor object with rolling mean data
+A ws_monitor object with data thaty have been processed by a rolling mean algorithm.
 }
 \description{
 Calculates rolling means for each monitor in the ws_monitor object using the

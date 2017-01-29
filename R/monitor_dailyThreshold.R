@@ -6,6 +6,7 @@
 #' @param dayStart one of \code{"sunset|midnight|sunrise"}
 #' @param minHours minimum number of hours to be reported
 #' @param na.rm logical value indicating whether NA values should be ignored
+#' @return A ws_monitor object with a daily count of hours at or above \code{threshold}.
 #' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
 #' For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
 #' very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.
@@ -14,7 +15,6 @@
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
-#' @return ws_monitor object with daily count of hours at or above threshold
 #' @examples 
 #' \dontrun{
 #' AirNow <- airnow_load(20150801, 20150930)

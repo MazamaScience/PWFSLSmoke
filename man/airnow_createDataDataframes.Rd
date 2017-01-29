@@ -14,7 +14,7 @@ airnow_createDataDataframes(parameters = NULL, startdate = "", hours = 24)
 \item{hours}{desired number of hours of data to assemble}
 }
 \value{
-Returns a list of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
+List of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
 }
 \description{
 The airnow_createDataDataframes() function uses the \link{airnow_downloadData} function 

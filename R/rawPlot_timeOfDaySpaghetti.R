@@ -5,7 +5,7 @@
 #' @param df enhanced, raw dataframe as created by the raw_enhance() function
 #' @param dataVar variable to be plotted
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
-#' @param shadedNight shade nighttime hours
+#' @param shadedNight add nighttime shading
 #' @param meanCol color used for the mean line (use NA to omit the mean)
 #' @param meanLwd line width used for the mean line
 #' @param meanLty line type used for the mean line

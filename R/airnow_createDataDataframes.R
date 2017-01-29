@@ -4,6 +4,7 @@
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
+#' @return List of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
 #' @description The airnow_createDataDataframes() function uses the \link{airnow_downloadData} function 
 #' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
@@ -36,7 +37,6 @@
 #' Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
 #' @note:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
-#' @return Returns a list of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
 #' @seealso \link{airnow_downloadData}
 #' @seealso \link{airnow_qualityControl}
 #' @examples

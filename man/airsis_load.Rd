@@ -20,7 +20,7 @@ airsis_load(startdate = 20000101, enddate = strftime(lubridate::now(),
 \item{url}{location of the meta and data files (url or local file)}
 }
 \value{
-ws_monitor object with subsetted time, monitorIDs and parameter
+A ws_monitor object with AIRSIS data.
 }
 \description{
 When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves 

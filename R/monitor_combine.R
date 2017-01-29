@@ -2,7 +2,7 @@
 #' @export
 #' @title Combine List of ws_monitor Objects into Single ws_monitor Object
 #' @param monitorList list containing ws_monitor objects
-#' @return A ws_monitor object.
+#' @return A ws_monitor object combining all monitoring data from \code{monitorList}.
 #' @description Combines a list of ws_monitor objects into a single ws_monitor object 
 #' by merging the 'meta' and 'data' dataframes from each object in the given list.
 #' @examples

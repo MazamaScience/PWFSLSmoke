@@ -2,6 +2,7 @@
 #' @export
 #' @title Ingest WRCC Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the WRCC dump file
+#' @return A ws_monitor object with WRCC data.
 #' @description Ingests an  WRCC dump file and converts
 #' it into a quality controlled, metadata enhanced \code{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
@@ -18,7 +19,6 @@
 #' }
 #' 
 #' @note Each dump file must contain data for only one type of monitor, e.g. EBAM or E-Sampler.
-#' @return ws_monitor object with a unique `monitorID` for each unique deployment.
 #' @seealso \code{\link{wrccDump_parseData}}
 #' @seealso \code{\link{wrcc_qualityControl}}
 #' @seealso \code{\link{addClustering}}

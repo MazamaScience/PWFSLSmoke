@@ -17,7 +17,7 @@ if only one monitor in the ws_monitor object)}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{localTime}{logical specifying whether \code{tlim} is in UTC or local time}
+\item{localTime}{logical specifying whether \code{tlim} is in local time or UTC}
 
 \item{style}{named style specification ('AirFire')}
 

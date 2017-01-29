@@ -28,7 +28,7 @@ The character data are then processed, read into a dataframe and augmented in th
 }
 \examples{
 \dontrun{
-fileString <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
 df <- wrcc_parseData(fileString)
 }
 }

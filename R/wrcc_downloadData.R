@@ -1,9 +1,9 @@
 #' @keywords WRCC
 #' @export
 #' @title Download Data from WRCC
-#' @param stationID station identifier (will be upcased)
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
+#' @param stationID station identifier (will be upcased)
 #' @param baseUrl base URL for data queries
 #' @description Request data from a particular station for the desired time period.
 #' Data are returned as a single character string containing the WRCC output. 
@@ -13,7 +13,7 @@
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 #' @examples
 #' \dontrun{
-#' fileString <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+#' fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
 #' df <- wrcc_parseData(fileString)
 #' }
 

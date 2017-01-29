@@ -4,17 +4,17 @@
 \alias{wrcc_createMonitorObject}
 \title{Obtain WRCC Data and Create ws_monitor Object}
 \usage{
-wrcc_createMonitorObject(stationID = NULL, startdate = 20020101,
+wrcc_createMonitorObject(startdate = 20020101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
-  clusterDiameter = 1000,
+  stationID = NULL, clusterDiameter = 1000,
   baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl", saveFile = NULL)
 }
 \arguments{
-\item{stationID}{station identifier (will be upcased)}
-
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
+
+\item{stationID}{station identifier (will be upcased)}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 
@@ -23,7 +23,7 @@ wrcc_createMonitorObject(stationID = NULL, startdate = 20020101,
 \item{saveFile}{optional filename where raw CSV will be written}
 }
 \value{
-ws_monitor object with a unique `monitorID` for each unique deployment.
+A ws_monitor object with a WRCC data.
 }
 \description{
 Obtains monitor data from an WRCC webservice and converts

@@ -18,9 +18,9 @@
 #' @param grayscale logical, if TRUE the colored map tile is rendered into a black & white image
 #' @param map optional map object returned from monitorGoogleMap()
 #' @param ... arguments passed on to RgoogleMaps::PlotOnStaticMap() (e.g. destfile, cex, pch, etc.)
+#' @return A \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
 #' @description Creates a Google map of a ws_monitor object.
 #' TODO:  More description here.
-#' @return \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
 #' @examples
 #' \dontrun{
 #' CarmelValley <- airnow_load(20160801,20160831,monitorIDs="060530002")

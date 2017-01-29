@@ -19,7 +19,7 @@ monitor_subsetByDistance(ws_monitor, lon = NULL, lat = NULL, radius = 50,
 \item{count}{number of grid cells to return}
 }
 \value{
-\code{ws_monitor} object containing monitors near a location
+A ws_monitor object with monitors near a location.
 }
 \description{
 Subsets a ws_monitor object to include only those monitors (or grid cells) 

@@ -5,6 +5,7 @@
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param countryCodes vector of countryCodes
+#' @return Input dataframe with additional columns: \code{timezone, countryCode, stateCode}.
 #' @description The \pkg{MazamaSpatialUtils} package used to determine elevation and
 #' address information associated with the locations specified by the
 #' \code{longitude} and \code{latitude} columns of the incoming dataframe.
@@ -19,7 +20,6 @@
 #' 
 #' If these lines have not be previously run, the function will return the original,
 #' unmodified dataframe.
-#' @return Input dataframe with additional columns: timezone, countryCode, stateCode.
 #' @references \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 
 addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", countryCodes=NULL) {

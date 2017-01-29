@@ -18,7 +18,7 @@
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 #' @examples
 #' \dontrun{
-#' fileString <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+#' fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
 #' df <- wrcc_parseData(fileString)
 #' }
 

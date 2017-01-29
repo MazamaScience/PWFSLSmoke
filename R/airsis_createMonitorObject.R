@@ -1,13 +1,14 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Obtain AIRSIS Data and Create ws_monitor Object
-#' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
-#' @param unitID character or numeric AIRSIS unit identifier
+#' @title Obain AIRSIS Data and Create ws_monitor Object
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
+#' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
+#' @param unitID character or numeric AIRSIS unit identifier
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
+#' @return A ws_monitor object with AIRSIS data.
 #' @description Obtains monitor data from an AIRSIS webservice and converts
 #' it into a quality controlled, metadata enhanced \code{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
@@ -24,7 +25,6 @@
 #' }
 #' 
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
-#' @return ws_monitor object with a unique `monitorID` for each unique deployment.
 #' @seealso \code{\link{airsis_downloadData}}
 #' @seealso \code{\link{airsis_parseData}}
 #' @seealso \code{\link{airsis_qualityControl}}
@@ -32,22 +32,27 @@
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
 
-airsis_createMonitorObject <- function(provider='USFS', unitID=NULL,
-                                       startdate=20020101,
+airsis_createMonitorObject <- function(startdate=20020101,
                                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                                       provider=NULL, unitID=NULL,
                                        clusterDiameter=1000,
                                        baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
                                        saveFile=NULL) {
 
   # Sanity checks
+  if ( is.null(provider) ) {
+    logger.error("Required parameter 'provider' is missing")
+    stop(paste0("Required parameter 'provider' is missing"))
+  }
+
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")
     stop(paste0("Required parameter 'unitID' is missing"))
   }
-
+  
   # Read in AIRSIS .csv data
   logger.info("Downloading AIRSIS data ...")
-  fileString <- airsis_downloadData(provider, unitID=unitID, startdate, enddate, baseUrl)
+  fileString <- airsis_downloadData(startdate, enddate, provider, unitID, baseUrl)
   
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {

@@ -8,7 +8,7 @@ raw_getHighlightDates(df, dataVar, tzone = NULL, highlightRange = c(1e+12,
   Inf))
 }
 \arguments{
-\item{df}{dataframe with \code{datetime} column in GMT}
+\item{df}{dataframe with \code{datetime} column in UTC}
 
 \item{dataVar}{variable to be evaluated}
 

@@ -17,7 +17,7 @@ addMazamaMetadata(df, lonVar = "longitude", latVar = "latitude",
 \item{countryCodes}{vector of countryCodes}
 }
 \value{
-Input dataframe with additional columns: timezone, countryCode, stateCode.
+Input dataframe with additional columns: \code{timezone, countryCode, stateCode}.
 }
 \description{
 The \pkg{MazamaSpatialUtils} package used to determine elevation and

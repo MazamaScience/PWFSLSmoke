@@ -1,13 +1,14 @@
 #' @keywords monitor
 #' @export
 #' @title Calculate Monitor Prediction Performance
-#' @param predicted data list of class \code{ws_monitor}
-#' @param observed data list of class \code{ws_monitor}
+#' @param predicted ws_monitor object with predicted data
+#' @param observed ws_monitor object with observed data
 #' @param t1 value used to classify \code{predicted} measurements
 #' @param t2 threshold used to classify \code{observed} measurements
 #' @param metric confusion matrix metric to be used
 #' @param FPCost cost associated with false positives (type II error)
 #' @param FNCost cost associated with false negatives (type I error)
+#' @return Dataframe of monitors vs named measure of performance.
 #' @description This function uses "confusion matrix" analysis to calculate
 #' different measures of predictive performance for every timeseries found
 #' in \code{predicted} with respect to the observed values found in the single timeseries
@@ -16,7 +17,6 @@
 #' The requested metric is returned in a dataframe organized with one row per monitor,
 #  the same as the \code{ws_monitor$meta} dataframe. If \code{metric=NULL},
 #' all available metrics are returned.
-#' @return Dataframe of monitors vs named measure of performance.
 #' @seealso \link{monitorMap_performance}
 #' @seealso \link{skill_confusionMatrix}
 #' @examples 

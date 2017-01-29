@@ -6,7 +6,7 @@
 #' @param monitorID monitor ID for a specific monitor in the given ws_monitor object (optional
 #' if only one monitor in the ws_monitor object)
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
-#' @param localTime logical specifying whether \code{tlim} is in UTC or local time
+#' @param localTime logical specifying whether \code{tlim} is in local time or UTC
 #' @param style named style specification ('AirFire')
 #' @param shadedNight add nighttime shading
 #' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)

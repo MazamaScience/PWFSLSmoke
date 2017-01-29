@@ -6,7 +6,7 @@
 #' @param stateCodes optional vector of stateCodes used to subset the data
 #' @param monitorIDs optional vector of monitorIDs used to subset the data
 #' @param url local file path or url containing the \code{ws_monitor} object to be loaded
-#' @return ws_monitor object with subsetted time, monitorIDs and parameter
+#' @return A ws_monitor object with WRCC data.
 #' @description When given the startdate, enddate, monitorIDs and stateCodes, the function retrieves 
 #' data from url and returns the subsetted ws_monitor object.
 #' @examples
@@ -28,7 +28,7 @@ wrcc_load <- function(startdate, enddate, monitorIDs=NULL, stateCodes=NULL,
   
   tlim <- c(parseDatetime(startdate), parseDatetime(enddate))
   
-  ws_monitor <- monitor_subset(ws_monitor, tlim=tlim,monitorIDs=monitorIDs,
+  ws_monitor <- monitor_subset(ws_monitor, tlim=tlim, monitorIDs=monitorIDs,
                                stateCodes=stateCodes, dropMonitors=TRUE)
   
   return(ws_monitor)

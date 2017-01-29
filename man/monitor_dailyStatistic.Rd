@@ -19,10 +19,10 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
 \item{minHours}{minimum number of valid data hours required to calculate each daily statistic}
 }
 \value{
-ws_monitor object with daily statistics for the local timezone.
+A ws_monitor object with daily statistics for the local timezone.
 }
 \description{
-Calculates daily statistics for each monitor in the \code{ws_monitor} data list.
+Calculates daily statistics for each monitor in \code{ws_monitor}.
 }
 \details{
 Sunrise and sunset times are calculated based on the first monitor encountered.

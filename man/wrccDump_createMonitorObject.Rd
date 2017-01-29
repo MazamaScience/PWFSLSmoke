@@ -10,7 +10,7 @@ wrccDump_createMonitorObject(filepath)
 \item{filepath}{absolute path of the WRCC dump file}
 }
 \value{
-ws_monitor object with a unique `monitorID` for each unique deployment.
+A ws_monitor object with WRCC data.
 }
 \description{
 Ingests an  WRCC dump file and converts

@@ -19,7 +19,7 @@ skill_confusionMatrix(predicted, observed, FPCost = 1, FNCost = 1,
 \item{lightweight}{flag specifying creation of a return list without derived metrics}
 }
 \value{
-List containing a \code{table} of confusion matrix values and a suite of derived metrics.
+List containing a table of confusion matrix values and a suite of derived metrics.
 }
 \description{
 Measurements of categorical forecast accuracy have a long history

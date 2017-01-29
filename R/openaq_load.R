@@ -7,7 +7,6 @@
 #' When set to NULL, the function returns all the monitor IDs available in the metadata
 #' @param parameter parameter of interest
 #' @param baseUrl base URL for OpenAQ meta and data files (note: the default baseURL cannot be used yet)
-#' @return ws_monitor object with subsetted time, monitorIDs and parameter
 #' @description When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 
 #' meta and data files from the archive baseUrl (or local directory) and return the subsetted ws_monitor object.
 #' 
@@ -31,6 +30,7 @@
 #' \item{201512}{:  12/1 - 12/30}
 #' }
 #' 
+#' @return A ws_monitor object with OpenAQ data.
 #' @examples
 #' \dontrun{
 #' openaq <- openaq_load(20150901, 20150930)

@@ -6,7 +6,8 @@
 #' @param dayStart one of \code{sunset|midnight|sunrise}
 #' @param na.rm logical value indicating whether NA values should be ignored
 #' @param minHours minimum number of valid data hours required to calculate each daily statistic
-#' @description Calculates daily statistics for each monitor in the \code{ws_monitor} data list.
+#' @return A ws_monitor object with daily statistics for the local timezone.
+#' @description Calculates daily statistics for each monitor in \code{ws_monitor}.
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
@@ -17,7 +18,6 @@
 #' object.
 #' 
 #' This returned object has a daily time axis where each time is set to noon, local time.
-#' @return ws_monitor object with daily statistics for the local timezone.
 #' @examples 
 #' \dontrun{
 #' airnow <- airnow_load(20150801, 20150831)

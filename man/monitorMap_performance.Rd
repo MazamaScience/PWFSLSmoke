@@ -38,7 +38,7 @@ monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
 
 \item{countyLwd}{width for county outlines}
 
-\item{add}{logical flag that specifies whether to add to the current plot}
+\item{add}{logical specifying whether to add to the current plot}
 
 \item{...}{additional arguments to be passed to the map() funciton such as graphical parameters (see par)}
 }

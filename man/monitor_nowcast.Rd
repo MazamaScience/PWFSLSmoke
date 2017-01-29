@@ -12,7 +12,7 @@ monitor_nowcast(ws_monitor, version = "pm")
 \item{version}{character identity specifying the type of nowcast algorithm to be used}
 }
 \value{
-ws_monitor object with data that have been proccessed by the Nowcast algorithm.
+A ws_monitor object with data that have been processed by the Nowcast algorithm.
 }
 \description{
 A Nowcast algorithm is applied to the data in in the ws_monitor object. The 

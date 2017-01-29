@@ -18,9 +18,9 @@ parameters (do "names(df)" to see list of options)}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{localTime}{use local times; defaults to GMT if >1 time zone in data.}
+\item{localTime}{logical specifying whether \code{tlim} is in local time or UTC}
 
-\item{shadedNight}{Shade background based on approximate sunrise/sunset times. Unavailable if >1 time zone in data.
+\item{shadedNight}{add nighttime shading
 Also note that for multiple deployments, this defaults to use the lat/lon for the first deployment, which in theory
 could be somewhat unrepresentative, such as if deployments have a large range in latitude.}
 
@@ -29,7 +29,7 @@ may include options to choose which parameter to plot, which color to use, which
 
 \item{sbLwd}{shaded background line width}
 
-\item{add}{A logical specifying whether you want to add the data points on top of an existing time series plot}
+\item{add}{logical specifying whether to add to the current plot}
 
 \item{gridPos}{position of grid lines either 'over', 'under' ('' for no grid lines)}
 
@@ -49,6 +49,9 @@ may include options to choose which parameter to plot, which color to use, which
 }
 \description{
 Creates a plot of raw monitoring data as generated using raw_enhance().
+}
+\note{
+If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 }
 \keyword{raw}
 

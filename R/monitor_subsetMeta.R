@@ -7,14 +7,13 @@
 #' @param stateCodes optional vector of stateCodes
 #' @param countryCodes optional vector of countryCodes
 #' @param monitorIDs optional vector of monitorIDs
+#' @return A ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors.
 #' @description Subsets a ws_monitor object's 'meta' dataframe by removing any monitors that
 #'     lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
 #'     latitudes and/or states) and that are not mentioned in the list of monitorIDs.
 #' @description If any parameter is not specified, that parameter will not be used in the subsetting.
 #' @description Intended for use by the monitor_subset function.
 #' @details Longitudes must be specified in the domain [-180,180].
-#' 
-#' @return ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors
 
 monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, countryCodes=NULL, monitorIDs=NULL) {
   

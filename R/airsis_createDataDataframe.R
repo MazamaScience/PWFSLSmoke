@@ -4,14 +4,14 @@
 #' @param df single site AIRSIS dataframe created by airsis_clustering()
 #' @param meta AIRSIS meta dataframe created by airsis_createMetaDataframe()
 #' @description After quality control has been applied to an AIRSIS dataframe,
-#' we can extract the PM2.5 values and store them in a \code{'data'} dataframe
+#' we can extract the PM2.5 values and store them in a 'data' dataframe
 #' organized as hour-by-deployment (aka hour-by-site).
 #' 
 #' The first column of the returned dataframe is named \code{'datetime'} and
 #' contains a \code{POSIXct} time in UTC. Additional columns contain data
 #' for each separate deployment of a monitor. 
 #' 
-#' @return A \code{'data'} dataframe for use in a \code{ws_monitor} object.
+#' @return A 'data' dataframe for use in a ws_monitor object.
 
 
 airsis_createDataDataframe <- function(df, meta) {

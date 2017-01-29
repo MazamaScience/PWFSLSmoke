@@ -2,9 +2,9 @@
 #' @export
 #' @title Load Recent AIRSIS Monitoring Data
 #' @param baseUrl The location of the meta and data files
-#' @return ws_monitor object with subsetted time, monitorIDs and parameter
 #' @description The most recent 10 days of AIRSIS data are updated in quasi-real time
 #' at PWFSL and can be loaded with this function.
+#' @return A ws_monitor object with AIRSIS data.
 #' @examples
 #' \dontrun{
 #' airsis <- airsis_loadLatest()

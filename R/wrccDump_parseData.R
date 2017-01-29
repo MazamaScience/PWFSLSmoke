@@ -79,7 +79,7 @@ wrccDump_parseData <- function(fileString) {
     lineCount <- monitorLineCount[i]
     
     if ( lineCount <= 4 ) {
-      logger.debug("No valid PM2.5 data for %s", lines[lineIndex])
+      logger.warn("No valid PM2.5 data for %s", lines[lineIndex])
       next
     }
     
@@ -106,11 +106,11 @@ wrccDump_parseData <- function(fileString) {
     columnTypes <- monitorTypeList$columnTypes
     
     if ( monitorType == "UNKNOWN" ) {
-      logger.debug("WRCC header type == %s", monitorType)
+      logger.warn("WRCC header type = '%s' is unknown", monitorType)
       next
     }
     
-    logger.debug("WRCC header type == %s", monitorType)
+    logger.debug("WRCC header type = '%s'", monitorType)
     
     # Convert the fileString into individual lines
     singleMonitorLines <- readr::read_lines(singleMonitorFileString)
@@ -137,7 +137,7 @@ wrccDump_parseData <- function(fileString) {
     
     # Sometimes we get a solid block of 99999s for non-time-location columns
     if ( all(is.na(df$Type)) ) {
-      logger.debug("No valid PM2.5 data for %s", monitorName)
+      logger.warn("No valid PM2.5 data for %s", monitorName)
       next
     }
     
@@ -149,7 +149,7 @@ wrccDump_parseData <- function(fileString) {
     
     # Sanity check
     if ( length(monitorTypeCode) > 1 ) {
-      logger.error("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", "))
+      logger.warn("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", "))
       next
     }
     
@@ -159,10 +159,10 @@ wrccDump_parseData <- function(fileString) {
     } else if ( monitorTypeCode == 9 ) {
       df$monitorType <- 'ESAM'
     } else if ( monitorTypeCode == 1 ) {
-      logger.error("EBAM PM10 data parsing is not supported")
+      logger.warn("EBAM PM10 data parsing is not supported")
       next
     } else {
-      logger.error("Unsupported monitor type code: %d",monitorTypeCode)
+      logger.warn("Unsupported monitor type code: %d",monitorTypeCode)
       next
     }
     

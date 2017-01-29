@@ -10,7 +10,7 @@ airsisDump_createMonitorObject(filepath)
 \item{filepath}{absolute path of the AIRSIS dump file}
 }
 \value{
-ws_monitor object with a unique `monitorID` for each unique deployment.
+A ws_monitor object with AIRSIS data.
 }
 \description{
 Ingests an  AIRSIS dump file and converts

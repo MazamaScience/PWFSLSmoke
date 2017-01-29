@@ -2,15 +2,16 @@
 # @export
 #' @title Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor
 #' @param ws_monitor ws_monitor object
-#' @param lon The custom longitude of the collapsed monitoring station. (Default = mean of the longitudes)
-#' @param lat The custom latitude of the collapsed monitoring station. (Default = mean of the latitudes)
-#' @param monitorID The custom monitor ID of the collapsed monitoring station. (Default = 'generated_id')
-#' @param FUN The function to be applied to all the monitors at a single time index. (Default = mean)
-#' @param ... Any additional argument to be passed on to the \code{apply()} function
+#' @param lon longitude of the collapsed monitoring station. (Default = mean of the longitudes)
+#' @param lat latitude of the collapsed monitoring station. (Default = mean of the latitudes)
+#' @param monitorID monitor ID of the collapsed monitoring station. (Default = 'generated_id')
+#' @param FUN function to be applied to all the monitors at a single time index. (Default = mean)
+#' @param ... additional arguments to be passed on to the apply() function
 #' @return A ws_monitor object with meta and data that corresponds to the collapsed single monitor
 #' @description Collapses all the monitors from a given ws_monitor object into a single-monitor ws_monitor object using
 #' the function provided in the \code{FUN} argument. The collapse applies to both ws_monitor$meta and ws_monitor$data.
-#' @description Intended for use with gridded model data, rather than actual monitor data itself (meta data is largely chopped; NAs propagate).
+#'
+#' Intended for use with gridded model data, rather than actual monitor data itself (meta data is largely chopped; NAs propagate).
 
 monitor_collapse <- function(ws_monitor, lon=NULL, lat=NULL, monitorID='generated_id', FUN=mean, ...) {
   

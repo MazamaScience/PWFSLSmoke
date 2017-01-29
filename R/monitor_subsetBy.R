@@ -2,10 +2,10 @@
 #' @export
 #' @title Subset Monitoring Data
 #' @param ws_monitor ws_monitor object
-#' @param filter a filter to use on the ws_monitor 
-#' @description The incoming monitoring data list is filtered according to the filter 
-#' passed in. Either meta data or actual data can be filtered. 
-#' @return monitoring data list filtered as specified
+#' @param filter a filter to use on the ws_monitor object
+#' @return A ws_monitor object with a subset of the input ws_monitor object.
+#' @description The incoming ws_monitor object is filtered according to \code{filter}.
+#' Either meta data or actual data can be filtered. 
 #' @examples
 #' \dontrun{
 #' # We will load wrcc monitors from the past 6 years and map all monitors 

@@ -3,6 +3,7 @@
 #' @title Create OpenAQ Site Location Metadata Dataframe
 #' @param df a OpenAQ dataframe after metadata enhancement
 #' @param parameters pollutant name
+#' @return A 'meta' dataframe for use in a ws_monitor object.
 #' @description After an OpenAQ dataframe has been enhanced with 
 #' additional columns including \code{'datetime'}, \code{'stateCode'}, \code{'monitorID'} we are ready to 
 #' pull out site information associated with unique monitorID.
@@ -18,8 +19,6 @@
 #' > names(meta)
 #' [1] "siteName"    "latitude"    "longitude"   "timezone"    "countryCode" "stateCode"   "monitorID"
 #' }
-#' 
-#' @return A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
 
 
 openaq_createMetaDataframes <- function(df, parameters=NULL){

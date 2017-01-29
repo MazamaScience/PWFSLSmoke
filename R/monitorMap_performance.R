@@ -15,7 +15,7 @@
 #' @param stateLwd width for state outlines
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
-#' @param add logical flag that specifies whether to add to the current plot
+#' @param add logical specifying whether to add to the current plot
 #' @param ... additional arguments to be passed to the map() funciton such as graphical parameters (see par)
 #' @description This function uses "confusion matrix" analysis to calculate
 #' different measures of predictive performance for every timeseries found

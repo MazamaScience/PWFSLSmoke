@@ -14,7 +14,7 @@ adjustRange(x, factor = 1.1, minRange = 0.1)
 \item{minRange}{minimum range to be returned}
 }
 \value{
-low and high values of the adjusted range
+Vector of low and high values of the adjusted range.
 }
 \description{
 Scale the range of values by a given factor. The min and max values of the 

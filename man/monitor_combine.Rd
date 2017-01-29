@@ -10,7 +10,7 @@ monitor_combine(monitorList)
 \item{monitorList}{list containing ws_monitor objects}
 }
 \value{
-A ws_monitor object.
+A ws_monitor object combining all monitoring data from \code{monitorList}.
 }
 \description{
 Combines a list of ws_monitor objects into a single ws_monitor object 

@@ -23,7 +23,7 @@ monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 \item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
-A List of isolated \code{ws_monitor} objects.
+A list of isolated ws_monitor objects.
 }
 \description{
 Filters the incoming ws_monitor object according to the parameters

@@ -1,10 +1,10 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Download Data from AIRSIS
-#' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
-#' @param unitID unit identifier
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
+#' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
+#' @param unitID unit identifier
 #' @param baseUrl base URL for data queries
 #' @description Request data from a particular station for the desired time period.
 #' Data are returned as a single character string containing the AIRIS output. 
@@ -12,12 +12,13 @@
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
-#' fileString <- airsis_downloadData('USFS',unitID='1026',startdate=20150701,enddate=20151231)
+#' fileString <- airsis_downloadData( 20150701, 20151231, 'USFS', unitID=1026)
 #' df <- airsis_parseData(fileString)
 #' }
 
-airsis_downloadData <- function(provider='USFS', unitID=NULL, startdate=20020101,
+airsis_downloadData <- function(startdate=20020101,
                                 enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                                provider='USFS', unitID=NULL,
                                 baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?") {
   
   # Sanity check

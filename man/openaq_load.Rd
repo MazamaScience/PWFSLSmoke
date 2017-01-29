@@ -20,7 +20,7 @@ When set to NULL, the function returns all the monitor IDs available in the meta
 \item{baseUrl}{base URL for OpenAQ meta and data files (note: the default baseURL cannot be used yet)}
 }
 \value{
-ws_monitor object with subsetted time, monitorIDs and parameter
+A ws_monitor object with OpenAQ data.
 }
 \description{
 When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 

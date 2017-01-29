@@ -14,7 +14,7 @@ rawPlot_pollutionRose(df, parameter = "pm25", tlim = NULL,
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{localTime}{use local times; defaults to GMT if >1 time zone in data.}
+\item{localTime}{logical specifying whether \code{tlim} is in local time or UTC}
 
 \item{normalize}{normalize slices to fill entire area, allowing for easier comparison of counts of magnitudes by direction}
 
@@ -23,6 +23,9 @@ rawPlot_pollutionRose(df, parameter = "pm25", tlim = NULL,
 \description{
 Create pollution rose plot from raw_enhance object based on openair::pollutionRose(). If normalized, black line
 indicates frequency by direction.
+}
+\note{
+If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 }
 \examples{
 \dontrun{

@@ -3,6 +3,7 @@
 #' @title Apply Nowcast Algorithm to ws_monitor Object
 #' @param ws_monitor ws_monitor object
 #' @param version character identity specifying the type of nowcast algorithm to be used
+#' @return A ws_monitor object with data that have been processed by the Nowcast algorithm.
 #' @description A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
 #' \code{version} argument specifies the minimum weight factor and number of hours to be 
 #' considered in the calculation.
@@ -19,7 +20,6 @@
 #' 
 #' @note Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
 #' .001 for 'ozone' regardless of the precision of the data in the incoming \code{ws_monitor} object.
-#' @return ws_monitor object with data that have been proccessed by the Nowcast algorithm.
 #' @references \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
 #' @references \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 #' @references \url{http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
@@ -33,7 +33,7 @@
 #' }
 
 # NOTE:  This script is based on the javascript code at: 
-# NOET:    https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
+# NOTE:    https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
 # NOTE: To compute a valid NowCast, you must have at least two of the most recent 3 hours
 
 monitor_nowcast <- function(ws_monitor, version='pm') {
