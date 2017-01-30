@@ -47,7 +47,7 @@ spatial datasets. To get these datasets you should execute the following command
 ```
 mkdir ~/Data
 cd ~/Data
-curl -O http://smoke.airfire.org/RData/Spatial.tar.gz
+curl -O http://mazamascience.com/RData/Spatial.tar.gz
 tar -xzf Spatial.tar.gz
 ```
 
