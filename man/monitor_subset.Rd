@@ -49,7 +49,7 @@ airnow <- airnow_load(20140913, 20141010)
 xlim <- c(-124.801, -122.801)
 ylim <- c(47.004, 48.404)
 Olympic_Peninsula <- monitor_subset(airnow, xlim, ylim)
-monitor_map(Olympic_Peninsula)
+monitorMap(Olympic_Peninsula)
 }
 }
 \keyword{ws_monitor}

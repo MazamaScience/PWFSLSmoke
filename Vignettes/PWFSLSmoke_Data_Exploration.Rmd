@@ -60,7 +60,6 @@ To create a ws_monitor object, we call one of the "createMonitorObject" function
 
 ```{r}
 ws_monitor <- airnow_load(20160901,20161015,stateCodes = "WA")
-# ws_monitor <- airsis_load(20160901,20161015,stateCodes = "WA")
 plain <- airsis_createMonitorObject(20160901, 20161015, provider='USFS', unitID=1033 )
 ```
 

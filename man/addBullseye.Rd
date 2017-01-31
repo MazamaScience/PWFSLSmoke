@@ -19,7 +19,7 @@ Draws a bullseye with concentric rings of black and white.
 airnow <- airnow_load(20140913, 20141010)
 KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
 map('county',region='ca', col='gray80')
-monitor_map(KingFire, add=TRUE)
+monitorMap(KingFire, add=TRUE)
 addBullseye(-120.604, 38.782)
 text(-120.604, 38.782, "King Fire", pos=4, font=2)
 }

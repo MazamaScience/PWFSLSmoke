@@ -25,7 +25,7 @@
 #' xlim <- c(-124.801, -122.801)
 #' ylim <- c(47.004, 48.404)
 #' Olympic_Peninsula <- monitor_subset(airnow, xlim, ylim)
-#' monitor_map(Olympic_Peninsula)
+#' monitorMap(Olympic_Peninsula)
 #' }
 
 # TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting

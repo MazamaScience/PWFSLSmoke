@@ -29,7 +29,7 @@ Data are returned as a single character string containing the AIRIS output.
 }
 \examples{
 \dontrun{
-fileString <- airsis_downloadData( 20150701, 20151231, 'USFS', unitID=1026)
+fileString <- airsis_downloadData( 20150701, 20151231, provider='USFS', unitID='1026')
 df <- airsis_parseData(fileString)
 }
 }
