@@ -23,7 +23,7 @@ processing from various sources.
 \dontrun{
 raw <- airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
 raw <- raw_enhance(raw,rawSource='AIRSIS')
-View(raw)
+rawPlot_timeseries(raw,tlim=c(20160908,20160917))
 }
 }
 \keyword{raw}

@@ -6,7 +6,7 @@
 #' Integers will be converted to character before parsing.
 #' @return POSIXct datetimes.
 #' @examples
-#' starttime <- parseDatetime(2015080718)
+#' starttime <- parseDatetime(2015080718,timezone = "America/Los_Angeles")
 
 parseDatetime <- function(datetime, timezone='UTC') {
   

@@ -24,7 +24,7 @@
 #' @return Dataframe of aggregated OpenAQ data.
 #' @examples
 #' \dontrun{
-#' df <- openaq_downloadData(20160901, days=7)
+#' df <- openaq_downloadData(startdate=20160901, days=2)
 #' }
 
 openaq_downloadData <- function(parameter=NULL,

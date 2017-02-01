@@ -22,8 +22,13 @@ the dataVar is within \code{highlightRange}.
 }
 \examples{
 \dontrun{
+raw <- airsis_createRawDataframe(startdate = 20160901, provider = 'USFS',unitID = '1033')
+raw <- raw_enhance(raw)
 highlightRange <- c(50,Inf)
-dataVar <- 'ConcHr'
+dataVar <- 'pm25'
+tzone <- "America/Los_Angeles"
+highlightDates <- raw_getHighlightDates(raw,dataVar,tzone,highlightRange)
+rawPlot_timeOfDaySpaghetti(df=raw,highlightDates = highlightDates)
 }
 }
 

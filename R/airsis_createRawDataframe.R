@@ -28,6 +28,14 @@
 #' @seealso \code{\link{airsis_parseData}}
 #' @seealso \code{\link{airsis_qualityControl}}
 #' @seealso \code{\link{addClustering}}
+#' 
+#' @examples
+#' \dontrun{
+#' raw <- airsis_createRawDataframe(startdate = 20160901, provider = 'USFS',unitID = '1033')
+#' raw <- raw_enhance(raw)
+#' rawPlot_timeseries(raw,tlim=c(20160908,20160917))
+#' }
+#' 
 
 airsis_createRawDataframe <- function(startdate=20020101,
                                       enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),

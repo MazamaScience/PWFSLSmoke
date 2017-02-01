@@ -11,7 +11,7 @@
 #' \dontrun{
 #' raw <- airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
 #' raw <- raw_enhance(raw,rawSource='AIRSIS')
-#' View(raw)
+#' rawPlot_timeseries(raw,tlim=c(20160908,20160917))
 #' }
 
 # TODO: Add check to ensure that column names match expected for the type passed in (e.g. EBAM_AIRSIS).

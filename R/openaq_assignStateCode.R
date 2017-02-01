@@ -7,7 +7,7 @@
 #' @return Input dataframe with additional columns: \code{stateCode}.
 #' @examples
 #' \dontrun{
-#' df <- openaq_downloadData(20160901, days=7)
+#' df <- openaq_downloadData(startdate = 20160901, days=2)
 #' df <- openaq_assignStateCode(df)
 #' }
 

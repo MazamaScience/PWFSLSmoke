@@ -29,9 +29,9 @@ If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 }
 \examples{
 \dontrun{
-df <- PWFSLSmoke::airsis_createRawDataframe(startdate = 20160901, enddate=20161015, unitID = 1012)
-df <- raw_enhance(df,rawSource='AIRSIS')
-rawPlot_pollutionRose(df)
+raw <- airsis_createRawDataframe(startdate = 20160901, enddate=20161015, provider = 'USFS', unitID = 1012)
+raw <- raw_enhance(raw,rawSource='AIRSIS')
+rawPlot_pollutionRose(raw)
 }
 }
 \keyword{raw}

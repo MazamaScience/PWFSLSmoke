@@ -21,7 +21,7 @@
 #' @seealso \link{monitor_subset}
 #' @examples
 #' \dontrun{
-#' airnow <- airnow_load(20140101, 20140131)
+#' airnow <- airnow_load(20140101, 20140110,stateCodes = "WA")
 #' monitorList <- monitor_isolate(airnow)
 #' names(monitorList)
 #' }
