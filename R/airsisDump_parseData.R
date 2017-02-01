@@ -22,7 +22,7 @@
 #' @examples
 #' \dontrun{
 #' fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
-#' df <- airsis_parseData(fileString)
+#' df <- airsisDump_parseData(fileString)
 #' }
 
 airsisDump_parseData <- function(fileString) {

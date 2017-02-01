@@ -54,7 +54,7 @@ not for earlier years.
 }
 \examples{
 \dontrun{
-airnow_data <- airnow_createDataDataframe("PM2.5", 201607)
+airnow_data <- airnow_createDataDataframes("PM2.5", 20160701)
 }
 }
 \seealso{

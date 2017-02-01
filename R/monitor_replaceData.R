@@ -18,7 +18,7 @@
 #' \dontrun{
 #' airnow <- airnow_load(20150701,20150730)
 #' wa <- monitor_subset(airnow, stateCodes='WA')
-#' wa_zero <- monitor_reaplceData(wa, data < 0, 0)
+#' wa_zero <- monitor_replaceData(wa, data < 0, 0)
 #' }
 
 monitor_replaceData <- function(ws_monitor, filter, value) {

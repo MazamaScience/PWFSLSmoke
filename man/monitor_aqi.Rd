@@ -34,7 +34,7 @@ See references for calculation details.
 }
 \examples{
 \dontrun{
-airnow <- openaq_load(startdate=20161001, enddate=20161031)
+airnow <- airnow_load(20161001, 20161031)
 airnow_AQI <- monitor_aqi(airnow)
 }
 

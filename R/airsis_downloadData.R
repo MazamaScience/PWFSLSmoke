@@ -12,7 +12,7 @@
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
-#' fileString <- airsis_downloadData( 20150701, 20151231, 'USFS', unitID=1026)
+#' fileString <- airsis_downloadData( 20150701, 20151231, provider='USFS', unitID='1026')
 #' df <- airsis_parseData(fileString)
 #' }
 
