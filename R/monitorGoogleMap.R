@@ -124,21 +124,21 @@ monitorGoogleMap <- function(ws_monitor,
   if ( is.null(zoom) ) {
     maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
     if ( maxRange > 50 ) {
-      zoom <- 3
+      zoom <- 2
     } else if ( maxRange > 20 ) {
-      zoom <- 4
+      zoom <- 3
     } else if ( maxRange > 10 ) {
-      zoom <- 5
+      zoom <- 4
     } else if ( maxRange > 5 ) {
-      zoom <- 6
+      zoom <- 5
     } else if ( maxRange > 2 ) {
-      zoom <- 7
+      zoom <- 6
     } else if ( maxRange > 1 ) {
-      zoom <- 8
+      zoom <- 7
     } else if ( maxRange > 0.5 ) {
-      zoom <- 9
+      zoom <- 8
     } else {
-      zoom <- 9
+      zoom <- 8
     }
   }
   
