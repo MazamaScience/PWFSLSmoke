@@ -8,10 +8,10 @@
 #' @examples
 #' \dontrun{
 #' monitorList <- list()
-#' monitorList[[1]] <- airsis_createMonitorObject(provider = 'USFS', unitID = '1031', 20160701, 20161231)
-#' monitorList[[2]] <- airsis_createMonitorObject(provider = 'USFS', unitID = '1032', 20160701, 20161231)
-#' monitorList[[3]] <- airsis_createMonitorObject(provider = 'USFS', unitID = '1033', 20160701, 20161231)
-#' monitorList[[4]] <- airsis_createMonitorObject(provider = 'USFS', unitID = '1034', 20160701, 20161231)
+#' monitorList[[1]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1031')
+#' monitorList[[2]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1032')
+#' monitorList[[3]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1033')
+#' monitorList[[4]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1034')
 #' ws_monitor <- monitor_combine(monitorList)
 #' monitorInteractiveMap(ws_monitor)
 #' } 

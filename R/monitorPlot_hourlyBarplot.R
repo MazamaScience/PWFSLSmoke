@@ -13,8 +13,12 @@
 #' @param gridCol grid color
 #' @param gridLwd grid line width
 #' @param gridLty grid line type
+#' @param dayCol day boundary color
 #' @param dayLwd day boundary line width (set to 0 to omit day lines)
+#' @param dayLty day boundary type
+#' @param hourCol hour boundary color
 #' @param hourLwd hour boundary line width (set to 0 to omit  hour lines)
+#' @param hourLty hour boundary type
 #' @param hourInterval interval for hour boundary lines
 #' @param ... additional arguments to be passed to barplot()
 #' @description Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a ws_monitor object.
@@ -41,8 +45,12 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
                                       gridCol='black',
                                       gridLwd=0.5,
                                       gridLty='solid',
+                                      dayCol='black',
                                       dayLwd=2,
+                                      dayLty='solid',
+                                      hourCol='black',
                                       hourLwd=1,
+                                      hourLty='solid',
                                       hourInterval=6,
                                       ...) {
   
@@ -208,8 +216,8 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # Add vertical lines to denote days and/or hour breaks
   hour_indices <- which(as.numeric(strftime(datetime,format="%H",tz=timezone)) %% hourInterval == 0)
   day_indices <- which(as.numeric(strftime(datetime,format="%H",tz=timezone)) %% 24 == 0)
-  abline(v=hour_indices-1, lwd=hourLwd) # at beginning of hour
-  abline(v=day_indices-1, lwd=dayLwd) # at beginning of day
+  abline(v=hour_indices-1, col=hourCol, lwd=hourLwd, lty=hourLty) # at beginning of hour
+  abline(v=day_indices-1, col=dayCol, lwd=dayLwd, lty=dayLty) # at beginning of day
 
   # Add default X axis
   if ( argsList$axes && !('names.arg' %in% names(argsList)) ) {

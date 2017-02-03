@@ -13,7 +13,7 @@
 #' @note If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 #' @examples
 #' \dontrun{
-#' raw <- airsis_createRawDataframe(startdate = 20160901, enddate=20161015, provider = 'USFS', unitID = 1012)
+#' raw <- airsis_createRawDataframe(20160901, 20161015, 'USFS', 1012)
 #' raw <- raw_enhance(raw,rawSource='AIRSIS')
 #' rawPlot_pollutionRose(raw)
 #' }
