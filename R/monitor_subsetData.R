@@ -26,8 +26,8 @@
 monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
                                dropMonitors=FALSE, timezone="UTC") {
   
-  # Subset based on monitorID column names first as that is the quickest
-  if (!is.null(monitorIDs)) {
+  # Subset/reorder based on monitorID column names first as that is the quickest
+  if ( !is.null(monitorIDs) ) {
     data <- data[,c("datetime", as.character(monitorIDs))] # allow for numeric monitorIDs
   }
   
