@@ -58,38 +58,44 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
   }
   
   # If specified, remove any data columns that have no valid data after time range subsetting
-  if ( dropMonitors & !is.null(dim(data[,-1])) ) {    
+  if ( dropMonitors ) {
     
-    anyMask <- c(TRUE, apply(data[,-1],2,function(x) { any(!is.na(x),na.rm=TRUE) }))
-    # Sanity check
-    if ( sum(anyMask) == 1 ) {
-      # All data missing, only 'datetime' has valid values
-      warning("All data are missing values.")
-      return(NULL)
-    }
-    data <- data[,anyMask]
-    
-    if ( !is.null(vlim) ) {
-      # NOTE:  The apply() function converts the first argument to a matrix.
-      # NOTE:  If we pass in a dataframe whose first column is POSIXct then things fail (Is it converting all subsequent columns to POSIXct?)
-      # NOTE:  Therefore, we strip off the first column when we use apply() and then add it back
-      vlimMask <- apply(data[,-1], 2, function(x) { any((x > vlim[1]) & (x <= vlim[2]), na.rm=TRUE) } )
-      data <- data[,c(TRUE,vlimMask)]
-    }
-  
-  } else if ( dropMonitors & is.null(dim(data[,-1])) ) {
-   
-    anyLogical <- c(TRUE, any(!is.na(data[,-1]),na.rm=TRUE))
-    data <- data[,anyLogical]
-    
-    if ( !is.null(vlim) ) {
+    if ( ncol(data) > 2 ) { 
+      # Multiple monitors, we can use apply() without worrying our subsetting will return a vector
       
-      dataParam <- data[,-1]
-            
-      dataParam[dataParam > vlim[2] & !is.na(dataParam)]  <- NA
-      dataParam[dataParam <= vlim[1] & !is.na(dataParam)] <- NA
-            
-      data[,-1] <- dataParam
+      anyMask <- c(TRUE, apply(data[,-1],2,function(x) { any(!is.na(x),na.rm=TRUE) }))
+      # Sanity check
+      if ( sum(anyMask) == 1 ) {
+        # All data missing, only 'datetime' has valid values
+        warning("All data are missing values.")
+        return(NULL)
+      }
+      data <- data[,anyMask]
+      
+      if ( !is.null(vlim) ) {
+        # NOTE:  The apply() function converts the first argument to a matrix.
+        # NOTE:  If we pass in a dataframe whose first column is POSIXct then things fail (Is it converting all subsequent columns to POSIXct?)
+        # NOTE:  Therefore, we strip off the first column when we use apply() and then add it back
+        vlimMask <- apply(data[,-1], 2, function(x) { any((x > vlim[1]) & (x <= vlim[2]), na.rm=TRUE) } )
+        data <- data[,c(TRUE,vlimMask)]
+      }
+      
+    } else {
+      # Need to be careful with a single monitor
+      
+      anyMask <- c(TRUE, any(!is.na(data[,-1]),na.rm=TRUE))
+      data <- data[,anyMask]
+      
+      if ( !is.null(vlim) ) {
+        
+        dataParam <- data[,-1]
+        
+        dataParam[dataParam > vlim[2] & !is.na(dataParam)]  <- NA
+        dataParam[dataParam <= vlim[1] & !is.na(dataParam)] <- NA
+        
+        data[,-1] <- dataParam
+        
+      }
       
     }
     
@@ -106,10 +112,7 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
   # TODO:  2017-01-06 Are we still using rownames in the 'data' dataframe?
   
   # Add back YYYYmmddHHMM rownames discarded by dplyr::filter
-  rowNames <- sapply(data$datetime, function(x){ stringr::str_replace_all(x, "-", "") } )
-  rowNames <- sapply(rowNames, function(x){ stringr::str_replace(x, " ", "") } )
-  rowNames <- sapply(rowNames, function(x){ stringr::str_split_fixed(x, ":", 3)[1] } )
-  rownames(data) <- rowNames
+  rownames(data) <- strftime(data$datetime, "%Y%m%d%H", tz="UTC")
   
   return(data)
   

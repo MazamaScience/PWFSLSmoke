@@ -77,9 +77,9 @@ wrcc_parseData <- function(fileString) {
   
   # Sanity check
   if ( length(monitorTypeCode) > 1 ) {
-    logger.warn("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", "))
+    logger.warn("More than one monitor type detected: %s", paste(monitorTypeCode,collapse=", "))
     # Pick the most common Type
-    typeTable <- table(monitorTypeCode)
+    typeTable <- table(df$Type)
     monitorTypeCode <- names(typeTable)[which(typeTable == max(typeTable))]
   }
   

@@ -63,20 +63,20 @@ wrcc_EBAMQualityControl <- function(df,
   
   # Latitude and longitude must be in range
   if (remove_Lon_zero) {
-    goodLonMask <- !is.na(df$GPSLon) & df$GPSLon >= valid_Longitude[1] & df$GPSLon <= valid_Longitude[2] & df$GPSLon != 0
+    goodLonMask <- !is.na(df$GPSLon) & (df$GPSLon >= valid_Longitude[1]) & (df$GPSLon <= valid_Longitude[2]) & (df$GPSLon != 0)
   } else {
-    goodLonMask <- !is.na(df$GPSLon) & df$GPSLon >= valid_Longitude[1] & df$GPSLon <= valid_Longitude[2]
+    goodLonMask <- !is.na(df$GPSLon) & (df$GPSLon >= valid_Longitude[1]) & (df$GPSLon <= valid_Longitude[2])
   }
   
   if (remove_Lat_zero) {
-    goodLatMask <- !is.na(df$GPSLat) & df$GPSLat >= valid_Latitude[1] & df$GPSLat <= valid_Latitude[2] & df$GPSLat != 0
+    goodLatMask <- !is.na(df$GPSLat) & (df$GPSLat >= valid_Latitude[1]) & (df$GPSLat <= valid_Latitude[2]) & (df$GPSLat != 0)
   } else {    
-    goodLatMask <- !is.na(df$GPSLat) & df$GPSLat >= valid_Latitude[1] & df$GPSLat <= valid_Latitude[2]
+    goodLatMask <- !is.na(df$GPSLat) & (df$GPSLat >= valid_Latitude[1]) & (df$GPSLat <= valid_Latitude[2])
   }
   
   badRows <- !(goodLonMask & goodLatMask)
   badRowCount <- sum(badRows)
-  if (badRowCount > 0) {
+  if ( badRowCount > 0 ) {
     logger.info("Discarding %s rows with invalid location information", badRowCount)
     badLocations <- paste('(',df$GPSLon[badRows],',',df$GPSLat[badRows],')',sep='')
     logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
@@ -94,7 +94,7 @@ wrcc_EBAMQualityControl <- function(df,
   # ----- Type ----------------------------------------------------------------
   
   # Type: 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
-  goodTypeMask <- df$Type == 0
+  goodTypeMask <- !is.na(df$Type) & (df$Type == 0)
   badRows <- !goodTypeMask
   badRowCount <- sum(badRows)
   if (badRowCount > 0) {

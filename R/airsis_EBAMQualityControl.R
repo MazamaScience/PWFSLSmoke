@@ -52,15 +52,15 @@ airsis_EBAMQualityControl <- function(df,
   
   # Latitude and longitude must be in range
   if (remove_Lon_zero) {
-    goodLonMask <- !is.na(df$Longitude) & df$Longitude >= valid_Longitude[1] & df$Longitude <= valid_Longitude[2] & df$Longitude != 0
+    goodLonMask <- !is.na(df$Longitude) & (df$Longitude >= valid_Longitude[1]) & (df$Longitude <= valid_Longitude[2]) & (df$Longitude != 0)
   } else {
-    goodLonMask <- !is.na(df$Longitude) & df$Longitude >= valid_Longitude[1] & df$Longitude <= valid_Longitude[2]
+    goodLonMask <- !is.na(df$Longitude) & (df$Longitude >= valid_Longitude[1]) & (df$Longitude <= valid_Longitude[2])
   }
   
   if (remove_Lat_zero) {
-    goodLatMask <- !is.na(df$Latitude) & df$Latitude >= valid_Latitude[1] & df$Latitude <= valid_Latitude[2] & df$Latitude != 0
+    goodLatMask <- !is.na(df$Latitude) & (df$Latitude >= valid_Latitude[1]) & (df$Latitude <= valid_Latitude[2]) & (df$Latitude != 0)
   } else {    
-    goodLatMask <- !is.na(df$Latitude) & df$Latitude >= valid_Latitude[1] & df$Latitude <= valid_Latitude[2]
+    goodLatMask <- !is.na(df$Latitude) & (df$Latitude >= valid_Latitude[1]) & (df$Latitude <= valid_Latitude[2])
   }
   
   badRows <- !(goodLonMask & goodLatMask)
@@ -88,7 +88,7 @@ airsis_EBAMQualityControl <- function(df,
   
   # ----- Type ----------------------------------------------------------------
   
-  goodTypeMask <- !is.na(df$Type) & df$Type == "PM 2.5"
+  goodTypeMask <- !is.na(df$Type) & (df$Type == "PM 2.5")
   
   badRows <- !goodTypeMask
   badRowCount <- sum(badRows)

@@ -27,8 +27,9 @@
 # USFSRegionalMonitors <- c()
 # MiscellaneousMonitors <- c()
 
-wrcc_downloadData <- function(stationID=NULL, startdate=20100101,
+wrcc_downloadData <- function(startdate=20100101,
                               enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                              stationID=NULL, 
                               baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl") {
   
   # Sanity check
@@ -73,8 +74,13 @@ wrcc_downloadData <- function(stationID=NULL, startdate=20100101,
   
   if ( class(rawBytes) == "character" ) {
     logger.debug(rawBytes)
-    logger.error("WRCC FTP request returns an error")
-    stop(rawBytes)
+    if ( stringr::str_detect(rawBytes, "WRCC data access information") ) {
+      logger.warn("No data available")
+      stop("No data available")
+    } else {
+      logger.error("WRCC FTP request returns an error")
+      stop(rawBytes)
+    }
   }
   
   # Convert raw bytes into a string
