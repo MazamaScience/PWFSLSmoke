@@ -74,10 +74,13 @@ wrcc_parseData <- function(fileString) {
   # NOTE:  Conversion of -9999 to NA happens in the ~QualityControl scripts so that
   # NOTE:  all raw data modifications can be found in one place.
   monitorTypeCode <- monitorTypeCode[monitorTypeCode >= 0]
+  
   # Sanity check
   if ( length(monitorTypeCode) > 1 ) {
-    logger.error("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", "))
-    stop(paste0("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", ")))
+    logger.warn("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", "))
+    # Pick the most common Type
+    typeTable <- table(monitorTypeCode)
+    monitorTypeCode <- names(typeTable)[which(typeTable == max(typeTable))]
   }
   
   # 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
