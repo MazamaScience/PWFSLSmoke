@@ -4,10 +4,12 @@
 \alias{airsisDump_createMonitorObject}
 \title{Ingest AIRSIS Dump File and Create ws_monitor Object}
 \usage{
-airsisDump_createMonitorObject(filepath)
+airsisDump_createMonitorObject(filepath, clusterDiameter = 1000)
 }
 \arguments{
 \item{filepath}{absolute path of the AIRSIS dump file}
+
+\item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 }
 \value{
 A ws_monitor object with AIRSIS data.

@@ -75,7 +75,7 @@ wrcc_createMonitorObject <- function(startdate=20020101,
   
   # Add clustering information to identify unique deployments
   logger.info("Clustering ...")
-  df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=1000)
+  df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter)
   
   # Create 'meta' dataframe of site properties organized as monitorID-by-property
   # NOTE:  This step will create a uniformly named set of properties and will

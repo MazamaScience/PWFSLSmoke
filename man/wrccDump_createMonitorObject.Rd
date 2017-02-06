@@ -4,10 +4,12 @@
 \alias{wrccDump_createMonitorObject}
 \title{Ingest WRCC Dump File and Create ws_monitor Object}
 \usage{
-wrccDump_createMonitorObject(filepath)
+wrccDump_createMonitorObject(filepath, clusterDiameter = 1000)
 }
 \arguments{
 \item{filepath}{absolute path of the WRCC dump file}
+
+\item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 }
 \value{
 A ws_monitor object with WRCC data.

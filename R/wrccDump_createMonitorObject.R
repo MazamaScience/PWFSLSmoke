@@ -2,6 +2,7 @@
 #' @export
 #' @title Ingest WRCC Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the WRCC dump file
+#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @return A ws_monitor object with WRCC data.
 #' @description Ingests an  WRCC dump file and converts
 #' it into a quality controlled, metadata enhanced \code{ws_monitor} object
@@ -25,7 +26,7 @@
 #' @seealso \code{\link{wrcc_createMetaDataframe}}
 #' @seealso \code{\link{wrcc_createDataDataframe}}
 
-wrccDump_createMonitorObject <- function(filepath) {
+wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
 
   logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
@@ -56,7 +57,7 @@ wrccDump_createMonitorObject <- function(filepath) {
     
     # Add clustering information to identify unique deployments
     logger.info("Clustering ...")
-    df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=1000)
+    df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter)
     
     # Create 'meta' dataframe of site properties organized as monitorID-by-property
     # NOTE:  This step will create a uniformly named set of properties and will

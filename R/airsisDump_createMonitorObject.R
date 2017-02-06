@@ -2,6 +2,7 @@
 #' @export
 #' @title Ingest AIRSIS Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the AIRSIS dump file
+#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @return A ws_monitor object with AIRSIS data.
 #' @description Ingests an  AIRSIS dump file and converts
 #' it into a quality controlled, metadata enhanced \code{ws_monitor} object
@@ -25,7 +26,7 @@
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
 
-airsisDump_createMonitorObject <- function(filepath) {
+airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
 
   logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
@@ -57,7 +58,7 @@ airsisDump_createMonitorObject <- function(filepath) {
     
     # Add clustering information to identify unique deployments
     logger.debug("Clustering ...")
-    df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
+    df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
     
     # Create 'meta' dataframe of site properties organized as monitorID-by-property
     # NOTE:  This step will create a uniformly named set of properties and will
