@@ -25,8 +25,8 @@ Either meta data or actual data can be filtered.
 airnow <- airnow_load(20150101, 20151231)
 mySubset <- monitor_subsetBy(airnow, timezone == 'America/Los_Angeles')
 hazardousSubset <- monitor_subsetBy(mySubset, data > AQI$breaks_24[6])
-monitorInteractiveMap(hazardousSubset,
-                popupInfo=c('siteName', 'agencyName', 'elevation','monitorID'))
+monitorLeaflet(hazardousSubset,
+               popupInfo=c('siteName', 'agencyName', 'elevation','monitorID'))
 }
 }
 \keyword{ws_monitor}

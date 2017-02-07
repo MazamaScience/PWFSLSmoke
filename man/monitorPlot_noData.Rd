@@ -16,5 +16,5 @@ monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
 \description{
 Creates a blank plot that indicates there is no data for the monitor of interest
 }
-\keyword{ws_monitor}
+\keyword{internal}
 

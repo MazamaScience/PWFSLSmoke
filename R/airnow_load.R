@@ -15,7 +15,7 @@
 #' \dontrun{
 #' airnow <- airnow_load(20150901, 20150930)
 #' airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
-#' monitorInteractiveMap(airnow_conus)
+#' monitorLeaflet(airnow_conus)
 #' }
 
 airnow_load <- function(startdate, enddate, stateCodes=NULL, monitorIDs=NULL,

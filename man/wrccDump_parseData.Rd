@@ -20,5 +20,5 @@ file using \code{readr::read_file()}.
 This function is intended for internal use at the Pacific Wildland
 Fire Sciences Lab.
 }
-\keyword{WRCC}
+\keyword{internal}
 

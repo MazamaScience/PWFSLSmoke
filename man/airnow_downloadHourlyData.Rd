@@ -11,10 +11,6 @@ airnow_downloadHourlyData(datestamp = "",
 \item{datestamp}{integer or character representing YYYYMMDDHH}
 
 \item{baseUrl}{base URL for archived hourly data}
-
-\item{tries}{number of download attempts in the face of timeouts}
-
-\item{curl}{previously initialized CURL context/handle (see RCurl::getURL())}
 }
 \value{
 Dataframe of AirNow hourly data.
@@ -39,5 +35,4 @@ df <- airnow_downloadHourlyData(2016070112)
 \link{airnow_downloadData}
 }
 \keyword{AirNow}
-\keyword{internal}
 

@@ -47,6 +47,12 @@ Steps involved include:
 \note{
 The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
 }
+\examples{
+\dontrun{
+usfs_1013 <- airsis_createMonitorObject(20150301, 20150831, 'USFS', unitID='1013')
+monitorLeaflet(usfs_1013)
+}
+}
 \seealso{
 \code{\link{airsis_downloadData}}
 

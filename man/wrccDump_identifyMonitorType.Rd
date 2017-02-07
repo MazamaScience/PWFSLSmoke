@@ -39,5 +39,5 @@ Fire Sciences Lab.
 \references{
 \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{WRCC Fire Cache Smoke Monitor Archive}
 }
-\keyword{WRCC}
+\keyword{internal}
 

@@ -31,6 +31,11 @@
 #' @seealso \code{\link{addClustering}}
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
+#' @examples
+#' \dontrun{
+#' usfs_1013 <- airsis_createMonitorObject(20150301, 20150831, 'USFS', unitID='1013')
+#' monitorLeaflet(usfs_1013)
+#' }
 
 airsis_createMonitorObject <- function(startdate=20020101,
                                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
@@ -49,6 +54,19 @@ airsis_createMonitorObject <- function(startdate=20020101,
     logger.error("Required parameter 'unitID' is missing")
     stop(paste0("Required parameter 'unitID' is missing"))
   }
+
+  startdateCount <- stringr::str_count(as.character(startdate))
+  if ( !startdateCount %in% c(8,10,12) ) {
+    logger.error("Cannot parse 'startdate' with %d characters", startdateCount)
+    stop(paste0("Cannot parse 'startdate' with ",startdateCount," characters"))
+  }
+  
+  enddateCount <- stringr::str_count(as.character(enddate))
+  if ( !enddateCount %in% c(8,10,12) ) {
+    logger.error("Cannot parse 'enddate' with %d characters", enddateCount)
+    stop(paste0("Cannot parse 'enddate' with ",enddateCount," characters"))
+  }
+  
   
   # Read in AIRSIS .csv data
   logger.info("Downloading AIRSIS data ...")

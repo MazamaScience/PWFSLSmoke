@@ -29,5 +29,5 @@ the function provided in the \code{FUN} argument. The collapse applies to both w
 
 Intended for use with gridded model data, rather than actual monitor data itself (meta data is largely chopped; NAs propagate).
 }
-\keyword{ws_monitor}
+\keyword{internal}
 

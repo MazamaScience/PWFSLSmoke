@@ -1,4 +1,4 @@
-#' @keywords AIRSIS
+#' @keywords internal
 #' @export
 #' @title Ingest AIRSIS Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the AIRSIS dump file

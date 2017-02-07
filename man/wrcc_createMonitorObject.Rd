@@ -44,6 +44,12 @@ Steps involved include:
 \note{
 The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
 }
+\examples{
+\dontrun{
+sm13 <- wrcc_createMonitorObject(20150301, 20150831, stationID='sm13')
+monitorLeaflet(sm13)
+}
+}
 \seealso{
 \code{\link{wrcc_downloadData}}
 

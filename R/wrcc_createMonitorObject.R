@@ -30,6 +30,11 @@
 #' @seealso \code{\link{addClustering}}
 #' @seealso \code{\link{wrcc_createMetaDataframe}}
 #' @seealso \code{\link{wrcc_createDataDataframe}}
+#' @examples
+#' \dontrun{
+#' sm13 <- wrcc_createMonitorObject(20150301, 20150831, stationID='sm13')
+#' monitorLeaflet(sm13)
+#' }
 
 wrcc_createMonitorObject <- function(startdate=20020101,
                                      enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
@@ -42,6 +47,18 @@ wrcc_createMonitorObject <- function(startdate=20020101,
   if ( is.null(stationID) ) {
     logger.error("Required parameter 'stationID' is missing")
     stop(paste0("Required parameter 'stationID' is missing"))
+  }
+  
+  startdateCount <- stringr::str_count(as.character(startdate))
+  if ( !startdateCount %in% c(8,10,12) ) {
+    logger.error("Cannot parse 'startdate' with %d characters", startdateCount)
+    stop(paste0("Cannot parse 'startdate' with ",startdateCount," characters"))
+  }
+  
+  enddateCount <- stringr::str_count(as.character(enddate))
+  if ( !enddateCount %in% c(8,10,12) ) {
+    logger.error("Cannot parse 'enddate' with %d characters", enddateCount)
+    stop(paste0("Cannot parse 'enddate' with ",enddateCount," characters"))
   }
   
   # Read in WRCC .csv data

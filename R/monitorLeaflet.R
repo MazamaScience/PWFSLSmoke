@@ -36,16 +36,16 @@
 #' airnow <- airnow_load(20140913, 20141010)
 #' v_low <- AQI$breaks_24[4] 
 #' CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
-#' monitorInteractiveMap(CA_unhealthy_monitors, maptype="toner")
+#' monitorLeaflet(CA_unhealthy_monitors, maptype="toner")
 #' }
 
-monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
-                                  breaks=AQI$breaks_24,
-                                  colors=AQI$colors,
-                                  labels=AQI$names,
-                                  legendTitle='Max AQI Level',
-                                  radius=10, opacity=0.7, maptype="terrain",
-                                  popupInfo=c('siteName','monitorID','elevation')) {
+monitorLeaflet <- function(ws_monitor, slice=get('max'),
+                           breaks=AQI$breaks_24,
+                           colors=AQI$colors,
+                           labels=AQI$names,
+                           legendTitle='Max AQI Level',
+                           radius=10, opacity=0.7, maptype="terrain",
+                           popupInfo=c('siteName','monitorID','elevation')) {
   
   # BEGIN verbatim from monitor_map.R -----------------------------------------
   
@@ -82,7 +82,7 @@ monitorInteractiveMap <- function(ws_monitor, slice=get('max'),
     }
     
     if ( missing(labels) ){
-    labels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
+      labels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
     } else if ( length(labels) != length(colors) ) {
       stop("The number of labels should be equal to the number of colors")
     }

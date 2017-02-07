@@ -13,11 +13,11 @@
 #' \dontrun{
 #' airnow <- airnow_load(20140913, 20141010)
 #' King_Fire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
-#' monitor_dygraph(King_Fire, title='KingFire/California/2014', rollPeriod=3)
+#' monitorDygraph(King_Fire, title='KingFire/California/2014', rollPeriod=3)
 #' } 
 
-monitor_dygraph <- function(ws_monitor, title='title', ylab='PM2.5 Concentration', 
-                            dateWindow=NULL, rollPeriod=1, showLegend=TRUE) {
+monitorDygraph <- function(ws_monitor, title='title', ylab='PM2.5 Concentration', 
+                           dateWindow=NULL, rollPeriod=1, showLegend=TRUE) {
   
   # Sanity check
   tzCount <- length(unique(ws_monitor$meta$timezone))

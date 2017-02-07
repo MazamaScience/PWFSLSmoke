@@ -1,4 +1,4 @@
-#' @keywords ws_monitor
+#' @keywords internal
 #' @export
 #' @import graphics
 #' @title Create Blank Plot with "No Data" Message

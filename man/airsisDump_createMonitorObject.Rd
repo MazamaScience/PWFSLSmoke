@@ -44,5 +44,5 @@ Each dump file must contain data for only one type of monitor, e.g. EBAM or E-Sa
 
 \code{\link{airsis_createDataDataframe}}
 }
-\keyword{AIRSIS}
+\keyword{internal}
 

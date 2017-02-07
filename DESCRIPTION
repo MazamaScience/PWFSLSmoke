@@ -26,7 +26,7 @@ Depends:
     MazamaSpatialUtils (>= 0.4.4)
 Imports:
     cluster,
-    dygraphs,
+    dygraphs (>= 1.1.1.4),
     futile.logger,
     ggmap,
     httr,

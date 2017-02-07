@@ -1,4 +1,4 @@
-#' @keywords AIRSIS
+#' @keywords internal
 #' @export
 #' @title Parse AIRSIS Dump File Data String
 #' @param fileString character string containing AIRSIS data as a csv

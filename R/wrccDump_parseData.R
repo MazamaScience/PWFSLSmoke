@@ -1,4 +1,4 @@
-#' @keywords WRCC
+#' @keywords internal
 #' @export
 #' @title Parse WRCC Dump File String
 #' @param fileString character string containing WRCC dump file

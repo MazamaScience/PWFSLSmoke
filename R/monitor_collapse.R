@@ -1,5 +1,5 @@
-#' @keywords ws_monitor
-# @export
+#' @keywords internal
+#' @export
 #' @title Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor
 #' @param ws_monitor ws_monitor object
 #' @param lon longitude of the collapsed monitoring station. (Default = mean of the longitudes)

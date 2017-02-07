@@ -1,4 +1,4 @@
-#' @keywords WRCC
+#' @keywords internal
 #' @export
 #' @title Ingest WRCC Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the WRCC dump file
