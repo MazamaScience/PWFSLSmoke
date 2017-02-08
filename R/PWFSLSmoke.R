@@ -1,4 +1,5 @@
-# ----- AQI breaks ----------------------------------------------------------------
+
+# ----- AQI breaks -------------------------------------------------------------
 
 #' AQI breaks and associated names and colors
 #' 
@@ -26,7 +27,7 @@ AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
                      grDevices::rgb(126/255,0,35/255)),
             names=c('good','moderate','USG','unhealthy','very unhealthy','extreme'))
 
-# ----- State codes in the lower 48 ---------------------------------------------------
+# ----- State codes in the lower 48 --------------------------------------------
 
 #' CONUS state codes
 #' 
