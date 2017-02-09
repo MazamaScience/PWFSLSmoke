@@ -156,7 +156,7 @@ monitorPlot_timeseries <- function(ws_monitor,
       lat <- mean(mon$meta$latitude)
       lon <- mean(mon$meta$longitude)
       timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
-      addShadedNights(timeInfo)
+      addShadedNight(timeInfo)
     }
     
     # Add vertical lines to denote days and/or hour breaks

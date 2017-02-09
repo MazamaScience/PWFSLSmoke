@@ -216,7 +216,7 @@ rawPlot_timeseries <- function(df,
         lat <- df$latitude[1]
         lon <- df$longitude[1]
         timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
-        addShadedNights(timeInfo)
+        addShadedNight(timeInfo)
       }
     }
     

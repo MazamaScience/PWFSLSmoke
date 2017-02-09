@@ -188,10 +188,10 @@ monitorPlot_rollingMean <- function(ws_monitor,
       timezone <- meta$timezone
       if ( localTime ) {
         timeInfo <- PWFSLSmoke::timeInfo(timeStamp, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
+        PWFSLSmoke::addShadedNight(timeInfo)
       } else {
         timeInfo <- PWFSLSmoke::timeInfo(data$datetime, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
+        PWFSLSmoke::addShadedNight(timeInfo)
       }
     }
   }

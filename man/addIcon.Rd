@@ -39,8 +39,8 @@ to be much smaller, perhaps ~ 0.001.
 \dontrun{
 ca <- airnow_load(20160801, 20160831, stateCodes='ca')
 # Google map
-monitorGoogleMap(ca)
-addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.1)
+map <- monitorGoogleMap(ca)
+addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)
 # line map
 monitorMap(ca)
 addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.002)

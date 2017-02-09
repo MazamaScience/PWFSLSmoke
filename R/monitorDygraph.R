@@ -4,7 +4,7 @@
 #' @param ws_monitor ws_monitor object
 #' @param title title text
 #' @param ylab title for the y axis
-#' @param dateWindow initial time range (POSIXct)
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param rollPeriod rolling mean to be applied to the data
 #' @param showLegend logical to toggle display of the legend
 #' @description This function creates interactive graphs that will be displayed in RStudio's 'Viewer' tab.  
@@ -17,12 +17,19 @@
 #' } 
 
 monitorDygraph <- function(ws_monitor, title='title', ylab='PM2.5 Concentration', 
-                           dateWindow=NULL, rollPeriod=1, showLegend=TRUE) {
+                           tlim=NULL, rollPeriod=1, showLegend=TRUE) {
   
   # Sanity check
   tzCount <- length(unique(ws_monitor$meta$timezone))
   if (tzCount > 1) {
     stop(paste0('Dygraphs cannot be made for data with multiple timezones: ',tzCount,' were found'))
+  }
+  
+  # Convert tlim to POSIXct
+  if ( !is.null(tlim) ) {
+    dateWindow <- parseDatetime(tlim)
+  } else {
+    dateWindow <- NULL
   }
   
   # Simplify access to variables

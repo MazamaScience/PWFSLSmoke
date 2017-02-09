@@ -5,7 +5,7 @@
 \title{Create Interactive Time Series Plot}
 \usage{
 monitorDygraph(ws_monitor, title = "title", ylab = "PM2.5 Concentration",
-  dateWindow = NULL, rollPeriod = 1, showLegend = TRUE)
+  tlim = NULL, rollPeriod = 1, showLegend = TRUE)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -14,7 +14,7 @@ monitorDygraph(ws_monitor, title = "title", ylab = "PM2.5 Concentration",
 
 \item{ylab}{title for the y axis}
 
-\item{dateWindow}{initial time range (POSIXct)}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
 \item{rollPeriod}{rolling mean to be applied to the data}
 

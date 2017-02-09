@@ -7,7 +7,7 @@
 #' @description Draw shading rectangles on a plot to indicate nighttime hours.
 #' @seealso \link{timeInfo}
 
-addShadedNights <- function(timeInfo, col=adjustcolor('black',0.1)) {
+addShadedNight <- function(timeInfo, col=adjustcolor('black',0.1)) {
   
   localTime <- timeInfo$localTime
   sunrise <- timeInfo$sunrise[!duplicated(timeInfo$sunrise)]
