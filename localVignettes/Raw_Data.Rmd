@@ -1,6 +1,6 @@
 ---
-title: "PWFSLSmoke Data Exploration"
-author: "Rex Thompson - Mazama Science"
+title: "Raw Data"
+author: "Mazama Science"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 vignette: >
