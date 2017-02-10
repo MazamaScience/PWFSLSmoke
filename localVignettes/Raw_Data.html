@@ -10,11 +10,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="Rex Thompson - Mazama Science" />
+<meta name="author" content="Mazama Science" />
 
-<meta name="date" content="2017-01-31" />
+<meta name="date" content="2017-02-09" />
 
-<title>PWFSLSmoke Data Exploration</title>
+<title>Raw Data</title>
 
 
 
@@ -68,15 +68,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">PWFSLSmoke Data Exploration</h1>
-<h4 class="author"><em>Rex Thompson - Mazama Science</em></h4>
-<h4 class="date"><em>2017-01-31</em></h4>
+<h1 class="title toc-ignore">Raw Data</h1>
+<h4 class="author"><em>Mazama Science</em></h4>
+<h4 class="date"><em>2017-02-09</em></h4>
 
 
 
-<p>This vignette offers examples of how the PWFSLSmoke package can be used to enable data exploration while supporting a variety of common tasks and questions.</p>
-<div id="package-setup" class="section level1">
-<h1>Package Setup</h1>
+<p>This vignette explores how the PWFSLSmoke package can be leveraged to enable raw data retrieval and exploration. We share a few examples using real monitoring data to support a variety of tasks and questions.</p>
+<div id="package-setup" class="section level2">
+<h2>Package Setup</h2>
 <p>First things first, we need to load the PWFSLSmoke package and set up logging. You can pass arguments to the <code>logger.setup()</code> function to send logging information to log files. In the following example we use <code>logger.setLevel()</code> to send any ERROR output to the console.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PWFSLSmoke)
 <span class="kw">logger.setup</span>()
@@ -86,25 +86,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">setSpatialDataDir</span>(<span class="st">'~/Data/Spatial'</span>)
 <span class="kw">loadSpatialData</span>(<span class="st">'NaturalEarthAdm1'</span>)</code></pre></div>
 <p>If the previous code above gives an error, you may need to download Mazama spatial data files. To do so, enter the following in the command line:</p>
-<p><code>mkdir ~/Data</code><br />
-<code>cd ~/Data</code><br />
-<code>curl -OL http://smoke.airfire.org/RData/Spatial.tar.gz</code><br />
-<code>tar -xzf Spatial.tar.gz</code><br />
-<code>rm Spatial.tar.gz</code></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> ~/Data
+<span class="kw">cd</span> ~/Data
+<span class="kw">curl</span> -OL http://smoke.airfire.org/RData/Spatial.tar.gz
+<span class="kw">tar</span> -xzf Spatial.tar.gz
+<span class="kw">rm</span> Spatial.tar.gz</code></pre></div>
 <p>If you are still having trouble setting things up, refer to the full package documentation and README at the following link: <a href="https://github.com/MazamaScience/PWFSLSmoke" class="uri">https://github.com/MazamaScience/PWFSLSmoke</a></p>
 </div>
-<div id="data-acquisition" class="section level1">
-<h1>Data Acquisition</h1>
+<div id="data-acquisition" class="section level2">
+<h2>Data Acquisition</h2>
 <p>After the PWFSLSmoke and the packages it depends upon are loaded, we can gather some monitoring data to work with. This can be done in two ways – the first we’ll address is the creation of a ws_monitor object.</p>
-<div id="ws_monitor-object" class="section level2">
-<h2>ws_monitor Object</h2>
+<div id="ws_monitor-object" class="section level3">
+<h3>ws_monitor Object</h3>
 <p>A ws_monitor object is the basis for the entire PWFSLSmoke package. Simply put, a ws_monitor object is a data structure that the PWFSLSmoke package depends upon for its many functions to work properly. It consists of a few constraints:</p>
 <ul>
 <li>Constraint 1</li>
 <li>Constrains 2</li>
 </ul>
 <p>To create a ws_monitor object, we call one of the “createMonitorObject” functions like the one shown below. See the “E-Sampler_Data_Handling” Vignette for a detailed look at what goes on in the function shown below, including download, parsing, QA/QC and clustering of the data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ws_monitor &lt;-<span class="st"> </span><span class="kw">airnow_load</span>(<span class="dv">20160901</span>,<span class="dv">20161015</span>,<span class="dt">stateCodes =</span> <span class="st">&quot;WA&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">raw &lt;-<span class="st"> </span><span class="kw">airsis_createRawDataframe</span>(<span class="dv">20160901</span>,<span class="dv">20161015</span>,<span class="dt">provider =</span> <span class="st">'USFS'</span>, <span class="dt">unitID =</span> <span class="dv">1033</span>)
 plain &lt;-<span class="st"> </span><span class="kw">airsis_createMonitorObject</span>(<span class="dv">20160901</span>, <span class="dv">20161015</span>, <span class="dt">provider=</span><span class="st">'USFS'</span>, <span class="dt">unitID=</span><span class="dv">1033</span> )</code></pre></div>
 <p>We can use a variety of functions to manipulate ws_monitor objects. The monitor_subset function can also be used to pull out one or more monitors from a multi-monitor ws_monitor object (recall that ws_monitor objects can contain data for more than one monitor). Below, we’ll use the monitor_subset() function to subset our data above over a specific time period.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plain &lt;-<span class="st"> </span><span class="kw">monitor_subset</span>(plain,<span class="dt">tlim =</span> <span class="kw">c</span>(<span class="dv">20160905</span>,<span class="dv">20160930</span>))</code></pre></div>
@@ -122,12 +122,12 @@ plain &lt;-<span class="st"> </span><span class="kw">airsis_createMonitorObject<
 <p>STRUCTURE: - Setup - ws_monitor object creation - ws_monitor plots and other goodies - raw_enhance object creation - raw_enhance plots and other goodies</p>
 </div>
 </div>
-<div id="put-it-all-together" class="section level1">
-<h1>Put it all together</h1>
+<div id="put-it-all-together" class="section level2">
+<h2>Put it all together</h2>
 <p>Make a bunch of plots that are all related?</p>
 </div>
-<div id="conclusion" class="section level1">
-<h1>Conclusion</h1>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
 <p>R is powerful. We have developed solid tools. Lots of good stuff we can do now.</p>
 <p>The end.</p>
 </div>
