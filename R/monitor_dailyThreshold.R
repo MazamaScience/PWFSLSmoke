@@ -15,6 +15,8 @@
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
+#' 
+#' The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
 #' \dontrun{
 #' AirNow <- airnow_load(20150801, 20150930)
@@ -114,7 +116,7 @@ monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="
   df[,-1] <- df[,-1] * 24
   
   # Set df$datetime to noon for each day
-  lubridate::hour(df$datetime) <- 12
+  lubridate::hour(df$datetime) <- 00
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00
   

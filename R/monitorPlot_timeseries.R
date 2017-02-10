@@ -24,6 +24,7 @@
 #' 
 #' \itemize{
 #' \item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+#' \item{\code{gnats}}{-- semi-transparent dots like a cloud of gnats}
 #' }
 #' 
 #' @note Remember that a ws_monitor object can contain data from more than one monitor, and thus, this function may produce
@@ -190,8 +191,8 @@ monitorPlot_timeseries <- function(ws_monitor,
       
       # # Set opacity based on number of points
       # dims <- dim(as.matrix(data[,-1]))
-      # num_na <- length(which(is.na(data[,-1])))
-      # size <- dims[1]*dims[2] - num_na
+      # naCount <- length(which(is.na(data[,-1])))
+      # size <- dims[1]*dims[2] - naCount
       # opacity <- min(8/log(size), 1)
       opacity <- 1
 
@@ -201,8 +202,10 @@ monitorPlot_timeseries <- function(ws_monitor,
         levels <- .bincode(argsList$y, breaks)
         argsList$col <- AQI$colors[levels]
         argsList$col <- adjustcolor(argsList$col, alpha.f=opacity)
-        argsList$cex <- argsList$y / 200 + .3
-        argsList$cex <- pmin(argsList$cex,2)
+        if ( !'cex' %in% names(argsList) ) {
+          argsList$cex <- argsList$y / 200 + .3
+          argsList$cex <- pmin(argsList$cex,2)
+        }
         # Add the points
         do.call(points,argsList)
       }
@@ -211,9 +214,12 @@ monitorPlot_timeseries <- function(ws_monitor,
       
       # Set opacity based on number of points
       dims <- dim(as.matrix(data[,-1]))
-      num_na <- length(which(is.na(data[,-1])))
-      size <- dims[1]*dims[2] - num_na
-      opacity <- min(8/log(size), 1)
+      naCount <- length(which(is.na(data[,-1])))
+      size <- dims[1]*dims[2] - naCount
+      opacity <- min(8/log(size), 0.9)
+      if ( !'col' %in% names(argsList) ) {
+        argsList$col <- 'black'
+      }
 
       for (id in meta$monitorID) {
         argsList$y <- data[[id]] # same as data[,id]

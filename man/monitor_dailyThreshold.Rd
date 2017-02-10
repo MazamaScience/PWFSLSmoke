@@ -34,6 +34,8 @@ AQI levels for \code{threshold} argument = one of \code{"good|moderate|USG|unhea
 Sunrise and sunset times are calculated based on the first monitor encountered.
 This should be accurate enough for all use cases involving co-located monitors. Monitors
 from different regions should have daily statistics calculated separately.
+
+The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 }
 \examples{
 \dontrun{

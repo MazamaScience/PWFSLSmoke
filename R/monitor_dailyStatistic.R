@@ -17,13 +17,13 @@
 #' number of hours in the first and last daily records of the returned \code{ws_monitor}
 #' object.
 #' 
-#' This returned object has a daily time axis where each time is set to noon, local time.
+#' The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
 #' \dontrun{
 #' airnow <- airnow_load(20150801, 20150831)
 #' WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(55,Inf))
 #' WA_smoky_dailyMean <- monitor_dailyStatistic(WA_smoky, FUN=get('mean'), dayStart='midnight')
-#' monitorPlot_timeseries(WA_smoky_dailyMean, type='s')
+#' monitorPlot_timeseries(WA_smoky_dailyMean, style='gnats')
 #' }
 
 monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,
@@ -98,7 +98,7 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   df$datetime <- meanDF$datetime
   
   # Set df$datetime to noon for each day
-  lubridate::hour(df$datetime) <- 12
+  lubridate::hour(df$datetime) <- 00
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00
   lubridate::tz(df$datetime) <- timezone
