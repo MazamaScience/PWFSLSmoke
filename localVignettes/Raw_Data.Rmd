@@ -1,10 +1,10 @@
 ---
 title: "Raw Data"
 author: "Mazama Science"
-date: '`r Sys.Date()`'
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{PWFSLSmoke Data Exploration}
+  %\VignetteIndexEntry{Raw Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,9 +13,9 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-This vignette offers examples of how the PWFSLSmoke package can be used to enable data exploration while supporting a variety of common tasks and questions.
+This vignette explores how the PWFSLSmoke package can be leveraged to enable raw data retrieval and exploration. We share a few examples using real monitoring data to support a variety of tasks and questions.
 
-# Package Setup
+## Package Setup
 
 First things first, we need to load the PWFSLSmoke package and set up logging. You can pass
 arguments to the `logger.setup()` function to send logging information to log files. In the following
@@ -37,19 +37,22 @@ loadSpatialData('NaturalEarthAdm1')
 
 If the previous code above gives an error, you may need to download Mazama spatial data files. To do so, enter the following in the command line:
 
-`mkdir ~/Data`  
-`cd ~/Data`  
-`curl -OL http://smoke.airfire.org/RData/Spatial.tar.gz`  
-`tar -xzf Spatial.tar.gz`  
-`rm Spatial.tar.gz`
+
+```{bash eval=FALSE}
+mkdir ~/Data
+cd ~/Data
+curl -OL http://smoke.airfire.org/RData/Spatial.tar.gz
+tar -xzf Spatial.tar.gz
+rm Spatial.tar.gz
+```
 
 If you are still having trouble setting things up, refer to the full package documentation and README at the following link: https://github.com/MazamaScience/PWFSLSmoke
 
-# Data Acquisition
+## Data Acquisition
 
 After the PWFSLSmoke and the packages it depends upon are loaded, we can gather some monitoring data to work with. This can be done in two ways -- the first we'll address is the creation of a ws_monitor object.
 
-## ws_monitor Object
+### ws_monitor Object
 
 A ws_monitor object is the basis for the entire PWFSLSmoke package. Simply put, a ws_monitor object is a data structure that the PWFSLSmoke package depends upon for its many functions to work properly. It consists of a few constraints:
 
@@ -59,7 +62,7 @@ A ws_monitor object is the basis for the entire PWFSLSmoke package. Simply put, 
 To create a ws_monitor object, we call one of the "createMonitorObject" functions like the one shown below. See the "E-Sampler_Data_Handling" Vignette for a detailed look at what goes on in the function shown below, including download, parsing, QA/QC and clustering of the data.
 
 ```{r}
-ws_monitor <- airnow_load(20160901,20161015,stateCodes = "WA")
+raw <- airsis_createRawDataframe(20160901,20161015,provider = 'USFS', unitID = 1033)
 plain <- airsis_createMonitorObject(20160901, 20161015, provider='USFS', unitID=1033 )
 ```
 
@@ -110,11 +113,11 @@ STRUCTURE:
  - raw_enhance object creation
  - raw_enhance plots and other goodies
 
-# Put it all together
+## Put it all together
  
  Make a bunch of plots that are all related?
  
-# Conclusion
+## Conclusion
 
 R is powerful. We have developed solid tools. Lots of good stuff we can do now.
 
