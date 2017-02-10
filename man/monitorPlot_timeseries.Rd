@@ -48,6 +48,7 @@ When a named \code{style} is used, some graphical parameters will be overridden.
 
 \itemize{
 \item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+\item{\code{gnats}}{-- semi-transparent dots like a cloud of gnats}
 }
 }
 \note{

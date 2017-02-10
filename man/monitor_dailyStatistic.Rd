@@ -43,7 +43,7 @@ The returned \code{ws_monitor} object has a daily time axis where each time is s
 airnow <- airnow_load(20150801, 20150831)
 WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(55,Inf))
 WA_smoky_dailyMean <- monitor_dailyStatistic(WA_smoky, FUN=get('mean'), dayStart='midnight')
-monitorPlot_timeseries(WA_smoky_dailyMean, type='s')
+monitorPlot_timeseries(WA_smoky_dailyMean, style='gnats')
 }
 }
 \keyword{ws_monitor}
