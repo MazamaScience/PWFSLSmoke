@@ -21,9 +21,9 @@ processing from various sources.
 }
 \examples{
 \dontrun{
-raw <- airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
-raw <- raw_enhance(raw,rawSource='AIRSIS')
-rawPlot_timeseries(raw,tlim=c(20160908,20160917))
+raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
+raw <- raw_enhance(raw, rawSource='AIRSIS')
+rawPlot_timeseries(raw, tlim=c(20160908,20160917))
 }
 }
 \keyword{raw}

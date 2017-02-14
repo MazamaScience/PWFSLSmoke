@@ -9,9 +9,9 @@
 #' @return Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 #' @examples
 #' \dontrun{
-#' raw <- airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
-#' raw <- raw_enhance(raw,rawSource='AIRSIS')
-#' rawPlot_timeseries(raw,tlim=c(20160908,20160917))
+#' raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
+#' raw <- raw_enhance(raw, rawSource='AIRSIS')
+#' rawPlot_timeseries(raw, tlim=c(20160908,20160917))
 #' }
 
 # TODO: Add check to ensure that column names match expected for the type passed in (e.g. EBAM_AIRSIS).

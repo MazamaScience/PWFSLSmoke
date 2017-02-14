@@ -13,9 +13,11 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-This vignette explores how the PWFSLSmoke package can be leveraged to enable raw data retrieval and exploration. We share a few examples using real monitoring data to support a variety of tasks and questions.
+This vignette explores how the PWFSLSmoke package can be leveraged to enable retrieval and exploration of raw ambient air quality data from multiple types of monitoring stations. We share examples using real monitoring data to support a variety of sample user tasks and questions.
 
 ## Package Setup
+
+\textcolor{red}{NOTE: This is all mentioned in the readme on the github page -- may be able to just point folks there for installation and setup.}
 
 First things first, we need to load the PWFSLSmoke package and set up logging. You can pass
 arguments to the `logger.setup()` function to send logging information to log files. In the following
@@ -37,7 +39,6 @@ loadSpatialData('NaturalEarthAdm1')
 
 If the previous code above gives an error, you may need to download Mazama spatial data files. To do so, enter the following in the command line:
 
-
 ```{bash eval=FALSE}
 mkdir ~/Data
 cd ~/Data
@@ -50,9 +51,141 @@ If you are still having trouble setting things up, refer to the full package doc
 
 ## Data Acquisition
 
-After the PWFSLSmoke and the packages it depends upon are loaded, we can gather some monitoring data to work with. This can be done in two ways -- the first we'll address is the creation of a ws_monitor object.
+The first step in any data exploration is data acquisition. We'll use the airsis_createRawDataframe() function for this task.
 
-### ws_monitor Object
+The airsis_createRawDataframe() function creates a dataframe of raw monitoring data from a single monitor over a specific time period. For example, below we retrieve data from September 1 through October 15, 2016 for monitor IDs 1033 and 1049. Both monitors' data is provided by the U.S. Forest Service.
+
+```{r}
+plain_AIRSIS_EBAM <- airsis_createRawDataframe(20160901,20161015,provider = 'USFS', unitID = 1033)
+nile_AIRSIS_ESAM <- airsis_createRawDataframe(20160901,20161015,provider = 'USFS', unitID = 1049)
+```
+
+For reference, the following is a list of a handful of monitors that can be called by the airsis_createRawDataframe() function as shown above. The data for all the monitors below is provided by U.S. Forest Service.
+
+Monitor ID  | Location (Alias)   | Type
+----------- | --------------- | ----------
+1012 | Kettle Falls, WA (Fish Hatchery) | EBAM
+1013 | Manson, WA (Kenned Meadows) | EBAM
+1031 | Liberty, WA | EBAM
+1033 | Plain, WA | EBAM
+1034 | Curlew, WA | EBAM
+1049 | Nile/Pinecliff, WA | E-Sampler
+1050 | Kettle Falls, WA | E-Sampler
+
+Note that, in our example above, we have pulled data for two different monitor types: the Plain monitor is an EBAM monitor, whereas the Nile/Pinecliff monitor is an E-Sampler. We'll explore the differences in data structures between the two monitor types a bit later on.
+
+The airsis_createRawDataframe() function is nearly identical to the airsis_createMonitorObject() function, which is explained in depth in the \textcolor{red}{TODO: UPDATE NAME} vignette within this package. The process is briefly summarized below.
+
+* **Data retrieval:** the airsis_downloadData() function downloads data from the specified provider for the monitor and time period requested. The data is brought into R as a single, long text string with comma separators and end-line characters (e.g. \\r\\n).
+* **Parsing:** the airsis_parseData() function converts the long text string into a dataframe.
+* **Quality Control:** the airsis_qualityControl() function performs some basic data cleaning and integrity checks. A uniform UTC timestamp field -- called 'datetime' -- is added, with data assigned to unique hours and duplicates removed as needed. 
+* **Clustering:** the addClustering() function identifies unique deployments and assigns a single monitor ID, a latitude and a longitude, to each deployment. Unique deployments are identified using k-means clustering based on the cluster diameter passed to the addClustering() function through the airsis_createRawDataframe() function.
+
+Up to this point this is the exact same process that the airsis_createMonitorObject() function uses to create a ws_monitor object. However, the processes deviate at the end with respect to what data is retained, and how it is stored. Specifically:
+
+* the airsis_createRawDataframe() function retains all monitored data (including engineering data), whereas the ws_monitor object retains only the meta data and the time-stamped PM2.5 data.
+* the airsis_createRawDataframe() function stores all meta and monitoring data in a single flat dataframe, whereas the ws_monitor object separates the meta data from the monitoing data to comply with the PWFSLSmoke ws_monitor class structure.
+
+Note that similar functions also exist for working with WRCC data (e.g. wrcc_createRawDataframe(), wrcc_parseData(), etc.), but these functions will not be explored in this vignette.
+
+## Data Handling
+
+Let's take a look at what fields we have in our datasets.
+
+```{r}
+names(plain_AIRSIS_EBAM)
+names(nile_AIRSIS_ESAM)
+```
+
+We observe that the vectors above are different lengths. Careful inspection, or better -- a few lines of clever code -- can tell us which fields are or are not shared between the two. First let's check which fields are shared between the types:
+
+```{r}
+names(plain_AIRSIS_EBAM)[names(plain_AIRSIS_EBAM) %in% names(nile_AIRSIS_ESAM)]
+```
+
+Now we'll check which fields are in the EBAM data but NOT the ESAM data.
+
+```{r}
+names(plain_AIRSIS_EBAM)[!(names(plain_AIRSIS_EBAM) %in% names(nile_AIRSIS_ESAM))]
+```
+
+And, for completeness, we'll check the other direction as well.
+
+```{r}
+names(nile_AIRSIS_ESAM)[!(names(nile_AIRSIS_ESAM) %in% names(plain_AIRSIS_EBAM))]
+```
+
+As you can see, most of the differences in fields between the two monitor types appear to simply come down to naming conventions. For example, we see that both monitor types include data on concentration (e.g. "COncRT", "Conc.mg.m3"), flow ("Flow" and "Flow.l.m"), air temperature ("AT" and "AT.C"), as well as several other parameters. In fact, there may be other differences even between similarly named fields (e.g. units of measure). All this inconsistency calls for some form of harmonization to allow for simple and elegant use and exploration of the data, independent of its source.
+
+## Raw Enhance
+
+In order to work with the data, we need to introduce some level of consistency so plotting and other functions can be written without having to customize to every difference in the data structures between the sources, not to mention possible changes in the future.
+
+We desire a consistent data structure. For this, we introduce the rawEnhance() function. This function takes the raw datafram from a variety of sources and monitor types and standardizes.
+
+Unlike the ws_monitor object, we do not strip the data. Instead, we simply add fields as needed. This does result in some data redundancy but it also provides flexibility for end users who may want quick and easy access to an engineering parameter (e.g. battery voltage) without having to re-retrieve the data.
+
+```{r}
+plainEnhance <- raw_enhance(plain_AIRSIS_EBAM,rawSource='AIRSIS')
+```
+
+## rawPlot_timeseries
+
+Most likely the first thing we'll want to see once we have our data is a time series plot of one or more parameters. Do do this, we use the aptly-named rawPlot_timeseries function.
+
+```{r}
+rawPlot_timeseries(plainEnhance)
+```
+
+
+## rawPlot_timeOfDaySpaghetti
+
+```{r}
+
+```
+
+
+## rawPlot_PollutionRose
+
+```{r}
+
+```
+
+
+## rawPlot_windRose
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## EXTRA STUFF -- Pull from below for sections above
+
+
+
+# WORDS:
+After the PWFSLSmoke and the packages it depends upon are loaded, we can gather some monitoring data to work with.
+
+
+
+
+
+
+
 
 A ws_monitor object is the basis for the entire PWFSLSmoke package. Simply put, a ws_monitor object is a data structure that the PWFSLSmoke package depends upon for its many functions to work properly. It consists of a few constraints:
 
@@ -61,23 +194,19 @@ A ws_monitor object is the basis for the entire PWFSLSmoke package. Simply put, 
 
 To create a ws_monitor object, we call one of the "createMonitorObject" functions like the one shown below. See the "E-Sampler_Data_Handling" Vignette for a detailed look at what goes on in the function shown below, including download, parsing, QA/QC and clustering of the data.
 
-```{r}
-raw <- airsis_createRawDataframe(20160901,20161015,provider = 'USFS', unitID = 1033)
-plain <- airsis_createMonitorObject(20160901, 20161015, provider='USFS', unitID=1033 )
-```
 
 
 
 We can use a variety of functions to manipulate ws_monitor objects. The monitor_subset function can also be used to pull out one or more monitors from a multi-monitor ws_monitor object (recall that ws_monitor objects can contain data for more than one monitor). Below, we'll use the monitor_subset() function to subset our data above over a specific time period. 
 
 ```{r}
-plain <- monitor_subset(plain,tlim = c(20160905,20160930))
+#plain <- monitor_subset(plain_AIRSIS_EBAM,tlim = c(20160905,20160930))
 ```
 
 
 
 ```{r}
-monitorPlot_rollingMean(plain)
+#monitorPlot_rollingMean(plain)
 ```
 
 The steps above (to be expanded) can be used to create a ws_monitor object that conforms to internal data format standards which enables the use of tools developed specifically to handle such objecs. See _____ for more informtion on the ws_monitor data structure.
@@ -90,9 +219,6 @@ df <- PWFSLSmoke::airsis_createRawDataframe(20160901, 20161015, provider='USFS',
 
 Now to clean the data
 
-```{r}
-df <- raw_enhance(df,rawSource='AIRSIS')
-```
 
 Now you have a nice raw dataset with which to work.
 
@@ -101,7 +227,7 @@ Now you have a nice raw dataset with which to work.
 Make a plot
 
 ```{r}
-rawPlot_windRose(df,ws.int=1)
+#rawPlot_windRose(df,ws.int=1)
 ```
 
 
