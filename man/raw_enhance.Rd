@@ -15,9 +15,23 @@ raw_enhance(raw, rawSource = "AIRSIS")
 Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 }
 \description{
-Processes raw monitor data to create a consistent format that can be handled by various raw* functions.
-All original raw data is retained, and additional columns are added with names add consistently-named columns enabling
-processing from various sources.
+Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
+raw* functions. All original raw data is retained, and the following additional columns are added:
+
+\itemize{
+\item{dataSource}
+\item{longitude}
+\item{latitude}
+\item{temperature}
+\item{humidity}
+\item{windSpeed}
+\item{windDir}
+\item{pressure}
+\item{pm25}
+}
+
+The \code{datetime} column in the incoming dataframe may have missing hours. This time axis is expanded to a
+uniform, hourly axes with missing data fields added for data columns.
 }
 \examples{
 \dontrun{
