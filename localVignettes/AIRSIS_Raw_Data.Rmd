@@ -1,10 +1,10 @@
 ---
-title: "Raw Data"
+title: "AIRSIS Raw Data"
 author: "Mazama Science"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Raw Data}
+  %\VignetteIndexEntry{AIRSIS Raw Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,7 +13,9 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-This vignette explores how the PWFSLSmoke package can be leveraged to enable retrieval and exploration of raw ambient air quality data from multiple types of monitoring stations. We share examples using real monitoring data to support a variety of sample user tasks and questions.
+This vignette explores how the PWFSLSmoke package can be leveraged to enable retrieval and exploration of raw ambient air quality data from multiple types of AIRSIS monitoring stations. We share examples using real monitoring data to support a variety of sample user tasks and questions.
+
+Note that similar functionality also exist for working with WRCC data (e.g. wrcc_createRawDataframe(), wrcc_parseData(), etc.), but these functions will not be explored in this vignette.
 
 ## Package Setup
 
@@ -86,7 +88,7 @@ Up to this point this is the exact same process that the airsis_createMonitorObj
 * the airsis_createRawDataframe() function retains all monitored data (including engineering data), whereas the ws_monitor object retains only the meta data and the time-stamped PM2.5 data.
 * the airsis_createRawDataframe() function stores all meta and monitoring data in a single flat dataframe, whereas the ws_monitor object separates the meta data from the monitoing data to comply with the PWFSLSmoke ws_monitor class structure.
 
-Note that similar functions also exist for working with WRCC data (e.g. wrcc_createRawDataframe(), wrcc_parseData(), etc.), but these functions will not be explored in this vignette.
+
 
 ## Data Handling
 

@@ -14,7 +14,7 @@
 
 <meta name="date" content="2017-02-14" />
 
-<title>Raw Data</title>
+<title>AIRSIS Raw Data</title>
 
 
 
@@ -68,13 +68,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Raw Data</h1>
+<h1 class="title toc-ignore">AIRSIS Raw Data</h1>
 <h4 class="author"><em>Mazama Science</em></h4>
 <h4 class="date"><em>2017-02-14</em></h4>
 
 
 
-<p>This vignette explores how the PWFSLSmoke package can be leveraged to enable retrieval and exploration of ambient air quality monitoring station raw data from multiple types of sources. We share examples using real monitoring data to support a variety of user tasks and questions.</p>
+<p>This vignette explores how the PWFSLSmoke package can be leveraged to enable retrieval and exploration of raw ambient air quality data from multiple types of AIRSIS monitoring stations. We share examples using real monitoring data to support a variety of sample user tasks and questions.</p>
+<p>Note that similar functionality also exist for working with WRCC data (e.g. wrcc_createRawDataframe(), wrcc_parseData(), etc.), but these functions will not be explored in this vignette.</p>
 <div id="package-setup" class="section level2">
 <h2>Package Setup</h2>
 <p></p>
@@ -94,13 +95,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">rm</span> Spatial.tar.gz</code></pre></div>
 <p>If you are still having trouble setting things up, refer to the full package documentation and README at the following link: <a href="https://github.com/MazamaScience/PWFSLSmoke" class="uri">https://github.com/MazamaScience/PWFSLSmoke</a></p>
 </div>
-<div id="data-acquisition-and-handling" class="section level2">
-<h2>Data Acquisition and Handling</h2>
+<div id="data-acquisition" class="section level2">
+<h2>Data Acquisition</h2>
 <p>The first step in any data exploration is data acquisition. We’ll use the airsis_createRawDataframe() function for this task.</p>
-<p>The airsis_createRawDataframe() function retrieves raw monitoring data from a single monitor over a specific time period. For example, below we retrieve data from September 1 through October 15, 2016 for monitor IDs 1033 and 1049. Both monitors’ data is provided by the U.S. Forest Service.</p>
+<p>The airsis_createRawDataframe() function creates a dataframe of raw monitoring data from a single monitor over a specific time period. For example, below we retrieve data from September 1 through October 15, 2016 for monitor IDs 1033 and 1049. Both monitors’ data is provided by the U.S. Forest Service.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plain_AIRSIS_EBAM &lt;-<span class="st"> </span><span class="kw">airsis_createRawDataframe</span>(<span class="dv">20160901</span>,<span class="dv">20161015</span>,<span class="dt">provider =</span> <span class="st">'USFS'</span>, <span class="dt">unitID =</span> <span class="dv">1033</span>)
 nile_AIRSIS_ESAM &lt;-<span class="st"> </span><span class="kw">airsis_createRawDataframe</span>(<span class="dv">20160901</span>,<span class="dv">20161015</span>,<span class="dt">provider =</span> <span class="st">'USFS'</span>, <span class="dt">unitID =</span> <span class="dv">1049</span>)</code></pre></div>
-<p>For reference, the following is a list of a few different monitors that can be called by the airsis_createRawDataframe() function. The data for all the monitors below is provided by U.S. Forest Service.</p>
+<p>For reference, the following is a list of a handful of monitors that can be called by the airsis_createRawDataframe() function as shown above. The data for all the monitors below is provided by U.S. Forest Service.</p>
 <table>
 <thead>
 <tr class="header">
@@ -147,22 +148,22 @@ nile_AIRSIS_ESAM &lt;-<span class="st"> </span><span class="kw">airsis_createRaw
 </tr>
 </tbody>
 </table>
-<p>Note that, in our example above, we have pulled data for two different monitor types: the Plain monitor is an EBAM monitor, whereas the Nile/Pinecliff monitor is an E-Sampler. We’ll explore the differences in data structures between the two types a bit later on.</p>
-<p>With the exception of splitting out the meta data from the rest of the data, the airsis_createRawDataframe() function follows the exact same process as the airsis_createMonitorObject() function, which is explained in depth in the TODO: UPDATE NAME vignette within this same package. The process is briefly summarized below.</p>
+<p>Note that, in our example above, we have pulled data for two different monitor types: the Plain monitor is an EBAM monitor, whereas the Nile/Pinecliff monitor is an E-Sampler. We’ll explore the differences in data structures between the two monitor types a bit later on.</p>
+<p>The airsis_createRawDataframe() function is nearly identical to the airsis_createMonitorObject() function, which is explained in depth in the  vignette within this package. The process is briefly summarized below.</p>
 <ul>
 <li><strong>Data retrieval:</strong> the airsis_downloadData() function downloads data from the specified provider for the monitor and time period requested. The data is brought into R as a single, long text string with comma separators and end-line characters (e.g. \r\n).</li>
 <li><strong>Parsing:</strong> the airsis_parseData() function converts the long text string into a dataframe.</li>
 <li><strong>Quality Control:</strong> the airsis_qualityControl() function performs some basic data cleaning and integrity checks. A uniform UTC timestamp field – called ‘datetime’ – is added, with data assigned to unique hours and duplicates removed as needed.</li>
 <li><strong>Clustering:</strong> the addClustering() function identifies unique deployments and assigns a single monitor ID, a latitude and a longitude, to each deployment. Unique deployments are identified using k-means clustering based on the cluster diameter passed to the addClustering() function through the airsis_createRawDataframe() function.</li>
 </ul>
-<p>This is the exact same process that is followed for the creation of a ws_monitor object. The processes only deviate at the end with respect to what data is retained, and how it is stored. Specifically:</p>
+<p>Up to this point this is the exact same process that the airsis_createMonitorObject() function uses to create a ws_monitor object. However, the processes deviate at the end with respect to what data is retained, and how it is stored. Specifically:</p>
 <ul>
 <li>the airsis_createRawDataframe() function retains all monitored data (including engineering data), whereas the ws_monitor object retains only the meta data and the time-stamped PM2.5 data.</li>
-<li>the airsis_createRawDataframe() function stores all meta and monitoring data in a single flat dataframe, whereas the ws_monitor object separates the meta data from the monitoing data.</li>
+<li>the airsis_createRawDataframe() function stores all meta and monitoring data in a single flat dataframe, whereas the ws_monitor object separates the meta data from the monitoing data to comply with the PWFSLSmoke ws_monitor class structure.</li>
 </ul>
-<p>Note that similar functions also exist for working with WRCC data (e.g. wrcc_createRawDataframe(), wrcc_parseData(), etc.), but these functions will not be explored in this vignette.</p>
-<div id="data-handling" class="section level3">
-<h3>Data Handling</h3>
+</div>
+<div id="data-handling" class="section level2">
+<h2>Data Handling</h2>
 <p>Let’s take a look at what fields we have in our datasets.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(plain_AIRSIS_EBAM)</code></pre></div>
 <pre><code>##  [1] &quot;MasterTable_ID&quot;        &quot;Alias&quot;                
@@ -217,7 +218,6 @@ nile_AIRSIS_ESAM &lt;-<span class="st"> </span><span class="kw">airsis_createRaw
 ##  [5] &quot;RHx...&quot;       &quot;RHi...&quot;       &quot;WS.M.S.&quot;      &quot;WD.Deg.&quot;     
 ##  [9] &quot;BV.V.&quot;        &quot;System.Volts&quot; &quot;Data.1&quot;       &quot;Data.2&quot;</code></pre>
 <p>As you can see, most of the differences in fields between the two monitor types appear to simply come down to naming conventions. For example, we see that both monitor types include data on concentration (e.g. “COncRT”, “Conc.mg.m3”), flow (“Flow” and “Flow.l.m”), air temperature (“AT” and “AT.C”), as well as several other parameters. In fact, there may be other differences even between similarly named fields (e.g. units of measure). All this inconsistency calls for some form of harmonization to allow for simple and elegant use and exploration of the data, independent of its source.</p>
-</div>
 </div>
 <div id="raw-enhance" class="section level2">
 <h2>Raw Enhance</h2>
