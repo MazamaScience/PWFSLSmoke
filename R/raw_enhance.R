@@ -3,15 +3,30 @@
 #' @title Process Raw Monitoring Data to Create raw_enhance Object
 #' @param raw raw monitor data, as created by airsis_createRawDataframe or wrcc_createRawDataframe
 #' @param rawSource source of raw monitor data (i.e. "AIRSIS" or "WRCC")
-#' @description Processes raw monitor data to create a consistent format that can be handled by various raw* functions.
-#' All original raw data is retained, and additional columns are added with names add consistently-named columns enabling
-#' processing from various sources.
+#' @description Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
+#' raw* functions. All original raw data is retained, and the following additional columns are added:
+#' 
+#' \itemize{
+#' \item{dataSource}
+#' \item{longitude}
+#' \item{latitude}
+#' \item{temperature}
+#' \item{humidity}
+#' \item{windSpeed}
+#' \item{windDir}
+#' \item{pressure}
+#' \item{pm25}
+#' }
+#' 
+#' The \code{datetime} column in the incoming dataframe may have missing hours. This time axis is expanded to a
+#' uniform, hourly axes with missing data fields added for data columns.
+#' 
 #' @return Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 #' @examples
 #' \dontrun{
-#' raw <- airsis_createRawDataframe(startdate = 20160901,enddate=20161015, unitID = 1012)
-#' raw <- raw_enhance(raw,rawSource='AIRSIS')
-#' rawPlot_timeseries(raw,tlim=c(20160908,20160917))
+#' raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
+#' raw <- raw_enhance(raw, rawSource='AIRSIS')
+#' rawPlot_timeseries(raw, tlim=c(20160908,20160917))
 #' }
 
 # TODO: Add check to ensure that column names match expected for the type passed in (e.g. EBAM_AIRSIS).

@@ -4,7 +4,7 @@
 #' WRCC monitor names and stationIDs
 #' 
 #' @docType data
-#' @kewords datasets
+#' @keywords datasets
 #' @name WRCC
 #' @title WRCC Monitor Names and Station IDs
 #' @format A list with three elements

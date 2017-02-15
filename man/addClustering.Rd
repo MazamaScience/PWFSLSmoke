@@ -4,15 +4,13 @@
 \alias{addClustering}
 \title{Add Clustering Information to a Dataframe}
 \usage{
-addClustering(df, clusterDiameter = 1000, minCount = 48,
-  lonVar = "longitude", latVar = "latitude", maxClusters = 50)
+addClustering(df, clusterDiameter = 1000, lonVar = "longitude",
+  latVar = "latitude", maxClusters = 50)
 }
 \arguments{
 \item{df}{dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see description)}
-
-\item{minCount}{minimum number of measurements for a location to be valid (see description)}
 
 \item{lonVar}{name of longitude variable in the incoming dataframe}
 
@@ -28,6 +26,9 @@ Clustering is used to assign individual measurements to deployment locations.
 
 The value of \code{clusterRadius} is compared with the output of \code{cluster::pam(...)$clusinfo[,'av_diss']}
 to determine the number of clusters.
+}
+\references{
+\href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
 }
 \keyword{internal}
 

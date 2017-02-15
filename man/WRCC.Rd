@@ -24,4 +24,5 @@ WRCC monitor names and stationIDs
 \note{
 This list of monitors was created on Feb 09, 2017.
 }
+\keyword{datasets}
 

@@ -3,7 +3,6 @@
 #' @title Add Clustering Information to a Dataframe
 #' @param df dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see description)
-#' @param minCount minimum number of measurements for a location to be valid (see description)
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param maxClusters maximum number of clusters to try
@@ -13,8 +12,9 @@
 #' to determine the number of clusters.
 #' 
 #' @return Input dataframe with additional columns: \code{deploymentID, medoidLon, mediodLat}.
+#' @references \href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
 
-addClustering <- function(df, clusterDiameter=1000, minCount=48,
+addClustering <- function(df, clusterDiameter=1000,
                           lonVar="longitude", latVar="latitude",
                           maxClusters=50) {
   
