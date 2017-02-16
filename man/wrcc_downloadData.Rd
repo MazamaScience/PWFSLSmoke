@@ -4,16 +4,16 @@
 \alias{wrcc_downloadData}
 \title{Download Data from WRCC}
 \usage{
-wrcc_downloadData(stationID = NULL, startdate = 20100101,
-  enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
+wrcc_downloadData(startdate = 20100101, enddate = strftime(lubridate::now(),
+  "\%Y\%m\%d", tz = "GMT"), stationID = NULL,
   baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl")
 }
 \arguments{
-\item{stationID}{station identifier (will be upcased)}
-
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
+
+\item{stationID}{station identifier (will be upcased)}
 
 \item{baseUrl}{base URL for data queries}
 }
@@ -28,7 +28,7 @@ Monitor stationIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
 }
 \examples{
 \dontrun{
-fileString <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
 df <- wrcc_parseData(fileString)
 }
 }

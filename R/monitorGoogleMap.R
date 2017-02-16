@@ -18,9 +18,9 @@
 #' @param grayscale logical, if TRUE the colored map tile is rendered into a black & white image
 #' @param map optional map object returned from monitorGoogleMap()
 #' @param ... arguments passed on to RgoogleMaps::PlotOnStaticMap() (e.g. destfile, cex, pch, etc.)
+#' @return A \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
 #' @description Creates a Google map of a ws_monitor object.
 #' TODO:  More description here.
-#' @return \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
 #' @examples
 #' \dontrun{
 #' CarmelValley <- airnow_load(20160801,20160831,monitorIDs="060530002")
@@ -43,23 +43,6 @@ monitorGoogleMap <- function(ws_monitor,
                              grayscale=FALSE,
                              map=NULL,
                              ...) {
-  
-  # ----- Style ---------------------------------------------------------------
-  
-  #   # Events as red-outlined, gray triangles (unless otherwise overwritten by icon)
-  #   cex_events <- 1.2
-  #   pch_events <- 17
-  #   col_events <- 'gray60'
-  #   pch_eventsBorder <- 2
-  #   col_eventsBorder <- 'red'
-  #   lwd_eventsBorder <- 2
-  #   
-  #   # icons (defaults - use readPNG() to define alternates if wish to use something other than default)
-  #   icon_paddle <- png::readPNG('localData/pin1.png') # from http://www.clker.com/clipart-map-pin-1.html
-  #   
-  #   # icon expansion
-  #   iconExpansion_monitor <- .1
-  #   iconExpansion_events <- .1
   
   # ----- Data Preparation ----------------------------------------------------
   
@@ -85,60 +68,29 @@ monitorGoogleMap <- function(ws_monitor,
                 " specified. You must specify both paramaters or neither."))
   }
   
-  # Figure out names for a legend
-  
-  # TODO:  Add sanity checks but allow for overlays as in:
-  # TODO:
-  # TODO:    wa <- airnow_load(20160901,20160930, stateCodes='WA')
-  # TODO:    map <- monitorGoogleMap(wa)
-  # TODO:    monitorGoogleMap(wa, breaks=NULL, colors=NULL, labels=NULL, col='black', pch=1, map=map)
-  
-#   # If the user didn't use custom breaks then use AQI names and colors
-#   if ( ! missing(breaks) ) {
-#     
-#     if ( length(breaks) <= 2) {
-#       stop("Please specify a vector of breaks")
-#     }
-#     
-#     if ( ! (length(breaks) - 1 == length(colors)) ) {
-#       stop("The number of colors provided should be one less than the number of breaks")
-#     }
-#     
-#     if ( missing(labels) ) {
-#       labels <- paste(sprintf("%.1f",breaks[-length(breaks)]),'--',sprintf("%.1f",breaks[-1]))
-#     } else if ( length(labels) != length(colors) ) {
-#       stop("The number of labels should be equal to the number of colors")
-#     }
-#     
-#   }
-  
   # Create levels and use them to create a color mask
   levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
-#   if ( ! all( ! is.na(levels)) ) {
-#     warning("NOTE that there are data points outside of your specified breaks, non-requested color(s) might be displayed on your map.",
-#             call.=FALSE)
-#   }
   cols <- colors[levels]
   
   # Guess at zoom level if not specified
   if ( is.null(zoom) ) {
     maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
     if ( maxRange > 50 ) {
-      zoom <- 3
+      zoom <- 2
     } else if ( maxRange > 20 ) {
-      zoom <- 4
+      zoom <- 3
     } else if ( maxRange > 10 ) {
-      zoom <- 5
+      zoom <- 4
     } else if ( maxRange > 5 ) {
-      zoom <- 6
+      zoom <- 5
     } else if ( maxRange > 2 ) {
-      zoom <- 7
+      zoom <- 6
     } else if ( maxRange > 1 ) {
-      zoom <- 8
+      zoom <- 7
     } else if ( maxRange > 0.5 ) {
-      zoom <- 9
+      zoom <- 8
     } else {
-      zoom <- 9
+      zoom <- 8
     }
   }
   

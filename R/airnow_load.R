@@ -8,14 +8,14 @@
 #' When set to NULL, the function returns all the monitor IDs available in the metadata
 #' @param parameter parameter of interest
 #' @param baseUrl base URL for AirNow meta and data files
-#' @return ws_monitor object with subsetted time, monitorIDs and parameter
+#' @return A ws_monitor object with AirNow data.
 #' @description When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 
 #' meta and data files from the archive baseUrl (or local directory) and return the subsetted ws_monitor object.
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20150901, 20150930)
 #' airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
-#' monitorInteractiveMap(airnow_conus)
+#' monitorLeaflet(airnow_conus)
 #' }
 
 airnow_load <- function(startdate, enddate, stateCodes=NULL, monitorIDs=NULL,

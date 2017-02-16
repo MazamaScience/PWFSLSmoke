@@ -10,7 +10,7 @@ wrcc_createMetaDataframe(df)
 \item{df}{single site WRCC dataframe after metadata enhancement}
 }
 \value{
-A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
+A 'meta' dataframe for use in a ws_monitor object.
 }
 \description{
 After an WRCC dataframe has been enhanced with 

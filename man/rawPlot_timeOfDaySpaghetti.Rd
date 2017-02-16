@@ -4,18 +4,18 @@
 \alias{rawPlot_timeOfDaySpaghetti}
 \title{Create Time of Day Spaghetti Plot from a Raw Dataframe}
 \usage{
-rawPlot_timeOfDaySpaghetti(df, dataVar = "pm25", tlim = NULL,
+rawPlot_timeOfDaySpaghetti(df, parameter = "pm25", tlim = NULL,
   shadedNight = TRUE, meanCol = "black", meanLwd = 4, meanLty = 1,
   highlightDates = c(), highlightCol = "dodgerblue", ...)
 }
 \arguments{
 \item{df}{enhanced, raw dataframe as created by the raw_enhance() function}
 
-\item{dataVar}{variable to be plotted}
+\item{parameter}{variable to be plotted}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{shadedNight}{shade nighttime hours}
+\item{shadedNight}{add nighttime shading}
 
 \item{meanCol}{color used for the mean line (use NA to omit the mean)}
 
@@ -34,9 +34,9 @@ Spaghetti Plot that shows data by hour-of-day.
 }
 \examples{
 \dontrun{
-raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, unitID=1012)
+raw <- airsis_createRawDataframe(20160901, 20161015, 'USFS', 1012)
 raw <- raw_enhance(raw, rawSource='AIRSIS')
-rawPlot_timeOfDaySpaghetti(raw)
+rawPlot_timeOfDaySpaghetti(raw,parameter="temperature")
 }
 }
 \keyword{raw}

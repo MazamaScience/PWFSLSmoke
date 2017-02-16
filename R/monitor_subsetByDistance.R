@@ -6,6 +6,7 @@
 #' @param lat target latitude from which the radius will be calculated
 #' @param radius distance (km) of radius from target location -- default=300
 #' @param count number of grid cells to return
+#' @return A ws_monitor object with monitors near a location.
 #' @description Subsets a ws_monitor object to include only those monitors (or grid cells) 
 #' within a certain radius of a target location. If no monitors (or grid cells) fall 
 #' within the specified \code{radius}, \code{ws_monitor$data} and \code{ws_monitor$meta} 
@@ -14,13 +15,12 @@
 #' \code{count} monitors, ordered by increasing distance from the target location. Thus, note that the number 
 #' of monitors (or grid cells) returned may be less than the specified \code{count} value if fewer than 
 #' \code{count} monitors (or grid cells) are found within the specified \code{radius} of the target location.
-#' @return \code{ws_monitor} object containing monitors near a location
 #' @seealso monitorDistance
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20140913, 20141010)
 #' KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
-#' monitorInteractiveMap(KingFire)
+#' monitorLeaflet(KingFire)
 #' } 
 
 monitor_subsetByDistance <- function(ws_monitor, lon=NULL, lat=NULL, radius=50, count=NULL) {
@@ -56,7 +56,9 @@ monitor_subsetByDistance <- function(ws_monitor, lon=NULL, lat=NULL, radius=50, 
     
     # Sanity check 
     if ( count > withinRadiusCount ) {
-      futile.logger::flog.info("count=%s cells requested but only %s within radius=%s.  Returning %s.", count, withinRadiusCount, radius, withinRadiusCount)
+      message(paste0("count=", count, " cells requested but only", 
+                     withinRadiusCount, "within radius=", radius,
+                     ".  Returning", withinRadiusCount, "."))
       count <- withinRadiusCount
     }
     

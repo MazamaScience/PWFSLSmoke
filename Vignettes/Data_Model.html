@@ -12,7 +12,7 @@
 
 <meta name="author" content="Mazama Science" />
 
-<meta name="date" content="2017-01-24" />
+<meta name="date" content="2017-02-14" />
 
 <title>Data Model</title>
 
@@ -70,18 +70,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Data Model</h1>
 <h4 class="author"><em>Mazama Science</em></h4>
-<h4 class="date"><em>2017-01-24</em></h4>
+<h4 class="date"><em>2017-02-14</em></h4>
 
 
 
-<p>The <strong>PWFSLSmoke</strong> package is designed to provide a compact, full-featured suite of utilities for working with PM 2.5 data used to monitor wildfire smoke. Uniform data models provides consistent data access across monitoring data available from different agencies.</p>
-<p>The core data model in this package is the <code>ws_monitor</code> object used to store data associated with groups of individual monitors.</p>
+<p>The <strong>PWFSLSmoke</strong> package is designed to provide a compact, full-featured suite of utilities for working with PM 2.5 data used to monitor wildfire smoke. A uniform data model provides consistent data access across monitoring data available from different agencies.</p>
+<p>The core data model in this package is defined by the <code>ws_monitor</code> object used to store data associated with groups of individual monitors.</p>
 <p>To work efficiently with the package it is important to understand the structure of this data object and which functions operate on it. Package functions that begin with <code>monitor_</code>, expect objects of class <code>ws_monitor</code> as their first argument. (<em>Note that ‘ws_’ stands for ‘wildfire smoke’.</em>)</p>
 <div id="monitoring-data" class="section level2">
 <h2>Monitoring Data</h2>
 <p>Monitoring data will typically be obtained from an agency charged with archiving data acquired at monitoring sites. For wildifre smoke, the primary pollutant is PM 2.5 and the sites archiving this data include <a href="http://www.airnow.gov">AirNow</a>, <a href="http://www.wrcc.dri.edu">WRCC</a> and <a href="http://app.airsis.com">AIRSIS</a>.</p>
 <p>The data model for monitoring data consists of an <strong>R</strong> <code>list</code> with two dataframes: <code>data</code> and <code>meta</code>.</p>
-<p>The <code>data</code> dataframe contains all hourly measurements organized with rows (the ‘unlimited’ dimension) as unique timestamps and columns as unique monitors. The very first column is always named <code>datetime</code> and contains the <code>POSIXct</code> datetime in Universal Time Coordinates (UTC = GMT).</p>
+<p>The <code>data</code> dataframe contains all hourly measurements organized with rows (the ‘unlimited’ dimension) as unique timesteps and columns as unique monitors. The very first column is always named <code>datetime</code> and contains the <code>POSIXct</code> datetime in Coordinated Universal Time (UTC).</p>
 <p>The <code>meta</code> dataframe contains all metadata associated with monitoring sites and is organized with rows as unique sites and columns as site attributes. The following columns are guaranteed to exist in the <code>meta</code> dataframe:</p>
 <ul>
 <li><code>monitorID</code> – unique ID for each monitoring site (<em>i.e.</em> each instrument deployment)</li>
@@ -95,23 +95,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><em>(The <a href="https://github.com/MazamaScience/MazamaSpatialUtils">MazamaSpatialUtils</a> package is used to assign timezones and state and country codes.)</em></p>
 <p>Additional columns may be available in the <code>meta</code> dataframe and these will depend on the source of the data.</p>
 <p>It is important to note that the <code>monitorID</code> acts as a unique key that connects data with metadata. The <code>monitorID</code> is used for column names in the <code>data</code> dataframe and for row names in the <code>meta</code> dataframe. So the following will always be true:</p>
-<pre><code>rownames(ws_monitor$meta) = ws_monitor$meta$monitorID
-colnames(ws_monitor$data) = c('datetime',ws_monitor$meta$monitorID)</code></pre>
+<pre><code>rownames(ws_monitor$meta) == ws_monitor$meta$monitorID
+colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)</code></pre>
 <p><strong>Example 1: Exploring <code>ws_monitor</code> Objects</strong></p>
 <p>We will use the <code>airnow_load()</code> and <code>monitor_subset()</code> functions to download and subset a <code>ws_monitor</code> object which we can then explore.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PWFSLSmoke)</code></pre></div>
-<pre><code>## Loading required package: dplyr</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre><code>## Loading required package: maps</code></pre>
-<pre><code>## Loading required package: MazamaSpatialUtils</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get some airnow data for Washington</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PWFSLSmoke)
+
+<span class="co"># Get some airnow data for Washington</span>
 airnow &lt;-<span class="st"> </span><span class="kw">airnow_load</span>(<span class="dt">startdate=</span><span class="dv">20150801</span>, <span class="dt">enddate=</span><span class="dv">20150831</span>)
 WA &lt;-<span class="st"> </span><span class="kw">monitor_subset</span>(airnow, <span class="dt">stateCodes=</span><span class="st">'WA'</span>)
 
@@ -169,21 +159,22 @@ Spokane &lt;-<span class="st"> </span><span class="kw">monitor_subset</span>(air
 <span class="co"># Apply 3-hr rolling mean</span>
 Spokane_3hr &lt;-<span class="st"> </span><span class="kw">monitor_rollingMean</span>(Spokane, <span class="dv">3</span>, <span class="dt">align=</span><span class="st">&quot;center&quot;</span>)
 
-<span class="co"># Replace data columns with their squared values (exponentiation is not supplied by the package)</span>
-Spokane_3hr$data[,-<span class="dv">1</span>] &lt;-<span class="st"> </span>(Spokane_3hr$data[,-<span class="dv">1</span>])^<span class="dv">2</span>
+<span class="co"># 1) Replace data columns with their squares (exponentiation is not supplied by the package)</span>
+Spokane_3hr_squared &lt;-<span class="st"> </span>Spokane_3hr
+Spokane_3hr_squared$data[,-<span class="dv">1</span>] &lt;-<span class="st"> </span>(Spokane_3hr$data[,-<span class="dv">1</span>])^<span class="dv">2</span> <span class="co"># exclude the 'datetime' column</span>
 
 <span class="co"># NOTE:  Exponentiation is only used as an example. It does not generate a meaningful result.</span>
 
 <span class="co"># Create a daily averaged 'ws_monitor' object</span>
 Spokane_daily_3hr &lt;-<span class="st"> </span><span class="kw">monitor_dailyStatistic</span>(Spokane_3hr)
 
-<span class="co"># Check out the correlation between monitors (correlation is not supplied by the package)</span>
-data &lt;-<span class="st"> </span>Spokane_daily_3hr$data[,-<span class="dv">1</span>] <span class="co"># omit the 'datetime' column</span>
+<span class="co"># 2) Check out the correlation between monitors (correlation is not supplied by the package)</span>
+data &lt;-<span class="st"> </span>Spokane_daily_3hr$data[,-<span class="dv">1</span>] <span class="co"># exclude the 'datetime' column</span>
 <span class="kw">cor</span>(data, <span class="dt">use=</span><span class="st">'complete.obs'</span>)</code></pre></div>
 <pre><code>##           530630047 530639997 530639996
-## 530630047 1.0000000 0.9712481 0.8323587
-## 530639997 0.9712481 1.0000000 0.8757483
-## 530639996 0.8323587 0.8757483 1.0000000</code></pre>
+## 530630047 1.0000000 0.9418159 0.9416837
+## 530639997 0.9418159 1.0000000 0.9520286
+## 530639996 0.9416837 0.9520286 1.0000000</code></pre>
 <hr />
 <p>This introduction to the <code>ws_monitor</code> data model should be enough to get you started. Lots more documentation and examples are available in the package documentation.</p>
 <p>Best of luck exploring and understanding PM 2.5 values associated with wildfire smoke!</p>

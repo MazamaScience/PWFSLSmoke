@@ -11,7 +11,7 @@
 #' }
 #' 
 #' See the individual \code{wrcc_~QualityControl()} functions for details.
-#' @return  Cleaned up dataframe of WRCC monitor data.
+#' @return Cleaned up dataframe of WRCC monitor data.
 #' @seealso \code{\link{wrcc_EBAMQualityControl}}
 #' @seealso \code{\link{wrcc_ESAMQualityControl}}
 
@@ -37,7 +37,7 @@ wrcc_qualityControl <- function(df, ...) {
   
   if ( monitorType == 'BAM1020' ) {
     
-    logger.warn('Dataframe contains %s data -- no QC available, original dataframe being returned', monitorType)
+    logger.warn("Dataframe contains %s data -- no QC available, original dataframe being returned", monitorType)
     
   } else if ( monitorType == 'EBAM' ) {
     
@@ -49,7 +49,7 @@ wrcc_qualityControl <- function(df, ...) {
     
   } else {
     
-    logger.warn('Dataframe contains %s data -- no QC available, original dataframe being returned', monitorType)
+    logger.warn("Dataframe contains %s data -- no QC available, original dataframe being returned", monitorType)
     
   }
   

@@ -5,6 +5,7 @@
 #' @param FPCost cost associated with false positives (type II error)
 #' @param FNCost cost associated with false negatives (type I error)
 #' @param lightweight flag specifying creation of a return list without derived metrics
+#' @return List containing a table of confusion matrix values and a suite of derived metrics.
 #' @description Measurements of categorical forecast accuracy have a long history
 #' in weather forecasting. The standard approach involves making binary classifications
 #' (detected/not-detected) of predicted and observed data and combining them in a
@@ -42,7 +43,6 @@
 #'   \item{oddsRatioSkill}{ = yulesQ = ((TP * TN) - (FP * FN)) / ((TP * TN) + (FP * FN))}
 #' }
 #' 
-#' @return List containing a \code{table} of confusion matrix values and a suite of derived metrics.
 #' @references \href{http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/}{Simple Guide to Confusion Matrix Terminology}
 #' @seealso \link{skill_ROC}
 #' @seealso \link{skill_ROCPlot}

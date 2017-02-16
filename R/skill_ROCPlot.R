@@ -7,7 +7,6 @@
 #' @param n number of test thresholds in ROC curve
 #' @param colors vector of colors used when plotting curves
 #' @description This function plots ROC curves for a variety of \code{observed} classification thresholds.
-#' @return None.
 #' @references \href{https://en.wikipedia.org/wiki/Receiver_operating_characteristic}{Receiver Operating Characteristic}
 #' @seealso \link{skill_confusionMatrix}
 #' @seealso \link{skill_ROC}

@@ -31,12 +31,12 @@ propagated backwords using a first-observation-carry-backward algorithm'}
 }
 \examples{
 \dontrun{
-fileString <- airsis_downloadData('USFS',unitID='1026',startdate=20150701,enddate=20151231)
-df <- airsis_parseData(fileString)
+fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
+df <- airsisDump_parseData(fileString)
 }
 }
 \references{
 \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 }
-\keyword{AIRSIS}
+\keyword{internal}
 

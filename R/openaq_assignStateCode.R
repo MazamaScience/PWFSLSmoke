@@ -4,10 +4,10 @@
 #' @param df a dataframe with longitude and latitude columns
 #' @description Uses function getStateCode() from MazamaSpatialUtils package 
 #' to assign state codes to the longitudes and latitudes in the dataframe.
-#' @return the original df with an additional \code{stateCode} column.
+#' @return Input dataframe with additional columns: \code{stateCode}.
 #' @examples
 #' \dontrun{
-#' df <- openaq_downloadData(20160901, days=7)
+#' df <- openaq_downloadData(startdate = 20160901, days=2)
 #' df <- openaq_assignStateCode(df)
 #' }
 

@@ -2,22 +2,22 @@
 % Please edit documentation in R/airsis_createMonitorObject.R
 \name{airsis_createMonitorObject}
 \alias{airsis_createMonitorObject}
-\title{Obtain AIRSIS Data and Create ws_monitor Object}
+\title{Obain AIRSIS Data and Create ws_monitor Object}
 \usage{
-airsis_createMonitorObject(provider = "USFS", unitID = NULL,
-  startdate = 20020101, enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz
-  = "GMT"), clusterDiameter = 1000,
+airsis_createMonitorObject(startdate = 20020101,
+  enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
+  provider = NULL, unitID = NULL, clusterDiameter = 1000,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
   saveFile = NULL)
 }
 \arguments{
-\item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
-
-\item{unitID}{character or numeric AIRSIS unit identifier}
-
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
+
+\item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
+
+\item{unitID}{character or numeric AIRSIS unit identifier}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 
@@ -26,7 +26,7 @@ airsis_createMonitorObject(provider = "USFS", unitID = NULL,
 \item{saveFile}{optional filename where raw CSV will be written}
 }
 \value{
-ws_monitor object with a unique `monitorID` for each unique deployment.
+A ws_monitor object with AIRSIS data.
 }
 \description{
 Obtains monitor data from an AIRSIS webservice and converts
@@ -46,6 +46,12 @@ Steps involved include:
 }
 \note{
 The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
+}
+\examples{
+\dontrun{
+usfs_1013 <- airsis_createMonitorObject(20150301, 20150831, 'USFS', unitID='1013')
+monitorLeaflet(usfs_1013)
+}
 }
 \seealso{
 \code{\link{airsis_downloadData}}

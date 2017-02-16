@@ -19,7 +19,7 @@ monitor_subsetByDistance(ws_monitor, lon = NULL, lat = NULL, radius = 50,
 \item{count}{number of grid cells to return}
 }
 \value{
-\code{ws_monitor} object containing monitors near a location
+A ws_monitor object with monitors near a location.
 }
 \description{
 Subsets a ws_monitor object to include only those monitors (or grid cells) 
@@ -36,7 +36,7 @@ of monitors (or grid cells) returned may be less than the specified \code{count}
 \dontrun{
 airnow <- airnow_load(20140913, 20141010)
 KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
-monitorInteractiveMap(KingFire)
+monitorLeaflet(KingFire)
 } 
 }
 \seealso{

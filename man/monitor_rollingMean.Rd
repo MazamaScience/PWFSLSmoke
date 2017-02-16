@@ -17,7 +17,7 @@ monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
 \item{align}{alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}}
 }
 \value{
-ws_monitor object with rolling mean data
+A ws_monitor object with data thaty have been processed by a rolling mean algorithm.
 }
 \description{
 Calculates rolling means for each monitor in the ws_monitor object using the
@@ -41,9 +41,9 @@ airnow <- airnow_load(20150801, 20150808)
 WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(100,Inf))
 WA_smoky_3hr <- monitor_rollingMean(WA_smoky, width=3, align="center")
 WA_smoky_24hr <- monitor_rollingMean(WA_smoky, width=24, align="right")
-monitor_timeseriesPlot(WA_smoky, type='l', shadedNight=TRUE)
-monitor_timeseriesPlot(WA_smoky_3hr, type='l', col='red', add=TRUE)
-monitor_timeseriesPlot(WA_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)
+monitorPlot_timeseries(WA_smoky, type='l', shadedNight=TRUE)
+monitorPlot_timeseries(WA_smoky_3hr, type='l', col='red', add=TRUE)
+monitorPlot_timeseries(WA_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)
 legend('topright', c("hourly","3-hourly","24-hourly"),
        col=c('black','red','blue'), lwd=c(1,1,2))
 title('Smoky Monitors in Washington -- August, 2015')

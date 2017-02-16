@@ -3,10 +3,10 @@
 #' @title Calculate Time Averages
 #' @param ws_monitor ws_monitor object
 #' @param ... additional arguments to be passed to openair::timeAverage()
-#' @description This function extracts the \code{data} dataframe from the \code{ws_monitor}
+#' @return A ws_monitor object with data that have been proccessed by openair::timeAverage().
+#' @description This function extracts the 'data' dataframe from the ws_monitor object
 #' and renames the 'datetime' column so that it can be processed by the \code{openair} package's
 #' \code{timeAverage()} function. (See that function for details.)
-#' @return ws_monitor object with data that have been proccessed by \code{openair::timeAverage()}
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20160801,20160831)

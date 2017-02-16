@@ -15,7 +15,7 @@ airnow_qualityControl <- function(df, limits=c(-Inf,Inf)) {
   
   # Count the -999s for logging
   minus999Count <- length(dataMatrix[dataMatrix == -999.0 & !is.na(dataMatrix)])
-  if (minus999Count > 0) logger.debug('Replacing %d values of -999 with NA',minus999Count)
+  if (minus999Count > 0) logger.debug("Replacing %d values of -999 with NA",minus999Count)
   
   # Convert -999.0s to NAs
   dataMatrix[dataMatrix == -999.0 & !is.na(dataMatrix)] <- NA
@@ -23,8 +23,8 @@ airnow_qualityControl <- function(df, limits=c(-Inf,Inf)) {
   # Count the out of range values for logging
   outOfRangeLoCount <- length(dataMatrix[dataMatrix < limits[1] & !is.na(dataMatrix)])
   outOfRangeHiCount <- length(dataMatrix[dataMatrix > limits[2] & !is.na(dataMatrix)])
-  if (outOfRangeLoCount > 0) logger.debug('Replacing %d values below %s with NA',outOfRangeLoCount,limits[1])
-  if (outOfRangeHiCount > 0) logger.debug('Replacing %d values above %s with NA',outOfRangeHiCount,limits[2])
+  if (outOfRangeLoCount > 0) logger.debug("Replacing %d values below %s with NA",outOfRangeLoCount,limits[1])
+  if (outOfRangeHiCount > 0) logger.debug("Replacing %d values above %s with NA",outOfRangeHiCount,limits[2])
   
   # Convert out of range values to NAs
   dataMatrix[dataMatrix < limits[1] & !is.na(dataMatrix)] <- NA

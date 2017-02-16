@@ -24,7 +24,7 @@
 #' @return Dataframe of aggregated OpenAQ data.
 #' @examples
 #' \dontrun{
-#' df <- openaq_downloadData(20160901, days=7)
+#' df <- openaq_downloadData(startdate=20160901, days=2)
 #' }
 
 openaq_downloadData <- function(parameter=NULL,
@@ -35,8 +35,8 @@ openaq_downloadData <- function(parameter=NULL,
   validParameters <- c('pm25','pm10','o3','so2','no2','co','bc')
   if ( !is.null(parameter) ) {
     if ( !parameter %in% validParameters ) {
-      logger.error("parameter '%s' is not in: %s", parameter, paste0(validParameters, collapse=", "))
-      stop(paste0("parameter '",parameter,"' is not in: ", paste0(validParameters, collapse=", ")))
+      logger.error("Requested parameter '%s' is not in: %s", parameter, paste0(validParameters, collapse=", "))
+      stop(paste0("Requested parameter '",parameter,"' is not in: ", paste0(validParameters, collapse=", ")))
     }
   }
   
@@ -52,9 +52,7 @@ openaq_downloadData <- function(parameter=NULL,
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   dfList <- vector(mode="list", length=days)
   
-  logger.info('Downloading %d daily data files from OpenAQ...',days)
-  
-
+  logger.info("Downloading %d daily data files from OpenAQ ...",days)
   
   # Loop through days and store each datafame in the list
   for (i in 1:days) {
@@ -83,7 +81,7 @@ openaq_downloadData <- function(parameter=NULL,
   # Remove any duplicate rows
   df <- dplyr::distinct(df)
   
-  logger.info('Downloaded %d rows of OpenAQ data', nrow(df))
+  logger.info("Downloaded %d rows of OpenAQ data", nrow(df))
   
   return(df)
   

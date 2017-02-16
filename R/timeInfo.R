@@ -27,7 +27,7 @@
 #' \dontrun{ 
 #' CarmelValley <- airnow_load(20160801,20160831, monitorIDs="060530002")
 #' ti <- timeInfo(CarmelValley$data$datetime,
-#'                CarmelValley$meta$longitue,
+#'                CarmelValley$meta$longitude,
 #'                CarmelValley$meta$latitude,
 #'                CarmelValley$meta$timezone)
 #' }

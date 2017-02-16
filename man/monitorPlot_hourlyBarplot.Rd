@@ -6,8 +6,9 @@
 \usage{
 monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
   localTime = TRUE, style = "AQI", shadedNight = TRUE, gridPos = "",
-  gridCol = "black", gridLwd = 0.5, gridLty = "solid", dayLwd = 2,
-  hourLwd = 1, hourInterval = 6, ...)
+  gridCol = "black", gridLwd = 0.5, gridLty = "solid", dayCol = "black",
+  dayLwd = 2, dayLty = "solid", hourCol = "black", hourLwd = 1,
+  hourLty = "solid", hourInterval = 6, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -17,7 +18,7 @@ if only one monitor in the ws_monitor object)}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{localTime}{logical specifying whether \code{tlim} is in UTC or local time}
+\item{localTime}{logical specifying whether \code{tlim} is in local time or UTC}
 
 \item{style}{named style specification ('AirFire')}
 
@@ -31,9 +32,17 @@ if only one monitor in the ws_monitor object)}
 
 \item{gridLty}{grid line type}
 
+\item{dayCol}{day boundary color}
+
 \item{dayLwd}{day boundary line width (set to 0 to omit day lines)}
 
+\item{dayLty}{day boundary type}
+
+\item{hourCol}{hour boundary color}
+
 \item{hourLwd}{hour boundary line width (set to 0 to omit  hour lines)}
+
+\item{hourLty}{hour boundary type}
 
 \item{hourInterval}{interval for hour boundary lines}
 

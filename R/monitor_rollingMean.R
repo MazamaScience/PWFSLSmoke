@@ -5,6 +5,7 @@
 #' @param width number of periods to average (e.g. for hourly data, \code{width = 24} calculates 24-hour rolling means)
 #' @param data.thresh minimum number of valid observations required as a percent of \code{width}; NA is returned if insufficicnet valid data to calculate mean
 #' @param align alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}
+#' @return A ws_monitor object with data thaty have been processed by a rolling mean algorithm.
 #' @description Calculates rolling means for each monitor in the ws_monitor object using the
 #' \code{openair::rollingMean()} function
 #' @details \itemize{
@@ -17,16 +18,15 @@
 #' \item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and 
 #' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
 #' }
-#' @return ws_monitor object with rolling mean data 
 #' @examples 
 #' \dontrun{
 #' airnow <- airnow_load(20150801, 20150808)
 #' WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(100,Inf))
 #' WA_smoky_3hr <- monitor_rollingMean(WA_smoky, width=3, align="center")
 #' WA_smoky_24hr <- monitor_rollingMean(WA_smoky, width=24, align="right")
-#' monitor_timeseriesPlot(WA_smoky, type='l', shadedNight=TRUE)
-#' monitor_timeseriesPlot(WA_smoky_3hr, type='l', col='red', add=TRUE)
-#' monitor_timeseriesPlot(WA_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)
+#' monitorPlot_timeseries(WA_smoky, type='l', shadedNight=TRUE)
+#' monitorPlot_timeseries(WA_smoky_3hr, type='l', col='red', add=TRUE)
+#' monitorPlot_timeseries(WA_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)
 #' legend('topright', c("hourly","3-hourly","24-hourly"),
 #'        col=c('black','red','blue'), lwd=c(1,1,2))
 #' title('Smoky Monitors in Washington -- August, 2015')

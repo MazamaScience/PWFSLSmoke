@@ -1,7 +1,9 @@
-#' @keywords AIRSIS
+#' @keywords internal
 #' @export
 #' @title Ingest AIRSIS Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the AIRSIS dump file
+#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
+#' @return A ws_monitor object with AIRSIS data.
 #' @description Ingests an  AIRSIS dump file and converts
 #' it into a quality controlled, metadata enhanced \code{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
@@ -18,26 +20,25 @@
 #' }
 #' 
 #' @note Each dump file must contain data for only one type of monitor, e.g. EBAM or E-Sampler.
-#' @return ws_monitor object with a unique `monitorID` for each unique deployment.
 #' @seealso \code{\link{airsisDump_parseData}}
 #' @seealso \code{\link{airsis_qualityControl}}
 #' @seealso \code{\link{addClustering}}
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
 
-airsisDump_createMonitorObject <- function(filepath) {
+airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
 
-  logger.debug('Reading data...')
+  logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
   
   # Special parsing for dump files as the format is different from the AIRSIS CSV webservice
-  logger.debug('Parsing data...')
+  logger.debug("Parsing data ...")
   df <- airsisDump_parseData(fileString)
   
   # At this point df has multiple monitors in it.
   
   # Standard quality control still works
-  logger.debug('Applying QC logic...')
+  logger.debug("Applying QC logic ...")
   if ( df$monitorType[1] == 'ESAM' ) {
     # NOTE:  Conversation with Sim and Lee on 2015-07-09. Accept all values of RHi for E-Samplers
     df <- airsis_ESAMQualityControl(df, valid_RHi=c(-Inf,Inf))
@@ -52,21 +53,21 @@ airsisDump_createMonitorObject <- function(filepath) {
   metaList <- list()
   dataList <- list()
   for (alias in unique(dfCombined$Alias)) {
-    logger.info('Processing data for %s...', alias)
+    logger.info("Processing data for %s ...", alias)
     df <- dplyr::filter(dfCombined, dfCombined$Alias == alias)
     
     # Add clustering information to identify unique deployments
-    logger.debug('Clustering...')
-    df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
+    logger.debug("Clustering ...")
+    df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
     
     # Create 'meta' dataframe of site properties organized as monitorID-by-property
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
-    logger.debug('Creating \'meta\' dataframe...')
+    logger.debug("Creating 'meta' dataframe ...")
     meta <- airsis_createMetaDataframe(df)
     
     # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
-    logger.debug('Creating \'data\' dataframe...')
+    logger.debug("Creating 'data' dataframe ...")
     data <- airsis_createDataDataframe(df, meta)
     
     metaList[[alias]] <- meta
@@ -77,11 +78,11 @@ airsisDump_createMonitorObject <- function(filepath) {
   # NOTE:  for debugging purposes.
   
   # Create combined 'meta'
-  logger.debug('Combining \'meta\' dataframes...')
+  logger.debug("Combining 'meta' dataframes ...")
   meta <- dplyr::bind_rows(metaList)
   
   # Create combined 'data'
-  logger.debug('Combining \'data\' dataframes ...')
+  logger.debug("Combining 'data' dataframes ...")
   alias <- names(dataList[1])
   data <- dataList[[alias]]
   for (alias in names(dataList)[-1]) {

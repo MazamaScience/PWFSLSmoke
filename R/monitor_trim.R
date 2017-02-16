@@ -2,10 +2,17 @@
 #' @export
 #' @title Trim ws_monitor Time Axis to Remove NA Periods From Beginning and End
 #' @param ws_monitor ws_monitor object
+#' @return A ws_monitor object with missing data trimmed.
 #' @description Trims the time axis of a ws_monitor object to exclude timestamps prior to the first and
 #' after the last valid datapoint for any monitor.
-#' @return ws_monitor object
-
+#' @examples
+#' \dontrun{
+#' sm13 <- wrcc_createMonitorObject(20150101, 20151231, stationID='sm13')
+#' sm13$meta[,c('stateCode','countyName','siteName','monitorID')]
+#' Deschutes <- monitor_subset(sm13, monitorIDs='Smoke..13__001')
+#' Deschutes <- monitor_trim(Deschutes)
+#' monitorPlot_dailyBarplot(Deschutes)
+#' }
 monitor_trim <- function(ws_monitor) {
   
   # Vectors of first and last valid indices excluding 'datetime'

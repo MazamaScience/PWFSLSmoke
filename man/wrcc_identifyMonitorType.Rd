@@ -35,7 +35,7 @@ The \code{monitorType} will be one of:
 }
 \examples{
 \dontrun{
-fileString <- wrcc_downloadData('1307',20160701,20160930)
+fileString <- wrcc_downloadData(20160701, 20160930, stationID='1307')
 monitorTypeList <- wrcc_identifyMonitorType(fileString)
 }
 }

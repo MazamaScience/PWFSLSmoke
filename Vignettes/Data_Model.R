@@ -4,9 +4,6 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ## ------------------------------------------------------------------------
 library(PWFSLSmoke)
 
-# Set the location of the local data archive
-setSmokeDataDir('~/Data/Smoke')
-
 # Get some airnow data for Washington
 airnow <- airnow_load(startdate=20150801, enddate=20150831)
 WA <- monitor_subset(airnow, stateCodes='WA')
@@ -34,15 +31,16 @@ Spokane <- monitor_subset(airnow, monitorIDs=SpokaneCountyIDs)
 # Apply 3-hr rolling mean
 Spokane_3hr <- monitor_rollingMean(Spokane, 3, align="center")
 
-# Replace data columns with their squared values (exponentiation is not supplied by the package)
-Spokane_3hr$data[,-1] <- (Spokane_3hr$data[,-1])^2
+# 1) Replace data columns with their squares (exponentiation is not supplied by the package)
+Spokane_3hr_squared <- Spokane_3hr
+Spokane_3hr_squared$data[,-1] <- (Spokane_3hr$data[,-1])^2 # exclude the 'datetime' column
 
 # NOTE:  Exponentiation is only used as an example. It does not generate a meaningful result.
 
 # Create a daily averaged 'ws_monitor' object
 Spokane_daily_3hr <- monitor_dailyStatistic(Spokane_3hr)
 
-# Check out the correlation between monitors (correlation is not supplied by the package)
-data <- Spokane_daily_3hr$data[,-1] # omit the 'datetime' column
+# 2) Check out the correlation between monitors (correlation is not supplied by the package)
+data <- Spokane_daily_3hr$data[,-1] # exclude the 'datetime' column
 cor(data, use='complete.obs')
 

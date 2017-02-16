@@ -7,14 +7,14 @@
 #' c("temperature","humidity","windSpeed","windDir", "pressure"), or any of the other raw
 #' parameters (do "names(df)" to see list of options)
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
-#' @param localTime use local times; defaults to GMT if >1 time zone in data.
-#' @param shadedNight Shade background based on approximate sunrise/sunset times. Unavailable if >1 time zone in data.
+#' @param localTime logical specifying whether \code{tlim} is in local time or UTC
+#' @param shadedNight add nighttime shading
 #' Also note that for multiple deployments, this defaults to use the lat/lon for the first deployment, which in theory
 #' could be somewhat unrepresentative, such as if deployments have a large range in latitude.
 #' @param shadedBackground Add vertical lines corresponding to a second parameter; currently defaults to wind speed binned into quartiles. Future iterations
 #' may include options to choose which parameter to plot, which color to use, which intervals, etc.
 #' @param sbLwd shaded background line width
-#' @param add A logical specifying whether you want to add the data points on top of an existing time series plot
+#' @param add logical specifying whether to add to the current plot
 #' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)
 #' @param gridCol grid line color
 #' @param gridLwd grid line width
@@ -24,6 +24,7 @@
 #' @param hourInterval interval for grid (max=12)
 #' @param ... additional arguments to pass to lines() function
 #' @description Creates a plot of raw monitoring data as generated using raw_enhance().
+#' @note If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 
 ###############################################################################
 #
@@ -48,7 +49,7 @@ rawPlot_timeseries <- function(df,
                                hourLwd=0,
                                hourInterval=6,
                                ...) {
-
+  
   # ----- Initial coherency checks -------------
   
   # Verify plot parameter exists
@@ -63,7 +64,7 @@ rawPlot_timeseries <- function(df,
       shadedBackground <- NULL
     }
   }
-
+  
   # ----- Data Preparation ----------------------------------------------------
   
   # Identify timezone(s)
@@ -88,7 +89,7 @@ rawPlot_timeseries <- function(df,
   
   # Set time axis data
   df$datetime <- lubridate::with_tz(df$datetime, tzone=timezone)
-
+  
   # Time limit application
   # TODO: add logic to check for tlim format
   # TODO: warn if tlim is outside range of datetime data
@@ -125,7 +126,7 @@ rawPlot_timeseries <- function(df,
   # ----- Style / Argument List -----------------------------------------------
   
   argsList <- list(...) #TODO: add ... in parens when finished...
-
+  
   # Prep the data to plot, based on parameter selection by user (default = "pm25")
   argsList$x <- times
   argsList$y <- data
@@ -157,7 +158,7 @@ rawPlot_timeseries <- function(df,
       argsList$ylab <- parameter
     }
   }
-    
+  
   # main (Title)
   if ( !('main' %in% names(argsList)) ) {
     if (parameter == "temperature") {
@@ -195,31 +196,27 @@ rawPlot_timeseries <- function(df,
   # ----- Plotting ------------------------------------------------------------
   
   if ( !add ) {
-  
+    
     # Set up argsList for blank plot...review to ensure everything captured
     argsListBlank <- argsList
-
+    
     argsListBlank$col <- 'transparent'
     argsListBlank$axes <- FALSE
-
+    
     # Create blank plot canvas
     do.call(plot,argsListBlank)
     
     # Shaded Night
     # Based on first deployment lat/lon if >1 deployment; breaks if >1 time zone
     if ( shadedNight ) {
-      if ( is.null(shadedBackground) ) {
-        if ( length(unique(df$timezone))>1 ) {
-          stop("Can't do shaded night for more than one time zone!!")
-        } else {
-          # Lat/lon for shadedNight
-          lat <- df$latitude[1]
-          lon <- df$longitude[1]
-          timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
-          addShadedNights(timeInfo)
-        }
+      if ( length(unique(df$timezone))>1 ) {
+        stop("Can't do shaded night for more than one time zone!!")
       } else {
-        warning("Can't do shaded night and shaded background")
+        # Lat/lon for shadedNight
+        lat <- df$latitude[1]
+        lon <- df$longitude[1]
+        timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
+        addShadedNight(timeInfo)
       }
     }
     
@@ -246,17 +243,17 @@ rawPlot_timeseries <- function(df,
       dataSB <- df[[shadedBackground]]
       PWFSLSmoke::addShadedBackground(param=dataSB, timeAxis=times, lwd=sbLwd)
     }
-  
+    
   }
   
   # Add lines
   do.call(lines,argsList)
-
+  
   if ( gridPos == 'over' ) {
     
     # Horizontal lines
     abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
     
   }
-
+  
 }

@@ -21,7 +21,7 @@ monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
 \item{monitorIDs}{optional vector of monitorIDs}
 }
 \value{
-ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors
+A ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors.
 }
 \description{
 Subsets a ws_monitor object's 'meta' dataframe by removing any monitors that

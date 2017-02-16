@@ -44,7 +44,7 @@ monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 \item{...}{arguments passed on to RgoogleMaps::PlotOnStaticMap() (e.g. destfile, cex, pch, etc.)}
 }
 \value{
-\code{MyMap} RgoogleMaps map object object that can serve as a base plot.
+A \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
 }
 \description{
 Creates a Google map of a ws_monitor object.

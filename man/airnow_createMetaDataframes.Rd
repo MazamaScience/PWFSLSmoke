@@ -10,7 +10,7 @@ airnow_createMetaDataframes(parameters = NULL)
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
 }
 \value{
-Returns a list of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
+List of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
 }
 \description{
 The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 

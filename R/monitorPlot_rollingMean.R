@@ -9,10 +9,10 @@
 #' @param align alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}
 #' @param data.thresh minimum number of valid observations required as a percent of \code{width};
 #' NA is returned if insufficicnet valid data to calculate mean
-#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param ylim y limits for the plot
-#' @param useGMT Plot w/ time axis in GMT, as opposed to local time
-#' @param shadedNight add shaded background during nights
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
+#' @param localTime logical specifying whether \code{tlim} is in local time or UTC
+#' @param shadedNight add nighttime shading
 #' @param aqiLines horizontal lines indicating AQI levels
 #' @param gridHorizontal add dashed horizontal grid lines
 #' @param grid24hr add dashed grid lines at day boundaries
@@ -29,11 +29,13 @@
 #' \item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and 
 #' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
 #' }
+#' @note This function intends to provide a 'publication ready' plot and does pass additional arguments to any
+#' lower level plotting functions.
 #' @examples
 #' \dontrun{
-#' ws_monitor <- wrcc_load(20150725, 20150805)
-#' monitor <- ws_monitor$meta$monitorID[1]
-#' monitorPlot_rollingMean(ws_monitor, monitor)
+#' airnow <- airnow_load(20150818, 20150825)
+#' Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
+#' monitorPlot_rollingMean(Roseburg)
 #' }
 
 monitorPlot_rollingMean <- function(ws_monitor,
@@ -43,7 +45,7 @@ monitorPlot_rollingMean <- function(ws_monitor,
                                     data.thresh=75,
                                     tlim=NULL,
                                     ylim=NULL,
-                                    useGMT=FALSE,
+                                    localTime=TRUE,
                                     shadedNight=FALSE,
                                     aqiLines=TRUE,
                                     gridHorizontal=FALSE,
@@ -103,13 +105,13 @@ monitorPlot_rollingMean <- function(ws_monitor,
   hourAvgs <- data[[monitorID]]
   rollingMeans <- PWFSLSmoke::monitor_rollingMean(ws_monitor, width=width, data.thresh=data.thresh, align=align)$data[[monitorID]]
   
-  # Assign timeStamp based on useGMT setting
-  if ( useGMT ) {
-    timeStamp <- data$datetime
-    tzLabel <- '(UTC)'
-  } else {
+  # Assign timeStamp based on localTime setting
+  if ( localTime ) {
     timeStamp <- lubridate::with_tz(data$datetime,meta$timezone)
     tzLabel <- '(local)'
+  } else {
+    timeStamp <- data$datetime
+    tzLabel <- '(UTC)'
   }
   
   # put the pieces of the new dataframe together
@@ -184,12 +186,12 @@ monitorPlot_rollingMean <- function(ws_monitor,
       lon <- meta$longitude
       lat <- meta$latitude
       timezone <- meta$timezone
-      if ( useGMT ) {
-        timeInfo <- PWFSLSmoke::timeInfo(data$datetime, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
-      } else {
+      if ( localTime ) {
         timeInfo <- PWFSLSmoke::timeInfo(timeStamp, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
+        PWFSLSmoke::addShadedNight(timeInfo)
+      } else {
+        timeInfo <- PWFSLSmoke::timeInfo(data$datetime, lon, lat, timezone)
+        PWFSLSmoke::addShadedNight(timeInfo)
       }
     }
   }
@@ -224,7 +226,7 @@ monitorPlot_rollingMean <- function(ws_monitor,
   
   # ----- Annotations ---------------------
   
-  # Horizontal axis (see "Assign timeStamp based on useGMT setting" above for horizontal axis label)
+  # Horizontal axis (see "Assign timeStamp based on localTime setting" above for horizontal axis label)
   if ( nrow(df) <=24 ) {
     axis.POSIXct(1, at=seq(minTime, maxTime+lubridate::hours(1), by="3 hour"), format="%H")
   } else {

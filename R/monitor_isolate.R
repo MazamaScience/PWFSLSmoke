@@ -8,6 +8,7 @@
 #' @param stateCodes optional vector of stateCodes
 #' @param monitorIDs optional vector of monitorIDs
 #' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
+#' @return A list of isolated ws_monitor objects.
 #' @description Filters the incoming ws_monitor object according to the parameters
 #' passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
 #' 
@@ -17,12 +18,11 @@
 #' 
 #' This function is useful when \code{ws_monitor} objects are created for
 #' mobile monitors that are deployed to different locations in different years.
-#' @return A List of isolated \code{ws_monitor} objects.
 #' @seealso \link{monitor_subset}
 #' @examples
 #' \dontrun{
-#' airsis <- airsis_load(20140101, 20151231)
-#' monitorList <- monitor_isolate(airsis)
+#' airnow <- airnow_load(20140101, 20140110,stateCodes = "WA")
+#' monitorList <- monitor_isolate(airnow)
 #' names(monitorList)
 #' }
 

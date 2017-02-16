@@ -4,28 +4,31 @@
 \alias{addBullseye}
 \title{Add a Bullseye at the Specified Location}
 \usage{
-addBullseye(x, y)
+addBullseye(lon, lat, map = NULL, cex = 2, lwd = 2)
 }
 \arguments{
-\item{x}{x-location on plot}
+\item{lon}{vector of longitudes}
 
-\item{y}{y-locaiton on plot}
+\item{lat}{vector of latitudes}
+
+\item{map}{optional RgoogleMaps map object}
+
+\item{cex}{character expansion}
+
+\item{lwd}{line width of individual circles}
 }
 \description{
-Draws a bullseye with concentric rings of black and white.
+Draws a bullseye with concentric circles of black and white.
 }
 \examples{
 \dontrun{
-airnow <- airnow_load(20140913, 20141010)
-KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
-map('county',region='ca', col='gray80')
-monitor_map(KingFire, add=TRUE)
-addBullseye(-120.604, 38.782)
-text(-120.604, 38.782, "King Fire", pos=4, font=2)
+# Google map
+map <- monitorGoogleMap(ca)
+addBullseye(ca$meta$longitude, ca$meta$latitude, map=map)
+# line map
+monitorMap(ca)
+addBullseye(ca$meta$longitude, ca$meta$latitude)
 }
-}
-\seealso{
-\link{addShadedNights}
 }
 \keyword{plotting}
 

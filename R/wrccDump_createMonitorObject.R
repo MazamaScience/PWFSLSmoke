@@ -1,7 +1,9 @@
-#' @keywords WRCC
+#' @keywords internal
 #' @export
 #' @title Ingest WRCC Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the WRCC dump file
+#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
+#' @return A ws_monitor object with WRCC data.
 #' @description Ingests an  WRCC dump file and converts
 #' it into a quality controlled, metadata enhanced \code{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
@@ -18,20 +20,19 @@
 #' }
 #' 
 #' @note Each dump file must contain data for only one type of monitor, e.g. EBAM or E-Sampler.
-#' @return ws_monitor object with a unique `monitorID` for each unique deployment.
 #' @seealso \code{\link{wrccDump_parseData}}
 #' @seealso \code{\link{wrcc_qualityControl}}
 #' @seealso \code{\link{addClustering}}
 #' @seealso \code{\link{wrcc_createMetaDataframe}}
 #' @seealso \code{\link{wrcc_createDataDataframe}}
 
-wrccDump_createMonitorObject <- function(filepath) {
+wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
 
-  logger.debug('Reading data...')
+  logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
   
   # Special parsing for dump files as the format is different from the WRCC CSV webservice
-  logger.debug('Parsing data...')
+  logger.debug("Parsing data ...")
   dfList <- wrccDump_parseData(fileString)
   
   # empty list for ws_monitor objects
@@ -40,32 +41,32 @@ wrccDump_createMonitorObject <- function(filepath) {
   # Loop over monitor dataframe list (mostly verbatim from wrcc_createMonitorObject)
   for ( name in names(dfList) ) {
   
-    logger.info('Processing data for %s...', name)
+    logger.info("Processing data for %s ...", name)
     
     df <- dfList[[name]]
     
     # Apply monitor-appropriate QC to the dataframe
-    logger.info('Applying QC logic...')
+    logger.info("Applying QC logic ...")
     df <- wrcc_qualityControl(df)
     
     # See if anything gets through QC
     if ( nrow(df) == 0 ) {
-      logger.warn('No data remaining after QC.')
+      logger.warn("No data remaining after QC")
       next
     }
     
     # Add clustering information to identify unique deployments
-    logger.info('Clustering...')
-    df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=1000)
+    logger.info("Clustering ...")
+    df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter)
     
     # Create 'meta' dataframe of site properties organized as monitorID-by-property
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
-    logger.info('Creating \'meta\' dataframe...')
+    logger.info("Creating 'meta' dataframe ...")
     meta <- wrcc_createMetaDataframe(df)
     
     # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
-    logger.info('Creating \'data\' dataframe...')
+    logger.info("Creating 'data' dataframe ...")
     data <- wrcc_createDataDataframe(df, meta)
     
     # Create the 'ws_monitor' object

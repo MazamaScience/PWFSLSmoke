@@ -12,10 +12,10 @@ monitor_timeAverage(ws_monitor, ...)
 \item{...}{additional arguments to be passed to openair::timeAverage()}
 }
 \value{
-ws_monitor object with data that have been proccessed by \code{openair::timeAverage()}
+A ws_monitor object with data that have been proccessed by openair::timeAverage().
 }
 \description{
-This function extracts the \code{data} dataframe from the \code{ws_monitor}
+This function extracts the 'data' dataframe from the ws_monitor object
 and renames the 'datetime' column so that it can be processed by the \code{openair} package's
 \code{timeAverage()} function. (See that function for details.)
 }

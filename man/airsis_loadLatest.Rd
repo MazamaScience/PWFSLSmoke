@@ -4,16 +4,17 @@
 \alias{airsis_loadLatest}
 \title{Load Recent AIRSIS Monitoring Data}
 \usage{
-airsis_loadLatest(baseUrl = "http://tools.airfire.org/monitoring/v3/data")
+
+  airsis_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/airsis_pm25_latest.RData")
 }
 \arguments{
 \item{baseUrl}{The location of the meta and data files}
 }
 \value{
-ws_monitor object with subsetted time, monitorIDs and parameter
+A ws_monitor object with AIRSIS data.
 }
 \description{
-The most recent 10 days of AIRSIS data are updated in quasi-real time
+The most recent 45 days of AIRSIS data are updated in real time
 at PWFSL and can be loaded with this function.
 }
 \examples{

@@ -4,6 +4,7 @@
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
+#' @return List of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
 #' @description The airnow_createDataDataframes() function uses the \link{airnow_downloadData} function 
 #' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
@@ -36,12 +37,11 @@
 #' Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
 #' @note:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
-#' @return Returns a list of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
 #' @seealso \link{airnow_downloadData}
 #' @seealso \link{airnow_qualityControl}
 #' @examples
 #' \dontrun{
-#' airnow_data <- airnow_createDataDataframe("PM2.5", 201607)
+#' airnow_data <- airnow_createDataDataframes("PM2.5", 20160701)
 #' }
 
 airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24) {
@@ -51,7 +51,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   
   # ----- Data Reshaping ------------------------------------------------------
   
-  logger.debug('Reshaping %d days of AirNow data...', hours/24)
+  logger.debug("Reshaping %d days of AirNow data ...", hours/24)
   
   # NOTE:  Example lines from the aggregated dataframe:
   # NOTE:
@@ -80,7 +80,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   # Use dplyr and reshape2 packages to seprate the data by parameter and restructure each data frame
   for (parameter in parameters) {
     
-    logger.debug('Reshaping data for %s...', parameter)
+    logger.debug("Reshaping data for %s ...", parameter)
     
     # Create datetime variable
     df <- dplyr::filter(airnowRaw, airnowRaw$ParameterName == parameter)
@@ -103,7 +103,8 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   timeAxis <- seq(starttime, starttime + lubridate::dhours(hours), by='hours')
   timeDF <- data.frame(datetime=timeAxis)
   
-  logger.info('Putting data on a uniform time axis...')
+  logger.info("Putting data on a uniform time axis ...")
+
   for (parameter in parameters) {
     # Join data to uniform time axis
     dfList[[parameter]] <- suppressMessages( dplyr::full_join(timeDF, dfList[[parameter]]) )

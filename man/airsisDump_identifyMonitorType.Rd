@@ -36,12 +36,12 @@ The \code{monitorType} will be one of:
 }
 \examples{
 \dontrun{
-fileString <- readr::read_file('/home/monitors/USFS_ebam.csv')
+fileString <- airsis_downloadData( 20150701, 20151231, provider='USFS', unitID='1026')
 monitorTypeList <- airsisDump_identifyMonitorType(fileString)
 }
 }
 \references{
 \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 }
-\keyword{AIRSIS}
+\keyword{internal}
 

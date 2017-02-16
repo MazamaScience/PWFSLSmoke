@@ -39,7 +39,7 @@ monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 
 \item{countyLwd}{width for county outlines}
 
-\item{add}{logical flag that specifies whether to add to the current plot}
+\item{add}{logical specifying whether to add to the current plot}
 
 \item{...}{additional arguments passed to maps::map() such as 'projection' or 'parameters'}
 }

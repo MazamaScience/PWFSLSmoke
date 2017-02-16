@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.8.21
+Version: 0.9.7
 Title: Utilities for Working with PM2.5 Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -26,7 +26,7 @@ Depends:
     MazamaSpatialUtils (>= 0.4.4)
 Imports:
     cluster,
-    dygraphs,
+    dygraphs (>= 1.1.1.4),
     futile.logger,
     ggmap,
     httr,

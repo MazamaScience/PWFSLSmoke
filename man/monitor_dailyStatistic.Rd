@@ -19,10 +19,10 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
 \item{minHours}{minimum number of valid data hours required to calculate each daily statistic}
 }
 \value{
-ws_monitor object with daily statistics for the local timezone.
+A ws_monitor object with daily statistics for the local timezone.
 }
 \description{
-Calculates daily statistics for each monitor in the \code{ws_monitor} data list.
+Calculates daily statistics for each monitor in \code{ws_monitor}.
 }
 \details{
 Sunrise and sunset times are calculated based on the first monitor encountered.
@@ -36,14 +36,14 @@ If you choose a date range based on UTC times this may result in an insufficient
 number of hours in the first and last daily records of the returned \code{ws_monitor}
 object.
 
-This returned object has a daily time axis where each time is set to noon, local time.
+The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 }
 \examples{
 \dontrun{
 airnow <- airnow_load(20150801, 20150831)
 WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(55,Inf))
 WA_smoky_dailyMean <- monitor_dailyStatistic(WA_smoky, FUN=get('mean'), dayStart='midnight')
-monitor_timeseriesPlot(WA_smoky_dailyMean, type='s')
+monitorPlot_timeseries(WA_smoky_dailyMean, style='gnats')
 }
 }
 \keyword{ws_monitor}

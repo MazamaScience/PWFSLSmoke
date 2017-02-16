@@ -12,7 +12,7 @@ monitor_nowcast(ws_monitor, version = "pm")
 \item{version}{character identity specifying the type of nowcast algorithm to be used}
 }
 \value{
-ws_monitor object with data that have been proccessed by the Nowcast algorithm.
+A ws_monitor object with data that have been processed by the Nowcast algorithm.
 }
 \description{
 A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
@@ -38,8 +38,8 @@ Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
 airnow <- airnow_load(20160801, 20160815)
 salinas <- monitor_subset(airnow, monitorIDs='060531003')
 salinas_nowcast <- monitor_nowcast(salinas)
-monitor_timeseriesPlot(salinas, type='l')
-monitor_timeseriesPlot(salinas_nowcast, add=TRUE, type='l', col='red')
+monitorPlot_timeseries(salinas, type='l')
+monitorPlot_timeseries(salinas_nowcast, add=TRUE, type='l', col='red')
 }
 }
 \references{

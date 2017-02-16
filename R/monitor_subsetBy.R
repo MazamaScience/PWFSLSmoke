@@ -2,19 +2,19 @@
 #' @export
 #' @title Subset Monitoring Data
 #' @param ws_monitor ws_monitor object
-#' @param filter a filter to use on the ws_monitor 
-#' @description The incoming monitoring data list is filtered according to the filter 
-#' passed in. Either meta data or actual data can be filtered. 
-#' @return monitoring data list filtered as specified
+#' @param filter a filter to use on the ws_monitor object
+#' @return A ws_monitor object with a subset of the input ws_monitor object.
+#' @description The incoming ws_monitor object is filtered according to \code{filter}.
+#' Either meta data or actual data can be filtered. 
 #' @examples
 #' \dontrun{
-#' # We will load wrcc monitors from the past 6 years and map all monitors 
-#' # that have measured hazardous pm2.5 levels. 
-#' wrcc <- wrcc_load(20100101, 20160101)
-#' mySubset <- monitor_subsetBy(wrcc, timezone == 'America/Los_Angeles')
+#' # We will load airnow monitors for all of 2015 and map all monitors in the Pacific timezone
+#' # that have measured hazardous pm2.5 levels.
+#' airnow <- airnow_load(20150101, 20151231)
+#' mySubset <- monitor_subsetBy(airnow, timezone == 'America/Los_Angeles')
 #' hazardousSubset <- monitor_subsetBy(mySubset, data > AQI$breaks_24[6])
-#' monitorInteractiveMap(hazardousSubset,
-#'                 popupInfo=c('siteName', 'agencyName', 'elevation','monitorID'))
+#' monitorLeaflet(hazardousSubset,
+#'                popupInfo=c('siteName', 'agencyName', 'elevation','monitorID'))
 #' }
 
 monitor_subsetBy <- function(ws_monitor, filter) {

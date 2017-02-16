@@ -6,6 +6,7 @@
 #' @param dayStart one of \code{"sunset|midnight|sunrise"}
 #' @param minHours minimum number of hours to be reported
 #' @param na.rm logical value indicating whether NA values should be ignored
+#' @return A ws_monitor object with a daily count of hours at or above \code{threshold}.
 #' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
 #' For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
 #' very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.
@@ -14,14 +15,15 @@
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
-#' @return ws_monitor object with daily count of hours at or above threshold
+#' 
+#' The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
 #' \dontrun{
 #' AirNow <- airnow_load(20150801, 20150930)
 #' 
 #' WA_IDS <- AirNow$meta$monitorID[AirNow$meta$stateCode == 'WA']
 #' WA <- monitor_subset(AirNow, monitorIDs=WA_IDS)
-#' monitorInteractiveMap(WA)
+#' monitorLeaflet(WA)
 #' 
 #' # Pull out specific locations
 #' Twisp <- monitor_subset(WA, monitorIDs='530470009')
@@ -38,9 +40,9 @@
 #'           adjustcolor('red',0.6),
 #'           adjustcolor('blue',0.6))
 #' legend <- c('Twisp','Winthrop','Omak')
-#' monitor_timeseriesPlot(Twisp_daily, pch=16, col=cols[1])
-#' monitor_timeseriesPlot(Winthrop_daily, pch=16, col=cols[2], add=TRUE)
-#' monitor_timeseriesPlot(Omak_daily, pch=16, col=cols[3], add=TRUE)
+#' monitorPlot_timeseries(Twisp_daily, pch=16, col=cols[1])
+#' monitorPlot_timeseries(Winthrop_daily, pch=16, col=cols[2], add=TRUE)
+#' monitorPlot_timeseries(Omak_daily, pch=16, col=cols[3], add=TRUE)
 #' legend('topright', legend=legend, col=cols, pch=16)
 #' title('Hours per day Above Threshold (PM 2.5 = 89)')
 #' }
@@ -114,7 +116,7 @@ monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="
   df[,-1] <- df[,-1] * 24
   
   # Set df$datetime to noon for each day
-  lubridate::hour(df$datetime) <- 12
+  lubridate::hour(df$datetime) <- 00
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00
   

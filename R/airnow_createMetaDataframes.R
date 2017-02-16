@@ -4,6 +4,7 @@
 #' @export
 #' @title Return Dataframes of AirNow Site Location Metadata
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
+#' @return List of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
 #' @description The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 
 #' to download site metadata from AirNow and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
@@ -56,7 +57,6 @@
 #' }
 #' 
 #' Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
-#' @return Returns a list of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
 #' @seealso \link{airnow_downloadSites}
 #' @examples
 #' \dontrun{
@@ -67,18 +67,18 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   
   # ----- Data Download -------------------------------------------------------
   
-  logger.debug('Downloading AirNow sites metadata...')
+  logger.debug("Downloading AirNow sites metadata ...")
   
   # Create the data frame that holds a month worth of AirNow data
   result <- try( airnowRaw <- airnow_downloadSites(),
                  silent=TRUE)
   if ( class(result)[1] == "try-error" ) {
     err_msg <- geterrmessage()
-    logger.error('Unable to obtain sites dataframe: %s',err_msg)
-    stop(paste0('Unable to obtain sites dataframe: ',err_msg))
+    logger.error("Unable to obtain sites dataframe: %s",err_msg)
+    stop(paste0("Unable to obtain sites dataframe: ",err_msg))
   }
   
-  logger.debug('Downloaded %d rows of AirNow sites metadata', nrow(airnowRaw))
+  logger.debug("Downloaded %d rows of AirNow sites metadata", nrow(airnowRaw))
   
   
   # ----- Adding Required Columns ---------------------------------------------
@@ -90,7 +90,9 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   # Fix bad locations
   badLocationMask <- airnowRaw$longitude == 0 & airnowRaw$latitude == 0
   badLocationIDs <- paste(airnowRaw$AQSID[badLocationMask], collapse=", ")
-  logger.debug('Replacing 0,0 locations with NA,NA for IDs: %s', badLocationIDs)
+
+  logger.debug("Replacing 0,0 locations with NA,NA for IDs: %s", badLocationIDs)
+
   airnowRaw$longitude[badLocationMask] <- NA
   airnowRaw$latitude[badLocationMask] <- NA
   
@@ -109,7 +111,7 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   
   # ----- Data Reshaping ------------------------------------------------------
   
-  logger.debug('Reshaping AirNow sites metadata...')
+  logger.debug("Reshaping AirNow sites metadata ...")
   
   # Get a list of parameters
   if ( is.null(parameters) ) {

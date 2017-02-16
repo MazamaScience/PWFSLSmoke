@@ -12,7 +12,7 @@
 #' }
 #' 
 #' See the individual \code{airsis_~QualityControl()} functions for details.
-#' @return  Cleaned up dataframe of AIRSIS monitor data.
+#' @return Cleaned up dataframe of AIRSIS monitor data.
 #' @seealso \code{\link{airsis_EBAMQualityControl}}
 #' @seealso \code{\link{airsis_ESAMQualityControl}}
 
@@ -34,11 +34,11 @@ airsis_qualityControl <- function(df, ...) {
   
   monitorType <- monitorType[1]
 
-  logger.debug('Applying %s QC rules', monitorType)
+  logger.debug("Applying %s QC rules", monitorType)
   
   if ( monitorType == 'BAM1020' ) {
     
-    logger.warn('Dataframe contains %s data -- no QC available, original dataframe being returned', monitorType)
+    logger.warn("Dataframe contains %s data -- no QC available, original dataframe being returned", monitorType)
     
   } else if ( monitorType == 'EBAM' ) {
     
@@ -50,7 +50,7 @@ airsis_qualityControl <- function(df, ...) {
     
   } else {
     
-    logger.warn('Dataframe contains %s data -- no QC available, original dataframe being returned', monitorType)
+    logger.warn("Dataframe contains %s data -- no QC available, original dataframe being returned", monitorType)
     
   }
   

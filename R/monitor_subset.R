@@ -11,6 +11,7 @@
 #' @param countryCodes optional vector of country codes used to filter the data
 #' @param dropMonitors flag specifying whether to remove monitors with no data
 #' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
+#' @return A ws_monitor object with a subset of the input ws_monitor object.
 #' @description Creates a subset of a ws_monitor object based on one or more optional input parameters.
 #' If any input parameter is not specified, that parameter will not be used to subset the ws_monitor object.
 #' @details By default, this function will return a ws_monitor object whose 'data' dataframe has the
@@ -18,14 +19,13 @@
 #'     in which case such columns will be removed (e.g. if there are no valid data for a specific monitor 
 #'     after subsetting by tlim or vlim).
 #'     If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
-#' @return ws_monitor object as a subset of the input ws_monitor object
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20140913, 20141010)
 #' xlim <- c(-124.801, -122.801)
 #' ylim <- c(47.004, 48.404)
 #' Olympic_Peninsula <- monitor_subset(airnow, xlim, ylim)
-#' monitor_map(Olympic_Peninsula)
+#' monitorMap(Olympic_Peninsula)
 #' }
 
 # TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting

@@ -12,12 +12,12 @@ openaq_createDataDataframes(df, parameters = NULL)
 \item{parameters}{pollutant name}
 }
 \value{
-A \code{'data'} dataframe for use in a \code{ws_monitor} object.
+A 'data' dataframe for use in a ws_monitor object.
 }
 \description{
 After addtional columns(i.e. \code{'datetime'}, \code{'stateCode'}, and \code{'monitorID'}) 
 have been applied to an OpenAQ dataframe,
-we can extract the PM2.5 values and store them in a \code{'data'} dataframe
+we can extract the PM2.5 values and store them in a 'data' dataframe
 organized as hour-by-monitor.
 
 The first column of the returned dataframe is named \code{'datetime'} and

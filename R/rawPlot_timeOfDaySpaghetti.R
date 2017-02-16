@@ -3,9 +3,9 @@
 #' @import graphics
 #' @title Create Time of Day Spaghetti Plot from a Raw Dataframe
 #' @param df enhanced, raw dataframe as created by the raw_enhance() function
-#' @param dataVar variable to be plotted
+#' @param parameter variable to be plotted
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
-#' @param shadedNight shade nighttime hours
+#' @param shadedNight add nighttime shading
 #' @param meanCol color used for the mean line (use NA to omit the mean)
 #' @param meanLwd line width used for the mean line
 #' @param meanLty line type used for the mean line
@@ -15,13 +15,13 @@
 #' @description Spaghetti Plot that shows data by hour-of-day. 
 #' @examples
 #' \dontrun{
-#' raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, unitID=1012)
+#' raw <- airsis_createRawDataframe(20160901, 20161015, 'USFS', 1012)
 #' raw <- raw_enhance(raw, rawSource='AIRSIS')
-#' rawPlot_timeOfDaySpaghetti(raw)
+#' rawPlot_timeOfDaySpaghetti(raw,parameter="temperature")
 #' }
 
 rawPlot_timeOfDaySpaghetti <- function(df,
-                                       dataVar='pm25',
+                                       parameter='pm25',
                                        tlim=NULL,
                                        shadedNight=TRUE,
                                        meanCol='black',
@@ -58,7 +58,7 @@ rawPlot_timeOfDaySpaghetti <- function(df,
   df$hour <- lubridate::hour(df$localTime)
   
   # Create a subset dataframe for local use
-  df <- df[,c('localTime',dataVar,'datestamp','hour')]
+  df <- df[,c('localTime',parameter,'datestamp','hour')]
   names(df) <- c('localTime','data','datestamp','hour')
   
   # Subset dataframe by tlim
@@ -87,14 +87,14 @@ rawPlot_timeOfDaySpaghetti <- function(df,
   }
   
   if ( !('ylim' %in% names(argsList)) ) {
-    argsList$ylim <- c(min(df$data),max(df$data))
+    argsList$ylim <- c(min(df$data,na.rm = TRUE),max(df$data,na.rm = TRUE))
   }
   
   if ( !('ylab' %in% names(argsList)) ) {
-    if ( dataVar=='pm25' ) {
+    if ( parameter=='pm25' ) {
       argsList$ylab <- "PM2.5"
     } else {
-      argsList$ylab <- dataVar
+      argsList$ylab <- parameter
     }
   }
   
@@ -166,11 +166,12 @@ rawPlot_timeOfDaySpaghetti <- function(df,
   }
   
   # Add mean line
-  df %>% group_by(as.factor(df$hour)) %>%
-    summarize(data=mean(df$data,na.rm=TRUE)) ->
-    hourMeanDF
+  hourMeanDF <- data.frame(hour=seq(0,23))
+  for (hr in 0:23) {
+    hourMeanDF$data[hr+1] <- mean(df$data[which(df$hour==hr)],na.rm = TRUE)
+  }
   
-  lines(hourMeanDF$data ~ seq(0,23), col=meanCol, lwd=meanLwd, lty=meanLty)
+  lines(hourMeanDF$data ~ hourMeanDF$hour, col=meanCol, lwd=meanLwd, lty=meanLty)
 
 }
 

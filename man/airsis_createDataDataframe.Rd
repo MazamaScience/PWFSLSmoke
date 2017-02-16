@@ -12,11 +12,11 @@ airsis_createDataDataframe(df, meta)
 \item{meta}{AIRSIS meta dataframe created by airsis_createMetaDataframe()}
 }
 \value{
-A \code{'data'} dataframe for use in a \code{ws_monitor} object.
+A 'data' dataframe for use in a ws_monitor object.
 }
 \description{
 After quality control has been applied to an AIRSIS dataframe,
-we can extract the PM2.5 values and store them in a \code{'data'} dataframe
+we can extract the PM2.5 values and store them in a 'data' dataframe
 organized as hour-by-deployment (aka hour-by-site).
 
 The first column of the returned dataframe is named \code{'datetime'} and

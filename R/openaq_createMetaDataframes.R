@@ -3,6 +3,7 @@
 #' @title Create OpenAQ Site Location Metadata Dataframe
 #' @param df a OpenAQ dataframe after metadata enhancement
 #' @param parameters pollutant name
+#' @return A 'meta' dataframe for use in a ws_monitor object.
 #' @description After an OpenAQ dataframe has been enhanced with 
 #' additional columns including \code{'datetime'}, \code{'stateCode'}, \code{'monitorID'} we are ready to 
 #' pull out site information associated with unique monitorID.
@@ -18,8 +19,6 @@
 #' > names(meta)
 #' [1] "siteName"    "latitude"    "longitude"   "timezone"    "countryCode" "stateCode"   "monitorID"
 #' }
-#' 
-#' @return A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
 
 
 openaq_createMetaDataframes <- function(df, parameters=NULL){
@@ -33,13 +32,13 @@ openaq_createMetaDataframes <- function(df, parameters=NULL){
   # Fix bad locations
   badLocationMask <- df$longitude == 0 & df$latitude == 0
   badLocationIDs <- paste( unique( df$monitorID[badLocationMask] ), collapse=", ")
-  logger.debug('Replacing 0,0 locations with NA,NA for IDs: %s', badLocationIDs)
+  logger.debug("Replacing 0,0 locations with NA,NA for IDs: %s", badLocationIDs)
   df$longitude[badLocationMask] <- NA
   df$latitude[badLocationMask] <- NA
   
   # Pull out unique monitors
   dfUnique <- df[!duplicated(df$monitorID),]
-  logger.debug('Dataframe contains %d unique monitorID(s)', nrow(dfUnique))
+  logger.debug("Dataframe contains %d unique monitorID(s)", nrow(dfUnique))
   
   dfUnique$timezone <- suppressMessages( MazamaSpatialUtils::getTimezone(dfUnique$longitude, dfUnique$latitude, useBuffering = T) )
   df <- dplyr::left_join(df, dfUnique[,c("monitorID", "timezone")], by="monitorID")
@@ -55,11 +54,11 @@ openaq_createMetaDataframes <- function(df, parameters=NULL){
   
   metaDF$siteName <- df$location
   
-  logger.debug("'meta' dataframe has %d rows and %d columns", nrow(metaDF), ncol(metaDF))
+  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(metaDF), ncol(metaDF))
   
   # ----- Data Reshaping ------------------------------------------------------
   
-  logger.debug('Reshaping OpenAQ sites metadata...')
+  logger.debug("Reshaping OpenAQ sites metadata ...")
   
   # Get a list of parameters
   if ( is.null(parameters) ) {
@@ -69,7 +68,7 @@ openaq_createMetaDataframes <- function(df, parameters=NULL){
     parameters <- dplyr::intersect(parameters, unique(df$parameter))
     invalidParameters <- dplyr::setdiff(parameters, unique(df$parameter))
     if ( length(invalidParameters) > 0 ) {
-      logger.warn("Requested parameters not found in AirNow sites metadata: %s", paste0(invalidParameters, collapse=", "))
+      logger.warn("Requested parameters not found in OpenAQ sites metadata: %s", paste0(invalidParameters, collapse=", "))
     }
   }
   

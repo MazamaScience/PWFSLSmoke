@@ -18,7 +18,7 @@ monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{aqiLines}{horizontal lines indicating AQI levels}
 
-\item{shadedNight}{shade nights based on sunrise/sunset times of middle day in selected period}
+\item{shadedNight}{add nighttime shading based on of middle day in selected period}
 
 \item{title}{plot title}
 

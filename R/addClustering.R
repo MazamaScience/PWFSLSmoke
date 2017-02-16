@@ -3,7 +3,6 @@
 #' @title Add Clustering Information to a Dataframe
 #' @param df dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see description)
-#' @param minCount minimum number of measurements for a location to be valid (see description)
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param maxClusters maximum number of clusters to try
@@ -13,8 +12,9 @@
 #' to determine the number of clusters.
 #' 
 #' @return Input dataframe with additional columns: \code{deploymentID, medoidLon, mediodLat}.
+#' @references \href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
 
-addClustering <- function(df, clusterDiameter=1000, minCount=48,
+addClustering <- function(df, clusterDiameter=1000,
                           lonVar="longitude", latVar="latitude",
                           maxClusters=50) {
   
@@ -23,12 +23,12 @@ addClustering <- function(df, clusterDiameter=1000, minCount=48,
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) ) {
-    logger.error('lonVar "%s" is not found in column names "%s"', lonVar, paste0(names(df), collapse=", "))
-    stop(paste0("Longitudes could not be found.  Did you specify the lonVar arguments?"))
+    logger.error("No lonVar='%s' column found in 'df' dataframe with columns: %s", lonVar, paste0(names(df), collapse=", "))
+    stop(paste0("Longitudes could not be found.  Did you specify the lonVar argument?"))
   }
   if ( !latVar %in% names(df) ) {
-    logger.error('latVar "%s" is not found in column names "%s"', latVar, paste0(names(df), collapse=", "))
-    stop(paste0("Latitudes could not be found.  Did you specify the latVar arguments?"))
+    logger.error("No latVar='%s' column found in 'df' dataframe with columns: %s", latVar, paste0(names(df), collapse=", "))
+    stop(paste0("Latitudes could not be found.  Did you specify the latVar argument?"))
   }
   
   # If we only have a single row, return immediately
@@ -61,7 +61,7 @@ addClustering <- function(df, clusterDiameter=1000, minCount=48,
   # NOTE:  Run the plots a few times and you will see that kmeans clustering sometimes
   # NOTE:  gets it wrong.
 
-  logger.debug('Testing up to %s clusters', maxClusters)
+  logger.debug("Testing up to %s clusters", maxClusters)
   
   # NOTE:  We need to use cluster::clara when we get above ~2K points.
   # NOTE:  For this reason we need to use clusinfo[,'max_diss'] instead
@@ -72,10 +72,10 @@ addClustering <- function(df, clusterDiameter=1000, minCount=48,
   # Perform clustering
   for (clusterCount in 1:maxClusters) {
     if ( nrow(df) < 2000 ) {
-      logger.trace('\ttesting %d clusters using cluster::pam', clusterCount)
+      logger.trace("\ttesting %d clusters using cluster::pam", clusterCount)
       clusterObj <- cluster::pam(df[,c(lonVar,latVar)],clusterCount)
     } else {
-      logger.trace('\ttesting %d clusters using cluster::clara', clusterCount)
+      logger.trace("\ttesting %d clusters using cluster::clara", clusterCount)
       clusterObj <- cluster::clara(df[,c(lonVar,latVar)],clusterCount, samples=50)
     }
     medoidLats <- clusterObj$medoids[,latVar]
@@ -88,7 +88,7 @@ addClustering <- function(df, clusterDiameter=1000, minCount=48,
     if ( max(meters) < clusterDiameter ) break
   }
   
-  logger.debug('Using %d cluster(s) with a diameter of %d meters', clusterCount, clusterDiameter)
+  logger.debug("Using %d cluster(s) with a diameter of %d meters", clusterCount, clusterDiameter)
   
   # Create the vector of deployment identifiers
   if ( nrow(df) < 2000 ) {

@@ -18,7 +18,7 @@
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 #' @examples
 #' \dontrun{
-#' fileString <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+#' fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
 #' df <- wrcc_parseData(fileString)
 #' }
 
@@ -36,8 +36,8 @@ wrcc_parseData <- function(fileString) {
   lines <- readr::read_lines(fileString)
   
   if ( length(lines) <= 4 ) {
-    logger.warn('No valid PM2.5 data')
-    stop(paste0('No valid PM2.5 data'))
+    logger.warn("No valid PM2.5 data")
+    stop(paste0("No valid PM2.5 data"))
   }
   
   # NOTE:  Here is an example header from WRCC ASCII output:
@@ -74,10 +74,13 @@ wrcc_parseData <- function(fileString) {
   # NOTE:  Conversion of -9999 to NA happens in the ~QualityControl scripts so that
   # NOTE:  all raw data modifications can be found in one place.
   monitorTypeCode <- monitorTypeCode[monitorTypeCode >= 0]
+  
   # Sanity check
   if ( length(monitorTypeCode) > 1 ) {
-    logger.error('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", "))
-    stop(paste0('More than one monitor type detected: %s', paste(monitorTypeCode,sep=", ")))
+    logger.warn("More than one monitor type detected: %s", paste(monitorTypeCode,collapse=", "))
+    # Pick the most common Type
+    typeTable <- table(df$Type)
+    monitorTypeCode <- names(typeTable)[which(typeTable == max(typeTable))]
   }
   
   # 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
@@ -86,11 +89,11 @@ wrcc_parseData <- function(fileString) {
   } else if ( monitorTypeCode == 9 ) {
     df$monitorType <- 'ESAM'
   } else if ( monitorTypeCode == 1 ) {
-    logger.error('EBAM PM10 data parsing is not supported')
-    stop(paste0('EBAM PM10 data parsing is not supported'))
+    logger.error("EBAM PM10 data parsing is not supported")
+    stop(paste0("EBAM PM10 data parsing is not supported"))
   } else {
-    logger.error('Unsupported monitor type code: %d',monitorTypeCode)
-    stop(paste0('Unsupported monitor type code: %d',monitorTypeCode))
+    logger.error("Unsupported monitor type code: %d",monitorTypeCode)
+    stop(paste0("Unsupported monitor type code: %d",monitorTypeCode))
   }
 
   return(df)

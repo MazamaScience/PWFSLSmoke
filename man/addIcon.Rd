@@ -2,25 +2,48 @@
 % Please edit documentation in R/addIcon.R
 \name{addIcon}
 \alias{addIcon}
-\title{Add an Icon to a RgoogleMap Plot
+\title{Add an Icon to a Map or RgoogleMap Plot
 map, icon, lon, lat, expansion=0.1, pos=0}
 \usage{
-addIcon(map, icon, lon, lat, expansion = 0.1, pos = 0)
+addIcon(icon, lon, lat, map = NULL, expansion = 0.1, pos = 0)
 }
 \arguments{
-\item{map}{RgoogleMaps map object}
-
 \item{icon}{object to be plotted}
 
 \item{lon}{vector of longitudes}
 
 \item{lat}{vector of latitudes}
 
+\item{map}{optional RgoogleMaps map object}
+
 \item{expansion}{icon expansion factor}
 
 \item{pos}{position of icon relative to lon/lat (0=center, 1=bottom, 2=left, 3=top,4=right)}
 }
 \description{
-Internal function aclled by monitorGoogleMap~ functions.
+Adds an icon to \code{map} -- an RgoogleMaps map object.
+The following icons are available:
+
+\itemize{
+\item{\code{orangeFlame}}{ -- yellow-orange flame}
+\item{\code{redFlame}}{ -- orange-red flame}
+}
+
+You can use other .png files as icons by passing an absolute path as the \code{icon} argument.
+}
+\note{
+For RgoogleMaps, the \code{expansion} will be ~ 0.1 while for basic plots it may need
+to be much smaller, perhaps ~ 0.001.
+}
+\examples{
+\dontrun{
+ca <- airnow_load(20160801, 20160831, stateCodes='ca')
+# Google map
+map <- monitorGoogleMap(ca)
+addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)
+# line map
+monitorMap(ca)
+addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.002)
+}
 }
 

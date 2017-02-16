@@ -1,30 +1,90 @@
 #' @export
 #' @import graphics
-#' @title Add an Icon to a RgoogleMap Plot
+#' @title Add an Icon to a Map or RgoogleMap Plot
 #' map, icon, lon, lat, expansion=0.1, pos=0
-#' @param map RgoogleMaps map object
 #' @param icon object to be plotted
 #' @param lon vector of longitudes
 #' @param lat vector of latitudes
+#' @param map optional RgoogleMaps map object
 #' @param expansion icon expansion factor
 #' @param pos position of icon relative to lon/lat (0=center, 1=bottom, 2=left, 3=top,4=right)
-#' @description Internal function aclled by monitorGoogleMap~ functions.
+#' @description Adds an icon to \code{map} -- an RgoogleMaps map object.
+#' The following icons are available:
+#' 
+#' \itemize{
+#' \item{\code{orangeFlame}}{ -- yellow-orange flame}
+#' \item{\code{redFlame}}{ -- orange-red flame}
+#' }
+#' 
+#' You can use other .png files as icons by passing an absolute path as the \code{icon} argument.
+#' 
+#' @note For RgoogleMaps, the \code{expansion} will be ~ 0.1 while for basic plots it may need
+#' to be much smaller, perhaps ~ 0.001.
+#' @examples
+#' \dontrun{
+#' ca <- airnow_load(20160801, 20160831, stateCodes='ca')
+#' # Google map
+#' map <- monitorGoogleMap(ca)
+#' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)
+#' # line map
+#' monitorMap(ca)
+#' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.002)
+#' }
 
-addIcon <- function(map, icon, lon, lat, expansion=0.1, pos=0) {
+
+addIcon <- function(icon, lon, lat, map=NULL, expansion=0.1, pos=0) {
   
-  # limit lon, lat to those within bounding box
-  lon_lo <- map$BBOX$ll[,'lon']
-  lon_hi <- map$BBOX$ur[,'lon']
-  lat_lo <- map$BBOX$ll[,'lat']
-  lat_hi <- map$BBOX$ur[,'lat']
+  # Test for absolute path
+  if ( dirname(icon) == "." ) {
+    # package icon
+    # let users specify either "orangeFlame" or "orangeFlame.png"
+    icon <- stringr::str_replace(icon,".png","")
+    icon <- paste0(icon,".png")
+    pngFile <- base::system.file("icons", icon, package="PWFSLSmoke")
+  } else {
+    # non-package icon, must be valid absolute path
+    pngFile <- icon
+  }
   
-  lonMask <- lon >= lon_lo & lon <= lon_hi
-  latMask <- lat >= lat_lo & lat <= lat_hi
-  goodMask <- lonMask & latMask
+  if ( pngFile == "" ) {
+    stop("Cannot find package file 'inst/icons/",icon,"'")
+  }
   
-  lon <- lon[goodMask]
-  lat <- lat[goodMask]
+  # Read in the png file
+  icon <- png::readPNG(pngFile)
   
+  if ( !is.null(map) ) {
+    # RgoogleMap
+    
+    if ( !"staticMap" %in% class(map) ) {
+      stop("'map' argument is not of class 'staticMap'")
+    }
+    
+    # limit lon, lat to those within bounding box
+    lon_lo <- map$BBOX$ll[,'lon']
+    lon_hi <- map$BBOX$ur[,'lon']
+    lat_lo <- map$BBOX$ll[,'lat']
+    lat_hi <- map$BBOX$ur[,'lat']
+    
+    lonMask <- lon >= lon_lo & lon <= lon_hi
+    latMask <- lat >= lat_lo & lat <= lat_hi
+    goodMask <- lonMask & latMask
+    
+    lon <- lon[goodMask]
+    lat <- lat[goodMask]
+    
+    # Get plot coordinates
+    newXY <- RgoogleMaps::LatLon2XY.centered(map, lat, lon)
+    x <- newXY$newX
+    y <- newXY$newY
+    
+  } else {
+    # basic plot from maps::map()
+    x <- lon
+    y <- lat
+    
+  }
+
   # Calculate final icon size
   icon_height <- dim(icon)[1] * expansion
   icon_width <- dim(icon)[2] * expansion
@@ -45,11 +105,6 @@ addIcon <- function(map, icon, lon, lat, expansion=0.1, pos=0) {
     nudge_x <- icon_width/2
     nudge_y <- 0
   }
-  
-  # Get plot coordinates
-  newXY <- RgoogleMaps::LatLon2XY.centered(map, lat, lon)
-  x <- newXY$newX
-  y <- newXY$newY
   
   graphics::rasterImage(icon,
                         x - icon_width/2 + nudge_x,

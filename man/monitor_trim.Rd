@@ -10,11 +10,20 @@ monitor_trim(ws_monitor)
 \item{ws_monitor}{ws_monitor object}
 }
 \value{
-ws_monitor object
+A ws_monitor object with missing data trimmed.
 }
 \description{
 Trims the time axis of a ws_monitor object to exclude timestamps prior to the first and
 after the last valid datapoint for any monitor.
+}
+\examples{
+\dontrun{
+sm13 <- wrcc_createMonitorObject(20150101, 20151231, stationID='sm13')
+sm13$meta[,c('stateCode','countyName','siteName','monitorID')]
+Deschutes <- monitor_subset(sm13, monitorIDs='Smoke..13__001')
+Deschutes <- monitor_trim(Deschutes)
+monitorPlot_dailyBarplot(Deschutes)
+}
 }
 \keyword{ws_monitor}
 

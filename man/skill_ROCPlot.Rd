@@ -20,9 +20,6 @@ skill_ROCPlot(predicted, observed, t1Range = c(0, 100), t2s = seq(10, 100,
 
 \item{colors}{vector of colors used when plotting curves}
 }
-\value{
-None.
-}
 \description{
 This function plots ROC curves for a variety of \code{observed} classification thresholds.
 }

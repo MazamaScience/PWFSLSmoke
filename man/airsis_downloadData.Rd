@@ -4,18 +4,19 @@
 \alias{airsis_downloadData}
 \title{Download Data from AIRSIS}
 \usage{
-airsis_downloadData(provider = "USFS", unitID = NULL,
-  startdate = 20020101, enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz
-  = "GMT"), baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+airsis_downloadData(startdate = 20020101,
+  enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
+  provider = "USFS", unitID = NULL,
+  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
 }
 \arguments{
-\item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
-
-\item{unitID}{unit identifier}
-
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
+
+\item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
+
+\item{unitID}{unit identifier}
 
 \item{baseUrl}{base URL for data queries}
 }
@@ -28,7 +29,7 @@ Data are returned as a single character string containing the AIRIS output.
 }
 \examples{
 \dontrun{
-fileString <- airsis_downloadData('USFS',unitID='1026',startdate=20150701,enddate=20151231)
+fileString <- airsis_downloadData( 20150701, 20151231, provider='USFS', unitID='1026')
 df <- airsis_parseData(fileString)
 }
 }

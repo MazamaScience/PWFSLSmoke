@@ -2,22 +2,22 @@
 % Please edit documentation in R/airsis_createRawDataframe.R
 \name{airsis_createRawDataframe}
 \alias{airsis_createRawDataframe}
-\title{Obtain AIRSIS Data and Parse into a Dataframe}
+\title{Obain AIRSIS Data and Create a Raw Dataframe}
 \usage{
-airsis_createRawDataframe(provider = "USFS", unitID = NULL,
-  startdate = 20020101, enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz
-  = "GMT"), clusterDiameter = 1000,
+airsis_createRawDataframe(startdate = 20020101,
+  enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
+  provider = NULL, unitID = NULL, clusterDiameter = 1000,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
   saveFile = NULL)
 }
 \arguments{
-\item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
-
-\item{unitID}{character or numeric AIRSIS unit identifier}
-
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
+
+\item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
+
+\item{unitID}{character or numeric AIRSIS unit identifier}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 
@@ -26,7 +26,7 @@ airsis_createRawDataframe(provider = "USFS", unitID = NULL,
 \item{saveFile}{optional filename where raw CSV will be written}
 }
 \value{
-ws_monitor object with a unique `monitorID` for each unique deployment.
+Raw dataframe of WRCC data.
 }
 \description{
 Obtains monitor data from an AIRSIS webservice and converts
@@ -45,6 +45,14 @@ Steps involved include:
 }
 \note{
 The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
+}
+\examples{
+\dontrun{
+raw <- airsis_createRawDataframe(startdate=20160901, provider='USFS', unitID='1033')
+raw <- raw_enhance(raw)
+rawPlot_timeseries(raw,tlim=c(20160908,20160917))
+}
+
 }
 \seealso{
 \code{\link{airsis_downloadData}}

@@ -5,7 +5,7 @@
 \title{Create Timeseries Plot}
 \usage{
 monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = "AQI", shadedNight = FALSE, add = FALSE,
+  localTime = TRUE, style = NULL, shadedNight = FALSE, add = FALSE,
   gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
   dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }
@@ -16,13 +16,13 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
-\item{localTime}{create plot in local time; applies to tlim as well}
+\item{localTime}{logical specifying whether \code{tlim} is in local time or UTC}
 
-\item{style}{AQI styling, one of \code{'Airfire| | '}... TODO: Fill in other options}
+\item{style}{custom styling, one of \code{'aqiDots'}}
 
-\item{shadedNight}{Shade nighttime values if TRUE, provided all monitors in the same time zone.}
+\item{shadedNight}{add nighttime shading}
 
-\item{add}{A logical specifying whether you want to add the data points on top of an existing time series plot}
+\item{add}{logical specifying whether to add to the current plot}
 
 \item{gridPos}{position of grid lines either 'over', 'under' ('' for no grid lines)}
 
@@ -42,12 +42,18 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
 }
 \description{
 Creates a time series plot of PM2.5 data from a ws_monitor object (see note below). Optional arguments
-color code by AQI index, add shading to indicate nighttime, and adjust the time display (GMT vs. local).
+color code by AQI index, add shading to indicate nighttime, and adjust the time display (local vs. UTC).
+
+When a named \code{style} is used, some graphical parameters will be overridden. Available styles include:
+
+\itemize{
+\item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+\item{\code{gnats}}{-- semi-transparent dots like a cloud of gnats}
+}
 }
 \note{
 Remember that a ws_monitor object can contain data from more than one monitor, and thus, this function may produce
-a time series of data from multiple monitors. To plot a time series of an individual monitor's data, use the monitor_subset
-function (see example below).
+a time series of data from multiple monitors. To plot a time series of an individual monitor's data, specify a single \code{monitorID}.
 }
 \examples{
 \dontrun{ 

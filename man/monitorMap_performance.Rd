@@ -38,7 +38,7 @@ monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
 
 \item{countyLwd}{width for county outlines}
 
-\item{add}{logical flag that specifies whether to add to the current plot}
+\item{add}{logical specifying whether to add to the current plot}
 
 \item{...}{additional arguments to be passed to the map() funciton such as graphical parameters (see par)}
 }
@@ -58,11 +58,10 @@ the size/colors to remain constant.
 \examples{
 \dontrun{
 # Spokane summer of 2015
-airnow <- airnow_load(20150701,20150930)
-airnow <- monitor_rollingMean(airnow, width=3)
-WA <- monitor_subset(airnow, stateCode='WA', countryCode="US")
-MonroeSt <- monitor_subset(WA, monitorIDs=530630047)
-monitorMap_performance(WA, MonroeSt, cex=2)
+wa <- airnow_load(20150701, 20150930, stateCodes='WA')
+wa <- monitor_rollingMean(wa, width=3)
+MonroeSt <- monitor_subset(wa, monitorIDs=530630047)
+monitorMap_performance(wa, MonroeSt, cex=2)
 title('Heidike Skill of monitors predicting another monitor.')
 }
 }

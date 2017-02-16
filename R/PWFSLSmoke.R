@@ -1,4 +1,29 @@
-# ----- AQI breaks ----------------------------------------------------------------
+
+# ----- WRCC monitors ----------------------------------------------------------
+
+#' WRCC monitor names and stationIDs
+#' 
+#' @docType data
+#' @keywords datasets
+#' @name WRCC
+#' @title WRCC Monitor Names and Station IDs
+#' @format A list with three elements
+#' @description
+#' The WRCC \url{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
+#' provides access to a variety of monitors that can be accessed with the wrcc_CreateMonitorObject()
+#' function. Use of this funciton requires a valid stationID. The \code{WRCC} object is 
+#' a list of three named vectors, each containing the stationIDs and associated names for
+#' one of the categories of monitors available at WRCC:
+#' 
+#' \itemize{
+#' \item{cache}
+#' \item{miscellaneous}
+#' \item{usfs_regional}
+#' }
+#' @note This list of monitors was created on Feb 09, 2017.
+NULL
+
+# ----- AQI breaks -------------------------------------------------------------
 
 #' AQI breaks and associated names and colors
 #' 
@@ -26,7 +51,7 @@ AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
                      grDevices::rgb(126/255,0,35/255)),
             names=c('good','moderate','USG','unhealthy','very unhealthy','extreme'))
 
-# ----- State codes in the lower 48 ---------------------------------------------------
+# ----- State codes in the lower 48 --------------------------------------------
 
 #' CONUS state codes
 #' 

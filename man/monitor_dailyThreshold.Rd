@@ -19,7 +19,7 @@ monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 }
 \value{
-ws_monitor object with daily count of hours at or above threshold
+A ws_monitor object with a daily count of hours at or above \code{threshold}.
 }
 \description{
 Calculates the number of hours per day each monitor in a ws_monitor object was at or above a given threshold
@@ -34,6 +34,8 @@ AQI levels for \code{threshold} argument = one of \code{"good|moderate|USG|unhea
 Sunrise and sunset times are calculated based on the first monitor encountered.
 This should be accurate enough for all use cases involving co-located monitors. Monitors
 from different regions should have daily statistics calculated separately.
+
+The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 }
 \examples{
 \dontrun{
@@ -41,7 +43,7 @@ AirNow <- airnow_load(20150801, 20150930)
 
 WA_IDS <- AirNow$meta$monitorID[AirNow$meta$stateCode == 'WA']
 WA <- monitor_subset(AirNow, monitorIDs=WA_IDS)
-monitorInteractiveMap(WA)
+monitorLeaflet(WA)
 
 # Pull out specific locations
 Twisp <- monitor_subset(WA, monitorIDs='530470009')
@@ -58,9 +60,9 @@ cols <- c(adjustcolor('orange',0.6),
           adjustcolor('red',0.6),
           adjustcolor('blue',0.6))
 legend <- c('Twisp','Winthrop','Omak')
-monitor_timeseriesPlot(Twisp_daily, pch=16, col=cols[1])
-monitor_timeseriesPlot(Winthrop_daily, pch=16, col=cols[2], add=TRUE)
-monitor_timeseriesPlot(Omak_daily, pch=16, col=cols[3], add=TRUE)
+monitorPlot_timeseries(Twisp_daily, pch=16, col=cols[1])
+monitorPlot_timeseries(Winthrop_daily, pch=16, col=cols[2], add=TRUE)
+monitorPlot_timeseries(Omak_daily, pch=16, col=cols[3], add=TRUE)
 legend('topright', legend=legend, col=cols, pch=16)
 title('Hours per day Above Threshold (PM 2.5 = 89)')
 }

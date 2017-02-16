@@ -1,9 +1,9 @@
 #' @keywords WRCC
 #' @export
 #' @title Download Data from WRCC
-#' @param stationID station identifier (will be upcased)
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
+#' @param stationID station identifier (will be upcased)
 #' @param baseUrl base URL for data queries
 #' @description Request data from a particular station for the desired time period.
 #' Data are returned as a single character string containing the WRCC output. 
@@ -13,7 +13,7 @@
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 #' @examples
 #' \dontrun{
-#' fileString <- wrcc_downloadData('SM16',startdate=20150701,enddate=20150930)
+#' fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
 #' df <- wrcc_parseData(fileString)
 #' }
 
@@ -27,14 +27,15 @@
 # USFSRegionalMonitors <- c()
 # MiscellaneousMonitors <- c()
 
-wrcc_downloadData <- function(stationID=NULL, startdate=20100101,
+wrcc_downloadData <- function(startdate=20100101,
                               enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                              stationID=NULL, 
                               baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl") {
   
   # Sanity check
   if ( is.null(stationID) ) {
     logger.error("Required parameter 'stationID' is missing")
-    stop(paste0("Required parameter 'stationID' is missing."))
+    stop(paste0("Required parameter 'stationID' is missing"))
   }
   
   # Get UTC times
@@ -67,14 +68,19 @@ wrcc_downloadData <- function(stationID=NULL, startdate=20100101,
                   WeHou='24',
                   .cgifields=c('unit','flag','srce'))
   
-  logger.debug('Downloading data from %s', baseUrl)
+  logger.debug("Downloading WRCC data from %s", baseUrl)
   
   rawBytes <- RCurl::postForm(uri=baseUrl, .params=.params)
   
   if ( class(rawBytes) == "character" ) {
-    logger.debug('rawBytes')
-    logger.info('WRCC FTP request returns an error')
-    stop(rawBytes)
+    logger.debug(rawBytes)
+    if ( stringr::str_detect(rawBytes, "WRCC data access information") ) {
+      logger.warn("No data available")
+      stop("No data available")
+    } else {
+      logger.error("WRCC FTP request returns an error")
+      stop(rawBytes)
+    }
   }
   
   # Convert raw bytes into a string

@@ -14,10 +14,10 @@ monitor_aqi(ws_monitor, parameter = "pm25", hour = 24)
 \item{hour}{the number of hours for concentration values to be averaged}
 }
 \value{
-a \code{ws_monitor} object with \code{data} replaced by AQI values
+A ws_monitor object with data replaced by AQI values.
 }
 \description{
-AQI values are calculated for \code{data} in the \code{ws_monitor} object for different pollutants.
+AQI values are calculated for data in the ws_monitor object for different pollutants.
 
 Available combinations of \code{parameter} and \code{hour} are:
 \enumerate{
@@ -34,7 +34,7 @@ See references for calculation details.
 }
 \examples{
 \dontrun{
-airnow <- openaq_load(startdate=20161001, enddate=20161031)
+airnow <- airnow_load(20161001, 20161031)
 airnow_AQI <- monitor_aqi(airnow)
 }
 

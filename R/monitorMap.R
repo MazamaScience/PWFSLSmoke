@@ -16,7 +16,7 @@
 #' @param stateLwd width for state outlines
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
-#' @param add logical flag that specifies whether to add to the current plot
+#' @param add logical specifying whether to add to the current plot
 #' @param ... additional arguments passed to maps::map() such as 'projection' or 'parameters'
 #' @description Creates a map of monitoring stations in a given ws_monitor object. 
 #' Individual monitor timeseries are reduced to a single value by applying the function 
