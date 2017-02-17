@@ -13,9 +13,10 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-This vignette explores how the PWFSLSmoke package can be leveraged to enable retrieval and exploration of raw ambient air quality data from multiple types of AIRSIS monitoring stations. We share examples using real monitoring data to support a variety of sample user tasks and questions.
+This vignette explores how the PWFSLSmoke package can be used to retrieve and explore raw, ambient air quality data from multiple types of AIRSIS monitoring stations.
+Examples demonstrate using real monitoring data to answer a variety of questions.
 
-This vignette focuses on monitors whose data is made available through AIRSIS; however, note that most if not all of the examples herein would also support exploration of raw data made available through WRCC for which similar functionality exists, e.g. `wrcc_createRawDataframe()`.
+This vignette focuses on monitors whose data is made available through AIRSIS. However, the following examples would also support exploration of raw data made available through WRCC for which similar functionality exists, e.g. `wrcc_createRawDataframe()`.
 
 ## Package Setup
 
@@ -23,7 +24,7 @@ This vignette focuses on monitors whose data is made available through AIRSIS; h
 
 First things first, we need to load the PWFSLSmoke package and set up logging. You can pass
 arguments to the `logger.setup()` function to send logging information to log files. In the following
-example we use `logger.setLevel()` to send any ERROR output to the console.
+example we do not use log files but instead use `logger.setLevel()` to send any ERROR output to the console.
 
 ```{r General Setup, message=FALSE}
 library(PWFSLSmoke)
@@ -31,7 +32,7 @@ logger.setup()
 logger.setLevel(ERROR)
 ```
 
-We'll also need to load MazamaSpatialUtils, which can be done with the code below.
+We'll also need to load MazamaSpatialUtils:
 
 ```{r MazamaSpatialUtils}
 library(MazamaSpatialUtils)
@@ -39,7 +40,7 @@ setSpatialDataDir('~/Data/Spatial')
 loadSpatialData('NaturalEarthAdm1')
 ```
 
-If the previous code above gives an error, you may need to download Mazama spatial data files. To do so, enter the following in the command line:
+If the previous code above gives an error, you may need to download Mazama spatial data files:
 
 ```{bash eval=FALSE}
 mkdir ~/Data
@@ -62,7 +63,7 @@ plain_AIRSIS_EBAM <- airsis_createRawDataframe(20160906,20161006,provider = 'USF
 nile_AIRSIS_ESAM <- airsis_createRawDataframe(20160906,20161006,provider = 'USFS', unitID = 1049)
 ```
 
-For reference, the following is a non-exhaustive list of monitors that can be called by the `airsis_createRawDataframe()` function as shown above. The data for all the monitors below is provided by U.S. Forest Service; others may be provided by APCD.
+These two monitors were part of a prescribed burn pilot program in Washingotn state which also involved the following monitors:
 
 Monitor ID  | Location (Alias)   | Type
 ----------- | --------------- | ----------
@@ -76,32 +77,32 @@ Monitor ID  | Location (Alias)   | Type
 
 Note that in our example above we have pulled data for two different monitor types: the Plain monitor is an EBAM monitor, whereas the Nile/Pinecliff monitor is an E-Sampler. We'll explore the differences in data structures between the two monitor types a bit later on.
 
-The `airsis_createRawDataframe()` function is nearly identical to the `airsis_createMonitorObject()` function, which is explained in depth in the \textcolor{red}{TODO:} UPDATE NAME vignette within this package. The process is briefly summarized below.
+The `airsis_createRawDataframe()` function is nearly identical to the `airsis_createMonitorObject()` function, which is explained in depth in the AIRSIS_Data_Handling vignette within this package. The process is briefly summarized below.
 
-* **Data retrieval:** `airsis_downloadData()` downloads data from the specified provider for the monitor and time period requested. The data is brought into R as a single, long text string with comma separators and end-line characters (e.g. \\r\\n).
+* **Data retrieval:** `airsis_downloadData()` downloads data from the specified provider for the monitor and time period requested. The data is ingested as a single, long text string with comma separators and end-line characters (e.g. \\r\\n).
 * **Parsing:** `airsis_parseData()` converts the long text string into a dataframe.
-* **Quality Control:** `airsis_qualityControl()` performs some basic data cleaning and integrity checks. A uniform UTC timestamp field -- called 'datetime' -- is added, with data assigned to unique hours and duplicates removed as needed. 
-* **Clustering:** `addClustering()` identifies unique monitor deployments and assigns a single monitor ID, a latitude and a longitude to each deployment. Unique monitor deployments are identified using k-means clustering based on the 'clusterDiameter' argument passed to the `addClustering()` function via the same argument in the `airsis_createRawDataframe()` function.
+* **Quality Control:** `airsis_qualityControl()` performs some basic data cleanup and integrity checks. A uniform UTC timestamp field, 'datetime', is added with data assigned to unique hours and duplicates removed as needed. 
+* **Clustering:** `addClustering()` identifies unique monitor "deployments"" (aka locations) and assigns a unique monitorID, a latitude and a longitude to each deployment. Unique monitor deployments are identified using k-means clustering based on the 'clusterDiameter' argument passed to the `addClustering()` function via the same argument in the `airsis_createRawDataframe()` function.
 
 Up to this point this is the exact same process that the `airsis_createMonitorObject()` function uses to create a ws_monitor object. However, the processes deviate at the end with respect to what data is retained, and how it is stored. Specifically:
 
-* the `airsis_createRawDataframe()` function retains all monitored data (including engineering data), whereas the ws_monitor object retains only the meta data and the time-stamped PM2.5 data.
-* the `airsis_createRawDataframe()` function stores all meta and monitoring data in a single flat dataframe, whereas the ws_monitor object separates the meta data from the monitoing data to comply with the PWFSLSmoke ws_monitor class structure.
+* the `airsis_createRawDataframe()` function retains all data fields (including "engineering"" data), whereas the ws_monitor object retains only the meta data and the time-stamped PM2.5 data.
+* the `airsis_createRawDataframe()` function stores all meta and monitoring data in a single flat dataframe, whereas the ws_monitor object separates the meta data from the monitoing data to comply with the PWFSLSmoke ws_monitor data model.
 
-The end result of the `airsis_createRawDataframe()` function is a single dataframe with time-stamped meta, monitoring, and engineering data.
+The return value from the `airsis_createRawDataframe()` function is a single dataframe with time-stamped meta-, monitoring-, and engineering-data.
 
 ## Data Handling
 
-Before we can begin to explore our data we should ensure that it adheres to a consistent and expected format regardless of the source, otherwise we could need complicated data handling procedures in all of our downstream applications.
+Before we can begin exploring our data we should ensure that this data adheres to a consistent format regardless of the source. Otherwise, we would need complicated data handling procedures in all of our downstream functions
 
 Returning to our example data from above, we created two datasets from different sources, so naturally we expect that there may be some differences between them. Let's take a look at what fields exist in the raw dataframes for each monitor type.
 
 ```{r All Attribute Sets}
-names(plain_AIRSIS_EBAM)
-names(nile_AIRSIS_ESAM)
+sort(names(plain_AIRSIS_EBAM))
+sort(names(nile_AIRSIS_ESAM))
 ```
 
-It is difficult to compare these large sets against one another; at a glance the fields don't appear to match up one-for-one, but this isn't necessarily a problem if the sets are identical but simply out of order from one another. However, we observe that the vectors have different lengths, so there must be at least some mismatch between the two. Careful inspection -- or better, a few simple lines of code -- allows for a quick evaluation of which fields are or are not shared between the two. First let's check which fields are shared between the types:
+We observe that the fields don't match up one-for-one. Careful inspection, or better, a few simple lines of code, allows for a quick evaluation of which fields are or are not shared between the two. First let's check which fields are shared between the types:
 
 ```{r Shared Attribute Sets}
 names(plain_AIRSIS_EBAM)[names(plain_AIRSIS_EBAM) %in% names(nile_AIRSIS_ESAM)]
@@ -121,9 +122,9 @@ And, for completeness, we'll check the other direction as well.
 names(nile_AIRSIS_ESAM)[!(names(nile_AIRSIS_ESAM) %in% names(plain_AIRSIS_EBAM))]
 ```
 
-From the latter two sets we can see that most of the differences in fields between the two monitor types appear to simply come down to naming conventions. For example, both monitor types include data on concentration (e.g. "COncRT" and "Conc.mg.m3"), flow ("Flow" and "Flow.l.m"), air temperature ("AT" and "AT.C"), as well as several other parameters. However, we need to be careful about units of measure. Even if we had a perfect match of field names it would be unreasonable to simply assume that two different monitor types output data in the same units of measure.
+From the latter two sets we can see that most of the differences in fields between the two monitor types come down to naming conventions. For example, both monitor types include data on concentration ("COncRT" and "Conc.mg.m3"), flow ("Flow" and "Flow.l.m"), air temperature ("AT" and "AT.C"), as well as several other parameters. However, we need to be careful about units of measure. Even if we had a perfect match of field names it would be unreasonable to simply assume that two different monitor types output data in the same units of measure.
 
-Additionally, we have some fields that appear in one set, but not the other. For example, we see FT (filter temperature) in the EBAM fields, but no such parameter presents itself in the E-Sampler fields. Indeed, no such parameter exists for E-Samplers because, unlike EBAM monitors, E-Samplers do not use filters directly to monitor PM~2.5~ (see brief overview of sampling techniques for the two monitors, and others, [here](https://app.airsis.com/USFS/About/MonitoringSystems)). Regardless, an engineer may be interested in plotting filter temperature for an EBAM monitor, so our raw data structure needs to allow for such analysis.
+Additionally, we have some fields that appear in one set, but not the other. For example, we see FT (filter temperature) in the EBAM fields, but no such parameter presents itself in the E-Sampler fields. Indeed, no such parameter exists for E-Samplers because, unlike EBAM monitors, E-Samplers do not use filters directly to monitor PM~2.5~ (see brief overview of sampling techniques for the two monitors, and others, [here](https://app.airsis.com/USFS/About/MonitoringSystems)). Regardless, an engineer may be interested in plotting filter temperature for an EBAM monitor, so our raw data structure needs retain all data fields to allow for such analysis.
 
 All this inconsistency calls for some form of harmonization to allow for simple and elegant use and exploration of the data, independent of its source. For this, we turn to the `raw_enhance()` function.
 
@@ -155,7 +156,7 @@ A few caveats:
 * The parameters listed above are simply guaranteed to exist; there is no guarantee that they will necessarily contain data. For example, atmospheric pressure is included as a guaranteed parameter since it is a key indicator of ambient conditions; however, EBAM monitors do not report pressure. Users will find pressure field populated with NAs for EBAM monitors. Missing data for any monitor type (e.g. due to sensor failure) would result in a similar situation.
 * The framework above does result in quite a bit of redundancy; however, we have not found raw dataframe size to be large enough for this to matter. Thus, any grief with such redundancy is a matter of principle only, and should be far outweighed by the flexibility the framework allows for end users to quickly and easily access both standard and engineering parameters for on-the-fly analysis.
 
-The end result of the `raw_enhance()` function is a robust framework which enables rapid exploration of data regardless of its original source.
+The end result of the `raw_enhance()` function is a dataframe with a subset of consistent data columns which enables rapid exploration of data regardless of its original source.
 
 To continue our prior example, let's create enhanced raw dataframes for the same two monitors as before:
 
@@ -174,16 +175,24 @@ Now that we have enhanced raw data dataframes we are ready to begin the data exp
 
 ## Data Exploration
 
-In our example above we created enhanced raw dataframes for two monitors in Washington State during late Summer/early Fall 2016. We'll use the PWFSLSmoke package `rawPlot_*()` functions to explore data from Plain, as this was the more interesting location of the two during the period.
+In our example above we created enhanced raw dataframes for two monitors in Washington State during late summer/early fall 2016. We'll use the PWFSLSmoke package `rawPlot_*()` functions to explore data from Plain, as this was the more interesting location of the two during the period.
 
-Plain is a small town in the Cascade Mountains of Washington State, about 80 miles east northeast of Seattle as the crow flies. The city is nestled in a remote mountain valley; its unique geography often subjects the location to poor air quality, usually as a result of woodstove combustion and/or temperature inversions in Winter and wildfires and/or prescribed burns in Summer.
+Plain is a small town in the Cascade Mountains of Washington State, about 80 miles east northeast of Seattle as the crow flies. The city is nestled in a quiet mountain valley; its unique geography often subjecting the location to poor air quality, often the result of woodstove combustion and/or temperature inversions in fall and winter and wildfires and/or prescribed burns in spring, summer and fall.
 
 ```{r, echo=FALSE}
-monitorGoogleMap(airsis_createMonitorObject(20160914,20160914,provider = 'USFS',unitID = 1033),zoom = 8)
+knitr::opts_chunk$set(fig.width=5, fig.height=5)
 ```
+
+```{r}
+plain <- airsis_createMonitorObject(20160914, 20160914, provider='USFS', unitID=1033)
+monitorGoogleMap(plain, zoom=8)
+monitorGoogleMap(plain, zoom=12, maptype='terrain')
+```
+
 ```{r, echo=FALSE}
-monitorGoogleMap(airsis_createMonitorObject(20160914,20160914,provider = 'USFS',unitID = 1033),zoom = 12,maptype = 'terrain')
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
+
 
 Late summer of 2016 saw frequent air quality episodes in Plain. We'll explore this period below.
 
@@ -195,14 +204,14 @@ First, we'll use the `rawPlot_timeseries()` function to get a high-level view of
 rawPlot_timeseries(plain_enhanced)
 ```
 
-Here we see a time-series plot of hourly PM2.5 concentrations. The alternating pattern of light and dark in the background represents periods of day and night, respectively (this feature can be disabled by setting the `shadedNight` argument to 'FALSE'). We observe multiple days with elevated PM2.5 concentrations; the days with elevated concentrations look to be grouped into 4 or 5 separate episodes, with an apparent diurnality to the concentrations (most of the highest peaks are obseved on the boundary from night to day).
+Here we see a time-series plot of hourly PM2.5 concentrations. The alternating pattern of light and dark in the background represents periods of day and night, respectively (this feature can be disabled by setting `shadedNight=FALSE`). We observe multiple days with elevated PM2.5 concentrations; the days with elevated concentrations look to be grouped into 4 or 5 separate episodes with an apparent diurnality to the concentrations (many of the highest peaks are obseved near dawn).
 
 Note that the only argument passed to the function above is the dataframe itself. This is a good example of how our `rawPlot*()` functions depend on the existence of the guaranteed parameters as listed above; in this case 'pm25' is hard coded into the function as the default parameter to plot. A different parameter (either from the list above, or otherwise) can be plotted instead by passing the field's name into the "parameter" argument.
 
 We can also utilize the `tlim` argument to subset the plot by time. Let's 'zoom in' on the multi-day episode in mid-September.
 
 ```{r}
-rawPlot_timeseries(plain_enhanced,tlim = c(20160912,20160916),dayLwd = 1)
+rawPlot_timeseries(plain_enhanced, tlim=c(20160912,20160916), dayLwd=1)
 ```
 
 Here we see a clear diurnality to the observations -- growing concentrations during nighttime hours, and lower concentrations during daylight hours. What could explain such a pattern?
@@ -210,8 +219,12 @@ Here we see a clear diurnality to the observations -- growing concentrations dur
 Our very same rawPlot_timeseries() function can help us answer this question. We'll visualize PM2.5 during the same period as before, but we'll add a line for temperature, and we'll also replace the nighttime shading with a background shading that is based on another parameter -- let's try wind speed.
 
 ```{r}
-rawPlot_timeseries(plain_enhanced,tlim = c(20160912,20160916),shadedNight = FALSE, shadedBackground = "windSpeed",sbLwd = 4,dayLwd = 1,ylab="PM2.5 (ug/m3) and Temperature (deg C)",main="PM2.5, Temperature, and Wind Speed")
-rawPlot_timeseries(plain_enhanced,parameter = 'temperature',add=TRUE,lty=5,col='blue')
+rawPlot_timeseries(plain_enhanced, tlim=c(20160912,20160916),
+                   shadedNight=FALSE, shadedBackground="windSpeed",
+                   sbLwd=4, dayLwd=1,
+                   ylab="PM2.5 (ug/m3) and Temperature (deg C)",
+                   main="PM2.5, Temperature, and Wind Speed")
+rawPlot_timeseries(plain_enhanced, parameter='temperature', add=TRUE, lty=5, col='blue')
 ```
 
 From this plot it is very clear what is going on -- smoke from a persistent source (or sources) is slowly building up during the calm, quiet nighttime hours before being washed out by the wind which picks up with the advent of convection due to surface heating every morning. So, one can see how even a single plotting function, paired with a guaranteed data structure, can prove to be very powerful.
@@ -248,7 +261,7 @@ par(oldpar)
 
 The patterns above are not terribly useful by themselves -- similar patterns are observed at almost all weather stations on a near-daily basis. However, the `higlightDates` feature allows us to look at the patterns in context to gain an understanding of what may have contributed to the elevated PM2.5 values on 9/13/2016.
 
-Specifically, we notice that the blue line tends to be on the cold and calm end of the spectrum within this period. A peek back at the plot above reorients us to focus on the morning hours, as this was the time with the highest PM2.5 concentrations on all days in the period. And indeed, we see that that the morning of 9/13/16 -- which had by far the higheest PM2.5 concnetrations -- was also the coldest by quite a bit! Thus, we may conclude that the surface-level PM2.5 concentration may have been inflated on the morning of 9/13/2016 by stronger subsidence, and perhaps more residential woodsmoke as well associated with the colder temperatures.
+Specifically, we notice that the blue line tends to be on the cold and calm end of the spectrum within this period. A peek back at the plot above reorients us to focus on the morning hours, as this was the time with the highest PM2.5 concentrations on all days in the period. And indeed, we see that that the morning of 9/13/16 -- which had by far the highest PM2.5 concnetrations -- was also the coldest by quite a bit! Thus, we may conclude that the surface-level PM2.5 concentration may have been inflated on the morning of 9/13/2016 by stronger subsidence, and perhaps more residential woodsmoke as well associated with the colder temperatures.
 
 Of course, 9/13/2016 was the first day in the period, and we might expect that the first day in any episode of elevated PM2.5 -- especially if the result of a nearby fire -- would be the highest. And indeed, such was the case here: smoke from a nearby prescribed burn which commenced on 9/12/2016 affected the area for a number of days. Regardless, this exercise has demonstrated the functionality of the `rawPlot_timeseries()` and `rawPlot_timeOfDaySpaghetti()` functions and how they can be used for raw monitor data exploration.
 
@@ -258,7 +271,7 @@ We now turn our attention from time-series-based plots to two other handy raw da
 
 While the time series plots demonstrated above are useful for evaluating temporal and day-to-day variations in PM2.5 concentrations or other parameters, they aren't able to tell us much about the source of air pollution. We experienced this first-hand in the last example above in which we concluded that the high PM2.5 values on 9/13/16 were due to a cold night, only to be told after the fact that a large fire burned nearby the day before.
 
-One key element that can be used to identify a source of air pollution is wind direction. Of course, air pollution must originate somewhere, and in most cases it is bound to drift wherever the wind wishes to take it. So, naturally, for a rough idea of where air pollution originates, we must simply look upwind! To this end, we have leveraged open source code from the OpenAir package to create a wind rose plot (baed on the `openair::windRose()` function) that is compatable with our enhanced raw dataframe structure. We demonstrate the plot below for Plain, WA over the same period as above -- September 12-16, 2016.
+One key element that can be used to identify a source of air pollution is wind direction. Of course, air pollution must originate somewhere, and in most cases it is bound to drift wherever the wind wishes to take it. So, naturally, for a rough idea of where air pollution originates, we must simply look upwind! To this end, we have leveraged open source code from the **openair** package to create a wind rose plot (baed on the `openair::windRose()` function) that is compatable with our enhanced raw dataframe structure. We demonstrate the plot below for Plain, WA over the same period as above -- September 12-16, 2016.
 
 ```{r}
 rawPlot_windRose(plain_enhanced,tlim = c(20160912,20160916))
@@ -268,7 +281,7 @@ This is effectively a polar stacked histogram -- the height of each color of eac
 
 Here we see that most of the wind was from the North and Northwest, and most of the wind was below 2 m/s in speed. This would seem to indicate that the source of the air pollution was from the North and Northwest; however, we must be careful about making assumptions such as this. As we saw above the highest concentrations were observed during the early morning hours when the wind speeds were the lowest, so it is certainly possible that the worst air quality could be associated with a wind direction that is completely different from the prevailing wind direction during the day. Thus, we should take care when making statements about the source of air pollution based on wind direction frequencies alone.
 
-What we really need is an approach that also takes into account the concentrations observed by wind direction. For this task, we again turn to the OpenAir package, from which we have modified the `openair::pollutionRose()` function to work with our enhanced raw dataframe structure. It is demonstrated below, again for September 12-16, 2016.
+What we really need is an approach that also takes into account the concentrations observed by wind direction. For this task, we again turn to the **openair** package, from which we have modified the `openair::pollutionRose()` function to work with our enhanced raw dataframe structure. It is demonstrated below, again for September 12-16, 2016.
 
 ### rawPlot_pollutionRose
 
@@ -276,7 +289,7 @@ What we really need is an approach that also takes into account the concentratio
 rawPlot_pollutionRose(plain_enhanced,tlim = c(20160912,20160916))
 ```
 
-Again, this plot represents a polar stacked histogram. The length of the wedges still represents the overall frequency of wind by direction; however, in this case the colors reprersent the concentrations observed from each wind direction, rather than the wind speeds by direction.
+Again, this plot represents a polar stacked histogram. The length of the wedges still represents the overall frequency of wind by direction. However, in this case the colors reprersent the concentrations observed from each wind direction, rather than the wind speeds by direction.
 
 So, in the plot above we again see that most of the wind came from the North and the Northwest, and we observe that a large number of hours with high PM2.5 concnetrations also had wind from these same directions. This is beginning to paint a picture -- some major source of air pollution to the North and/or Northwest of the monitoring station.
 
@@ -286,7 +299,7 @@ While the plot above is helpful, the varying lengths of the wedges can make it d
 rawPlot_pollutionRose(plain_enhanced,tlim = c(20160912,20160916),normalize=TRUE)
 ```
 
-As shown, this argument normalizes the lenghts of the wedges in the pollutionRose plot, and a black wedge outline is added to represent the overall frequencies of wind direction. Thus, the normalize=TRUE argument effectively combines the windRose and pollutionRose plots into one, and it allows for a very thorough analysis of the frequencies and magnitudes of air pollution concentrations by direction. For example, in the plot above we can now more easily see that a large proportion of hours with wind from the North had high PM2.5 concentrations. Similarly, we see relatively high proportions of high PM2.5 concentrations in winds from the east; however, we temper this observation by also noting that te overall frequency of wind from the east was low. In other words, we are more easily able to compare the proportions of different concentrations by direction, while the black wedge outlines help us keep our bearings on the overall frequencies of wind directions.
+As shown, this argument normalizes the lenghts of the wedges in the pollutionRose plot, and a black wedge outline is added to represent the overall frequencies of wind direction. Thus, setting `normalize=TRUE` effectively combines the windRose and pollutionRose plots into one, and it allows for a very thorough analysis of the frequencies and magnitudes of air pollution concentrations by direction. For example, in the plot above we can now more easily see that a large proportion of hours with wind from the North had high PM2.5 concentrations. Similarly, we see relatively high proportions of high PM2.5 concentrations in winds from the east; however, we temper this observation by also noting that te overall frequency of wind from the east was low. In other words, we are more easily able to compare the proportions of different concentrations by direction, while the black wedge outlines help us keep our bearings on the overall frequencies of wind directions.
 
 As a final experiment, let's create the same plot as above, but only for the single day that had the highest PM2.5 concentrations (i.e. 9/16/2016).
 
