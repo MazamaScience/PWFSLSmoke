@@ -1,30 +1,44 @@
+# In the summer of 2015 we had catastrophic wildfire in Washington, whilch then led to heavy smoke in the
+# surrounding towns for quite a few days. Visualizing smoke data can have vital importance by helping
+# us understand patterns of wildfire consequences.
+# In this report, we would like to show how our mapping functions
+# in the PWFSLSmoke package can help us visualize the PM25 data from summer of 2015. To begin, let's have
+# a broader look in the regions of Washington, Oregon and Idaho from June 1, 2015 to October 31m 2015.
 airnow <- airnow_load(startdate = 20150601, enddate = 20151031)
 airnow <- monitor_subset(airnow, stateCodes = c("WA", "OR", "ID"), countryCodes = "US")
-airnowID <- monitor_subset(airnow, stateCodes = "ID", countryCodes = "US")
-airnowWA <- monitor_subset(airnow, stateCodes = "WA", countryCodes = "US")
-airnowOR <- monitor_subset(airnow, stateCodes = "OR", countryCodes = "US")
+monitorMap(airnow)
+monitorLeaflet(airnow)
+
+# The monitorMap plot and monitorLeaflet plot show us pretty much the same information, except that from
+# leaflet plot you can get information of a paticular monitor by clicking on the dot of interest. Now
+# we might be interested to see which monitor has the worst acute smoke.
 
 # worst acute
-monitorInteractiveMap(airnow)
 worstPm25 <- max(airnow$data[,-1], na.rm=TRUE)
-dataArray <- as.matrix(airnow$data[,-1])
-worstMonitor <- which(dataArray==worstPm25, arr.ind=TRUE)
+worstMonitor <- which(airnow$data==worstPm25, arr.ind=TRUE)
 worstAcuteMonitor <- colnames(airnow$data)[worstMonitor[2]]
+airnow$meta[,c(3,8,9,10,12,17,18,20)][which(airnow$meta$monitorID==worstAcuteMonitor),]
 
-# find meta info for the monitor that has the worst pm
-# airnow$meta[which(rownames(airnow$meta)==worstMonitor),]
-# AQSID siteCode             siteName status agencyID                                agencyName EPARegion latitude longitude elevation GMTOffsetHours
-# 160491012 160491012     1012 Cottonwood E-sampler Active      ID1 Idaho Department of Environmental Quality       R10 46.06132 -116.3467    1091.6             -8
-# countryCode FIPSCMSACode CMSAName FIPSMSACode MSAName FIPSStateCode stateCode GNISCountyCode countyName GNISCityCode cityName            timezone monitorID
-# 160491012          US                                                      16        ID          16049      IDAHO                       America/Los_Angeles 160491012
+# So we find out that the monitor "160491012" had worst acute PM2.5 among all monitors during that summer. We can know a little
+# more about this monitor by looking at the information in our meta data.
 
-monitorPlot_dailyBarplot(ws_monitor=airnow, monitorID=worstAcuteMonitor)
+# AQSID siteCode            siteName status agencyID                                agencyName EPARegion
+# 160571012 160571012     1012 Juliaetta E-sampler Active      ID1 Idaho Department of Environmental Quality       R10
+# latitude longitude elevation GMTOffsetHours countryCode FIPSCMSACode CMSAName FIPSMSACode MSAName FIPSStateCode
+# 160571012 46.57873  -116.709     343.7             -8          US                                                      16
+# stateCode GNISCountyCode countyName GNISCityCode cityName            timezone monitorID
+# 160571012        ID          16057      LATAH                       America/Los_Angeles 160571012                                                  16        ID          16049      IDAHO                       America/Los_Angeles 160491012
 
+# So this monitor is in Latah county in Idaho. This worst PM2.5 was recorded on August 23, 2015 UTC!!!!
+
+
+# We might also be interested in finding out which county had the worst chronic air quality.
+# We can find out the answer by comparing the number of unhealthy days on average by AQI standard.
 # worst chronic
-airnowAvg <- monitor_dailyStatistic(airnow)
+airnowAvg <- suppressWarnings(monitor_dailyStatistic(airnow))
 numBadDays <- apply(airnowAvg$data[,-1], 2, function(x){ sum(x > AQI$breaks_24[4], na.rm=TRUE) }) #unhealthy level
 worstChronicMonitor <- colnames(airnowAvg$data)[which(numBadDays==max(numBadDays))+1]
-
+airnow$meta[,c(3,8,9,10,12,17,18,20)][which(airnow$meta$monitorID==worstChronicMonitor),]
 # this is the same monitor by looking at averages
 # pm25Means <- apply(dataArray, 2, function(x){mean(x, na.rm=TRUE)})
 # worstChronicMonitor <- names( which(pm25Means==max(pm25Means)) ) # 160490003 
@@ -37,47 +51,70 @@ worstChronicMonitor <- colnames(airnowAvg$data)[which(numBadDays==max(numBadDays
 # 160490003                                         16        ID          16049      IDAHO                       America/Los_Angeles 160490003
 # 
 
-monitorPlot_dailyBarplot(ws_monitor=airnow, monitorID=worstChronicMonitor)
+# So we know that the Idaho county in Idaho had the worst chronic air quality during summer 2015.
 
-# to see where the two monitors are on the map
+# With the worst acute and worst chronic counties, we can see how they locate relatively on the map
 monitorMap(airnow)
-points(-116.3467, 46.06132,cex=1.8,pch=1,lwd=2,col="blue")
+points(-116.709, 46.57873,cex=1.8,pch=1,lwd=2,col="blue")
 points(-116.0275, 46.2094, cex=1.8,pch=1,lwd=2,col="darkgreen")
+# The dot with blue outline is the worst acute location
+# The dot with dark green outline is the worst chronic location.
+
+# Or we can use a flame instead of a circle to mark these two locations on the map to make it look a little
+# more intuitive.
+monitorMap(airnow)
+addIcon("orangeFlame", -116.709, 46.57873, expansion=0.0018, pos=3)
+addIcon("redFlame", -116.0275, 46.2094, expansion=0.0018, pos=3)
+# As you can see the orange flame is where we had worst acute smoke and the red flame is where we had the worst chronic smoke
+
+# Since we now know the locations with the worst acute and chronic air quality, we can look at their daily average bar plots to
+# see which days had really bad smoke. 
 
 # find out the day with the worst pm25
-monitorPlot_dailyBarplot(ws_monitor=airnow, monitorID=worstAcuteMonitor, tlim = c(20150809, 20150829)) #0822 0825
-monitorPlot_dailyBarplot(ws_monitor=airnow, monitorID=worstChronicMonitor, tlim = c(20150809, 20150829)) #0822 0827
+monitorPlot_dailyBarplot(ws_monitor=airnow, monitorID=worstAcuteMonitor) #0817 0829
+monitorPlot_dailyBarplot(ws_monitor=airnow, monitorID=worstChronicMonitor) #0811 0829
+
+# We can see the unhealthy days are approximately from August 17 to August 29 for the worst acute location, and from August 11 to
+# August 29 for the worst Chronic location. These dates also imply that the smoke came from the Okanogan Complex Fire.
+# Then we can further zoon in to see the hourly averahe barplot to figure out if there's any pattern of the smoke
+# during a day.
 
 # look at hourly pm at specific bad days
-monitorPlot_hourlyBarplot(ws_monitor=airnow, monitorID=worstAcuteMonitor, tlim=c(20150822, 20150825))
+monitorPlot_hourlyBarplot(ws_monitor=airnow, monitorID=worstAcuteMonitor, tlim=c(20150822, 20150827))
 monitorPlot_hourlyBarplot(ws_monitor=airnow, monitorID=worstChronicMonitor, tlim=c(20150822, 20150827))
 
-monitorPlot_timeOfDaySpaghetti(ws_monitor=airnow, monitorID=worstAcuteMonitor, tlim=c(20150822, 20150825))
+# It's easy to see that at the worst acute location, the smoke spiked at around noon from August 23 to August 26.
+# And there's no consistent pattern for smoke at the worst chronic location. We can further confirm our observations
+# in the below spaghetti plots.
+
+monitorPlot_timeOfDaySpaghetti(ws_monitor=airnow, monitorID=worstAcuteMonitor, tlim=c(20150822, 20150827))
 monitorPlot_timeOfDaySpaghetti(ws_monitor=airnow, monitorID=worstChronicMonitor, tlim=c(20150822, 20150827))
 
+# The spaghetti plot for the worst acute location echos what we discovered in the hourly plot. For the spaghetti plot
+# of the worst chronic location, the lines are kind of bouncing up and down in the afternoon.
 
-# color counties by number of days/hours for AQI levels
+# Finally we can zoon out to have a bigger picture of the number of unhealthy days by AQI standard among all the counties.
 
-numBadDaysCounty <- aggregate(data.frame(numBadDays), list(airnow$meta$GNISCountyCode), max) # mean or max
+# color counties by number of days for AQI levels
+
+numBadDaysCounty <- aggregate(data.frame(numBadDays), list(airnow$meta$GNISCountyCode), max) 
 numBadDaysCounty[,2] <- ceiling(numBadDaysCounty[,2])
 colnames(numBadDaysCounty) <- c("fips", "days")
 countyFIPs <- maps::county.fips
-countyFIPs <- countyFIPs[duplicated(countyFIPs[,1])]
+countyFIPs <- countyFIPs[!duplicated(countyFIPs[,1]),]
 countyFIPs$polyname <- sapply(countyFIPs$polyname,function(x){ return( stringr::str_split_fixed(x,":",2)[1] ) } )
 numBadDaysCounty <- data.frame(apply(numBadDaysCounty,2,as.integer))
 numBadDaysCounty <- dplyr::left_join(numBadDaysCounty, countyFIPs, by="fips")
 colnames(numBadDaysCounty)[3] <- "county"
 # 0, 1-5, 6-10, 11-15, 16-20
 numBadDaysCounty$colIndex <- .bincode(numBadDaysCounty$days, c(0,1,5,10,15,20), right=FALSE)
-cols <- RColorBrewer::brewer.pal(5, "Blues")
+cols <- RColorBrewer::brewer.pal(11, "BrBG")[5:1]
 
 map("county",c("WA","OR","ID"))
-map("county",numBadDaysCounty$county, col=cols[numBadDaysCounty$colIndex], fill=TRUE, add=TRUE)
-
-if (FALSE) {
-  
-
-  
-  
-    
+for(i in 1:nrow(numBadDaysCounty)) {
+  map("county", numBadDaysCounty$county[i], col=cols[numBadDaysCounty$colIndex[i]], fill=TRUE, add=TRUE)
 }
+legend("topright", title="Number of Unhealthy Days", pch=16, pt.cex=2, col=cols, legend=c("0", "1-5", "6-10", "11-15", "16-20"), bty="n")
+
+# We can see that the Idaho county in Idaho is the county that had most of bad smokey days while the Okanogan county in
+# Washington had the second most of bad smokey days.
