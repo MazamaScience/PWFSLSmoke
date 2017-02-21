@@ -6,7 +6,7 @@
 \usage{
 monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
   minHours = 20, gridPos = "", gridCol = "black", gridLwd = 0.5,
-  gridLty = "solid", ...)
+  gridLty = "solid", labels_x_nudge = 0, labels_y_nudge = 0, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -26,6 +26,10 @@ if only one monitor in the ws_monitor object)}
 
 \item{gridLty}{type of grid lines (see graphical parameter 'lty')}
 
+\item{labels_x_nudge}{nudge x labels to the left}
+
+\item{labels_y_nudge}{nudge y labels down}
+
 \item{...}{additional arguments to be passed to barplot()}
 }
 \description{
@@ -37,6 +41,10 @@ function may be used.
 
 Each 'day' is the midnight-to-midnight period in the monitor local timezone.
 When \code{tlim} is used, it is converted to the monitor local timezone.
+}
+\details{
+The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to 
+tweak the date labeling. Units used are the same as those in the plot.
 }
 \examples{
 \dontrun{

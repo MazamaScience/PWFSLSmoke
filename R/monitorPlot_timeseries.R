@@ -212,18 +212,20 @@ monitorPlot_timeseries <- function(ws_monitor,
       
     } else if ( style == 'gnats' ) {
       
-      # Set opacity based on number of points
+      # Set opacity based on total number of valid measurements
       dims <- dim(as.matrix(data[,-1]))
       naCount <- length(which(is.na(data[,-1])))
       size <- dims[1]*dims[2] - naCount
-      opacity <- min(8/log(size), 0.9)
+      opacity <- min(2/log(size), 0.9)
       if ( !'col' %in% names(argsList) ) {
-        argsList$col <- 'black'
+        baseColor <- 'black'
+      } else {
+        baseColor <- argsList$col
       }
 
       for (id in meta$monitorID) {
         argsList$y <- data[[id]] # same as data[,id]
-        argsList$col <- adjustcolor(argsList$col, alpha.f=opacity)
+        argsList$col <- adjustcolor(baseColor, alpha.f=opacity)
         argsList$pch <- 16
         # Add the points
         do.call(points,argsList)

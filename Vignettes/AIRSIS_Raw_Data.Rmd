@@ -13,10 +13,11 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-This vignette explores how the PWFSLSmoke package can be used to retrieve and explore raw, ambient air quality data from multiple types of AIRSIS monitoring stations.
+This vignette explores how the **PWFSLSmoke** package can be used to retrieve and explore raw, ambient air quality data from multiple types of [AIRSIS](http://app.airsis.com) monitoring stations.
 Examples demonstrate using real monitoring data to answer a variety of questions.
 
-This vignette focuses on monitors whose data is made available through AIRSIS. However, the following examples would also support exploration of raw data made available through WRCC for which similar functionality exists, e.g. `wrcc_createRawDataframe()`.
+
+Although  this vignette focuses on monitors whose data is made available through AIRSIS, the following examples would also support exploration of raw data made available through WRCC for which similar functionality exists, e.g. `wrcc_createRawDataframe()`.
 
 ## Package Setup
 

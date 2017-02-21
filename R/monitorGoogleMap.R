@@ -6,21 +6,20 @@
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
 #' @param breaks set of breaks used to assign colors
 #' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
-#' @param labels a set of text labels, one for each color
-#' @param legendTitle legend title
-#' @param legendX x coordinate passed on to the legend() command
-#' @param legendY y coordinate passed on to the legend() command
-#' @param showLegend logical specifying whether to add a legend
 #' @param width width of image, in pixels
 #' @param height height of image, in pixels
+#' @param centerLon map center longitude
+#' @param centerLat map center latitude
 #' @param zoom map zoom level
 #' @param maptype map type
 #' @param grayscale logical, if TRUE the colored map tile is rendered into a black & white image
 #' @param map optional map object returned from monitorGoogleMap()
 #' @param ... arguments passed on to RgoogleMaps::PlotOnStaticMap() (e.g. destfile, cex, pch, etc.)
 #' @return A \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
-#' @description Creates a Google map of a ws_monitor object.
-#' TODO:  More description here.
+#' @description Creates a Google map of a ws_monitor object using the \pkg{RgoogleMaps} package.
+#' 
+#' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
+#' will be calcualted from the \code{ws_monitor} object metadata.
 #' @examples
 #' \dontrun{
 #' CarmelValley <- airnow_load(20160801,20160831,monitorIDs="060530002")
@@ -31,13 +30,10 @@ monitorGoogleMap <- function(ws_monitor,
                              slice=get('max'),
                              breaks=AQI$breaks_24,
                              colors=AQI$colors,
-                             labels=AQI$names,
-                             legendTitle='Max AQI Level',
-                             legendX="topright",
-                             legendY=NULL,
-                             showLegend=TRUE,
                              width=640,
                              height=640,
+                             centerLon=NULL,
+                             centerLat=NULL,
                              zoom=NULL,
                              maptype='terain',
                              grayscale=FALSE,
@@ -46,8 +42,13 @@ monitorGoogleMap <- function(ws_monitor,
   
   # ----- Data Preparation ----------------------------------------------------
   
-  centerLat <- base::mean(ws_monitor$meta$latitude)
-  centerLon <- base::mean(ws_monitor$meta$longitude)
+  if ( is.null(centerLon) ) {
+    centerLon <- base::mean(ws_monitor$meta$longitude)
+  }
+  
+  if ( is.null(centerLat) ) {
+    centerLat <- base::mean(ws_monitor$meta$latitude)
+  }
   
   # Create the 'slice'
   if ( class(slice) == "function" ) {
@@ -123,7 +124,5 @@ monitorGoogleMap <- function(ws_monitor,
   
   map <- do.call(RgoogleMaps::PlotOnStaticMap, argsList)
   
-  # TODO:  Add legend to monitorGoogleMap.R
- 
   return(invisible(map)) 
 }

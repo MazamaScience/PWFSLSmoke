@@ -5,10 +5,8 @@
 \title{Create Map of Monitoring Stations}
 \usage{
 monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, cex = par("cex"), labels = AQI$names,
-  legendTitle = "Max AQI Level", legendX = "topright", legendY = NULL,
-  showLegend = TRUE, stateCol = "grey60", stateLwd = 2,
-  countyCol = "grey70", countyLwd = 1, add = FALSE, ...)
+  colors = AQI$colors, cex = par("cex"), stateCol = "grey60",
+  stateLwd = 2, countyCol = "grey70", countyLwd = 1, add = FALSE, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -20,16 +18,6 @@ monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 \item{colors}{set of colors must be one less than the number of breaks}
 
 \item{cex}{the amount that the points will be magnified on the map}
-
-\item{labels}{a set of text labels, one for each color}
-
-\item{legendTitle}{a title for the legend if showLegend=TRUE}
-
-\item{legendX}{x coordinate passed on to the legend() command}
-
-\item{legendY}{y coordinate passed on to the legend() command}
-
-\item{showLegend}{logical specifying whether to add a legend (default: \code{TRUE})}
 
 \item{stateCol}{color for state outlines on the map}
 

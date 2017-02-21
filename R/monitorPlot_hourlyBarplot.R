@@ -13,6 +13,8 @@
 #' @param gridCol grid color
 #' @param gridLwd grid line width
 #' @param gridLty grid line type
+#' @param labels_x_nudge nudge x labels to the left
+#' @param labels_y_nudge nudge y labels down
 #' @param dayCol day boundary color
 #' @param dayLwd day boundary line width (set to 0 to omit day lines)
 #' @param dayLty day boundary type
@@ -28,6 +30,8 @@
 #' \item{\code{brownScaleAQI} -- hourly values colored with brownscale colors using AQI 24-hour breaks}
 #' \item{\code{grayScaleAQI} -- hourly values colored grayscale colors using AQI 24-hour breaks}
 #' }
+#' @details The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to 
+#' tweak the date labeling. Units used are the same as those in the plot.
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20150701, 20150710)
@@ -45,6 +49,8 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
                                       gridCol='black',
                                       gridLwd=0.5,
                                       gridLty='solid',
+                                      labels_x_nudge=0,
+                                      labels_y_nudge=0,
                                       dayCol='black',
                                       dayLwd=2,
                                       dayLty='solid',
@@ -225,17 +231,15 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
     # Days
     if ( dayLwd > 0 ) {
       labels_x <- day_indices-1
-      labels_x_nudge <- 0
       labels_y <- -0.08 * (par('usr')[4] - par('usr')[3])
       labels <- strftime(datetime, "%b %d", tz=timezone)[day_indices]
-      text(labels_x - labels_x_nudge, labels_y, labels, srt=45, cex=argsList$cex.names, xpd=NA)
+      text(labels_x - labels_x_nudge, labels_y - labels_y_nudge, labels, srt=45, cex=argsList$cex.names, xpd=NA)
       axis(1, at=labels_x, labels=FALSE, lwd=0, lwd.ticks=dayLwd)
     }
     
     if ( hourLwd > 0 ) {
       # Hours
       labels_x <- hour_indices-1
-      labels_x_nudge <- 0
       labels_y <- -0.03 * (par('usr')[4] - par('usr')[3])
       if ( hourInterval == 12 ) {
         labels <- c('00','12')
@@ -247,7 +251,7 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
         labels <- seq(0,23,hourInterval)
       }
       if ( dayLwd > 0 ) { labels[1] <- '' }
-      text(labels_x - labels_x_nudge, labels_y, labels, srt=00, cex=argsList$cex.names*0.6, xpd=NA)
+      text(labels_x, labels_y, labels, srt=00, cex=argsList$cex.names*0.6, xpd=NA)
 
     }
     

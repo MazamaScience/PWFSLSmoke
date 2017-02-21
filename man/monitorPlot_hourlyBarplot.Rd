@@ -6,9 +6,10 @@
 \usage{
 monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
   localTime = TRUE, style = "AQI", shadedNight = TRUE, gridPos = "",
-  gridCol = "black", gridLwd = 0.5, gridLty = "solid", dayCol = "black",
-  dayLwd = 2, dayLty = "solid", hourCol = "black", hourLwd = 1,
-  hourLty = "solid", hourInterval = 6, ...)
+  gridCol = "black", gridLwd = 0.5, gridLty = "solid",
+  labels_x_nudge = 0, labels_y_nudge = 0, dayCol = "black", dayLwd = 2,
+  dayLty = "solid", hourCol = "black", hourLwd = 1, hourLty = "solid",
+  hourInterval = 6, ...)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}
@@ -31,6 +32,10 @@ if only one monitor in the ws_monitor object)}
 \item{gridLwd}{grid line width}
 
 \item{gridLty}{grid line type}
+
+\item{labels_x_nudge}{nudge x labels to the left}
+
+\item{labels_y_nudge}{nudge y labels down}
 
 \item{dayCol}{day boundary color}
 
@@ -56,6 +61,10 @@ Colors are assigned to one of the following styles:
 \item{\code{brownScaleAQI} -- hourly values colored with brownscale colors using AQI 24-hour breaks}
 \item{\code{grayScaleAQI} -- hourly values colored grayscale colors using AQI 24-hour breaks}
 }
+}
+\details{
+The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to 
+tweak the date labeling. Units used are the same as those in the plot.
 }
 \examples{
 \dontrun{
