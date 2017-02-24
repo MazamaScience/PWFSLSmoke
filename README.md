@@ -35,6 +35,9 @@ of some packages that are not yet available on CRAN.
 The following packages should be installed with devtools by typing the following at the RStudio console:
 
 ```
+# Note that vignettes require knitr and rmarkdown
+install.packages('knitr')
+install.packages('rmarkdown')
 devtools::install_github('rstudio/dygraphs')
 devtools::install_github('rstudio/leaflet')
 devtools::install_github('mazamascience/MazamaSpatialUtils', build_vignettes=TRUE)
