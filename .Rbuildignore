@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^NEWS\.md$
-^LICENSE$
+^app$
 ^local.*$
+^LICENSE$
+^NEWS\.md$
