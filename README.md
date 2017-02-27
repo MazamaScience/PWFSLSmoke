@@ -1,3 +1,8 @@
+<!-- [![Build Status](https://travis-ci.org/mazamascience/PWFSLSmoke.svg)](https://travis-ci.org/mazamascience/PWFSLSmoke)
+[![Coverage Status](https://coveralls.io/repos/mazamascience/PWFSLSmoke/badge.svg?branch=master&service=github)](https://coveralls.io/github/mazamascience/PWFSLSmoke?branch=master) -->
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
+[![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSMoke)](https://cran.r-project.org/package=PWFSLSmoke)
+
 # PWFSLSmoke R Package
 
 ```
