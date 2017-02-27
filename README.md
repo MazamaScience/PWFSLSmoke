@@ -1,3 +1,8 @@
+<!-- [![Build Status](https://travis-ci.org/mazamascience/PWFSLSmoke.svg)](https://travis-ci.org/mazamascience/PWFSLSmoke)
+[![Coverage Status](https://coveralls.io/repos/mazamascience/PWFSLSmoke/badge.svg?branch=master&service=github)](https://coveralls.io/github/mazamascience/PWFSLSmoke?branch=master) -->
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
+[![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSMoke)](https://cran.r-project.org/package=PWFSLSmoke)
+
 # PWFSLSmoke R Package
 
 ```
@@ -35,6 +40,9 @@ of some packages that are not yet available on CRAN.
 The following packages should be installed with devtools by typing the following at the RStudio console:
 
 ```
+# Note that vignettes require knitr and rmarkdown
+install.packages('knitr')
+install.packages('rmarkdown')
 devtools::install_github('rstudio/dygraphs')
 devtools::install_github('rstudio/leaflet')
 devtools::install_github('mazamascience/MazamaSpatialUtils', build_vignettes=TRUE)
