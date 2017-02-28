@@ -1,5 +1,7 @@
 
-library(jug)
+library(methods)       # always included for Rscripts
+library(jug)           # web framework
+
 library(PWFSLSmoke)
 
 
