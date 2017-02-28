@@ -7,11 +7,6 @@
 #' @param breaks set of breaks used to assign colors
 #' @param colors set of colors must be one less than the number of breaks
 #' @param cex the amount that the points will be magnified on the map
-#' @param labels a set of text labels, one for each color
-#' @param legendTitle a title for the legend if showLegend=TRUE
-#' @param legendX x coordinate passed on to the legend() command
-#' @param legendY y coordinate passed on to the legend() command
-#' @param showLegend logical specifying whether to add a legend (default: \code{TRUE})
 #' @param stateCol color for state outlines on the map
 #' @param stateLwd width for state outlines
 #' @param countyCol color for county outline on the map
@@ -61,11 +56,6 @@ monitorMap <- function(ws_monitor,
                        breaks=AQI$breaks_24,
                        colors=AQI$colors,
                        cex=par('cex'),  
-                       labels=AQI$names,
-                       legendTitle="Max AQI Level",
-                       legendX="topright",
-                       legendY=NULL,
-                       showLegend=TRUE,
                        stateCol="grey60",
                        stateLwd=2,
                        countyCol="grey70",
@@ -88,7 +78,7 @@ monitorMap <- function(ws_monitor,
     stop("Improper use of slice parameter")
   }
   
-  # ----- Figure out names for a legend and colors for each point ---- 
+  # Colors for each point 
   
   # Create levels and use them to create a set of colors
   levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
@@ -122,10 +112,6 @@ monitorMap <- function(ws_monitor,
   } else {
     points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters, argsList$orientation), 
             pch=16, cex=cex, col=cols )
-  }
-  
-  if ( showLegend ) { 
-    addLegend(legendX, legendY, cex=cex*0.7, col=rev(colors), legend=rev(labels), title=legendTitle)
   }
   
 }

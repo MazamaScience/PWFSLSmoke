@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-This document covers the basics of how the **PWFSLSmoke** Package acquires and processes [AIRSIS](http://app.airsis.com) data.
+This vignette covers the basics of how the **PWFSLSmoke** Package acquires and processes [AIRSIS](http://app.airsis.com) data.
 An initial demonstration of the creation of a `ws_monitor` object will be followed by a closer analysis
 of how raw data is processed including functions called by the `airsis_createRawDataframe()` function:
 

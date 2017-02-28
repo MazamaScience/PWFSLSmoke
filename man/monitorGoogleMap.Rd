@@ -5,9 +5,8 @@
 \title{Create a Google Map of ws_monitor Object}
 \usage{
 monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, labels = AQI$names, legendTitle = "Max AQI Level",
-  legendX = "topright", legendY = NULL, showLegend = TRUE, width = 640,
-  height = 640, zoom = NULL, maptype = "terain", grayscale = FALSE,
+  colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
+  centerLat = NULL, zoom = NULL, maptype = "terain", grayscale = FALSE,
   map = NULL, ...)
 }
 \arguments{
@@ -19,19 +18,13 @@ monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 
 \item{colors}{a set of colors for different levels of air quality data determined by \code{breaks}}
 
-\item{labels}{a set of text labels, one for each color}
-
-\item{legendTitle}{legend title}
-
-\item{legendX}{x coordinate passed on to the legend() command}
-
-\item{legendY}{y coordinate passed on to the legend() command}
-
-\item{showLegend}{logical specifying whether to add a legend}
-
 \item{width}{width of image, in pixels}
 
 \item{height}{height of image, in pixels}
+
+\item{centerLon}{map center longitude}
+
+\item{centerLat}{map center latitude}
 
 \item{zoom}{map zoom level}
 
@@ -47,8 +40,10 @@ monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 A \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
 }
 \description{
-Creates a Google map of a ws_monitor object.
-TODO:  More description here.
+Creates a Google map of a ws_monitor object using the \pkg{RgoogleMaps} package.
+
+If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
+will be calcualted from the \code{ws_monitor} object metadata.
 }
 \examples{
 \dontrun{
