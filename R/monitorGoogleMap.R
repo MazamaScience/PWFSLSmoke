@@ -92,6 +92,9 @@ monitorGoogleMap <- function(ws_monitor,
     } else {
       zoom <- 8
     }
+  } else if ( round(zoom)-zoom!=0 ) {
+      warning(paste0("Google maps does not support non-integer zoom levels. Rounded zoom level to nearest integer (i.e. ",round(zoom),")"))
+      zoom <- round(zoom)
   }
   
   
