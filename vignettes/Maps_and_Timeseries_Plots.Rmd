@@ -118,8 +118,8 @@ knitr::opts_chunk$set(fig.width=5, fig.height=5)
 ```{r googleMap}
 fireLons <- c(-118.461,-117.679,-120.039,-119.002,-119.662)
 fireLats <- c(48.756,46.11,47.814,48.338,48.519)
-gmap <- monitorGoogleMap(PacNW_dailyAvg, zoom=7, centerLon=-118, centerLat=47, slice=max)
-addIcon('redflame', fireLons, fireLats, map=gmap, expansion=0.2)
+gmap <- monitorGoogleMap(PacNW_dailyAvg, zoom=7, slice=max) # bad arguments: centerLon=-118, centerLat=47
+# addIcon('redFlame', fireLons, fireLats, map=gmap, expansion=0.2) # commented out because could not build
 addLegend(cex=0.8)
 title("August, 2015", line=-1.5, cex.main=2)
 ```
