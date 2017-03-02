@@ -1,38 +1,32 @@
-#' @keywords ws_monitor 
+#' @keywords EPA
 #' @export
-#' @importFrom utils download.file
 #' @title Download and Convert Hourly EPA Air Quality Data
-#' @param parameterName name of parameterName.
-#' @param parameterCode specific parameter code (e.g. PM2.5 could be 88101 or 88502)
 #' @param year year
-#' @param baseUrl base URL for archived hourly data
+#' @param parameterName pollutant name
+#' @param parameterCode pollutant code
+#' @param baseUrl base URL for archived daily data
+#' @param downloadDir directory where files are downloaded and unzipped
 #' @description Convert EPA data into a ws_monitor object, ready for use with all monitor_~ functions.
 #' @note Before running this function you must first enable spatial data capabilities as in the example.
-#' @return Character string name of the generated .RData file.
-#' @references \href{http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html}{EPA data files}
-#' @references \href{http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/FileFormats.html#_format_3}{file format description}
+#' @return A ws_monitor object with EPA data.
+#' @references \href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+#' @references \href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/FileFormats.html#_format_3}{file format description}
 #' @examples
 #' \dontrun{
 #' library(PWFSLSmoke)
-#' setSmokeDataDir('~/Data/Smoke')
 #' library(MazamaSpatialUtils)
 #' setSpatialDataDir('~/Data/Spatial')
 #' loadSpatialData('NaturalEarthAdm1') # stateCodes dataset
-#' file <- epa_createMonitorObject("PM2.5", 88101, 2015)
-#' mon <- get(load(file))
+#' mon <- epa_createMonitorObject(2015, "PM2.5", "88101")
 #' }
 
-# if (false){
-#   parameterName="PM2.5"
-#   parameterCode=88101
-#   year=NULL
-#   baseUrl='http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/'
-# }
+epa_createMonitorObject <- function(year=NULL,
+                                    parameterName="PM2.5",
+                                    parameterCode="88101",
+                                    baseUrl='https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/',
+                                    downloadDir=tempdir()) {
 
-epa_createMonitorObject <- function(parameterName=NULL, parameterCode=NULL, year=NULL,
-                                    baseUrl='https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/') {
-
-  df <- epa_downloadData(parameterName, parameterCode, year, baseUrl)
+  df <- epa_downloadData(year, parameterName, parameterCode, baseUrl, downloadDir)
       
   dataSource <- 'EPA'
   
@@ -51,27 +45,29 @@ epa_createMonitorObject <- function(parameterName=NULL, parameterCode=NULL, year
   }
   
   # Create 'meta' dataframe
+  logger.info("Creating 'meta' dataframe ...")
   meta <- epa_createMetaDataframe(df)
   
-  #Create 'data' dataframe
+  # Create 'data' dataframe
+  logger.info("Creating 'data' dataframe ...")
   data <- epa_createDataDataframe(df)
   
   # Create the 'ws_monitor' data list
-  ws_monitor <- list(meta=meta,
-                     data=data)
-  
+  ws_monitor <- list(meta=meta, data=data)
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
-  
-  # Create appropriate data object and file name and write the data to disk
-  dfName <- paste(dataSource, parameterName, parameterCode, year,sep='_')  
-  assign(dfName, ws_monitor)
-  fileName <- paste0(getSmokeDataDir(), '/', dfName, '.RData')
-  save(list=dfName, file=fileName)
   
   logger.debug(paste0('   Finished creating ws_monitor object\n'))
   
-  # Return a 'prefix' for use with monitor_load()
-  return(fileName)
+  # # Create appropriate data object and file name and write the data to disk
+  # dfName <- paste(dataSource, parameterName, parameterCode, year,sep='_')  
+  # assign(dfName, ws_monitor)
+  # fileName <- paste0(getSmokeDataDir(), '/', dfName, '.RData')
+  # save(list=dfName, file=fileName)
+  # 
+  # # Return a 'prefix' for use with monitor_load()
+  # return(fileName)
+  
+  return(ws_monitor)
   
 }
 

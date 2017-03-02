@@ -23,7 +23,7 @@ wrcc_createMonitorObject(startdate = 20020101,
 \item{saveFile}{optional filename where raw CSV will be written}
 }
 \value{
-A ws_monitor object with a WRCC data.
+A ws_monitor object with WRCC data.
 }
 \description{
 Obtains monitor data from an WRCC webservice and converts

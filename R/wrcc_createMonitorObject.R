@@ -7,7 +7,7 @@
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
-#' @return A ws_monitor object with a WRCC data.
+#' @return A ws_monitor object with WRCC data.
 #' @description Obtains monitor data from an WRCC webservice and converts
 #' it into a quality controlled, metadata enhanced \code{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
