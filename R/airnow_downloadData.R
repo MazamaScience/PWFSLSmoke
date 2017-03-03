@@ -67,7 +67,7 @@ airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
     # Obtain an hour of AirNow data
     result <- try( df <- airnow_downloadHourlyData(datestamp),
                    silent=TRUE)
-    if ( class(result)[1] == "try-error" ) {
+    if ( "try-error" %in% class(result) ) {
       err_msg <- stringr::str_trim(geterrmessage())
       logger.warn("Unable to download data: %s",err_msg)
       next

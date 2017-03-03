@@ -61,9 +61,18 @@ tar -xzf Spatial.tar.gz
 
 ## Examples
 
-Working example scripts that demonstrate the functionality of the package can be found in the
-[localExamples](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localExamples)
-directory on github. This directory is not part of the package.
+Additional vignettes that demonstrate the functionality of the package can be found in the
+[localVignettes](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localVignettes)
+directory on github. These vignettes are not part of the package because they require
+installation of the **MazamaSpatialUtils** datasets.
+
+To run them you should:
+
+ * make sure you have the proper spatial data installed in ~/Data/Spatial/
+ * make sure you have both the **knitr** and **rmarkdown** packages installed
+ * download the localVignettes
+ * load one into RStudio
+ * click the "Knit" button
 
 ----
 

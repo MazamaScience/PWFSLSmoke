@@ -84,10 +84,15 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
         logger.trace("\tgoogle address request for location = %s, %s", location[1], location[2])
         if (!anyNA(location)) {
           address <- suppressMessages( ggmap::revgeocode(location, output='more') )
-          df$siteName[i] <- paste(address$locality,address$route,sep='-')
+          # NOTE:  revgeocode can fail if you have too may Google requests in a day
+          result <- try( df$siteName[i] <- paste(address$locality,address$route,sep='-'),
+                         silent=TRUE ) # don't show errors
+          if ( "try-error" %in% class(result) ) {
+            logger.warn("Google geocoding may have failed. Have you goin over the 2,500/day limit? (2017)")
+          }
           # NOTE:  administrative_area_level_2 is not always present
           try( df$countyName[i] <- stringr::str_replace(address$administrative_area_level_2,' County',''),
-               silent=TRUE ) ## not to show the errors
+               silent=TRUE ) # don't show errors
         }
         
       }

@@ -2,7 +2,7 @@
 #
 # NOTE: May have to validate or revalidate email address prior to running...
 
-library(rub)
+library(rhub)
 
 rhubTestScript <- function(email='RexS.Thompson@gmail.com',...) {
   
