@@ -4,11 +4,13 @@
 \alias{airsis_loadLatest}
 \title{Load Recent AIRSIS Monitoring Data}
 \usage{
-
-  airsis_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/airsis_pm25_latest.RData")
+airsis_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/",
+  file = "airsis_pm25_latest.RData")
 }
 \arguments{
-\item{baseUrl}{The location of the meta and data files}
+\item{baseUrl}{location of the AIRSIS latest data file}
+
+\item{file}{name of the AIRSIS latest data file}
 }
 \value{
 A ws_monitor object with AIRSIS data.

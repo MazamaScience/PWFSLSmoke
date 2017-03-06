@@ -8,13 +8,13 @@
 #' 
 #' Available combinations of \code{parameter} and \code{hour} are:
 #' \enumerate{
-#' \item{parameter="o3",  hour=8}
-#' \item{parameter="o3",  hour=1}
-#' \item{parameter="pm25,  hour=24}
-#' \item{parameter="pm10,  hour=24}
-#' \item{parameter="co",  hour=8}
-#' \item{parameter="so2",  hour=1}
-#' \item{parameter="no2",  hour=1}
+#' \item{parameter="o3", hour=8}
+#' \item{parameter="o3", hour=1}
+#' \item{parameter="pm25, hour=24}
+#' \item{parameter="pm10, hour=24}
+#' \item{parameter="co", hour=8}
+#' \item{parameter="so2", hour=1}
+#' \item{parameter="no2", hour=1}
 #' }
 #' 
 #' See references for calculation details.
@@ -250,19 +250,19 @@ return(AQI_monitor)
 #steps: truncate the highest concentration value, find the break points, calculate the equation, round the integer
 # equation:
 # Ip = (Ihi - Ilo)/(BPhi - BPlo) * (Cp - BPlo) + Ilo
-# Ozone (ppm) – truncate to 3 decimal places
-# PM2.5 (µg/m3) – truncate to 1 decimal place
-# PM10 (µg/m3) – truncate to integer
-# CO (ppm) – truncate to 1 decimal place
-# SO2 (ppb) – truncate to integer
-# NO2 (ppb) – truncate to integer
+# Ozone (ppm) - truncate to 3 decimal places
+# PM2.5 (ug/m3) - truncate to 1 decimal place
+# PM10 (ug/m3) - truncate to integer
+# CO (ppm) - truncate to 1 decimal place
+# SO2 (ppb) - truncate to integer
+# NO2 (ppb) - truncate to integer
 
 # reference table:
 
 #    O3 - 8h        O3 - 1h       PM2.5             PM10         CO           SO2          NO2          AQI
-# 0.000 - 0.054        -          0.0 – 12.0        0 - 54    0.0 - 4.4     0 - 35         0 - 53      0 - 50   Good
-# 0.055 - 0.070        -         12.1 – 35.4       55 - 154   4.5 - 9.4    36 - 75        54 - 100    51 - 100  Moderate
-# 0.071 - 0.085  0.125 - 0.164   35.5 – 55.4      155 - 254   9.5 - 12.4   76 - 185      101 - 360   101 - 150  UnhealthyForSensitiveGroups
+# 0.000 - 0.054        -          0.0 - 12.0        0 - 54    0.0 - 4.4     0 - 35         0 - 53      0 - 50   Good
+# 0.055 - 0.070        -         12.1 - 35.4       55 - 154   4.5 - 9.4    36 - 75        54 - 100    51 - 100  Moderate
+# 0.071 - 0.085  0.125 - 0.164   35.5 - 55.4      155 - 254   9.5 - 12.4   76 - 185      101 - 360   101 - 150  UnhealthyForSensitiveGroups
 # 0.086 - 0.105  0.165 - 0.204  (55.5 - 150.4)3   255 - 354  12.5 - 15.4 (186 - 304)4    361 - 649   151 - 200  Unhealthy
 # 0.106 - 0.200  0.205 - 0.404 (150.5 - (250.4)3  355 - 424  15.5 - 30.4 (305 - 604)4    650 - 1249  201 - 300  VeryUnhealthy
 #                0.405 - 0.504 (250.5 - (350.4)3  425 - 504  30.5 - 40.4 (605 - 804)4   1250 - 1649  301 - 400  Hazadrous                   

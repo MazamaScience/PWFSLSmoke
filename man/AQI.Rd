@@ -16,9 +16,8 @@ AQI breaks and associated names and colors
 
 
 
-AQI breaks were obtained from \url{http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf}
-
-AQI colors are defined in \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-dec2013.pdf}
+AQI breaks and colors colors are defined in
+\url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
 }
 \note{
 The low end of each break category is used as the breakpoint.

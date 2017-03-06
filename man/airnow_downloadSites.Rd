@@ -4,11 +4,13 @@
 \alias{airnow_downloadSites}
 \title{Download AirNow Site Location Metadata}
 \usage{
-
-  airnow_downloadSites(url = "https://files.airnowtech.org/airnow/today/monitoring_site_locations.dat")
+airnow_downloadSites(baseUrl = "https://files.airnowtech.org/airnow/today/",
+  file = "monitoring_site_locations.dat")
 }
 \arguments{
-\item{url}{location of the monitoring_site_locations.dat file}
+\item{baseUrl}{location of the AirNow monitoring site locations file}
+
+\item{file}{name of the AirNow monitoring site locations file}
 }
 \value{
 Dataframe of site location metadata.

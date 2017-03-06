@@ -24,7 +24,7 @@ address information associated with the locations specified by the
 Address information is obtained by using the \pkg{ggmap} package.
 }
 \references{
-\url{https://maps.googleapis.com/maps/api/elevation}
+\url{https://developers.google.com/maps/documentation/elevation/intro}
 }
 \keyword{internal}
 

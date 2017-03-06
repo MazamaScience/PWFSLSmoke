@@ -30,8 +30,8 @@ expect objects of class `ws_monitor` as their first argument. (*Note that 'ws_' 
 
 Monitoring data will typically be obtained from an agency charged with archiving data
 acquired at monitoring sites. For wildifre smoke, the primary pollutant is PM 2.5 and the
-sites archiving this data include [AirNow](http://www.airnow.gov), [WRCC](http://www.wrcc.dri.edu) and
-[AIRSIS](http://app.airsis.com).
+sites archiving this data include [AirNow](https://www.airnow.gov), [WRCC](http://www.wrcc.dri.edu) and
+[AIRSIS](https://app.airsis.com/USFS).
 
 The data model for monitoring data consists of an **R** `list` with two dataframes: `data` and `meta`.
 

@@ -21,13 +21,13 @@ AQI values are calculated for data in the ws_monitor object for different pollut
 
 Available combinations of \code{parameter} and \code{hour} are:
 \enumerate{
-\item{parameter="o3",  hour=8}
-\item{parameter="o3",  hour=1}
-\item{parameter="pm25,  hour=24}
-\item{parameter="pm10,  hour=24}
-\item{parameter="co",  hour=8}
-\item{parameter="so2",  hour=1}
-\item{parameter="no2",  hour=1}
+\item{parameter="o3", hour=8}
+\item{parameter="o3", hour=1}
+\item{parameter="pm25, hour=24}
+\item{parameter="pm10, hour=24}
+\item{parameter="co", hour=8}
+\item{parameter="so2", hour=1}
+\item{parameter="no2", hour=1}
 }
 
 See references for calculation details.

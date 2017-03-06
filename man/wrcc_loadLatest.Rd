@@ -4,11 +4,13 @@
 \alias{wrcc_loadLatest}
 \title{Load Recent WRCC Monitoring Data}
 \usage{
-
-  wrcc_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/wrcc_pm25_latest.RData")
+wrcc_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/",
+  file = "wrcc_pm25_latest.RData")
 }
 \arguments{
-\item{baseUrl}{The location of the meta and data files}
+\item{baseUrl}{location of the WRCC latest data file}
+
+\item{file}{name of the WRCC latest data file}
 }
 \value{
 A ws_monitor object with WRCC data.

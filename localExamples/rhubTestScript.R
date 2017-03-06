@@ -4,7 +4,11 @@
 
 library(rhub)
 
-rhubTestScript <- function(email='RexS.Thompson@gmail.com',...) {
+rhubTestScript <- function(email='',...) {
+  
+  if ( email == '' ) {
+  stop("Requred argument email was left blank")
+  }
   
   argsList <- list(...)
   

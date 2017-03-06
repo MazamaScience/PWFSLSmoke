@@ -4,11 +4,13 @@
 \alias{airnow_loadLatest}
 \title{Load Recent AirNow Monitoring Data}
 \usage{
-
-  airnow_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/airnow_pm25_latest.RData")
+airnow_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/",
+  file = "airnow_pm25_latest.RData")
 }
 \arguments{
-\item{baseUrl}{The location of the meta and data files}
+\item{baseUrl}{location of the AirNow latest data file}
+
+\item{file}{name of the AirNow latest data file}
 }
 \value{
 A ws_monitor object with AirNow data.
