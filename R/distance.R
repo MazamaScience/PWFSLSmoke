@@ -10,14 +10,12 @@
 #' @references \url{http://www.r-bloggers.com/great-circle-distance-calculations-in-r/} 
 #' @return Vector of distances in km.
 #' @examples
-#' \dontrun{
 #' # Seattle to Portland airports
 #' SEA_lon <- -122.3088
 #' SEA_lat <- 47.4502
 #' PDX_lon <- -122.5951
 #' PDX_lat <- 45.5898
 #' distance(SEA_lon, SEA_lat, PDX_lon, PDX_lat)
-#' }
 
 distance <- function(targetLon, targetLat, lons, lats) {
   
