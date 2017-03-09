@@ -8,7 +8,7 @@ addClustering(df, clusterDiameter = 1000, lonVar = "longitude",
   latVar = "latitude", maxClusters = 50)
 }
 \arguments{
-\item{df}{dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)}
+\item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see description)}
 

@@ -7,12 +7,12 @@
 monitor_subsetBy(ws_monitor, filter)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{filter}{a filter to use on the ws_monitor object}
 }
 \value{
-A ws_monitor object with a subset of the input ws_monitor object.
+A emph{ws_monitor} object with a subset of the input ws_monitor object.
 }
 \description{
 The incoming ws_monitor object is filtered according to \code{filter}.

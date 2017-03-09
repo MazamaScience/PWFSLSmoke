@@ -9,10 +9,10 @@ monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
   gridLty = "solid", labels_x_nudge = 0, labels_y_nudge = 0, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
-\item{monitorID}{monitor ID for a specific monitor in the given ws_monitor object (optional
-if only one monitor in the ws_monitor object)}
+\item{monitorID}{monitor ID for a specific monitor in \code{ws_monitor} (optional
+if \code{ws_monitor} only has one monitor)}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
@@ -30,11 +30,11 @@ if only one monitor in the ws_monitor object)}
 
 \item{labels_y_nudge}{nudge y labels down}
 
-\item{...}{additional arguments to be passed to barplot()}
+\item{...}{additional arguments to be passed to \code{barplot()}}
 }
 \description{
 Creates a bar plot showing daily average PM 2.5 values for a specific monitor
-in a ws_monitor object. Each bar is colored according to its AQI category.
+in a emph{ws_monitor} object. Each bar is colored according to its AQI category.
 
 This function is a wrapper around \code{base::barplot} and any arguments to that 
 function may be used.

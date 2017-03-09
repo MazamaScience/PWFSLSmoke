@@ -40,10 +40,10 @@ monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
 
 \item{add}{logical specifying whether to add to the current plot}
 
-\item{...}{additional arguments to be passed to the map() funciton such as graphical parameters (see par)}
+\item{...}{additional arguments to be passed to the \code{maps::map()} funciton such as graphical parameters (see code{?par})}
 }
 \description{
-This function uses "confusion matrix" analysis to calculate
+This function uses \emph{confusion matrix} analysis to calculate
 different measures of predictive performance for every timeseries found
 in \code{predicted} with respect to the observed values found in the single timeseries
 found in \code{observed}.
@@ -68,5 +68,5 @@ title('Heidike Skill of monitors predicting another monitor.')
 \seealso{
 \link{monitor_performance}
 }
-\keyword{monitor}
+\keyword{ws_monitor}
 

@@ -8,9 +8,9 @@
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
-#' @return A ws_monitor object with AIRSIS data.
+#' @return A \emph{ws_monitor} object with AIRSIS data.
 #' @description Obtains monitor data from an AIRSIS webservice and converts
-#' it into a quality controlled, metadata enhanced \code{ws_monitor} object
+#' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
 #' 
 #' Steps involved include:
@@ -21,7 +21,7 @@
 #'  \item{apply quality control}
 #'  \item{apply clustering to determine unique deployments}
 #'  \item{enhance metadata to include: elevation, timezone, state, country, site name}
-#'  \item{reshape data into deployment-by-property 'meta' and and time-by-deployment 'data' dataframes}
+#'  \item{reshape AIRSIS data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 #' }
 #' 
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
@@ -107,7 +107,7 @@ airsis_createMonitorObject <- function(startdate=20020101,
   logger.info("Creating 'meta' dataframe ...")
   meta <- airsis_createMetaDataframe(df)
   
-  # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
+  # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
   logger.info("Creating 'data' dataframe ...")
   data <- airsis_createDataDataframe(df, meta)
   

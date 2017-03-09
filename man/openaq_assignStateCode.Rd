@@ -13,7 +13,7 @@ openaq_assignStateCode(df)
 Input dataframe with additional columns: \code{stateCode}.
 }
 \description{
-Uses function getStateCode() from MazamaSpatialUtils package 
+Use  \code{MazamaSpatialUtils::getStateCode()} 
 to assign state codes to the longitudes and latitudes in the dataframe.
 }
 \examples{

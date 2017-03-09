@@ -6,9 +6,9 @@
 #' @param parameterCode pollutant code
 #' @param baseUrl base URL for archived daily data
 #' @param downloadDir directory where files are downloaded and unzipped
-#' @description Convert EPA data into a ws_monitor object, ready for use with all monitor_~ functions.
+#' @description Convert EPA data into a \emph{ws_monitor} object, ready for use with all \code{monitor_~} functions.
 #' @note Before running this function you must first enable spatial data capabilities as in the example.
-#' @return A ws_monitor object with EPA data.
+#' @return A \emph{ws_monitor} object with EPA data.
 #' @references \href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 #' @references \href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/FileFormats.html#_format_3}{file format description}
 #' @examples

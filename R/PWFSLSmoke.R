@@ -13,7 +13,7 @@
 #' coast. It was at the time the most expensive wildifre in US history. This dataset contains
 #' PM2.5 monitoring data for the monitor in Carmel Valley which shows heavy smoke
 #' as well as strong diurnal cycles associated with sea breezes. Data are stored
-#' as a \code{ws_monitor} object and are used in some examples in the package
+#' as a \emph{ws_monitor} object and are used in some examples in the package
 #' documentation.
 NULL
 
@@ -29,7 +29,7 @@ NULL
 #' to many days of heavy smoke in eastern Washington, Oregon and northern Idaho.
 #' The Northwest_Megafires dataset contains AirNow ambient monitoring data for the 
 #' Pacific Northwest from May 31 through November 01, 2015 (UTC). Data are stored
-#' as a \code{ws_monitor} object and are used in many examples in the package
+#' as a \emph{ws_monitor} object and are used in many examples in the package
 #' documentation.
 NULL
 
@@ -42,7 +42,7 @@ NULL
 #' @format A list with three elements
 #' @description
 #' The WRCC \url{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
-#' provides access to a variety of monitors that can be accessed with the wrcc_CreateMonitorObject()
+#' provides access to a variety of monitors that can be accessed with the \link{wrcc_createMonitorObject}
 #' function. Use of this funciton requires a valid stationID. The \code{WRCC} object is 
 #' a list of three named vectors, each containing the stationIDs and associated names for
 #' one of the categories of monitors available at WRCC:

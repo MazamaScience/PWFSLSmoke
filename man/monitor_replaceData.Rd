@@ -7,9 +7,9 @@
 monitor_replaceData(ws_monitor, filter, value)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
-\item{filter}{an R expression used to identify values for replacement}
+\item{filter}{an \R{R} expression used to identify values for replacement}
 
 \item{value}{replacement value}
 }
@@ -17,13 +17,13 @@ monitor_replaceData(ws_monitor, filter, value)
 Use an R expression to identify values for replacement.
 
 The \R{R} expression given in \code{filter} is used to identify elements
-of the 'data' dataframe that should be replaced.  Typical usage would include
+in \code{ws_monitor$data} that should be replaced.  Typical usage would include
 \enumerate{
 \item{replacing negative values with 0}
 \item{replacing unreasonably high values with \code{NA}}
 }
 
-Expressions should use \code{'data'} for the left hand side of the comparison.
+Expressions should use \code{data} for the left hand side of the comparison.
 }
 \examples{
 wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')

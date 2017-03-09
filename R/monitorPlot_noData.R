@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create Blank Plot with "No Data" Message
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param monitorID id for a specific monitor in the given ws_monitor object
 #' @param cex text size of "No data for"; monitor ID is one size smaller
 #' @description Creates a blank plot that indicates there is no data for the monitor of interest

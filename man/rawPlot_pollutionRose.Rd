@@ -8,7 +8,7 @@ rawPlot_pollutionRose(df, parameter = "pm25", tlim = NULL,
   localTime = TRUE, normalize = FALSE, ...)
 }
 \arguments{
-\item{df}{enhanced, raw dataframe as created by the raw_enhance() function}
+\item{df}{enhanced, raw dataframe as created by the \code{raw_enhance()} function}
 
 \item{parameter}{parameter to plot}
 
@@ -21,7 +21,8 @@ rawPlot_pollutionRose(df, parameter = "pm25", tlim = NULL,
 \item{...}{additional arguments to pass on to openair::pollutionRose()}
 }
 \description{
-Create pollution rose plot from raw_enhance object based on openair::pollutionRose(). If normalized, black line
+Create pollution rose plot from an enhanced raw dataframe.
+This function is based on \code{openair::pollutionRose()}. If normalized, black line
 indicates frequency by direction.
 }
 \note{

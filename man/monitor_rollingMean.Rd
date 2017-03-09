@@ -8,7 +8,7 @@ monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
   align = "center")
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{width}{number of periods to average (e.g. for hourly data, \code{width = 24} calculates 24-hour rolling means)}
 
@@ -17,10 +17,10 @@ monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
 \item{align}{alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}}
 }
 \value{
-A ws_monitor object with data thaty have been processed by a rolling mean algorithm.
+A \emph{ws_monitor} object with data thaty have been processed by a rolling mean algorithm.
 }
 \description{
-Calculates rolling means for each monitor in the ws_monitor object using the
+Calculates rolling means for each monitor in \code{ws_monitor} using the
 \code{openair::rollingMean()} function
 }
 \details{

@@ -8,9 +8,9 @@ skill_ROCPlot(predicted, observed, t1Range = c(0, 100), t2s = seq(10, 100,
   10), n = 101, colors = grDevices::rainbow(length(t2s)))
 }
 \arguments{
-\item{predicted}{vector of predicted values (or a \code{ws_monitor} object with a single location)}
+\item{predicted}{vector of predicted values (or a \emph{ws_monitor} object with a single location)}
 
-\item{observed}{vector of observed values (or a \code{ws_monitor} object with a single location)}
+\item{observed}{vector of observed values (or a \emph{ws_monitor} object with a single location)}
 
 \item{t1Range}{lo and high values used to generate test thresholds for classifying \code{predicted} data}
 

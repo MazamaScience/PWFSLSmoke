@@ -7,14 +7,14 @@
 monitor_combine(monitorList)
 }
 \arguments{
-\item{monitorList}{list containing ws_monitor objects}
+\item{monitorList}{list containing \emph{ws_monitor} objects}
 }
 \value{
-A ws_monitor object combining all monitoring data from \code{monitorList}.
+A emph{ws_monitor} object combining all monitoring data from \code{monitorList}.
 }
 \description{
-Combines a list of ws_monitor objects into a single ws_monitor object 
-by merging the 'meta' and 'data' dataframes from each object in the given list.
+Combines a list of \emph{ws_monitor} objects into a single \emph{ws_monitor} object 
+by merging the \code{meta} and \code{data} dataframes from each object in \code{monitorList}.
 }
 \examples{
 \dontrun{

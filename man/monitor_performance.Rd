@@ -16,7 +16,7 @@ monitor_performance(predicted, observed, t1, t2, metric = NULL, FPCost = 1,
 
 \item{t2}{threshold used to classify \code{observed} measurements}
 
-\item{metric}{confusion matrix metric to be used}
+\item{metric}{\emph{confusion matrix} metric to be used}
 
 \item{FPCost}{cost associated with false positives (type II error)}
 
@@ -26,7 +26,7 @@ monitor_performance(predicted, observed, t1, t2, metric = NULL, FPCost = 1,
 Dataframe of monitors vs named measure of performance.
 }
 \description{
-This function uses "confusion matrix" analysis to calculate
+This function uses \emph{confusion matrix} analysis to calculate
 different measures of predictive performance for every timeseries found
 in \code{predicted} with respect to the observed values found in the single timeseries
 found in \code{observed}.
@@ -53,5 +53,5 @@ performanceMetrices <- monitor_performance(airnow_dailyAvg_m1,
 
 \link{skill_confusionMatrix}
 }
-\keyword{monitor}
+\keyword{ws_monitor}
 

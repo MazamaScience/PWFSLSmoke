@@ -8,7 +8,7 @@ monitor_subsetByDistance(ws_monitor, lon = NULL, lat = NULL, radius = 50,
   count = NULL)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{lon}{target longitude from which the radius will be calculated}
 
@@ -19,15 +19,15 @@ monitor_subsetByDistance(ws_monitor, lon = NULL, lat = NULL, radius = 50,
 \item{count}{number of grid cells to return}
 }
 \value{
-A ws_monitor object with monitors near a location.
+A \emph{ws_monitor} object with monitors near a location.
 }
 \description{
-Subsets a ws_monitor object to include only those monitors (or grid cells) 
+Subsets \code{ws_monitor} to include only those monitors (or grid cells) 
 within a certain radius of a target location. If no monitors (or grid cells) fall 
 within the specified \code{radius}, \code{ws_monitor$data} and \code{ws_monitor$meta} 
 are set to \code{NULL}.
 
-When \code{count} is used, a \code{ws_monitor} object is created containing \strong{up to}
+When \code{count} is used, a \emph{ws_monitor} object is created containing \strong{up to}
 \code{count} monitors, ordered by increasing distance from the target location. Thus, note that the number 
 of monitors (or grid cells) returned may be less than the specified \code{count} value if fewer than 
 \code{count} monitors (or grid cells) are found within the specified \code{radius} of the target location.

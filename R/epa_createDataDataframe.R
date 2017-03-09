@@ -5,13 +5,13 @@
 #' @description After addtional columns(i.e. \code{datetime}, and \code{monitorID}) 
 #' have been applied to an EPA dataframe, we are ready to
 #' extract the PM2.5 values and store them in a \code{data} dataframe
-#' organized as hour-by-monitor.
+#' organized as time-by-monitor.
 #' 
 #' The first column of the returned dataframe is named \code{datetime} and
 #' contains a \code{POSIXct} time in UTC. Additional columns contain data
 #' for each separate monitorID. 
 #' 
-#' @return A \code{'data'} dataframe for use in a \code{ws_monitor} object.
+#' @return A \code{data} dataframe for use in a \emph{ws_monitor} object.
 
 epa_createDataDataframe <- function(df) {
 

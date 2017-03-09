@@ -4,7 +4,7 @@
 #' @param raw raw monitor data, as created by airsis_createRawDataframe or wrcc_createRawDataframe
 #' @param rawSource source of raw monitor data (i.e. "AIRSIS" or "WRCC")
 #' @description Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
-#' raw* functions. All original raw data is retained, and the following additional columns are added:
+#' \code{raw~} functions. All original raw data is retained, and the following additional columns are added:
 #' 
 #' \itemize{
 #' \item{dataSource}

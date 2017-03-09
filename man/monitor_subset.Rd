@@ -9,7 +9,7 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
   countryCodes = NULL, dropMonitors = TRUE, timezone = "UTC")
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{xlim}{optional vector with low and high longitude limits}
 
@@ -30,18 +30,18 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 \item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
-A ws_monitor object with a subset of the input ws_monitor object.
+A \emph{ws_monitor} object with a subset of \code{ws_monitor}.
 }
 \description{
-Creates a subset of a ws_monitor object based on one or more optional input parameters.
-If any input parameter is not specified, that parameter will not be used to subset the ws_monitor object.
+Creates a subset \emph{ws_monitor} based on one or more optional input parameters.
+If any input parameter is not specified, that parameter will not be used to subset \code{ws_monitor}.
 }
 \details{
-By default, this function will return a ws_monitor object whose 'data' dataframe has the
-    same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s, 
-    in which case such columns will be removed (e.g. if there are no valid data for a specific monitor 
-    after subsetting by tlim or vlim).
-    If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
+By default, this function will return a \emph{ws_monitor} object whose \code{data} dataframe has the
+same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s, 
+in which case such columns will be removed (\emph{e.g.} if there are no valid data for a specific monitor 
+after subsetting by \code{tlim} or \code{vlim}).
+If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
 }
 \examples{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150701,20150731))

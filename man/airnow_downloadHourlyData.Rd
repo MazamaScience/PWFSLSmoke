@@ -17,11 +17,11 @@ Dataframe of AirNow hourly data.
 }
 \description{
 The \url{http://airnowtech.org} site provides both air pollution
-monitoring data as well as monitoring site location metadata. The \code{airnow_downloadHourlyData()}
+monitoring data as well as monitoring site location metadata. This
 function retrieves a single, hourly data file and returns it as a dataframe.
 }
 \note{
-:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
+As of 2016-12-27, it appears that hourly data are available only for 2016 and
 not for earlier years.
 }
 \examples{

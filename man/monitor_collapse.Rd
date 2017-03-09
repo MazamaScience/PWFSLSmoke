@@ -8,7 +8,7 @@ monitor_collapse(ws_monitor, lon = NULL, lat = NULL,
   monitorID = "generated_id", FUN = mean, na.rm = TRUE, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{lon}{longitude of the collapsed monitoring station. (Default = mean of the longitudes)}
 
@@ -20,14 +20,14 @@ monitor_collapse(ws_monitor, lon = NULL, lat = NULL,
 
 \item{na.rm}{logical value indicating whether NA values should be ignored when FUN is applied}
 
-\item{...}{additional arguments to be passed on to the apply() function}
+\item{...}{additional arguments to be passed on to the \code{apply()} function}
 }
 \value{
-A ws_monitor object with meta and data that corresponds to the collapsed single monitor
+A \emph{ws_monitor} object with meta and data that corresponds to the collapsed single monitor
 }
 \description{
 Collapses data from all the monitors in \code{ws_monitor} into a single-monitor 
-ws_monitor object using the function provided in the \code{FUN} argument. The single-monitor
+\emph{ws_monitor} object using the function provided in the \code{FUN} argument. The single-monitor
 result will be located at the mean longitude and latitude unless \code{lon} and \code{lat}
 parameters are specified.
 }

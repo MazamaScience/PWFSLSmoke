@@ -50,7 +50,7 @@ Passing a vector of one ore more of the above names as the \code{parameters} arg
 dataframe to be filtered to contain only records for those parameters.
 }
 \note{
-:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
+As of 2016-12-27, it appears that hourly data are available only for 2016 and
 not for earlier years.
 }
 \examples{

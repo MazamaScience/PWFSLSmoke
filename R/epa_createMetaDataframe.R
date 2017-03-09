@@ -6,12 +6,12 @@
 #' have been applied to an EPA dataframe, we are ready to 
 #' pull out site information associated with unique monitorID.
 #' 
-#' These will be rearranged into a dataframe organized as site-by-property
+#' These will be rearranged into a dataframe organized as deployment-by-property
 #' with one row for each monitorID.
 #'
 #' This site information found in \code{df} is augmented so that we end up with a uniform
 #' set of properties associated with each monitorID. The list of
-#' columns in the returned \code{'meta'} dataframe is:
+#' columns in the returned \code{meta} dataframe is:
 #' 
 #' \preformatted{
 #' > names(meta)
@@ -19,7 +19,7 @@
 #' [8] "Site.Num"         "Parameter.Code"   "POC"              "Units.of.Measure" "MDL"              "Method.Type"      "Method.Name"     
 #' [15] "State.Name"       "County.Name" 
 #' }
-#' @return A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
+#' @return A \code{meta} dataframe for use in a \emph{ws_monitor} object.
 
 epa_createMetaDataframe <- function(df){
   

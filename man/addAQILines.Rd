@@ -7,10 +7,10 @@
 addAQILines(...)
 }
 \arguments{
-\item{...}{additional arguments to be passed to abline()}
+\item{...}{additional arguments to be passed to \code{abline()}}
 }
 \description{
-This function is a convenience for"
+This function is a convenience for:
 
 \code{abline(h=AQI$breaks_24, col=AQI$colors)}
 }

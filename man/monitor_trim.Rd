@@ -7,13 +7,13 @@
 monitor_trim(ws_monitor)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 }
 \value{
-A ws_monitor object with missing data trimmed.
+A emph{ws_monitor} object with missing data trimmed.
 }
 \description{
-Trims the time axis of a ws_monitor object to exclude timestamps prior to the first and
+Trims the time axis of a emph{ws_monitor} object to exclude timestamps prior to the first and
 after the last valid datapoint for any monitor.
 }
 \examples{

@@ -5,13 +5,13 @@
 #' @param FPCost cost associated with false positives (type I error)
 #' @param FNCost cost associated with false negatives (type II error)
 #' @param lightweight flag specifying creation of a return list without derived metrics
-#' @return List containing a table of confusion matrix values and a suite of derived metrics.
+#' @return List containing a table of \code{confusion matrix} values and a suite of derived metrics.
 #' @description Measurements of categorical forecast accuracy have a long history
 #' in weather forecasting. The standard approach involves making binary classifications
 #' (detected/not-detected) of predicted and observed data and combining them in a
-#' binary contingency table known as a *confusion matrix*.
+#' binary contingency table known as a \emph{confusion matrix}.
 #' 
-#' This function creates a confusion matrix from predicted and observed values and calculates
+#' This function creates a \code{confusion matrix} from predicted and observed values and calculates
 #' a wide range of common statistics including: 
 #' \itemize{
 #'   \item{TP}{ (true postive)}

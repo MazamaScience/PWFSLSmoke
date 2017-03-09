@@ -3,19 +3,14 @@
 #' @import graphics
 #' @title Create Timeseries Plot from a Raw Dataframe
 #' @param df enhanced, raw dataframe as created by the raw_enhance() function
-#' @param parameter raw parameter to plot. Default = "pm25". Other options include
-#' c("temperature","humidity","windSpeed","windDir", "pressure"), or any of the other raw
-#' parameters (do "names(df)" to see list of options)
+#' @param parameter raw parameter to plot
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime logical specifying whether \code{tlim} is in local time or UTC
 #' @param shadedNight add nighttime shading
-#' Also note that for multiple deployments, this defaults to use the lat/lon for the first deployment, which in theory
-#' could be somewhat unrepresentative, such as if deployments have a large range in latitude.
-#' @param shadedBackground Add vertical lines corresponding to a second parameter; currently defaults to wind speed binned into quartiles. Future iterations
-#' may include options to choose which parameter to plot, which color to use, which intervals, etc.
+#' @param shadedBackground add vertical lines for a second parameter
 #' @param sbLwd shaded background line width
 #' @param add logical specifying whether to add to the current plot
-#' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)
+#' @param gridPos position of grid lines either \code{'over'}, \code{'under'} or \code{''} for no grid lines
 #' @param gridCol grid line color
 #' @param gridLwd grid line width
 #' @param gridLty grid line type
@@ -24,6 +19,14 @@
 #' @param hourInterval interval for grid (max=12)
 #' @param ... additional arguments to pass to lines() function
 #' @description Creates a plot of raw monitoring data as generated using raw_enhance().
+#'
+#' Other options for \code{parameter} include
+#' \code{"temperature", "humidity", "windSpeed", "windDir", "pressure"}
+#' or any of the other raw
+#' parameters (try \code{names(df)} to see list of options)
+#' @details
+#' Note that for multiple deployments, \code{shadedNight} defaults to use the lat/lon for the first deployment, which in theory
+#' could be somewhat unrepresentative, such as if deployments have a large range in latitude.
 #' @note If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 
 ###############################################################################

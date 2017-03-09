@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Calculate Distances From ws_monitor Monitors to Location of Interest
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param lon longitude of the location of interest
 #' @param lat latitude of the location of interest
 #' @description This function returns the distances (km) between monitoring sites and

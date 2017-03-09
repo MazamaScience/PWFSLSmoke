@@ -1,11 +1,11 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Calculate Time Averages
-#' @param ws_monitor ws_monitor object
-#' @param ... additional arguments to be passed to openair::timeAverage()
-#' @return A ws_monitor object with data that have been proccessed by openair::timeAverage().
-#' @description This function extracts the 'data' dataframe from the ws_monitor object
-#' and renames the 'datetime' column so that it can be processed by the \code{openair} package's
+#' @param ws_monitor emph{ws_monitor} object
+#' @param ... additional arguments to be passed to \code{openair::timeAverage()}
+#' @return A emph{ws_monitor} object with data that have been proccessed by \code{openair::timeAverage()}.
+#' @description This function extracts the \code{data} dataframe from \code{ws_monitor} object
+#' and renames the \code{'datetime'} column so that it can be processed by the \pkg{openair} package's
 #' \code{timeAverage()} function. (See that function for details.)
 #' @examples
 #' C_V <- monitor_subset(CarmelValley, tlim=c(2016080800,2016081023),

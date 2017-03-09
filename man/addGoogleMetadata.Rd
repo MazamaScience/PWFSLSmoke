@@ -7,7 +7,7 @@
 addGoogleMetadata(df, lonVar = "longitude", latVar = "latitude")
 }
 \arguments{
-\item{df}{dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)}
+\item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
 
 \item{lonVar}{name of longitude variable in the incoming dataframe}
 

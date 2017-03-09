@@ -1,7 +1,7 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Apply Quality Control to Raw AIRSIS E-Sampler Dataframe
-#' @param df single site dataframe created by airsis_downloadData()
+#' @param df single site dataframe created by \code{airsis_downloadData()}
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values
 #' @param remove_Lon_zero flag to remove rows where Longitude == 0

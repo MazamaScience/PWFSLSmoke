@@ -13,7 +13,7 @@ airnow_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/",
 \item{file}{name of the AirNow latest data file}
 }
 \value{
-A ws_monitor object with AirNow data.
+A emph{ws_monitor} object with AirNow data.
 }
 \description{
 The most recent 45 days of AirNow data are updated in real time

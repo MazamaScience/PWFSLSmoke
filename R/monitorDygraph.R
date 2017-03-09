@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Create Interactive Time Series Plot
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param title title text
 #' @param ylab title for the y axis
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])

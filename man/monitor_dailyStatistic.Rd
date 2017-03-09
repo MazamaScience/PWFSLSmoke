@@ -8,7 +8,7 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
   na.rm = TRUE, minHours = 24)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{FUN}{function used to collapse a day's worth of data into a single number for each monitor in the ws_monitor object}
 
@@ -19,7 +19,7 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
 \item{minHours}{minimum number of valid data hours required to calculate each daily statistic}
 }
 \value{
-A ws_monitor object with daily statistics for the local timezone.
+A emph{ws_monitor} object with daily statistics for the local timezone.
 }
 \description{
 Calculates daily statistics for each monitor in \code{ws_monitor}.
@@ -30,13 +30,13 @@ This should be accurate enough for all use cases involving co-located monitors. 
 from different regions should have daily statistics calculated separately.
 }
 \note{
-Note that the incoming \code{ws_monitor} object should have UTC (GMT)
+Note that the incoming \emph{ws_monitor} object should have UTC (GMT)
 times and that this function calculates daily statistics based on local (clock) time.
 If you choose a date range based on UTC times this may result in an insufficient 
-number of hours in the first and last daily records of the returned \code{ws_monitor}
+number of hours in the first and last daily records of the returned \emph{ws_monitor}
 object.
 
-The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
+The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 }
 \examples{
 N_M <- Northwest_Megafires

@@ -12,7 +12,7 @@
 #' @param maptype optional name of leaflet ProviderTiles to use, e.g. "terrain"
 #' @param popupInfo a vector of column names from ws_monitor$meta to be shown in a popup window
 #' @description This function creates interactive maps that will be displayed in RStudio's 'Viewer' tab.
-#' The \code{slice} argument is used to collapse a \code{ws_monitor} timeseries into a single value.
+#' The \code{slice} argument is used to collapse a \emph{ws_monitor} timeseries into a single value.
 #' If \code{slice} is an integer, that row index will be selected from the \code{ws_monitor$data} dataframe.
 #' If \code{slice} is a function (unquoted), that function will be applied to the timeseires with the
 #' argument \code{na.rm=TRUE} (e.g. \code{max(..., na.rm=TRUE)}).

@@ -9,7 +9,7 @@ rawPlot_timeOfDaySpaghetti(df, parameter = "pm25", tlim = NULL,
   highlightDates = c(), highlightCol = "dodgerblue", ...)
 }
 \arguments{
-\item{df}{enhanced, raw dataframe as created by the raw_enhance() function}
+\item{df}{enhanced, raw dataframe as created by the \code{raw_enhance()} function}
 
 \item{parameter}{variable to be plotted}
 
@@ -17,7 +17,7 @@ rawPlot_timeOfDaySpaghetti(df, parameter = "pm25", tlim = NULL,
 
 \item{shadedNight}{add nighttime shading}
 
-\item{meanCol}{color used for the mean line (use NA to omit the mean)}
+\item{meanCol}{color used for the mean line (use \code{NA} to omit the mean)}
 
 \item{meanLwd}{line width used for the mean line}
 
@@ -27,7 +27,7 @@ rawPlot_timeOfDaySpaghetti(df, parameter = "pm25", tlim = NULL,
 
 \item{highlightCol}{color used for highlighted days}
 
-\item{...}{additional graphical parameters are passed to the lines() function for day lines}
+\item{...}{additional graphical parameters are passed to the \code{lines()} function for day lines}
 }
 \description{
 Spaghetti Plot that shows data by hour-of-day.

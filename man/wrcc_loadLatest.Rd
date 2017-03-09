@@ -13,7 +13,7 @@ wrcc_loadLatest(baseUrl = "https://haze.airfire.org/monitoring/RData/",
 \item{file}{name of the WRCC latest data file}
 }
 \value{
-A ws_monitor object with WRCC data.
+A emph{ws_monitor} object with WRCC data.
 }
 \description{
 The most recent 45 days of WRCC data are updated in real time

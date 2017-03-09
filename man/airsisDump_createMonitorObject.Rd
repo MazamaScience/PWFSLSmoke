@@ -12,11 +12,11 @@ airsisDump_createMonitorObject(filepath, clusterDiameter = 1000)
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 }
 \value{
-A ws_monitor object with AIRSIS data.
+A emph{ws_monitor} object with AIRSIS data.
 }
 \description{
 Ingests an  AIRSIS dump file and converts
-it into a quality controlled, metadata enhanced \code{ws_monitor} object
+it into a quality controlled, metadata enhanced \emph{ws_monitor} object
 ready for use with all \code{monitor_~} functions.
 
 Steps involved include:
@@ -27,7 +27,7 @@ Steps involved include:
  \item{apply quality control}
  \item{apply clustering to determine unique deployments}
  \item{enhance metadata to include: elevation, timezone, state, country, site name}
- \item{reshape data into deployment-by-property 'meta' and and time-by-deployment 'data' dataframes}
+ \item{reshape dumpfile data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 }
 }
 \note{

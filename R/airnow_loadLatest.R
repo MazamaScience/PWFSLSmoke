@@ -5,7 +5,7 @@
 #' @param file name of the AirNow latest data file
 #' @description The most recent 45 days of AirNow data are updated in real time
 #' at PWFSL and can be loaded with this function.
-#' @return A ws_monitor object with AirNow data.
+#' @return A emph{ws_monitor} object with AirNow data.
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_loadLatest()

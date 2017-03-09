@@ -11,7 +11,7 @@ monitorPlot_rollingMean(ws_monitor, monitorID = NULL, width = 3,
   showLegend = TRUE)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{monitorID}{monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
 in the ws_monitor object)}

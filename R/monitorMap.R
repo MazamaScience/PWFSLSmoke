@@ -2,7 +2,7 @@
 #' @export
 #' @import maps mapproj
 #' @title Create Map of Monitoring Stations
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param slice either a time index or a function used to collapse the time axis
 #' @param breaks set of breaks used to assign colors
 #' @param colors set of colors must be one less than the number of breaks
@@ -12,12 +12,12 @@
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
 #' @param add logical specifying whether to add to the current plot
-#' @param ... additional arguments passed to maps::map() such as 'projection' or 'parameters'
+#' @param ... additional arguments passed to \code{maps::map()} such as \code{'projection'} or \code{'parameters'}
 #' @description Creates a map of monitoring stations in a given ws_monitor object. 
 #' Individual monitor timeseries are reduced to a single value by applying the function 
 #' passed in as \code{slice} to the entire timeseries of each monitor with \code{na.rm=TRUE}.
 #' These values are then plotted over a map of the United States. Any additional 
-#' arguments specified in '...' are passed on to the points() function.
+#' arguments specified in '...' are passed on to the \code{points()} function.
 #' 
 #' If \code{slice} is an integer, it will be used as an index to pull out a single timestep.
 #' 

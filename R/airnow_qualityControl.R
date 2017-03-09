@@ -1,7 +1,7 @@
 #' @keywords AirNow
 #' @export
 #' @title Apply Quality Control to AirNow Dataframe
-#' @param df multi-site restructured dataframe created within airsis_createDataDataframe()
+#' @param df multi-site restructured dataframe created within \code{airsis_createDataDataframe()}
 #' @param limits lo and hi range of valid values
 #' @description Perform range validation on AirNow data. This function also replaces values 
 #' of \code{-999} with \code{NA}.

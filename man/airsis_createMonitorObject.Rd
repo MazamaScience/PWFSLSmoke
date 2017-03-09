@@ -26,11 +26,11 @@ airsis_createMonitorObject(startdate = 20020101,
 \item{saveFile}{optional filename where raw CSV will be written}
 }
 \value{
-A ws_monitor object with AIRSIS data.
+A \emph{ws_monitor} object with AIRSIS data.
 }
 \description{
 Obtains monitor data from an AIRSIS webservice and converts
-it into a quality controlled, metadata enhanced \code{ws_monitor} object
+it into a quality controlled, metadata enhanced \emph{ws_monitor} object
 ready for use with all \code{monitor_~} functions.
 
 Steps involved include:
@@ -41,7 +41,7 @@ Steps involved include:
  \item{apply quality control}
  \item{apply clustering to determine unique deployments}
  \item{enhance metadata to include: elevation, timezone, state, country, site name}
- \item{reshape data into deployment-by-property 'meta' and and time-by-deployment 'data' dataframes}
+ \item{reshape AIRSIS data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 }
 }
 \note{

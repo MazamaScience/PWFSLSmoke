@@ -7,7 +7,7 @@
 monitor_distance(ws_monitor, lon, lat)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{lon}{longitude of the location of interest}
 

@@ -10,7 +10,7 @@ In August of 2016, the Soberanes fire in California burned along the Big Sur
 coast. It was at the time the most expensive wildifre in US history. This dataset contains
 PM2.5 monitoring data for the monitor in Carmel Valley which shows heavy smoke
 as well as strong diurnal cycles associated with sea breezes. Data are stored
-as a \code{ws_monitor} object and are used in some examples in the package
+as a \emph{ws_monitor} object and are used in some examples in the package
 documentation.
 }
 \details{

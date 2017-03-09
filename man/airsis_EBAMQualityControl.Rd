@@ -11,7 +11,7 @@ airsis_EBAMQualityControl(df, valid_Longitude = c(-180, 180),
   0.984))
 }
 \arguments{
-\item{df}{single site dataframe created by airsis_parseData()}
+\item{df}{single site dataframe created by \code{airsis_parseData()}}
 
 \item{valid_Longitude}{range of valid Longitude values}
 

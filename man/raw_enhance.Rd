@@ -16,7 +16,7 @@ Dataframe with original raw data, plus new columns with raw naming scheme for do
 }
 \description{
 Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
-raw* functions. All original raw data is retained, and the following additional columns are added:
+\code{raw~} functions. All original raw data is retained, and the following additional columns are added:
 
 \itemize{
 \item{dataSource}

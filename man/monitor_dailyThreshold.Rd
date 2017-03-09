@@ -8,7 +8,7 @@ monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
   dayStart = "midnight", minHours = 0, na.rm = TRUE)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{threshold}{AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted}
 
@@ -19,10 +19,10 @@ monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 }
 \value{
-A ws_monitor object with a daily count of hours at or above \code{threshold}.
+A emph{ws_monitor} object with a daily count of hours at or above \code{threshold}.
 }
 \description{
-Calculates the number of hours per day each monitor in a ws_monitor object was at or above a given threshold
+Calculates the number of hours per day each monitor in \code{ws_monitor} was at or above a given threshold
 }
 \details{
 \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
@@ -35,7 +35,7 @@ Sunrise and sunset times are calculated based on the first monitor encountered.
 This should be accurate enough for all use cases involving co-located monitors. Monitors
 from different regions should have daily statistics calculated separately.
 
-The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
+The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 }
 \examples{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))

@@ -23,11 +23,12 @@ When set to NULL, the function returns all the monitor IDs available in the meta
 \item{baseUrl}{base URL for AirNow meta and data files}
 }
 \value{
-A ws_monitor object with AirNow data.
+A emph{ws_monitor} object with AirNow data.
 }
 \description{
 When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 
-meta and data files from the archive baseUrl (or local directory) and return the subsetted ws_monitor object.
+meta and data files from the archive at \code{baseUrl} (or local directory) and returns a \emph{ws_monitor} object
+after subsetting by time, state and monitor ID.
 }
 \examples{
 \dontrun{

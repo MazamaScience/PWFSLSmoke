@@ -5,7 +5,7 @@
 #' @param file name of the WRCC latest data file
 #' @description The most recent 45 days of WRCC data are updated in real time
 #' at PWFSL and can be loaded with this function.
-#' @return A ws_monitor object with WRCC data.
+#' @return A emph{ws_monitor} object with WRCC data.
 #' @examples
 #' \dontrun{
 #' wrcc <- wrcc_loadLatest()

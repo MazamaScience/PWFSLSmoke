@@ -3,9 +3,9 @@
 #' @title Ingest WRCC Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the WRCC dump file
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
-#' @return A ws_monitor object with WRCC data.
-#' @description Ingests an  WRCC dump file and converts
-#' it into a quality controlled, metadata enhanced \code{ws_monitor} object
+#' @return A emph{ws_monitor} object with WRCC data.
+#' @description Ingests a WRCC dump file and converts
+#' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
 #' 
 #' Steps involved include:
@@ -16,7 +16,7 @@
 #'  \item{apply quality control}
 #'  \item{apply clustering to determine unique deployments}
 #'  \item{enhance metadata to include: elevation, timezone, state, country, site name}
-#'  \item{reshape data into deployment-by-property 'meta' and and time-by-deployment 'data' dataframes}
+#'  \item{reshape data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 #' }
 #' 
 #' @note Each dump file must contain data for only one type of monitor, e.g. EBAM or E-Sampler.
@@ -65,7 +65,7 @@ wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
     logger.info("Creating 'meta' dataframe ...")
     meta <- wrcc_createMetaDataframe(df)
     
-    # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
+    # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
     logger.info("Creating 'data' dataframe ...")
     data <- wrcc_createDataDataframe(df, meta)
     

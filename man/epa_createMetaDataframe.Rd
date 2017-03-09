@@ -10,19 +10,19 @@ epa_createMetaDataframe(df)
 \item{df}{an EPA raw dataframe after metadata enhancement}
 }
 \value{
-A \code{'meta'} dataframe for use in a \code{ws_monitor} object.
+A \code{meta} dataframe for use in a \emph{ws_monitor} object.
 }
 \description{
 After addtional columns(i.e. \code{datetime}, and \code{monitorID}) 
 have been applied to an EPA dataframe, we are ready to 
 pull out site information associated with unique monitorID.
 
-These will be rearranged into a dataframe organized as site-by-property
+These will be rearranged into a dataframe organized as deployment-by-property
 with one row for each monitorID.
 
 This site information found in \code{df} is augmented so that we end up with a uniform
 set of properties associated with each monitorID. The list of
-columns in the returned \code{'meta'} dataframe is:
+columns in the returned \code{meta} dataframe is:
 
 \preformatted{
 > names(meta)

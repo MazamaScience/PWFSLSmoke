@@ -10,7 +10,7 @@ wrcc_ESAMQualityControl(df, valid_Longitude = c(-180, 180),
   150), valid_RHi = c(-Inf, 55), valid_Conc = c(-Inf, 984))
 }
 \arguments{
-\item{df}{single site dataframe created by wrcc_parseData()}
+\item{df}{single site dataframe created by \code{wrcc_parseData()}}
 
 \item{valid_Longitude}{range of valid Longitude values}
 

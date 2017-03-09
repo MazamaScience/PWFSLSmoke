@@ -16,8 +16,8 @@
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
 #' @param add logical specifying whether to add to the current plot
-#' @param ... additional arguments to be passed to the map() funciton such as graphical parameters (see par)
-#' @description This function uses "confusion matrix" analysis to calculate
+#' @param ... additional arguments to be passed to the \code{maps::map()} funciton such as graphical parameters (see code{?par})
+#' @description This function uses \emph{confusion matrix} analysis to calculate
 #' different measures of predictive performance for every timeseries found
 #' in \code{predicted} with respect to the observed values found in the single timeseries
 #' found in \code{observed}.

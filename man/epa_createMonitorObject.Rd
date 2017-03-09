@@ -21,10 +21,10 @@ epa_createMonitorObject(year = NULL, parameterName = "PM2.5",
 \item{downloadDir}{directory where files are downloaded and unzipped}
 }
 \value{
-A ws_monitor object with EPA data.
+A \emph{ws_monitor} object with EPA data.
 }
 \description{
-Convert EPA data into a ws_monitor object, ready for use with all monitor_~ functions.
+Convert EPA data into a \emph{ws_monitor} object, ready for use with all \code{monitor_~} functions.
 }
 \note{
 Before running this function you must first enable spatial data capabilities as in the example.

@@ -8,9 +8,9 @@ addAQILegend(x = "topright", y = NULL, col = rev(AQI$colors),
   legend = rev(AQI$names), pch = 16, title = "Air Quality Index", ...)
 }
 \arguments{
-\item{x}{x coordinate passed on to the legend() command}
+\item{x}{x coordinate passed on to the \code{legend()} command}
 
-\item{y}{y coordinate passed on to the legend() command}
+\item{y}{y coordinate passed on to the \code{legend()} command}
 
 \item{col}{the color for points/lines in the legend}
 
@@ -20,10 +20,10 @@ addAQILegend(x = "topright", y = NULL, col = rev(AQI$colors),
 
 \item{title}{title for the legend}
 
-\item{...}{additional arguments to be passed to legend()}
+\item{...}{additional arguments to be passed to \code{legend()}}
 }
 \description{
-This function is a convenience wrapper around graphics::legend(). It will show the AQI colors and 
+This function is a convenience wrapper around \code{graphics::legend()}. It will show the AQI colors and 
 names by default if \code{col} and \code{legend} are not specified.
 }
 \keyword{plotting}

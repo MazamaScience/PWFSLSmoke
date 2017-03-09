@@ -7,7 +7,7 @@
 \format{A list with three elements}
 \description{
 The WRCC \url{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
-provides access to a variety of monitors that can be accessed with the wrcc_CreateMonitorObject()
+provides access to a variety of monitors that can be accessed with the \link{wrcc_createMonitorObject}
 function. Use of this funciton requires a valid stationID. The \code{WRCC} object is 
 a list of three named vectors, each containing the stationIDs and associated names for
 one of the categories of monitors available at WRCC:

@@ -2,16 +2,16 @@
 #' @export
 #' @import graphics
 #' @title Create Time of Day Spaghetti Plot from a Raw Dataframe
-#' @param df enhanced, raw dataframe as created by the raw_enhance() function
+#' @param df enhanced, raw dataframe as created by the \code{raw_enhance()} function
 #' @param parameter variable to be plotted
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param shadedNight add nighttime shading
-#' @param meanCol color used for the mean line (use NA to omit the mean)
+#' @param meanCol color used for the mean line (use \code{NA} to omit the mean)
 #' @param meanLwd line width used for the mean line
 #' @param meanLty line type used for the mean line
 #' @param highlightDates dates to be highlighted in YYYYMMDD format
 #' @param highlightCol color used for highlighted days
-#' @param ... additional graphical parameters are passed to the lines() function for day lines
+#' @param ... additional graphical parameters are passed to the \code{lines()} function for day lines
 #' @description Spaghetti Plot that shows data by hour-of-day. 
 #' @examples
 #' \dontrun{

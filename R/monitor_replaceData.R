@@ -1,19 +1,19 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Subset Monitoring Data
-#' @param ws_monitor ws_monitor object
-#' @param filter an R expression used to identify values for replacement
+#' @param ws_monitor emph{ws_monitor} object
+#' @param filter an \R{R} expression used to identify values for replacement
 #' @param value replacement value
 #' @description Use an R expression to identify values for replacement.
 #' 
 #' The \R{R} expression given in \code{filter} is used to identify elements
-#' of the 'data' dataframe that should be replaced.  Typical usage would include
+#' in \code{ws_monitor$data} that should be replaced.  Typical usage would include
 #' \enumerate{
 #' \item{replacing negative values with 0}
 #' \item{replacing unreasonably high values with \code{NA}}
 #' }
 #' 
-#' Expressions should use \code{'data'} for the left hand side of the comparison.
+#' Expressions should use \code{data} for the left hand side of the comparison.
 #' @examples
 #' wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
 #' wa_zero <- monitor_replaceData(wa, data < 0, 0)

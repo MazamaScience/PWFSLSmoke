@@ -1,7 +1,7 @@
 #' @keywords WRCC
 #' @export
 #' @title Apply Quality Control to Raw WRCC EBAM Dataframe
-#' @param df single site dataframe created by wrcc_parseData()
+#' @param df single site dataframe created by \code{wrcc_parseData()}
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values
 #' @param remove_Lon_zero flag to remove rows where Longitude == 0

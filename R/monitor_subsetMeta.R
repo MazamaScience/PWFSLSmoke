@@ -1,16 +1,16 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Subset ws_monitor Object 'meta' Dataframe
-#' @param meta ws_monitor object 'meta' dataframe
+#' @param meta \emph{ws_monitor} object \code{meta} dataframe
 #' @param xlim optional vector with low and high longitude limits
 #' @param ylim optional vector with low and high latitude limits
 #' @param stateCodes optional vector of stateCodes
 #' @param countryCodes optional vector of countryCodes
 #' @param monitorIDs optional vector of monitorIDs
-#' @return A ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors.
-#' @description Subsets a ws_monitor object's 'meta' dataframe by removing any monitors that
-#'     lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
-#'     latitudes and/or states) and that are not mentioned in the list of monitorIDs.
+#' @return A \emph{ws_monitor} object \code{meta} dataframe, or \code{NULL} if filtering removes all monitors.
+#' @description Subsets the \code{ws_monitor$data} dataframe by removing any monitors that
+#' lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
+#' latitudes and/or states) and that are not mentioned in the list of monitorIDs.
 #' @description If any parameter is not specified, that parameter will not be used in the subsetting.
 #' @description Intended for use by the monitor_subset function.
 #' @details Longitudes must be specified in the domain [-180,180].

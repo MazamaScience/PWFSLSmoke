@@ -5,7 +5,7 @@
 #' @param file name of the AIRSIS latest data file
 #' @description The most recent 45 days of AIRSIS data are updated in real time
 #' at PWFSL and can be loaded with this function.
-#' @return A ws_monitor object with AIRSIS data.
+#' @return A emph{ws_monitor} object with AIRSIS data.
 #' @examples
 #' \dontrun{
 #' airsis <- airsis_loadLatest()

@@ -5,11 +5,11 @@
 #' @param observed ws_monitor object with observed data
 #' @param t1 value used to classify \code{predicted} measurements
 #' @param t2 threshold used to classify \code{observed} measurements
-#' @param metric confusion matrix metric to be used
+#' @param metric \emph{confusion matrix} metric to be used
 #' @param FPCost cost associated with false positives (type II error)
 #' @param FNCost cost associated with false negatives (type I error)
 #' @return Dataframe of monitors vs named measure of performance.
-#' @description This function uses "confusion matrix" analysis to calculate
+#' @description This function uses \emph{confusion matrix} analysis to calculate
 #' different measures of predictive performance for every timeseries found
 #' in \code{predicted} with respect to the observed values found in the single timeseries
 #' found in \code{observed}.

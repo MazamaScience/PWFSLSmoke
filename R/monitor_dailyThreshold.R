@@ -1,22 +1,22 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Calculate Daily Counts of Values At or Above a Threshold
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param threshold AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted
 #' @param dayStart one of \code{"sunset|midnight|sunrise"}
 #' @param minHours minimum number of hourly observations required
 #' @param na.rm logical value indicating whether NA values should be ignored
-#' @return A ws_monitor object with a daily count of hours at or above \code{threshold}.
+#' @return A emph{ws_monitor} object with a daily count of hours at or above \code{threshold}.
 #' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
 #' For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
 #' very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.
 #' @details AQI levels for \code{threshold} argument = one of \code{"good|moderate|USG|unhealthy|very unhealthy|extreme"}
-#' @description Calculates the number of hours per day each monitor in a ws_monitor object was at or above a given threshold
+#' @description Calculates the number of hours per day each monitor in \code{ws_monitor} was at or above a given threshold
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
 #' 
-#' The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
+#' The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
 #' # monitorLeaflet(N_M) # to identify specific monitorIDs

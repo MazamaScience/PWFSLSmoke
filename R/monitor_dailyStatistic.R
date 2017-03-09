@@ -1,23 +1,23 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Calculate Daily Statistics for each Monitor in a ws_monitor Object
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param FUN function used to collapse a day's worth of data into a single number for each monitor in the ws_monitor object
 #' @param dayStart one of \code{sunset|midnight|sunrise}
 #' @param na.rm logical value indicating whether NA values should be ignored
 #' @param minHours minimum number of valid data hours required to calculate each daily statistic
-#' @return A ws_monitor object with daily statistics for the local timezone.
+#' @return A emph{ws_monitor} object with daily statistics for the local timezone.
 #' @description Calculates daily statistics for each monitor in \code{ws_monitor}.
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
-#' @note Note that the incoming \code{ws_monitor} object should have UTC (GMT)
+#' @note Note that the incoming \emph{ws_monitor} object should have UTC (GMT)
 #' times and that this function calculates daily statistics based on local (clock) time.
 #' If you choose a date range based on UTC times this may result in an insufficient 
-#' number of hours in the first and last daily records of the returned \code{ws_monitor}
+#' number of hours in the first and last daily records of the returned \emph{ws_monitor}
 #' object.
 #' 
-#' The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
+#' The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
 #' N_M <- Northwest_Megafires
 #' wa_unhealthy <- monitor_subset(N_M, stateCodes='WA', tlim=c(20150701,20150831), vlim=c(55,Inf))

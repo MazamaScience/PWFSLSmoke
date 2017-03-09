@@ -7,12 +7,12 @@
 monitor_nowcast(ws_monitor, version = "pm")
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{version}{character identity specifying the type of nowcast algorithm to be used}
 }
 \value{
-A ws_monitor object with data that have been processed by the Nowcast algorithm.
+A emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
 }
 \description{
 A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
@@ -31,7 +31,7 @@ for typical usage.
 }
 \note{
 Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
-.001 for 'ozone' regardless of the precision of the data in the incoming \code{ws_monitor} object.
+.001 for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
 }
 \examples{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
@@ -51,5 +51,5 @@ title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
 
 \url{http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 }
-\keyword{nowcast}
+\keyword{ws_monitor}
 
