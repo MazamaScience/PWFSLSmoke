@@ -1,4 +1,4 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
 #' @title Calculate Monitor Prediction Performance
 #' @param predicted ws_monitor object with predicted data

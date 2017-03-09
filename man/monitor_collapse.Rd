@@ -31,5 +31,22 @@ ws_monitor object using the function provided in the \code{FUN} argument. The si
 result will be located at the mean longitude and latitude unless \code{lon} and \code{lat}
 parameters are specified.
 }
+\note{
+After \code{FUN} is applied, values of \code{+Inf} and \code{-Inf} are converted to \code{NA}.
+This is a convenience for the common case where \code{FUN=min} or \code{FUN=max} and some of the
+timesteps have all missing values. See the R documentation for \code{min} for an explanation.
+}
+\examples{
+N_M <- Northwest_Megafires
+# monitorLeaflet(N_M) # to identify Spokane monitorIDs
+Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+Spokane_min <- monitor_collapse(Spokane, monitorID='Spokane_min', FUN=min)
+Spokane_max <- monitor_collapse(Spokane, monitorID='Spokane_max', FUN=max)
+monitorPlot_timeseries(Spokane, tlim=c(20150619,20150626),
+                       style='gnats', shadedNight=TRUE)
+monitorPlot_timeseries(Spokane_max, col='red', type='s', add=TRUE)
+monitorPlot_timeseries(Spokane_min, col='blue', type='s', add=TRUE)
+title('Spokane Range of PM2.5 Values, June 2015')
+}
 \keyword{ws_monitor}
 

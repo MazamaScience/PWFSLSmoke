@@ -27,29 +27,13 @@
 #' @details Using a single number for the \code{breaks} argument will result in the use
 #' of quantiles to determine a set of breaks appropriate for the number of colors.
 #' @examples
-#' \dontrun{
-#' airnow <- airnow_load(20150901, 20150930)
-#' nw <- monitor_subset(airnow, stateCodes=c('WA','OR'), countryCodes="US")
+#' N_M <- Northwest_Megafires
+#' nw <- monitor_subset(N_M, tlim=c(20150801,20150831))
 #' nw_daily <- monitor_dailyStatistic(nw, FUN=mean)
-#' map('county',c('WA','OR'))
-#' monitorMap(nw_daily, add=TRUE)
+#' map('county',c('WA','OR','ID'))
+#' monitorMap(nw_daily, slice=max, cex=2, add=TRUE)
+#' addAQILegend()
 #' title('Max Daily PM2.5 Levels in September, 2015')
-#'}
-
-# if(FALSE) {
-#   ws_monitor
-#   slice=get('max')
-#   breaks=AQI$breaks_24
-#   colors=AQI$colors
-#   labels=AQI$names
-#   legendTitle="Max AQI Level"
-#   showLegend=TRUE
-#   stateCol="grey60"
-#   stateLwd=2
-#   countyCol="grey70"
-#   countyLwd=1
-#   add=FALSE
-# }
 
 monitorMap <- function(ws_monitor, 
                        slice=get('max'),

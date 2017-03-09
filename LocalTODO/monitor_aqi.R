@@ -41,7 +41,7 @@ monitor_aqi <- function( ws_monitor, parameter="pm25", hour=24 ) {
                   Hazardrous1 = c(301, 400),
                   Hazardrous2 = c(401, 500))
   
-#------------------- the concentration calculation below is solely for pm25 right now-------------------
+  #------------------- the concentration calculation below is solely for pm25 right now-------------------
   data <- ws_monitor$data
   datetimeUTC <- data$datetime
   

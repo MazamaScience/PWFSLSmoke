@@ -21,10 +21,11 @@
 #' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
 #' will be calcualted from the \code{ws_monitor} object metadata.
 #' @examples
-#' \dontrun{
-#' CarmelValley <- airnow_load(20160801,20160831,monitorIDs="060530002")
-#' monitorGoogleMap(CarmelValley)
-#' }
+#' N_M <- Northwest_Megafires
+#' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
+#' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+#' Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
+#' monitorGoogleMap(Spokane)
 
 monitorGoogleMap <- function(ws_monitor,
                              slice=get('max'),
@@ -77,25 +78,24 @@ monitorGoogleMap <- function(ws_monitor,
   if ( is.null(zoom) ) {
     maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
     if ( maxRange > 50 ) {
-      zoom <- 2
-    } else if ( maxRange > 20 ) {
       zoom <- 3
-    } else if ( maxRange > 10 ) {
+    } else if ( maxRange > 20 ) {
       zoom <- 4
-    } else if ( maxRange > 5 ) {
+    } else if ( maxRange > 10 ) {
       zoom <- 5
-    } else if ( maxRange > 2 ) {
+    } else if ( maxRange > 5 ) {
       zoom <- 6
-    } else if ( maxRange > 1 ) {
+    } else if ( maxRange > 2 ) {
       zoom <- 7
+    } else if ( maxRange > 1 ) {
+      zoom <- 8
     } else if ( maxRange > 0.5 ) {
-      zoom <- 8
+      zoom <- 9
     } else {
-      zoom <- 8
+      zoom <- 9
     }
-  } else if ( round(zoom)-zoom!=0 ) {
-      warning(paste0("Google maps does not support non-integer zoom levels. Rounded zoom level to nearest integer (i.e. ",round(zoom),")"))
-      zoom <- round(zoom)
+  } else {
+    zoom <- round(zoom)
   }
   
   

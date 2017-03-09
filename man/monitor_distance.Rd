@@ -22,13 +22,14 @@ a location of interest. These distances can be used to create a mask identifying
 monitors within a certain radius of the location of interest.
 }
 \examples{
-\dontrun{
-airnow <- airnow_load(2014091300, 2014101023)
-distance <- monitor_distance(airnow, -120.604, 38.782)
+N_M <- Northwest_Megafires
+# Walla Walla
+WW_lon <- -118.330278
+WW_lat <- 46.065
+distance <- monitor_distance(N_M, WW_lon, WW_lat)
 closestIndex <- which(distance == min(distance))
 distance[closestIndex]
-airnow$meta[closestIndex,]
-}
+N_M$meta[closestIndex,]
 }
 \seealso{
 distance

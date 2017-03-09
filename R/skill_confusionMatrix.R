@@ -2,8 +2,8 @@
 #' @title Confusion Matrix Statistics
 #' @param predicted logical vector of predicted values
 #' @param observed logical vector of observed values
-#' @param FPCost cost associated with false positives (type II error)
-#' @param FNCost cost associated with false negatives (type I error)
+#' @param FPCost cost associated with false positives (type I error)
+#' @param FNCost cost associated with false negatives (type II error)
 #' @param lightweight flag specifying creation of a return list without derived metrics
 #' @return List containing a table of confusion matrix values and a suite of derived metrics.
 #' @description Measurements of categorical forecast accuracy have a long history

@@ -44,13 +44,12 @@ By default, this function will return a ws_monitor object whose 'data' dataframe
     If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
 }
 \examples{
-\dontrun{
-airnow <- airnow_load(20140913, 20141010)
-xlim <- c(-124.801, -122.801)
-ylim <- c(47.004, 48.404)
-Olympic_Peninsula <- monitor_subset(airnow, xlim, ylim)
-monitorMap(Olympic_Peninsula)
-}
+N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150701,20150731))
+xlim <- c(-124.73, -122.80)
+ylim <- c(47.20, 48.40)
+Olympic_Peninsula <- monitor_subset(N_M, xlim, ylim)
+monitorMap(Olympic_Peninsula, cex=2)
+rect(xlim[1], ylim[1], xlim[2], ylim[2], col=adjustcolor('black',0.1))
 }
 \keyword{ws_monitor}
 

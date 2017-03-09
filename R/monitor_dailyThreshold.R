@@ -4,7 +4,7 @@
 #' @param ws_monitor ws_monitor object
 #' @param threshold AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted
 #' @param dayStart one of \code{"sunset|midnight|sunrise"}
-#' @param minHours minimum number of hours to be reported
+#' @param minHours minimum number of hourly observations required
 #' @param na.rm logical value indicating whether NA values should be ignored
 #' @return A ws_monitor object with a daily count of hours at or above \code{threshold}.
 #' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
@@ -18,36 +18,29 @@
 #' 
 #' The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
-#' \dontrun{
-#' AirNow <- airnow_load(20150801, 20150930)
-#' 
-#' WA_IDS <- AirNow$meta$monitorID[AirNow$meta$stateCode == 'WA']
-#' WA <- monitor_subset(AirNow, monitorIDs=WA_IDS)
-#' monitorLeaflet(WA)
+#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
+#' # monitorLeaflet(N_M) # to identify specific monitorIDs
 #' 
 #' # Pull out specific locations
-#' Twisp <- monitor_subset(WA, monitorIDs='530470009')
-#' Winthrop <- monitor_subset(WA, monitorIDs='530470010')
-#' Omak <- monitor_subset(WA, monitorIDs='530470013')
+#' Twisp <- monitor_subset(N_M, monitorIDs='530470009')
+#' Winthrop <- monitor_subset(N_M, monitorIDs='530470010')
+#' Omak <- monitor_subset(N_M, monitorIDs='530470013')
 #' 
 #' # Generate 
-#' Twisp_daily <- monitor_dailyThreshold(Twisp, 89, dayStart='midnight', minHours=1)
-#' Winthrop_daily <- monitor_dailyThreshold(Winthrop, 89, dayStart='midnight', minHours=1)
-#' Omak_daily <- monitor_dailyThreshold(Omak, 89, dayStart='midnight', minHours=1)
+#' Twisp_daily <- monitor_dailyThreshold(Twisp, "unhealthy", dayStart='midnight', minHours=1)
+#' Winthrop_daily <- monitor_dailyThreshold(Winthrop, "unhealthy", dayStart='midnight', minHours=1)
+#' Omak_daily <- monitor_dailyThreshold(Omak, "unhealthy", dayStart='midnight', minHours=1)
 #' 
 #' # Plot
 #' cols <- c(adjustcolor('orange',0.6),
 #'           adjustcolor('red',0.6),
 #'           adjustcolor('blue',0.6))
 #' legend <- c('Twisp','Winthrop','Omak')
-#' monitorPlot_timeseries(Twisp_daily, pch=16, col=cols[1])
-#' monitorPlot_timeseries(Winthrop_daily, pch=16, col=cols[2], add=TRUE)
-#' monitorPlot_timeseries(Omak_daily, pch=16, col=cols[3], add=TRUE)
-#' legend('topright', legend=legend, col=cols, pch=16)
-#' title('Hours per day Above Threshold (PM 2.5 = 89)')
-#' }
-
-# TODO:  Add an argument specifying the minimum number of hours required per day
+#' monitorPlot_timeseries(Twisp_daily, pch=15, cex=2, col=cols[1], ylab="Hours")
+#' monitorPlot_timeseries(Winthrop_daily, pch=15, cex=2, col=cols[2], add=TRUE)
+#' monitorPlot_timeseries(Omak_daily, pch=15, cex=2, col=cols[3], add=TRUE)
+#' legend('topright', legend=legend, col=cols, pch=15)
+#' title("Washington Towns with Multiple Hours per day Above 'Unhealthy', 2015")
 
 monitor_dailyThreshold <- function(ws_monitor, threshold="unhealthy", dayStart="midnight", minHours=0, na.rm=TRUE) {
   

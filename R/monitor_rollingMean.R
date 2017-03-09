@@ -19,19 +19,17 @@
 #' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
 #' }
 #' @examples 
-#' \dontrun{
-#' airnow <- airnow_load(20150801, 20150808)
-#' WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(100,Inf))
-#' WA_smoky_3hr <- monitor_rollingMean(WA_smoky, width=3, align="center")
-#' WA_smoky_24hr <- monitor_rollingMean(WA_smoky, width=24, align="right")
-#' monitorPlot_timeseries(WA_smoky, type='l', shadedNight=TRUE)
-#' monitorPlot_timeseries(WA_smoky_3hr, type='l', col='red', add=TRUE)
-#' monitorPlot_timeseries(WA_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)
+#' N_M <- Northwest_Megafires
+#' wa_smoky <- monitor_subset(N_M, stateCodes='WA', tlim=c(20150801, 20150808), vlim=c(100,Inf))
+#' wa_smoky_3hr <- monitor_rollingMean(wa_smoky, width=3, align="center")
+#' wa_smoky_24hr <- monitor_rollingMean(wa_smoky, width=24, align="right")
+#' monitorPlot_timeseries(wa_smoky, type='l', shadedNight=TRUE)
+#' monitorPlot_timeseries(wa_smoky_3hr, type='l', col='red', add=TRUE)
+#' monitorPlot_timeseries(wa_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)
 #' legend('topright', c("hourly","3-hourly","24-hourly"),
 #'        col=c('black','red','blue'), lwd=c(1,1,2))
 #' title('Smoky Monitors in Washington -- August, 2015')
-#' }
- 
+
 monitor_rollingMean <- function(ws_monitor, width=8, data.thresh=75, align="center") {
   
   data <- ws_monitor$data

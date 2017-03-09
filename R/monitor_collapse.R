@@ -13,15 +13,33 @@
 #' ws_monitor object using the function provided in the \code{FUN} argument. The single-monitor
 #' result will be located at the mean longitude and latitude unless \code{lon} and \code{lat}
 #' parameters are specified.
+#' @note After \code{FUN} is applied, values of \code{+Inf} and \code{-Inf} are converted to \code{NA}.
+#' This is a convenience for the common case where \code{FUN=min} or \code{FUN=max} and some of the
+#' timesteps have all missing values. See the R documentation for \code{min} for an explanation.
+#' @examples
+#' N_M <- Northwest_Megafires
+#' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
+#' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+#' Spokane_min <- monitor_collapse(Spokane, monitorID='Spokane_min', FUN=min)
+#' Spokane_max <- monitor_collapse(Spokane, monitorID='Spokane_max', FUN=max)
+#' monitorPlot_timeseries(Spokane, tlim=c(20150619,20150626),
+#'                        style='gnats', shadedNight=TRUE)
+#' monitorPlot_timeseries(Spokane_max, col='red', type='s', add=TRUE)
+#' monitorPlot_timeseries(Spokane_min, col='blue', type='s', add=TRUE)
+#' title('Spokane Range of PM2.5 Values, June 2015')
 
 monitor_collapse <- function(ws_monitor, lon=NULL, lat=NULL,
                              monitorID='generated_id',
                              FUN=mean, na.rm=TRUE, ...) {
   
-  data <- ws_monitor$data[,-1]
+  data <- as.matrix(ws_monitor$data[,-1])
   
-  collapsed_data <- apply(data, MARGIN=1, FUN=FUN, na.rm=na.rm, ...)
- 
+  collapsed_data <- suppressWarnings( apply(data, MARGIN=1, FUN=FUN, na.rm=na.rm, ...) )
+
+  # Special handling for min and max which return +Inf and -Inf when any row has all NAs
+  collapsed_data[collapsed_data == +Inf] <- NA
+  collapsed_data[collapsed_data == -Inf] <- NA
+  
   newData <- data.frame(ws_monitor$data$datetime, collapsed_data)
   colnames(newData) <- c('datetime', monitorID)
   

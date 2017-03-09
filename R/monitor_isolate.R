@@ -20,11 +20,12 @@
 #' mobile monitors that are deployed to different locations in different years.
 #' @seealso \link{monitor_subset}
 #' @examples
-#' \dontrun{
-#' airnow <- airnow_load(20140101, 20140110,stateCodes = "WA")
-#' monitorList <- monitor_isolate(airnow)
+#' N_M <- Northwest_Megafires
+#' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
+#' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+#' Spokane$meta$monitorID
+#' monitorList <- monitor_isolate(Spokane)
 #' names(monitorList)
-#' }
 
 monitor_isolate <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL,
                             monitorIDs=NULL, stateCodes=NULL,

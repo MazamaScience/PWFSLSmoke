@@ -1,0 +1,13 @@
+#' @keywords plotting
+#' @export
+#' @title Adds AQI Lines to a Plot
+#' @param ... additional arguments to be passed to abline()
+#' @description This function is a convenience for:
+#' 
+#' \code{abline(h=AQI$breaks_24, col=AQI$colors)}
+
+addAQILines <- function(...) {
+  
+  abline(h=AQI$breaks_24, col=AQI$colors, ...)
+  
+}

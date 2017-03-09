@@ -21,14 +21,9 @@ addBullseye(lon, lat, map = NULL, cex = 2, lwd = 2)
 Draws a bullseye with concentric circles of black and white.
 }
 \examples{
-\dontrun{
-# Google map
-map <- monitorGoogleMap(ca)
-addBullseye(ca$meta$longitude, ca$meta$latitude, map=map)
-# line map
-monitorMap(ca)
-addBullseye(ca$meta$longitude, ca$meta$latitude)
-}
+wa <- monitor_subset(Northwest_Megafires, stateCodes='WA', tlim=c(20150821,20150828))
+monitorMap(wa, cex=4)
+addBullseye(wa$meta$longitude, wa$meta$latitude)
 }
 \keyword{plotting}
 

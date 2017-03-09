@@ -1,4 +1,4 @@
-#' @keywords nowcast
+#' @keywords ws_monitor
 #' @export
 #' @title Apply Nowcast Algorithm to ws_monitor Object
 #' @param ws_monitor ws_monitor object
@@ -24,13 +24,15 @@
 #' @references \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 #' @references \url{http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 #' @examples
-#' \dontrun{
-#' airnow <- airnow_load(20160801, 20160815)
-#' salinas <- monitor_subset(airnow, monitorIDs='060531003')
-#' salinas_nowcast <- monitor_nowcast(salinas)
-#' monitorPlot_timeseries(salinas, type='l')
-#' monitorPlot_timeseries(salinas_nowcast, add=TRUE, type='l', col='red')
-#' }
+#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
+#' Omak <- monitor_subset(N_M, monitorIDs='530470013')
+#' Omak_nowcast <- monitor_nowcast(Omak)
+#' monitorPlot_timeseries(Omak, type='l', lwd=2)
+#' monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
+#' addAQILines()
+#' addAQILegend(lwd=1, pch=NULL)
+#' legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
+#' title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
 
 # NOTE:  This script is based on the javascript code at: 
 # NOTE:    https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js

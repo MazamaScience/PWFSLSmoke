@@ -109,11 +109,6 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
     return (NULL)
   }
   
-  # TODO:  2017-01-06 Are we still using rownames in the 'data' dataframe?
-  
-  # Add back YYYYmmddHHMM rownames discarded by dplyr::filter
-  rownames(data) <- strftime(data$datetime, "%Y%m%d%H", tz="UTC")
-  
   return(data)
   
 }

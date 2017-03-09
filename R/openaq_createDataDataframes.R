@@ -84,8 +84,7 @@ openaq_createDataDataframes <- function(df, parameters=NULL){
     
     # combine the two dataframes together by doing a left join
     dataDF <- dplyr::left_join(hourlyDF,parameterDF,by="datetime")
-    rownames(dataDF) <- format(dataDF$datetime,"%Y%m%d%H",tz="GMT")
-    
+
     dfList[[parameter]] <- dataDF
     logger.debug("Created 'data' dataframe for parameter %s with %d rows and %d columns", parameter, nrow(dataDF), ncol(dataDF))
     

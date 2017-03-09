@@ -1,4 +1,4 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
 #' @import maps mapproj
 #' @title Create Map of Monitor Prediction Performance
@@ -74,25 +74,25 @@ monitorMap_performance <- function (predicted,
   #------------- below copies from monitor_performanceMap-------------------
   # Get the performance dataframe
   performanceDF <- monitor_performance(predicted, observed, threshold, threshold)
-
+  
   # Plot the basemap
   if ( !add ) {
     
-  # list of unique states to be plotted as base map
-  stateCode <- as.data.frame( unique( c( as.character( predicted$meta$stateCode) ) ) )
-  colnames(stateCode) <- "abb"
-  state.fips <- maps::state.fips
-  duplicateIndex <- duplicated(state.fips$abb)
-  state.fips <- state.fips[!duplicateIndex,]
-  suppressWarnings(stateName <- dplyr::left_join(stateCode, state.fips, by="abb"))
-  stateName <- apply(as.data.frame(stateName$polyname),2,function(x){stringr::str_split_fixed(x, ':', 2)})[1:nrow(stateName)]
-  
-
+    # list of unique states to be plotted as base map
+    stateCode <- as.data.frame( unique( c( as.character( predicted$meta$stateCode) ) ) )
+    colnames(stateCode) <- "abb"
+    state.fips <- maps::state.fips
+    duplicateIndex <- duplicated(state.fips$abb)
+    state.fips <- state.fips[!duplicateIndex,]
+    suppressWarnings(stateName <- dplyr::left_join(stateCode, state.fips, by="abb"))
+    stateName <- apply(as.data.frame(stateName$polyname),2,function(x){stringr::str_split_fixed(x, ':', 2)})[1:nrow(stateName)]
+    
+    
     maps::map("state", stateName, col=stateCol, lwd=stateLwd, ...)
     maps::map('county', stateName, col=countyCol, lwd=countyLwd, add=TRUE, ...)
   }
   
-
+  
   # Sizing
   if ( !is.null(sizeBy) && sizeBy %in% names(performanceDF)) {
     cex <- cex * performanceDF[[sizeBy]] / max(performanceDF[[sizeBy]], na.rm = TRUE) 
@@ -137,12 +137,13 @@ monitorMap_performance <- function (predicted,
   # # else if only sizeBy is specified, show the size legend
   # if (showLegend) {
   #   if( !is.null(colorBy) ) {
-  #     addLegend( cex=cex*0.5, col=rev(colorss), legend=rev(legend), title=paste0(colorBy, " levels") )
+  #     legend( "topright", cex=cex*0.5, col=rev(colorss), legend=rev(legend), title=paste0(colorBy, " levels") )
   #   } else {
-  #     addLegend( pt.cex=cex*0.5, col="black", legend=rev(sizeLegend), 
-  #                title=paste0(sizeBy, " levels") )
+  #     legend( "topright", pt.cex=cex*0.5, col="black", legend=rev(sizeLegend), title=paste0(sizeBy, " levels") )
   #   }
   # }
-  if ( showLegend & !is.null(colorBy) ) { addLegend( cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") ) }
+  if ( showLegend & !is.null(colorBy) ) {
+    legend( "topright", cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") )
+  }
   
 }

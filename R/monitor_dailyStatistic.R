@@ -19,12 +19,12 @@
 #' 
 #' The returned \code{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
-#' \dontrun{
-#' airnow <- airnow_load(20150801, 20150831)
-#' WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(55,Inf))
-#' WA_smoky_dailyMean <- monitor_dailyStatistic(WA_smoky, FUN=get('mean'), dayStart='midnight')
-#' monitorPlot_timeseries(WA_smoky_dailyMean, style='gnats')
-#' }
+#' N_M <- Northwest_Megafires
+#' wa_unhealthy <- monitor_subset(N_M, stateCodes='WA', tlim=c(20150701,20150831), vlim=c(55,Inf))
+#' wa_unhealthy_dailyMean <- monitor_dailyStatistic(wa_unhealthy, FUN=get('mean'), dayStart='midnight')
+#' monitorPlot_timeseries(wa_unhealthy_dailyMean, style='gnats')
+#' addAQILines()
+#' title('Washington Unhealthy Sites - Daily Average, 2015')
 
 monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,
                                    minHours=24) {

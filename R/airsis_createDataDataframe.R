@@ -72,8 +72,7 @@ airsis_createDataDataframe <- function(df, meta) {
   # NOTE:  The resulting dataframe is [datetime,monitorID] with an extra first column containing datetime
   pm25DF <- reshape2::dcast(melted, datetime ~ monitorID, stats::median)
   colnames(pm25DF) <- c('datetime',meta$monitorID)
-  rownames(pm25DF) <- format(pm25DF$datetime,"%Y%m%d%H",tz="GMT")
-  
+
   # Create an empty hourlyDF dataframe with a full time axis (no missing hours)
   datetime <- seq(min(df$datetime), max(df$datetime), by="hours")
   hourlyDF <- data.frame(datetime=datetime)
@@ -81,8 +80,7 @@ airsis_createDataDataframe <- function(df, meta) {
   # Merge pm25DF into the houlyDF dataframe, inserting NA's where necessary
   # NOTE:  dplyr returns objects of class "tbl_df" which can be confusing. We undo that.
   data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime') )
-  rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="GMT")
-  
+
   logger.debug("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
   
   return(as.data.frame(data))

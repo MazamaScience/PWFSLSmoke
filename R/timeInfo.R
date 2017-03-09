@@ -24,13 +24,11 @@
 #' }
 #' @return A dataframe with times and masks. 
 #' @examples 
-#' \dontrun{ 
-#' CarmelValley <- airnow_load(20160801,20160831, monitorIDs="060530002")
 #' ti <- timeInfo(CarmelValley$data$datetime,
 #'                CarmelValley$meta$longitude,
 #'                CarmelValley$meta$latitude,
 #'                CarmelValley$meta$timezone)
-#' }
+#' head(ti)
 
 timeInfo <- function(time, lon=NULL, lat=NULL, timezone=NULL) {
 

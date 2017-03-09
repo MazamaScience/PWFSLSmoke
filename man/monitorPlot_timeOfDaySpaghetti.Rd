@@ -29,10 +29,7 @@ Creates a spaghetti plot of PM2.5 levels by hour for one or more days. The avera
 the period is also calculated and plotted as a thick red line.
 }
 \examples{
-\dontrun{
-CarmelValley <- airnow_load(20160801,20160831, monitorIDs="060530002")
 monitorPlot_timeOfDaySpaghetti(CarmelValley, tlim=c(20160801,20160809))
-}
 }
 \keyword{ws_monitor}
 

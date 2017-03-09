@@ -29,14 +29,12 @@
 #' \item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and 
 #' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
 #' }
-#' @note This function intends to provide a 'publication ready' plot and does pass additional arguments to any
-#' lower level plotting functions.
+#' @note This function attempts to provide a 'publication ready' rolling mean plot.
 #' @examples
-#' \dontrun{
-#' airnow <- airnow_load(20150818, 20150825)
-#' Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
-#' monitorPlot_rollingMean(Roseburg)
-#' }
+#' N_M <- Northwest_Megafires
+#' Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
+#'                            monitorIDs=c('410190002'))
+#' monitorPlot_rollingMean(Roseburg, shadedNight=TRUE)
 
 monitorPlot_rollingMean <- function(ws_monitor,
                                     monitorID=NULL,

@@ -30,11 +30,18 @@
 #' @note Remember that a ws_monitor object can contain data from more than one monitor, and thus, this function may produce
 #' a time series of data from multiple monitors. To plot a time series of an individual monitor's data, specify a single \code{monitorID}.
 #' @examples
-#' \dontrun{ 
-#' airnow <- airnow_load(20150801, 20150831)
-#' Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
-#' monitorPlot_timeseries(Roseburg)
-#' }
+#' N_M <- Northwest_Megafires
+#' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
+#' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+#' monitorPlot_timeseries(Spokane, style='gnats')
+#' title('Spokane PM2.5 values, 2015')
+#' monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqiDots', pch=16)
+#' addAQILegend()
+#' title('Spokane PM2.5 values, August 2015')
+#' monitorPlot_timeseries(Spokane, tlim=c(20150821,20150828), shadedNight=TRUE, style='gnats')
+#' abline(h=AQI$breaks_24, col=AQI$colors, lwd=2)
+#' addAQILegend()
+#' title('Spokane PM2.5 values, August 2015')
 
 monitorPlot_timeseries <- function(ws_monitor,
                                    monitorID=NULL,
@@ -114,13 +121,14 @@ monitorPlot_timeseries <- function(ws_monitor,
   argsList$x=times
   argsList$y=data[,2]
   
-  # # TODO: better ylim smarts
-  # # set range for plotting
-  # if ( !('ylim' %in% names(argsList)) ) {
-  #   argsList$ylim <- max(data[,-1], na.rm=TRUE)
-  #   argsList$ylim <- c(0, argsList$ylim*1.1)
-  # }
-  
+  # set range for plotting
+  if ( !('ylim' %in% names(argsList)) ) {
+    ymin <- min(data[,-1], na.rm=TRUE)
+    ymax <- max(data[,-1], na.rm=TRUE)
+    buffer <- 0.04 * (ymax - ymin) # Standard R buffer around min/max
+    argsList$ylim <- c(ymin-buffer, ymax+buffer)
+  }
+
   if ( !('xlab' %in% names(argsList)) ) {
     if ( timezone=='UTC' ) {
       argsList$xlab <- 'UTC'

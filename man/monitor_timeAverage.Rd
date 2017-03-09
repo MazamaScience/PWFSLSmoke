@@ -20,17 +20,11 @@ and renames the 'datetime' column so that it can be processed by the \code{opena
 \code{timeAverage()} function. (See that function for details.)
 }
 \examples{
-\dontrun{
-airnow <- airnow_load(20160801,20160831)
-CarmelValley <- monitor_subset(airnow, monitorIDs="060530002",
-                               tlim=c(2016080800,2016081023),
-                               timezone='America/Los_Angeles')
-CarmelValley_3hrChunks <- monitor_timeAverage(CarmelValley, avg.time="3 hour")
-layout(matrix(seq(2)))
-monitorPlot_hourlyBarplot(CarmelValley, main='1-Hourly Average PM2.5')
-monitorPlot_hourlyBarplot(CarmelValley_3hrChunks, main='3-Hourly Average PM2.5')
-layout(1)
-}
+C_V <- monitor_subset(CarmelValley, tlim=c(2016080800,2016081023),
+                      timezone='America/Los_Angeles')
+C_V_3hourly <- monitor_timeAverage(C_V, avg.time="3 hour")
+head(C_V$data, n=15)
+head(C_V_3hourly$data, n=5)
 }
 \keyword{nowcast}
 

@@ -36,8 +36,7 @@ epa_createDataDataframe <- function(df) {
   
   # combine the two dataframes together by doing a left join
   data <- dplyr::left_join(hourlyDF, pm25DF, by="datetime")
-  rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="GMT")
-  
+
   logger.debug("'data' dataframe has %d rows and %d columns", nrow(data), ncol(data))
   
   return(data)
