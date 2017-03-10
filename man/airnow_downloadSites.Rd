@@ -16,12 +16,12 @@ airnow_downloadSites(baseUrl = "https://files.airnowtech.org/airnow/today/",
 Dataframe of site location metadata.
 }
 \description{
-The \url{http://airnowtech.org} site provides both air pollution
+The \url{https://airnowtech.org} site provides both air pollution
 monitoring data as well as monitoring site location metadata. This 
 function retrieves the most recent version of the site location metadata file and returns it as a dataframe.
 
 A description of the data format is publicly available at the
-\href{http://www.airnowapi.org/docs/MonitoringSiteFactSheet.pdf}{Monitoring Site Fact Sheet}.
+\href{https://www.airnowapi.org/docs/MonitoringSiteFactSheet.pdf}{Monitoring Site Fact Sheet}.
 }
 \note{
 As of December, 2016, the \code{monitoring_site_locations.dat} file has an encoding of 

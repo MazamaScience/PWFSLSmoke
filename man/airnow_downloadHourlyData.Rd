@@ -16,7 +16,7 @@ airnow_downloadHourlyData(datestamp = "",
 Dataframe of AirNow hourly data.
 }
 \description{
-The \url{http://airnowtech.org} site provides both air pollution
+The \url{https://airnowtech.org} site provides both air pollution
 monitoring data as well as monitoring site location metadata. This
 function retrieves a single, hourly data file and returns it as a dataframe.
 }

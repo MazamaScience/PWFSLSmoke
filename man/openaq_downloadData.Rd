@@ -5,7 +5,7 @@
 \title{Download and Aggregate Multiple Daily Data Files from OpenAQ}
 \usage{
 openaq_downloadData(parameter = NULL, startdate = "", days = 1,
-  countryCode = NULL, baseUrl = "http://openaq-data.s3.amazonaws.com/")
+  countryCode = NULL, baseUrl = "https://openaq-data.s3.amazonaws.com/")
 }
 \arguments{
 \item{parameter}{pollutant name}

@@ -49,7 +49,7 @@ title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
 
 \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 
-\url{http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
+\url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 }
 \keyword{ws_monitor}
 

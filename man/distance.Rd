@@ -32,6 +32,6 @@ PDX_lat <- 45.5898
 distance(SEA_lon, SEA_lat, PDX_lon, PDX_lat)
 }
 \references{
-\url{http://www.r-bloggers.com/great-circle-distance-calculations-in-r/}
+\url{https://www.r-bloggers.com/great-circle-distance-calculations-in-r/}
 }
 
