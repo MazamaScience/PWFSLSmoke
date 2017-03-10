@@ -8,7 +8,7 @@ monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
   monitorIDs = NULL, stateCodes = NULL, timezone = "UTC")
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{xlim}{optional vector with low and high longitude limits}
 
@@ -26,22 +26,23 @@ monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 A list of isolated ws_monitor objects.
 }
 \description{
-Filters the incoming ws_monitor object according to the parameters
+Filters \code{ws_monitor} according to the parameters
 passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
 
-After filtering, each monitorID found in the \code{ws_monitor} object is extracted
+After filtering, each monitorID found in \code{ws_monitor} is extracted
 and its \code{data} dataframe is restricted to the times from when that monitor first
 datapoint until its last datapoint.
 
-This function is useful when \code{ws_monitor} objects are created for
+This function is useful when \emph{ws_monitor} objects are created for
 mobile monitors that are deployed to different locations in different years.
 }
 \examples{
-\dontrun{
-airnow <- airnow_load(20140101, 20140110,stateCodes = "WA")
-monitorList <- monitor_isolate(airnow)
+N_M <- Northwest_Megafires
+# monitorLeaflet(N_M) # to identify Spokane monitorIDs
+Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+Spokane$meta$monitorID
+monitorList <- monitor_isolate(Spokane)
 names(monitorList)
-}
 }
 \seealso{
 \link{monitor_subset}

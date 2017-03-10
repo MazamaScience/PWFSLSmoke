@@ -36,7 +36,7 @@
 #' Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
 #' dataframe to be filtered to contain only records for those parameters.
 #' 
-#' @note:  As of 2016-12-27, it appears that hourly data are available only for 2016 and
+#' @note As of 2016-12-27, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
 #' @return Dataframe of aggregated AirNow data.
 #' @seealso \link{airnow_createDataDataframes}
@@ -67,7 +67,7 @@ airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
     # Obtain an hour of AirNow data
     result <- try( df <- airnow_downloadHourlyData(datestamp),
                    silent=TRUE)
-    if ( class(result)[1] == "try-error" ) {
+    if ( "try-error" %in% class(result) ) {
       err_msg <- stringr::str_trim(geterrmessage())
       logger.warn("Unable to download data: %s",err_msg)
       next

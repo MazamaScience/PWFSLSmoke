@@ -31,7 +31,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' raw <- airsis_createRawDataframe(startdate = 20160901, provider = 'USFS',unitID = '1033')
+#' raw <- airsis_createRawDataframe(startdate=20160901, provider='USFS', unitID='1033')
 #' raw <- raw_enhance(raw)
 #' rawPlot_timeseries(raw,tlim=c(20160908,20160917))
 #' }
@@ -63,7 +63,7 @@ airsis_createRawDataframe <- function(startdate=20020101,
   if ( !is.null(saveFile) ) {
     result <- try( cat(fileString, file=saveFile),
                    silent=TRUE )
-    if ( class(result)[1] == "try-error" ) {
+    if ( "try-error" %in% class(result) ) {
       err_msg <- geterrmessage()
       logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
     }

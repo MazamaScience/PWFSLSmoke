@@ -4,17 +4,19 @@
 \alias{wrccDump_createMonitorObject}
 \title{Ingest WRCC Dump File and Create ws_monitor Object}
 \usage{
-wrccDump_createMonitorObject(filepath)
+wrccDump_createMonitorObject(filepath, clusterDiameter = 1000)
 }
 \arguments{
 \item{filepath}{absolute path of the WRCC dump file}
+
+\item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 }
 \value{
-A ws_monitor object with WRCC data.
+A emph{ws_monitor} object with WRCC data.
 }
 \description{
-Ingests an  WRCC dump file and converts
-it into a quality controlled, metadata enhanced \code{ws_monitor} object
+Ingests a WRCC dump file and converts
+it into a quality controlled, metadata enhanced \emph{ws_monitor} object
 ready for use with all \code{monitor_~} functions.
 
 Steps involved include:
@@ -25,7 +27,7 @@ Steps involved include:
  \item{apply quality control}
  \item{apply clustering to determine unique deployments}
  \item{enhance metadata to include: elevation, timezone, state, country, site name}
- \item{reshape data into deployment-by-property 'meta' and and time-by-deployment 'data' dataframes}
+ \item{reshape data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 }
 }
 \note{
@@ -42,5 +44,5 @@ Each dump file must contain data for only one type of monitor, e.g. EBAM or E-Sa
 
 \code{\link{wrcc_createDataDataframe}}
 }
-\keyword{WRCC}
+\keyword{internal}
 

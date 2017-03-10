@@ -2,27 +2,22 @@
 #' @export
 #' @import maps mapproj
 #' @title Create Map of Monitoring Stations
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param slice either a time index or a function used to collapse the time axis
 #' @param breaks set of breaks used to assign colors
 #' @param colors set of colors must be one less than the number of breaks
 #' @param cex the amount that the points will be magnified on the map
-#' @param labels a set of text labels, one for each color
-#' @param legendTitle a title for the legend if showLegend=TRUE
-#' @param legendX x coordinate passed on to the legend() command
-#' @param legendY y coordinate passed on to the legend() command
-#' @param showLegend logical specifying whether to add a legend (default: \code{TRUE})
 #' @param stateCol color for state outlines on the map
 #' @param stateLwd width for state outlines
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
 #' @param add logical specifying whether to add to the current plot
-#' @param ... additional arguments passed to maps::map() such as 'projection' or 'parameters'
+#' @param ... additional arguments passed to \code{maps::map()} such as \code{'projection'} or \code{'parameters'}
 #' @description Creates a map of monitoring stations in a given ws_monitor object. 
 #' Individual monitor timeseries are reduced to a single value by applying the function 
 #' passed in as \code{slice} to the entire timeseries of each monitor with \code{na.rm=TRUE}.
 #' These values are then plotted over a map of the United States. Any additional 
-#' arguments specified in '...' are passed on to the points() function.
+#' arguments specified in '...' are passed on to the \code{points()} function.
 #' 
 #' If \code{slice} is an integer, it will be used as an index to pull out a single timestep.
 #' 
@@ -32,40 +27,15 @@
 #' @details Using a single number for the \code{breaks} argument will result in the use
 #' of quantiles to determine a set of breaks appropriate for the number of colors.
 #' @examples
-#' \dontrun{
-#' airnow <- airnow_load(20150901, 20150930)
-#' nw <- monitor_subset(airnow, stateCodes=c('WA','OR'), countryCodes="US")
-#' nw_daily <- monitor_dailyStatistic(nw, FUN=mean)
-#' map('county',c('WA','OR'))
-#' monitorMap(nw_daily, add=TRUE)
-#' title('Max Daily PM2.5 Levels in September, 2015')
-#'}
-
-# if(FALSE) {
-#   ws_monitor
-#   slice=get('max')
-#   breaks=AQI$breaks_24
-#   colors=AQI$colors
-#   labels=AQI$names
-#   legendTitle="Max AQI Level"
-#   showLegend=TRUE
-#   stateCol="grey60"
-#   stateLwd=2
-#   countyCol="grey70"
-#   countyLwd=1
-#   add=FALSE
-# }
+#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150821,20150828))
+#' monitorMap(N_M, cex=2)
+#' addAQILegend()
 
 monitorMap <- function(ws_monitor, 
                        slice=get('max'),
                        breaks=AQI$breaks_24,
                        colors=AQI$colors,
                        cex=par('cex'),  
-                       labels=AQI$names,
-                       legendTitle="Max AQI Level",
-                       legendX="topright",
-                       legendY=NULL,
-                       showLegend=TRUE,
                        stateCol="grey60",
                        stateLwd=2,
                        countyCol="grey70",
@@ -88,7 +58,7 @@ monitorMap <- function(ws_monitor,
     stop("Improper use of slice parameter")
   }
   
-  # ----- Figure out names for a legend and colors for each point ---- 
+  # Colors for each point 
   
   # Create levels and use them to create a set of colors
   levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
@@ -122,10 +92,6 @@ monitorMap <- function(ws_monitor,
   } else {
     points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters, argsList$orientation), 
             pch=16, cex=cex, col=cols )
-  }
-  
-  if ( showLegend ) { 
-    addLegend(legendX, legendY, cex=cex*0.7, col=rev(colors), legend=rev(labels), title=legendTitle)
   }
   
 }

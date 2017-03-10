@@ -8,7 +8,7 @@ monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
   ylim = NULL, aqiLines = TRUE, shadedNight = TRUE, title = NULL, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{monitorID}{id for a specific monitor in the ws_monitor object}
 
@@ -22,17 +22,14 @@ monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{title}{plot title}
 
-\item{...}{additional arguments to pass to lines()}
+\item{...}{additional arguments to pass to \code{lines()}}
 }
 \description{
 Creates a spaghetti plot of PM2.5 levels by hour for one or more days. The average by hour over 
 the period is also calculated and plotted as a thick red line.
 }
 \examples{
-\dontrun{
-CarmelValley <- airnow_load(20160801,20160831, monitorIDs="060530002")
 monitorPlot_timeOfDaySpaghetti(CarmelValley, tlim=c(20160801,20160809))
-}
 }
 \keyword{ws_monitor}
 

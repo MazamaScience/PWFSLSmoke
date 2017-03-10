@@ -1,7 +1,7 @@
 #' @keywords WRCC
 #' @export
 #' @title Apply Quality Control to Raw WRCC E-Sampler Dataframe
-#' @param df single site dataframe created by wrcc_parseData()
+#' @param df single site dataframe created by \code{wrcc_parseData()}
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values
 #' @param remove_Lon_zero flag to remove rows where Longitude == 0
@@ -63,20 +63,20 @@ wrcc_ESAMQualityControl <- function(df,
   
   # Latitude and longitude must be in range
   if (remove_Lon_zero) {
-    goodLonMask <- !is.na(df$GPSLon) & df$GPSLon >= valid_Longitude[1] & df$GPSLon <= valid_Longitude[2] & df$GPSLon != 0
+    goodLonMask <- !is.na(df$GPSLon) & df$GPSLon >= valid_Longitude[1] & df$GPSLon <= valid_Longitude[2] & (df$GPSLon != 0)
   } else {
     goodLonMask <- !is.na(df$GPSLon) & df$GPSLon >= valid_Longitude[1] & df$GPSLon <= valid_Longitude[2]
   }
   
   if (remove_Lat_zero) {
-    goodLatMask <- !is.na(df$GPSLat) & df$GPSLat >= valid_Latitude[1] & df$GPSLat <= valid_Latitude[2] & df$GPSLat != 0
+    goodLatMask <- !is.na(df$GPSLat) & df$GPSLat >= valid_Latitude[1] & df$GPSLat <= valid_Latitude[2] & (df$GPSLat != 0)
   } else {    
     goodLatMask <- !is.na(df$GPSLat) & df$GPSLat >= valid_Latitude[1] & df$GPSLat <= valid_Latitude[2]
   }
   
   badRows <- !(goodLonMask & goodLatMask)
   badRowCount <- sum(badRows)
-  if (badRowCount > 0) {
+  if ( badRowCount > 0 ) {
     logger.info("Discarding %s rows with invalid location information", badRowCount)
     badLocations <- paste('(',df$GPSLon[badRows],',',df$GPSLat[badRows],')',sep='')
     logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
@@ -94,10 +94,10 @@ wrcc_ESAMQualityControl <- function(df,
   # ----- Type ----------------------------------------------------------------
   
   # Type: 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
-  goodTypeMask <- df$Type == 9
+  goodTypeMask <- !is.na(df$Type) & (df$Type == 9)
   badRows <- !goodTypeMask
   badRowCount <- sum(badRows)
-  if (badRowCount > 0) {
+  if ( badRowCount > 0 ) {
     logger.info("Discarding %s rows with invalid Type information", badRowCount)
     logger.debug("Bad Types:  %s", paste0(sort(df$Type[badRows]), collapse=", "))
   }

@@ -5,13 +5,11 @@
 \title{Create Map of Monitoring Stations}
 \usage{
 monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, cex = par("cex"), labels = AQI$names,
-  legendTitle = "Max AQI Level", legendX = "topright", legendY = NULL,
-  showLegend = TRUE, stateCol = "grey60", stateLwd = 2,
-  countyCol = "grey70", countyLwd = 1, add = FALSE, ...)
+  colors = AQI$colors, cex = par("cex"), stateCol = "grey60",
+  stateLwd = 2, countyCol = "grey70", countyLwd = 1, add = FALSE, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{slice}{either a time index or a function used to collapse the time axis}
 
@@ -20,16 +18,6 @@ monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 \item{colors}{set of colors must be one less than the number of breaks}
 
 \item{cex}{the amount that the points will be magnified on the map}
-
-\item{labels}{a set of text labels, one for each color}
-
-\item{legendTitle}{a title for the legend if showLegend=TRUE}
-
-\item{legendX}{x coordinate passed on to the legend() command}
-
-\item{legendY}{y coordinate passed on to the legend() command}
-
-\item{showLegend}{logical specifying whether to add a legend (default: \code{TRUE})}
 
 \item{stateCol}{color for state outlines on the map}
 
@@ -41,14 +29,14 @@ monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 
 \item{add}{logical specifying whether to add to the current plot}
 
-\item{...}{additional arguments passed to maps::map() such as 'projection' or 'parameters'}
+\item{...}{additional arguments passed to \code{maps::map()} such as \code{'projection'} or \code{'parameters'}}
 }
 \description{
 Creates a map of monitoring stations in a given ws_monitor object. 
 Individual monitor timeseries are reduced to a single value by applying the function 
 passed in as \code{slice} to the entire timeseries of each monitor with \code{na.rm=TRUE}.
 These values are then plotted over a map of the United States. Any additional 
-arguments specified in '...' are passed on to the points() function.
+arguments specified in '...' are passed on to the \code{points()} function.
 
 If \code{slice} is an integer, it will be used as an index to pull out a single timestep.
 
@@ -61,14 +49,9 @@ Using a single number for the \code{breaks} argument will result in the use
 of quantiles to determine a set of breaks appropriate for the number of colors.
 }
 \examples{
-\dontrun{
-airnow <- airnow_load(20150901, 20150930)
-nw <- monitor_subset(airnow, stateCodes=c('WA','OR'), countryCodes="US")
-nw_daily <- monitor_dailyStatistic(nw, FUN=mean)
-map('county',c('WA','OR'))
-monitorMap(nw_daily, add=TRUE)
-title('Max Daily PM2.5 Levels in September, 2015')
-}
+N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150821,20150828))
+monitorMap(N_M, cex=2)
+addAQILegend()
 }
 \keyword{ws_monitor}
 

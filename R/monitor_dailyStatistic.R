@@ -1,30 +1,31 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Calculate Daily Statistics for each Monitor in a ws_monitor Object
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param FUN function used to collapse a day's worth of data into a single number for each monitor in the ws_monitor object
 #' @param dayStart one of \code{sunset|midnight|sunrise}
 #' @param na.rm logical value indicating whether NA values should be ignored
 #' @param minHours minimum number of valid data hours required to calculate each daily statistic
-#' @return A ws_monitor object with daily statistics for the local timezone.
+#' @return A emph{ws_monitor} object with daily statistics for the local timezone.
 #' @description Calculates daily statistics for each monitor in \code{ws_monitor}.
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
 #' from different regions should have daily statistics calculated separately.
-#' @note Note that the incoming \code{ws_monitor} object should have UTC (GMT)
+#' @note Note that the incoming \emph{ws_monitor} object should have UTC (GMT)
 #' times and that this function calculates daily statistics based on local (clock) time.
 #' If you choose a date range based on UTC times this may result in an insufficient 
-#' number of hours in the first and last daily records of the returned \code{ws_monitor}
+#' number of hours in the first and last daily records of the returned \emph{ws_monitor}
 #' object.
 #' 
-#' This returned object has a daily time axis where each time is set to noon, local time.
+#' The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
-#' \dontrun{
-#' airnow <- airnow_load(20150801, 20150831)
-#' WA_smoky <- monitor_subset(airnow, stateCodes='WA', vlim=c(55,Inf))
-#' WA_smoky_dailyMean <- monitor_dailyStatistic(WA_smoky, FUN=get('mean'), dayStart='midnight')
-#' monitorPlot_timeseries(WA_smoky_dailyMean, type='s')
-#' }
+#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
+#' Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009')
+#' Twisp_dailyMean <- monitor_dailyStatistic(Twisp, FUN=get('mean'), dayStart='midnight')
+#' monitorPlot_timeseries(Twisp_dailyMean, type='b')
+#' addAQILines()
+#' addAQILegend("topleft", lwd=1, pch=NULL)
+#' title("Twisp, Washington Daily Mean PM2.5, 2015")
 
 monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,
                                    minHours=24) {
@@ -98,7 +99,7 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   df$datetime <- meanDF$datetime
   
   # Set df$datetime to noon for each day
-  lubridate::hour(df$datetime) <- 12
+  lubridate::hour(df$datetime) <- 00
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00
   lubridate::tz(df$datetime) <- timezone

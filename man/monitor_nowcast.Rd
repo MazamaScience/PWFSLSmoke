@@ -7,12 +7,12 @@
 monitor_nowcast(ws_monitor, version = "pm")
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{version}{character identity specifying the type of nowcast algorithm to be used}
 }
 \value{
-A ws_monitor object with data that have been processed by the Nowcast algorithm.
+A emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
 }
 \description{
 A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
@@ -31,16 +31,18 @@ for typical usage.
 }
 \note{
 Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
-.001 for 'ozone' regardless of the precision of the data in the incoming \code{ws_monitor} object.
+.001 for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
 }
 \examples{
-\dontrun{
-airnow <- airnow_load(20160801, 20160815)
-salinas <- monitor_subset(airnow, monitorIDs='060531003')
-salinas_nowcast <- monitor_nowcast(salinas)
-monitorPlot_timeseries(salinas, type='l')
-monitorPlot_timeseries(salinas_nowcast, add=TRUE, type='l', col='red')
-}
+N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
+Omak <- monitor_subset(N_M, monitorIDs='530470013')
+Omak_nowcast <- monitor_nowcast(Omak)
+monitorPlot_timeseries(Omak, type='l', lwd=2)
+monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
+addAQILines()
+addAQILegend(lwd=1, pch=NULL)
+legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
+title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
@@ -49,5 +51,5 @@ monitorPlot_timeseries(salinas_nowcast, add=TRUE, type='l', col='red')
 
 \url{http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 }
-\keyword{nowcast}
+\keyword{ws_monitor}
 

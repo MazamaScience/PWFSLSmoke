@@ -38,5 +38,5 @@ df <- airsisDump_parseData(fileString)
 \references{
 \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 }
-\keyword{AIRSIS}
+\keyword{internal}
 

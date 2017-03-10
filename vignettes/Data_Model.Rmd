@@ -13,11 +13,13 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-The **PWFSLSmoke** package is designed to provide a compact, full-featured suite of utilities for
-working with PM 2.5 data used to monitor wildfire smoke. Uniform data models
-provides consistent data access across monitoring data available from different agencies.
+This vignette explores the `ws_monitor` data model used throughout the **PWFSLSmoke** package to store
+and work with monitoring data.
 
-The core data model in this package is the `ws_monitor` object used to store data associated
+The **PWFSLSmoke** package is designed to provide a compact, full-featured suite of utilities for
+working with PM 2.5 data used to monitor wildfire smoke. A uniform data model
+provides consistent data access across monitoring data available from different agencies.
+The core data model in this package is defined by the `ws_monitor` object used to store data associated
 with groups of individual monitors.
 
 To work efficiently with the package it is important to understand the structure of this
@@ -28,14 +30,14 @@ expect objects of class `ws_monitor` as their first argument. (*Note that 'ws_' 
 
 Monitoring data will typically be obtained from an agency charged with archiving data
 acquired at monitoring sites. For wildifre smoke, the primary pollutant is PM 2.5 and the
-sites archiving this data include [AirNow](http://www.airnow.gov), [WRCC](http://www.wrcc.dri.edu) and
-[AIRSIS](http://app.airsis.com).
+sites archiving this data include [AirNow](https://www.airnow.gov), [WRCC](http://www.wrcc.dri.edu) and
+[AIRSIS](https://app.airsis.com/USFS).
 
 The data model for monitoring data consists of an **R** `list` with two dataframes: `data` and `meta`.
 
-The `data` dataframe contains all hourly measurements organized with rows (the 'unlimited' dimension) as unique timestamps and
+The `data` dataframe contains all hourly measurements organized with rows (the 'unlimited' dimension) as unique timesteps and
 columns as unique monitors. The very first column is always named `datetime` and contains the `POSIXct` datetime
-in Universal Time Coordinates (UTC = GMT).
+in Coordinated Universal Time (UTC).
 
 The `meta` dataframe contains all metadata associated with monitoring sites and is organized with
 rows as unique sites and columns as site attributes. The following columns are guaranteed to exist
@@ -58,8 +60,8 @@ It is important to note that the `monitorID` acts as a unique key that connects 
 The `monitorID` is used for column names in the `data` dataframe and for row names in the `meta` dataframe.
 So the following will always be true:
 
-    rownames(ws_monitor$meta) = ws_monitor$meta$monitorID
-    colnames(ws_monitor$data) = c('datetime',ws_monitor$meta$monitorID)
+    rownames(ws_monitor$meta) == ws_monitor$meta$monitorID
+    colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)
 
 **Example 1: Exploring `ws_monitor` Objects**
 
@@ -106,16 +108,17 @@ Spokane <- monitor_subset(airnow, monitorIDs=SpokaneCountyIDs)
 # Apply 3-hr rolling mean
 Spokane_3hr <- monitor_rollingMean(Spokane, 3, align="center")
 
-# Replace data columns with their squared values (exponentiation is not supplied by the package)
-Spokane_3hr$data[,-1] <- (Spokane_3hr$data[,-1])^2
+# 1) Replace data columns with their squares (exponentiation is not supplied by the package)
+Spokane_3hr_squared <- Spokane_3hr
+Spokane_3hr_squared$data[,-1] <- (Spokane_3hr$data[,-1])^2 # exclude the 'datetime' column
 
 # NOTE:  Exponentiation is only used as an example. It does not generate a meaningful result.
 
 # Create a daily averaged 'ws_monitor' object
 Spokane_daily_3hr <- monitor_dailyStatistic(Spokane_3hr)
 
-# Check out the correlation between monitors (correlation is not supplied by the package)
-data <- Spokane_daily_3hr$data[,-1] # omit the 'datetime' column
+# 2) Check out the correlation between monitors (correlation is not supplied by the package)
+data <- Spokane_daily_3hr$data[,-1] # exclude the 'datetime' column
 cor(data, use='complete.obs')
 ```
 

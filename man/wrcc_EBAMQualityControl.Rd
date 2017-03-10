@@ -11,7 +11,7 @@ wrcc_EBAMQualityControl(df, valid_Longitude = c(-180, 180),
   984))
 }
 \arguments{
-\item{df}{single site dataframe created by wrcc_parseData()}
+\item{df}{single site dataframe created by \code{wrcc_parseData()}}
 
 \item{valid_Longitude}{range of valid Longitude values}
 

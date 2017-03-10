@@ -2,7 +2,7 @@
 #' @export
 #' @title Assign State Codes to the Available Longitudes and Latitudes
 #' @param df a dataframe with longitude and latitude columns
-#' @description Uses function getStateCode() from MazamaSpatialUtils package 
+#' @description Use  \code{MazamaSpatialUtils::getStateCode()} 
 #' to assign state codes to the longitudes and latitudes in the dataframe.
 #' @return Input dataframe with additional columns: \code{stateCode}.
 #' @examples

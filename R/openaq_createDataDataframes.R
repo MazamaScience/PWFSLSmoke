@@ -5,8 +5,8 @@
 #' @param parameters pollutant name
 #' @description After addtional columns(i.e. \code{'datetime'}, \code{'stateCode'}, and \code{'monitorID'}) 
 #' have been applied to an OpenAQ dataframe,
-#' we can extract the PM2.5 values and store them in a 'data' dataframe
-#' organized as hour-by-monitor.
+#' we can extract the PM2.5 values and store them in a \code{data} dataframe
+#' organized as time-by-monitor.
 #' 
 #' The first column of the returned dataframe is named \code{'datetime'} and
 #' contains a \code{POSIXct} time in UTC. Additional columns contain data
@@ -25,7 +25,7 @@
 #' \item{bc}{ -- black carbon}
 #' }
 #' 
-#' @return A 'data' dataframe for use in a ws_monitor object.
+#' @return A \code{data} dataframe for use in a emph{ws_monitor} object.
 
 
 openaq_createDataDataframes <- function(df, parameters=NULL){
@@ -84,8 +84,7 @@ openaq_createDataDataframes <- function(df, parameters=NULL){
     
     # combine the two dataframes together by doing a left join
     dataDF <- dplyr::left_join(hourlyDF,parameterDF,by="datetime")
-    rownames(dataDF) <- format(dataDF$datetime,"%Y%m%d%H",tz="GMT")
-    
+
     dfList[[parameter]] <- dataDF
     logger.debug("Created 'data' dataframe for parameter %s with %d rows and %d columns", parameter, nrow(dataDF), ncol(dataDF))
     

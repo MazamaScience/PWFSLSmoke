@@ -2,13 +2,14 @@
 #' @export
 #' @import graphics
 #' @title Create Pollution Rose Plot from a Raw Dataframe
-#' @param df enhanced, raw dataframe as created by the raw_enhance() function
+#' @param df enhanced, raw dataframe as created by the \code{raw_enhance()} function
 #' @param parameter parameter to plot
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime logical specifying whether \code{tlim} is in local time or UTC
 #' @param normalize normalize slices to fill entire area, allowing for easier comparison of counts of magnitudes by direction
 #' @param ... additional arguments to pass on to openair::pollutionRose()
-#' @description Create pollution rose plot from raw_enhance object based on openair::pollutionRose(). If normalized, black line
+#' @description Create pollution rose plot from an enhanced raw dataframe.
+#' This function is based on \code{openair::pollutionRose()}. If normalized, black line
 #' indicates frequency by direction.
 #' @note If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 #' @examples

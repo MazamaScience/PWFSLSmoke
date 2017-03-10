@@ -3,17 +3,17 @@
 #' @title Create OpenAQ Site Location Metadata Dataframe
 #' @param df a OpenAQ dataframe after metadata enhancement
 #' @param parameters pollutant name
-#' @return A 'meta' dataframe for use in a ws_monitor object.
+#' @return A \code{meta} dataframe for use in a \emph{ws_monitor} object.
 #' @description After an OpenAQ dataframe has been enhanced with 
 #' additional columns including \code{'datetime'}, \code{'stateCode'}, \code{'monitorID'} we are ready to 
 #' pull out site information associated with unique monitorID.
 #' 
-#' These will be rearranged into a dataframe organized as site-by-property
+#' These will be rearranged into a dataframe organized as deployment-by-property
 #' with one row for each monitorID.
 #'
 #' This site information found in \code{df} is augmented so that we end up with a uniform
 #' set of properties associated with each monitorID. The list of
-#' columns in the returned \code{'meta'} dataframe is:
+#' columns in the returned \code{meta} dataframe is:
 #' 
 #' \preformatted{
 #' > names(meta)

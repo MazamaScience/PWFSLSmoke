@@ -1,0 +1,207 @@
+---
+title: "AIRSIS Data Acquisition and Handling"
+author: "Mazama Science"
+date: '`r Sys.Date()`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AIRSIS Data Acquisition and Handling}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+```
+
+This vignette covers the basics of how the **PWFSLSmoke** Package acquires and processes [AIRSIS](http://app.airsis.com) data.
+An initial demonstration of the creation of a `ws_monitor` object will be followed by a closer analysis
+of how raw data is processed including functions called by the `airsis_createRawDataframe()` function:
+
+* `airsis_downloadData()`
+* `airsis_parseData()`
+* `airsis_qualityControl()`
+* `addClustering()`
+
+## Setup
+
+Before downloading data we need to load the **PWFSLSmoke** package and set up logging. You can pass
+arguments to the `logger.setup()` function to send logging information to log files. In the following
+example we avoid specifying log files and instead use `logger.setLevel()` to send any INFO level output
+to the console.
+
+```{r setup}
+library(PWFSLSmoke)
+logger.setup()
+logger.setLevel(INFO)
+```
+
+Additionally, we need to load the **MazamaSpatialUtils** package and required datasets:
+
+```{r spatial_utils}
+library(MazamaSpatialUtils)
+setSpatialDataDir('~/Data/Spatial')
+loadSpatialData('NaturalEarthAdm1')
+```
+
+Now we are ready to begin processing data from AIRSIS.
+
+## Downloading and Creating a ws_monitor Object
+
+The easiest way to work with AIRSIS data is to simply request data for a known monitor and have it automatically
+converted into a `ws_monitor` object:
+
+```{r airsis_createMonitorObject}
+usfs_1013 <- airsis_createMonitorObject(20150301, 20150831, 'USFS', unitID='1013')
+```
+
+The logging output provides information on progress and how many rows of raw data are discarded during processing.
+More detailed logging output is available with `logger.setLevel(DEBUG)`. Use `logger.setLevel(ERROR)` for minimal output.
+
+This `usfs_1013` object is ready to be used with any of the package `monitor_~()` functions.
+
+Note that monitorIDs or AIRSIS data are created using the `deploymentID` generated during clustering to data associated with independent deployments of the same monitor. For the `ws_monitor` object we just created we see:
+
+```{r deploymentID}
+usfs_1013$meta$monitorID
+```
+
+The functions that take care of download, parsing, QC and clustering are used by both  `airsis_createMonitorObject()` and `airsis_createRawDataframe()` and are described in the sections below.
+
+## Downloading Raw Data
+
+It is also possible to download and work with "raw" data from AIRSIS which retains all of the additional "engineering" values associated with the monitor including wind direction, wind speed, temperature, humidity, *etc.* Raw data is returned as a dataframe by the `airsis_createRawDataframe()` function.
+
+The first step in `airsis_createRawDataframe()` function is to download the raw data for the requested monitor and time period. This is done with `airsis_downloadData()`. The user passes in start and end times, an agency (*e.g.* 'USFS') and a monitor ID (*e.g.* '1033').  Data are then downloaded as a raw text string from AIRSIS.
+
+For example, the following code will create text strings of raw data for two different monitors over the month of September 2016.
+
+```{r download}
+logger.setLevel(ERROR)
+fileStringEBAM <- airsis_downloadData(startdate=20160901,
+                                      enddate=20160930,
+                                      provider='USFS',
+                                      unitID='1012')
+fileStringESAM <- airsis_downloadData(startdate=20160901,
+                                      enddate=20160930,
+                                      provider='USFS',
+                                      unitID='1050')
+```
+
+## Parsing Data
+
+Once a raw data text string is assigned to a variable it is parsed and preliminarily cleaned by the `airsis_parseData()` function. Note that this function currently only supports EBAM and E-Sampler type monitors.
+The parsing process returns a raw data dataframe for the monitor of interest before quality control has been
+applied. The following summarizes the preliminary cleaning that is performed on the data during the parsing process:
+
+* ESAM: Some E-Sampler files (*e.g.* USFS 1050) have internal rows with header line information. These rows are removed.
+* ESAM: Data for USFS 1050 in July 2016 was observed to have extra rows with some sort of metadata in columns 'Serial.Number' and 'Data.1'. These rows are removed.
+* All types: Latitude, Longitude and Sys..Volts are measured at 6am and 6pm as separate GPS entries in the dataframe. These values are carried forward so they appear in all rows.
+
+Continuing from our example above, the following code creates a dataframe for each of the two text strings created above:
+
+```{r parse}
+dfEBAM <- airsis_parseData(fileStringEBAM)
+dfESAM <- airsis_parseData(fileStringESAM)
+```
+
+## Quality Control (QC)
+
+After the raw data is parsed into a dataframe, it is then passed into the `airsis_qualityControl()` funtion.
+A few preliminary checks are performed before the dataframe is passed into a type-specific QC function. Currently, two such functions exist: `airsis_EBAMQualityControl()` for EBAM, and `airsis_ESAMQualityControl()` for E-Sampler monitors.
+
+Although separate, the shared functionality between the two QC functions is nearly identical. The following sub-sections provide an overview of the different elements of the QC process.
+
+### Longitudes/Latitudes
+
+Longitude and latitude values are limited to their domain:
+
+* Longitude: -180 to 180
+* Latitude: -90 to 90
+
+Any rows with coordinate values outside the limits are removed from the QC'd dataframe.
+
+### Assigning Time
+
+An important step in the quality control process is assigning consistent time stamps to the data so that plotting and other functions in the PWFSLSmoke package can work consistently on all data.
+
+The EBAM and E-Sampler raw data include various date/time fields. Below is a summary of the various fields:
+
+* `Date.Time.GMT` (EBAM only) - date/time of the data
+* `Start.Date.Time..GMT.` (almost always blank for both monitor types; only observed once thus far, on USFS Monitor 1012 on 9/30/16, possibly due to a monitor software version update)
+* `TimeStamp` - date/time the data was received by AIRSIS
+* `PDate` - date/time the data was processed by AIRSIS
+
+For the EBAM monitors, the `Date.Time.GMT` data is always at the top of an hour, and we take it at face value to represent the time associated with the data. (*In actuality we use the floor of the `TimeStamp` data minus an hour, though maybe we should revisit the appropriateness of this decision to protect against assigning data to the wrong time in case the data ever comes in more than an hour after the time for which it is representative.*) However, this nice clean `Date.Time.GMT` field is not provided for the E-Sampler monitors. For the E-Sampler monitors, we use the floor of the `TimeStamp` data, minus one hour, to assign a clean `datetime` field. (*See the Hourly Time Stamp Standard section below for a discussion on why we subtract one hour from both monitor types' time stamps.*)
+
+While the EBAM monitors' `TimeStamp` data is typically just a few minutes after the top of an hour, this is not the case with the E-Sampler monitors. The E-Sampler monitors' `TimeStamp` data is observed to drift by a few minutes more than 60 between readings (60 is the inteval we would expect between hourly readings), except for once a day when the readings appear to "reset" to being captured just a few minutes past the top of the hour. For example, the following plot shows the number of minutes __*after*__ the top of the hour of each `TimeStamp` row for USFS monitor ID 1049 (E-Sampler) in September 2016.
+
+```{r timingPlot}
+tsESAM <- lubridate::mdy_hms(dfESAM$TimeStamp)
+minsESAM <- lubridate::minute(tsESAM)
+plot(tsESAM, minsESAM, ylim=c(0,25), xlab="TimeStamp", ylab="TimeStamp Minute")
+title("Minutes Past the Top of the Hour\nUSFS Monitor ID 1050 TimeStamp Data\nSeptember 2016")
+```
+
+Similar patterns were observed on other E-Sampler monitors as well. In some cases, the time offset was observed to become quite large (up to 55 minutes) before resetting; for example, see USFS 1049 data in September 2016. But, importantly, it appears the data offset never gets so large as to carry over to the next full hour (though it might not hurt to periodically check for this occurrence). As such, we are able to simply take the floor of the `TimeStamp` data (minus one hour) in order to assign the data to unique hours. This is the approach we have implemented in the `airsis_EBAMQualityControl()` and `airsis_ESAMQualityControl()` functions to create a new `datetime` field in the QC'd dataframe.
+
+#### Hourly Time Stamp Standard
+
+For both monitor types' `datetime` field, we currently subtract one hour from the floor of the reported time stamp. For example, for a reading with a time stamp of 12:04, we assign a `datetime` of 11:00. This is because the data that came in at 12:04 is (presumably) an average of the data in Hour 11. This approach, while somewhat confusing at first glance when working with raw data, makes for better clarity and consistency in downstream applications. For example, to calculate a daily average, the user can simply filter on `datetime` data that has a certain day value, and the displayed data will be representative of the data for that day.
+
+If this approach is confusing, it might help to think about it from the perspective of years. Suppose you wanted to know the average temperature for a location over the year 2016. To find this value you would average the individual measurements for the location of interest from 1/1/16 - 12/31/16. Thus, it follows that you wouldn't be able to calculate the full year's average until the year was over; that is, the 2016 average wouldn't materialize until the beginning of 2017. But, it would be inappropriate to say that this average "belongs" to 2017. In fact, it is 2016's annual average temperature, since it consists of an average of all temperature data recorded during 2016. The same pattern can be applied to days (Tuesday's average doesn't materialize until Wednesday), and finally, to hours (Hour 11's average doesn't materialize until Hour 12).
+
+Please note that a different approach may be warranted for different configurations, such as if the readings are representative of an instantaneous measurement at the reported time stamp (e.g. temperature at 12:04), rather than averages (e.g. average temperature from 11:00-11:59). Over time we hope to build a more thorough understanding of the meaning of each data point and timestamp so we can more appropriately label the data for comparison against other data sets.
+
+The aforementioned hourly time label standard is consistent with federal monitoring requirements when working with averages.
+
+### Data Type (EBAM Monitors Only)
+
+The `airsis_EBAMQualityControl()` function includes a check to ensure that the `Type` field is 'PM2.5' for all rows. Nonconforming rows are removed from the QC'd dataframe.
+
+### Missing Data and Value Checks
+
+The QC functions screen the data for missing values and check the existing values against acceptable limits. The following table summarizes the parameters that are checked, along with conditions for rejecting a record. When calling the QC functions directly, the user can specify alternate limit values.
+
+| Parameter                  | EBAM Name  | EBAM Limits      | ESAM Name     | ESAM Limits |
+|:-------------:|:-----------:|:-----------:|:-----------:|:-----------:|
+| Sample Flow Rate           | `Flow`     | > +/- 5% of 16.7 | `Flow.l.m.`   | != 2        |
+| Air Temperature            | `AT`       | > 45             | `AT.C.`       | > 150       |
+| Relative Humidity          | `RHi`      | > 45             | `RHi...`      | > 55        |
+| Hourly PM2.5 Concentration | `ConcHr`   | > 0.984          | `Conc.mg.m3.` | > 984       |
+| Time Stamp                 | `datetime` | > now            | `datetime`    | > now       |
+
+### Duplicte Hours
+
+The last step in the AIRSIS QC functions is to remove any records with duplicate time stamps. Occasionally, the data will include more than one record for the same time period. In many cases this is observed as two records with the same `Date.Time.GMT` (for EBAMS) / `TimeStamp` (for E-Samplers) times, but different `PDate` times, which implies that the data was reprocessed (in reality, the duplicate check is based on the values in the `datetime` field). In such cases, we assume the data was reprocessed for a reason and therefore we choose to retain the entry with the latest processing time. (*Currently we simply retain the last record as the data always appears to be in order.*) All prior rows with duplicate `datetime` values are removed from the QC'd dataframe.
+
+## Clustering
+
+Finally, once the data is downloaded and cleaned, it is processed to assign an ID to unique deployments based on the latitude/longitude of the monitor over the period in question. The `addClustering()` function takes
+a dataframe with columns of longitude and latitude data and a `clusterDiameter` in meters. Locations that are closer than `clusterDiameter` meters apart are considered to share the same location and be part of a single "deployment" and assigned a single `deploymentID`. (*Note that installation of a monitor at the same site in different years will generate the same `deploymentID`.)
+
+Details of the clustering algorithm and tests of its robustness are given in the blog post
+[When k-means Clustering Fails](http://mazamascience.com/WorkingWithData/?p=1694).
+
+With the default setting of `clusterDiameter=1000` the `addClustering()` function will differentaiate between sites that are over 1km apart.
+
+There are several `raw~()` functions in the package that are designed to work with "raw"" dataframes once clustering has been applied.
+
+----
+
+## Plotting with a Raw Dataframe
+
+After describing the gory details of how AIRSIS data are procerssed, let's do some work with a "raw" dataframe.
+After creating the raw dataframe we will immediately call `raw_enhance()` to create a uniform time axis and 
+standardized column names.
+
+```{r raw}
+usfs_1013_raw <- airsis_createRawDataframe(20150301, 20150831, 'USFS', unitID='1013')
+usfs_1013_enhanced <- raw_enhance(usfs_1013_raw)
+```
+
+Because "raw" dataframes have atmospheric variables like windSpeed and windDir we can perform a wide variety of analyses. We will end this vignette by demonstrating a Pollution Rose plot using a function that wraps the `pollutionRose()` function provided in the **openair** package.
+
+```{r pollutionRose}
+rawPlot_pollutionRose(usfs_1013_enhanced)
+```
+

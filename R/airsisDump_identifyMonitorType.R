@@ -1,4 +1,4 @@
-#' @keywords AIRSIS
+#' @keywords internal
 #' @export
 #' @title Identify AIRSIS Dump File Monitor Type
 #' @param df dataframe or raw character string containing AIRSIS data

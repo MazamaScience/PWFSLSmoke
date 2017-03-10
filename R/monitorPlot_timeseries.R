@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create Timeseries Plot
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param monitorID monitor ID for one or more monitor in the ws_monitor object
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime logical specifying whether \code{tlim} is in local time or UTC
@@ -16,24 +16,32 @@
 #' @param dayLwd day marker line width
 #' @param hourLwd hour marker line width
 #' @param hourInterval interval for grid (max=12)
-#' @param ... additional arguments to be passed to points()
-#' @description Creates a time series plot of PM2.5 data from a ws_monitor object (see note below). Optional arguments
+#' @param ... additional arguments to be passed to \code{points()}
+#' @description Creates a time series plot of PM2.5 data from a emph{ws_monitor} object (see note below). Optional arguments
 #' color code by AQI index, add shading to indicate nighttime, and adjust the time display (local vs. UTC).
 #' 
 #' When a named \code{style} is used, some graphical parameters will be overridden. Available styles include:
 #' 
 #' \itemize{
 #' \item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+#' \item{\code{gnats}}{-- semi-transparent dots like a cloud of gnats}
 #' }
 #' 
-#' @note Remember that a ws_monitor object can contain data from more than one monitor, and thus, this function may produce
+#' @note Remember that a emph{ws_monitor} object can contain data from more than one monitor, and thus, this function may produce
 #' a time series of data from multiple monitors. To plot a time series of an individual monitor's data, specify a single \code{monitorID}.
 #' @examples
-#' \dontrun{ 
-#' airnow <- airnow_load(20150801, 20150831)
-#' Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
-#' monitorPlot_timeseries(Roseburg)
-#' }
+#' N_M <- Northwest_Megafires
+#' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
+#' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+#' monitorPlot_timeseries(Spokane, style='gnats')
+#' title('Spokane PM2.5 values, 2015')
+#' monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqiDots', pch=16)
+#' addAQILegend()
+#' title('Spokane PM2.5 values, August 2015')
+#' monitorPlot_timeseries(Spokane, tlim=c(20150821,20150828), shadedNight=TRUE, style='gnats')
+#' abline(h=AQI$breaks_24, col=AQI$colors, lwd=2)
+#' addAQILegend()
+#' title('Spokane PM2.5 values, August 2015')
 
 monitorPlot_timeseries <- function(ws_monitor,
                                    monitorID=NULL,
@@ -113,13 +121,14 @@ monitorPlot_timeseries <- function(ws_monitor,
   argsList$x=times
   argsList$y=data[,2]
   
-  # # TODO: better ylim smarts
-  # # set range for plotting
-  # if ( !('ylim' %in% names(argsList)) ) {
-  #   argsList$ylim <- max(data[,-1], na.rm=TRUE)
-  #   argsList$ylim <- c(0, argsList$ylim*1.1)
-  # }
-  
+  # set range for plotting
+  if ( !('ylim' %in% names(argsList)) ) {
+    ymin <- min(data[,-1], na.rm=TRUE)
+    ymax <- max(data[,-1], na.rm=TRUE)
+    buffer <- 0.04 * (ymax - ymin) # Standard R buffer around min/max
+    argsList$ylim <- c(ymin-buffer, ymax+buffer)
+  }
+
   if ( !('xlab' %in% names(argsList)) ) {
     if ( timezone=='UTC' ) {
       argsList$xlab <- 'UTC'
@@ -156,7 +165,7 @@ monitorPlot_timeseries <- function(ws_monitor,
       lat <- mean(mon$meta$latitude)
       lon <- mean(mon$meta$longitude)
       timeInfo <- PWFSLSmoke::timeInfo(times, lon, lat, timezone)
-      addShadedNights(timeInfo)
+      addShadedNight(timeInfo)
     }
     
     # Add vertical lines to denote days and/or hour breaks
@@ -190,8 +199,8 @@ monitorPlot_timeseries <- function(ws_monitor,
       
       # # Set opacity based on number of points
       # dims <- dim(as.matrix(data[,-1]))
-      # num_na <- length(which(is.na(data[,-1])))
-      # size <- dims[1]*dims[2] - num_na
+      # naCount <- length(which(is.na(data[,-1])))
+      # size <- dims[1]*dims[2] - naCount
       # opacity <- min(8/log(size), 1)
       opacity <- 1
 
@@ -201,23 +210,30 @@ monitorPlot_timeseries <- function(ws_monitor,
         levels <- .bincode(argsList$y, breaks)
         argsList$col <- AQI$colors[levels]
         argsList$col <- adjustcolor(argsList$col, alpha.f=opacity)
-        argsList$cex <- argsList$y / 200 + .3
-        argsList$cex <- pmin(argsList$cex,2)
+        if ( !'cex' %in% names(argsList) ) {
+          argsList$cex <- argsList$y / 200 + .3
+          argsList$cex <- pmin(argsList$cex,2)
+        }
         # Add the points
         do.call(points,argsList)
       }
       
     } else if ( style == 'gnats' ) {
       
-      # Set opacity based on number of points
+      # Set opacity based on total number of valid measurements
       dims <- dim(as.matrix(data[,-1]))
-      num_na <- length(which(is.na(data[,-1])))
-      size <- dims[1]*dims[2] - num_na
-      opacity <- min(8/log(size), 1)
+      naCount <- length(which(is.na(data[,-1])))
+      size <- dims[1]*dims[2] - naCount
+      opacity <- min(2/log(size), 0.9)
+      if ( !'col' %in% names(argsList) ) {
+        baseColor <- 'black'
+      } else {
+        baseColor <- argsList$col
+      }
 
       for (id in meta$monitorID) {
         argsList$y <- data[[id]] # same as data[,id]
-        argsList$col <- adjustcolor(argsList$col, alpha.f=opacity)
+        argsList$col <- adjustcolor(baseColor, alpha.f=opacity)
         argsList$pch <- 16
         # Add the points
         do.call(points,argsList)

@@ -10,7 +10,7 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
   dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{monitorID}{monitor ID for one or more monitor in the ws_monitor object}
 
@@ -38,28 +38,36 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{hourInterval}{interval for grid (max=12)}
 
-\item{...}{additional arguments to be passed to points()}
+\item{...}{additional arguments to be passed to \code{points()}}
 }
 \description{
-Creates a time series plot of PM2.5 data from a ws_monitor object (see note below). Optional arguments
+Creates a time series plot of PM2.5 data from a emph{ws_monitor} object (see note below). Optional arguments
 color code by AQI index, add shading to indicate nighttime, and adjust the time display (local vs. UTC).
 
 When a named \code{style} is used, some graphical parameters will be overridden. Available styles include:
 
 \itemize{
 \item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+\item{\code{gnats}}{-- semi-transparent dots like a cloud of gnats}
 }
 }
 \note{
-Remember that a ws_monitor object can contain data from more than one monitor, and thus, this function may produce
+Remember that a emph{ws_monitor} object can contain data from more than one monitor, and thus, this function may produce
 a time series of data from multiple monitors. To plot a time series of an individual monitor's data, specify a single \code{monitorID}.
 }
 \examples{
-\dontrun{ 
-airnow <- airnow_load(20150801, 20150831)
-Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
-monitorPlot_timeseries(Roseburg)
-}
+N_M <- Northwest_Megafires
+# monitorLeaflet(N_M) # to identify Spokane monitorIDs
+Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+monitorPlot_timeseries(Spokane, style='gnats')
+title('Spokane PM2.5 values, 2015')
+monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqiDots', pch=16)
+addAQILegend()
+title('Spokane PM2.5 values, August 2015')
+monitorPlot_timeseries(Spokane, tlim=c(20150821,20150828), shadedNight=TRUE, style='gnats')
+abline(h=AQI$breaks_24, col=AQI$colors, lwd=2)
+addAQILegend()
+title('Spokane PM2.5 values, August 2015')
 }
 \keyword{ws_monitor}
 

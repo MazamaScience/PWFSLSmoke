@@ -1,3 +1,8 @@
+<!-- [![Build Status](https://travis-ci.org/mazamascience/PWFSLSmoke.svg)](https://travis-ci.org/mazamascience/PWFSLSmoke)
+[![Coverage Status](https://coveralls.io/repos/mazamascience/PWFSLSmoke/badge.svg?branch=master&service=github)](https://coveralls.io/github/mazamascience/PWFSLSmoke?branch=master) -->
+<!-- [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke) -->
+<!-- [![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSMoke)](https://cran.r-project.org/package=PWFSLSmoke) -->
+
 # PWFSLSmoke R Package
 
 ```
@@ -35,6 +40,9 @@ of some packages that are not yet available on CRAN.
 The following packages should be installed with devtools by typing the following at the RStudio console:
 
 ```
+# Note that vignettes require knitr and rmarkdown
+install.packages('knitr')
+install.packages('rmarkdown')
 devtools::install_github('rstudio/dygraphs')
 devtools::install_github('rstudio/leaflet')
 devtools::install_github('mazamascience/MazamaSpatialUtils', build_vignettes=TRUE)
@@ -53,9 +61,18 @@ tar -xzf Spatial.tar.gz
 
 ## Examples
 
-Working example scripts that demonstrate the functionality of the package can be found in the
-[localExamples](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localExamples)
-directory on github. This directory is not part of the package.
+Additional vignettes that demonstrate the functionality of the package can be found in the
+[localVignettes](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localVignettes)
+directory on github. These vignettes are not part of the package because they require
+installation of the **MazamaSpatialUtils** datasets.
+
+To run them you should:
+
+ * make sure you have the proper spatial data installed in ~/Data/Spatial/
+ * make sure you have both the **knitr** and **rmarkdown** packages installed
+ * download the localVignettes
+ * load one into RStudio
+ * click the "Knit" button
 
 ----
 

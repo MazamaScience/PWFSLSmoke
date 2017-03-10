@@ -5,29 +5,48 @@
 \title{Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor}
 \usage{
 monitor_collapse(ws_monitor, lon = NULL, lat = NULL,
-  monitorID = "generated_id", FUN = mean, ...)
+  monitorID = "generated_id", FUN = mean, na.rm = TRUE, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{lon}{longitude of the collapsed monitoring station. (Default = mean of the longitudes)}
 
 \item{lat}{latitude of the collapsed monitoring station. (Default = mean of the latitudes)}
 
-\item{monitorID}{monitor ID of the collapsed monitoring station. (Default = 'generated_id')}
+\item{monitorID}{monitor ID of the collapsed monitoring station.}
 
-\item{FUN}{function to be applied to all the monitors at a single time index. (Default = mean)}
+\item{FUN}{function to be applied to all the monitors at a single time index.}
 
-\item{...}{additional arguments to be passed on to the apply() function}
+\item{na.rm}{logical value indicating whether NA values should be ignored when FUN is applied}
+
+\item{...}{additional arguments to be passed on to the \code{apply()} function}
 }
 \value{
-A ws_monitor object with meta and data that corresponds to the collapsed single monitor
+A \emph{ws_monitor} object with meta and data that corresponds to the collapsed single monitor
 }
 \description{
-Collapses all the monitors from a given ws_monitor object into a single-monitor ws_monitor object using
-the function provided in the \code{FUN} argument. The collapse applies to both ws_monitor$meta and ws_monitor$data.
-
-Intended for use with gridded model data, rather than actual monitor data itself (meta data is largely chopped; NAs propagate).
+Collapses data from all the monitors in \code{ws_monitor} into a single-monitor 
+\emph{ws_monitor} object using the function provided in the \code{FUN} argument. The single-monitor
+result will be located at the mean longitude and latitude unless \code{lon} and \code{lat}
+parameters are specified.
+}
+\note{
+After \code{FUN} is applied, values of \code{+Inf} and \code{-Inf} are converted to \code{NA}.
+This is a convenience for the common case where \code{FUN=min} or \code{FUN=max} and some of the
+timesteps have all missing values. See the R documentation for \code{min} for an explanation.
+}
+\examples{
+N_M <- Northwest_Megafires
+# monitorLeaflet(N_M) # to identify Spokane monitorIDs
+Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+Spokane_min <- monitor_collapse(Spokane, monitorID='Spokane_min', FUN=min)
+Spokane_max <- monitor_collapse(Spokane, monitorID='Spokane_max', FUN=max)
+monitorPlot_timeseries(Spokane, tlim=c(20150619,20150626),
+                       style='gnats', shadedNight=TRUE)
+monitorPlot_timeseries(Spokane_max, col='red', type='s', add=TRUE)
+monitorPlot_timeseries(Spokane_min, col='blue', type='s', add=TRUE)
+title('Spokane Range of PM2.5 Values, June 2015')
 }
 \keyword{ws_monitor}
 

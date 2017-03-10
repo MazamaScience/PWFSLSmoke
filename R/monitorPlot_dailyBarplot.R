@@ -2,29 +2,35 @@
 #' @export
 #' @import graphics
 #' @title Create Daily Barplot
-#' @param ws_monitor ws_monitor object
-#' @param monitorID monitor ID for a specific monitor in the given ws_monitor object (optional
-#' if only one monitor in the ws_monitor object)
+#' @param ws_monitor emph{ws_monitor} object
+#' @param monitorID monitor ID for a specific monitor in \code{ws_monitor} (optional
+#' if \code{ws_monitor} only has one monitor)
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param minHours minimum number of valid data hours required to calculate each daily average
 #' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)
 #' @param gridCol color of grid lines (see graphical parameter 'col')
 #' @param gridLwd line width of grid lines (see graphical parameter 'lwd')
 #' @param gridLty type of grid lines (see graphical parameter 'lty')
-#' @param ... additional arguments to be passed to barplot()
+#' @param labels_x_nudge nudge x labels to the left
+#' @param labels_y_nudge nudge y labels down
+#' @param ... additional arguments to be passed to \code{barplot()}
 #' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor
-#' in a ws_monitor object. Each bar is colored according to its AQI category.
+#' in a emph{ws_monitor} object. Each bar is colored according to its AQI category.
 #' 
 #' This function is a wrapper around \code{base::barplot} and any arguments to that 
 #' function may be used.
 #' 
 #' Each 'day' is the midnight-to-midnight period in the monitor local timezone.
 #' When \code{tlim} is used, it is converted to the monitor local timezone.
+#' @details The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to 
+#' tweak the date labeling. Units used are the same as those in the plot.
 #' @examples
 #' \dontrun{
-#' airnow <- airnow_load(20150701, 20150831)
-#' main <- "Daily Average PM2.5 for Colleville, WA"
-#' monitorPlot_dailyBarplot(airnow, monitorID="530650004", main=main)
+#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150715,20150930))
+#' main <- "Daily Average PM2.5 for Omak, WA"
+#' monitorPlot_dailyBarplot(N_M, monitorID="530470013", main=main,
+#'                          labels_x_nudge=1)
+#' addAQILegend(fill=rev(AQI$colors), pch=NULL)
 #' }
 
 monitorPlot_dailyBarplot <- function(ws_monitor,
@@ -35,8 +41,10 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
                                      gridCol='black',
                                      gridLwd=0.5,
                                      gridLty='solid',
+                                     labels_x_nudge=0,
+                                     labels_y_nudge=0,
                                      ...) {
-  
+ 
   # Data Preparation ----------------------------------------------------------
   
   # Allow single monitor objects to be used without specifying monitorID
@@ -130,10 +138,9 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
       labels <- allLabels[seq(1,barCount,by=stride)]
     }
     labels_x <- (indices - 0.5) + (indices * argsList$space)
-    labels_x_nudge <- 0
     labels_y <- -0.06 * (par('usr')[4] - par('usr')[3])
     # Add tilted dates
-    text(labels_x - labels_x_nudge, labels_y, labels, srt=45, cex=argsList$cex.names, xpd=NA)
+    text(labels_x - labels_x_nudge, labels_y - labels_y_nudge, labels, srt=45, cex=argsList$cex.names, xpd=NA)
     # Now add tick marks
     axis(1, at=labels_x, labels=FALSE, lwd=0, lwd.ticks=1)
   }

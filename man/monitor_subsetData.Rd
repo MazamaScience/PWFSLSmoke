@@ -8,7 +8,7 @@ monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
   dropMonitors = FALSE, timezone = "UTC")
 }
 \arguments{
-\item{data}{ws_monitor object 'data' dataframe}
+\item{data}{emph{ws_monitor} object \code{data} dataframe}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 
@@ -21,10 +21,10 @@ monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
 \item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
-A ws_monitor object 'data' dataframe, or \code{NULL} if filtering removes all monitors.
+A emph{ws_monitor} object \code{data} dataframe, or \code{NULL} if filtering removes all monitors.
 }
 \description{
-Subsets a ws_monitor object's 'data' dataframe by removing any monitors that
+Subsets a emph{ws_monitor} object's \code{data} dataframe by removing any monitors that
 lie outisde the specified ranges of time and values and that are not mentioned in the
 list of monitorIDs.
 

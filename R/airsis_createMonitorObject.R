@@ -8,9 +8,9 @@
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
-#' @return A ws_monitor object with AIRSIS data.
+#' @return A \emph{ws_monitor} object with AIRSIS data.
 #' @description Obtains monitor data from an AIRSIS webservice and converts
-#' it into a quality controlled, metadata enhanced \code{ws_monitor} object
+#' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.
 #' 
 #' Steps involved include:
@@ -21,7 +21,7 @@
 #'  \item{apply quality control}
 #'  \item{apply clustering to determine unique deployments}
 #'  \item{enhance metadata to include: elevation, timezone, state, country, site name}
-#'  \item{reshape data into deployment-by-property 'meta' and and time-by-deployment 'data' dataframes}
+#'  \item{reshape AIRSIS data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 #' }
 #' 
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
@@ -31,6 +31,11 @@
 #' @seealso \code{\link{addClustering}}
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
+#' @examples
+#' \dontrun{
+#' usfs_1013 <- airsis_createMonitorObject(20150301, 20150831, 'USFS', unitID='1013')
+#' monitorLeaflet(usfs_1013)
+#' }
 
 airsis_createMonitorObject <- function(startdate=20020101,
                                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
@@ -49,6 +54,19 @@ airsis_createMonitorObject <- function(startdate=20020101,
     logger.error("Required parameter 'unitID' is missing")
     stop(paste0("Required parameter 'unitID' is missing"))
   }
+
+  startdateCount <- stringr::str_count(as.character(startdate))
+  if ( !startdateCount %in% c(8,10,12) ) {
+    logger.error("Cannot parse 'startdate' with %d characters", startdateCount)
+    stop(paste0("Cannot parse 'startdate' with ",startdateCount," characters"))
+  }
+  
+  enddateCount <- stringr::str_count(as.character(enddate))
+  if ( !enddateCount %in% c(8,10,12) ) {
+    logger.error("Cannot parse 'enddate' with %d characters", enddateCount)
+    stop(paste0("Cannot parse 'enddate' with ",enddateCount," characters"))
+  }
+  
   
   # Read in AIRSIS .csv data
   logger.info("Downloading AIRSIS data ...")
@@ -58,7 +76,7 @@ airsis_createMonitorObject <- function(startdate=20020101,
   if ( !is.null(saveFile) ) {
     result <- try( cat(fileString, file=saveFile),
                    silent=TRUE )
-    if ( class(result)[1] == "try-error" ) {
+    if ( "try-error" %in% class(result) ) {
       err_msg <- geterrmessage()
       logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
     }
@@ -81,7 +99,7 @@ airsis_createMonitorObject <- function(startdate=20020101,
   
   # Add clustering information to identify unique deployments
   logger.info("Clustering ...")
-  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
+  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
   
   # Create 'meta' dataframe of site properties organized as monitorID-by-property
   # NOTE:  This step will create a uniformly named set of properties and will
@@ -89,7 +107,7 @@ airsis_createMonitorObject <- function(startdate=20020101,
   logger.info("Creating 'meta' dataframe ...")
   meta <- airsis_createMetaDataframe(df)
   
-  # Create 'data' dataframe of PM2.5 values organized as hour-by-monitorID
+  # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
   logger.info("Creating 'data' dataframe ...")
   data <- airsis_createDataDataframe(df, meta)
   

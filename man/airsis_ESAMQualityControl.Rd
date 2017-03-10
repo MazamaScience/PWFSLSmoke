@@ -10,7 +10,7 @@ airsis_ESAMQualityControl(df, valid_Longitude = c(-180, 180),
   150), valid_RHi = c(-Inf, 55), valid_Conc = c(-Inf, 984))
 }
 \arguments{
-\item{df}{single site dataframe created by airsis_downloadData()}
+\item{df}{single site dataframe created by \code{airsis_downloadData()}}
 
 \item{valid_Longitude}{range of valid Longitude values}
 

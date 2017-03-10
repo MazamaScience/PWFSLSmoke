@@ -72,7 +72,7 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   # Create the data frame that holds a month worth of AirNow data
   result <- try( airnowRaw <- airnow_downloadSites(),
                  silent=TRUE)
-  if ( class(result)[1] == "try-error" ) {
+  if ( "try-error" %in% class(result) ) {
     err_msg <- geterrmessage()
     logger.error("Unable to obtain sites dataframe: %s",err_msg)
     stop(paste0("Unable to obtain sites dataframe: ",err_msg))

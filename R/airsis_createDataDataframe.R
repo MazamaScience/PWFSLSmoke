@@ -1,17 +1,17 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Create AIRSIS Data Dataframe
-#' @param df single site AIRSIS dataframe created by airsis_clustering()
-#' @param meta AIRSIS meta dataframe created by airsis_createMetaDataframe()
+#' @param df single site AIRSIS dataframe created by \code{airsis_clustering()}
+#' @param meta AIRSIS meta dataframe created by \code{airsis_createMetaDataframe()}
 #' @description After quality control has been applied to an AIRSIS dataframe,
-#' we can extract the PM2.5 values and store them in a 'data' dataframe
-#' organized as hour-by-deployment (aka hour-by-site).
+#' we can extract the PM2.5 values and store them in a \code{data} dataframe
+#' organized as time-by-deployment (aka time-by-site).
 #' 
 #' The first column of the returned dataframe is named \code{'datetime'} and
 #' contains a \code{POSIXct} time in UTC. Additional columns contain data
 #' for each separate deployment of a monitor. 
 #' 
-#' @return A 'data' dataframe for use in a ws_monitor object.
+#' @return A \code{data} dataframe for use in a emph{ws_monitor} object.
 
 
 airsis_createDataDataframe <- function(df, meta) {
@@ -72,8 +72,7 @@ airsis_createDataDataframe <- function(df, meta) {
   # NOTE:  The resulting dataframe is [datetime,monitorID] with an extra first column containing datetime
   pm25DF <- reshape2::dcast(melted, datetime ~ monitorID, stats::median)
   colnames(pm25DF) <- c('datetime',meta$monitorID)
-  rownames(pm25DF) <- format(pm25DF$datetime,"%Y%m%d%H",tz="GMT")
-  
+
   # Create an empty hourlyDF dataframe with a full time axis (no missing hours)
   datetime <- seq(min(df$datetime), max(df$datetime), by="hours")
   hourlyDF <- data.frame(datetime=datetime)
@@ -81,8 +80,7 @@ airsis_createDataDataframe <- function(df, meta) {
   # Merge pm25DF into the houlyDF dataframe, inserting NA's where necessary
   # NOTE:  dplyr returns objects of class "tbl_df" which can be confusing. We undo that.
   data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime') )
-  rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="GMT")
-  
+
   logger.debug("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
   
   return(as.data.frame(data))

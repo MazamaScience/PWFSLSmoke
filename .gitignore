@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 *.Rproj
+vignettes/*.html
+vignettes/*.R

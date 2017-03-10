@@ -1,4 +1,4 @@
-#' @keywords WRCC
+#' @keywords internal
 #' @export
 #' @title Identify WRCC Dump File Monitor Type
 #' @param fileString character string containing WRCC dump file

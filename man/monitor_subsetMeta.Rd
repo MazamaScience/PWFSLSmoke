@@ -8,7 +8,7 @@ monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
   countryCodes = NULL, monitorIDs = NULL)
 }
 \arguments{
-\item{meta}{ws_monitor object 'meta' dataframe}
+\item{meta}{\emph{ws_monitor} object \code{meta} dataframe}
 
 \item{xlim}{optional vector with low and high longitude limits}
 
@@ -21,12 +21,12 @@ monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
 \item{monitorIDs}{optional vector of monitorIDs}
 }
 \value{
-A ws_monitor object 'meta' dataframe, or \code{NULL} if filtering removes all monitors.
+A \emph{ws_monitor} object \code{meta} dataframe, or \code{NULL} if filtering removes all monitors.
 }
 \description{
-Subsets a ws_monitor object's 'meta' dataframe by removing any monitors that
-    lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
-    latitudes and/or states) and that are not mentioned in the list of monitorIDs.
+Subsets the \code{ws_monitor$data} dataframe by removing any monitors that
+lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
+latitudes and/or states) and that are not mentioned in the list of monitorIDs.
 
 If any parameter is not specified, that parameter will not be used in the subsetting.
 

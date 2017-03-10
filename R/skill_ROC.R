@@ -1,7 +1,7 @@
 #' @export
 #' @title ROC Curve
-#' @param predicted vector of predicted values (or a \code{ws_monitor} object with a single location)
-#' @param observed vector of observed values (or a \code{ws_monitor} object with a single location)
+#' @param predicted vector of predicted values (or a \emph{ws_monitor} object with a single location)
+#' @param observed vector of observed values (or a \emph{ws_monitor} object with a single location)
 #' @param t1Range lo and high values used to generate test thresholds for classifying \code{predicted} data
 #' @param t2 used to classify \code{observed} data
 #' @param n number of test thresholds in ROC curve

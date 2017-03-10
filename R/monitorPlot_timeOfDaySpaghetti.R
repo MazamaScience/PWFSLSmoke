@@ -2,21 +2,18 @@
 #' @export
 #' @import graphics
 #' @title Create Time of Day Spaghetti Plot
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param monitorID id for a specific monitor in the ws_monitor object
 #' @param ylim y limits for the plot
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param shadedNight add nighttime shading based on of middle day in selected period
 #' @param aqiLines horizontal lines indicating AQI levels
 #' @param title plot title
-#' @param ... additional arguments to pass to lines()
+#' @param ... additional arguments to pass to \code{lines()}
 #' @description Creates a spaghetti plot of PM2.5 levels by hour for one or more days. The average by hour over 
 #' the period is also calculated and plotted as a thick red line.
 #' @examples
-#' \dontrun{
-#' CarmelValley <- airnow_load(20160801,20160831, monitorIDs="060530002")
 #' monitorPlot_timeOfDaySpaghetti(CarmelValley, tlim=c(20160801,20160809))
-#' }
 
 monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
                                            monitorID=NULL,

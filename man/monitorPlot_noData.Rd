@@ -7,7 +7,7 @@
 monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{monitorID}{id for a specific monitor in the given ws_monitor object}
 
@@ -16,5 +16,5 @@ monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
 \description{
 Creates a blank plot that indicates there is no data for the monitor of interest
 }
-\keyword{ws_monitor}
+\keyword{internal}
 

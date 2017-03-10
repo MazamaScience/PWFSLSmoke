@@ -1,7 +1,7 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Apply Quality Control to Raw AIRSIS E-Sampler Dataframe
-#' @param df single site dataframe created by airsis_downloadData()
+#' @param df single site dataframe created by \code{airsis_downloadData()}
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values
 #' @param remove_Lon_zero flag to remove rows where Longitude == 0
@@ -56,20 +56,20 @@ airsis_ESAMQualityControl <- function(df,
   
   # Latitude and longitude must be in range
   if (remove_Lon_zero) {
-    goodLonMask <- !is.na(df$Longitude) & df$Longitude >= valid_Longitude[1] & df$Longitude <= valid_Longitude[2] & df$Longitude != 0
+    goodLonMask <- !is.na(df$Longitude) & (df$Longitude >= valid_Longitude[1]) & (df$Longitude <= valid_Longitude[2]) & (df$Longitude != 0)
   } else {
-    goodLonMask <- !is.na(df$Longitude) & df$Longitude >= valid_Longitude[1] & df$Longitude <= valid_Longitude[2]
+    goodLonMask <- !is.na(df$Longitude) & (df$Longitude >= valid_Longitude[1]) & (df$Longitude <= valid_Longitude[2])
   }
   
   if (remove_Lat_zero) {
-    goodLatMask <- !is.na(df$Latitude) & df$Latitude >= valid_Latitude[1] & df$Latitude <= valid_Latitude[2] & df$Latitude != 0
+    goodLatMask <- !is.na(df$Latitude) & (df$Latitude >= valid_Latitude[1]) & (df$Latitude <= valid_Latitude[2]) & (df$Latitude != 0)
   } else {    
-    goodLatMask <- !is.na(df$Latitude) & df$Latitude >= valid_Latitude[1] & df$Latitude <= valid_Latitude[2]
+    goodLatMask <- !is.na(df$Latitude) & (df$Latitude >= valid_Latitude[1]) & (df$Latitude <= valid_Latitude[2])
   }
   
   badRows <- !(goodLonMask & goodLatMask)
   badRowCount <- sum(badRows)
-  if (badRowCount > 0) {
+  if ( badRowCount > 0 ) {
     logger.info("Discarding %s rows with invalid location information", badRowCount)
     badLocations <- paste('(',df$Longitude[badRows],',',df$Latitude[badRows],')',sep='')
     logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))

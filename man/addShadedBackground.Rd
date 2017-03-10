@@ -12,7 +12,7 @@ addShadedBackground(param, timeAxis, breaks = stats::quantile(param, na.rm =
 
 \item{timeAxis}{vector of times of the same length as param}
 
-\item{breaks}{break methodology}
+\item{breaks}{set of breaks used to assign colors}
 
 \item{col}{color for vertical lines}
 
@@ -22,5 +22,6 @@ addShadedBackground(param, timeAxis, breaks = stats::quantile(param, na.rm =
 }
 \description{
 Adds vertical lines to an existing plot using any variable that shares the same
+length as the time axis of the current plot. Line widths corresponds to magnitude of values.
 }
 

@@ -2,7 +2,7 @@
 #' @export
 #' @importFrom utils installed.packages
 #' @title Add Elevation and Address Information to a Dataframe
-#' @param df dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)
+#' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @description Google APIs are used to determine elevation and
@@ -11,7 +11,7 @@
 #' 
 #' Address information is obtained by using the \pkg{ggmap} package.
 #' @return Input dataframe with additional columns: \code{elevation, siteName, countyName}.
-#' @references \url{https://maps.googleapis.com/maps/api/elevation}
+#' @references \url{https://developers.google.com/maps/documentation/elevation/intro}
 
 addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
   
@@ -84,10 +84,15 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
         logger.trace("\tgoogle address request for location = %s, %s", location[1], location[2])
         if (!anyNA(location)) {
           address <- suppressMessages( ggmap::revgeocode(location, output='more') )
-          df$siteName[i] <- paste(address$locality,address$route,sep='-')
+          # NOTE:  revgeocode can fail if you have too may Google requests in a day
+          result <- try( df$siteName[i] <- paste(address$locality,address$route,sep='-'),
+                         silent=TRUE ) # don't show errors
+          if ( "try-error" %in% class(result) ) {
+            logger.warn("Google geocoding may have failed. Have you goin over the 2,500/day limit? (2017)")
+          }
           # NOTE:  administrative_area_level_2 is not always present
           try( df$countyName[i] <- stringr::str_replace(address$administrative_area_level_2,' County',''),
-               silent=TRUE ) ## not to show the errors
+               silent=TRUE ) # don't show errors
         }
         
       }

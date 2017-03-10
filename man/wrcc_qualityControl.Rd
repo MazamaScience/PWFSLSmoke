@@ -7,7 +7,7 @@
 wrcc_qualityControl(df, ...)
 }
 \arguments{
-\item{df}{single site dataframe created by wrcc_downloadData()}
+\item{df}{single site dataframe created by \code{wrcc_downloadData()}}
 
 \item{...}{additional parameters are passed to type-specific QC functions}
 }

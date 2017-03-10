@@ -11,7 +11,7 @@ monitorPlot_rollingMean(ws_monitor, monitorID = NULL, width = 3,
   showLegend = TRUE)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{monitorID}{monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
 in the ws_monitor object)}
@@ -57,15 +57,13 @@ Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a s
 }
 }
 \note{
-This function intends to provide a 'publication ready' plot and does pass additional arguments to any
-lower level plotting functions.
+This function attempts to provide a 'publication ready' rolling mean plot.
 }
 \examples{
-\dontrun{
-airnow <- airnow_load(20150818, 20150825)
-Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
-monitorPlot_rollingMean(Roseburg)
-}
+N_M <- Northwest_Megafires
+Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
+                           monitorIDs=c('410190002'))
+monitorPlot_rollingMean(Roseburg, shadedNight=TRUE)
 }
 \keyword{ws_monitor}
 

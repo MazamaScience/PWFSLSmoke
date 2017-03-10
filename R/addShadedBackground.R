@@ -2,12 +2,12 @@
 #' @title Add Shaded Background
 #' @param param vector of data to be represented
 #' @param timeAxis vector of times of the same length as param
-#' @param breaks break methodology
+#' @param breaks set of breaks used to assign colors
 #' @param col color for vertical lines
 #' @param maxOpacity maximum opacity
 #' @param lwd line width
 #' @description Adds vertical lines to an existing plot using any variable that shares the same
-# length as the time axis of the current plot. Line widths corresponds to magnitude of values.
+#' length as the time axis of the current plot. Line widths corresponds to magnitude of values.
 
 ########################################################################################
 #

@@ -7,17 +7,17 @@
 airsis_createDataDataframe(df, meta)
 }
 \arguments{
-\item{df}{single site AIRSIS dataframe created by airsis_clustering()}
+\item{df}{single site AIRSIS dataframe created by \code{airsis_clustering()}}
 
-\item{meta}{AIRSIS meta dataframe created by airsis_createMetaDataframe()}
+\item{meta}{AIRSIS meta dataframe created by \code{airsis_createMetaDataframe()}}
 }
 \value{
-A 'data' dataframe for use in a ws_monitor object.
+A \code{data} dataframe for use in a emph{ws_monitor} object.
 }
 \description{
 After quality control has been applied to an AIRSIS dataframe,
-we can extract the PM2.5 values and store them in a 'data' dataframe
-organized as hour-by-deployment (aka hour-by-site).
+we can extract the PM2.5 values and store them in a \code{data} dataframe
+organized as time-by-deployment (aka time-by-site).
 
 The first column of the returned dataframe is named \code{'datetime'} and
 contains a \code{POSIXct} time in UTC. Additional columns contain data

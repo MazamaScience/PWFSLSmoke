@@ -16,6 +16,9 @@ FATAL
 }
 \description{
 Log levels matching those found in \pkg{futile.logger}.
+Available levels include:
+
+\code{FATAL ERROR WARN INFO DEBUG TRACE}
 }
 \keyword{datasets}
 

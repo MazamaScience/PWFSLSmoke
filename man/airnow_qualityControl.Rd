@@ -7,7 +7,7 @@
 airnow_qualityControl(df, limits = c(-Inf, Inf))
 }
 \arguments{
-\item{df}{multi-site restructured dataframe created within airsis_createDataDataframe()}
+\item{df}{multi-site restructured dataframe created within \code{airsis_createDataDataframe()}}
 
 \item{limits}{lo and hi range of valid values}
 }

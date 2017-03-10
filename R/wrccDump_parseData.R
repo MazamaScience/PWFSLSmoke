@@ -1,4 +1,4 @@
-#' @keywords WRCC
+#' @keywords internal
 #' @export
 #' @title Parse WRCC Dump File String
 #' @param fileString character string containing WRCC dump file
@@ -150,7 +150,9 @@ wrccDump_parseData <- function(fileString) {
     # Sanity check
     if ( length(monitorTypeCode) > 1 ) {
       logger.warn("More than one monitor type detected: %s", paste(monitorTypeCode,sep=", "))
-      next
+      # Pick the most common Type
+      typeTable <- table(monitorTypeCode)
+      monitorTypeCode <- names(typeTable)[which(typeTable == max(typeTable))]
     }
     
     # 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements

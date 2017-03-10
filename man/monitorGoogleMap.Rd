@@ -5,13 +5,12 @@
 \title{Create a Google Map of ws_monitor Object}
 \usage{
 monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, labels = AQI$names, legendTitle = "Max AQI Level",
-  legendX = "topright", legendY = NULL, showLegend = TRUE, width = 640,
-  height = 640, zoom = NULL, maptype = "terain", grayscale = FALSE,
+  colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
+  centerLat = NULL, zoom = NULL, maptype = "terain", grayscale = FALSE,
   map = NULL, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{slice}{either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}}
 
@@ -19,19 +18,13 @@ monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 
 \item{colors}{a set of colors for different levels of air quality data determined by \code{breaks}}
 
-\item{labels}{a set of text labels, one for each color}
-
-\item{legendTitle}{legend title}
-
-\item{legendX}{x coordinate passed on to the legend() command}
-
-\item{legendY}{y coordinate passed on to the legend() command}
-
-\item{showLegend}{logical specifying whether to add a legend}
-
 \item{width}{width of image, in pixels}
 
 \item{height}{height of image, in pixels}
+
+\item{centerLon}{map center longitude}
+
+\item{centerLat}{map center latitude}
 
 \item{zoom}{map zoom level}
 
@@ -39,22 +32,25 @@ monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 
 \item{grayscale}{logical, if TRUE the colored map tile is rendered into a black & white image}
 
-\item{map}{optional map object returned from monitorGoogleMap()}
+\item{map}{optional map object returned from \code{monitorGoogleMap(})}
 
-\item{...}{arguments passed on to RgoogleMaps::PlotOnStaticMap() (e.g. destfile, cex, pch, etc.)}
+\item{...}{arguments passed on to \code{RgoogleMaps::PlotOnStaticMap()} (\emph{e.g.} destfile, cex, pch, etc.)}
 }
 \value{
-A \code{MyMap} RgoogleMaps map object object that can serve as a base plot.
+A \emph{MyMap} RgoogleMaps map object object that can serve as a base plot.
 }
 \description{
-Creates a Google map of a ws_monitor object.
-TODO:  More description here.
+Creates a Google map of a emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
+
+If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
+will be calcualted using data from the \code{ws_monitor$meta} dataframe.
 }
 \examples{
-\dontrun{
-CarmelValley <- airnow_load(20160801,20160831,monitorIDs="060530002")
-monitorGoogleMap(CarmelValley)
-}
+N_M <- Northwest_Megafires
+# monitorLeaflet(N_M) # to identify Spokane monitorIDs
+Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
+Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
+monitorGoogleMap(Spokane)
 }
 \keyword{ws_monitor}
 

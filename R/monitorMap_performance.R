@@ -1,4 +1,4 @@
-#' @keywords monitor
+#' @keywords ws_monitor
 #' @export
 #' @import maps mapproj
 #' @title Create Map of Monitor Prediction Performance
@@ -16,8 +16,8 @@
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
 #' @param add logical specifying whether to add to the current plot
-#' @param ... additional arguments to be passed to the map() funciton such as graphical parameters (see par)
-#' @description This function uses "confusion matrix" analysis to calculate
+#' @param ... additional arguments to be passed to the \code{maps::map()} funciton such as graphical parameters (see code{?par})
+#' @description This function uses \emph{confusion matrix} analysis to calculate
 #' different measures of predictive performance for every timeseries found
 #' in \code{predicted} with respect to the observed values found in the single timeseries
 #' found in \code{observed}.
@@ -30,11 +30,10 @@
 #' @examples 
 #' \dontrun{
 #' # Spokane summer of 2015
-#' airnow <- airnow_load(20150701,20150930)
-#' airnow <- monitor_rollingMean(airnow, width=3)
-#' WA <- monitor_subset(airnow, stateCode='WA', countryCode="US")
-#' MonroeSt <- monitor_subset(WA, monitorIDs=530630047)
-#' monitorMap_performance(WA, MonroeSt, cex=2)
+#' wa <- airnow_load(20150701, 20150930, stateCodes='WA')
+#' wa <- monitor_rollingMean(wa, width=3)
+#' MonroeSt <- monitor_subset(wa, monitorIDs=530630047)
+#' monitorMap_performance(wa, MonroeSt, cex=2)
 #' title('Heidike Skill of monitors predicting another monitor.')
 #' }
 
@@ -75,25 +74,25 @@ monitorMap_performance <- function (predicted,
   #------------- below copies from monitor_performanceMap-------------------
   # Get the performance dataframe
   performanceDF <- monitor_performance(predicted, observed, threshold, threshold)
-
+  
   # Plot the basemap
   if ( !add ) {
     
-  # list of unique states to be plotted as base map
-  stateCode <- as.data.frame( unique( c( as.character( predicted$meta$stateCode) ) ) )
-  colnames(stateCode) <- "abb"
-  state.fips <- maps::state.fips
-  duplicateIndex <- duplicated(state.fips$abb)
-  state.fips <- state.fips[!duplicateIndex,]
-  suppressWarnings(stateName <- dplyr::left_join(stateCode, state.fips, by="abb"))
-  stateName <- apply(as.data.frame(stateName$polyname),2,function(x){stringr::str_split_fixed(x, ':', 2)})[1:nrow(stateName)]
-  
-
+    # list of unique states to be plotted as base map
+    stateCode <- as.data.frame( unique( c( as.character( predicted$meta$stateCode) ) ) )
+    colnames(stateCode) <- "abb"
+    state.fips <- maps::state.fips
+    duplicateIndex <- duplicated(state.fips$abb)
+    state.fips <- state.fips[!duplicateIndex,]
+    suppressWarnings(stateName <- dplyr::left_join(stateCode, state.fips, by="abb"))
+    stateName <- apply(as.data.frame(stateName$polyname),2,function(x){stringr::str_split_fixed(x, ':', 2)})[1:nrow(stateName)]
+    
+    
     maps::map("state", stateName, col=stateCol, lwd=stateLwd, ...)
     maps::map('county', stateName, col=countyCol, lwd=countyLwd, add=TRUE, ...)
   }
   
-
+  
   # Sizing
   if ( !is.null(sizeBy) && sizeBy %in% names(performanceDF)) {
     cex <- cex * performanceDF[[sizeBy]] / max(performanceDF[[sizeBy]], na.rm = TRUE) 
@@ -138,12 +137,13 @@ monitorMap_performance <- function (predicted,
   # # else if only sizeBy is specified, show the size legend
   # if (showLegend) {
   #   if( !is.null(colorBy) ) {
-  #     addLegend( cex=cex*0.5, col=rev(colorss), legend=rev(legend), title=paste0(colorBy, " levels") )
+  #     legend( "topright", cex=cex*0.5, col=rev(colorss), legend=rev(legend), title=paste0(colorBy, " levels") )
   #   } else {
-  #     addLegend( pt.cex=cex*0.5, col="black", legend=rev(sizeLegend), 
-  #                title=paste0(sizeBy, " levels") )
+  #     legend( "topright", pt.cex=cex*0.5, col="black", legend=rev(sizeLegend), title=paste0(sizeBy, " levels") )
   #   }
   # }
-  if ( showLegend & !is.null(colorBy) ) { addLegend( cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") ) }
+  if ( showLegend & !is.null(colorBy) ) {
+    legend( "topright", cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") )
+  }
   
 }

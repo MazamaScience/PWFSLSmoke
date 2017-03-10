@@ -353,6 +353,9 @@ stopIfNotInitialized <- function() {
 #' @aliases FATAL ERROR WARN INFO DEBUG TRACE
 #' @title Log Levels
 #' @description Log levels matching those found in \pkg{futile.logger}.
+#' Available levels include:
+#' 
+#' \code{FATAL ERROR WARN INFO DEBUG TRACE}
 #' @export
 FATAL <- 1L
 names(FATAL) <- "FATAL"

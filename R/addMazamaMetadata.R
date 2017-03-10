@@ -1,13 +1,13 @@
 #' @keywords internal
 #' @export
-#' @title Add Elevation and Address Information to a Dataframe
-#' @param df dataframe with geolocation information (e.g. created by wrcc_qualityControl() or airsis_qualityControl)
+#' @title Add State, Country and Timezone to a Dataframe
+#' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param countryCodes vector of countryCodes
 #' @return Input dataframe with additional columns: \code{timezone, countryCode, stateCode}.
-#' @description The \pkg{MazamaSpatialUtils} package used to determine elevation and
-#' address information associated with the locations specified by the
+#' @description The \pkg{MazamaSpatialUtils} package used to determine the ISO state and country code,
+#' and the Olson timezone associated with the locations specified by the
 #' \code{longitude} and \code{latitude} columns of the incoming dataframe.
 #' 
 #' This function requires previous setup of the \pkg{MazamaSpatialUtils} package:
@@ -18,8 +18,7 @@
 #' loadSpatialData('NaturalEarthAdm1')
 #' }
 #' 
-#' If these lines have not be previously run, the function will return the original,
-#' unmodified dataframe.
+#' An error will be generated if these lines have not be previously run.
 #' @references \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 
 addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", countryCodes=NULL) {

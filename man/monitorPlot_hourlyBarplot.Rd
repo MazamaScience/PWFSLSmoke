@@ -6,15 +6,16 @@
 \usage{
 monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
   localTime = TRUE, style = "AQI", shadedNight = TRUE, gridPos = "",
-  gridCol = "black", gridLwd = 0.5, gridLty = "solid", dayCol = "black",
-  dayLwd = 2, dayLty = "solid", hourCol = "black", hourLwd = 1,
-  hourLty = "solid", hourInterval = 6, ...)
+  gridCol = "black", gridLwd = 0.5, gridLty = "solid",
+  labels_x_nudge = 0, labels_y_nudge = 0, dayCol = "black", dayLwd = 2,
+  dayLty = "solid", hourCol = "black", hourLwd = 1, hourLty = "solid",
+  hourInterval = 6, ...)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
-\item{monitorID}{monitor ID for a specific monitor in the given ws_monitor object (optional
-if only one monitor in the ws_monitor object)}
+\item{monitorID}{monitor ID for a specific monitor in \code{ws_monitor} (optional
+if \code{ws_monitor} only has one monitor)}
 
 \item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
 
@@ -32,6 +33,10 @@ if only one monitor in the ws_monitor object)}
 
 \item{gridLty}{grid line type}
 
+\item{labels_x_nudge}{nudge x labels to the left}
+
+\item{labels_y_nudge}{nudge y labels down}
+
 \item{dayCol}{day boundary color}
 
 \item{dayLwd}{day boundary line width (set to 0 to omit day lines)}
@@ -46,10 +51,10 @@ if only one monitor in the ws_monitor object)}
 
 \item{hourInterval}{interval for hour boundary lines}
 
-\item{...}{additional arguments to be passed to barplot()}
+\item{...}{additional arguments to be passed to \code{barplot(})}
 }
 \description{
-Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a ws_monitor object.
+Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a emph{ws_monitor} object.
 Colors are assigned to one of the following styles:
 \itemize{
 \item{\code{AQI} -- hourly values colored with AQI colors using AQI 24-hour breaks}
@@ -57,12 +62,15 @@ Colors are assigned to one of the following styles:
 \item{\code{grayScaleAQI} -- hourly values colored grayscale colors using AQI 24-hour breaks}
 }
 }
-\examples{
-\dontrun{
-airnow <- airnow_load(20150701, 20150710)
-title <- "Hourly PM2.5 for Colleville, WA"
-monitorPlot_hourlyBarplot(airnow, monitorID="530650004")
+\details{
+The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to 
+tweak the date labeling. Units used are the same as those in the plot.
 }
+\examples{
+C_V <- monitor_subset(CarmelValley, tlim=c(2016080800,2016081023),
+                      timezone='America/Los_Angeles')
+monitorPlot_hourlyBarplot(C_V, main='1-Hourly Average PM2.5',
+                          labels_x_nudge=1, labels_y_nudge=0)
 }
 \keyword{ws_monitor}
 

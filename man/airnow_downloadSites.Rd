@@ -4,18 +4,20 @@
 \alias{airnow_downloadSites}
 \title{Download AirNow Site Location Metadata}
 \usage{
-
-  airnow_downloadSites(url = "https://files.airnowtech.org/airnow/today/monitoring_site_locations.dat")
+airnow_downloadSites(baseUrl = "https://files.airnowtech.org/airnow/today/",
+  file = "monitoring_site_locations.dat")
 }
 \arguments{
-\item{url}{location of the monitoring_site_locations.dat file}
+\item{baseUrl}{location of the AirNow monitoring site locations file}
+
+\item{file}{name of the AirNow monitoring site locations file}
 }
 \value{
 Dataframe of site location metadata.
 }
 \description{
 The \url{http://airnowtech.org} site provides both air pollution
-monitoring data as well as monitoring site location metadata. The \code{airnow_downloadSites()}
+monitoring data as well as monitoring site location metadata. This 
 function retrieves the most recent version of the site location metadata file and returns it as a dataframe.
 
 A description of the data format is publicly available at the

@@ -1,7 +1,7 @@
 #' @keywords WRCC
 #' @export
 #' @title Apply Quality Control to Raw WRCC Dataframe
-#' @param df single site dataframe created by wrcc_downloadData()
+#' @param df single site dataframe created by \code{wrcc_downloadData()}
 #' @param ... additional parameters are passed to type-specific QC functions
 #' @description Various QC steps are taken to clean up the incoming raw dataframe including:
 #' 

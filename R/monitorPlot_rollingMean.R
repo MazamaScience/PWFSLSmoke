@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create Individual Value and Rolling Mean Plot
-#' @param ws_monitor ws_monitor object
+#' @param ws_monitor emph{ws_monitor} object
 #' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
 #' in the ws_monitor object)
 #' @param width number of periods to average (e.g. for hourly data, \code{width = 24} plots 24-hour rolling means)
@@ -29,14 +29,12 @@
 #' \item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and 
 #' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
 #' }
-#' @note This function intends to provide a 'publication ready' plot and does pass additional arguments to any
-#' lower level plotting functions.
+#' @note This function attempts to provide a 'publication ready' rolling mean plot.
 #' @examples
-#' \dontrun{
-#' airnow <- airnow_load(20150818, 20150825)
-#' Roseburg <- monitor_subset(airnow, monitorIDs=c('410190002'))
-#' monitorPlot_rollingMean(Roseburg)
-#' }
+#' N_M <- Northwest_Megafires
+#' Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
+#'                            monitorIDs=c('410190002'))
+#' monitorPlot_rollingMean(Roseburg, shadedNight=TRUE)
 
 monitorPlot_rollingMean <- function(ws_monitor,
                                     monitorID=NULL,
@@ -188,10 +186,10 @@ monitorPlot_rollingMean <- function(ws_monitor,
       timezone <- meta$timezone
       if ( localTime ) {
         timeInfo <- PWFSLSmoke::timeInfo(timeStamp, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
+        PWFSLSmoke::addShadedNight(timeInfo)
       } else {
         timeInfo <- PWFSLSmoke::timeInfo(data$datetime, lon, lat, timezone)
-        PWFSLSmoke::addShadedNights(timeInfo)
+        PWFSLSmoke::addShadedNight(timeInfo)
       }
     }
   }

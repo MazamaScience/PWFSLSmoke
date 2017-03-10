@@ -7,27 +7,22 @@
 monitor_subsetBy(ws_monitor, filter)
 }
 \arguments{
-\item{ws_monitor}{ws_monitor object}
+\item{ws_monitor}{emph{ws_monitor} object}
 
 \item{filter}{a filter to use on the ws_monitor object}
 }
 \value{
-A ws_monitor object with a subset of the input ws_monitor object.
+A emph{ws_monitor} object with a subset of the input ws_monitor object.
 }
 \description{
 The incoming ws_monitor object is filtered according to \code{filter}.
 Either meta data or actual data can be filtered.
 }
 \examples{
-\dontrun{
-# We will load airnow monitors for all of 2015 and map all monitors in the Pacific timezone
-# that have measured hazardous pm2.5 levels.
-airnow <- airnow_load(20150101, 20151231)
-mySubset <- monitor_subsetBy(airnow, timezone == 'America/Los_Angeles')
-hazardousSubset <- monitor_subsetBy(mySubset, data > AQI$breaks_24[6])
-monitorInteractiveMap(hazardousSubset,
-                popupInfo=c('siteName', 'agencyName', 'elevation','monitorID'))
-}
+N_M <- Northwest_Megafires
+boise_tz <- monitor_subsetBy(N_M, timezone == 'America/Boise')
+boise_tz_very_unhealthy <- monitor_subsetBy(boise_tz, data > AQI$breaks_24[5])
+boise_tz_very_unhealthy$meta$siteName
 }
 \keyword{ws_monitor}
 
