@@ -7,7 +7,7 @@ from the AirNow, AIRSIS, WRCC and others.
 
 ## Background
 
-The USFS Pacific Wildland Fire Sciences Lab [AirFire](http://www.airfire.org) team works
+The USFS Pacific Wildland Fire Sciences Lab [AirFire](https://www.airfire.org) team works
 to model wildland fire emissions and has created the BlueSky Modeling Framework. This
 system  integrates a wide collection of models along a smoke modeling pipeline (fire 
 information, fuel loadings, consumption modeling, emissions modeling, time rate of 
@@ -27,7 +27,7 @@ The package includes functionality to make it easier to:
 ## Installation
 
 This package is designed to be used with [R](https://cran.r-project.org) (>= 3.1.0) and
-[RStudio](http://rstudio.com) so make sure you have those installed first.
+[RStudio](https://www.rstudio.com) so make sure you have those installed first.
 
 Users will want to install the **devtools** package to have access to latest versions
 of some packages that are not yet available on CRAN.
@@ -60,6 +60,6 @@ directory on github. This directory is not part of the package.
 ----
 
 This R package was created by [Mazama Science](http://mazamascience.com) and is being 
-funded by the USFS [Pacific Wildland Fire Sciences Lab](http://www.fs.fed.us/pnw/pwfsl/).
+funded by the USFS [Pacific Wildland Fire Sciences Lab](https://www.fs.fed.us/pnw/pwfsl/).
 
 

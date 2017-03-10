@@ -55,7 +55,7 @@ monitorGoogleMap <- function(ws_monitor,
   #   lwd_eventsBorder <- 2
   #   
   #   # icons (defaults - use readPNG() to define alternates if wish to use something other than default)
-  #   icon_paddle <- png::readPNG('localData/pin1.png') # from http://www.clker.com/clipart-map-pin-1.html
+  #   icon_paddle <- png::readPNG('localData/pin1.png') # from https://www.clker.com/clipart-map-pin-1.html
   #   
   #   # icon expansion
   #   iconExpansion_monitor <- .1

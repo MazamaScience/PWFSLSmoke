@@ -10,7 +10,7 @@
 #' airsis <- airsis_loadLatest()
 #' }
 
-airsis_loadLatest <- function(baseUrl='http://tools.airfire.org/monitoring/v3/data') {
+airsis_loadLatest <- function(baseUrl='https://tools.airfire.org/monitoring/v3/data') {
   
   # Get the most recent data and metadata
   data <- get(load(url(paste0(baseUrl,'/EBAM_PM2.5_Latest.RData'))))

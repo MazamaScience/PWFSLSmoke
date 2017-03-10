@@ -11,7 +11,7 @@
 #' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
 #' @details
 #' 
-#' AQI breaks were obtained from \url{http://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf}
+#' AQI breaks were obtained from \url{https://www.arb.ca.gov/carpa/toolkit/data-to-mes/wildfire-smoke-guide.pdf}
 #' 
 #' AQI colors are defined in \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-dec2013.pdf}
 #' @note

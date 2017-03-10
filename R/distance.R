@@ -7,7 +7,7 @@
 #' @description This funciton uses the Haversine forumula for calculating great
 #' circle distances between points. This formula is purpoted to work better
 #' than the spherical law of cosines for very short distances.
-#' @references \url{http://www.r-bloggers.com/great-circle-distance-calculations-in-r/} 
+#' @references \url{https://www.r-bloggers.com/great-circle-distance-calculations-in-r/} 
 #' @return Vector of distances in km.
 
 distance <- function(targetLon, targetLat, lons, lats) {
@@ -16,7 +16,7 @@ distance <- function(targetLon, targetLat, lons, lats) {
     stop(paste0('lons [',length(lons),'] and lats [',length(lats),'] are requried to be of the same length'))
   }
   
-  # Algorithm copied directly from http://www.r-bloggers.com/great-circle-distance-calculations-in-r/
+  # Algorithm copied directly from https://www.r-bloggers.com/great-circle-distance-calculations-in-r/
     
   # Set up vector to be filled in
   distance <- rep(as.numeric(NA),length(lons))

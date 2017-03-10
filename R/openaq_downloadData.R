@@ -29,7 +29,7 @@
 
 openaq_downloadData <- function(parameter=NULL,
                                 startdate='', days=1, countryCode=NULL,
-                                baseUrl="http://openaq-data.s3.amazonaws.com/") {
+                                baseUrl="https://openaq-data.s3.amazonaws.com/") {
   
   # Sanity Check -- validate parameter
   validParameters <- c('pm25','pm10','o3','so2','no2','co','bc')

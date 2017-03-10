@@ -22,7 +22,7 @@
 #' .001 for 'ozone' regardless of the precision of the data in the incoming \code{ws_monitor} object.
 #' @references \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
 #' @references \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
-#' @references \url{http://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
+#' @references \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20160801, 20160815)
