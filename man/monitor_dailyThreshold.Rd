@@ -39,28 +39,10 @@ The returned \emph{ws_monitor} object has a daily time axis where each time is s
 }
 \examples{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
-# monitorLeaflet(N_M) # to identify specific monitorIDs
-
-# Pull out specific locations
 Twisp <- monitor_subset(N_M, monitorIDs='530470009')
-Winthrop <- monitor_subset(N_M, monitorIDs='530470010')
-Omak <- monitor_subset(N_M, monitorIDs='530470013')
-
-# Generate 
 Twisp_daily <- monitor_dailyThreshold(Twisp, "unhealthy", dayStart='midnight', minHours=1)
-Winthrop_daily <- monitor_dailyThreshold(Winthrop, "unhealthy", dayStart='midnight', minHours=1)
-Omak_daily <- monitor_dailyThreshold(Omak, "unhealthy", dayStart='midnight', minHours=1)
-
-# Plot
-cols <- c(adjustcolor('orange',0.6),
-          adjustcolor('red',0.6),
-          adjustcolor('blue',0.6))
-legend <- c('Twisp','Winthrop','Omak')
-monitorPlot_timeseries(Twisp_daily, pch=15, cex=2, col=cols[1], ylab="Hours")
-monitorPlot_timeseries(Winthrop_daily, pch=15, cex=2, col=cols[2], add=TRUE)
-monitorPlot_timeseries(Omak_daily, pch=15, cex=2, col=cols[3], add=TRUE)
-legend('topright', legend=legend, col=cols, pch=15)
-title("Washington Towns with Multiple Hours per day Above 'Unhealthy', 2015")
+monitorPlot_timeseries(Twisp_daily, type='h', lwd=6, ylab="Hours")
+title("Twisp, Washington Hours per day Above 'Unhealthy', 2015")
 }
 \keyword{ws_monitor}
 

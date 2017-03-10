@@ -27,13 +27,9 @@
 #' @details Using a single number for the \code{breaks} argument will result in the use
 #' of quantiles to determine a set of breaks appropriate for the number of colors.
 #' @examples
-#' N_M <- Northwest_Megafires
-#' nw <- monitor_subset(N_M, tlim=c(20150801,20150831))
-#' nw_daily <- monitor_dailyStatistic(nw, FUN=mean)
-#' map('county',c('WA','OR','ID'))
-#' monitorMap(nw_daily, slice=max, cex=2, add=TRUE)
+#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150821,20150828))
+#' monitorMap(N_M, cex=2)
 #' addAQILegend()
-#' title('Max Daily PM2.5 Levels in September, 2015')
 
 monitorMap <- function(ws_monitor, 
                        slice=get('max'),

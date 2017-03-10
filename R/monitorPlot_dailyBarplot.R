@@ -25,11 +25,13 @@
 #' @details The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to 
 #' tweak the date labeling. Units used are the same as those in the plot.
 #' @examples
+#' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150715,20150930))
 #' main <- "Daily Average PM2.5 for Omak, WA"
 #' monitorPlot_dailyBarplot(N_M, monitorID="530470013", main=main,
 #'                          labels_x_nudge=1)
 #' addAQILegend(fill=rev(AQI$colors), pch=NULL)
+#' }
 
 monitorPlot_dailyBarplot <- function(ws_monitor,
                                      monitorID=NULL,

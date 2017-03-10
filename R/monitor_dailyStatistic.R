@@ -19,12 +19,13 @@
 #' 
 #' The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
-#' N_M <- Northwest_Megafires
-#' wa_unhealthy <- monitor_subset(N_M, stateCodes='WA', tlim=c(20150701,20150831), vlim=c(55,Inf))
-#' wa_unhealthy_dailyMean <- monitor_dailyStatistic(wa_unhealthy, FUN=get('mean'), dayStart='midnight')
-#' monitorPlot_timeseries(wa_unhealthy_dailyMean, style='gnats')
+#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
+#' Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009')
+#' Twisp_dailyMean <- monitor_dailyStatistic(Twisp, FUN=get('mean'), dayStart='midnight')
+#' monitorPlot_timeseries(Twisp_dailyMean, type='b')
 #' addAQILines()
-#' title('Washington Unhealthy Sites - Daily Average, 2015')
+#' addAQILegend("topleft", lwd=1, pch=NULL)
+#' title("Twisp, Washington Daily Mean PM2.5, 2015")
 
 monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,
                                    minHours=24) {
