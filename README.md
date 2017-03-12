@@ -1,13 +1,12 @@
 <!-- [![Build Status](https://travis-ci.org/mazamascience/PWFSLSmoke.svg)](https://travis-ci.org/mazamascience/PWFSLSmoke)
 [![Coverage Status](https://coveralls.io/repos/mazamascience/PWFSLSmoke/badge.svg?branch=master&service=github)](https://coveralls.io/github/mazamascience/PWFSLSmoke?branch=master) -->
-<!-- [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke) -->
-<!-- [![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSMoke)](https://cran.r-project.org/package=PWFSLSmoke) -->
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
+[![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSMoke)](https://cran.r-project.org/package=PWFSLSmoke)
 
 # PWFSLSmoke R Package
 
 ```
-Utilities for working with PM2.5 monitoring data available
-from the AirNow, AIRSIS, WRCC and others.
+Utilities for Working with Air Quality Monitoring Data
 ```
 
 ## Background
@@ -23,11 +22,14 @@ prediction systems and scientific modeling efforts.
 The **PWFSLSmoke** R package is being developed for PWFSL to help modelers and scientists
 more easily work with PM2.5 data from monitoring locations across North America.
 
-The package includes functionality to make it easier to:
+The package makes it easier to obtain data, perform analyses and generate reports. It includes functionality to:
 
- * download and work with monitoring data
- * create maps and timeseries plots of monitoring data
- * convert between local and GMT times
+ * download and easily work with regulatory PM2.5 data from AirNow
+ * download and quality control raw monitoring data from other sources
+ * convert between UTC and local timezones
+ * apply various algorithms to the data (nowcast, rolling means, aggregation, etc.)
+ * provide interactive timeseries and maps through RStudio’s Viewer pane
+ * create a variety of publication ready maps and timeseries plots
 
 ## Installation
 
