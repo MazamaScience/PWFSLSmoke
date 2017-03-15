@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^app$
+^docker$
 ^local.*$
 ^LICENSE$
 ^NEWS\.md$
