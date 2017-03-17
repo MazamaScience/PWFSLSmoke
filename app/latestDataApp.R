@@ -7,7 +7,7 @@ library(PWFSLSmoke)
 
 jug() %>%
   
-  # Countries
+  # AirNow
   get("/airnow", function(req, res, err){
     
     # get parameters
@@ -37,7 +37,7 @@ jug() %>%
     
   }) %>%
   
-  # Countries
+  # AIRSIS
   get("/airsis", function(req, res, err){
     
     # get parameters
@@ -67,7 +67,7 @@ jug() %>%
     
   }) %>%
   
-  # Countries
+  # WRCC
   get("/wrcc", function(req, res, err){
     
     # get parameters
