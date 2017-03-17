@@ -15,6 +15,11 @@ jug() %>%
     
     # get state subset
     monitors <- airnow_loadLatest()
+    
+    if ( nrow(monitors$meta) == 0 ) {
+      stop('No data available for AirNow.', call.=FALSE)
+    }
+    
     if ( is.null(state) ) {
       stateMonitors <- monitor_subset(monitors)
     } else {
@@ -45,6 +50,11 @@ jug() %>%
     
     # get state subset
     monitors <- airsis_loadLatest()
+
+    if ( nrow(monitors$meta) == 0 ) {
+      stop('No data available for AIRSIS', call.=FALSE)
+    }
+    
     if ( is.null(state) ) {
       stateMonitors <- monitor_subset(monitors)
     } else {
@@ -75,6 +85,11 @@ jug() %>%
     
     # get state subset
     monitors <- wrcc_loadLatest()
+    
+    if ( nrow(monitors$meta) == 0 ) {
+      stop('No data available for WRCC.', call.=FALSE)
+    }
+    
     if ( is.null(state) ) {
       stateMonitors <- monitor_subset(monitors)
     } else {

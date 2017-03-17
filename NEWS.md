@@ -7,6 +7,67 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ----
 
+## Version 0.99 -- Regularized and Consistent (beta)
+
+### PWFSLSmoke 0.99.10
+
+ * added docker/ directory showing how to create a docker image
+ * added app/ directory showing how to create a **jug** based web service
+
+### PWFSLSmoke 0.99.9
+
+ * added `epa_~()` data processing functions
+ * added example datasets: Northwest_Megafires, CarmelValley
+ * refactored many examples to use example datasets and run during `R CMD check`[
+ * removed rowname creation for 'data' dataframe
+ * renamed `addLegend()` -> `addAQILegend()`
+ * added `addAQILines()`
+ * lots of documentation fixes
+
+### PWFSLSmoke 0.99.0
+
+ * `monitorMap()` no longer creates legends
+ * `monitorGoogleMap()` no longer creates legends
+ * `monitorGoogleMap()` accepts `centerLon` and `centerLat` arguments
+ * `monitorPlot_dailyBarplot()` accepts `labels_x_nudge` and `labels_y_nudge` arguments
+ * `monitorPlot_hourlyBarplot()` accepts `labels_x_nudge` and `labels_y_nudge` arguments
+ * fixed s`tyle="gnats"` in `monitorPlot_timeseries()`
+ * new Mapping vignette
+
+
+## Version 0.9 -- Full Functionality (alpha)
+
+### PWFSLSmoke 0.9.7
+
+ * new AIRSIS_Raw_Data vignette
+ * new `airnow_loadLatest()` function
+ * `monitor_collapse()` now has `na.rm=TRUE` argument
+
+### PWFSLSmoke 0.9.6
+
+ * renamed vignette to AIRSIS_Data_Handling and updated content
+ * removed unused minCount parameter from `addClustering()`
+ * improved documentation in `raw_enhance()`
+
+### PWFSLSmoke 0.9.5
+
+ * renamed `addShadedNights()` to addShadedNight()`
+ * `addBullseye()` accepts more arguments and works with RgoogleMaps map objects
+ * `monitorDygraph()` now accepts `tlim` argument instead of `dateWindow`
+ * cleaned up varous examples
+ * removed localDNR/ and localData/ directories
+ * removed unused test code from localExamples/
+
+### PWFSLSmoke 0.9.4
+
+ * new addIcon() function addis icons to maps and RgoogleMaps map objects
+
+### PWFSLSmoke 0.9.3
+
+First alpha release with functionality for downloading and processing PM2.5 monitoring
+data from AirNow, AIRSIS and WRCC.
+
+
 ## Version 0.8 -- Plotting Functions
 
 ### PWFSLSmoke 0.8.6
@@ -32,6 +93,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 0.8.0
 
  * Plotting functions added.
+
 
 ## Version 0.7 -- Initial Internal Release
 
