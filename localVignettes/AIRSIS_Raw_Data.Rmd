@@ -225,7 +225,7 @@ rawPlot_timeseries(plain_enhanced, tlim=c(20160912,20160916),
                    sbLwd=4, dayLwd=1,
                    ylab="PM2.5 (ug/m3) and Temperature (deg C)",
                    main="PM2.5, Temperature, and Wind Speed")
-rawPlot_timeseries(plain_enhanced, parameter='temperature', add=TRUE, lty=5, col='blue')
+rawPlot_timeseries(plain_enhanced, parameter='temperature', add=TRUE, lty='dashed, col='brown')
 ```
 
 From this plot it is very clear what is going on -- smoke from a persistent source (or sources) is slowly building up during the calm, quiet nighttime hours before being washed out by the wind which picks up with the advent of convection due to surface heating every morning. So, one can see how even a single plotting function, paired with a guaranteed data structure, can prove to be very powerful.

@@ -234,7 +234,7 @@ monitorPlot_timeseries <- function(ws_monitor,
       for (id in meta$monitorID) {
         argsList$y <- data[[id]] # same as data[,id]
         argsList$col <- adjustcolor(baseColor, alpha.f=opacity)
-        argsList$pch <- 16
+        argsList$pch <- 15 # squares draw faster than circles
         # Add the points
         do.call(points,argsList)
       }
