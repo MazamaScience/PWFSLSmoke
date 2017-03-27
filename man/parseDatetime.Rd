@@ -7,7 +7,7 @@
 parseDatetime(datetime, timezone = "UTC")
 }
 \arguments{
-\item{datetime}{vector of character or integer datetimes in YYYYMMDD[HHMMSS] format}
+\item{datetime}{vector of character or integer datetimes in YYYYMMDD[HHMMSS] format (or POSIXct)}
 
 \item{timezone}{Olson timezone at the location of interest}
 }
@@ -16,7 +16,10 @@ POSIXct datetimes.
 }
 \description{
 8-, 10-, 12- and 14-digit formats are understood, e.g: 20150721 to 20150721000000.
-Integers will be converted to character before parsing.
+Integers will be converted to character before parsing. All incoming dates will be interpreted
+in the specified \code{timezone} ("UTC" by default).
+
+If \code{datetime} is a \code{POSIXct} it will be returned unmodified.
 }
 \examples{
 starttime <- parseDatetime(2015080718,timezone = "America/Los_Angeles")
