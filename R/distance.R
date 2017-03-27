@@ -2,8 +2,8 @@
 #' @title Calculate the Distance Between Points
 #' @param targetLon longitude (decimal degrees) of the point from which distances are calculated
 #' @param targetLat latitude (decimal degrees) of the point from which distances are calculated
-#' @param lons vector of longitudes (decimal degrees) for which a distance is calculated
-#' @param lats vector of latitudes (decimal degrees) for which a distance is calculated
+#' @param longitude vector of longitudes for which a distance is calculated
+#' @param latitude vector of latitudes for which a distance is calculated
 #' @description This funciton uses the Haversine forumula for calculating great
 #' circle distances between points. This formula is purpoted to work better
 #' than the spherical law of cosines for very short distances.
@@ -17,25 +17,25 @@
 #' PDX_lat <- 45.5898
 #' distance(SEA_lon, SEA_lat, PDX_lon, PDX_lat)
 
-distance <- function(targetLon, targetLat, lons, lats) {
+distance <- function(targetLon, targetLat, longitude, latitude) {
   
-  if (length(lons) != length(lats)) {
-    stop(paste0('lons [',length(lons),'] and lats [',length(lats),'] are requried to be of the same length'))
+  if (length(longitude) != length(latitude)) {
+    stop(paste0('longitude [',length(longitude),'] and latitude [',length(latitude),'] are requried to be of the same length'))
   }
   
   # Algorithm copied directly from https://www.r-bloggers.com/great-circle-distance-calculations-in-r/
     
   # Set up vector to be filled in
-  distance <- rep(as.numeric(NA),length(lons))
+  distance <- rep(as.numeric(NA),length(longitude))
   
   # Convert to radians
   targetLon <- targetLon*pi/180
   targetLat <- targetLat*pi/180
   
   # Haversine formula
-  for (i in seq(length(lons))) {
-    lon <- lons[i]*pi/180
-    lat <- lats[i]*pi/180
+  for (i in seq(length(longitude))) {
+    lon <- longitude[i]*pi/180
+    lat <- latitude[i]*pi/180
     R <- 6371 # Earth mean radius [km]
     delta.lon <- (lon - targetLon)
     delta.lat <- (lat - targetLat)

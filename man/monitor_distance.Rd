@@ -4,14 +4,14 @@
 \alias{monitor_distance}
 \title{Calculate Distances From ws_monitor Monitors to Location of Interest}
 \usage{
-monitor_distance(ws_monitor, lon, lat)
+monitor_distance(ws_monitor, longitude, latitude)
 }
 \arguments{
 \item{ws_monitor}{emph{ws_monitor} object}
 
-\item{lon}{longitude of the location of interest}
+\item{longitude}{longitude of the location of interest}
 
-\item{lat}{latitude of the location of interest}
+\item{latitude}{latitude of the location of interest}
 }
 \value{
 vector of of distances (km)

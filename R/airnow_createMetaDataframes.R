@@ -27,7 +27,7 @@
 #' \code{monitoring_site_locations.dat} file, splits it up into separate dataframes,
 #' one for each parameter, and performs the following cleanup:
 #' \itemize{
-#'   \item{convert incorrect values to \code{NA} e.g. lon=0 & lat=0}
+#'   \item{convert incorrect values to \code{NA} e.g. longitude=0 & latitude=0}
 #'   \item{add timezone information}
 #' }
 #' 

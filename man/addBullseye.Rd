@@ -4,12 +4,12 @@
 \alias{addBullseye}
 \title{Add a Bullseye at the Specified Location}
 \usage{
-addBullseye(lon, lat, map = NULL, cex = 2, lwd = 2)
+addBullseye(longitude, latitude, map = NULL, cex = 2, lwd = 2)
 }
 \arguments{
-\item{lon}{vector of longitudes}
+\item{longitude}{vector of longitudes}
 
-\item{lat}{vector of latitudes}
+\item{latitude}{vector of latitudes}
 
 \item{map}{optional RgoogleMaps map object}
 

@@ -29,7 +29,10 @@ This function creates interactive graphs that will be displayed in RStudio's 'Vi
 \examples{
 \dontrun{
 airnow <- airnow_load(20140913, 20141010)
-King_Fire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
+King_Fire <- monitor_subsetByDistance(airnow,
+                                      longitude=-120.604,
+                                      latitude=38.782,
+                                      radius=50)
 monitorDygraph(King_Fire, title='KingFire/California/2014', rollPeriod=3)
 } 
 }

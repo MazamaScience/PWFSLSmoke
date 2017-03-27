@@ -1,14 +1,14 @@
 #' @export
 #' @title Get Time Relatied Information
 #' @param time POSIXct vector with specified timezone
-#' @param lon longitude of the location of interest
-#' @param lat latitude of the location of interest
+#' @param longitude longitude of the location of interest
+#' @param latitude latitude of the location of interest
 #' @param timezone Olson timezone at the location of interest
 #' @description Calculate the local time at the target location, sunrise, sunset and solar 
 #' noon times, and create several temporal masks.
 #' 
 #' If the \code{timezone} is provided it will be used. Otherwise, the \pkg{MazamaSpatialUtils}
-#' package will be used to determine the timezone from \code{lon} and \code{lat}.
+#' package will be used to determine the timezone from \code{longitude} and \code{latitude}.
 #' 
 #' The returned dataframe will have as many rows as the length of the incoming UTC \code{time} vector
 #' and will contain the following columns:
@@ -30,21 +30,23 @@
 #'                CarmelValley$meta$timezone)
 #' head(ti)
 
-timeInfo <- function(time, lon=NULL, lat=NULL, timezone=NULL) {
+timeInfo <- function(time, longitude=NULL, latitude=NULL, timezone=NULL) {
 
   # Sanity check
-  if ( is.null(lon) || is.null(lat) ) stop('timeInfo cannot be calculated: missing lon or lat.')
+  if ( is.null(longitude) || is.null(latitude) ) {
+    stop(paste0("Required parameter 'longitude' or 'latitude' is missing"))
+  }
   
   if ( is.null(timezone) ||  !(timezone %in% base::OlsonNames()) ) {
     # get timezone from target location
-    timezone <- MazamaSpatialUtils::getTimezone(lon, lat, useBuffering=TRUE)
+    timezone <- MazamaSpatialUtils::getTimezone(longitude, latitude, useBuffering=TRUE)
   }
   
   # convert to local time
   localTime <- lubridate::with_tz(time, tzone=timezone)
   
   # sunriset reqires matrix or spatial object for input
-  coords <- matrix(c(lon, lat), nrow=1)
+  coords <- matrix(c(longitude, latitude), nrow=1)
   
   # calculate sunrise, sunset, and solar noon times using fancy algorithm
   sunrise <- maptools::sunriset(coords, localTime, direction="sunrise", POSIXct.out=TRUE)

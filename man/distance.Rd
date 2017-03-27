@@ -4,16 +4,16 @@
 \alias{distance}
 \title{Calculate the Distance Between Points}
 \usage{
-distance(targetLon, targetLat, lons, lats)
+distance(targetLon, targetLat, longitude, latitude)
 }
 \arguments{
 \item{targetLon}{longitude (decimal degrees) of the point from which distances are calculated}
 
 \item{targetLat}{latitude (decimal degrees) of the point from which distances are calculated}
 
-\item{lons}{vector of longitudes (decimal degrees) for which a distance is calculated}
+\item{longitude}{vector of longitudes for which a distance is calculated}
 
-\item{lats}{vector of latitudes (decimal degrees) for which a distance is calculated}
+\item{latitude}{vector of latitudes for which a distance is calculated}
 }
 \value{
 Vector of distances in km.

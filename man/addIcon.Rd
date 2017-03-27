@@ -4,20 +4,20 @@
 \alias{addIcon}
 \title{Add an Icon to a Map or RgoogleMap Plot}
 \usage{
-addIcon(icon, lon, lat, map = NULL, expansion = 0.1, pos = 0)
+addIcon(icon, longitude, latitude, map = NULL, expansion = 0.1, pos = 0)
 }
 \arguments{
 \item{icon}{object to be plotted}
 
-\item{lon}{vector of longitudes}
+\item{longitude}{vector of longitudes}
 
-\item{lat}{vector of latitudes}
+\item{latitude}{vector of latitudes}
 
 \item{map}{optional RgoogleMaps map object}
 
 \item{expansion}{icon expansion factor}
 
-\item{pos}{position of icon relative to lon/lat (0=center, 1=bottom, 2=left, 3=top,4=right)}
+\item{pos}{position of icon relative to location (0=center, 1=bottom, 2=left, 3=top,4=right)}
 }
 \description{
 Adds an icon to \code{map} -- an RgoogleMaps map object.

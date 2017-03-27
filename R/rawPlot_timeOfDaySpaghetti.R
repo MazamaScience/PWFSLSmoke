@@ -122,7 +122,7 @@ rawPlot_timeOfDaySpaghetti <- function(df,
   if ( shadedNight ) {
     
     # Get the sunrise/sunset information
-    ti <- timeInfo(df$localTime, lon=lon, lat=lat, timezone=tzone)
+    ti <- timeInfo(df$localTime, longitude=lon, latitude=lat, timezone=tzone)
     
     # Extract the middle row
     ti <- ti[round(nrow(ti)/2),]

@@ -2,8 +2,8 @@
 #' @export
 #' @title Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor
 #' @param ws_monitor \emph{ws_monitor} object
-#' @param lon longitude of the collapsed monitoring station. (Default = mean of the longitudes)
-#' @param lat latitude of the collapsed monitoring station. (Default = mean of the latitudes)
+#' @param longitude longitude of the collapsed monitoring station. (Default = mean of the longitudes)
+#' @param latitude latitude of the collapsed monitoring station. (Default = mean of the latitudes)
 #' @param monitorID monitor ID of the collapsed monitoring station.
 #' @param FUN function to be applied to all the monitors at a single time index.
 #' @param na.rm logical value indicating whether NA values should be ignored when FUN is applied
@@ -11,7 +11,7 @@
 #' @return A \emph{ws_monitor} object with meta and data that corresponds to the collapsed single monitor
 #' @description Collapses data from all the monitors in \code{ws_monitor} into a single-monitor 
 #' \emph{ws_monitor} object using the function provided in the \code{FUN} argument. The single-monitor
-#' result will be located at the mean longitude and latitude unless \code{lon} and \code{lat}
+#' result will be located at the mean longitude and latitude unless \code{longitude} and \code{latitude}
 #' parameters are specified.
 #' @note After \code{FUN} is applied, values of \code{+Inf} and \code{-Inf} are converted to \code{NA}.
 #' This is a convenience for the common case where \code{FUN=min} or \code{FUN=max} and some of the
@@ -28,7 +28,7 @@
 #' monitorPlot_timeseries(Spokane_min, col='blue', type='s', add=TRUE)
 #' title('Spokane Range of PM2.5 Values, June 2015')
 
-monitor_collapse <- function(ws_monitor, lon=NULL, lat=NULL,
+monitor_collapse <- function(ws_monitor, longitude=NULL, latitude=NULL,
                              monitorID='generated_id',
                              FUN=mean, na.rm=TRUE, ...) {
   
@@ -45,10 +45,10 @@ monitor_collapse <- function(ws_monitor, lon=NULL, lat=NULL,
   
   meta <- ws_monitor$meta
   
-  if (!is.null(lon) & !is.null(lat)) {
+  if (!is.null(longitude) & !is.null(latitude)) {
         
-    newLat <- lat
-    newLon <- lon
+    newLat <- latitude
+    newLon <- longitude
   
   } else {
           

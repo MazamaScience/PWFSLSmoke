@@ -4,14 +4,14 @@
 \alias{timeInfo}
 \title{Get Time Relatied Information}
 \usage{
-timeInfo(time, lon = NULL, lat = NULL, timezone = NULL)
+timeInfo(time, longitude = NULL, latitude = NULL, timezone = NULL)
 }
 \arguments{
 \item{time}{POSIXct vector with specified timezone}
 
-\item{lon}{longitude of the location of interest}
+\item{longitude}{longitude of the location of interest}
 
-\item{lat}{latitude of the location of interest}
+\item{latitude}{latitude of the location of interest}
 
 \item{timezone}{Olson timezone at the location of interest}
 }
@@ -23,7 +23,7 @@ Calculate the local time at the target location, sunrise, sunset and solar
 noon times, and create several temporal masks.
 
 If the \code{timezone} is provided it will be used. Otherwise, the \pkg{MazamaSpatialUtils}
-package will be used to determine the timezone from \code{lon} and \code{lat}.
+package will be used to determine the timezone from \code{longitude} and \code{latitude}.
 
 The returned dataframe will have as many rows as the length of the incoming UTC \code{time} vector
 and will contain the following columns:

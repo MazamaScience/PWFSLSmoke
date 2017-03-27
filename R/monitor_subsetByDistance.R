@@ -2,8 +2,8 @@
 #' @export
 #' @title Subset ws_monitor Object by Distance from Target Location
 #' @param ws_monitor \emph{ws_monitor} object
-#' @param lon target longitude from which the radius will be calculated
-#' @param lat target latitude from which the radius will be calculated
+#' @param longitude target longitude from which the radius will be calculated
+#' @param latitude target latitude from which the radius will be calculated
 #' @param radius distance (km) of radius from target location -- default=300
 #' @param count number of grid cells to return
 #' @return A \emph{ws_monitor} object with monitors near a location.
@@ -19,15 +19,15 @@
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(20140913, 20141010)
-#' KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
+#' KingFire <- monitor_subsetByDistance(airnow, longitude=-120.604, latitude=38.782, radius=50)
 #' monitorLeaflet(KingFire)
 #' } 
 
-monitor_subsetByDistance <- function(ws_monitor, lon=NULL, lat=NULL, radius=50, count=NULL) {
+monitor_subsetByDistance <- function(ws_monitor, longitude=NULL, latitude=NULL, radius=50, count=NULL) {
   
   # Create distance vector and mask
   # distanceMask <- distances <= radius
-  distanceVector <- monitor_distance(ws_monitor, lon, lat) 
+  distanceVector <- monitor_distance(ws_monitor, longitude, latitude) 
   distanceMask <- distanceVector <= radius
   
   if ( !(any(distanceMask)) ) {
@@ -43,7 +43,7 @@ monitor_subsetByDistance <- function(ws_monitor, lon=NULL, lat=NULL, radius=50, 
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
   # Update the distanceVector for the new subset of monitors
-  distanceVector <- monitor_distance(ws_monitor, lon, lat) 
+  distanceVector <- monitor_distance(ws_monitor, longitude, latitude) 
   
   # If user specified the count, return only the sites closest to the target location.
   if ( !is.null(count) ) {

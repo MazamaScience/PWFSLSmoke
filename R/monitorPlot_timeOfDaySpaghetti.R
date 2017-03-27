@@ -131,7 +131,7 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   if ( shadedNight ) {
     
     # Get the sunrise/sunset information
-    ti <- timeInfo(localTime, lon=mon$meta$longitude, lat=mon$meta$latitude, timezone=timezone)
+    ti <- timeInfo(localTime, longitude=mon$meta$longitude, latitude=mon$meta$latitude, timezone=timezone)
     
     # Extract the middle row
     ti <- ti[round(nrow(ti)/2),]

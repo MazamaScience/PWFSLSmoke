@@ -2,11 +2,11 @@
 #' @import graphics
 #' @title Add an Icon to a Map or RgoogleMap Plot
 #' @param icon object to be plotted
-#' @param lon vector of longitudes
-#' @param lat vector of latitudes
+#' @param longitude vector of longitudes
+#' @param latitude vector of latitudes
 #' @param map optional RgoogleMaps map object
 #' @param expansion icon expansion factor
-#' @param pos position of icon relative to lon/lat (0=center, 1=bottom, 2=left, 3=top,4=right)
+#' @param pos position of icon relative to location (0=center, 1=bottom, 2=left, 3=top,4=right)
 #' @description Adds an icon to \code{map} -- an RgoogleMaps map object.
 #' The following icons are available:
 #' 
@@ -31,7 +31,7 @@
 #' }
 
 
-addIcon <- function(icon, lon, lat, map=NULL, expansion=0.1, pos=0) {
+addIcon <- function(icon, longitude, latitude, map=NULL, expansion=0.1, pos=0) {
   
   # Test for absolute path
   if ( dirname(icon) == "." ) {
@@ -59,28 +59,28 @@ addIcon <- function(icon, lon, lat, map=NULL, expansion=0.1, pos=0) {
       stop("'map' argument is not of class 'staticMap'")
     }
     
-    # limit lon, lat to those within bounding box
+    # limit longitude, latitude to those within bounding box
     lon_lo <- map$BBOX$ll[,'lon']
     lon_hi <- map$BBOX$ur[,'lon']
     lat_lo <- map$BBOX$ll[,'lat']
     lat_hi <- map$BBOX$ur[,'lat']
     
-    lonMask <- lon >= lon_lo & lon <= lon_hi
-    latMask <- lat >= lat_lo & lat <= lat_hi
+    lonMask <- longitude >= lon_lo & longitude <= lon_hi
+    latMask <- latitude >= lat_lo & latitude <= lat_hi
     goodMask <- lonMask & latMask
     
-    lon <- lon[goodMask]
-    lat <- lat[goodMask]
+    longitude <- longitude[goodMask]
+    latitude <- latitude[goodMask]
     
     # Get plot coordinates
-    newXY <- RgoogleMaps::LatLon2XY.centered(map, lat, lon)
+    newXY <- RgoogleMaps::LatLon2XY.centered(map, latitude, longitude)
     x <- newXY$newX
     y <- newXY$newY
     
   } else {
     # basic plot from maps::map()
-    x <- lon
-    y <- lat
+    x <- longitude
+    y <- latitude
     
   }
 

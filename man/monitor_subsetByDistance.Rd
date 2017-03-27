@@ -4,15 +4,15 @@
 \alias{monitor_subsetByDistance}
 \title{Subset ws_monitor Object by Distance from Target Location}
 \usage{
-monitor_subsetByDistance(ws_monitor, lon = NULL, lat = NULL, radius = 50,
-  count = NULL)
+monitor_subsetByDistance(ws_monitor, longitude = NULL, latitude = NULL,
+  radius = 50, count = NULL)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{lon}{target longitude from which the radius will be calculated}
+\item{longitude}{target longitude from which the radius will be calculated}
 
-\item{lat}{target latitude from which the radius will be calculated}
+\item{latitude}{target latitude from which the radius will be calculated}
 
 \item{radius}{distance (km) of radius from target location -- default=300}
 
@@ -35,7 +35,7 @@ of monitors (or grid cells) returned may be less than the specified \code{count}
 \examples{
 \dontrun{
 airnow <- airnow_load(20140913, 20141010)
-KingFire <- monitor_subsetByDistance(airnow, lon=-120.604, lat=38.782, radius=50)
+KingFire <- monitor_subsetByDistance(airnow, longitude=-120.604, latitude=38.782, radius=50)
 monitorLeaflet(KingFire)
 } 
 }

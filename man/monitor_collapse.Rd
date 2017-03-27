@@ -4,15 +4,15 @@
 \alias{monitor_collapse}
 \title{Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor}
 \usage{
-monitor_collapse(ws_monitor, lon = NULL, lat = NULL,
+monitor_collapse(ws_monitor, longitude = NULL, latitude = NULL,
   monitorID = "generated_id", FUN = mean, na.rm = TRUE, ...)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{lon}{longitude of the collapsed monitoring station. (Default = mean of the longitudes)}
+\item{longitude}{longitude of the collapsed monitoring station. (Default = mean of the longitudes)}
 
-\item{lat}{latitude of the collapsed monitoring station. (Default = mean of the latitudes)}
+\item{latitude}{latitude of the collapsed monitoring station. (Default = mean of the latitudes)}
 
 \item{monitorID}{monitor ID of the collapsed monitoring station.}
 
@@ -28,7 +28,7 @@ A \emph{ws_monitor} object with meta and data that corresponds to the collapsed 
 \description{
 Collapses data from all the monitors in \code{ws_monitor} into a single-monitor 
 \emph{ws_monitor} object using the function provided in the \code{FUN} argument. The single-monitor
-result will be located at the mean longitude and latitude unless \code{lon} and \code{lat}
+result will be located at the mean longitude and latitude unless \code{longitude} and \code{latitude}
 parameters are specified.
 }
 \note{
