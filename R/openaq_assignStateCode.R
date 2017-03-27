@@ -52,7 +52,7 @@ openaq_assignStateCode <- function(df) {
   # ca <- df[which(df$country=='CA'),]
   # 
   # data(maps::state.fips)
-  # usStateCodes <- as.character( unique(state.fips$abb) )
+  # usStateCodes <- as.character( unique(maps::state.fips$abb) )
   # usStateCodes <- c(usStateCodes, c("AK", "HI"))
   # 
   # checkUSStateCodes <- unique( us$stateCode[! us$stateCode %in% usStateCodes] )

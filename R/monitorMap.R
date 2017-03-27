@@ -66,20 +66,41 @@ monitorMap <- function(ws_monitor,
   
   # ------------------------------- GRAPHICS --------------------------------------
   
-  # list of states to be plotted as base map
-  stateCode <- as.data.frame(unique(ws_monitor$meta$stateCode))
-  colnames(stateCode) <- "abb"
-  state.fips <- maps::state.fips
-  duplicateIndex <- duplicated(state.fips$abb)
-  state.fips <- state.fips[!duplicateIndex,]
-  suppressWarnings(stateName <- dplyr::left_join(stateCode, state.fips, by="abb"))
-  stateName <- apply(as.data.frame(stateName$polyname),2,function(x){stringr::str_split_fixed(x, ':', 2)})[1:nrow(stateName)]
-  
-  # in case map complains multiple col arguments
+  # Create the basemap
   if ( !add ) {
-    # Plot the base map
-    maps::map("state", stateName, col=stateCol, lwd=stateLwd, ...)
-    maps::map('county', stateName, col=countyCol, lwd=countyLwd, add=TRUE, ...)
+
+    stateCodes <- unique(ws_monitor$meta$stateCode)
+    
+    if ( is.null(stateCodes) || stateCodes == '' ) {
+      
+      # No stateCodes found. Use xlim and ylim.
+      xlim <- range(ws_monitor$meta$longitude)
+      ylim <- range(ws_monitor$meta$latitude)
+      # add a 1 degree buffer
+      xlim[1] <- xlim[1] - 1.0
+      xlim[2] <- xlim[2] + 1.0
+      ylim[1] <- ylim[1] - 1.0
+      ylim[2] <- ylim[2] + 1.0
+      # Plot the base map: state first, counties on top
+      maps::map("state", xlim=xlim, ylim=ylim, col=stateCol, lwd=stateLwd, ...)
+      maps::map('county', xlim=xlim, ylim=ylim, col=countyCol, lwd=countyLwd, add=TRUE, ...)
+      
+    } else {
+      
+      # Plot only the states containing the monitors
+      # Need to get the maps package state names to be plotted in base map
+      # We need to deal with things like "washington:whidbey island"
+      stateCodes <- as.character(stateCodes)
+      df <- maps::state.fips
+      df$polyname <- stringr::str_replace(df$polyname, ":.*", "")
+      df <- df %>% dplyr::filter(df$abb %in% stateCodes) %>% dplyr::distinct()
+      stateNames <- df$polyname
+      # Plot the base map: state first, counties on top
+      maps::map("state", stateNames, col=stateCol, lwd=stateLwd, ...)
+      maps::map('county', stateNames, col=countyCol, lwd=countyLwd, add=TRUE, ...)
+      
+    }
+    
   }
   
   # Now we add the (potentially projected) monitor points
@@ -88,10 +109,10 @@ monitorMap <- function(ws_monitor,
   argsList <- list(...)
   
   if( is.null(argsList$projection) ) {
-    points(lon, lat, pch=16, cex=cex, col=cols)
+    points(lon, lat, pch=16, cex=cex, col=cols, xpd=NA)
   } else {
     points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters, argsList$orientation), 
-            pch=16, cex=cex, col=cols )
+            pch=16, cex=cex, col=cols, xpd=NA )
   }
   
 }
