@@ -30,8 +30,8 @@ monitor_timeAverage <- function(ws_monitor, ...) {
   # Rebuild ws_monitor object
   names(averagedData)[1] <- 'datetime'
   ws_monitor <- list(meta=meta, data=averagedData)
-  ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
-  return(ws_monitor)
+  return( structure(ws_monitor, class = c("ws_monitor", "list")) )
+  
 }
 

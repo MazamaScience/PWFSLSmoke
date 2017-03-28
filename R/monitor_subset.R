@@ -68,8 +68,7 @@ monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NUL
   meta <- monitor_subsetMeta(ws_monitor$meta, monitorIDs=validMonIDs)
   
   ws_monitor <- list(meta=meta, data=data)
-  ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
-  
-  return(ws_monitor)
+
+  return( structure(ws_monitor, class = c("ws_monitor", "list")) )
   
 }

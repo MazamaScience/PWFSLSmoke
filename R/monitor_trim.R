@@ -22,5 +22,5 @@ monitor_trim <- function(ws_monitor) {
   # Subset the data dataframe
   ws_monitor$data <- ws_monitor$data[max(firstValids):min(lastValids),]
   
-  return(ws_monitor)
+  return( structure(ws_monitor, class = c("ws_monitor", "list")) )
 }

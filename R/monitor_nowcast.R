@@ -61,7 +61,8 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   ws_monitor$data[,2:n] <- apply(as.data.frame(ws_monitor$data[,2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin) })
   ws_monitor$data[,2:n] <- round(as.data.frame(ws_monitor$data[,2:n]), digits = digits)
   
-  return(ws_monitor)
+  return( structure(ws_monitor, class = c("ws_monitor", "list")) )
+  
 }
 
 # ----- Helper Functions ------------------------------------------------------

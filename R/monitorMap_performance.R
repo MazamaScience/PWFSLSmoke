@@ -109,7 +109,7 @@ monitorMap_performance <- function (predicted,
       breaks <- stats::quantile(performanceDF[[colorBy]], probs=probs, na.rm=TRUE)
     }
     indices <- .bincode(performanceDF[[colorBy]], breaks=breaks, include.lowest=TRUE)
-    colors <- paletteFunc(max(indices,na.rm=TRUE))
+    colors <- paletteFunc((length(breaks)-1))
     cols <- colors[indices]
     
     # create a legend to be used later

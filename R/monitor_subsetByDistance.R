@@ -74,7 +74,7 @@ monitor_subsetByDistance <- function(ws_monitor, longitude=NULL, latitude=NULL, 
   # Add 'distance' to the ws_monitor object
   ws_monitor[['distance']] <- distanceVector
   
-  return(ws_monitor)
+  return( structure(ws_monitor, class = c("ws_monitor", "list")) )
   
 }
 

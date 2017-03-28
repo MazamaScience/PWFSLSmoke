@@ -47,7 +47,7 @@ monitor_rollingMean <- function(ws_monitor, width=8, data.thresh=75, align="cent
 
   # Create a new ws_monitor object
   ws_monitor <- list(meta=meta, data=rollingData)
-  ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
-  return (ws_monitor)
+  return( structure(ws_monitor, class = c("ws_monitor", "list")) )
+
 }

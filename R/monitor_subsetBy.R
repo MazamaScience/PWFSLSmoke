@@ -69,4 +69,5 @@ monitor_subsetBy <- function(ws_monitor, filter) {
   ws_monitor <- list(data=data, meta=meta)
   
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )
+  
 }

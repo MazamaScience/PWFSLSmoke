@@ -4,24 +4,19 @@
 \alias{monitor_scaleData}
 \title{Scale Monitoring Data}
 \usage{
-monitor_scaleData(ws_monitor, expression)
+monitor_scaleData(ws_monitor, factor)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{expression}{an \R{R} expression used to scale data}
+\item{factor}{numeric used to scale the data}
 }
 \description{
-Use an R expression scale the data in a \emph{ws_monitor} object.
-
-The \R{R} expression given in \code{expression} is applied to all data columns in
-in \code{ws_monitor$data}.
-
-Expressions should use \code{data} for the left hand side of the expression.
+Scale the data in a \emph{ws_monitor} object by mutiplying it with \code{factor}.
 }
 \examples{
 wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
-wa_zero <- monitor_scaleData(wa, data * 3.4)
+wa_zero <- monitor_scaleData(wa, 3.4)
 }
 \keyword{ws_monitor}
 
