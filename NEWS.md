@@ -9,6 +9,16 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.11
+
+ * 'gnats' style timeseries plots now plotting squares to speed things up
+ * maps now work when meta$stateCode is missing
+ * `parseDatetime()` returns POSIXct unmodified
+ * `monitor_subsetBy()` drops monitors when filter evaluates to NA
+ * all parameters now called `longitude` and `latitude` instead of `lon` and `lat`
+ * new `monitor_scaleData()` function
+ * fixed `monitorMap_performance()` issue with legend colors
+ 
 ### PWFSLSmoke 0.99.10
 
  * added docker/ directory showing how to create a docker image

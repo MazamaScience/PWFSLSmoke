@@ -11,6 +11,7 @@
 #' @param breaks set of breaks used to assign colors or a single integer used to provide quantile based breaks - Must also specify the colorBy paramater
 #' @param paletteFunc a palette generating function as returned by \code{colorRampPalette}
 #' @param showLegend logical specifying whether to add a legend (default: \code{TRUE})
+#' @param legendPos legend position passed to \code{legend()}
 #' @param stateCol color for state outlines on the map
 #' @param stateLwd width for state outlines
 #' @param countyCol color for county outline on the map
@@ -37,23 +38,6 @@
 #' title('Heidike Skill of monitors predicting another monitor.')
 #' }
 
-
-# if(FALSE) {
-#   threshold=AQI$breaks_24[3]
-#   cex=par('cex')
-#   sizeBy=NULL
-#   colorBy="heidikeSkill"
-#   breaks=c(-Inf,.5,.6,.7,.8,Inf)
-#   paletteFunc=grDevices::colorRampPalette(RColorBrewer::brewer.pal(6,"Purples")[-1])
-#   legendTitle="Max AQI Level"
-#   showLegend=TRUE
-#   stateCol="grey60"
-#   stateLwd=2
-#   countyCol="grey70"
-#   countyLwd=1
-#   add=FALSE
-# }
-
 monitorMap_performance <- function (predicted,
                                     observed,
                                     threshold=AQI$breaks_24[3],
@@ -64,6 +48,7 @@ monitorMap_performance <- function (predicted,
                                     paletteFunc=grDevices::colorRampPalette( 
                                       RColorBrewer::brewer.pal( length(breaks) ,"Purples")[-1] ),
                                     showLegend=TRUE,
+                                    legendPos="topright",
                                     stateCol="grey60",
                                     stateLwd=2,
                                     countyCol="grey70",
@@ -113,7 +98,7 @@ monitorMap_performance <- function (predicted,
   }
   
   # Sizing
-  if ( !is.null(sizeBy) && sizeBy %in% names(performanceDF)) {
+  if ( !is.null(sizeBy) && sizeBy %in% names(performanceDF) ) {
     cex <- cex * performanceDF[[sizeBy]] / max(performanceDF[[sizeBy]], na.rm = TRUE) 
   }
   
@@ -162,7 +147,7 @@ monitorMap_performance <- function (predicted,
   #   }
   # }
   if ( showLegend & !is.null(colorBy) ) {
-    legend( "topright", cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") )
+    legend( legendPos, pch=16, cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") )
   }
   
 }

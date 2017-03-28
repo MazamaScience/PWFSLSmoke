@@ -7,7 +7,7 @@
 monitor_replaceData(ws_monitor, filter, value)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{filter}{an \R{R} expression used to identify values for replacement}
 

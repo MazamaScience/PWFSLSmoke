@@ -8,8 +8,9 @@ monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
   cex = par("cex"), sizeBy = NULL, colorBy = "heidikeSkill",
   breaks = c(-Inf, 0.5, 0.6, 0.7, 0.8, Inf),
   paletteFunc = grDevices::colorRampPalette(RColorBrewer::brewer.pal(length(breaks),
-  "Purples")[-1]), showLegend = TRUE, stateCol = "grey60", stateLwd = 2,
-  countyCol = "grey70", countyLwd = 1, add = FALSE, ...)
+  "Purples")[-1]), showLegend = TRUE, legendPos = "topright",
+  stateCol = "grey60", stateLwd = 2, countyCol = "grey70",
+  countyLwd = 1, add = FALSE, ...)
 }
 \arguments{
 \item{predicted}{ws_monitor object with predicted values}
@@ -29,6 +30,8 @@ monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
 \item{paletteFunc}{a palette generating function as returned by \code{colorRampPalette}}
 
 \item{showLegend}{logical specifying whether to add a legend (default: \code{TRUE})}
+
+\item{legendPos}{legend position passed to \code{legend()}}
 
 \item{stateCol}{color for state outlines on the map}
 
