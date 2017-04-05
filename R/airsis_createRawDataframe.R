@@ -8,6 +8,7 @@
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
+#' @param flagAndKeep flag, rather then remove, bad data during the QC process
 #' @return Raw dataframe of WRCC data.
 #' @description Obtains monitor data from an AIRSIS webservice and converts
 #' it into a quality controlled, metadata enhanced "raw" dataframe
@@ -42,7 +43,8 @@ airsis_createRawDataframe <- function(startdate=20020101,
                                       provider=NULL, unitID=NULL,
                                       clusterDiameter=1000,
                                       baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-                                      saveFile=NULL) {
+                                      saveFile=NULL,
+                                      flagAndKeep=FALSE) {
   
   # Sanity checks
   if ( is.null(provider) ) {
@@ -72,11 +74,11 @@ airsis_createRawDataframe <- function(startdate=20020101,
   
   # Read csv raw data into a dataframe
   logger.info("Parsing data ...")
-  df <- airsis_parseData(fileString)
+  df <- airsis_parseData(fileString) # TODO: Consider adding flagAndKeep argument functionality to the airsis_parseData() as well
   
   # Apply monitor-appropriate QC to the dataframe
   logger.info("Applying QC logic ...")
-  df <- airsis_qualityControl(df)
+  df <- airsis_qualityControl(df, flagAndKeep=flagAndKeep)
   
   # Add clustering information to identify unique deployments
   logger.info("Clustering ...")

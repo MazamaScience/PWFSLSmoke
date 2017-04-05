@@ -8,7 +8,7 @@ airsis_EBAMQualityControl(df, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,
   remove_Lat_zero = TRUE, valid_Flow = c(16.7 * 0.95, 16.7 * 1.05),
   valid_AT = c(-Inf, 45), valid_RHi = c(-Inf, 45), valid_Conc = c(-Inf,
-  0.984))
+  0.984), flagAndKeep = FALSE)
 }
 \arguments{
 \item{df}{single site dataframe created by \code{airsis_parseData()}}
@@ -28,6 +28,8 @@ airsis_EBAMQualityControl(df, valid_Longitude = c(-180, 180),
 \item{valid_RHi}{range of valid RHi values}
 
 \item{valid_Conc}{range of valid ConcHr values}
+
+\item{flagAndKeep}{flag, rather than remove, bad data during the QC process}
 }
 \value{
 Cleaned up dataframe of AIRSIS monitor data.
