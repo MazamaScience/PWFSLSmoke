@@ -1,9 +1,9 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Combine List of ws_monitor Objects into Single ws_monitor Object
-#' @param monitorList list containing \emph{ws_monitor} objects
+#' @param monitorList list containing one or more \emph{ws_monitor} objects
 #' @return A emph{ws_monitor} object combining all monitoring data from \code{monitorList}.
-#' @description Combines a list of \emph{ws_monitor} objects into a single \emph{ws_monitor} object 
+#' @description Combines a list of one or more \emph{ws_monitor} objects into a single \emph{ws_monitor} object 
 #' by merging the \code{meta} and \code{data} dataframes from each object in \code{monitorList}.
 #' @examples
 #' \dontrun{
@@ -14,9 +14,15 @@
 #' monitorList[[4]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1034')
 #' ws_monitor <- monitor_combine(monitorList)
 #' monitorLeaflet(ws_monitor)
-#' } 
+#' }
 
 monitor_combine <- function(monitorList) {
+  
+  # Stop and return first element of monitorList as ws_monitor object if only one element in list
+  # Note that there can be multiple monitors within a single element
+  if ( length(monitorList) == 1 ) {
+    return(monitorList[[1]])
+  }
   
   # Extract lists of 'meta' and 'data' dataframes
   metaList <- lapply(monitorList, function(x) { return(x$meta) })

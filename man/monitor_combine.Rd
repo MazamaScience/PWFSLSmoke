@@ -7,13 +7,13 @@
 monitor_combine(monitorList)
 }
 \arguments{
-\item{monitorList}{list containing \emph{ws_monitor} objects}
+\item{monitorList}{list containing one or more \emph{ws_monitor} objects}
 }
 \value{
 A emph{ws_monitor} object combining all monitoring data from \code{monitorList}.
 }
 \description{
-Combines a list of \emph{ws_monitor} objects into a single \emph{ws_monitor} object 
+Combines a list of one or more \emph{ws_monitor} objects into a single \emph{ws_monitor} object 
 by merging the \code{meta} and \code{data} dataframes from each object in \code{monitorList}.
 }
 \examples{
@@ -25,7 +25,7 @@ monitorList[[3]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1033
 monitorList[[4]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1034')
 ws_monitor <- monitor_combine(monitorList)
 monitorLeaflet(ws_monitor)
-} 
+}
 }
 \keyword{ws_monitor}
 
