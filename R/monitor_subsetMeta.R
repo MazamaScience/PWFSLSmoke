@@ -17,7 +17,7 @@
 
 monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, countryCodes=NULL, monitorIDs=NULL) {
   
-  if (!is.null(xlim)) {
+  if ( !is.null(xlim) ) {
     # Sanity check -- longitude domain
     for (i in seq(2)) {
       if (xlim[i] < -180 || xlim[i] > 360) {
@@ -32,7 +32,7 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, coun
     meta <- dplyr::filter(meta, meta$longitude >= xlim[1] & meta$longitude <= xlim[2])
   }
   
-  if (!is.null(ylim)) {
+  if ( !is.null(ylim) ) {
     # Sanity check -- latitude domain
     if (min(ylim) < -90 || max(ylim) > 90) {
       stop(paste0('ylim = ',ylim,' contains values outside the domain [-90,90]'))
@@ -41,7 +41,7 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, coun
     meta <- dplyr::filter(meta, meta$latitude >= ylim[1] & meta$latitude <= ylim[2])
   }
   
-  if (!is.null(countryCodes)) {
+  if ( !is.null(countryCodes) ) {
     # Guarantee upper case countrycodes
     countryCodes <- stringr::str_to_upper(countryCodes)
     if ( 'countryCode' %in% names(meta) ) {
@@ -51,7 +51,7 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, coun
     }
   }
   
-  if (!is.null(stateCodes)) {
+  if ( !is.null(stateCodes) ) {
     # Guarantee upper case statecodes
     stateCodes <- stringr::str_to_upper(stateCodes)
     if ( 'stateCode' %in% names(meta) ) {
@@ -61,11 +61,15 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, coun
     }
   }
   
-  if (!is.null(monitorIDs)) {
+  if ( !is.null(monitorIDs) ) {
     meta <- dplyr::filter(meta, meta$monitorID %in% as.character(monitorIDs)) # allow for numeric monitorIDs
+    
+    # TODO: Reorder meta data here to match order of monitor IDs in monitorID vector passed in
+    
+    
   }
   
-  if (nrow(meta) == 0) {
+  if ( nrow(meta) == 0 ) {
     warning("No matching monitors found.")
     return (NULL)
   }
