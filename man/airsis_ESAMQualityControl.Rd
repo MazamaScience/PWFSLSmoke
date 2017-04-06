@@ -45,7 +45,7 @@ The following columns of data are tested against valid ranges:
 \item{\code{ConcHr}}
 }
 
-A \code{POSIXct datetime} column (UTC) is also added based on \code{Date.Time.GMT}.
+A \code{POSIXct datetime} column (UTC) is also added based on \code{TimeStamp}.
 }
 \seealso{
 \code{\link{airsis_qualityControl}}

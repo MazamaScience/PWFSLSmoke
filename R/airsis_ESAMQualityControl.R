@@ -21,7 +21,7 @@
 #' \item{\code{ConcHr}}
 #' }
 #' 
-#' A \code{POSIXct datetime} column (UTC) is also added based on \code{Date.Time.GMT}.
+#' A \code{POSIXct datetime} column (UTC) is also added based on \code{TimeStamp}.
 #' 
 #' @return Cleaned up dataframe of AIRSIS monitor data.
 #' @seealso \code{\link{airsis_qualityControl}}
@@ -157,7 +157,8 @@ airsis_ESAMQualityControl <- function(df,
   
   if (dupHrCount > 0) {
     logger.info("Discarding %s duplicate time entries", dupHrCount)
-    logger.debug("Duplicate times being removed:  %s", paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
+    logger.debug("Duplicate times being removed:  %s", paste0(sort(unique(df$TimeStamp[dupHrMask])), collapse=", "))
+    # TODO: the line above caused an error for at least one ESAM (1054); consider updating to TimeStamp or other timestamp
   }
 
   df <- df[uniqueHrMask,]
