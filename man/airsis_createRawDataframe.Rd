@@ -8,7 +8,7 @@ airsis_createRawDataframe(startdate = 20020101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
   provider = NULL, unitID = NULL, clusterDiameter = 1000,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-  saveFile = NULL)
+  saveFile = NULL, flagAndKeep = FALSE)
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
@@ -24,6 +24,8 @@ airsis_createRawDataframe(startdate = 20020101,
 \item{baseUrl}{base URL for data queries}
 
 \item{saveFile}{optional filename where raw CSV will be written}
+
+\item{flagAndKeep}{flag, rather then remove, bad data during the QC process}
 }
 \value{
 Raw dataframe of WRCC data.

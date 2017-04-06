@@ -10,6 +10,7 @@
 #' @param valid_AT range of valid AT.C. values
 #' @param valid_RHi range of valid RHi... values
 #' @param valid_Conc range of valid Conc.mg.m3. values
+#' @param flagAndKeep flag, rather then remove, bad data during the QC process
 #' @description Perform various QC measures on AIRSIS E-Sampler data.
 #' 
 #' The following columns of data are tested against valid ranges:
@@ -33,7 +34,8 @@ airsis_ESAMQualityControl <- function(df,
                                       valid_Flow = c(1.999,2.001),     # anything other than 2 is bad
                                       valid_AT = c(-Inf,150),
                                       valid_RHi = c(-Inf,55),
-                                      valid_Conc = c(-Inf,984)) {
+                                      valid_Conc = c(-Inf,984),
+                                      flagAndKeep = FALSE) {
   
   # TODO:  What about Alarm?
   
