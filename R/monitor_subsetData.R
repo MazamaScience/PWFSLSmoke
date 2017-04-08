@@ -26,11 +26,6 @@
 monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
                                dropMonitors=FALSE, timezone="UTC") {
   
-  # Subset/reorder based on monitorID column names first as that is the quickest
-  if ( !is.null(monitorIDs) ) {
-    data <- data[,c("datetime", as.character(monitorIDs))] # allow for numeric monitorIDs
-  }
-  
   if ( !is.null(tlim) ) {
     
     # Accept numeric, character or POSIXct values for tlim
@@ -61,8 +56,8 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
   if ( dropMonitors ) {
     
     if ( ncol(data) > 2 ) { 
-      # Multiple monitors, we can use apply() without worrying our subsetting will return a vector
       
+      # Multiple monitors, we can use apply() without worrying our subsetting will return a vector
       anyMask <- c(TRUE, apply(data[,-1],2,function(x) { any(!is.na(x),na.rm=TRUE) }))
       # Sanity check
       if ( sum(anyMask) == 1 ) {
@@ -81,20 +76,16 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
       }
       
     } else {
-      # Need to be careful with a single monitor
       
+      # Need to be careful with a single monitor
       anyMask <- c(TRUE, any(!is.na(data[,-1]),na.rm=TRUE))
       data <- data[,anyMask]
       
       if ( !is.null(vlim) ) {
-        
         dataParam <- data[,-1]
-        
         dataParam[dataParam > vlim[2] & !is.na(dataParam)]  <- NA
         dataParam[dataParam <= vlim[1] & !is.na(dataParam)] <- NA
-        
         data[,-1] <- dataParam
-        
       }
       
     }
@@ -106,7 +97,14 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
   # since it's easy to test for as the result of a calculation. 
   if ( is.null(names(data)) ) {
     warning("No matching monitors found")
-    return (NULL)
+    return (NULL)  # TODO:  ticket #86 (must be coordinated with monitor_subsetMeta and any code that checks for this)
+  }
+
+  # Guarantee that monitors are returned in the order requested
+  if ( !is.null(monitorIDs) ) {
+    monitorIDs <- as.character(monitorIDs) # allow incoming monitorIDs to be numeric
+    foundMonitorIDs <- intersect(monitorIDs, colnames(data)) # perhaps not all monitorIDs were found
+    data <- data[,c("datetime",foundMonitorIDs)]
   }
   
   return(data)

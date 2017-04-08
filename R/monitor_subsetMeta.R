@@ -62,20 +62,23 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, coun
   }
   
   if ( !is.null(monitorIDs) ) {
-    meta <- dplyr::filter(meta, meta$monitorID %in% as.character(monitorIDs)) # allow for numeric monitorIDs
-    
-    # TODO: Reorder meta data here to match order of monitor IDs in monitorID vector passed in
-    
-    
+    monitorIDs <- as.character(monitorIDs) # allow incoming monitorIDs to be numeric
+    meta <- dplyr::filter(meta, meta$monitorID %in% monitorIDs)
   }
   
   if ( nrow(meta) == 0 ) {
     warning("No matching monitors found.")
-    return (NULL)
+    return (NULL) # TODO:  ticket #86 (must be coordinated with monitor_subsetData and any code that checks for this)
   }
   
   # Restore rownames that dplyr::filter discards
   rownames(meta) <- meta$monitorID
+  
+  # Guarantee that monitors are returned in the order requested
+  if ( !is.null(monitorIDs) ) {
+    foundMonitorIDs <- intersect(monitorIDs, rownames(meta)) # perhaps not all monitorIDs were found
+    meta <- meta[foundMonitorIDs,]
+  }
   
   return(meta)
 }
