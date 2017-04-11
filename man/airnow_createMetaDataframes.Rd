@@ -75,4 +75,3 @@ metaList <- airnow_createMetaDataframes(parameters="PM2.5")
 \link{airnow_downloadSites}
 }
 \keyword{AirNow}
-

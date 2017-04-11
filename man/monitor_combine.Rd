@@ -28,4 +28,3 @@ monitorLeaflet(ws_monitor)
 }
 }
 \keyword{ws_monitor}
-

@@ -42,4 +42,3 @@ Filtering by vlim is open on the left and closed on the right, i.e.
  \code{x > vlim[1] & x <= vlim[2]}
 }
 \keyword{ws_monitor}
-

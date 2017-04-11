@@ -53,4 +53,3 @@ The downloaded CSV may be saved to a local file by providing an argument to the 
 \code{\link{addClustering}}
 }
 \keyword{WRCC}
-

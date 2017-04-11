@@ -56,4 +56,3 @@ A \code{POSIXct datetime} column (UTC) is also added based on \code{DateTime}.
 \code{\link{wrcc_qualityControl}}
 }
 \keyword{WRCC}
-

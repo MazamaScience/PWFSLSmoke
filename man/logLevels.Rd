@@ -2,13 +2,13 @@
 % Please edit documentation in R/pylogger.R
 \docType{data}
 \name{logLevels}
-\alias{DEBUG}
-\alias{ERROR}
-\alias{FATAL}
-\alias{INFO}
-\alias{TRACE}
-\alias{WARN}
 \alias{logLevels}
+\alias{FATAL}
+\alias{ERROR}
+\alias{WARN}
+\alias{INFO}
+\alias{DEBUG}
+\alias{TRACE}
 \title{Log Levels}
 \format{An object of class \code{integer} of length 1.}
 \usage{
@@ -21,4 +21,3 @@ Available levels include:
 \code{FATAL ERROR WARN INFO DEBUG TRACE}
 }
 \keyword{datasets}
-

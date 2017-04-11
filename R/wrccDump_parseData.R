@@ -127,8 +127,20 @@ wrccDump_parseData <- function(fileString) {
     goodLines <- !is.na(singleMonitorLines) & !stringr::str_detect(singleMonitorLines,'^:')
     
     # Read the data into a dataframe
-    fakeFile <- paste0(singleMonitorLines[goodLines], collapse='\n')
+    # NOTE:  We need to guarantee that fakeFile always has a newline so that read_lines will interpret
+    # NOTE:  a single data record as literal data and now a path.
+    fakeFile <- paste0(paste0(singleMonitorLines[goodLines], collapse='\n'),'\n')
     df <- readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes, na=na_strings)
+
+    # Print out any problems encountered by readr::read_csv
+    problemsDF <- readr::problems(df)
+    if ( dim(problemsDF)[1] > 0 ) {
+      logger.debug("Records skipped with parsing errors:")
+      problems <- utils::capture.output(format(problemsDF))
+      for (i in 1:length(problems)) {
+        logger.debug("%s",problems[i])
+      }
+    }
     
     # Add monitor name
     df$monitorName <- monitorName

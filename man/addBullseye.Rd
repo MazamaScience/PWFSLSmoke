@@ -26,4 +26,3 @@ monitorMap(wa, cex=4)
 addBullseye(wa$meta$longitude, wa$meta$latitude)
 }
 \keyword{plotting}
-

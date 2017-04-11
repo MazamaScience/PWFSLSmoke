@@ -31,4 +31,3 @@ highlightDates <- raw_getHighlightDates(raw,dataVar,tzone,highlightRange)
 rawPlot_timeOfDaySpaghetti(df=raw,highlightDates = highlightDates)
 }
 }
-

@@ -40,4 +40,3 @@ rawPlot_timeOfDaySpaghetti(raw,parameter="temperature")
 }
 }
 \keyword{raw}
-

@@ -45,4 +45,3 @@ monitorPlot_timeseries(Twisp_daily, type='h', lwd=6, ylab="Hours")
 title("Twisp, Washington Hours per day Above 'Unhealthy', 2015")
 }
 \keyword{ws_monitor}
-

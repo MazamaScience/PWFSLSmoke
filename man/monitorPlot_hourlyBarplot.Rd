@@ -73,4 +73,3 @@ monitorPlot_hourlyBarplot(C_V, main='1-Hourly Average PM2.5',
                           labels_x_nudge=1, labels_y_nudge=0)
 }
 \keyword{ws_monitor}
-

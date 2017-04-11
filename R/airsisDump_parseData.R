@@ -96,8 +96,10 @@ airsisDump_parseData <- function(fileString) {
   #     Parse the file     ----------------------------------------------------
   
   # Remove header line, leaving only data
-  fakeFile <- paste0(lines[-1], collapse='\n')
-  
+  # NOTE:  We need to guarantee that fakeFile always has a newline so that read_lines will interpret
+  # NOTE:  a single data record as literal data and now a path.
+  fakeFile <- paste0(paste0(lines[-1], collapse='\n'),'\n')
+  # Read the data into a dataframe
   df <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
   
   # Print out any problems encountered by readr::read_csv

@@ -23,4 +23,3 @@ df <- openaq_assignStateCode(df)
 }
 }
 \keyword{OpenAQ}
-

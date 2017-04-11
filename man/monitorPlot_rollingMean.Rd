@@ -66,4 +66,3 @@ Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
 monitorPlot_rollingMean(Roseburg, shadedNight=TRUE)
 }
 \keyword{ws_monitor}
-

@@ -35,4 +35,3 @@ df <- airnow_downloadHourlyData(2016070112)
 \link{airnow_downloadData}
 }
 \keyword{AirNow}
-

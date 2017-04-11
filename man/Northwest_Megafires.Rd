@@ -17,4 +17,3 @@ documentation.
 Northwest_Megafires example dataset
 }
 \keyword{datasets}
-

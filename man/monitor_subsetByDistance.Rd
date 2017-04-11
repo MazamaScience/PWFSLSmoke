@@ -43,4 +43,3 @@ monitorLeaflet(KingFire)
 monitorDistance
 }
 \keyword{ws_monitor}
-

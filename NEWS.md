@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.12
+
+ * fixed bug in `monitor_combine()` so that it now works when `monitorList` contains a single *ws_monitor* object
+ * fixed bugs in `wrccDump_parseData()` and `airsisDump_parseData()` which failed when a monitor had a single record of data
+
 ### PWFSLSmoke 0.99.11
 
  * 'gnats' style timeseries plots now plotting squares to speed things up

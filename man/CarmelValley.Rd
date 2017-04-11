@@ -17,4 +17,3 @@ documentation.
 Carmel Valley example dataset
 }
 \keyword{datasets}
-
