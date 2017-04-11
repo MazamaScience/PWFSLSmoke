@@ -123,7 +123,7 @@ airsis_ESAMQualityControl <- function(df,
   # ----- Time ----------------------------------------------------------------
   
   # TODO:  How best to assign TimeStamp column with second accuracy to an hourly datetime variable?
-  # TODO:  Should we use TimeStampm or PDate?
+  # TODO:  Should we use TimeStamp or PDate?
   # TODO:  Are these data in GMT?
   
   # NOTE: It appears the ESAM "TimeStamp" data drifts throughout the day, with >60 minutes between timestamps during most
