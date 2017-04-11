@@ -104,11 +104,11 @@ airsis_EBAMQualityControl <- function(df,
       
       # Flag bad longitudes
       dfFlagged$QCFlag_badLon[df$rowID[!goodLonMask]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]] <- "badLon"
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]],"badLon ")
       
       # Flag bad latitudes
       dfFlagged$QCFlag_badLat[df$rowID[!goodLatMask]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]] <- "badLat"
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]],"badLat ")
       
       # Flag any bad
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badLon | dfFlagged$QCFlag_badLat
@@ -153,7 +153,7 @@ airsis_EBAMQualityControl <- function(df,
       
       # Flag bad type
       dfFlagged$QCFlag_badType[df$rowID[!goodTypeMask]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]] <- "badType"
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]],"badType ")
       
       # Flag any bad 
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badType
@@ -196,7 +196,7 @@ airsis_EBAMQualityControl <- function(df,
     if ( flagAndKeep ) {
       # Flag bad flow
       dfFlagged$QCFlag_badFlow[df$rowID[!goodFlow]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]] <- "badFlow "
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]],"badFlow ")
     }
   }
   logger.debug("AT has %s missing or out of range values", sum(!goodAT))
@@ -227,7 +227,7 @@ airsis_EBAMQualityControl <- function(df,
     }
   }
   logger.debug("datetime has %s missing or out of range values", sum(!gooddatetime))
-  if ( sum(!gooddatetime) > 0) {
+  if ( sum(!gooddatetime) > 0 ) {
     logger.debug("Bad datetime values:  %s", paste0(sort(df$datetime[!gooddatetime]), collapse=", "))
     if ( flagAndKeep ) {
       # Flag bad dateandtime
@@ -293,6 +293,7 @@ airsis_EBAMQualityControl <- function(df,
   
   if ( flagAndKeep ) {
     dfFlagged$QCFlag_reasonCode <- trimws(dfFlagged$QCFlag_reasonCode)
+    dfFlagged$QCFlag_reasonCode <- substring(dfFlagged$QCFlag_reasonCode, 3)
     df <- dfFlagged
     df$rowID <- NULL
   }

@@ -98,6 +98,7 @@ airsis_createRawDataframe <- function(startdate=20020101,
                         "QCFlag_badConcHr",
                         "QCFlag_badDateAndTime",
                         "QCFlag_duplicateHr")
+    # TODO: add intersection check here to remove those that do not exist in data
     QC_columns <- df[,QC_columnNames]
     df <- df[,-(which(names(df) %in% QC_columnNames))]
     df <- cbind(df,QC_columns)
