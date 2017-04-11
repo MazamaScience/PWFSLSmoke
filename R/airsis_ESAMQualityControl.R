@@ -105,20 +105,14 @@ airsis_ESAMQualityControl <- function(df,
     logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
     
     if ( flagAndKeep ) {
-      
       # Flag bad longitudes
       dfFlagged$QCFlag_badLon[df$rowID[!goodLonMask]] <- TRUE
       dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]],"badLon ")
-      
-      
       # Flag bad latitudes
       dfFlagged$QCFlag_badLat[df$rowID[!goodLatMask]] <- TRUE
       dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]],"badLat ")
-      
-      
       # Flag any bad
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badLon | dfFlagged$QCFlag_badLat
-      
     }
     
   }
@@ -279,8 +273,8 @@ airsis_ESAMQualityControl <- function(df,
   # ----- Final cleanup -------------------------------------------------------
   
   if ( flagAndKeep ) {
-    dfFlagged$QCFlag_reasonCode <- trimws(dfFlagged$QCFlag_reasonCode)
-    dfFlagged$QCFlag_reasonCode <- substring(dfFlagged$QCFlag_reasonCode, 3)
+    dfFlagged$QCFlag_reasonCode <- stringr::str_trim(dfFlagged$QCFlag_reasonCode)
+    dfFlagged$QCFlag_reasonCode <- stringr::str_sub(dfFlagged$QCFlag_reasonCode, 3)
     df <- dfFlagged
     df$rowID <- NULL
   }
