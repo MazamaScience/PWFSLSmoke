@@ -3,10 +3,11 @@
 #' @title Obtain WRCC Data and Parse into Dataframe
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
-#' @param stationID station identifier (will be upcased)
+#' @param unitID station identifier (will be upcased)
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
+#' @param flagAndKeep flag, rather then remove, bad data during the QC process
 #' @return Raw dataframe of WRCC data.
 #' @description Obtains monitor data from a WRCC webservice and converts
 #' it into a quality controlled, metadata enhanced "raw" dataframe
@@ -30,20 +31,20 @@
 
 wrcc_createRawDataframe <- function(startdate=20100101,
                                     enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                    stationID=NULL,
+                                    unitID=NULL,
                                     clusterDiameter=1000,
                                     baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
                                     saveFile=NULL) {
   
   # Sanity check
-  if ( is.null(stationID) ) {
-    logger.error("Required parameter 'stationID' is missing")
-    stop(paste0("Required parameter 'stationID' is missing"))
+  if ( is.null(unitID) ) {
+    logger.error("Required parameter 'unitID' is missing")
+    stop(paste0("Required parameter 'unitID' is missing"))
   }
   
   # Read in WRCC .csv data
   logger.info("Downloading WRCC data ...")
-  fileString <- wrcc_downloadData(startdate, enddate, stationID, baseUrl)
+  fileString <- wrcc_downloadData(startdate, enddate, unitID, baseUrl)
   
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {

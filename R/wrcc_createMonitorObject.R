@@ -3,7 +3,7 @@
 #' @title Obtain WRCC Data and Create ws_monitor Object
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
-#' @param stationID station identifier (will be upcased)
+#' @param unitID station identifier (will be upcased)
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
@@ -32,21 +32,21 @@
 #' @seealso \code{\link{wrcc_createDataDataframe}}
 #' @examples
 #' \dontrun{
-#' sm13 <- wrcc_createMonitorObject(20150301, 20150831, stationID='sm13')
+#' sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID='sm13')
 #' monitorLeaflet(sm13)
 #' }
 
 wrcc_createMonitorObject <- function(startdate=20020101,
                                      enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                     stationID=NULL,
+                                     unitID=NULL,
                                      clusterDiameter=1000,
                                      baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
                                      saveFile=NULL) {
   
   # Sanity checks
-  if ( is.null(stationID) ) {
-    logger.error("Required parameter 'stationID' is missing")
-    stop(paste0("Required parameter 'stationID' is missing"))
+  if ( is.null(unitID) ) {
+    logger.error("Required parameter 'unitID' is missing")
+    stop(paste0("Required parameter 'unitID' is missing"))
   }
   
   startdateCount <- stringr::str_count(as.character(startdate))
@@ -63,7 +63,7 @@ wrcc_createMonitorObject <- function(startdate=20020101,
   
   # Read in WRCC .csv data
   logger.info("Downloading WRCC data ...")
-  fileString <- wrcc_downloadData(startdate, enddate, stationID, baseUrl)
+  fileString <- wrcc_downloadData(startdate, enddate, unitID, baseUrl)
   
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {

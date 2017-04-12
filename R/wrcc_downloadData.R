@@ -3,17 +3,17 @@
 #' @title Download Data from WRCC
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
-#' @param stationID station identifier (will be upcased)
+#' @param unitID station identifier (will be upcased)
 #' @param baseUrl base URL for data queries
 #' @description Request data from a particular station for the desired time period.
 #' Data are returned as a single character string containing the WRCC output. 
 #' 
-#' Monitor stationIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
+#' Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
 #' @return String containing WRCC output.
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 #' @examples
 #' \dontrun{
-#' fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
+#' fileString <- wrcc_downloadData(20150701, 20150930, unitID='SM16')
 #' df <- wrcc_parseData(fileString)
 #' }
 
@@ -29,13 +29,13 @@
 
 wrcc_downloadData <- function(startdate=20100101,
                               enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                              stationID=NULL, 
+                              unitID=NULL, 
                               baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl") {
   
   # Sanity check
-  if ( is.null(stationID) ) {
-    logger.error("Required parameter 'stationID' is missing")
-    stop(paste0("Required parameter 'stationID' is missing"))
+  if ( is.null(unitID) ) {
+    logger.error("Required parameter 'unitID' is missing")
+    stop(paste0("Required parameter 'unitID' is missing"))
   }
   
   # Get UTC times
@@ -43,7 +43,7 @@ wrcc_downloadData <- function(startdate=20100101,
   endtime <- lubridate::ymd(enddate)
   
   # Create CGI parameters
-  .params <- list(stn=toupper(stationID),
+  .params <- list(stn=toupper(unitID),
                   smon=strftime(starttime,"%m",tz="GMT"),
                   sday=strftime(starttime,"%d",tz="GMT"),
                   syea=strftime(starttime,"%y",tz="GMT"),

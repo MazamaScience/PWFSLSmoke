@@ -6,7 +6,7 @@
 \usage{
 wrcc_createMonitorObject(startdate = 20020101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
-  stationID = NULL, clusterDiameter = 1000,
+  unitID = NULL, clusterDiameter = 1000,
   baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl", saveFile = NULL)
 }
 \arguments{
@@ -14,7 +14,7 @@ wrcc_createMonitorObject(startdate = 20020101,
 
 \item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
 
-\item{stationID}{station identifier (will be upcased)}
+\item{unitID}{station identifier (will be upcased)}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
 
@@ -46,7 +46,7 @@ The downloaded CSV may be saved to a local file by providing an argument to the 
 }
 \examples{
 \dontrun{
-sm13 <- wrcc_createMonitorObject(20150301, 20150831, stationID='sm13')
+sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID='sm13')
 monitorLeaflet(sm13)
 }
 }
