@@ -48,9 +48,9 @@ airsis_EBAMQualityControl <- function(df,
   
   # Setup for flagAndKeep argument utility
   if ( flagAndKeep ) {
-
-    # verb for logging messages and 
+    # verb for logging messages
     verb <- "Flagging"
+    
     df$rowID <- as.integer(rownames(df))
     
     # duplicate df and add columns for flags
@@ -66,12 +66,9 @@ airsis_EBAMQualityControl <- function(df,
     dfFlagged$QCFlag_badConcHr <- FALSE
     dfFlagged$QCFlag_badDateAndTime <- FALSE
     dfFlagged$QCFlag_duplicateHr <- FALSE
-    
   } else {
-    
     # verb for logging messages
     verb <- "Discarding"
-    
   }
   
   # ----- Missing Values ------------------------------------------------------
@@ -99,18 +96,15 @@ airsis_EBAMQualityControl <- function(df,
     logger.info(paste(verb,"%s rows with invalid location information"), badRowCount)
     badLocations <- paste('(',df$Longitude[badRows],',',df$Latitude[badRows],')',sep='')
     logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
-    
     if ( flagAndKeep ) {
-      # Flag bad longitudes
+      # apply flags
       dfFlagged$QCFlag_badLon[df$rowID[!goodLonMask]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]],"badLon ")
-      # Flag bad latitudes
       dfFlagged$QCFlag_badLat[df$rowID[!goodLatMask]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]],"badLat ")
-      # Flag any bad
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badLon | dfFlagged$QCFlag_badLat
+      # apply reason codes
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]],"badLon")
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]],"badLat")
     }
-    
   }
 
   df <- df[goodLonMask & goodLatMask,]
@@ -144,15 +138,13 @@ airsis_EBAMQualityControl <- function(df,
   if ( badRowCount > 0 ) {
     logger.info(paste(verb,"%s rows with invalid Type information"), badRowCount)
     logger.debug("Bad Types:  %s", paste0(sort(df$Type[badRows]), collapse=", "))
-    
     if ( flagAndKeep ) {
-      # Flag bad type
+      # apply flags
       dfFlagged$QCFlag_badType[df$rowID[!goodTypeMask]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]],"badType ")
-      # Flag any bad 
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badType
+      # apply reason code 
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]],"badType")
     }
-    
   }
 
   df <- df[goodTypeMask,]
@@ -161,7 +153,6 @@ airsis_EBAMQualityControl <- function(df,
     logger.warn("No valid PM2.5 data for %s", monitorName)
     stop(paste0("No valid PM2.5 data for ", monitorName))
   }
-  
   
   # Leland Tarnay QC -----------------------------------------------------------
   
@@ -184,66 +175,40 @@ airsis_EBAMQualityControl <- function(df,
   gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
   
   logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
-  if ( sum(!goodFlow) > 0 ) {
-    logger.debug("Bad Flow values:  %s", paste0(sort(df$Flow[!goodFlow]), collapse=", "))
-    if ( flagAndKeep ) {
-      # Flag bad flow
-      dfFlagged$QCFlag_badFlow[df$rowID[!goodFlow]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]],"badFlow ")
-    }
-  }
+  if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(df$AvAirFlw[!goodFlow]), collapse=", "))
   logger.debug("AT has %s missing or out of range values", sum(!goodAT))
-  if ( sum(!goodAT) > 0 ) {
-    logger.debug("Bad AT values:  %s", paste0(sort(df$AT[!goodAT]), collapse=", "))
-    if ( flagAndKeep ) {
-      # Flag bad air temperature
-      dfFlagged$QCFlag_badAT[df$rowID[!goodAT]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodAT]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodAT]],"badAT ")
-    }
-  }
+  if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(df$AvAirTemp[!goodAT]), collapse=", "))
   logger.debug("RHi has %s missing or out of range values", sum(!goodRHi))
-  if ( sum(!goodRHi) > 0 ) {
-    logger.debug("Bad RHi values:  %s", paste0(sort(df$RHi[!goodRHi]), collapse=", "))
-    if ( flagAndKeep ) {
-      # Flag bad relative humidity
-      dfFlagged$QCFlag_badRHi[df$rowID[!goodRHi]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodRHi]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodRHi]],"badRHi ")
-    }
-  }
-  logger.debug("ConcHr has %s missing or out of range values", sum(!goodConcHr))
-  if ( sum(!goodConcHr) > 0 ) {
-    logger.debug("Bad ConcHr values:  %s", paste0(sort(df$ConcHr[!goodConcHr]), collapse=", "))
-    if ( flagAndKeep ) {
-      # Flag bad concentration
-      dfFlagged$QCFlag_badConcHr[df$rowID[!goodConcHr]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodConcHr]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!goodConcHr]],"badConcHr ")
-    }
-  }
+  if (sum(!goodRHi) > 0) logger.debug("Bad RHi values:  %s", paste0(sort(df$SensorIntRH[!goodRHi]), collapse=", "))
+  logger.debug("Conc has %s missing or out of range values", sum(!goodConcHr))
+  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(df$ConcRT[!goodConcHr]), collapse=", "))
   logger.debug("datetime has %s missing or out of range values", sum(!gooddatetime))
-  if ( sum(!gooddatetime) > 0 ) {
-    logger.debug("Bad datetime values:  %s", paste0(sort(df$datetime[!gooddatetime]), collapse=", "))
-    if ( flagAndKeep ) {
-      # Flag bad dateandtime
-      dfFlagged$QCFlag_badDateAndTime[df$rowID[!gooddatetime]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!gooddatetime]] <- paste0(dfFlagged$QCFlag_reasonCode[df$rowID[!gooddatetime]],"badDateAndTime ")
-    }
-  }
+  if (sum(!gooddatetime) > 0) logger.debug("Bad datetime values:  %s", paste0(sort(df$datetime[!gooddatetime]), collapse=", "))
   
   goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
-
-  # Flag any bad
-  if ( flagAndKeep ) {
-    dfFlagged$QCFlag_anyBad <- (dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badFlow | dfFlagged$QCFlag_badAT | 
-      dfFlagged$QCFlag_badRHi | dfFlagged$QCFlag_badConcHr | dfFlagged$QCFlag_badDateAndTime)
-  }
-
-  df <- df[goodMask,]
-  
   badQCCount <- sum(!goodMask)
-  if (badQCCount > 0) {
+  
+  if ( badQCCount > 0 ) {
     logger.info(paste(verb,"%s rows because of QC logic"), badQCCount)
+    if ( flagAndKeep ) {
+      # apply flags
+      dfFlagged$QCFlag_badFlow[df$rowID[!goodFlow]] <- TRUE
+      dfFlagged$QCFlag_badAT[df$rowID[!goodAT]] <- TRUE
+      dfFlagged$QCFlag_badRHi[df$rowID[!goodRHi]] <- TRUE
+      dfFlagged$QCFlag_badConcHr[df$rowID[!goodConcHr]] <- TRUE
+      dfFlagged$QCFlag_badDateAndTime[df$rowID[!gooddatetime]] <- TRUE
+      dfFlagged$QCFlag_anyBad <- (dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badFlow | dfFlagged$QCFlag_badAT | 
+                                    dfFlagged$QCFlag_badRHi | dfFlagged$QCFlag_badConcHr | dfFlagged$QCFlag_badDateAndTime)
+      # apply reason codes
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]],"badFlow")
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodAT]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodAT]],"badAT")
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodRHi]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodRHi]],"badRHi")
+      dfFlagged$QCFlag_reasonCode[df$rowID[!goodConcHr]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodConcHr]],"badConcHr")
+      dfFlagged$QCFlag_reasonCode[df$rowID[!gooddatetime]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!gooddatetime]],"badDateAndTime")
+    }
   }
   
+  df <- df[goodMask,]
   
   # ----- Duplicate Hours -----------------------------------------------------
   
@@ -260,16 +225,15 @@ airsis_EBAMQualityControl <- function(df,
     logger.info(paste(verb,"%s duplicate time entries"), dupHrCount)
     logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
     if ( flagAndKeep ) {
-      # Flag duplicate hours
+      # apply flags
       dfFlagged$QCFlag_duplicateHr[df$rowID[!dupHrMask]] <- TRUE
-      dfFlagged$QCFlag_reasonCode[df$rowID[!dupHrMask]] <- "duplicateHr"
-      # Flag any bad 
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_duplicateHr
+      # apply reason code
+      dfFlagged$QCFlag_reasonCode[df$rowID[!dupHrMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!dupHrMask]],"duplicateHr")
     }
   }
   
   df <- df[uniqueHrMask,]
-  
   
   # ----- More QC -------------------------------------------------------------
   

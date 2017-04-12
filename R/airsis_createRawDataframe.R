@@ -85,7 +85,6 @@ airsis_createRawDataframe <- function(startdate=20020101,
   df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
   
   # Rearrange columns to put QCFlag_* parameters at end if they exist
-
   if ( flagAndKeep ) {
     QC_columnNames <- c("QCFlag_anyBad",
                         "QCFlag_reasonCode",

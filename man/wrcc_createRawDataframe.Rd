@@ -45,6 +45,17 @@ Steps involved include:
 }
 \note{
 The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
+
+Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
+}
+\examples{
+\dontrun{
+df <- wrcc_createRawDataframe(20150701, 20150930, unitID='SM16')
+}
+
+}
+\references{
+\href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 }
 \seealso{
 \code{\link{wrcc_downloadData}}
