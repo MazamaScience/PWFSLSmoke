@@ -64,7 +64,7 @@ raw_enhance <- function(raw, rawSource="AIRSIS") {
     raw$humidity <- raw$RelHumidity
     raw$windSpeed <- raw$WindSpeed
     raw$windDir <- raw$WindDir
-    raw$pm25 <- raw$ConcRT*1000
+    raw$pm25 <- raw$ConcRT
     raw$longitude <- raw$medoidLon
     raw$latitude <- raw$medoidLat
     raw$pressure <- raw$BaromPress
