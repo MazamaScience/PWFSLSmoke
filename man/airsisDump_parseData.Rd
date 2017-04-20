@@ -14,7 +14,7 @@ List of dataframes of WRCC raw monitor data from multiple monitors.
 }
 \description{
 Raw character data from AIRSIS are parsed into a dataframe.
-The incoming \code{fileString} can be read from a local \code{SmokeMon.csv}
+The incoming \code{fileString} can be read from a local
 file using \code{readr::read_file()}.
 
 This function is intended for internal use at the Pacific Wildland
