@@ -255,8 +255,8 @@ wrcc_ESAMQualityControl <- function(df,
   # ----- Final cleanup -------------------------------------------------------
   
   if ( flagAndKeep ) {
-    dfFlagged$QCFlag_reasonCode <- stringr::str_trim(dfFlagged$QCFlag_reasonCode)
     dfFlagged$QCFlag_reasonCode <- stringr::str_sub(dfFlagged$QCFlag_reasonCode, 3)
+    dfFlagged$QCFlag_reasonCode <- stringr::str_trim(dfFlagged$QCFlag_reasonCode)
     df <- dfFlagged
     df$rowID <- NULL
   }
