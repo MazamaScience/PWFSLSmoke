@@ -89,8 +89,10 @@ airsis_parseData <- function(fileString) {
   #     Parse the file     ----------------------------------------------------
   
   # Remove header line, leaving only data
-  fakeFile <- paste0(lines[-1], collapse='\n')
-  
+  # NOTE:  We need to guarantee that fakeFile always has a newline so that read_lines will interpret
+  # NOTE:  a single data record as literal data and now a path.
+  fakeFile <- paste0(paste0(lines[-1], collapse='\n'),'\n')
+
   df <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
   
   # Print out any problems encountered by readr::read_csv
@@ -112,7 +114,6 @@ airsis_parseData <- function(fileString) {
     
     serialNumberMask <- (df$Serial.Number != "") & !is.na(df$Serial.Number)
     logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
-    
     df <- df[!serialNumberMask,]
     
   }
@@ -147,7 +148,8 @@ airsis_parseData <- function(fileString) {
   df$monitorName <- df$Alias
   df$monitorType <- monitorType
   
-  logger.debug("Created dataframe with %d rows of raw %s measurements", nrow(df), monitorType)
-  
+  logger.debug('Retaining %d rows of raw %s measurements', nrow(df), monitorType)
+
+    
   return(df)
 }

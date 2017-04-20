@@ -1,5 +1,5 @@
 #' @export
-#' @title Add Shaded Background
+#' @title Add Shaded Background to a Plot
 #' @param param vector of data to be represented
 #' @param timeAxis vector of times of the same length as param
 #' @param breaks set of breaks used to assign colors

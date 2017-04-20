@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.13
+
+ * refactored `airsisDump_createMonitorObject()` which was previously applying QC before splitting by monitorID
+
 ### PWFSLSmoke 0.99.12
 
  * fixed bug in `monitor_combine()` so that it now works when `monitorList` contains a single *ws_monitor* object

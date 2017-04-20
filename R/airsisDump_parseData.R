@@ -1,29 +1,35 @@
 #' @keywords internal
 #' @export
 #' @title Parse AIRSIS Dump File Data String
-#' @param fileString character string containing AIRSIS data as a csv
+#' @param fileString character string containing AIRSIS dump file
 #' @description Raw character data from AIRSIS are parsed into a dataframe.
-#' The incoming \code{fileString}
-#' can be read in directly from AIRSIS using \code{airsis_downloadData()} or from a local
+#' The incoming \code{fileString} can be read from a local
 #' file using \code{readr::read_file()}.
 #' 
-#' The type of monitor represented by this fileString is inferred from the column names
-#' using \code{airsis_identifyMonitorType()} and appropriate column types are assigned.
-#' The character data are then read into a dataframe and augmented in the following ways:
-#' \enumerate{
-#' \item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-#' propagated foward using a last-observation-carry-forward algorithm'}
-#' \item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-#' propagated backwords using a first-observation-carry-backward algorithm'}
-#' \item{GPS timestamp rows are removed'}
-#' }
-#' @return Dataframe of AIRSIS raw monitor data.
-#' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
-#' @examples
-#' \dontrun{
-#' fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
-#' df <- airsisDump_parseData(fileString)
-#' }
+#' This function is intended for internal use at the Pacific Wildland
+#' Fire Sciences Lab.
+#' 
+#' @return List of dataframes of WRCC raw monitor data from multiple monitors.
+
+# NOTE:  AIRSIS dump files have a format that similar to data downloaded form AIRSIS.
+# NOTE:  Each contains a single header line followed by data records. Dump files have
+# NOTE:  the following differences:
+# NOTE:   * they may contain data for more than one unitID and thus repeated timestamps
+# NOTE:   * Latitude and Longitude have been assigned
+# NOTE:   * no MasterTable_ID or PDate
+#
+# Direct download from AIRSIS CSV service:
+#
+# MasterTable_ID,Alias,Latitude,Longitude,Date/Time/GMT,Start Date/Time (GMT),COncRT,ConcHr,Flow,W/S,W/D,AT,RHx,RHi,BV,FT,Alarm,Type,Serial Number,Version,Sys. Volts,TimeStamp,PDate
+# 53640931,Naches WA (1033),,,4/14/2017 7:00:00 PM,24-MAR-2017 00:00:0,,,,,,,,,,,,, H9495 ,3613-01 R1.57.0,,4/14/2017 7:30:17 PM,4/14/2017 7:30:00 PM                          
+# 53640969,Naches WA (1033),46.73171,-120.7054,4/14/2017 7:00:00 PM,,,,,,,,,,,,,,,,13.32,4/14/2017 7:37:19 PM,4/14/2017 7:38:00 PM
+#
+# Dump file:
+#
+# Date/Time/GMT,COncRT,ConcHr,Flow,W/S,W/D,AT,RHx,RHi,BV,FT,Alarm,Type,Serial Number,Version,Sys. Volts,UnitID,Alias,Latitude,Longitude,TimeStamp 
+# 4/10/2017 11:00:00 AM,0.018,0.005,16.7,0.3,48,-0.2,87,35,14.2,5.7,0,PM 2.5,,,,1013,1013 Johnsondale,35.9698927402496,-118.541343212128,4/10/2017 11:04:30 AM
+# 4/10/2017 12:00:00 PM,-0.005,0.006,16.7,0.3,61,-0.7,88,35,14.2,5.1,0,PM 2.5,,,,1013,1013 Johnsondale,35.9698927402496,-118.541343212128,4/10/2017 12:04:31 PM
+
 
 airsisDump_parseData <- function(fileString) {
   
@@ -40,18 +46,11 @@ airsisDump_parseData <- function(fileString) {
 
   if ( length(lines) == 1 ) {
     logger.warn("No valid PM2.5 data")
-    stop(paste0("No valid PM2.5 data")) # This can be trapped by the calling function
-  }
-  
-  # Sanity check -- more than just the header line
-  if ( length(lines) == 1 ) {
-    logger.info("No data available")
-    stop("No data avaialble")
+    stop(paste0("No valid PM2.5 data"))
   }
   
   if ( monitorType == "BAM1020" ) {
     
-    # TODO:  How to assign data with to-the-minute timestamps to a particular hour? floor?
     logger.warn("BAM1020 file parsing is not supported")
     logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
     stop(paste0("BAM1020 file parsing is not supported"), call.=FALSE)
@@ -99,7 +98,7 @@ airsisDump_parseData <- function(fileString) {
   # NOTE:  We need to guarantee that fakeFile always has a newline so that read_lines will interpret
   # NOTE:  a single data record as literal data and now a path.
   fakeFile <- paste0(paste0(lines[-1], collapse='\n'),'\n')
-  # Read the data into a dataframe
+
   df <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
   
   # Print out any problems encountered by readr::read_csv
@@ -123,38 +122,22 @@ airsisDump_parseData <- function(fileString) {
     logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
     df <- df[!serialNumberMask,]
     
-    missingDataMask <- is.na(df$Conc.mg.m3.)
-    logger.debug("Removing %d 'missing data' records from raw data", sum(missingDataMask))
-    df <- df[!missingDataMask,]
-    
   }
   
   #     Various fixes     -----------------------------------------------------
-  
-  # NOTE:  Latitude, Longitude and Sys..Volts are measured at 6am and 6pm
-  # NOTE:  as separate GPS entries in the dataframe. They need to be carried
-  # NOTE:  forward so they appear in all rows.
-  
-  # Carry data forward to fill in all missing values
-  df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE)
-  df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE)
-  if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
-  if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE)
-  if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
-  
-  # Now fill in any missing values at the front end
-  df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE, fromLast=TRUE)
-  df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE, fromLast=TRUE)
-  if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
-  if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE, fromLast=TRUE)
-  if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
-  
+
+  # NOTE:  No need to fix Latitude and Longitude as they are already present  
+
   # Add monitor name and type
   df$monitorName <- df$Alias
   df$monitorType <- monitorType
   
   logger.debug('Retaining %d rows of raw %s measurements', nrow(df), monitorType)
   
+  # Split the dataframe int a list of per-monitor dataframes
+  dfList <- split(df, df$Alias) # list of tibbles
+  dfList <- lapply(dfList, as.data.frame)
+  names(dfList) <- make.names(names(dfList))
   
-  return(df)
+  return(dfList)
 }
