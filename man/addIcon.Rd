@@ -2,7 +2,7 @@
 % Please edit documentation in R/addIcon.R
 \name{addIcon}
 \alias{addIcon}
-\title{Add an Icon to a Map or RgoogleMap Plot}
+\title{Add Icons to a Map or RgoogleMap Plot}
 \usage{
 addIcon(icon, longitude, latitude, map = NULL, expansion = 0.1, pos = 0)
 }

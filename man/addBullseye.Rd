@@ -2,7 +2,7 @@
 % Please edit documentation in R/addBullseye.R
 \name{addBullseye}
 \alias{addBullseye}
-\title{Add a Bullseye at the Specified Location}
+\title{Add a Bullseyes to a Map or RgoogleMap Plot}
 \usage{
 addBullseye(longitude, latitude, map = NULL, cex = 2, lwd = 2)
 }
