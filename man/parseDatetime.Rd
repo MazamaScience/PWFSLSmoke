@@ -24,3 +24,4 @@ If \code{datetime} is a \code{POSIXct} it will be returned unmodified.
 \examples{
 starttime <- parseDatetime(2015080718,timezone = "America/Los_Angeles")
 }
+

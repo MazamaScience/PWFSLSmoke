@@ -45,3 +45,4 @@ monitorMap(ca)
 addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.002)
 }
 }
+

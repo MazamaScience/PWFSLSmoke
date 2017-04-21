@@ -25,3 +25,4 @@ airnow <- airnow_loadLatest()
 }
 }
 \keyword{AirNow}
+

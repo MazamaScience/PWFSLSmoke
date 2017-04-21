@@ -63,3 +63,4 @@ airnow_data <- airnow_createDataDataframes("PM2.5", 20160701)
 \link{airnow_qualityControl}
 }
 \keyword{AirNow}
+

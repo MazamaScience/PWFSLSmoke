@@ -19,3 +19,4 @@ wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
 wa_zero <- monitor_scaleData(wa, 3.4)
 }
 \keyword{ws_monitor}
+

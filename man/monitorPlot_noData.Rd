@@ -17,3 +17,4 @@ monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
 Creates a blank plot that indicates there is no data for the monitor of interest
 }
 \keyword{internal}
+

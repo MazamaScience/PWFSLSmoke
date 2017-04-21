@@ -29,3 +29,4 @@ rawPlot_windRose(raw)
 }
 }
 \keyword{raw}
+

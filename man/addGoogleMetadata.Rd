@@ -27,3 +27,4 @@ Address information is obtained by using the \pkg{ggmap} package.
 \url{https://developers.google.com/maps/documentation/elevation/intro}
 }
 \keyword{internal}
+

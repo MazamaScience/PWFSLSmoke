@@ -37,3 +37,4 @@ monitorDygraph(King_Fire, title='KingFire/California/2014', rollPeriod=3)
 } 
 }
 \keyword{ws_monitor}
+

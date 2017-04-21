@@ -70,3 +70,4 @@ addAQILegend()
 title('Spokane PM2.5 values, August 2015')
 }
 \keyword{ws_monitor}
+

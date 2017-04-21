@@ -36,3 +36,4 @@ df <- wrcc_parseData(fileString)
 \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 }
 \keyword{WRCC}
+

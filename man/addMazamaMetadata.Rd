@@ -38,3 +38,4 @@ An error will be generated if these lines have not be previously run.
 \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 }
 \keyword{internal}
+

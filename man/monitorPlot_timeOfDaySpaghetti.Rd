@@ -32,3 +32,4 @@ the period is also calculated and plotted as a thick red line.
 monitorPlot_timeOfDaySpaghetti(CarmelValley, tlim=c(20160801,20160809))
 }
 \keyword{ws_monitor}
+

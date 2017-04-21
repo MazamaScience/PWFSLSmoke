@@ -56,3 +56,4 @@ addAQILegend(fill=rev(AQI$colors), pch=NULL)
 }
 }
 \keyword{ws_monitor}
+

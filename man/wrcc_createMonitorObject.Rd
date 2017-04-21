@@ -64,3 +64,4 @@ monitorLeaflet(sm13)
 \code{\link{wrcc_createDataDataframe}}
 }
 \keyword{WRCC}
+

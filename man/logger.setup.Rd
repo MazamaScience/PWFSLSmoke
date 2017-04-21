@@ -60,3 +60,4 @@ logger.fatal('fatal statement \%s', "THE END")
 \code{\link{logger.trace}} \code{\link{logger.debug}}  \code{\link{logger.info}}
 \code{\link{logger.warn}} \code{\link{logger.error}} \code{\link{logger.fatal}}
 }
+

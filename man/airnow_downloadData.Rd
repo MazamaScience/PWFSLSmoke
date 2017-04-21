@@ -64,3 +64,4 @@ df <- airnow_downloadData("PM2.5", 2016070112, hours=24)
 \link{airnow_downloadHourlyData}
 }
 \keyword{AirNow}
+

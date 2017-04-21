@@ -51,3 +51,4 @@ A \code{POSIXct datetime} column (UTC) is also added based on \code{Date.Time.GM
 \code{\link{airsis_qualityControl}}
 }
 \keyword{AIRSIS}
+

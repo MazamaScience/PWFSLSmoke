@@ -52,3 +52,4 @@ monitorMap(Olympic_Peninsula, cex=2)
 rect(xlim[1], ylim[1], xlim[2], ylim[2], col=adjustcolor('black',0.1))
 }
 \keyword{ws_monitor}
+

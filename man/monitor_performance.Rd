@@ -54,3 +54,4 @@ performanceMetrices <- monitor_performance(airnow_dailyAvg_m1,
 \link{skill_confusionMatrix}
 }
 \keyword{ws_monitor}
+

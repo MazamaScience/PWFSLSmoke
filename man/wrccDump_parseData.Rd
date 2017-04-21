@@ -21,3 +21,4 @@ This function is intended for internal use at the Pacific Wildland
 Fire Sciences Lab.
 }
 \keyword{internal}
+

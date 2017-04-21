@@ -36,3 +36,4 @@ Intended for use by the monitor_subset function.
 Longitudes must be specified in the domain [-180,180].
 }
 \keyword{ws_monitor}
+

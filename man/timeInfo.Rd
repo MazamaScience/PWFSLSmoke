@@ -45,3 +45,4 @@ ti <- timeInfo(CarmelValley$data$datetime,
                CarmelValley$meta$timezone)
 head(ti)
 }
+

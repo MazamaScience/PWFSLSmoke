@@ -48,3 +48,4 @@ legend('topright', c("hourly","3-hourly","24-hourly"),
 title('Smoky Monitors in Washington -- August, 2015')
 }
 \keyword{ws_monitor}
+

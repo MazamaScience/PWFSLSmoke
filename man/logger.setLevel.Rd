@@ -31,3 +31,4 @@ logger.setLevel(DEBUG)
 \seealso{
 \code{\link{logger.setup}}
 }
+
