@@ -7,36 +7,18 @@
 airsisDump_parseData(fileString)
 }
 \arguments{
-\item{fileString}{character string containing AIRSIS data as a csv}
+\item{fileString}{character string containing AIRSIS dump file}
 }
 \value{
-Dataframe of AIRSIS raw monitor data.
+List of dataframes of WRCC raw monitor data from multiple monitors.
 }
 \description{
 Raw character data from AIRSIS are parsed into a dataframe.
-The incoming \code{fileString}
-can be read in directly from AIRSIS using \code{airsis_downloadData()} or from a local
+The incoming \code{fileString} can be read from a local
 file using \code{readr::read_file()}.
 
-The type of monitor represented by this fileString is inferred from the column names
-using \code{airsis_identifyMonitorType()} and appropriate column types are assigned.
-The character data are then read into a dataframe and augmented in the following ways:
-\enumerate{
-\item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-propagated foward using a last-observation-carry-forward algorithm'}
-\item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
-propagated backwords using a first-observation-carry-backward algorithm'}
-\item{GPS timestamp rows are removed'}
-}
-}
-\examples{
-\dontrun{
-fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
-df <- airsisDump_parseData(fileString)
-}
-}
-\references{
-\href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
+This function is intended for internal use at the Pacific Wildland
+Fire Sciences Lab.
 }
 \keyword{internal}
 

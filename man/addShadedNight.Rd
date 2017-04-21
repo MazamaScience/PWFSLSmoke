@@ -2,7 +2,7 @@
 % Please edit documentation in R/addShadedNight.R
 \name{addShadedNight}
 \alias{addShadedNight}
-\title{Add Nighttime Shading on an Existing Plot}
+\title{Add Nighttime Shading to a Plot}
 \usage{
 addShadedNight(timeInfo, col = adjustcolor("black", 0.1))
 }

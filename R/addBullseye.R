@@ -1,6 +1,6 @@
 #' @keywords plotting
 #' @export
-#' @title Add a Bullseye at the Specified Location
+#' @title Add a Bullseyes to a Map or RgoogleMap Plot
 #' @param longitude vector of longitudes
 #' @param latitude vector of latitudes
 #' @param map optional RgoogleMaps map object

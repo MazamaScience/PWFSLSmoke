@@ -1,6 +1,6 @@
 #' @export
 #' @import graphics
-#' @title Add an Icon to a Map or RgoogleMap Plot
+#' @title Add Icons to a Map or RgoogleMap Plot
 #' @param icon object to be plotted
 #' @param longitude vector of longitudes
 #' @param latitude vector of latitudes
