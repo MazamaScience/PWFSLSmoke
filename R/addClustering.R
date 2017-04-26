@@ -113,12 +113,14 @@ addClustering <- function(df, clusterDiameter=1000,
   # reinsert rows with bad locations if flagAndKeep = TRUE
   if ( flagAndKeep ) {
     # add new columns to badLocationRows for rbind
-    badLocationRows$deploymentID <- NA
-    badLocationRows$medoidLon <- NA
-    badLocationRows$medoidLat <- NA
-    # merge dataframes and sort based on dummy rowID
-    df <- rbind(df, badLocationRows)
-    df <- df[order(df$rowID),]
+    if ( sum(badLocationMask) > 0 ) {
+      badLocationRows$deploymentID <- NA
+      badLocationRows$medoidLon <- NA
+      badLocationRows$medoidLat <- NA
+      # merge dataframes and sort based on dummy rowID
+      df <- rbind(df, badLocationRows)
+      df <- df[order(df$rowID),]
+    }
     df$rowID <- NULL
   }
   
