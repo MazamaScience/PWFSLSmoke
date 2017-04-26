@@ -76,6 +76,9 @@ airsis_createRawDataframe <- function(startdate=20020101,
   logger.info("Parsing data ...")
   df <- airsis_parseData(fileString) # TODO: Consider adding flagAndKeep argument functionality to the airsis_parseData() as well
   
+  # add monitor type
+  df$provider <- "AIRSIS"
+  
   # Apply monitor-appropriate QC to the dataframe
   logger.info("Applying QC logic ...")
   df <- airsis_qualityControl(df, flagAndKeep=flagAndKeep)

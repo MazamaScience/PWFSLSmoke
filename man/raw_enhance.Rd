@@ -4,12 +4,10 @@
 \alias{raw_enhance}
 \title{Process Raw Monitoring Data to Create raw_enhance Object}
 \usage{
-raw_enhance(raw, rawSource = "AIRSIS")
+raw_enhance(df)
 }
 \arguments{
-\item{raw}{raw monitor data, as created by airsis_createRawDataframe or wrcc_createRawDataframe}
-
-\item{rawSource}{source of raw monitor data (i.e. "AIRSIS" or "WRCC")}
+\item{df}{raw monitor data, as created by airsis_createRawDataframe or wrcc_createRawDataframe}
 }
 \value{
 Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
@@ -35,9 +33,9 @@ uniform, hourly axes with missing data fields added for data columns.
 }
 \examples{
 \dontrun{
-raw <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
-raw <- raw_enhance(raw, rawSource='AIRSIS')
-rawPlot_timeseries(raw, tlim=c(20160908,20160917))
+df <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
+df <- raw_enhance(df)
+rawPlot_timeseries(df, tlim=c(20160908,20160917))
 }
 }
 \keyword{raw}

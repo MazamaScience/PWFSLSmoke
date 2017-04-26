@@ -76,6 +76,9 @@ wrcc_createRawDataframe <- function(startdate=20100101,
   logger.info("Parsing data ...")
   df <- wrcc_parseData(fileString) # TODO: Consider adding flagAndKeep argument functionality to the wrcc_parseData() as well
   
+  # add monitor type
+  df$provider <- "WRCC"
+  
   # Apply monitor-appropriate QC to the dataframe
   logger.info("Applying QC logic ...")
   df <- wrcc_qualityControl(df, flagAndKeep=flagAndKeep)
