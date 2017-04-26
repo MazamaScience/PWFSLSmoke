@@ -82,7 +82,7 @@ airsis_createRawDataframe <- function(startdate=20020101,
   
   # Add clustering information to identify unique deployments
   logger.info("Clustering ...")
-  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=1000)
+  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
   
   # Rearrange columns to put QCFlag_* parameters at end if they exist
   if ( flagAndKeep ) {

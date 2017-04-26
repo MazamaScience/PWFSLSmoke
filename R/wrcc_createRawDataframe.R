@@ -82,7 +82,7 @@ wrcc_createRawDataframe <- function(startdate=20100101,
   
   # Add clustering information to identify unique deployments
   logger.info("Clustering ...")
-  df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=1000) #TODO: Update to Latitude/Longitude?
+  df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
   
   # Rearrange columns to put QCFlag_* parameters at end if they exist
   if ( flagAndKeep ) {
