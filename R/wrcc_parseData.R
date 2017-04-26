@@ -24,6 +24,8 @@
 
 wrcc_parseData <- function(fileString) {
   
+  logger.debug("Parsing WRCC data ...")
+  
   # Identify monitor type
   monitorTypeList <- wrcc_identifyMonitorType(fileString)
   
