@@ -234,10 +234,10 @@ wrcc_ESAMQualityControl <- function(df,
     logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(df$TimeStamp[dupHrMask])), collapse=", "))
     if ( flagAndKeep ) {
       # apply flags
-      dfFlagged$QCFlag_duplicateHr[df$rowID[!dupHrMask]] <- TRUE
+      dfFlagged$QCFlag_duplicateHr[df$rowID[dupHrMask]] <- TRUE
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_duplicateHr
       # apply reason code
-      dfFlagged$QCFlag_reasonCode[df$rowID[!dupHrMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!dupHrMask]],"duplicateHr")
+      dfFlagged$QCFlag_reasonCode[df$rowID[dupHrMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[dupHrMask]],"duplicateHr")
     }
   }
   
