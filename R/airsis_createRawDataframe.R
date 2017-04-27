@@ -74,7 +74,7 @@ airsis_createRawDataframe <- function(startdate=20020101,
   
   # Read csv raw data into a dataframe
   logger.info("Parsing data ...")
-  df <- airsis_parseData(fileString) # TODO: Consider adding flagAndKeep argument functionality to the airsis_parseData() as well
+  df <- airsis_parseData(fileString)
   
   # add monitor type
   df$provider <- "AIRSIS"

@@ -115,9 +115,7 @@ airsis_ESAMQualityControl <- function(df,
   
   # ----- Time ----------------------------------------------------------------
   
-  # TODO:  How best to assign TimeStamp column with second accuracy to an hourly datetime variable?
-  # TODO:  Should we use TimeStamp or PDate?
-  # TODO:  Are these data in GMT?
+  # NOTE:  Assume all times downloaded from are UTC
   
   # NOTE: It appears the ESAM "TimeStamp" data drifts throughout the day, with >60 minutes between timestamps during most
   # NOTE: hours in the day, and then a daily re-synch. For now we are assuming this is a communication issue rather than
@@ -226,7 +224,7 @@ airsis_ESAMQualityControl <- function(df,
   
   # ----- More QC -------------------------------------------------------------
   
-  # TODO:  Other QC?
+  # NOTE:  Additional QC would go here
   
   if ( flagAndKeep ) {
     logger.debug("Retaining %d rows of measurements; %d bad rows flagged", nrow(df), sum(dfFlagged$QCFlag_anyBad))    

@@ -6,6 +6,7 @@
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param maxClusters maximum number of clusters to try
+#' @param flagAndKeep flag, rather then remove, bad data during clustering
 #' @description Clustering is used to assign individual measurements to deployment locations.
 #' 
 #' The value of \code{clusterRadius} is compared with the output of \code{cluster::pam(...)$clusinfo[,'av_diss']}

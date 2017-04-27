@@ -123,8 +123,6 @@ wrcc_EBAMQualityControl <- function(df,
   
   df <- df[goodLonMask & goodLatMask,]
   
-  # TODO:  Convert longitudes <-10 to positive so they don't end up in China. (Is this still an issue?)
-  
   # ----- Time ----------------------------------------------------------------
   
   # Add a POSIXct datetime based on YYmmddHHMM DateTime
@@ -246,9 +244,7 @@ wrcc_EBAMQualityControl <- function(df,
   
   # ----- More QC -------------------------------------------------------------
   
-  # TODO:  Other QC?
-  
-  # TODO:  Multiply ConcRT by 1000?
+  # NOTE:  Additional QC would go here
   
   if ( flagAndKeep ) {
     logger.debug("Retaining %d rows of measurements; %d bad rows flagged", nrow(df), sum(dfFlagged$QCFlag_anyBad))    

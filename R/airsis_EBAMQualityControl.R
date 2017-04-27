@@ -238,7 +238,7 @@ airsis_EBAMQualityControl <- function(df,
   
   # ----- More QC -------------------------------------------------------------
   
-  # TODO:  Other QC?
+  # NOTE:  Additional QC would go here
   
   if ( flagAndKeep ) {
     logger.debug("Retaining %d rows of measurements; %d bad rows flagged", nrow(df), sum(dfFlagged$QCFlag_anyBad))    

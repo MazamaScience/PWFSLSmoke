@@ -74,7 +74,7 @@ wrcc_createRawDataframe <- function(startdate=20100101,
   
   # Read csv raw data into a dataframe
   logger.info("Parsing data ...")
-  df <- wrcc_parseData(fileString) # TODO: Consider adding flagAndKeep argument functionality to the wrcc_parseData() as well
+  df <- wrcc_parseData(fileString)
   
   # add monitor type
   df$provider <- "WRCC"
