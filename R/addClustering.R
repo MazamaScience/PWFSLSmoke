@@ -16,7 +16,7 @@
 
 addClustering <- function(df, clusterDiameter=1000,
                           lonVar="longitude", latVar="latitude",
-                          maxClusters=50) {
+                          maxClusters=50, flagAndKeep=FALSE) {
   
   # Sanity check -- make sure df does not have class "tbl_df"
   df <- as.data.frame(df)
@@ -37,6 +37,14 @@ addClustering <- function(df, clusterDiameter=1000,
     df$medoidLon <- df[[lonVar]][1]
     df$medoidLat <- df[[latVar]][1]
     return(df)
+  }
+  
+  # temporarily remove rows with bad locations if flagAndKeep = TRUE
+  if ( flagAndKeep ) {
+    df$rowID <- as.integer(rownames(df))
+    badLocationMask <- is.na(df[lonVar]) | is.na(df[latVar])
+    badLocationRows <- df[badLocationMask,]
+    df <- df[!badLocationMask,]
   }
   
   # NOTE:  A monitor wil be moved around from time to time, sometimes across the country
@@ -101,6 +109,20 @@ addClustering <- function(df, clusterDiameter=1000,
   # Add medoid lons and lats to the dataframe for use by wrcc_createMetaDataframe
   df$medoidLon <- clusterObj$medoids[,lonVar][df$deploymentID]
   df$medoidLat <- clusterObj$medoids[,latVar][df$deploymentID]
+  
+  # reinsert rows with bad locations if flagAndKeep = TRUE
+  if ( flagAndKeep ) {
+    # add new columns to badLocationRows for rbind
+    if ( sum(badLocationMask) > 0 ) {
+      badLocationRows$deploymentID <- NA
+      badLocationRows$medoidLon <- NA
+      badLocationRows$medoidLat <- NA
+      # merge dataframes and sort based on dummy rowID
+      df <- rbind(df, badLocationRows)
+      df <- df[order(df$rowID),]
+    }
+    df$rowID <- NULL
+  }
   
   return(as.data.frame(df))
   

@@ -49,7 +49,12 @@ airsis_ESAMQualityControl <- function(df,
   
   monitorName <- df$monitorName[1]
   
-  # Setup for flagAndKeep argument utility
+  # ----- Missing Values ------------------------------------------------------
+  
+  # Handle various missing value flags
+  
+  # ----- Setup for flagAndKeep argument utility ------------------------------
+  
   if ( flagAndKeep ) {
     # verb for logging messages
     verb <- "Flagging"
@@ -73,11 +78,6 @@ airsis_ESAMQualityControl <- function(df,
     # verb for logging messages
     verb <- "Discarding"
   }
-  
-  # ----- Missing Values ------------------------------------------------------
-  
-  # Handle various missing value flags
-  
   
   # ----- Location ------------------------------------------------------------
   
@@ -164,15 +164,15 @@ airsis_ESAMQualityControl <- function(df,
   gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
   
   logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
-  if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(df$Flow.l.m.[!goodFlow]), collapse=", "))
+  if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(unique(df$Flow.l.m.[!goodFlow]),na.last=TRUE), collapse=", "))
   logger.debug("AT has %s missing or out of range values", sum(!goodAT))
-  if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(df$AT.C.[!goodAT]), collapse=", "))
+  if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(unique(df$AT.C.[!goodAT]),na.last=TRUE), collapse=", "))
   logger.debug("RHi has %s missing or out of range values", sum(!goodRHi))
-  if (sum(!goodRHi) > 0) logger.debug("Bad RHi values:  %s", paste0(sort(df$RHi...[!goodRHi]), collapse=", "))
+  if (sum(!goodRHi) > 0) logger.debug("Bad RHi values:  %s", paste0(sort(unique(df$RHi...[!goodRHi]),na.last=TRUE), collapse=", "))
   logger.debug("Conc has %s missing or out of range values", sum(!goodConcHr))
-  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(df$Conc.mg.m3.[!goodConcHr]), collapse=", "))
+  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(unique(df$Conc.mg.m3.[!goodConcHr]),na.last=TRUE), collapse=", "))
   logger.debug("datetime has %s missing or out of range values", sum(!gooddatetime))
-  if (sum(!gooddatetime) > 0) logger.debug("Bad datetime values:  %s", paste0(sort(df$datetime[!gooddatetime]), collapse=", "))
+  if (sum(!gooddatetime) > 0) logger.debug("Bad datetime values:  %s", paste0(sort(unique(df$datetime[!gooddatetime]),na.last=TRUE), collapse=", "))
   
   goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
   badQCCount <- sum(!goodMask)
@@ -215,10 +215,10 @@ airsis_ESAMQualityControl <- function(df,
     logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(df$TimeStamp[dupHrMask])), collapse=", "))
     if ( flagAndKeep ) {
       # apply flags
-      dfFlagged$QCFlag_duplicateHr[df$rowID[!dupHrMask]] <- TRUE
+      dfFlagged$QCFlag_duplicateHr[df$rowID[dupHrMask]] <- TRUE
       dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_duplicateHr
       # apply reason code
-      dfFlagged$QCFlag_reasonCode[df$rowID[!dupHrMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!dupHrMask]],"duplicateHr")
+      dfFlagged$QCFlag_reasonCode[df$rowID[dupHrMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[dupHrMask]],"duplicateHr")
     }
   }
 

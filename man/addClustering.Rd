@@ -5,7 +5,7 @@
 \title{Add Clustering Information to a Dataframe}
 \usage{
 addClustering(df, clusterDiameter = 1000, lonVar = "longitude",
-  latVar = "latitude", maxClusters = 50)
+  latVar = "latitude", maxClusters = 50, flagAndKeep = FALSE)
 }
 \arguments{
 \item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
