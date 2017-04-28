@@ -162,8 +162,8 @@ The end result of the `raw_enhance()` function is a dataframe with a subset of c
 To continue our prior example, let's create enhanced raw dataframes for the same two monitors as before:
 
 ```{r raw_enhance}
-plain_enhanced <- raw_enhance(plain_AIRSIS_EBAM,rawSource='AIRSIS')
-nile_enhanced <- raw_enhance(nile_AIRSIS_ESAM,rawSource='AIRSIS')
+plain_enhanced <- raw_enhance(plain_AIRSIS_EBAM)
+nile_enhanced <- raw_enhance(nile_AIRSIS_ESAM)
 ```
 
 For demonstration purposes, we'll show the common parameters between the two dataframes now that they have been ehnaced.

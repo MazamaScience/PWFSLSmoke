@@ -40,4 +40,3 @@ columns in the returned \code{meta} dataframe is:
 \code{\link{addMazamaMetadata}}
 }
 \keyword{WRCC}
-

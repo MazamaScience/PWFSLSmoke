@@ -11,7 +11,7 @@
 #' @examples
 #' \dontrun{
 #' raw <- airsis_createRawDataframe(20160901, 20161015, provider='USFS', unitID=1012)
-#' raw <- raw_enhance(raw, rawSource='AIRSIS')
+#' raw <- raw_enhance(raw)
 #' rawPlot_windRose(raw)
 #' }
 

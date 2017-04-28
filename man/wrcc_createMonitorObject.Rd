@@ -5,7 +5,7 @@
 \title{Obtain WRCC Data and Create ws_monitor Object}
 \usage{
 wrcc_createMonitorObject(startdate = 20020101,
-  enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
+  enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "UTC"),
   unitID = NULL, clusterDiameter = 1000,
   baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl", saveFile = NULL)
 }
@@ -64,4 +64,3 @@ monitorLeaflet(sm13)
 \code{\link{wrcc_createDataDataframe}}
 }
 \keyword{WRCC}
-

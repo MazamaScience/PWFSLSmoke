@@ -9,9 +9,19 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.14
+
+ * improved use of `DEBUG` and `INFO` logging statments during AIRSIS and WRCC data processing
+ * new `deploymentID` for temporary monitors based on `lon_lat` rather than cluster ID
+ * reset to zereo any negative pm25 values in that make it through QC (AIRSIS and WRCC only)
+ * fixed duplicate hour flagging bug during QC
+ * added `flagAndKeep` capability to `airsis_createRawDataframe()` and `wrcc_createRawDataframe()`
+ * `raw_enhance()` now handles AIRSIS EBAM files
+
 ### PWFSLSmoke 0.99.13
 
  * refactored `airsisDump_createMonitorObject()` which was previously applying QC before splitting by monitorID
+ * fixed WRCC E-Sampler mutliplication bug in `raw_enhance()`
 
 ### PWFSLSmoke 0.99.12
 

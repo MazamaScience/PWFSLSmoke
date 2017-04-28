@@ -17,4 +17,3 @@ Draw shading rectangles on a plot to indicate nighttime hours.
 \seealso{
 \link{timeInfo}
 }
-

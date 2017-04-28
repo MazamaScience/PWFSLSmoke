@@ -39,4 +39,3 @@ logger.fatal('fatal statement \%s', "THE END")
 \seealso{
 \code{\link{logger.setup}}
 }
-

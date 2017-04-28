@@ -66,4 +66,3 @@ rawPlot_timeseries(raw,tlim=c(20160908,20160917))
 \code{\link{addClustering}}
 }
 \keyword{AIRSIS}
-

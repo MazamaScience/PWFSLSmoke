@@ -73,18 +73,18 @@ airsis_createRawDataframe <- function(startdate=20020101,
   }
   
   # Read csv raw data into a dataframe
-  logger.info("Parsing data ...")
+  logger.debug("Parsing data ...")
   df <- airsis_parseData(fileString)
   
-  # add monitor type
-  df$provider <- "AIRSIS"
+  # Add source of raw data
+  df$rawSource <- "AIRSIS"
   
   # Apply monitor-appropriate QC to the dataframe
-  logger.info("Applying QC logic ...")
+  logger.debug("Applying QC logic ...")
   df <- airsis_qualityControl(df, flagAndKeep=flagAndKeep)
   
   # Add clustering information to identify unique deployments
-  logger.info("Clustering ...")
+  logger.debug("Clustering ...")
   df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
   
   # Rearrange columns to put QCFlag_* parameters at end if they exist

@@ -34,9 +34,10 @@ addClustering <- function(df, clusterDiameter=1000,
   
   # If we only have a single row, return immediately
   if ( nrow(df) == 1 ) {
-    df$deploymentID <- 1
     df$medoidLon <- df[[lonVar]][1]
     df$medoidLat <- df[[latVar]][1]
+    locationString <- paste0( 'lon_',round(df$medoidLon,3), '_lat_', round(df$medoidLat,3) )
+    df$deploymentID <- make.names(locationString)
     return(df)
   }
   
@@ -105,11 +106,18 @@ addClustering <- function(df, clusterDiameter=1000,
   } else {
     clusterObj <- cluster::clara(df[,c(lonVar,latVar)],clusterCount, samples=50)
   }
-  df$deploymentID <- clusterObj$clustering
-  
+
   # Add medoid lons and lats to the dataframe for use by wrcc_createMetaDataframe
-  df$medoidLon <- clusterObj$medoids[,lonVar][df$deploymentID]
-  df$medoidLat <- clusterObj$medoids[,latVar][df$deploymentID]
+  df$medoidLon <- clusterObj$medoids[,lonVar][clusterObj$clustering]
+  df$medoidLat <- clusterObj$medoids[,latVar][clusterObj$clustering]
+
+  # NOTE:  Each deploymentID identifies a unique location. We paste together
+  # NOTE:  longitude and latitude rounded to 3 decimal places to create this identifier.
+  # NOTE:  This should be enough accuracy for a unique deploymentID as
+  # NOTE:  0.001 degrees of longitude = 102.47m at 23N, 43.496m at 67N
+  
+  locationString <- paste0( 'lon_',round(df$medoidLon,3), '_lat_', round(df$medoidLat,3) )
+  df$deploymentID <- make.names(locationString)
   
   # reinsert rows with bad locations if flagAndKeep = TRUE
   if ( flagAndKeep ) {

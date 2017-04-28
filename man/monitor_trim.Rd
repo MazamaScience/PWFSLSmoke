@@ -26,4 +26,3 @@ monitorPlot_dailyBarplot(Deschutes)
 }
 }
 \keyword{ws_monitor}
-

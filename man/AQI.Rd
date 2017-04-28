@@ -23,4 +23,3 @@ AQI breaks and colors colors are defined in
 The low end of each break category is used as the breakpoint.
 }
 \keyword{datasets}
-

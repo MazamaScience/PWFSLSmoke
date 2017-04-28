@@ -24,4 +24,3 @@ addShadedBackground(param, timeAxis, breaks = stats::quantile(param, na.rm =
 Adds vertical lines to an existing plot using any variable that shares the same
 length as the time axis of the current plot. Line widths corresponds to magnitude of values.
 }
-

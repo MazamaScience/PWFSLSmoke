@@ -67,4 +67,3 @@ df <- wrcc_createRawDataframe(20150701, 20150930, unitID='SM16')
 \code{\link{addClustering}}
 }
 \keyword{WRCC}
-

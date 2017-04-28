@@ -128,7 +128,8 @@ wrcc_createMetaDataframe <- function(df) {
   # NOTE:  consistent when working with non-AirNow datasets.
   meta$longitude <- df$medoidLon
   meta$latitude <- df$medoidLat
-  meta$monitorID <- paste0(make.names(df$monitorName),'__',sprintf("%03d",df$deploymentID))
+  locationString <- paste0( 'lon_',round(df$medoidLon,3), '_lat_', round(df$medoidLat,3) )
+  meta$monitorID <- make.names(locationString)
   meta$monitorType <- df$monitorType
   
   # Assign rownames
@@ -155,7 +156,7 @@ wrcc_createMetaDataframe <- function(df) {
     meta[[colName]] <- as.character(meta[[colName]])
   }
   
-  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   
   return(meta)
   

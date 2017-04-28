@@ -35,9 +35,8 @@ Spaghetti Plot that shows data by hour-of-day.
 \examples{
 \dontrun{
 raw <- airsis_createRawDataframe(20160901, 20161015, 'USFS', 1012)
-raw <- raw_enhance(raw, rawSource='AIRSIS')
+raw <- raw_enhance(raw)
 rawPlot_timeOfDaySpaghetti(raw,parameter="temperature")
 }
 }
 \keyword{raw}
-

@@ -73,18 +73,18 @@ wrcc_createRawDataframe <- function(startdate=20100101,
   }
   
   # Read csv raw data into a dataframe
-  logger.info("Parsing data ...")
+  logger.debug("Parsing data ...")
   df <- wrcc_parseData(fileString)
   
-  # add monitor type
-  df$provider <- "WRCC"
+  # Add source of raw data
+  df$rawSource <- "WRCC"
   
   # Apply monitor-appropriate QC to the dataframe
-  logger.info("Applying QC logic ...")
+  logger.debug("Applying QC logic ...")
   df <- wrcc_qualityControl(df, flagAndKeep=flagAndKeep)
   
   # Add clustering information to identify unique deployments
-  logger.info("Clustering ...")
+  logger.debug("Clustering ...")
   df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
   
   # Rearrange columns to put QCFlag_* parameters at end if they exist

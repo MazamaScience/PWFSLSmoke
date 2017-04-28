@@ -54,7 +54,7 @@ openaq_createMetaDataframes <- function(df, parameters=NULL){
   
   metaDF$siteName <- df$location
   
-  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(metaDF), ncol(metaDF))
+  logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(metaDF), ncol(metaDF))
   
   # ----- Data Reshaping ------------------------------------------------------
   

@@ -46,4 +46,3 @@ title(paste0('Area Under Curve = ', format(auc,digits=3)))
 
 \link{skill_ROCPlot}
 }
-

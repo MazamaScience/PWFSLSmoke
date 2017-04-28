@@ -27,4 +27,3 @@ This function is a convenience wrapper around \code{graphics::legend()}. It will
 names by default if \code{col} and \code{legend} are not specified.
 }
 \keyword{plotting}
-

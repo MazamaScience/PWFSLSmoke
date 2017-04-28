@@ -33,7 +33,7 @@
 raw_enhance <- function(df) {
 
   # Identify monitor type and source and save to variable
-  monType <- paste0(df$monitorType[1],"_",df$provider[1],sep="")
+  monType <- paste0(df$monitorType[1],"_",df$rawSource[1],sep="")
 
   # Create uniform attributes
   if ( monType=="EBAM_AIRSIS" ) {
@@ -82,17 +82,26 @@ raw_enhance <- function(df) {
 
   # Apply timezone to hours with location information
   df$timezone <- ""
-  for (i in unique(df$deploymentID)) {
-    if (is.na(i)) { break } else {
-      index <- which(df$deploymentID==i)
-      df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]],
-                                                            countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
+  for ( deploymentID in unique(df$deploymentID) ) {
+    if ( is.na(deploymentID) ) {
+        break
+      } else {
+        index <- which(df$deploymentID==deploymentID)
+        df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]],
+                                                              countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
     }
   }
+  
+  # for (i in unique(df$deploymentID)) { 
+  #   if (is.na(i)) { break } else {
+  #     index <- which(df$deploymentID==i)
+  #     df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]],
+  #                                                           countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
+      
 
   # Apply timezone to missing hours based on TZ of prior good hour
   tz <- df$timezone[1]
-  for (i in 2:nrow(df)) {
+  for ( i in 2:nrow(df) ) {
     if(df$timezone[i]=="") {df$timezone[i] <- tz}
     tz <- df$timezone[i]
   }

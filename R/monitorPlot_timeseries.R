@@ -219,12 +219,13 @@ monitorPlot_timeseries <- function(ws_monitor,
       }
       
     } else if ( style == 'gnats' ) {
-      
+
       # Set opacity based on total number of valid measurements
       dims <- dim(as.matrix(data[,-1]))
       naCount <- length(which(is.na(data[,-1])))
       size <- dims[1]*dims[2] - naCount
-      opacity <- min(2/log(size), 0.9)
+      opacity <- min(1/log2(size), 0.9)
+
       if ( !'col' %in% names(argsList) ) {
         baseColor <- 'black'
       } else {

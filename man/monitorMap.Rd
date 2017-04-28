@@ -54,4 +54,3 @@ monitorMap(N_M, cex=2)
 addAQILegend()
 }
 \keyword{ws_monitor}
-

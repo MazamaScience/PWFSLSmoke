@@ -48,4 +48,3 @@ addAQILegend("topleft", lwd=1, pch=NULL)
 title("Twisp, Washington Daily Mean PM2.5, 2015")
 }
 \keyword{ws_monitor}
-

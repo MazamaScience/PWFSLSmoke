@@ -46,7 +46,7 @@ wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
     df <- dfList[[name]]
     
     # Apply monitor-appropriate QC to the dataframe
-    logger.info("Applying QC logic ...")
+    logger.debug("Applying QC logic ...")
     df <- wrcc_qualityControl(df)
     
     # See if anything gets through QC
@@ -56,22 +56,26 @@ wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
     }
     
     # Add clustering information to identify unique deployments
-    logger.info("Clustering ...")
+    logger.debug("Clustering ...")
     df <- addClustering(df, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter)
     
     # Create 'meta' dataframe of site properties organized as monitorID-by-property
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
-    logger.info("Creating 'meta' dataframe ...")
+    logger.debug("Creating 'meta' dataframe ...")
     meta <- wrcc_createMetaDataframe(df)
     
     # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
-    logger.info("Creating 'data' dataframe ...")
+    logger.debug("Creating 'data' dataframe ...")
     data <- wrcc_createDataDataframe(df, meta)
     
     # Create the 'ws_monitor' object
     ws_monitor <- list(meta=meta, data=data)
     ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
+
+    # Reset all negative values that made it through QC to zero
+    logger.debug("Reset negative valus to zero ...")
+    ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
     
     monitorList[[name]] <- ws_monitor
     

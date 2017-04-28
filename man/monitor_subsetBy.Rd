@@ -25,4 +25,3 @@ boise_tz_very_unhealthy <- monitor_subsetBy(boise_tz, data > AQI$breaks_24[5])
 boise_tz_very_unhealthy$meta$siteName
 }
 \keyword{ws_monitor}
-

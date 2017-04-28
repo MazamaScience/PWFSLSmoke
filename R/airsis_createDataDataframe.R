@@ -43,7 +43,7 @@ airsis_createDataDataframe <- function(df, meta) {
   }
   
   # Add monitorID to the dataframe
-  df$monitorID <- meta$monitorID[df$deploymentID]
+  df$monitorID <- meta[df$deploymentID, 'monitorID']
   
   if ( monitorType == 'EBAM' ) {
     pm25Var <- 'ConcHr'
@@ -81,7 +81,7 @@ airsis_createDataDataframe <- function(df, meta) {
   # NOTE:  dplyr returns objects of class "tbl_df" which can be confusing. We undo that.
   data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime') )
 
-  logger.debug("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
+  logger.info("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
   
   return(as.data.frame(data))
   

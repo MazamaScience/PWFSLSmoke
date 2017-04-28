@@ -43,4 +43,3 @@ df <- openaq_downloadData(startdate=20160901, days=2)
 }
 }
 \keyword{OpenAQ}
-

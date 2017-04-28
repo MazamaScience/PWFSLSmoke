@@ -52,4 +52,3 @@ title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
 \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 }
 \keyword{ws_monitor}
-

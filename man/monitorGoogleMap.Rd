@@ -53,4 +53,3 @@ Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
 monitorGoogleMap(Spokane)
 }
 \keyword{ws_monitor}
-

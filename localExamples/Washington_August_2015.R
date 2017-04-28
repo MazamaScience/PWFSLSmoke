@@ -28,7 +28,7 @@ airnow_wa_unhealthy <- monitor_subset(airnow_wa_unhealthy_data, monitorIDs=monit
 # Plot a static map
 map('state','WA')
 monitorMap(airnow_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
-addLegend("topright")
+addAQILegend("topright")
 title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites)', line=2)
 
 
@@ -77,8 +77,9 @@ monitorLeaflet(merged_worst, maptype="Stamen.Terrain")
 monitorDygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
 
 # Plot with monitor_timeseriesPlot
-monitor_timeseriesPlot(merged_worst, AQIStyle=TRUE)
-legend('topleft', legend=rev(AQI$names), pch=16, col=rev(AQI$colors))
+monitorPlot_timeseries(merged_worst, style='aqiDots')
+###legend('topleft', legend=rev(AQI$names), pch=16, col=rev(AQI$colors))
+addAQILegend()
 title('Terrible Smoke in late August')
 
 # Create a new ws_monitor object by appling 24hr right-aligned rolling mean

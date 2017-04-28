@@ -15,4 +15,3 @@ State codes for the 48 states that make up the Continental US
 CONUS state codes
 }
 \keyword{datasets}
-

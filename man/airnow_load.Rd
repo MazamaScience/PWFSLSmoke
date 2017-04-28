@@ -38,4 +38,3 @@ monitorLeaflet(airnow_conus)
 }
 }
 \keyword{AirNow}
-

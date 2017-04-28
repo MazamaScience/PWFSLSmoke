@@ -76,4 +76,3 @@ df <- epa_downloadData(2016, "PM2.5", "88101")
 \href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 }
 \keyword{EPA}
-
