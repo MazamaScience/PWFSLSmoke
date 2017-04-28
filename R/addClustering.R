@@ -36,7 +36,9 @@ addClustering <- function(df, clusterDiameter=1000,
   if ( nrow(df) == 1 ) {
     df$medoidLon <- df[[lonVar]][1]
     df$medoidLat <- df[[latVar]][1]
-    locationString <- paste0( 'lon_',round(df$medoidLon,3), '_lat_', round(df$medoidLat,3) )
+    lonString <- format( round(df$medoidLon,3), nsmall=3 ) # 3 decimal places
+    latString <- format( round(df$medoidLat,3), nsmall=3 ) # 3 decimal places
+    locationString <- paste0( 'lon_', lonString, '_lat_', latString )
     df$deploymentID <- make.names(locationString)
     return(df)
   }
@@ -116,9 +118,11 @@ addClustering <- function(df, clusterDiameter=1000,
   # NOTE:  This should be enough accuracy for a unique deploymentID as
   # NOTE:  0.001 degrees of longitude = 102.47m at 23N, 43.496m at 67N
   
-  locationString <- paste0( 'lon_',round(df$medoidLon,3), '_lat_', round(df$medoidLat,3) )
+  lonString <- format( round(df$medoidLon,3), nsmall=3 ) # 3 decimal places
+  latString <- format( round(df$medoidLat,3), nsmall=3 ) # 3 decimal places
+  locationString <- paste0( 'lon_', lonString, '_lat_', latString )
   df$deploymentID <- make.names(locationString)
-  
+
   # reinsert rows with bad locations if flagAndKeep = TRUE
   if ( flagAndKeep ) {
     # add new columns to badLocationRows for rbind

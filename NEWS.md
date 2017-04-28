@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.15
+
+ * monitorID now uses `monitorName` and `deploymentID`
+
 ### PWFSLSmoke 0.99.14
 
  * improved use of `DEBUG` and `INFO` logging statments during AIRSIS and WRCC data processing
