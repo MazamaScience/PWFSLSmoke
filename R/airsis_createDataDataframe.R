@@ -42,8 +42,8 @@ airsis_createDataDataframe <- function(df, meta) {
     stop(paste0("Multiple monitor types found in 'meta' dataframe."))
   }
   
-  # Add monitorID to the dataframe
-  df$monitorID <- meta[df$deploymentID, 'monitorID']
+  # Create monitorID the same way we did in airsis_createMetaDataframe()
+  df$monitorID <- paste0( make.names(df$monitorName), '__', df$deploymentID )
   
   if ( monitorType == 'EBAM' ) {
     pm25Var <- 'ConcHr'

@@ -5,12 +5,12 @@ A quick refresher on docker commands is available at the [docker cheatsheet](htt
 A docker image with all required prerequisites can be built with the `Dockerfile` in this directory:
 
 ```
-$ docker build -t mazamascience/pwfslsmoke:v0.99.9 .
-$ docker tag mazamascience/pwfslsmoke:v0.99.9 mazamascience/pwfslsmoke:latest
+$ docker build --no-cache -t mazamascience/pwfslsmoke:v0.99.16 .
+$ docker tag mazamascience/pwfslsmoke:v0.99.15 mazamascience/pwfslsmoke:latest
 $ docker images
 REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
 mazamascience/pwfslsmoke     latest              964859fc3d6c        21 minutes ago      1.258 GB
-mazamascience/pwfslsmoke     v0.99.9             964859fc3d6c        21 minutes ago      1.258 GB
+mazamascience/pwfslsmoke     v0.99.16            964859fc3d6c        21 minutes ago      1.258 GB
 mazamascience/spatialutils   v0.4.9              be5b4f8f8ca5        22 hours ago        1.193 GB
 ...
 ```
@@ -24,7 +24,7 @@ Spatial data required by the **MazamaSpatialUtils** package already exists in th
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:v0.99.9
+docker pull mazamascience/pwfslsmoke:v0.99.16
 ```
 
 ## Docker Run ##

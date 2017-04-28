@@ -42,8 +42,8 @@ wrcc_createDataDataframe <- function(df, meta) {
     stop(paste0("No 'deploymentID' column found in 'df' dataframe.  Have you run addClustering()?"))
   }
   
-  # Add monitorID to the dataframe
-  df$monitorID <- meta[df$deploymentID, 'monitorID']
+  # Create monitorID the same way we did in wrcc_createMetaDataframe()
+  df$monitorID <- paste0( make.names(df$monitorName), '__', df$deploymentID )
   
   if ( monitorType == 'EBAM' ) {
     pm25Var <- 'ConcRT'

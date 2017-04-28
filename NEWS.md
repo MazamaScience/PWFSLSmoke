@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.16
+
+ * bug fix in creation of temporary monitors
+
 ### PWFSLSmoke 0.99.15
 
  * monitorID now uses `monitorName` and `deploymentID`
