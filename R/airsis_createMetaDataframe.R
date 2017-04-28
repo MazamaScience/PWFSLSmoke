@@ -128,8 +128,7 @@ airsis_createMetaDataframe <- function(df) {
   # NOTE:  consistent when working with non-AirNow datasets.
   meta$longitude <- df$medoidLon
   meta$latitude <- df$medoidLat
-  locationString <- paste0( 'lon_',round(df$medoidLon,3), '_lat_', round(df$medoidLat,3) )
-  meta$monitorID <- make.names(locationString)
+  meta$monitorID <- paste0( make.names(df$monitorName), '__', df$deploymentID )
   meta$monitorType <- df$monitorType
   
   # Assign rownames
