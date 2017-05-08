@@ -57,6 +57,7 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
     }
   }
   
+  # TODO:  tlim in monitorPlot_dailyBarplot should accept POSIXct
   # When tlim is specified in whole days we should add hours to get the requsted full days
   if ( !is.null(tlim) ) {
     tlimStrings <- as.character(tlim)
@@ -127,7 +128,7 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   if ( argsList$axes && !('names.arg' %in% names(argsList)) ) {
     barCount <- length(argsList$height)
     allIndices <- 1:barCount
-    allLabels <- strftime(localTime, "%b %d")
+    allLabels <- strftime(localTime, "%b %d", tz=timezone)
     maxLabelCount <- 16
     stride <- round(barCount/maxLabelCount)
     if ( stride == 0 ) {

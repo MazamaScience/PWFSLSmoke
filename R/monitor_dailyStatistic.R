@@ -98,7 +98,7 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   # Restore POSIXct daily datetimes
   df$datetime <- meanDF$datetime
   
-  # Set df$datetime to noon for each day
+  # Set df$datetime to the beginning of each day
   lubridate::hour(df$datetime) <- 00
   lubridate::minute(df$datetime) <- 00
   lubridate::second(df$datetime) <- 00

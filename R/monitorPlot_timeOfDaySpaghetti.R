@@ -122,7 +122,8 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
   # Add a title
   if ( is.null(title) ) {
     mtext(bquote(paste('Daily PM'[2.5],' Values and ', .(dayCount),'-day Mean')), line=2, cex=1.5)
-    mtext(paste(strftime(df$localTime[1], '%b. %d - '), strftime(utils::tail(df$localTime,1), '%b. %d %Y')), line=.5, cex=1.5)
+    mtext(paste(strftime(df$localTime[1], '%b. %d - ', tz=timezone),
+                strftime(utils::tail(df$localTime,1), '%b. %d %Y'), tz=timezone), line=.5, cex=1.5)
   } else {
     title(title)
   }

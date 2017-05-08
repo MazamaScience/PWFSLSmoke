@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.17
+
+ * bug fix in `monitorPlot_dailyBarplot()` time axis
+
 ### PWFSLSmoke 0.99.16
 
  * bug fix in creation of temporary monitors
