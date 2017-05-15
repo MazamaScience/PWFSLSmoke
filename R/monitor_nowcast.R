@@ -67,6 +67,10 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
 
 # ----- Helper Functions ------------------------------------------------------
 
+# TODO:  Need special logic for the first 1:numHrs for which the nowcast algorithm can be applied.
+# TODO:  as long as we accept na.rm logic while calculating the most recent 12-hr average.
+# TODO:  So the first two data points will be NA but the third could be calculated using that
+# TODO:  3-hr average as a proxy for the 12-hr average.
 .nowcast <- function(x, numHrs, weightFactorMin) {
   
   # Start at the end end of the data (most recent hour) and work backwards
