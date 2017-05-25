@@ -60,10 +60,13 @@ airsis_parseData <- function(fileString) {
     # NOTE:  Some E-Sampler files from AIRSIS (USFS 1050) have internal rows messed up with header line information
     # NOTE:  We need to remove these first. It seems they can be identified by searching for '%'.
     # NOTE:  Of course, we have to retain the first header line.
-    internalHeaderLines <- which(stringr::str_detect(lines,'%'))[-1]
     
-    logger.debug("Removing %d 'internal header line' records from raw data", length(internalHeaderLines))
-    lines <- lines[-internalHeaderLines]
+    internalHeaderMask <- stringr::str_detect(lines,'%')
+    internalHeaderMask[1] <- FALSE
+    if ( sum(internalHeaderMask) > 0 ) {
+      logger.debug("Removing %d 'internal header line' records from raw data", sum(internalHeaderMask))
+      lines <- lines[!internalHeaderMask]
+    }
     
   } else if ( monitorType == "OTHER_1" ) {
     
@@ -113,12 +116,20 @@ airsis_parseData <- function(fileString) {
     # We remove those here.
     
     serialNumberMask <- (df$Serial.Number != "") & !is.na(df$Serial.Number)
-    logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
-    df <- df[!serialNumberMask,]
+    if ( sum(serialNumberMask) > 0 ) {
+      logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
+      df <- df[!serialNumberMask,]
+    }
     
   }
   
   #     Various fixes     -----------------------------------------------------
+  
+  # Check to see if any records remain
+  if ( nrow(df) == 0 ) {
+    logger.warn("No data remaining after parsing cleanup")
+    stop("No data remaining after parsing cleanup", call.=FALSE)
+  }
   
   # NOTE:  Latitude, Longitude and Sys..Volts are measured at 6am and 6pm
   # NOTE:  as separate GPS entries in the dataframe. They need to be carried
