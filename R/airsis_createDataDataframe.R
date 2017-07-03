@@ -49,6 +49,8 @@ airsis_createDataDataframe <- function(df, meta) {
     pm25Var <- 'ConcHr'
   } else if ( monitorType == 'ESAM' ) {
     pm25Var <- 'Conc.mg.m3.'
+  } else if ( monitorType == 'BAM1020' ) {
+    pm25Var <- 'Conc..µg.m3.'
   } else {
     logger.error("Dataframe creation is not supported for %s", monitorType)
     stop(paste0("Dataframe creation is not supported for ", monitorType))

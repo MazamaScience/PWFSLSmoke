@@ -162,7 +162,7 @@ airsis_BAM1020QualityControl <- function(df,
   # TODO: Consider logic to throw out pm25 data if temperature changes by more than 2 degC in adjacent hrs
   # TODO: (see NOTE in section 2.2 here: https://www.arb.ca.gov/airwebmanual/instrument_manuals/Documents/BAM-1020-9800%20Manual%20Rev%20G.pdf)
   
-  # goodFlow <- !is.na(df$Flow) & df$Flow >= valid_Flow[1] & df$Flow <= valid_Flow[2]
+  # goodFlow <- !is.na(df$Qtot..m3.) & df$Flow >= valid_Flow[1] & df$Qtot..m3. <= valid_Flow[2]
   goodFlow <- rep(TRUE, nrow(df))
   goodAT <- !is.na(df$Ambient.Temp..C.) & df$Ambient.Temp..C. >= valid_AT[1] & df$Ambient.Temp..C. <= valid_AT[2]
   goodRHi <- !is.na(df$RH....) & df$RH.... >= valid_RHi[1] & df$RH.... <= valid_RHi[2]
@@ -170,7 +170,7 @@ airsis_BAM1020QualityControl <- function(df,
   gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
   
   # logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
-  # if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(unique(df$Flow[!goodFlow]),na.last=TRUE), collapse=", "))
+  # if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(unique(df$Qtot..m3.[!goodFlow]),na.last=TRUE), collapse=", "))
   logger.debug("AT has %s missing or out of range values", sum(!goodAT))
   if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(unique(df$Ambient.Temp..C.[!goodAT]),na.last=TRUE), collapse=", "))
   logger.debug("RHi has %s missing or out of range values", sum(!goodRHi))
