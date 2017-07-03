@@ -193,9 +193,9 @@ if (FALSE) {
   
   VERSION = "0.1.0"
   opt <- list(
-    outputDir="/Users/aliceyang/Data/openAQ",
-    logDir="/Users/aliceyang/Data/Logs",
-    spatialDataDir='/Users/aliceyang/Data/Spatial' )
+    outputDir="/Users/rexthompson/Data/openAQ",
+    logDir="/Users/rexthompson/Data/Logs",
+    spatialDataDir='/Users/rexthompson//Data/Spatial' )
   
 }
 
