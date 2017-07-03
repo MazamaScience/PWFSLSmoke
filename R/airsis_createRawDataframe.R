@@ -77,7 +77,9 @@ airsis_createRawDataframe <- function(startdate=20020101,
   df <- airsis_parseData(fileString)
   
   # Add source of raw data
-  df$rawSource <- "AIRSIS"
+  if ( nrow(df) > 0 ) {
+    df$rawSource <- "AIRSIS"
+  }
   
   # Apply monitor-appropriate QC to the dataframe
   logger.debug("Applying QC logic ...")

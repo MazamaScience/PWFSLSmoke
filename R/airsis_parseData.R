@@ -110,6 +110,10 @@ airsis_parseData <- function(fileString) {
     }
   }
   
+  # Add monitor name and type
+  df$monitorName <- df$Alias
+  df$monitorType <- monitorType
+  
   #     E-Sampler fixes     ---------------------------------------------------
   
   if ( monitorType == "ESAM" ) {
@@ -164,12 +168,8 @@ airsis_parseData <- function(fileString) {
   if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
   
   logger.debug("Removing %d 'GPS' records from raw data", sum(gpsMask))
-  
   df <- df[!gpsMask,]
   
-  # Add monitor name and type
-  df$monitorName <- df$Alias
-  df$monitorType <- monitorType
   
   logger.debug('Retaining %d rows of raw %s measurements', nrow(df), monitorType)
 

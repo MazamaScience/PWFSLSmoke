@@ -22,6 +22,12 @@ addClustering <- function(df, clusterDiameter=1000,
   # Sanity check -- make sure df does not have class "tbl_df"
   df <- as.data.frame(df)
   
+  # Sanity check -- row count
+  if ( nrow(df) == 0 ) {
+    logger.error("Unable to perform clustering: dataframe empty")
+    stop(paste0("Unable to perform clustering: dataframe empty"))
+  }
+  
   # Sanity check -- names
   if ( !lonVar %in% names(df) ) {
     logger.error("No lonVar='%s' column found in 'df' dataframe with columns: %s", lonVar, paste0(names(df), collapse=", "))

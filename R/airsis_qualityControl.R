@@ -18,6 +18,12 @@
 
 airsis_qualityControl <- function(df, ...) {
   
+  # Sanity check -- row count
+  if ( nrow(df) == 0 ) {
+    logger.error("Unable to perform QC: dataframe empty")
+    stop(paste0("Unable to perform QC: dataframe empty"))
+  }
+  
   # Sanity check -- df must have a monitorType
   if ( !'monitorType' %in% names(df) ) {
     logger.error("No 'monitorType' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
