@@ -38,7 +38,8 @@ airsis_qualityControl <- function(df, ...) {
   
   if ( monitorType == 'BAM1020' ) {
     
-    logger.warn("Dataframe contains %s data -- no QC available, original dataframe being returned", monitorType)
+    df <- airsis_BAM1020QualityControl(df, ...)
+    # logger.warn("Dataframe contains %s data -- no QC available, original dataframe being returned", monitorType)
     
   } else if ( monitorType == 'EBAM' ) {
     

@@ -45,9 +45,11 @@ airsis_parseData <- function(fileString) {
   
   if ( monitorType == "BAM1020" ) {
     
-    logger.warn("BAM1020 file parsing is not supported")
-    logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
-    stop(paste0("BAM1020 file parsing is not supported"), call.=FALSE)
+    logger.debug("Parsing BAM1020 data ...")
+    
+    # logger.warn("BAM1020 file parsing is not supported")
+    # logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    # stop(paste0("BAM1020 file parsing is not supported"), call.=FALSE)
     
   } else if ( monitorType == "EBAM" ) {
     
@@ -123,6 +125,15 @@ airsis_parseData <- function(fileString) {
     
   }
   
+  #     EBAM1020 fixes     ---------------------------------------------------
+  
+  if ( monitorType == "BAM1020" ) {
+    
+    # TODO: UnitID=49 on 6/20/10 had every other row missing; also, no lat/lon info.
+    # TODO: May want to look into this further if noticed in more recent data as well.
+    
+  }
+  
   #     Various fixes     -----------------------------------------------------
   
   # Check to see if any records remain
@@ -140,14 +151,15 @@ airsis_parseData <- function(fileString) {
   # Carry data forward to fill in all missing values
   df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE)
   df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE)
-  if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
+  # if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
+  if ( monitorType == "BAM1020" ) df$System.Volts <- NA
   if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE)
   if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
   
   # Now fill in any missing values at the front end
   df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE, fromLast=TRUE)
   df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE, fromLast=TRUE)
-  if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
+  # if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
   if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE, fromLast=TRUE)
   if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
   
@@ -161,6 +173,6 @@ airsis_parseData <- function(fileString) {
   
   logger.debug('Retaining %d rows of raw %s measurements', nrow(df), monitorType)
 
-    
   return(df)
+  
 }
