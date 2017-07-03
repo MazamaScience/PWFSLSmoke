@@ -24,7 +24,7 @@
 # }
 
 #' 
-#' A \code{POSIXct datetime} column (UTC) is also added based on \code{Date.Time.GMT}.
+#' A \code{POSIXct datetime} column (UTC) is also added based on \code{DateTime}.
 #' 
 #' @return Cleaned up dataframe of AIRSIS monitor data.
 #' @seealso \code{\link{airsis_qualityControl}}
@@ -113,6 +113,12 @@ airsis_BAM1020QualityControl <- function(df,
   df <- df[goodLonMask & goodLatMask,]
   
   # ----- Time ----------------------------------------------------------------
+  
+  # Sanity check -- row count
+  if ( nrow(df) == 0 ) {
+    logger.error("Unable to complete QC: no data remains")
+    stop(paste0("Unable to complete QC: no data remains"))
+  }
   
   # Add a POSIXct datetime
   df$datetime <- lubridate::floor_date(lubridate::mdy_hms(df$TimeStamp), unit="hour") - lubridate::dhours(1)
@@ -218,7 +224,7 @@ airsis_BAM1020QualityControl <- function(df,
   
   if ( dupHrCount > 0 ) {
     logger.info(paste(verb,"%s duplicate time entries"), dupHrCount)
-    logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(df$Date.Time.GMT[dupHrMask])), collapse=", "))
+    logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(df$TimeStamp[dupHrMask])), collapse=", "))
     if ( flagAndKeep ) {
       # apply flags
       dfFlagged$QCFlag_duplicateHr[df$rowID[dupHrMask]] <- TRUE
