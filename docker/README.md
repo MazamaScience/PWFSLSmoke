@@ -46,6 +46,11 @@ print(df)
 
 ## Publish the Docker Image ##
 
+```
+docker login
+...
+docker push mazamascience/pwfslsmoke:v0.99.19
+```
 
 
 ## Download the Docker Image ##
