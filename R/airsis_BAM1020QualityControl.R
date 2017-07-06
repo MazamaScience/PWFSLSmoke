@@ -42,7 +42,7 @@ airsis_BAM1020QualityControl <- function(df,
   
   #  > names(df)
   #  [1] "MasterTable_ID"   "Alias"            "Latitude"         "Longitude"
-  #  [5] "Conc..µg.m3."     "Qtot..m3."        "WS..KTS."         "Ozone..ppb."
+  #  [5] "Conc..ug.m3."     "Qtot..m3."        "WS..KTS."         "Ozone..ppb."
   #  [9] "RTM09..mg3."      "RH...."           "Ambient.Temp..C." "TimeStamp"
   #  [13] "PDate"            "System.Volts"     "monitorName"      "monitorType"
   
@@ -172,7 +172,7 @@ airsis_BAM1020QualityControl <- function(df,
   goodFlow <- rep(TRUE, nrow(df))
   goodAT <- !is.na(df$Ambient.Temp..C.) & df$Ambient.Temp..C. >= valid_AT[1] & df$Ambient.Temp..C. <= valid_AT[2]
   goodRHi <- !is.na(df$RH....) & df$RH.... >= valid_RHi[1] & df$RH.... <= valid_RHi[2]
-  goodConcHr <- !is.na(df$Conc..µg.m3.) & df$Conc..µg.m3. >= valid_Conc[1] & df$Conc..µg.m3. <= valid_Conc[2]
+  goodConcHr <- !is.na(df$'Conc..\u00B5g.m3.') & df$'Conc..\u00B5g.m3.' >= valid_Conc[1] & df$'Conc..\u00B5g.m3.' <= valid_Conc[2]
   gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
   
   # logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
@@ -182,7 +182,7 @@ airsis_BAM1020QualityControl <- function(df,
   logger.debug("RHi has %s missing or out of range values", sum(!goodRHi))
   if (sum(!goodRHi) > 0) logger.debug("Bad RHi values:  %s", paste0(sort(unique(df$RH....[!goodRHi]),na.last=TRUE), collapse=", "))
   logger.debug("Conc has %s missing or out of range values", sum(!goodConcHr))
-  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(unique(df$Conc..µg.m3.[!goodConcHr]),na.last=TRUE), collapse=", "))
+  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(unique(df$'Conc..\u00B5g.m3.'[!goodConcHr]),na.last=TRUE), collapse=", "))
   logger.debug("datetime has %s missing or out of range values", sum(!gooddatetime))
   if (sum(!gooddatetime) > 0) logger.debug("Bad datetime values:  %s", paste0(sort(unique(df$datetime[!gooddatetime]),na.last=TRUE), collapse=", "))
   
