@@ -1,15 +1,15 @@
-## Create a Docker Image ##
+## Create the Docker Image ##
 
 A quick refresher on docker commands is available at the [docker cheatsheet](https://github.com/wsargent/docker-cheat-sheet).
 
 A docker image with all required prerequisites can be built with the `Dockerfile` in this directory:
 
 ```
-$ docker build --no-cache -t mazamascience/pwfslsmoke:v0.99.18 -t mazamascience/pwfslsmoke:latest .
+$ docker build --no-cache -t mazamascience/pwfslsmoke:v0.99.19 -t mazamascience/pwfslsmoke:latest .
 $ docker images
 REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke     latest              964859fc3d6c        21 minutes ago      1.258 GB
-mazamascience/pwfslsmoke     v0.99.18            964859fc3d6c        21 minutes ago      1.258 GB
+mazamascience/pwfslsmoke     latest              8154fe51ad75        8 minutes ago       1.26GB
+mazamascience/pwfslsmoke     v0.99.19            8154fe51ad75        8 minutes ago       1.26GB
 mazamascience/spatialutils   v0.4.9              be5b4f8f8ca5        22 hours ago        1.193 GB
 ...
 ```
@@ -18,15 +18,8 @@ mazamascience/spatialutils   v0.4.9              be5b4f8f8ca5        22 hours ag
 
 Spatial data required by the **MazamaSpatialUtils** package already exists in the docker image in `/home/mazama/data/Spatial`.
 
-## Download a Docker Image ##
 
-A recent image can also be obtained from DockerHub with:
-
-```
-docker pull mazamascience/pwfslsmoke:v0.99.18
-```
-
-## Docker Run ##
+## Test the Docker Image ##
 
 Having built the docker image we can now test it with:
 
@@ -48,5 +41,18 @@ print(df)
 530730015 Bellingham-Yew St     WHATCOM     58.3
 530530029        Tacoma-L St     PIERCE     57.3
 530370002 Ellensburg-Ruby St     CHELAN     55.0
+```
+
+
+## Publish the Docker Image ##
+
+
+
+## Download the Docker Image ##
+
+A recent image can also be obtained from DockerHub with:
+
+```
+docker pull mazamascience/pwfslsmoke:v0.99.19
 ```
 
