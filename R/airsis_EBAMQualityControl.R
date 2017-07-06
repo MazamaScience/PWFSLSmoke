@@ -152,7 +152,6 @@ airsis_EBAMQualityControl <- function(df,
   
   if (nrow(df) < 1) {
     logger.warn("No valid PM2.5 data for %s", monitorName)
-    stop(paste0("No valid PM2.5 data for ", monitorName))
   }
   
   # Leland Tarnay QC -----------------------------------------------------------

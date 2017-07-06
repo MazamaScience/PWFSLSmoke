@@ -47,7 +47,14 @@ wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
     
     # Apply monitor-appropriate QC to the dataframe
     logger.debug("Applying QC logic ...")
-    df <- wrcc_qualityControl(df)
+    result <- try( df <- wrcc_qualityControl(df),
+                   silent=TRUE ) # don't show errors
+    
+    if ( "try-error" %in% class(result) ) {
+      err_msg <- geterrmessage()
+      logger.warn(err_msg)
+      next
+    }
     
     # See if anything gets through QC
     if ( nrow(df) == 0 ) {
