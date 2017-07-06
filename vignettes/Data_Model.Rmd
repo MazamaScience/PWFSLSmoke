@@ -1,0 +1,130 @@
+---
+title: "Data Model"
+author: "Mazama Science"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+```
+
+This vignette explores the `ws_monitor` data model used throughout the **PWFSLSmoke** package to store
+and work with monitoring data.
+
+The **PWFSLSmoke** package is designed to provide a compact, full-featured suite of utilities for
+working with PM 2.5 data used to monitor wildfire smoke. A uniform data model
+provides consistent data access across monitoring data available from different agencies.
+The core data model in this package is defined by the `ws_monitor` object used to store data associated
+with groups of individual monitors.
+
+To work efficiently with the package it is important to understand the structure of this
+data object and which functions operate on it. Package functions that begin with `monitor_`, 
+expect objects of class `ws_monitor` as their first argument. (*Note that 'ws_' stands for 'wildfire smoke'.*)
+
+## Monitoring Data
+
+Monitoring data will typically be obtained from an agency charged with archiving data
+acquired at monitoring sites. For wildifre smoke, the primary pollutant is PM 2.5 and the
+sites archiving this data include [AirNow](https://www.airnow.gov), [WRCC](http://www.wrcc.dri.edu) and
+[AIRSIS](https://app.airsis.com/USFS).
+
+The data model for monitoring data consists of an **R** `list` with two dataframes: `data` and `meta`.
+
+The `data` dataframe contains all hourly measurements organized with rows (the 'unlimited' dimension) as unique timesteps and
+columns as unique monitors. The very first column is always named `datetime` and contains the `POSIXct` datetime
+in Coordinated Universal Time (UTC).
+
+The `meta` dataframe contains all metadata associated with monitoring sites and is organized with
+rows as unique sites and columns as site attributes. The following columns are guaranteed to exist
+in the `meta` dataframe:
+
+ * `monitorID` -- unique ID for each monitoring site (*i.e.* each instrument deployment)
+ * `longitude` -- decimal degrees East
+ * `latitude` -- decimal degrees North
+ * `elevation` -- meters above sea level
+ * `timezone` -- Olson timezone
+ * `countryCode` -- ISO 3166-1 alpha-2 code
+ * `stateCode` -- ISO 3166-2 alpha-2 code
+
+*(The [MazamaSpatialUtils](https://github.com/MazamaScience/MazamaSpatialUtils) package is used to assign timezones and state and country codes.)*
+
+Additional columns may be available in the `meta` dataframe and these will depend on the source of the
+data.
+
+It is important to note that the `monitorID` acts as a unique key that connects data with metadata.
+The `monitorID` is used for column names in the `data` dataframe and for row names in the `meta` dataframe.
+So the following will always be true:
+
+    rownames(ws_monitor$meta) == ws_monitor$meta$monitorID
+    colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)
+
+**Example 1: Exploring `ws_monitor` Objects**
+
+We will use the `airnow_load()` and `monitor_subset()` functions to download and subset a `ws_monitor` object
+which we can then explore.
+
+```{r}
+library(PWFSLSmoke)
+
+# Get some airnow data for Washington
+airnow <- airnow_load(startdate=20150801, enddate=20150831)
+WA <- monitor_subset(airnow, stateCodes='WA')
+
+# 'ws_monitor' objects can be identified by their class
+class(WA)
+
+# Examine the 'meta' dataframe
+dim(WA$meta)
+rownames(WA$meta)
+colnames(WA$meta)
+
+# Examine the 'data' dataframe
+dim(WA$data)
+colnames(WA$data)
+
+# This should always be true
+all(rownames(WA$meta) == colnames(WA$data[,-1]))
+```
+  
+**Example 2: Manipulating `ws_monitor` Objects**
+
+The **PWFSLSmoke** package has numerous functions that can work with `ws_monitor` objects, 
+all of which begin with `monitor_`. If you need to do something that the package functions do not
+provide you can manipulate `ws_monitor` objects directly as long as you retain the structure
+of the data model.
+
+The following code mixes use of package functions with direct manipulation of the `ws_monitor` object.
+
+```{r}
+# Use special knowledge of AirNow IDs to subset airnow data for Spokane county monitors
+SpokaneCountyIDs <- airnow$meta$monitorID[stringr::str_detect(airnow$meta$monitorID, "^53063")]
+Spokane <- monitor_subset(airnow, monitorIDs=SpokaneCountyIDs)
+
+# Apply 3-hr rolling mean
+Spokane_3hr <- monitor_rollingMean(Spokane, 3, align="center")
+
+# 1) Replace data columns with their squares (exponentiation is not supplied by the package)
+Spokane_3hr_squared <- Spokane_3hr
+Spokane_3hr_squared$data[,-1] <- (Spokane_3hr$data[,-1])^2 # exclude the 'datetime' column
+
+# NOTE:  Exponentiation is only used as an example. It does not generate a meaningful result.
+
+# Create a daily averaged 'ws_monitor' object
+Spokane_daily_3hr <- monitor_dailyStatistic(Spokane_3hr)
+
+# 2) Check out the correlation between monitors (correlation is not supplied by the package)
+data <- Spokane_daily_3hr$data[,-1] # exclude the 'datetime' column
+cor(data, use='complete.obs')
+```
+
+----
+
+This introduction to the `ws_monitor`  data model should be enough to get you started.
+Lots more documentation and examples are available in the package documentation.
+
+Best of luck exploring and understanding PM 2.5 values associated with wildfire smoke!
