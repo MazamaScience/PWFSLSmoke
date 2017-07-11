@@ -40,7 +40,7 @@ wrcc_createMonitorObject <- function(startdate=20020101,
                                      enddate=strftime(lubridate::now(),"%Y%m%d",tz="UTC"),
                                      unitID=NULL,
                                      clusterDiameter=1000,
-                                     baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
+                                     baseUrl="https://wrcc.dri.edu:443/cgi-bin/wea_list2.pl",
                                      saveFile=NULL) {
   
   # Sanity checks

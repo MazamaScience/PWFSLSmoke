@@ -6,7 +6,7 @@
 \usage{
 wrcc_downloadData(startdate = 20100101, enddate = strftime(lubridate::now(),
   "\%Y\%m\%d", tz = "GMT"), unitID = NULL,
-  baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl")
+  baseUrl = "https://wrcc.dri.edu:443/cgi-bin/wea_list2.pl")
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
