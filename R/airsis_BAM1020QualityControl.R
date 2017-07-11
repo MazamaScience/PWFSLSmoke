@@ -13,17 +13,6 @@
 #' @param flagAndKeep flag, rather than remove, bad data during the QC process
 #' @description Perform various QC measures on AIRSIS BAM1020 data.
 #' 
-
-# TODO: Verify the following:
-# The following columns of data are tested against valid ranges:
-# \itemize{
-# \item{\code{Flow}}
-# \item{\code{AT}}
-# \item{\code{RHi}}
-# \item{\code{ConcHr}}
-# }
-
-#' 
 #' A \code{POSIXct datetime} column (UTC) is also added based on \code{DateTime}.
 #' 
 #' @return Cleaned up dataframe of AIRSIS monitor data.
@@ -34,11 +23,20 @@ airsis_BAM1020QualityControl <- function(df,
                                          valid_Latitude=c(-90,90),
                                          remove_Lon_zero = TRUE,
                                          remove_Lat_zero = TRUE,
-                                         valid_Flow = c(16,17.34),
+                                         valid_Flow = c(.834*.95,.834*1.05),
                                          valid_AT = c(-Inf,45),
                                          valid_RHi = c(-Inf,45),
                                          valid_Conc = c(-Inf,984),
                                          flagAndKeep = FALSE) {
+  
+  ### dat.2012arbbamraw$concHR <- ifelse(dat.2012arbbamraw$Qtot.m3.<.834*.95,NA,
+  ###                                    ifelse(dat.2012arbbamraw$Qtot.m3.>.834*1.05,NA,
+  ###                                    ifelse(dat.2012arbbamraw$IT.C.>45,NA,
+  ###                                    ifelse(dat.2012arbbamraw$RH...> 45,NA,
+  ###                                    ifelse(dat.2012arbbamraw$Conc.mg.<0,0,
+  ###                                    ifelse(dat.2012arbbamraw$Conc.mg.>.984,NA,
+  ###                                    ifelse(dat.2012arbbamraw$Delta.C.>25,NA,
+  ###                                    dat.2012arbbamraw$Conc.mg.*1000)))))))
   
   #  > names(df)
   #  [1] "MasterTable_ID"   "Alias"            "Latitude"         "Longitude"
@@ -165,18 +163,29 @@ airsis_BAM1020QualityControl <- function(df,
   
   # QC -----------------------------------------------------------
   
+  
+  # Leland Tarnay QC -----------------------------------------------------------
+  
+  ### dat.2012arbbamraw$concHR <- ifelse(dat.2012arbbamraw$Qtot.m3.<.834*.95,NA,
+  ###                                    ifelse(dat.2012arbbamraw$Qtot.m3.>.834*1.05,NA,
+  ###                                    ifelse(dat.2012arbbamraw$IT.C.>45,NA,
+  ###                                    ifelse(dat.2012arbbamraw$RH...> 45,NA,
+  ###                                    ifelse(dat.2012arbbamraw$Conc.mg.<0,0,
+  ###                                    ifelse(dat.2012arbbamraw$Conc.mg.>.984,NA,
+  ###                                    ifelse(dat.2012arbbamraw$Delta.C.>25,NA,
+  ###                                    dat.2012arbbamraw$Conc.mg.*1000)))))))
+  
   # TODO: Consider logic to throw out pm25 data if temperature changes by more than 2 degC in adjacent hrs
   # TODO: (see NOTE in section 2.2 here: https://www.arb.ca.gov/airwebmanual/instrument_manuals/Documents/BAM-1020-9800%20Manual%20Rev%20G.pdf)
   
-  # goodFlow <- !is.na(df$Qtot..m3.) & df$Flow >= valid_Flow[1] & df$Qtot..m3. <= valid_Flow[2]
-  goodFlow <- rep(TRUE, nrow(df))
+  goodFlow <- !is.na(df$Qtot..m3.) & df$Qtot..m3. >= valid_Flow[1] & df$Qtot..m3. <= valid_Flow[2]
   goodAT <- !is.na(df$Ambient.Temp..C.) & df$Ambient.Temp..C. >= valid_AT[1] & df$Ambient.Temp..C. <= valid_AT[2]
   goodRHi <- !is.na(df$RH....) & df$RH.... >= valid_RHi[1] & df$RH.... <= valid_RHi[2]
   goodConcHr <- !is.na(df$'Conc..\u00B5g.m3.') & df$'Conc..\u00B5g.m3.' >= valid_Conc[1] & df$'Conc..\u00B5g.m3.' <= valid_Conc[2]
   gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
   
-  # logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
-  # if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(unique(df$Qtot..m3.[!goodFlow]),na.last=TRUE), collapse=", "))
+  logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
+  if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(unique(df$Qtot..m3.[!goodFlow]),na.last=TRUE), collapse=", "))
   logger.debug("AT has %s missing or out of range values", sum(!goodAT))
   if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(unique(df$Ambient.Temp..C.[!goodAT]),na.last=TRUE), collapse=", "))
   logger.debug("RHi has %s missing or out of range values", sum(!goodRHi))

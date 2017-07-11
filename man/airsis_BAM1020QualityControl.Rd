@@ -6,9 +6,9 @@
 \usage{
 airsis_BAM1020QualityControl(df, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,
-  remove_Lat_zero = TRUE, valid_Flow = c(16, 17.34), valid_AT = c(-Inf,
-  45), valid_RHi = c(-Inf, 45), valid_Conc = c(-Inf, 984),
-  flagAndKeep = FALSE)
+  remove_Lat_zero = TRUE, valid_Flow = c(0.834 * 0.95, 0.834 * 1.05),
+  valid_AT = c(-Inf, 45), valid_RHi = c(-Inf, 45), valid_Conc = c(-Inf,
+  984), flagAndKeep = FALSE)
 }
 \arguments{
 \item{df}{single site dataframe created by \code{airsis_parseData()}}
@@ -36,7 +36,6 @@ Cleaned up dataframe of AIRSIS monitor data.
 }
 \description{
 Perform various QC measures on AIRSIS BAM1020 data.
-
 
 A \code{POSIXct datetime} column (UTC) is also added based on \code{DateTime}.
 }
