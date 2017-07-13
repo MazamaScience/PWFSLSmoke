@@ -29,6 +29,13 @@ airsis_BAM1020QualityControl <- function(df,
                                          valid_Conc = c(-Inf,984),
                                          flagAndKeep = FALSE) {
   
+  ### Qtot (m3)             ifelse(Qtot.m3. < 0.834 * 0.95, "FlowLow”
+  ###                       ifelse(Qtot.m3. > 0.834 * 1.05, "FlowHigh"
+  ### Ambient Temp (C)      ifelse(AT.C. > 45, "HighTemp"
+  ### RH (%)                ifelse(RH... > 45,"HighRHi"
+  ### Conc (µg/m3)          ifelse(Conc.mg. < 0, "Negative”,
+  ###                       ifelse(Conc.mg. > 0.984, "HighConc", "OK"
+  
   ### dat.2012arbbamraw$concHR <- ifelse(dat.2012arbbamraw$Qtot.m3.<.834*.95,NA,
   ###                                    ifelse(dat.2012arbbamraw$Qtot.m3.>.834*1.05,NA,
   ###                                    ifelse(dat.2012arbbamraw$IT.C.>45,NA,

@@ -155,15 +155,14 @@ airsis_parseData <- function(fileString) {
   # Carry data forward to fill in all missing values
   df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE)
   df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE)
-  # if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
-  if ( monitorType == "BAM1020" ) df$System.Volts <- NA
+  # NOTE: BAM1020s don't have voltage data
   if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE)
   if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE)
   
   # Now fill in any missing values at the front end
   df$Longitude <- zoo::na.locf(df$Longitude, na.rm=FALSE, fromLast=TRUE)
   df$Latitude <- zoo::na.locf(df$Latitude, na.rm=FALSE, fromLast=TRUE)
-  # if ( monitorType == "BAM1020" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
+  # NOTE: BAM1020s don't have voltage data
   if ( monitorType == "EBAM" ) df$Sys..Volts <- zoo::na.locf(df$Sys..Volts, na.rm=FALSE, fromLast=TRUE)
   if ( monitorType == "ESAM" ) df$System.Volts <- zoo::na.locf(df$System.Volts, na.rm=FALSE, fromLast=TRUE)
   
