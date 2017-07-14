@@ -38,8 +38,7 @@ airsisDump_identifyMonitorType <- function(df) {
   #     Different header styles     -------------------------------------------
 
   # USFS_bam1020.csv
-  bam1020_header <- "Conc (\xb5g/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),UnitID,Alias,Latitude,Longitude,TimeStamp"
-  bam1020_header <- stringr::str_replace(bam1020_header,'\xb5','\u00B5')
+  bam1020_header <- "Conc (\u00B5g/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),UnitID,Alias,Latitude,Longitude,TimeStamp"
   bam1020_rawNames <- unlist(stringr::str_split(bam1020_header, ','))
   bam1020_names <- make.names(bam1020_rawNames)
   bam1020_types <- 'ddddddddcddc'
@@ -63,10 +62,7 @@ airsisDump_identifyMonitorType <- function(df) {
   ebam_types_2 <- 'ccddddddddddicccdccddc'
   
   # WASHOE.csv
-  ebam_header_3 <- "Date/Time/GMT,Conc (\xb5g/m3),Qtot (m3),COncRT,ConcHr,WS (KTS),Ozone (ppb),Flow,W/S,RTM09 (mg3),RH (%),W/D,AT,Ambient Temp (C),RHx,RHi,BV,FT,Alarm,Type,Serial Number,Version,Start Date/Time (GMT),Sys. Volts,UnitID,Alias,Latitude,Longitude,TimeStamp"
-  # NOTE:  make.names() complains with "invalid multibyte string 2" when unicode variables are present
-  # NOTE:  Replace HTML hex entitity for 'MICRO' found in some header lines with unicode
-  ebam_header_3 <- stringr::str_replace(ebam_header_3,'\xb5','\U00B5')
+  ebam_header_3 <- "Date/Time/GMT,Conc (\u00B5g/m3),Qtot (m3),COncRT,ConcHr,WS (KTS),Ozone (ppb),Flow,W/S,RTM09 (mg3),RH (%),W/D,AT,Ambient Temp (C),RHx,RHi,BV,FT,Alarm,Type,Serial Number,Version,Start Date/Time (GMT),Sys. Volts,UnitID,Alias,Latitude,Longitude,TimeStamp"
   ebam_rawNames_3 <- unlist(stringr::str_split(ebam_header_3, ','))
   ebam_names_3 <- make.names(ebam_rawNames_3)
   ebam_types_3 <- 'cdddddddddddddddddiccccdccddc'
