@@ -44,7 +44,7 @@ raw_enhance <- function(df) {
     df$pm25 <- df$ConcHr*1000
     df$longitude <- df$medoidLon
     df$latitude <- df$medoidLat
-    df$pressure <- as.numeric(NA)
+    df$pressure <- as.numeric(NA) # TODO: check if other NA's below should be numeric as well
   } else if ( monType=="ESAM_AIRSIS" ) {
     df$temperature <- df$AT.C.
     df$humidity <- df$RHx...
@@ -54,6 +54,15 @@ raw_enhance <- function(df) {
     df$longitude <- df$medoidLon
     df$latitude <- df$medoidLat
     df$pressure <- (df$BP.PA.)/100 #Adjust to hPa for consistency w/ ESAM_WRCC
+  } else if ( monType=="BAM1020_AIRSIS") {
+    df$temperature <- df$Ambient.Temp..C.
+    df$humidity <- df$RH....
+    df$windSpeed <- df$WS..KTS.*0.514444 # convert to m/s for consistency
+    df$windDir <- NA
+    df$pm25 <- df$Conc..µg.m3.
+    df$longitude <- df$medoidLon
+    df$latitude <- df$medoidLat
+    df$pressure <- NA
   } else if ( monType=="ESAM_WRCC" ) {
     df$temperature <- df$AvAirTemp
     df$humidity <- df$RelHumidity
