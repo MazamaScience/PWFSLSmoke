@@ -38,7 +38,7 @@ airsisDump_identifyMonitorType <- function(df) {
   #     Different header styles     -------------------------------------------
 
   # USFS_bam1020.csv
-  bam1020_header <- "Conc (\xb5/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),UnitID,Alias,Latitude,Longitude,TimeStamp"
+  bam1020_header <- "Conc (\xb5g/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),UnitID,Alias,Latitude,Longitude,TimeStamp"
   bam1020_header <- stringr::str_replace(bam1020_header,'\xb5','\u00B5')
   bam1020_rawNames <- unlist(stringr::str_split(bam1020_header, ','))
   bam1020_names <- make.names(bam1020_rawNames)
@@ -79,7 +79,7 @@ airsisDump_identifyMonitorType <- function(df) {
     lines <- readr::read_lines(df)
     # NOTE:  make.names() complains with "invalid multibyte string 2" when unicode variables are present
     # NOTE:  Replace HTML hex entitity for 'MICRO' found in some header lines with 'u'
-    line1 <- stringr::str_replace(lines[1],'\xb5','\u00BB5')
+    line1 <- stringr::str_replace(lines[1],'\xb5','\u00B5')
     colNames <- make.names(unlist(stringr::str_split(line1,',')))
   } else {
     colNames <- make.names(names(df))
