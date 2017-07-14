@@ -26,7 +26,7 @@ rawPlot_windRose <- function(df,
   timezone <- unique(df$timezone)
   
   # Force timezone to UTC if >1 timezone in metadata for monitorIDs
-  if ( length(timezone)>1 ) { # note that we will only enter this condition if localTime==TRUE
+  if ( length(timezone) > 1 ) { # note that we will only enter this condition if localTime==TRUE
     if ( localTime ) {
       warning(">1 timezone in data: Timezone (including tlim, if specified) forced to UTC")
       timezone <- "UTC"

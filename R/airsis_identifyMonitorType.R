@@ -101,10 +101,6 @@ airsis_identifyMonitorType <- function(df) {
     rawNames <- bam1020_rawNames
     columnNames <- bam1020_names
     columnTypes <- bam1020_types
-    # } else if ( length(setdiff(olderEbam_1_names, colNames)) == 0 ) {
-    #   monitorType <- "OTHER_1"
-    # } else if ( length(setdiff(olderEbam_2_names, colNames)) == 0 ) {
-    #   monitorType <- "OTHER_2"
   }
   
   monitorTypeList <- list(monitorType=monitorType,

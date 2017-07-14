@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.20
+
+ * added support for parsing of BAM1020 data from AIRSIS
+
 ### PWFSLSmoke 0.99.19
 
  * bug fix in quality control processing to handle monitors with no PM2.5 measurements
