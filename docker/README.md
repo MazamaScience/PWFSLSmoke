@@ -5,11 +5,11 @@ A quick refresher on docker commands is available at the [docker cheatsheet](htt
 A docker image with all required prerequisites can be built with the `Dockerfile` in this directory:
 
 ```
-$ docker build --no-cache -t mazamascience/pwfslsmoke:v0.99.20 -t mazamascience/pwfslsmoke:latest .
+$ docker build --no-cache -t mazamascience/pwfslsmoke:v0.99.21 -t mazamascience/pwfslsmoke:latest .
 $ docker images
 REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
 mazamascience/pwfslsmoke     latest              8154fe51ad75        8 minutes ago       1.26GB
-mazamascience/pwfslsmoke     v0.99.20            8154fe51ad75        8 minutes ago       1.26GB
+mazamascience/pwfslsmoke     v0.99.21            8154fe51ad75        8 minutes ago       1.26GB
 mazamascience/spatialutils   v0.4.9              be5b4f8f8ca5        22 hours ago        1.193 GB
 ...
 ```
@@ -49,7 +49,7 @@ print(df)
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:v0.99.20
+docker push mazamascience/pwfslsmoke:v0.99.21
 ```
 
 
@@ -58,6 +58,6 @@ docker push mazamascience/pwfslsmoke:v0.99.20
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:v0.99.20
+docker pull mazamascience/pwfslsmoke:v0.99.21
 ```
 
