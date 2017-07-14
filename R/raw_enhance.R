@@ -44,7 +44,7 @@ raw_enhance <- function(df) {
     df$pm25 <- df$ConcHr*1000
     df$longitude <- df$medoidLon
     df$latitude <- df$medoidLat
-    df$pressure <- as.numeric(NA) # TODO: check if other NA's below should be numeric as well
+    df$pressure <- as.numeric(NA)
   } else if ( monType=="ESAM_AIRSIS" ) {
     df$temperature <- df$AT.C.
     df$humidity <- df$RHx...
@@ -54,15 +54,15 @@ raw_enhance <- function(df) {
     df$longitude <- df$medoidLon
     df$latitude <- df$medoidLat
     df$pressure <- (df$BP.PA.)/100 #Adjust to hPa for consistency w/ ESAM_WRCC
-  } else if ( monType=="BAM1020_AIRSIS") {
+  } else if ( monType=="BAM1020_AIRSIS" ) {
     df$temperature <- df$Ambient.Temp..C.
     df$humidity <- df$RH....
-    df$windSpeed <- df$WS..KTS.*0.514444 # convert to m/s for consistency
-    df$windDir <- NA
-    df$pm25 <- df$Conc..µg.m3.
+    df$windSpeed <- df$WS..KTS.*0.514444
+    df$windDir <- as.numeric(NA)
+    df$pm25 <- df$'Conc..\u00B5g.m3.'
     df$longitude <- df$medoidLon
     df$latitude <- df$medoidLat
-    df$pressure <- NA
+    df$pressure <- as.numeric(NA)
   } else if ( monType=="ESAM_WRCC" ) {
     df$temperature <- df$AvAirTemp
     df$humidity <- df$RelHumidity
@@ -101,19 +101,16 @@ raw_enhance <- function(df) {
     }
   }
   
-  # for (i in unique(df$deploymentID)) { 
-  #   if (is.na(i)) { break } else {
-  #     index <- which(df$deploymentID==i)
-  #     df$timezone[index] <- MazamaSpatialUtils::getTimezone(df$longitude[index[1]], df$latitude[index[1]],
-  #                                                           countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
-      
+  # NOTE:  In order to minimize error messages in functions light rawPlot_timeseries() we
+  # NOTE:  add timezones to all rows, even those missing location information. Typically, 
+  # NOTE:  monitors will be moved within the same timezone. Adding timezones to rows with
+  # NOTE:  no location information is harmless in any case.
+  
+  # Apply timezone to missing hours based on timezone of prior good hour
+  df$timezone[df$timezone == ""] <- NA
+  df$timezone <- zoo::na.locf(df$timezone, na.rm=FALSE, fromLast=FALSE)
 
-  # Apply timezone to missing hours based on TZ of prior good hour
-  tz <- df$timezone[1]
-  for ( i in 2:nrow(df) ) {
-    if(df$timezone[i]=="") {df$timezone[i] <- tz}
-    tz <- df$timezone[i]
-  }
+  df$timezones[1]
 
   return(df)
 

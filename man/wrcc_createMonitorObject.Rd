@@ -7,8 +7,7 @@
 wrcc_createMonitorObject(startdate = 20020101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "UTC"),
   unitID = NULL, clusterDiameter = 1000,
-  baseUrl = "https://wrcc.dri.edu:443/cgi-bin/wea_list2.pl",
-  saveFile = NULL)
+  baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl", saveFile = NULL)
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

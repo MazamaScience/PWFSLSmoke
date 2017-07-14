@@ -29,22 +29,6 @@ airsis_BAM1020QualityControl <- function(df,
                                          valid_Conc = c(-Inf,984),
                                          flagAndKeep = FALSE) {
   
-  ### Qtot (m3)             ifelse(Qtot.m3. < 0.834 * 0.95, "FlowLow”
-  ###                       ifelse(Qtot.m3. > 0.834 * 1.05, "FlowHigh"
-  ### Ambient Temp (C)      ifelse(AT.C. > 45, "HighTemp"
-  ### RH (%)                ifelse(RH... > 45,"HighRHi"
-  ### Conc (µg/m3)          ifelse(Conc.mg. < 0, "Negative”,
-  ###                       ifelse(Conc.mg. > 0.984, "HighConc", "OK"
-  
-  ### dat.2012arbbamraw$concHR <- ifelse(dat.2012arbbamraw$Qtot.m3.<.834*.95,NA,
-  ###                                    ifelse(dat.2012arbbamraw$Qtot.m3.>.834*1.05,NA,
-  ###                                    ifelse(dat.2012arbbamraw$IT.C.>45,NA,
-  ###                                    ifelse(dat.2012arbbamraw$RH...> 45,NA,
-  ###                                    ifelse(dat.2012arbbamraw$Conc.mg.<0,0,
-  ###                                    ifelse(dat.2012arbbamraw$Conc.mg.>.984,NA,
-  ###                                    ifelse(dat.2012arbbamraw$Delta.C.>25,NA,
-  ###                                    dat.2012arbbamraw$Conc.mg.*1000)))))))
-  
   #  > names(df)
   #  [1] "MasterTable_ID"   "Alias"            "Latitude"         "Longitude"
   #  [5] "Conc..ug.m3."     "Qtot..m3."        "WS..KTS."         "Ozone..ppb."
@@ -116,14 +100,15 @@ airsis_BAM1020QualityControl <- function(df,
   }
 
   df <- df[goodLonMask & goodLatMask,]
+
+  # Sanity check -- row count
+  if (nrow(df) < 1) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.error(err_msg)
+    stop(err_msg, call.=FALSE)
+  }
   
   # ----- Time ----------------------------------------------------------------
-  
-  # Sanity check -- row count
-  if ( nrow(df) == 0 ) {
-    logger.error("Unable to complete QC: no data remains")
-    stop(paste0("Unable to complete QC: no data remains"))
-  }
   
   # Add a POSIXct datetime
   df$datetime <- lubridate::floor_date(lubridate::mdy_hms(df$TimeStamp), unit="hour") - lubridate::dhours(1)
@@ -143,32 +128,11 @@ airsis_BAM1020QualityControl <- function(df,
   # NOTE: how an average over a year, such as 2016, is referred to as 2016's value, not 2017's, even
   # NOTE: though the average wasn't available until the beginning of 2017).
   
-  # # ----- Type ----------------------------------------------------------------
-  # 
-  # goodTypeMask <- !is.na(df$Type) & (df$Type == "PM 2.5")
-  # 
-  # badRows <- !goodTypeMask
-  # badRowCount <- sum(badRows)
-  # if ( badRowCount > 0 ) {
-  #   logger.info(paste(verb,"%s rows with invalid Type information"), badRowCount)
-  #   logger.debug("Bad Types:  %s", paste0(sort(unique(df$Type[badRows]),na.last=TRUE), collapse=", "))
-  #   if ( flagAndKeep ) {
-  #     # apply flags
-  #     dfFlagged$QCFlag_badType[df$rowID[!goodTypeMask]] <- TRUE
-  #     dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badType
-  #     # apply reason code 
-  #     dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]],"badType")
-  #   }
-  # }
-  # 
-  # df <- df[goodTypeMask,]
-  # 
-  # if (nrow(df) < 1) {
-  #   logger.warn("No valid PM2.5 data for %s", monitorName)
-  #   stop(paste0("No valid PM2.5 data for ", monitorName))
-  # }
+  # ----- Type ----------------------------------------------------------------
+
+  # No 'Type' column in BAM1020 files
   
-  # QC -----------------------------------------------------------
+  # QC ------------------------------------------------------------------------
   
   
   # Leland Tarnay QC -----------------------------------------------------------

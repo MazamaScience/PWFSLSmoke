@@ -47,10 +47,6 @@ airsis_parseData <- function(fileString) {
     
     logger.debug("Parsing BAM1020 data ...")
     
-    # logger.warn("BAM1020 file parsing is not supported")
-    # logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
-    # stop(paste0("BAM1020 file parsing is not supported"), call.=FALSE)
-    
   } else if ( monitorType == "EBAM" ) {
     
     logger.debug("Parsing EBAM data ...")
