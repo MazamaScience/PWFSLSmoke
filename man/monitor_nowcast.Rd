@@ -43,6 +43,11 @@ addAQILines()
 addAQILegend(lwd=1, pch=NULL)
 legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
 title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
+# Zooming in to check on handling of missing values
+monitorPlot_timeseries(Omak, tlim=c(20150823,20150825))
+monitorPlot_timeseries(Omak_nowcast, tlim=c(20150823,20150825), pch=16,col='red',type='b', add=TRUE)
+abline(v=Omak$data[is.na(Omak$data[,2]),1])
+title("Missing values")
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}

@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.21
+
+ * correction to monitor_nowcast() algorithm
+ * updated vignettes to use package datasets
+
 ### PWFSLSmoke 0.99.20
 
  * added support for parsing of BAM1020 data from AIRSIS

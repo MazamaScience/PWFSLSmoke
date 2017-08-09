@@ -33,6 +33,12 @@
 #' addAQILegend(lwd=1, pch=NULL)
 #' legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
 #' title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
+#' # Zooming in to check on handling of missing values
+#' monitorPlot_timeseries(Omak, tlim=c(20150823,20150825))
+#' monitorPlot_timeseries(Omak_nowcast, tlim=c(20150823,20150825), pch=16,col='red',type='b', add=TRUE)
+#' abline(v=Omak$data[is.na(Omak$data[,2]),1])
+#' title("Missing values")
+
 
 # NOTE:  This script is based on the javascript code at: 
 # NOTE:    https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
@@ -77,31 +83,39 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   # The oldest hour for which we can calculate nowcast is numHrs+1
   for ( i in length(x):(numHrs+1) ) {
     
-    # Apply nowcast algorithm to numHrs data points in recent-older order
-    concByHour <- x[(i-1):(i-numHrs)]
+    # Apply nowcast algorithm to numHrs data points in order with more recent first
+    concByHour <- x[i:(i-numHrs+1)]
     
-    # If two or more of the most recent 3 hours are missing, no valid Nowcast will be reported
     if ( sum( is.na(concByHour[1:3]) ) >= 2 ) {
+    
+      # If two or more of the most recent 3 hours are missing, no valid Nowcast will be reported
+      
       x[i] <- NA
       
     } else {
+      
       # Calculate the weight factor according to the type of air quality data
       weightFactor <- .weightFactor(concByHour, weightFactorMin)
       
-      weightedConcSum <- weightFactorSum <- 0
+      # NOTE:  We need to create vectors so that we can sum at the end with na.rm=TRUE
+
+      weightedConcs <- rep(as.numeric(NA),12)
+      weightFactors <- rep(as.numeric(NA),12)
       
-      # Loop to calculate the denominator and numerator
+      # Loop over hours to get individual elements
       for (j in 1:numHrs) {
-        weightedConcSum <- sum( weightedConcSum, concByHour[j] * weightFactor^(j-1), na.rm=TRUE)
-        weightFactorSum <- sum( weightFactorSum + weightFactor^(j-1), na.rm=TRUE)
+        if ( !is.na( concByHour[j]) ) {
+          weightedConcs[j] <- concByHour[j] * weightFactor^(j-1)
+          weightFactors[j] <- weightFactor^(j-1)
+        }
       }
       
-      x[i] <- weightedConcSum/weightFactorSum
-      
+      x[i] <- sum(weightedConcs, na.rm=TRUE) / sum(weightFactors, na.rm=TRUE)
+
     }
   }
   
-  # Set missing values when there are not enough preceding hours'
+  # Set missing values when there are not enough preceding hours
   x[1:numHrs] <- NA
   
   return(x)
@@ -111,6 +125,7 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
 #  concByHour: vector of hourly concentration values
 #  weightFactorMin (optional): wight factor minimum
 .weightFactor <- function(concByHour, weightFactorMin) {
+  
   min <- min(concByHour, na.rm=TRUE)
   max <- max(concByHour, na.rm=TRUE)
   
@@ -134,9 +149,8 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   # For pm data, if the min/max ratio is less than min weight factor we use the latter  
   } else if ( weightFactor > weightFactorMin ) {
     return(weightFactor)
-    
   } else {
     return(weightFactorMin)
-    
   }
+  
 }

@@ -65,15 +65,18 @@ So the following will always be true:
 
 **Example 1: Exploring `ws_monitor` Objects**
 
-We will use the `airnow_load()` and `monitor_subset()` functions to download and subset a `ws_monitor` object
+We will use the built-in "Northwest_Megafires" dataset and the `monitor_subset()` function to subset a `ws_monitor` object
 which we can then explore.
 
 ```{r}
 library(PWFSLSmoke)
 
-# Get some airnow data for Washington
-airnow <- airnow_load(startdate=20150801, enddate=20150831)
-WA <- monitor_subset(airnow, stateCodes='WA')
+# Get some airnow data for Washington state in the summer of 2015
+N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
+# To work with AirNow data directly, uncomment the next two lines
+#N_M <- airnow_load(startdate=20150801, enddate=20150831)
+#WA <- monitor_subset(airnow, stateCodes=c("WA"))
+WA <- monitor_subset(N_M, stateCodes='WA')
 
 # 'ws_monitor' objects can be identified by their class
 class(WA)
@@ -102,8 +105,8 @@ The following code mixes use of package functions with direct manipulation of th
 
 ```{r}
 # Use special knowledge of AirNow IDs to subset airnow data for Spokane county monitors
-SpokaneCountyIDs <- airnow$meta$monitorID[stringr::str_detect(airnow$meta$monitorID, "^53063")]
-Spokane <- monitor_subset(airnow, monitorIDs=SpokaneCountyIDs)
+SpokaneCountyIDs <- N_M$meta$monitorID[stringr::str_detect(N_M$meta$monitorID, "^53063")]
+Spokane <- monitor_subset(N_M, monitorIDs=SpokaneCountyIDs)
 
 # Apply 3-hr rolling mean
 Spokane_3hr <- monitor_rollingMean(Spokane, 3, align="center")
