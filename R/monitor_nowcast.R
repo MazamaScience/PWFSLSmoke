@@ -23,6 +23,8 @@
 #' @references \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
 #' @references \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 #' @references \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
+#' @references \url{https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172}
+#' @references \url{https://forum.airnowtech.org/t/the-aqi-equation/169}
 #' @examples
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 #' Omak <- monitor_subset(N_M, monitorIDs='530470013')
@@ -43,6 +45,8 @@
 # NOTE:  This script is based on the javascript code at: 
 # NOTE:    https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
 # NOTE: To compute a valid NowCast, you must have at least two of the most recent 3 hours
+
+# TODO:  python-aqi at: https://pypi.python.org/pypi/python-aqi
 
 monitor_nowcast <- function(ws_monitor, version='pm') {
   
