@@ -55,5 +55,9 @@ title("Missing values")
 \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 
 \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
+
+\url{https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172}
+
+\url{https://forum.airnowtech.org/t/the-aqi-equation/169}
 }
 \keyword{ws_monitor}
