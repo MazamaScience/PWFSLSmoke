@@ -9,7 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
-### PWFSLSmoke 0.99.21
+### PWFSLSmoke 0.99.23
+
+ * bug fix for monitor assignment issues in WRCC and AIRSIS monitors that move
+
+### PWFSLSmoke 0.99.22
 
  * correction to monitor_nowcast() algorithm
  * updated vignettes to use package datasets
