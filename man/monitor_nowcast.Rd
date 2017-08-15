@@ -4,12 +4,14 @@
 \alias{monitor_nowcast}
 \title{Apply Nowcast Algorithm to ws_monitor Object}
 \usage{
-monitor_nowcast(ws_monitor, version = "pm")
+monitor_nowcast(ws_monitor, version = "pm", includeShortTerm = FALSE)
 }
 \arguments{
 \item{ws_monitor}{emph{ws_monitor} object}
 
 \item{version}{character identity specifying the type of nowcast algorithm to be used}
+
+\item{includeShortTerm}{calcluate preliminary NowCast values for hours 3-11}
 }
 \value{
 A emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
@@ -36,7 +38,7 @@ Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
 \examples{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 Omak <- monitor_subset(N_M, monitorIDs='530470013')
-Omak_nowcast <- monitor_nowcast(Omak)
+Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
 monitorPlot_timeseries(Omak, type='l', lwd=2)
 monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
 addAQILines()
