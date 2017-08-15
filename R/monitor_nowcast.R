@@ -70,6 +70,8 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   n <- ncol(ws_monitor$data)
   ws_monitor$data[,2:n] <- apply(as.data.frame(ws_monitor$data[,2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin) })
   ws_monitor$data[,2:n] <- round(as.data.frame(ws_monitor$data[,2:n]), digits = digits)
+  # TODO: wikipedia page says ozone nowcast should truncate to ppb, rather than round
+  # TODO: (e.g. 0.0138 would become 0.013, not 0.014)
   
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )
   
