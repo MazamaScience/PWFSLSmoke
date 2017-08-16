@@ -28,7 +28,7 @@
 #' @seealso \code{\link{addMazamaMetadata}}
 
 
-airsis_createMetaDataframe <- function(df) {
+airsis_createMetaDataframe <- function(df) { # TODO:  Accept oldMeta=NULL argument
 
   # Sanity check -- df must have a monitorType
   if ( !'monitorType' %in% names(df) ) {
@@ -148,7 +148,7 @@ airsis_createMetaDataframe <- function(df) {
   }
   
   # Add elevation, siteName and countyName
-  meta <- addGoogleMetadata(meta)
+  meta <- addGoogleMetadata(meta) # TODO:  Pass in oldMeta argument
 
   # Convert some columns to character even if they have all NA
   characterColumns <- c('AQSID','siteCode','siteName','countyName','timezone','monitorID','monitorType')

@@ -13,7 +13,7 @@
 #' @return Input dataframe with additional columns: \code{elevation, siteName, countyName}.
 #' @references \url{https://developers.google.com/maps/documentation/elevation/intro}
 
-addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
+addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") { # TODO:  Accept oldMeta=NULL argument
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df)
@@ -78,17 +78,19 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude") {
     
     for (i in 1:nrow(df)) {
       
+      # TODO:  If monitorID is found in oldMeta and associated siteName exists, use it. Otherwise:
+      
       if ( is.na(df[i,'siteName']) ) {
         
         location <- c(df[i,lonVar],df[i,latVar])
         logger.trace("\tgoogle address request for location = %s, %s", location[1], location[2])
-        if (!anyNA(location)) {
+        if ( !anyNA(location) ) {
           address <- suppressMessages( ggmap::revgeocode(location, output='more') )
           # NOTE:  revgeocode can fail if you have too may Google requests in a day
           result <- try( df$siteName[i] <- paste(address$locality,address$route,sep='-'),
                          silent=TRUE ) # don't show errors
           if ( "try-error" %in% class(result) ) {
-            logger.warn("Google geocoding may have failed. Have you goin over the 2,500/day limit? (2017)")
+            logger.warn("Google geocoding may have failed. Have you gone over the 2.5K/day limit? (2017)")
           }
           # NOTE:  administrative_area_level_2 is not always present
           try( df$countyName[i] <- stringr::str_replace(address$administrative_area_level_2,' County',''),

@@ -26,7 +26,7 @@
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
 
-airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
+airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000) { # TODO:  Add oldMeta=NULL argument
 
   logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
@@ -70,7 +70,7 @@ airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
     logger.debug("Creating 'meta' dataframe ...")
-    meta <- airsis_createMetaDataframe(df)
+    meta <- airsis_createMetaDataframe(df) # TODO:  pass in oldMeta argument
     
     # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
     logger.debug("Creating 'data' dataframe ...")
