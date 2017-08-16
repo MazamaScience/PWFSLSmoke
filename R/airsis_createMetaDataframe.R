@@ -31,6 +31,8 @@
 
 airsis_createMetaDataframe <- function(df, existingMeta=NULL) {
 
+  logger.info(" ----- airsis_createMetaDataframe() ----- ")
+
   # Sanity check -- df must have a monitorType
   if ( !'monitorType' %in% names(df) ) {
     logger.error("No 'monitorType' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
@@ -136,7 +138,7 @@ airsis_createMetaDataframe <- function(df, existingMeta=NULL) {
   rownames(meta) <- meta$monitorID
   
   # Add timezones, state and country codes
-  meta <- addMazamaMetadata(meta, existingMeta)
+  meta <- addMazamaMetadata(meta, existingMeta=existingMeta)
   
   # TODO:  Could assign other spatial identifiers like EPARegion, etc.
   
@@ -149,7 +151,7 @@ airsis_createMetaDataframe <- function(df, existingMeta=NULL) {
   }
   
   # Add elevation, siteName and countyName
-  meta <- addGoogleMetadata(meta, existingMeta)
+  meta <- addGoogleMetadata(meta, existingMeta=existingMeta)
 
   # Convert some columns to character even if they have all NA
   characterColumns <- c('AQSID','siteCode','siteName','countyName','timezone','monitorID','monitorType')

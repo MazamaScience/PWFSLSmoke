@@ -16,6 +16,8 @@
 
 addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
   
+  logger.info(" ----- addGoogleMetadata() ----- ")
+  
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df)
   
@@ -69,7 +71,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
   
   # ----- Add siteName from Google API ---------------------------
   
-  logger.debug("Getting Google address data for %s location(s)", nrow(df))
+  logger.debug("Getting site names for %s location(s)", nrow(df))
   
   # When siteName is missing, create one similar to AirNow with "locality-route"
   
@@ -101,6 +103,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
       if ( metadataExists ) {
         
         # Use existing siteName and countyName if the already exist
+        logger.trace("\tusing existing metadata for %s", monitorID)
         df$siteName[i] <- existingMeta[monitorID,'siteName']
         df$countyName[i] <- existingMeta[monitorID, 'countyName']
         
