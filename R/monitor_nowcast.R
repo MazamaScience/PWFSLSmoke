@@ -1,31 +1,43 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Apply Nowcast Algorithm to ws_monitor Object
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param version character identity specifying the type of nowcast algorithm to be used
-#' @param includeShortTerm calcluate preliminary NowCast values for hours 3-11
-#' @return A emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
+#' @param includeShortTerm calcluate preliminary NowCast values starting with the 2nd hour
+#' @return A \emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
 #' @description A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
 #' \code{version} argument specifies the minimum weight factor and number of hours to be 
 #' considered in the calculation.
 #' 
 #' Available versions include:
 #' \enumerate{
-#' \item{pm}{hours=12, weight=0.5}
-#' \item{pmAsian}{hours=3, weight=0.1}
-#' \item{ozone}{hours=8, weight=NA}
+#' \item{\code{pm}}: {hours=12, weight=0.5}
+#' \item{\code{pmAsian}}: {hours=3, weight=0.1}
+#' \item{\code{ozone}}: {hours=8, weight=NA}
 #' }
 #' 
-#' See the references for details. The default, \code{version='pm'}, is appropriate
-#' for typical usage.
+#' The default, \code{version='pm'}, is appropriate for typical usage.
 #' 
-#' @note Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
-#' .001 for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
+#' @details 
+#' This function calculates the current hour's NowCast value based on the value for the given hour and the previous N-1 hours, where N is the number
+#' of hours corresponding to the \code{version} argument (see \strong{Description} above). For example, if \code{version=pm}, then the NowCast value
+#' for Hour 12 is based on the data from Hours 1-12.
+#' 
+#' The function requires valid data for at least two of the three latest hours; NA's are returned for hours where this condition is not met.
+#' 
+#' By default, the funtion will not return a valid value until the Nth hour. If \code{includeShortTerm=TRUE}, the function will return a valid value
+#' after only the 2nd hour (provided, of course, that both hours are valid).
+#' 
+#' Calculated Nowcast values are truncated to the nearest .1 ug/m3 for 'pm' and nearest
+#' .001 ppm for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
+#' 
 #' @references \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
 #' @references \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 #' @references \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 #' @references \url{https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172}
 #' @references \url{https://forum.airnowtech.org/t/the-aqi-equation/169}
+#' @references \url{https://airnow.zendesk.com/hc/en-us/articles/211625598-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-}
+#' 
 #' @examples
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 #' Omak <- monitor_subset(N_M, monitorIDs='530470013')
@@ -45,7 +57,7 @@
 
 # NOTE:  This script is based on the javascript code at: 
 # NOTE:    https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
-# NOTE: To compute a valid NowCast, you must have at least two of the most recent 3 hours
+# NOTE:  To compute a valid NowCast, you must have at least two of the most recent 3 hours
 
 # TODO:  python-aqi at: https://pypi.python.org/pypi/python-aqi
 
@@ -63,12 +75,13 @@ monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
   } else if (version == 'ozone') {
     numHrs <- 8
     weightFactorMin <- NA
-    digits <- 3
+    digits <- 3  # Assumes O3 values given in ppm; update to 0 if Ozone given in ppb
   }
   
   # Apply nowcast to each data column in ws_monitor
-  # NOTE:  We need as.data.frame for when there is only a single column of data
-  # NOTE:  We truncate, rather than round, as per documentation linked above
+  # NOTE:  We need as.data.frame for when there is only a single column of data.
+  # NOTE:  We truncate, rather than round, per the following:
+  # NOTE:  https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
   n <- ncol(ws_monitor$data)
   newData <- apply(as.data.frame(ws_monitor$data[,2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin, includeShortTerm) })
   ws_monitor$data[,2:n] <- as.data.frame(trunc(newData*10^digits)/10^digits)
@@ -79,20 +92,17 @@ monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
 
 # ----- Helper Functions ------------------------------------------------------
 
-# TODO:  Need special logic for the first 1:numHrs for which the nowcast algorithm can be applied.
-# TODO:  as long as we accept na.rm logic while calculating the most recent 12-hr average.
-# TODO:  So the first two data points will be NA but the third could be calculated using that
-# TODO:  3-hr average as a proxy for the 12-hr average.
 .nowcast <- function(x, numHrs, weightFactorMin, includeShortTerm) {
   
   if ( includeShortTerm ) {
-    firstHr <- 3
+    firstHr <- 2
   } else {
     firstHr <- numHrs
   }
   
   # Start at the end end of the data (most recent hour) and work backwards
-  # The oldest hour for which we can calculate nowcast is numHrs
+  # The oldest hour for which we can calculate nowcast is numHrs, unless includeShortTerm=TRUE
+  # in which case we can go back to the 3rd hour.
   for ( i in length(x):firstHr ) {
 
     # Apply nowcast algorithm to numHrs data points in order with more recent first
@@ -136,33 +146,23 @@ monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
 # Calculate the weight factor ('w' in the nowcast formula)
 #  concByHour: vector of hourly concentration values
 #  weightFactorMin (optional): wight factor minimum
+# Assumes concByHour has at least one valid value to calculate min & max. In fact, .nowcast won't even call 
+# this function if more than one of the three most recent hours is invalid.
 .weightFactor <- function(concByHour, weightFactorMin) {
   
   min <- min(concByHour, na.rm=TRUE)
   max <- max(concByHour, na.rm=TRUE)
   
-  # NOTE:  The official Nowcast algorithm has no mention of (aphysical) 
-  # NOTE:  negative values. But they are not uncommon in actual data.
-  # NOTE:  We hande them here.
+  # Calculate weight factor
+  # NOTE:  https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172 says that there is "no minimum
+  # NOTE:    weight factor" for ozone; however, we limit the value to zero since otherwise it would be possible
+  # NOTE:    to get negative weights, even as large as -Inf (i.e. if min<0 & max=0).
+  # NOTE:  Otherwise, we don't worry about negatives, per the following:
+  # NOTE:    https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143
+  weightFactor <- 1-(max-min)/max
+  weightFactor <- min(weightFactor, 1, na.rm=TRUE)
+  weightFactor <- max(weightFactor, weightFactorMin, 0, na.rm=TRUE)
   
-  # Handle zero and negative values
-  if ( min < 0 ) { # negative values -- unknowable instrument bias: less weighting
-    weightFactor <- weightFactorMin
-  } else if ( min == 0 && max == 0 ) { # all zeroes -- consistent: full weighting
-    weightFactor = 1
-  } else { # all positive: normal calculation
-    weightFactor <- min/max
-  }
-    
-  # Nowcast for ozone doesn't use a minimum weight factor
-  if ( is.na(weightFactorMin) ) {
-    return(weightFactor)
-  
-  # For pm data, if the min/max ratio is less than min weight factor we use the latter  
-  } else if ( weightFactor > weightFactorMin ) {
-    return(weightFactor)
-  } else {
-    return(weightFactorMin)
-  }
+  return(weightFactor)
   
 }

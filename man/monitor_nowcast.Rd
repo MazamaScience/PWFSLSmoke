@@ -7,14 +7,14 @@
 monitor_nowcast(ws_monitor, version = "pm", includeShortTerm = FALSE)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{version}{character identity specifying the type of nowcast algorithm to be used}
 
-\item{includeShortTerm}{calcluate preliminary NowCast values for hours 3-11}
+\item{includeShortTerm}{calcluate preliminary NowCast values starting with the 2nd hour}
 }
 \value{
-A emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
+A \emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
 }
 \description{
 A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
@@ -23,17 +23,25 @@ considered in the calculation.
 
 Available versions include:
 \enumerate{
-\item{pm}{hours=12, weight=0.5}
-\item{pmAsian}{hours=3, weight=0.1}
-\item{ozone}{hours=8, weight=NA}
+\item{\code{pm}}: {hours=12, weight=0.5}
+\item{\code{pmAsian}}: {hours=3, weight=0.1}
+\item{\code{ozone}}: {hours=8, weight=NA}
 }
 
-See the references for details. The default, \code{version='pm'}, is appropriate
-for typical usage.
+The default, \code{version='pm'}, is appropriate for typical usage.
 }
-\note{
-Calculated Nowcast values are rounded to the nearest .1 for 'pm' and nearest
-.001 for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
+\details{
+This function calculates the current hour's NowCast value based on the value for the given hour and the previous N-1 hours, where N is the number
+of hours corresponding to the \code{version} argument (see \strong{Description} above). For example, if \code{version=pm}, then the NowCast value
+for Hour 12 is based on the data from Hours 1-12.
+
+The function requires valid data for at least two of the three latest hours; NA's are returned for hours where this condition is not met.
+
+By default, the funtion will not return a valid value until the Nth hour. If \code{includeShortTerm=TRUE}, the function will return a valid value
+after only the 2nd hour (provided, of course, that both hours are valid).
+
+Calculated Nowcast values are truncated to the nearest .1 ug/m3 for 'pm' and nearest
+.001 ppm for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
 }
 \examples{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
@@ -61,5 +69,7 @@ title("Missing values")
 \url{https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172}
 
 \url{https://forum.airnowtech.org/t/the-aqi-equation/169}
+
+\url{https://airnow.zendesk.com/hc/en-us/articles/211625598-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-}
 }
 \keyword{ws_monitor}
