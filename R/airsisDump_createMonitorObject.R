@@ -3,6 +3,7 @@
 #' @title Ingest AIRSIS Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the AIRSIS dump file
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
+#' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
 #' @return A emph{ws_monitor} object with AIRSIS data.
 #' @description Ingests an  AIRSIS dump file and converts
 #' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
@@ -26,8 +27,10 @@
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
 
-airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000) { # TODO:  Add oldMeta=NULL argument
-
+airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000, existingMeta=NULL) {
+  
+  logger.info(" ----- airsisDump_createMonitorObject() ----- ")
+  
   logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
   
@@ -70,7 +73,7 @@ airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000) { # T
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
     logger.debug("Creating 'meta' dataframe ...")
-    meta <- airsis_createMetaDataframe(df) # TODO:  pass in oldMeta argument
+    meta <- airsis_createMetaDataframe(df, existingMeta)
     
     # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
     logger.debug("Creating 'data' dataframe ...")

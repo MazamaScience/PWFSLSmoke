@@ -4,12 +4,15 @@
 \alias{wrccDump_createMonitorObject}
 \title{Ingest WRCC Dump File and Create ws_monitor Object}
 \usage{
-wrccDump_createMonitorObject(filepath, clusterDiameter = 1000)
+wrccDump_createMonitorObject(filepath, clusterDiameter = 1000,
+  existingMeta = NULL)
 }
 \arguments{
 \item{filepath}{absolute path of the WRCC dump file}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
+
+\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
 A emph{ws_monitor} object with WRCC data.
