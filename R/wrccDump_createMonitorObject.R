@@ -3,6 +3,7 @@
 #' @title Ingest WRCC Dump File and Create ws_monitor Object
 #' @param filepath absolute path of the WRCC dump file
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
+#' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
 #' @return A emph{ws_monitor} object with WRCC data.
 #' @description Ingests a WRCC dump file and converts
 #' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
@@ -26,8 +27,10 @@
 #' @seealso \code{\link{wrcc_createMetaDataframe}}
 #' @seealso \code{\link{wrcc_createDataDataframe}}
 
-wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
+wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000, existingMeta=NULL) {
 
+  logger.info(" ----- wrccDump_createMonitorObject() ----- ")
+  
   logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
   
@@ -70,7 +73,7 @@ wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000) {
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
     logger.debug("Creating 'meta' dataframe ...")
-    meta <- wrcc_createMetaDataframe(df)
+    meta <- wrcc_createMetaDataframe(df, existingMeta)
     
     # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
     logger.debug("Creating 'data' dataframe ...")

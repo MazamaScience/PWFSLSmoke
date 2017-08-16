@@ -4,10 +4,12 @@
 \alias{wrcc_createMetaDataframe}
 \title{Create WRCC Site Location Metadata Dataframe}
 \usage{
-wrcc_createMetaDataframe(df)
+wrcc_createMetaDataframe(df, existingMeta = NULL)
 }
 \arguments{
 \item{df}{single site WRCC dataframe after metadata enhancement}
+
+\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
 A \code{meta} dataframe for use in a \emph{ws_monitor} object.

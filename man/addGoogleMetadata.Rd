@@ -4,7 +4,8 @@
 \alias{addGoogleMetadata}
 \title{Add Elevation and Address Information to a Dataframe}
 \usage{
-addGoogleMetadata(df, lonVar = "longitude", latVar = "latitude")
+addGoogleMetadata(df, lonVar = "longitude", latVar = "latitude",
+  existingMeta = NULL)
 }
 \arguments{
 \item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
@@ -12,6 +13,8 @@ addGoogleMetadata(df, lonVar = "longitude", latVar = "latitude")
 \item{lonVar}{name of longitude variable in the incoming dataframe}
 
 \item{latVar}{name of the latitude variable in the incoming dataframe}
+
+\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
 Input dataframe with additional columns: \code{elevation, siteName, countyName}.

@@ -9,6 +9,18 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.26
+
+ * avoid using Google elevation service whenever monitor metadata is already present
+
+### PWFSLSmoke 0.99.25
+
+ * more detailed logging output
+
+### PWFSLSmoke 0.99.24
+
+ * avoid using Google address service whenever monitor metadata is already present
+
 ### PWFSLSmoke 0.99.23
 
  * bug fix for monitor assignment issues in WRCC and AIRSIS monitors that move

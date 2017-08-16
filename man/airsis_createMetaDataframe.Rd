@@ -4,10 +4,12 @@
 \alias{airsis_createMetaDataframe}
 \title{Create AIRSIS Site Location Metadata Dataframe}
 \usage{
-airsis_createMetaDataframe(df)
+airsis_createMetaDataframe(df, existingMeta = NULL)
 }
 \arguments{
 \item{df}{single site AIRSIS dataframe after metadata enhancement}
+
+\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
 A \code{meta} dataframe for use in a emph{ws_monitor} object.
