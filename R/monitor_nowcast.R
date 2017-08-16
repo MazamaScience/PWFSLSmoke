@@ -3,6 +3,7 @@
 #' @title Apply Nowcast Algorithm to ws_monitor Object
 #' @param ws_monitor emph{ws_monitor} object
 #' @param version character identity specifying the type of nowcast algorithm to be used
+#' @param includeShortTerm calcluate preliminary NowCast values for hours 3-11
 #' @return A emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
 #' @description A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
 #' \code{version} argument specifies the minimum weight factor and number of hours to be 
@@ -28,7 +29,7 @@
 #' @examples
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 #' Omak <- monitor_subset(N_M, monitorIDs='530470013')
-#' Omak_nowcast <- monitor_nowcast(Omak)
+#' Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
 #' monitorPlot_timeseries(Omak, type='l', lwd=2)
 #' monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
 #' addAQILines()
@@ -48,7 +49,7 @@
 
 # TODO:  python-aqi at: https://pypi.python.org/pypi/python-aqi
 
-monitor_nowcast <- function(ws_monitor, version='pm') {
+monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
   
   # Set parameters based on version
   if (version =='pm') {
@@ -67,9 +68,10 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   
   # Apply nowcast to each data column in ws_monitor
   # NOTE:  We need as.data.frame for when there is only a single column of data
+  # NOTE:  We truncate, rather than round, as per documentation linked above
   n <- ncol(ws_monitor$data)
-  ws_monitor$data[,2:n] <- apply(as.data.frame(ws_monitor$data[,2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin) })
-  ws_monitor$data[,2:n] <- round(as.data.frame(ws_monitor$data[,2:n]), digits = digits)
+  newData <- apply(as.data.frame(ws_monitor$data[,2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin, includeShortTerm) })
+  ws_monitor$data[,2:n] <- as.data.frame(trunc(newData*10^digits)/10^digits)
   
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )
   
@@ -81,15 +83,21 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
 # TODO:  as long as we accept na.rm logic while calculating the most recent 12-hr average.
 # TODO:  So the first two data points will be NA but the third could be calculated using that
 # TODO:  3-hr average as a proxy for the 12-hr average.
-.nowcast <- function(x, numHrs, weightFactorMin) {
+.nowcast <- function(x, numHrs, weightFactorMin, includeShortTerm) {
+  
+  if ( includeShortTerm ) {
+    firstHr <- 3
+  } else {
+    firstHr <- numHrs
+  }
   
   # Start at the end end of the data (most recent hour) and work backwards
-  # The oldest hour for which we can calculate nowcast is numHrs+1
-  for ( i in length(x):(numHrs+1) ) {
-    
+  # The oldest hour for which we can calculate nowcast is numHrs
+  for ( i in length(x):firstHr ) {
+
     # Apply nowcast algorithm to numHrs data points in order with more recent first
-    concByHour <- x[i:(i-numHrs+1)]
-    
+    concByHour <- x[i:max(1, i-numHrs+1)]
+
     if ( sum( is.na(concByHour[1:3]) ) >= 2 ) {
     
       # If two or more of the most recent 3 hours are missing, no valid Nowcast will be reported
@@ -103,9 +111,9 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
       
       # NOTE:  We need to create vectors so that we can sum at the end with na.rm=TRUE
 
-      weightedConcs <- rep(as.numeric(NA),12)
-      weightFactors <- rep(as.numeric(NA),12)
-      
+      weightedConcs <- rep(as.numeric(NA),numHrs)
+      weightFactors <- rep(as.numeric(NA),numHrs)
+
       # Loop over hours to get individual elements
       for (j in 1:numHrs) {
         if ( !is.na( concByHour[j]) ) {
@@ -120,7 +128,7 @@ monitor_nowcast <- function(ws_monitor, version='pm') {
   }
   
   # Set missing values when there are not enough preceding hours
-  x[1:numHrs] <- NA
+  x[1:(firstHr-1)] <- NA
   
   return(x)
 }
