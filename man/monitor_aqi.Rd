@@ -10,14 +10,22 @@ monitor_aqi(ws_monitor, aqiParameter = "pm25", nowcastVersion = "pm",
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{aqiParameter}{parameter type}
+\item{aqiParameter}{parameter type; used to define reference breakpointsTable}
 
 \item{nowcastVersion}{character identity specifying the type of nowcast algorithm to be used}
 
 \item{includeShortTerm}{calcluate preliminary values starting with the 2nd hour}
 }
 \description{
-Nowcast and AQI algorithms are applied to the data in in the ws_monitor object.
+Nowcast and AQI algorithms are applied to the data in the ws_monitor object.
+}
+\examples{
+\dontrun{
+N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
+ws_monitor <- N_M
+aqi <- monitor_aqi(ws_monitor)
+monitorPlot_timeseries(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")
+}
 }
 \references{
 \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
