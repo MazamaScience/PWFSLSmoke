@@ -39,6 +39,7 @@
 #' @references \url{https://airnow.zendesk.com/hc/en-us/articles/211625598-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-}
 #' 
 #' @examples
+#' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 #' Omak <- monitor_subset(N_M, monitorIDs='530470013')
 #' Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
@@ -53,6 +54,7 @@
 #' monitorPlot_timeseries(Omak_nowcast, tlim=c(20150823,20150825), pch=16,col='red',type='b', add=TRUE)
 #' abline(v=Omak$data[is.na(Omak$data[,2]),1])
 #' title("Missing values")
+#' }
 
 
 # NOTE:  This script is based on the javascript code at: 
@@ -83,8 +85,8 @@ monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
   # NOTE:  We truncate, rather than round, per the following:
   # NOTE:  https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
   n <- ncol(ws_monitor$data)
-  newData <- apply(as.data.frame(ws_monitor$data[,2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin, includeShortTerm) })
-  ws_monitor$data[,2:n] <- as.data.frame(trunc(newData*10^digits)/10^digits)
+  newData <- apply(as.data.frame(ws_monitor$data[2:n]), 2, function(x) { .nowcast(x, numHrs, weightFactorMin, includeShortTerm) })
+  ws_monitor$data[2:n] <- as.data.frame(trunc(newData*10^digits)/10^digits)
   
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )
   

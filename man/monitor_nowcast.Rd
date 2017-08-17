@@ -44,6 +44,7 @@ Calculated Nowcast values are truncated to the nearest .1 ug/m3 for 'pm' and nea
 .001 ppm for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
 }
 \examples{
+\dontrun{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 Omak <- monitor_subset(N_M, monitorIDs='530470013')
 Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
@@ -58,6 +59,7 @@ monitorPlot_timeseries(Omak, tlim=c(20150823,20150825))
 monitorPlot_timeseries(Omak_nowcast, tlim=c(20150823,20150825), pch=16,col='red',type='b', add=TRUE)
 abline(v=Omak$data[is.na(Omak$data[,2]),1])
 title("Missing values")
+}
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
