@@ -34,22 +34,27 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   # TODO: include checks to ensure values are appropriately truncated
   data <- round(data, 1)
   
-  # define index for each data point's corresponding breakpointsTable row
+  # for each datapoint find the row index corresponding to the breakpoints that contain the concentration
   rowIndex <- apply(X=data, MARGIN=2, FUN=findInterval, vec=breakpointsTable$rangeHigh, left.open=TRUE)
   rowIndex <- rowIndex + 1
+  
+  # From 40 CFR 58 Appendix G.12.ii:
+  #  If the concentration is larger than the highest breakpoint in Table 2
+  #  then you may use the last two breakpoints in Table 2 when you apply Equation 1.
   rowIndex[rowIndex > nrow(breakpointsTable)] <- nrow(breakpointsTable)
   
-  # define values for equation
+  # assign breakpoints and corresponding index values
   I_Hi <- breakpointsTable$aqiHigh[rowIndex]
   I_Lo <- breakpointsTable$aqiLow[rowIndex]
   BP_Hi <- breakpointsTable$rangeHigh[rowIndex]
   BP_Lo <- breakpointsTable$rangeLow[rowIndex]
   
-  # apply Equation 1 from 40 CFR 58 Appendix G
+  # apply Equation 1 from 40 CFR 58 Appendix G and round to the nearest integer
   I_p <- (I_Hi-I_Lo)/(BP_Hi-BP_Lo)*(data-BP_Lo)+I_Lo
   I_p <- round(I_p, 0)
   
-  # assume that we cannot have negative AQI values
+  # For negative concentrations, set AQI = 0
+  # NOTE: This functionality is assumed; it is not explicity referenced in 40 CFR 58
   I_p[I_p<0] <- 0
   
   ws_monitor$data[2:n] <- I_p
@@ -57,9 +62,6 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   return(ws_monitor)
   
 }
-
-
-
 
 # ----- helper function --------------------
 
@@ -77,66 +79,3 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   return(breakpointsTable)
   
 }
-
-
-# # DEFUNCT
-# 
-# monitor_aqi_v1 <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', includeShortTerm=FALSE) {
-# 
-#   n <- ncol(ws_monitor$data)
-#   ws_monitor <- monitor_nowcast(ws_monitor, version = nowcastVersion, includeShortTerm = includeShortTerm)
-# 
-#   breakpointsTable <- .assignBreakpointsTable(aqiParameter)
-# 
-#   ws_monitor$data[2:n] <- apply(ws_monitor$data[2:n], 1:2, .calculateAQI, breakpointsTable=breakpointsTable)
-# 
-#   return(ws_monitor)
-# 
-# }
-# 
-# .calculateAQI <- function(C_p, breakpointsTable=.assignBreakpointsTable("pm25")) {
-# 
-#   if ( !is.na(C_p) ) {
-# 
-#     # TODO: include checks to ensure values are appropriately truncated
-#     C_p <- round(C_p, 1)
-# 
-#     if ( C_p > 0 ) {
-# 
-#       # find the row index corresponding to the breakpoints that contain the concentration
-#       rowIndex <- which(breakpointsTable$rangeLow <= C_p & C_p <= breakpointsTable$rangeHigh)
-# 
-#       # From 40 CFR 58 Appendix G.12.ii:
-#       #   If the concentration is larger than the highest breakpoint in Table 2
-#       #   then you may use the last two breakpoints in Table 2 when you apply Equation 1.
-#       if ( length(rowIndex)==0 ) {
-#         rowIndex <- nrow(breakpointsTable)
-#       }
-# 
-#       # assign breakpoints and corresponding index values
-#       I_Hi <- breakpointsTable$aqiHigh[rowIndex]
-#       I_Lo <- breakpointsTable$aqiLow[rowIndex]
-#       BP_Hi <- breakpointsTable$rangeHigh[rowIndex]
-#       BP_Lo <- breakpointsTable$rangeLow[rowIndex]
-# 
-#       # apply Equation 1 from 40 CFR 58 Appendix G
-#       I_p <- (I_Hi-I_Lo)/(BP_Hi-BP_Lo)*(C_p-BP_Lo)+I_Lo
-# 
-#     } else {
-# 
-#       # For negative concentrations, set AQI = 0
-#       # This functionality is assumed; it is not explicity referenced in 40 CFR 58
-#       I_p <- 0
-# 
-#     }
-# 
-#     # Round the index to the nearest integer
-#     I_p <- round(I_p, 0)
-# 
-#   } else {
-#     I_p <- NA
-#   }
-# 
-#   return(I_p)
-# 
-# }
