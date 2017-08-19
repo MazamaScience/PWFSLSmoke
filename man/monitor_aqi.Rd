@@ -12,7 +12,8 @@ monitor_aqi(ws_monitor, aqiParameter = "pm25", nowcastVersion = "pm",
 
 \item{aqiParameter}{parameter type; used to define reference breakpointsTable}
 
-\item{nowcastVersion}{character identity specifying the type of nowcast algorithm to be used}
+\item{nowcastVersion}{character identity specifying the type of nowcast algorithm to be used.
+See \code{?monitor_nowcast} for more information.}
 
 \item{includeShortTerm}{calcluate preliminary values starting with the 2nd hour}
 }
@@ -21,8 +22,7 @@ Nowcast and AQI algorithms are applied to the data in the ws_monitor object.
 }
 \examples{
 \dontrun{
-N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
-ws_monitor <- N_M
+ws_monitor <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 aqi <- monitor_aqi(ws_monitor)
 monitorPlot_timeseries(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")
 }
@@ -32,6 +32,6 @@ monitorPlot_timeseries(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")
 
 \url{https://archive.epa.gov/ttn/ozone/web/pdf/airqual.pdf}
 
-\url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#se40.6.58_150} (see Appendix G)
+\url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g}
 }
 \keyword{ws_monitor}

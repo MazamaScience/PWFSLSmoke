@@ -3,16 +3,16 @@
 #' @title Calculate hourly AQI values
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param aqiParameter parameter type; used to define reference breakpointsTable
-#' @param nowcastVersion character identity specifying the type of nowcast algorithm to be used
+#' @param nowcastVersion character identity specifying the type of nowcast algorithm to be used.
+#' See \code{?monitor_nowcast} for more information.
 #' @param includeShortTerm calcluate preliminary values starting with the 2nd hour
 #' @description Nowcast and AQI algorithms are applied to the data in the ws_monitor object.
 #' @references \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
 #' @references \url{https://archive.epa.gov/ttn/ozone/web/pdf/airqual.pdf}
-#' @references \url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#se40.6.58_150} (see Appendix G)
+#' @references \url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g}
 #' @examples
 #' \dontrun{
-#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
-#' ws_monitor <- N_M
+#' ws_monitor <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 #' aqi <- monitor_aqi(ws_monitor)
 #' monitorPlot_timeseries(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")
 #' }
@@ -31,8 +31,13 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   n <- ncol(ws_monitor$data)
   data <- ws_monitor$data[2:n]
   
-  # TODO: include checks to ensure values are appropriately truncated
-  data <- round(data, 1)
+  # TODO: include/expand checks to ensure values are appropriately truncated
+  if ( aqiParameter=="pm25" || nowcastVersion=="pm" ) {
+    digits <- 1
+  } else {
+    digits <- 0
+  }
+  data <- trunc(data*10^digits)/10^digits
   
   # for each datapoint find the row index corresponding to the breakpoints that contain the concentration
   rowIndex <- apply(X=data, MARGIN=2, FUN=findInterval, vec=breakpointsTable$rangeHigh, left.open=TRUE)
@@ -67,7 +72,10 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
 
 .assignBreakpointsTable <- function(parameter="pm25") {
   
+  # TODO: Add other breakpoint table options
+  
   if ( parameter == "pm25") {
+    # From Table 2 at https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g
     breakpointsTable <- data.frame(rangeLow=c(0.0, 12.1, 35.5, 55.5, 150.5, 250.5, 350.5),
                                    rangeHigh=c(12.0, 35.4, 55.4, 150.4, 250.4, 350.4, 500.4),
                                    aqiLow=c(0, 51, 101, 151, 201, 301, 401),
