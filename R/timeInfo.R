@@ -1,5 +1,5 @@
 #' @export
-#' @title Get Time Relatied Information
+#' @title Get Time Related Information
 #' @param time POSIXct vector with specified timezone
 #' @param longitude longitude of the location of interest
 #' @param latitude latitude of the location of interest
