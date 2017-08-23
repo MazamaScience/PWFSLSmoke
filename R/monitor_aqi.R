@@ -39,7 +39,7 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   }
   data <- trunc(data*10^digits)/10^digits
   
-  # for each datapoint find the row index corresponding to the breakpoints that contain the concentration
+  # for each datapoint find the breakpointsTable row index that corresponds to the concentration
   rowIndex <- apply(X=data, MARGIN=2, FUN=findInterval, vec=breakpointsTable$rangeHigh, left.open=TRUE)
   rowIndex <- rowIndex + 1
   

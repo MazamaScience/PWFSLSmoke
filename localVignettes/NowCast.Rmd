@@ -33,7 +33,9 @@ For the examples you can show what nowcast does when applied to the entire time 
 
 Under "test datasets" I'd like to see a simple CSV file with two columns: pm25_input, expected_output
 
-Also include section on AQI
+Also include section on AQI:
+
+ - It's also worth adding a small section to the vignette that should probably have something like "NowCast and AQI Calculations" in the title.
 
 ## Background
 

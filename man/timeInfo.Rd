@@ -2,7 +2,7 @@
 % Please edit documentation in R/timeInfo.R
 \name{timeInfo}
 \alias{timeInfo}
-\title{Get Time Relatied Information}
+\title{Get Time Related Information}
 \usage{
 timeInfo(time, longitude = NULL, latitude = NULL, timezone = NULL)
 }

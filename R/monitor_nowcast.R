@@ -56,12 +56,24 @@
 #' title("Missing values")
 #' }
 
-
 # NOTE:  This script is based on the javascript code at: 
 # NOTE:    https://github.com/chatch/nowcast-aqi/blob/master/nowcast-aqi.js
 # NOTE:  To compute a valid NowCast, you must have at least two of the most recent 3 hours
 
 # TODO:  python-aqi at: https://pypi.python.org/pypi/python-aqi
+
+#### ----- NowCast Calculation Overview -----
+# 
+# The process for calculating the NowCast concentration and AQI for PM2.5 or PM10 is as follows:
+# 
+# 1. Compute the concentrations range (max-min) over the last 12 hours.
+# 2. Divide the range by the maximum concentration in the 12 hour period to obtain the scaled rate of change.
+# 3. Compute the weight factor by subtracting the scaled rate from 1. The weight factor must be between .5 and 1.
+#    The minimum limit approximates a 3-hour average. If the weight factor is less than .5, then set it equal to .5.
+# 4. Multiply each hourly concentration by the weight factor raised to the power of how many hours ago the concentration
+#    was measured (for the current hour, the factor is raised to the zero power).
+# 5. Compute the NowCast by summing these products and dividing by the sum of the weight factors raised to the power of
+#    how many hours ago the concentration was measured.
 
 monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
   
@@ -77,7 +89,7 @@ monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
   } else if (version == 'ozone') {
     numHrs <- 8
     weightFactorMin <- NA
-    digits <- 3  # Assumes O3 values given in ppm; update to 0 if Ozone given in ppb
+    digits <- 3  # NOTE: digits=3 assumes Ozone values given in ppm; update to 0 if values given in ppb
   }
   
   # Apply nowcast to each data column in ws_monitor
@@ -104,7 +116,7 @@ monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
   
   # Start at the end end of the data (most recent hour) and work backwards
   # The oldest hour for which we can calculate nowcast is numHrs, unless includeShortTerm=TRUE
-  # in which case we can go back to the 3rd hour.
+  # in which case we can go back to the 2nd hour.
   for ( i in length(x):firstHr ) {
 
     # Apply nowcast algorithm to numHrs data points in order with more recent first
