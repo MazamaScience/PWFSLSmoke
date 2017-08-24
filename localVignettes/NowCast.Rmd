@@ -4,7 +4,7 @@ author: "Mazama Science"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AIRSIS Data Acquisition and Handling}
+  %\VignetteIndexEntry{NowCast and AQI}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,6 +12,115 @@ vignette: >
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
+
+## Background
+
+This vignette documents the basis and functionality of the `monitor_nowcast()` function, which is used to create NowCast data for `ws_monitor` objects. It also covers the `monitor_aqi()` function, which converts raw pm2.5 data into AQI values.
+
+### What is NowCast?
+
+NowCast is an algorithm designed to approximate real-time air quality readings to 24-hour averages, upon which health advisory levels are based.
+
+When air quality readings are relatively stable, NowCast approximates a 12-hour average. When readings are changing rapidly, NowCast more closely captures current conditions.
+
+## Setup
+
+We run the following code to get things set up to use our new funcitons.
+
+```{r setup}
+library(PWFSLSmoke)
+logger.setup()
+library(MazamaSpatialUtils)
+setSpatialDataDir('~/Data/Spatial')
+loadSpatialData('NaturalEarthAdm1')
+```
+
+
+
+## NowCast Equation
+
+NowCast is calculated as follows.
+
+Define
+
+$$
+w^* = \frac{c_{min}}{c_{max}}
+$$
+
+Note that this is equivalent to the following, which is seen and described in some of the literature.
+
+$$
+w^* = 1- \frac{c_{max}-c_{min}}{c_{max}}
+$$
+
+Then let
+
+$$
+w = 
+\begin{cases}
+w^*         & \text{if} & w^*>\frac{1}{2} \\
+\frac{1}{2} & \text{if} & w^*\leq\frac{1}{2}  \\
+\end{cases}
+$$
+
+Then 
+
+$$
+\frac{\sum_{i=1}^{12}{w^{i-1}c_i}}{\sum_{i=1}^{12}w^{i-1}}
+$$
+
+
+
+This can be expanded to the following:
+
+$$
+\frac
+{w^0c_1 + w^1c_2 + w^2c_3 + w^3c_4 + w^4c_5 + w^5c_6 + w^6c_7 + w^7c_8 + w^8c_9 + w^9c_{10} + w^{10}c_{11} + w^{11}c_{12}}
+{w^0 + w^1 + w^2 + w^3 + w^4 + w^5 + w^6 + w^7 + w^8 + w^9 + w^{10} + w^{11}}
+$$
+
+
+
+
+
+
+
+## Missing Data
+
+The NowCast algorithm only requires two of the most recent three hours valid in order to calculate a value.
+
+
+
+This is built into the monitor_nowcast function.
+
+However, note that this means that NowCast values can be calculated as soon as the 2nd hour of a dataset (assuming both hours are valid). We allow this, but not by default, since a common task would be to generate a ws_monitor object for a date range. Reporting NowCast values for the 3rd hour of a subset of data would result in inaccurate values for the first several hours. However, this setting may be useful when folks want to see their data as soon as possible, to ensure that it is being properly ingested and processed by the system.
+
+
+
+
+
+## Data
+
+For this notebook we will use the Northwest Megafires data from the PWFSLSmoke package:
+
+```{r}
+N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
+Omak <- monitor_subset(N_M, monitorIDs='530470013')
+```
+
+## Pot
+
+```{r}
+Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
+monitorPlot_timeseries(Omak, type='l', lwd=2)
+monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
+addAQILines()
+addAQILegend(lwd=1, pch=NULL)
+legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
+title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
+```
+
+
 
 ## Task Description from Trac
 
@@ -36,77 +145,4 @@ Under "test datasets" I'd like to see a simple CSV file with two columns: pm25_i
 Also include section on AQI:
 
  - It's also worth adding a small section to the vignette that should probably have something like "NowCast and AQI Calculations" in the title.
-
-## Background
-
-This vignette documents the functionality of the monitor_nowcast function, which is used to create NowCast data for `ws_monitor` objects.
-
-## Setup
-
-Before loading data we need to load the **PWFSLSmoke** package and set up logging. You can pass arguments
-to the `logger.setup()` function to send logging information to log files. In the following example we avoid
-specifying log files and instead use `logger.setLevel()` to send any INFO level output to the console.
-
-```{r setup}
-library(PWFSLSmoke)
-logger.setup()
-logger.setLevel(INFO)
-```
-
-Additionally, we need to load the **MazamaSpatialUtils** package and required datasets:
-
-```{r spatial_utils}
-library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial')
-loadSpatialData('NaturalEarthAdm1')
-```
-
-Now we are ready to begin processing data from AIRSIS.
-
-## Data
-
-For this notebook we will use the Northwest Megafires data from the PWFSLSmoke package:
-
-```{r}
-N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
-Omak <- monitor_subset(N_M, monitorIDs='530470013')
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-PLot
-
-```{r}
-Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
-monitorPlot_timeseries(Omak, type='l', lwd=2)
-monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
-addAQILines()
-addAQILegend(lwd=1, pch=NULL)
-legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
-title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
-```
-
 
