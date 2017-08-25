@@ -41,8 +41,10 @@ Imports:
     RgoogleMaps,
     readr,
     reshape2,
+    rvest,
     sp,
     stringr,
+    xml2,
     xts,
     zoo
 Suggests:
