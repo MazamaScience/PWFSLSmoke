@@ -8,8 +8,8 @@
 #' @return A dataframe with unit ID, alias, location, and latest update time, in UTC.
 #' @examples
 #' \dontrun{
-#' usfs <- airsis_currentStatus(provider="usfs")
-#' View(usfs)
+#' epa <- airsis_currentStatus(provider="epa")
+#' View(epa)
 #' }
 
 airsis_currentStatus <- function(provider, username, password) {
@@ -24,11 +24,14 @@ airsis_currentStatus <- function(provider, username, password) {
   response <- readr::read_file(paste0("~/Downloads/", provider, ".htm"))
   ### ------------------------------------------------------------------
   
+  # NOTE: It appears AIRSIS reports last update time in their computer's time zone, rather than UTC.
+  AIRSIS_COMPUTATIONAL_TIMEZONE <- "America/Los_Angeles"
+
   provider <- stringr::str_to_lower(provider)
     
   # parse raw html and pull out fields of interest
   currentStatusDoc <- xml2::read_html(response)
-  currentStatusNode <- rvest::html_nodes(currentStatusDoc, xpath='//*[@id="DataGrid1"]')
+  currentStatusNode <- rvest::html_nodes(currentStatusDoc, css="#DataGrid1")
   
   # convert node to table
   currentStatusTable <- rvest::html_table(currentStatusNode, header=TRUE)[[1]]
@@ -50,18 +53,19 @@ airsis_currentStatus <- function(provider, username, password) {
   unitIDs <- stringr::str_replace(urls, stringr::fixed("UnitHistory.aspx?uid="), "")
   
   # get times
-  # TODO: verify airsis data is in local time
+  # TODO: verify data is in local time
+  # TODO: output format OK?
   times <- currentStatusTable[["Date/Time"]]
-  times <- as.POSIXct(times, format="%m/%d/%y %I:%M%p")
+  times <- as.POSIXct(times, format="%m/%d/%y %I:%M%p", tz=AIRSIS_COMPUTATIONAL_TIMEZONE)
   times <- lubridate::with_tz(times, "UTC")
-  times <- format(times, "%Y-%m-%d %H:%M %Z")
-  
+  # times <- format(times, "%Y-%m-%d %H:%M %Z")
   
   # create dataframe
   df <- data.frame(unitID=unitIDs)
-  df$Alias <- currentStatusTable[["Alias"]]
-  df$Location <- currentStatusTable[["Location"]]
-  df$datetimeString <- times
+  df$alias <- currentStatusTable[["Alias"]]
+  df$location <- currentStatusTable[["Location"]]
+  df$lastUpdateTime <- times
+  df$provider <- provider
   
   return(df)
   
