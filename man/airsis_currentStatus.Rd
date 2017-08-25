@@ -22,7 +22,7 @@ where xxxx %in% c("usfs", "apcd", "arb2", "epa").
 }
 \examples{
 \dontrun{
-usfs <- airsis_currentStatus(provider="usfs")
-View(usfs)
+epa <- airsis_currentStatus(provider="epa")
+View(epa)
 }
 }

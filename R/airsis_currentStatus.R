@@ -61,7 +61,7 @@ airsis_currentStatus <- function(provider, username, password) {
   # times <- format(times, "%Y-%m-%d %H:%M %Z")
   
   # create dataframe
-  df <- data.frame(unitID=unitIDs)
+  df <- data.frame(unitID=unitIDs, stringsAsFactors = FALSE)
   df$alias <- currentStatusTable[["Alias"]]
   df$location <- currentStatusTable[["Location"]]
   df$lastUpdateTime <- times

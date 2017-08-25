@@ -87,7 +87,7 @@ airsis_BAM1020QualityControl <- function(df,
   if ( badRowCount > 0 ) {
     logger.info(paste(verb,"%s rows with invalid location information"), badRowCount)
     badLocations <- paste('(',df$Longitude[badRows],',',df$Latitude[badRows],')',sep='')
-    logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
+    logger.debug("Bad locations: %s", unique(badLocations))
     if ( flagAndKeep ) {
       # apply flags
       dfFlagged$QCFlag_badLon[df$rowID[!goodLonMask]] <- TRUE
@@ -102,7 +102,7 @@ airsis_BAM1020QualityControl <- function(df,
   df <- df[goodLonMask & goodLatMask,]
 
   # Sanity check -- row count
-  if (nrow(df) < 1) {
+  if (nrow(df) < 1 & !flagAndKeep) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.error(err_msg)
     stop(err_msg, call.=FALSE)
