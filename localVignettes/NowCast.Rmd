@@ -13,15 +13,105 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-## Background
+## Overview
 
-This vignette documents the basis and functionality of the `monitor_nowcast()` function, which is used to create NowCast data for `ws_monitor` objects. It also covers the `monitor_aqi()` function, which converts raw pm2.5 data into AQI values.
+This vignette documents the basis and functionality of the `monitor_nowcast()` function. This function converts a `ws_monitor` object's values to NowCast values, based on the user-selected inputs (e.g. parameter, NowCast type, etc.).
+
+We provide details on the NowCast algorithm and our implementation thereof. We provide examples to highlight specific attributes and potential points of confusion in the algorithm and/or our functional implementation.
+
+This vignette also briefly covers the `monitor_aqi()` function, which uses the `monitor_nowcast()` function to convert raw PM~2.5~ data into AQI values.
+
+## Background
 
 ### What is NowCast?
 
-NowCast is an algorithm designed to approximate real-time air quality readings to 24-hour averages, upon which health advisory levels are based.
+NowCast is a smoothing algorithm that puts an emphasis on recent values when readings are unstable, and approaches a long-term average when readings are stable.
 
-When air quality readings are relatively stable, NowCast approximates a 12-hour average. When readings are changing rapidly, NowCast more closely captures current conditions.
+The original algoritm, known as the Conroy method, was developed to make real-time air quality readings roughly comparable to established regulatory air quality health thresholds (e.g. 24‐hour PM~2.5~ standards). However, EPA recently developed a new method (the Reff method) to be more responsive to rapidly changing air quality conditions. This new method approaches a three-hour average when readings are unstable, and a 12-hour average when readings are stable.^1^
+
+### The NowCast Equation (Reff Method)
+
+The NowCast algorithm uses hourly averages from the 12 most-recent clock hours. The equations below describe how NowCast is calculated for a given hour.
+
+Define $w^*$ as follows:
+
+$$
+w^* = 1- \frac{c_{max}-c_{min}}{c_{max}} = \frac{c_{min}}{c_{max}}
+$$
+
+where
+ 
+ - $c_{max}$ represents the highest hourly average during the most recent 12 clock hours
+ - $c_{min}$ represents the lowest hourly average during the most recent 12 clock hours
+
+NowCast-related literature usually gives the equation for $w^*$ in one of two forms, both of which are included above for reference. Note that both forms are equivalent.
+
+Then let
+
+$$
+w = 
+\begin{cases}
+w^*         & \text{if} & w^*>\frac{1}{2} \\
+\frac{1}{2} & \text{if} & w^*\leq\frac{1}{2}  \\
+\end{cases}
+$$
+
+Then
+
+$$
+NowCast = \frac{\sum_{i=1}^{12}{w^{i-1}c_i}}{\sum_{i=1}^{12}w^{i-1}}
+$$
+
+where $i$ represents the number of hours before present.
+
+The equation above can be expanded as follows:
+
+$$
+NowCast = \frac
+{w^0c_1 + w^1c_2 + w^2c_3 + w^3c_4 + w^4c_5 + w^5c_6 + w^6c_7 + w^7c_8 + w^8c_9 + w^9c_{10} + w^{10}c_{11} + w^{11}c_{12}}
+{w^0 + w^1 + w^2 + w^3 + w^4 + w^5 + w^6 + w^7 + w^8 + w^9 + w^{10} + w^{11}}
+$$
+Note that:
+
+ - $w^0$, $w^1$, $w^2$, $...$ represent $w$ to the power of 0, 1, 2, $...$ 
+ - $c_1$, $c_2$, $c_3$, $...$ represent the hourly average for the most recent 0, 1, 2, $...$ hours.
+
+In the extreme case where $c_{min} = c_{max}$, $w = 1$ and so the equation above reduces to:
+
+$$
+NowCast = \frac{\sum_{i=1}^{12}{c_i}}{12}
+$$
+
+which is just a simple 12-hour average.
+
+
+
+
+## Data Availability
+
+The NowCast algorithm only requires two of the most recent three hours valid in order to calculate a value.
+
+
+
+This is built into the monitor_nowcast function.
+
+
+
+However, note that this means that NowCast values can be calculated as soon as the 2nd hour of a dataset (assuming both hours are valid). We allow this, but not by default, since a common task would be to generate a ws_monitor object for a date range. Reporting NowCast values for the 3rd hour of a subset of data would result in inaccurate values for the first several hours. However, this setting may be useful when folks want to see their data as soon as possible, to ensure that it is being properly ingested and processed by the system.
+
+
+
+
+
+
+
+
+## Related Algorithms
+
+While not official to EPA, other algorithms have been proposed. For example,
+
+ - non-pm2.5 algorithms suggested by the AQICN site
+ - others?
 
 ## Setup
 
@@ -37,69 +127,7 @@ loadSpatialData('NaturalEarthAdm1')
 
 
 
-## NowCast Equation
-
-NowCast is calculated as follows.
-
-Define
-
-$$
-w^* = \frac{c_{min}}{c_{max}}
-$$
-
-Note that this is equivalent to the following, which is seen and described in some of the literature.
-
-$$
-w^* = 1- \frac{c_{max}-c_{min}}{c_{max}}
-$$
-
-Then let
-
-$$
-w = 
-\begin{cases}
-w^*         & \text{if} & w^*>\frac{1}{2} \\
-\frac{1}{2} & \text{if} & w^*\leq\frac{1}{2}  \\
-\end{cases}
-$$
-
-Then 
-
-$$
-\frac{\sum_{i=1}^{12}{w^{i-1}c_i}}{\sum_{i=1}^{12}w^{i-1}}
-$$
-
-
-
-This can be expanded to the following:
-
-$$
-\frac
-{w^0c_1 + w^1c_2 + w^2c_3 + w^3c_4 + w^4c_5 + w^5c_6 + w^6c_7 + w^7c_8 + w^8c_9 + w^9c_{10} + w^{10}c_{11} + w^{11}c_{12}}
-{w^0 + w^1 + w^2 + w^3 + w^4 + w^5 + w^6 + w^7 + w^8 + w^9 + w^{10} + w^{11}}
-$$
-
-
-
-
-
-
-
-## Missing Data
-
-The NowCast algorithm only requires two of the most recent three hours valid in order to calculate a value.
-
-
-
-This is built into the monitor_nowcast function.
-
-However, note that this means that NowCast values can be calculated as soon as the 2nd hour of a dataset (assuming both hours are valid). We allow this, but not by default, since a common task would be to generate a ws_monitor object for a date range. Reporting NowCast values for the 3rd hour of a subset of data would result in inaccurate values for the first several hours. However, this setting may be useful when folks want to see their data as soon as possible, to ensure that it is being properly ingested and processed by the system.
-
-
-
-
-
-## Data
+### Data
 
 For this notebook we will use the Northwest Megafires data from the PWFSLSmoke package:
 
@@ -108,7 +136,7 @@ N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 Omak <- monitor_subset(N_M, monitorIDs='530470013')
 ```
 
-## Pot
+## Plot
 
 ```{r}
 Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
@@ -119,6 +147,9 @@ addAQILegend(lwd=1, pch=NULL)
 legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
 title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
 ```
+
+
+
 
 
 
@@ -146,3 +177,8 @@ Also include section on AQI:
 
  - It's also worth adding a small section to the vignette that should probably have something like "NowCast and AQI Calculations" in the title.
 
+
+
+SOURCES:
+
+1. https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf
