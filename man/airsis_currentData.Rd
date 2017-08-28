@@ -17,5 +17,8 @@ airsis_currentData(lookbackDays = 7, providers = c("usfs", "apcd", "arb2",
 \item{passwords}{vector of passwords corresponding to \code{providers}}
 }
 \value{
-\code{ws_monitor} object with data for monitors with new data in last \code{lookbackDays} days
+\code{ws_monitor} object
+}
+\description{
+Creates a ws_monitor object with data from AIRSIS monitors active within the last \code{lookbackDays} days.
 }
