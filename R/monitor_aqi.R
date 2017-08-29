@@ -1,6 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Calculate hourly AQI values
+#' @title Calculate hourly NowCast-based AQI values
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param aqiParameter parameter type; used to define reference breakpointsTable
 #' @param nowcastVersion character identity specifying the type of nowcast algorithm to be used.
@@ -25,6 +25,7 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   breakpointsTable <- .assignBreakpointsTable(aqiParameter)
   
   # calculate NowCast values
+  # TODO: add argument to specify whether to use NowCast values or regulatory averages for AQI
   ws_monitor <- monitor_nowcast(ws_monitor, version = nowcastVersion, includeShortTerm = includeShortTerm)
   
   # pull out data for AQI calculation
