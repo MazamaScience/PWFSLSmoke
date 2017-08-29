@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_aqi.R
 \name{monitor_aqi}
 \alias{monitor_aqi}
-\title{Calculate hourly AQI values}
+\title{Calculate hourly NowCast-based AQI values}
 \usage{
 monitor_aqi(ws_monitor, aqiParameter = "pm25", nowcastVersion = "pm",
   includeShortTerm = FALSE)

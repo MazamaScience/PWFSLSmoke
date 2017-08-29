@@ -88,7 +88,7 @@ monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
     digits <- 1
   } else if (version == 'ozone') {
     numHrs <- 8
-    weightFactorMin <- NA
+    weightFactorMin <- NA  # negative values adjusted up to 0 in .weightFactor()
     digits <- 3  # NOTE: digits=3 assumes Ozone values given in ppm; update to 0 if values given in ppb
   }
   
