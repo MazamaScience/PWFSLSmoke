@@ -41,7 +41,7 @@ wrcc_ESAMQualityControl <- function(df,
                                     valid_Flow = c(1.999,2.001),     # anything other than 2 is bad
                                     valid_AT = c(-Inf,150),
                                     valid_RHi = c(-Inf,55),
-                                    valid_Conc = c(-Inf,984),
+                                    valid_Conc = c(-Inf,5000),
                                     flagAndKeep = FALSE) {
   
   # TODO:  What about Alarm?
@@ -159,6 +159,8 @@ wrcc_ESAMQualityControl <- function(df,
   }
   
   # Leland Tarnay QC for E-Sampler --------------------------------------------
+  
+  # NOTE:  Override ConcHr high value with 5000 as per conversation with Mike Broughton
   
   ###tmp.2013_NIFC_GOES65_wrcc$concQA <- with(tmp.2013_NIFC_GOES65_wrcc,
   ###                                         ifelse(Flow < 2 "FlowLow",

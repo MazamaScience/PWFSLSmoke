@@ -26,7 +26,7 @@ airsis_BAM1020QualityControl <- function(df,
                                          valid_Flow = c(.834*.95,.834*1.05),
                                          valid_AT = c(-Inf,45),
                                          valid_RHi = c(-Inf,45),
-                                         valid_Conc = c(-Inf,984),
+                                         valid_Conc = c(-Inf,5000),
                                          flagAndKeep = FALSE) {
   
   #  > names(df)
@@ -136,6 +136,8 @@ airsis_BAM1020QualityControl <- function(df,
   
   
   # Leland Tarnay QC -----------------------------------------------------------
+  
+  # NOTE:  Override ConcHr high value with 5000 as per conversation with Mike Broughton
   
   ### dat.2012arbbamraw$concHR <- ifelse(dat.2012arbbamraw$Qtot.m3.<.834*.95,NA,
   ###                                    ifelse(dat.2012arbbamraw$Qtot.m3.>.834*1.05,NA,
