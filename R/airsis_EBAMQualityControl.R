@@ -34,7 +34,7 @@ airsis_EBAMQualityControl <- function(df,
                                       valid_Flow = c(16.7*0.95,16.7*1.05),
                                       valid_AT = c(-Inf,45),
                                       valid_RHi = c(-Inf,45),
-                                      valid_Conc = c(-Inf,.984),
+                                      valid_Conc = c(-Inf,5.000),
                                       flagAndKeep = FALSE) {
   
   #   > names(df)
@@ -155,6 +155,8 @@ airsis_EBAMQualityControl <- function(df,
   }
   
   # Leland Tarnay QC -----------------------------------------------------------
+  
+  # NOTE:  Override ConcHr high value with 5.000 as per conversation with Mike Broughton
   
   ###tmp.2014_YOSE_ebam1_ftp$concQA <- with(tmp.2014_YOSE_ebam1_ftp,
   ###                              ifelse(Flow < 16.7 * .95, "FlowLow",
