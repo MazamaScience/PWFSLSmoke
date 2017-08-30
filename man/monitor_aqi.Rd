@@ -33,5 +33,7 @@ monitorPlot_timeseries(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")
 \url{https://archive.epa.gov/ttn/ozone/web/pdf/airqual.pdf}
 
 \url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g}
+
+\url{https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143}
 }
 \keyword{ws_monitor}
