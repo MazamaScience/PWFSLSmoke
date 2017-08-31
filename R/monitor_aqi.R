@@ -8,9 +8,7 @@
 #' @param includeShortTerm calcluate preliminary values starting with the 2nd hour
 #' @description Nowcast and AQI algorithms are applied to the data in the ws_monitor object.
 #' @references \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
-#' @references \url{https://archive.epa.gov/ttn/ozone/web/pdf/airqual.pdf}
 #' @references \url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g}
-#' @references \url{https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143}
 #' @examples
 #' \dontrun{
 #' ws_monitor <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
