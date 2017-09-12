@@ -9,10 +9,14 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.28
+
+ * `monitor_reorder()` now includes `dropMonitors=FALSE` default
+
 ### PWFSLSmoke 0.99.27
 
- * corrected monitor_nowcast() now calculates values after the first 2 valid measurements
- * new monitor_aqi() algorithm
+ * corrected `monitor_nowcast()` now calculates values after the first 2 valid measurements
+ * new `monitor_aqi()` algorithm
  * changed EBAM and E-Sampler QC pm25 threshold to accept as valid any pm25 value up to 5000 ug/m3
 
 ### PWFSLSmoke 0.99.26
@@ -33,7 +37,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 0.99.22
 
- * correction to monitor_nowcast() algorithm
+ * correction to `monitor_nowcast()` algorithm
  * updated vignettes to use package datasets
 
 ### PWFSLSmoke 0.99.20
