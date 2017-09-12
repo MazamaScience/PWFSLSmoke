@@ -37,6 +37,7 @@
 #' @references \url{https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172}
 #' @references \url{https://forum.airnowtech.org/t/the-aqi-equation/169}
 #' @references \url{https://airnow.zendesk.com/hc/en-us/articles/211625598-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-}
+#' @references \url{https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143}
 #' 
 #' @examples
 #' \dontrun{

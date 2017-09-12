@@ -8,7 +8,6 @@
 #' @param includeShortTerm calcluate preliminary values starting with the 2nd hour
 #' @description Nowcast and AQI algorithms are applied to the data in the ws_monitor object.
 #' @references \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
-#' @references \url{https://archive.epa.gov/ttn/ozone/web/pdf/airqual.pdf}
 #' @references \url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g}
 #' @examples
 #' \dontrun{
@@ -31,6 +30,9 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   # pull out data for AQI calculation
   n <- ncol(ws_monitor$data)
   data <- ws_monitor$data[2:n]
+  
+  # NOTE: see https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143
+  data[data<0] <- 0
   
   # TODO: include/expand checks to ensure values are appropriately truncated
   if ( aqiParameter=="pm25" || nowcastVersion=="pm" ) {
@@ -58,10 +60,6 @@ monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', in
   # apply Equation 1 from 40 CFR 58 Appendix G and round to the nearest integer
   I_p <- (I_Hi-I_Lo)/(BP_Hi-BP_Lo)*(data-BP_Lo)+I_Lo
   I_p <- round(I_p, 0)
-  
-  # For negative concentrations, set AQI = 0
-  # NOTE: This functionality is assumed; it is not explicity referenced in 40 CFR 58
-  I_p[I_p<0] <- 0
   
   ws_monitor$data[2:n] <- I_p
   

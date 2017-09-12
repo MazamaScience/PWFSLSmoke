@@ -30,8 +30,6 @@ monitorPlot_timeseries(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")
 \references{
 \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
 
-\url{https://archive.epa.gov/ttn/ozone/web/pdf/airqual.pdf}
-
 \url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g}
 }
 \keyword{ws_monitor}
