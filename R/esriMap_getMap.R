@@ -1,4 +1,4 @@
-#' @keywords ws_monitor
+#' @keywords internal
 #' @export
 #' @import graphics
 #' @title Create a RGB spatial raster from arcGIS REST
@@ -28,8 +28,7 @@ esriMap_getMap <- function(centerLon,
                            zoom = 12, 
                            width = 640,
                            height = 640,
-                           crs = sp::CRS("+init=epsg:3857"), 
-                           grayscale = FALSE,
+                           crs = sp::CRS("+init=epsg:3857"),
                            ...){
   
   
@@ -101,7 +100,7 @@ esriMap_getMap <- function(centerLon,
                           ymn=mapInfo$extent$ymin, 
                           ymx=mapInfo$extent$ymax, 
                           crs=sp::CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid)))
-    raster::values(map) <- grayImageArray*255
+    raster::values(map) <- round(grayImageArray*255)
   } else {
     map <- raster::brick(ncol=mapInfo$width, 
                          nrow=mapInfo$height,
@@ -111,7 +110,7 @@ esriMap_getMap <- function(centerLon,
                          ymn=mapInfo$extent$ymin, 
                          ymx=mapInfo$extent$ymax, 
                          crs=sp::CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid)))
-    raster::values(map) <- imageArray*255
+    raster::values(map) <- round(imageArray*255)
     map <- raster::t(map)
   }
   
