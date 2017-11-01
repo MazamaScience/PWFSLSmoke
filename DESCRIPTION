@@ -8,6 +8,7 @@ Authors@R: c(
     person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("aut")),
     person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("aut")),
     person("Jimin", "Kim", email="jk55@uw.edu", role=c("aut")),
+    person("Helen", "Miller", email="helen@ohana.org", role=c("aut")),
     person("Rex", "Thompson", email="rexs.thompson@gmail.com", role=c("aut")),
     person("Alice", "Yang", email="wenhuy@uw.edu", role=c("aut"))
     )
@@ -16,6 +17,7 @@ Author: Jonathan Callahan [aut, cre],
     Zach Dingels [aut],
     Jon Hagg [aut],
     Jimin Kim [aut],
+    Helen Miller [aut],
     Rex Thompson [aut],
     Alice Yang [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
@@ -30,14 +32,17 @@ Imports:
     futile.logger,
     ggmap,
     httr,
+    jsonlite,
     leaflet (>= 1.0.0),
     lubridate,
     maptools,
     mapproj,
     openair,
     png,
+    raster,
     RColorBrewer,
     RCurl,
+    rgdal,
     RgoogleMaps,
     readr,
     reshape2,

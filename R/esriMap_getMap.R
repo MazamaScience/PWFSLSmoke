@@ -1,19 +1,18 @@
-#' @keywords internal
+#' @keywords plotting
 #' @export
 #' @title Create a RGB spatial raster from arcGIS REST
-#' @param width width of image, in pixels
-#' @param height height of image, in pixels
 #' @param centerLon map center longitude
 #' @param centerLat map center latitude
+#' @param mapType map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme. Also accepts
+#' map server identity, found at \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
 #' @param zoom map zoom level; corresponds to googleMaps zoom level
-#' @param maptype map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme, or any available map server identity 
-#' found at \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
-#' representing red, green, and blue intensity are returned. 
-#' @param ... arguments passed on to methods
-#' @return A rasterBrick raster object which can be plotted with \code{plotRGB} and serve as a base plot.
-#' @description Creates a rasterBrick using the \pkg{raster} package with layers for red, green, and blue or gray color intensity.
-#'
-#'@references \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/}
+#' @param width width of image, in pixels
+#' @param height height of image, in pixels
+#' @param crs object of class CRS. The Coordinate Reference System (CRS) for the returned map. If the CRS of the downloaded
+#' map does not match, it will be projected to the specified CRS using \code{raster::projectRaster}.
+#' @return A rasterBrick object which can be plotted with \code{raster::plotRGB} and serve as a base plot.
+#' @description Creates a rasterBrick using the \pkg{raster} package with layers for red, green, and blue color intensity.
+#' @references \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/}
 #' @examples
 #' map <- esriMap_getMap(-122.3318, 47.668)
 #' raster::plotRGB(map)
@@ -26,8 +25,7 @@ esriMap_getMap <- function(centerLon,
                            zoom = 12, 
                            width = 640,
                            height = 640,
-                           crs = sp::CRS("+init=epsg:3857"),
-                           ...){
+                           crs = sp::CRS("+init=epsg:3857")) {
   
   
   # calculate degrees per pixel from zoom to determine bbox: 
@@ -55,22 +53,22 @@ esriMap_getMap <- function(centerLon,
   # Specialty/DeLorme_World_Base_Map = deLorme
   # World_Imagery = satellite
   
-  if ( mapType == "natGeo"){
+  if ( mapType == "natGeo" ) {
     mapTypeText <- "NatGeo_World_map"
-  } else if(mapType == "worldStreetMap"){
+  } else if ( mapType == "worldStreetMap" ) {
     mapTypeText <- "World_Street_Map"
-  } else if ( mapType == "worldTopoMap"){
+  } else if ( mapType == "worldTopoMap" ) {
     mapTypeText <- "World_Topo_Map"
   } else if ( mapType == "deLorme" ) {
     mapTypeText <- "Specialty/DeLorme_World_Base_Map"
   } else {
-    stop("invalid mapType")
+    mapTypeText <- mapType
   }
   
   # Apply arguments to url
   
   baseurl <- paste0("http://server.arcgisonline.com/arcgis/rest/services/", mapTypeText, "/MapServer/export")
-  url <- paste0(baseurl, "?bbox=", bbox, "&bboxSR=4326&size=",width,",",height)
+  url <- paste0(baseurl, "?bbox=", bbox, "&bboxSR=4326&size=", width, ",", height)
   urlPNG <- paste0(url, "&f=image")
   urlJSON <- paste0(url, "&f=json")
   
@@ -89,24 +87,24 @@ esriMap_getMap <- function(centerLon,
   
   mapInfo <- jsonlite::fromJSON(mapInfoJSON)
   
+  # Create raster with RBG layers and matching metadata
   
-  map <- raster::brick(ncol=mapInfo$width, 
+  mapRaster <- raster::brick(ncol=mapInfo$width, 
                        nrow=mapInfo$height,
                        nl = 3)
-  map <- raster::setValues(map, round(imageArray*255))
-  map <- raster::t(map)
+  mapRaster <- raster::setValues(mapRaster, round(imageArray*255))
+  mapRaster <- raster::t(mapRaster) # correct because columns from the array are read in as rows
   
-  # The planes are interpreted in the sequence
-  # red, green, blue, alpha.
+  names(mapRaster) <- c("red", "green", "blue")
   
-  extent(map) <- c(mapInfo$extent$xmin, mapInfo$extent$xmax, mapInfo$extent$ymin, mapInfo$extent$ymax)
-  crs(map) <- CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid)) # from sp package
+  raster::extent(mapRaster) <- c(mapInfo$extent$xmin, mapInfo$extent$xmax, mapInfo$extent$ymin, mapInfo$extent$ymax)
+  raster::crs(mapRaster) <- sp::CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid)) 
   
   
   if ( rgdal::CRSargs(crs) != rgdal::CRSargs(sp::CRS(paste0("+init=epsg:", mapInfo$extent$spatialReference$latestWkid))) ) {
-    map <- raster::projectRaster(map, crs = crs)
+    mapRaster <- raster::projectRaster(mapRaster, crs = crs)
   }
   
-  return(map)
+  return(mapRaster)
   
 }

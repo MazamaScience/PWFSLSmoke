@@ -1,9 +1,11 @@
-#' @keywords internal
+#' @keywords plotting
 #' @export
-#' @title Plot a map loaded as a RGB rasterBrick.
-#' @param grayscale logical, if TRUE one layer is returned representing grayscale values. If false, three layers 
-#' representing red, green, and blue intensity are returned. 
-#' @param ... arguments passed on to \code{plot}
+#' @title Plot a map from a RGB rasterBrick.
+#' @param mapRaster a RGB rasterBrick object. It is assumed that layer 1 represents red, layer 2 represents
+#' gree, and layer 3 represents blue. 
+#' @param grayscale logical, if TRUE one layer is plotted with grayscale values. If FALSE, a color
+#' map is plotted from red, green, and blue colors. 
+#' @param ... arguments passed on to \code{plot} (for grayscale = TRUE) or \code{plotRGB} (for grayscale = FALSE)
 #' @return An plot of the map
 #' @description The map is plotted using \code{plotRGB} from \pkg{raster}. 
 #' @examples
@@ -11,23 +13,23 @@
 #' esriMap_plotOnStaticMap(map)
 #' esriMap_plotOnStaticMap(map, grayscale = TRUE)
 
-esriMap_plotOnStaticMap <- function(rasterMap, 
+esriMap_plotOnStaticMap <- function(mapRaster, 
                                     grayscale = FALSE,
                                     ...){
   
   
   argsList <- list(...)
-  if(is.null(argsList$interpolate)){argsList$interpolate <- TRUE}
+  if ( is.null(argsList$interpolate) ) { argsList$interpolate <- TRUE }
   
-  if (grayscale){
-    grayImageArray <- round(apply(raster::values(rasterMap), 1, sum)/3)
-    map <- raster::raster(rasterMap, 1)
-    raster::setValues(map, grayImageArray)
-    argsList$x <- map
-    if(is.null(argsList$col)){argsList$col <- grDevices::gray.colors(255, gamma = 1)}
-    do.call(plot, argsList)
+  if ( grayscale ) {
+    singleLayerMap <- raster::raster(mapRaster, 1) 
+    grayImageArray <- round(apply(raster::values(mapRaster), 1, sum)/3)
+    raster::setValues(singleLayerMap, grayImageArray)
+    argsList$x <- singleLayerMap
+    if ( is.null(argsList$col) ) { argsList$col <- grDevices::gray.colors(255, gamma = 1) }
+    do.call(sp::plot, argsList)
   } else {
-    argsList$x <- rasterMap
+    argsList$x <- mapRaster
     do.call(raster::plotRGB, argsList)
   }
   
