@@ -1,6 +1,5 @@
 #' @keywords internal
 #' @export
-#' @import graphics
 #' @title Plot a map loaded as a RGB rasterBrick.
 #' @param grayscale logical, if TRUE one layer is returned representing grayscale values. If false, three layers 
 #' representing red, green, and blue intensity are returned. 
@@ -25,7 +24,7 @@ esriMap_plotOnStaticMap <- function(rasterMap,
     map <- raster::raster(rasterMap, 1)
     raster::setValues(map, grayImageArray)
     argsList$x <- map
-    if(is.null(argsList$col)){argsList$col <- gray.colors(255, gamma = 1)}
+    if(is.null(argsList$col)){argsList$col <- grDevices::gray.colors(255, gamma = 1)}
     do.call(plot, argsList)
   } else {
     argsList$x <- rasterMap

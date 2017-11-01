@@ -1,6 +1,5 @@
 #' @keywords internal
 #' @export
-#' @import graphics
 #' @title Create a RGB spatial raster from arcGIS REST
 #' @param width width of image, in pixels
 #' @param height height of image, in pixels
@@ -9,7 +8,6 @@
 #' @param zoom map zoom level; corresponds to googleMaps zoom level
 #' @param maptype map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme, or any available map server identity 
 #' found at \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
-#' @param grayscale logical, if TRUE one layer is returned representing grayscale values. If false, three layers 
 #' representing red, green, and blue intensity are returned. 
 #' @param ... arguments passed on to methods
 #' @return A rasterBrick raster object which can be plotted with \code{plotRGB} and serve as a base plot.
@@ -33,7 +31,7 @@ esriMap_getMap <- function(centerLon,
   
   
   # calculate degrees per pixel from zoom to determine bbox: 
-  # * google maps tiles are 256 pixels wide
+  # * google maps tiles are 256x256 pixels
   # * zoom level 0 includes 360 degrees-EW
   # * every time zoom level increases, scale halves. Thus, for degrees EW:
   # pixels/degree = 256pixels*2^zoomLevel/360degrees 
@@ -81,8 +79,8 @@ esriMap_getMap <- function(centerLon,
   dirName <- paste("esriMap", centerLat, centerLon, sep = "_")
   dir.create(dirName)
   
-  download.file(urlPNG, paste0(dirName, "/image.png"))
-  download.file(urlJSON, paste0(dirName, "/info.json"))
+  utils::download.file(urlPNG, paste0(dirName, "/image.png"))
+  utils::download.file(urlJSON, paste0(dirName, "/info.json"))
   
   imageArray <- png::readPNG(paste0(dirName, "/image.png"))
   mapInfoJSON <- readr::read_file(paste0(dirName, "/info.json"))
@@ -91,33 +89,21 @@ esriMap_getMap <- function(centerLon,
   
   mapInfo <- jsonlite::fromJSON(mapInfoJSON)
   
-  if (grayscale){
-    grayImageArray <- (imageArray[,,1]+imageArray[,,2]+imageArray[,,3])/3 
-    map <- raster::raster(ncol=mapInfo$width, 
-                          nrow=mapInfo$height,
-                          xmn=mapInfo$extent$xmin, 
-                          xmx=mapInfo$extent$xmax, 
-                          ymn=mapInfo$extent$ymin, 
-                          ymx=mapInfo$extent$ymax, 
-                          crs=sp::CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid)))
-    raster::values(map) <- round(grayImageArray*255)
-  } else {
-    map <- raster::brick(ncol=mapInfo$width, 
-                         nrow=mapInfo$height,
-                         nl = 3,
-                         xmn=mapInfo$extent$xmin, 
-                         xmx=mapInfo$extent$xmax, 
-                         ymn=mapInfo$extent$ymin, 
-                         ymx=mapInfo$extent$ymax, 
-                         crs=sp::CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid)))
-    raster::values(map) <- round(imageArray*255)
-    map <- raster::t(map)
-  }
+  
+  map <- raster::brick(ncol=mapInfo$width, 
+                       nrow=mapInfo$height,
+                       nl = 3)
+  map <- raster::setValues(map, round(imageArray*255))
+  map <- raster::t(map)
   
   # The planes are interpreted in the sequence
   # red, green, blue, alpha.
   
-  if ( rgdal::CRSargs(crs) != CRSargs(sp::CRS(paste0("+init=epsg:", mapInfo$extent$spatialReference$latestWkid))) ) {
+  extent(map) <- c(mapInfo$extent$xmin, mapInfo$extent$xmax, mapInfo$extent$ymin, mapInfo$extent$ymax)
+  crs(map) <- CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid)) # from sp package
+  
+  
+  if ( rgdal::CRSargs(crs) != rgdal::CRSargs(sp::CRS(paste0("+init=epsg:", mapInfo$extent$spatialReference$latestWkid))) ) {
     map <- raster::projectRaster(map, crs = crs)
   }
   
