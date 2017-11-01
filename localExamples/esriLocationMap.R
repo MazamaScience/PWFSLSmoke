@@ -18,28 +18,47 @@ library(stringr)
 
 # target lat/lon: 47.427498, -120.315141
 
+# mapType options: http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/
+# NatGeo_World_Map
+# World_Street_Map
+# World_Topo_Map
+# Specialty/DeLorme_World_Base_Map
+
+downloadEsriLocationMap <- function(latitude, longitude, mapType = "World_Street_Map", zoom = 9, size = 640, destination = "~/Desktop/esrimaps/map.png"){
+  
+  degreesPerPixel <- 360/(256*2^zoom) #degrees EW
+  targetLat <- latitude
+  targetLon <- longitude
+  lonlo <- targetLon - degreesPerPixel*size/2
+  lonhi <- targetLon + degreesPerPixel*size/2 
+  
+  # Can I just set a very small range for latitude, and let esri choose the range based on the size? 
+  latlo <- targetLat 
+  lathi <- targetLat
+  bbox <- paste(lonlo, latlo, lonhi, lathi, sep = ",")
+  baseurl <- paste0("http://server.arcgisonline.com/arcgis/rest/services/", mapType, "/MapServer/export")
+  url <- paste0(baseurl, "?bbox=", bbox, "&bboxSR=4326&size=",as.character(size),",",as.character(size), "&f=image")
+  
+  download.file(url, destination)
+  
+}
 
 
-zoom = 11
-degreesPerPixel <- 260/(256*2^zoom) #degrees EW
-size = 250
-targetLat <- 47.427498
-targetLon <- -120.315141
-lonlo <- targetLon - degreesPerPixel*size/2
-lonhi <- targetLon + degreesPerPixel*size/2 
+# Map for Wenatchee
+airnow <- airnow_loadLatest()
+wenatchee <- monitor_subset(airnow, monitorIDs = "530070011")
 
+downloadEsriLocationMap(wenatchee$meta$latitude, wenatchee$meta$longitude, zoom = 9, size = 250, 
+                        mapType = "World_Street_Map", destination = "~/Desktop/esrimaps/worldstreet.png")
 
-# Can I just set a very small range for latitude, and let esri choose the range based on the size? 
-latlo <- targetLat - .001
-lathi <- targetLat + .001
-bbox <- paste(lonlo, latlo, lonhi, lathi, sep = ",")
-baseurl <- "http://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/export"
-url <- paste0(baseurl, "?bbox=", bbox, "&bboxSR=4326&size=",as.character(size),",",as.character(size),"&f=image")
-          
-download.file(url, "~/Desktop/map.png")
+downloadEsriLocationMap(wenatchee$meta$latitude, wenatchee$meta$longitude, zoom = 9, size = 250, 
+                        mapType = "NatGeo_World_Map", destination = "~/Desktop/esrimaps/natgeo.png")
 
+downloadEsriLocationMap(wenatchee$meta$latitude, wenatchee$meta$longitude, zoom = 9, size = 250, 
+                        mapType = "World_Topo_Map", destination = "~/Desktop/esrimaps/worldtopo.png")
 
-
+downloadEsriLocationMap(wenatchee$meta$latitude, wenatchee$meta$longitude, zoom = 9, size = 250, 
+                        mapType = "Specialty/DeLorme_World_Base_Map", destination = "~/Desktop/esrimaps/delorme.png")
 
 
 # it seems that mapScale parameter should allow me to specify the scale of the map, no matter the bbox (so maybe could

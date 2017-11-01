@@ -1,43 +1,35 @@
 #' @export
 #' @import graphics
 #' @title Add Icons to a Map or RgoogleMap Plot
-#' @param color marker color; 'red' is currently the only option. 
+#' @param color marker color; 'red', 'green', 'yellow', 'orange', or 'blue'. Also includes AQI 
+#' category colors, specified 'AQI[number]' eg. 'AQI1' 
 #' @param longitude vector of longitudes
 #' @param latitude vector of latitudes
 #' @param map optional RgoogleMaps map object or Raster* object. 
-#' @param expansion icon expansion factor. Ignored if size is specified.
-#' @param width icon width in map coordinates 
-#' @param height icon height in map coordinates
+#' @param expansion icon expansion factor. Ignored if width and height are specified.
 #' @param ... arguments passed on to \code{rasterImage} 
 #' Taken from \code{map} if \code{map} is not null.
 #' @description Adds an icon to a plot or \code{map} -- an RgoogleMaps map object. 
-#' 
-#' @note 
-#' 
-#' When \code{map} is not null, \code{expansion} will change the icon size based on its actual size. 
-#' For basic plots, it may need to be much smaller, perhaps ~ 0.001.
-#' 
-#' Alternatively, if \code{width} and \code{height} are specified, the marker will be drawn with
-#' the specified dimensions, in plot coordinates.
-#' 
+#'  
 #' @examples
 #' \dontrun{
 #' ca <- airnow_load(20160801, 20160831, stateCodes='ca')
 #' # Google map
 #' map <- monitorGoogleMap(ca)
-#' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)
+#' addMarker(ca$meta$longitude, ca$meta$latitude, map=map)
 #' # line map
 #' monitorMap(ca)
-#' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.002)
+#' ca_AQI <- apply(ca$data[,-1], 2, max, na.rm = TRUE)
+#' ca_col <- .bincode(ca_AQI, breaks = AQI$breaks_24)
+#' addMarker(ca$meta$longitude, ca$meta$latitude, color = "blue")
 #' }
-#' 
 
 
-addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
-                      width = NULL, height = NULL, ...) {
+addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1, ...) {
   
   
   markerPath <- paste0("marker_",color,".png")
+  
   pngFile <- base::system.file("icons", markerPath, package="PWFSLSmoke")
   
   if ( pngFile == "" ) {
@@ -53,10 +45,10 @@ addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
       stop("'map' argument is not of class 'staticMap' or 'Raster*'")
     }
   }
-    
-    if ( "staticMap" %in% class(map) ) {
+  
+  if ( "staticMap" %in% class(map) ) {
     #RgoogleMap
-      
+    
     # limit longitude, latitude to those within bounding box
     lon_lo <- map$BBOX$ll[,'lon']
     lon_hi <- map$BBOX$ur[,'lon']
@@ -76,13 +68,9 @@ addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
     degreesPerPixelEW <- 360/(256*2^zoom) 
     degreesPerPixelNS <- degreesPerPixelEW*cos(pi/180*latitude) # R does trigonometry in radians
     
-    if ( is.null(width) ) {
-      width <- degreesPerPixelEW*dim(marker)[2]*expansion
-    } 
     
-    if ( is.null(height) ) {
-      height <- degreesPerPixelNS*dim(marker)[1]*expansion
-    } 
+    width <- degreesPerPixelEW*dim(marker)[2]*expansion
+    height <- degreesPerPixelNS*dim(marker)[1]*expansion
     
     left <- longitude - width/2
     right <- longitude + width/2
@@ -102,10 +90,10 @@ addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
     # Raster*
     
     # limit longitude, latitude to those within bounding box
-    lon_lo <- extent(map)[1]
-    lon_hi <- extent(map)[2]
-    lat_lo <- extent(map)[3]
-    lat_hi <- extent(map)[4]
+    lon_lo <- map@extent@xmin
+    lon_hi <- map@extent@xmax
+    lat_lo <- map@extent@ymin
+    lat_hi <- map@extent@ymax
     
     lonMask <- longitude >= lon_lo & longitude <= lon_hi
     latMask <- latitude >= lat_lo & latitude <= lat_hi
@@ -119,13 +107,9 @@ addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
     degreesPerPixelEW <- raster::res(map)[1]
     degreesPerPixelNS <- raster::res(map)[2]
     
-    if ( is.null(width) ) {
-      width <- degreesPerPixelEW*dim(marker)[2]*expansion
-    } 
     
-    if ( is.null(height) ) {
-      height <- degreesPerPixelNS*dim(marker)[1]*expansion
-    } 
+    width <- degreesPerPixelEW*dim(marker)[2]*expansion
+    height <- degreesPerPixelNS*dim(marker)[1]*expansion
     
     left <- longitude - width/2
     right <- longitude + width/2
@@ -158,13 +142,8 @@ addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
     degreesPerPixelEW <- degreesPerInchEW/96
     degreesPerPixelNS <- degreesPerInchNS/96
     
-    if ( is.null(width) ) {
-      width <- degreesPerPixelEW*dim(marker)[2]*expansion
-    } 
-    
-    if ( is.null(height) ) {
-      height <- degreesPerPixelNS*dim(marker)[1]*expansion
-    } 
+    width <- degreesPerPixelEW*dim(marker)[2]*expansion
+    height <- degreesPerPixelNS*dim(marker)[1]*expansion
     
     left <- longitude - width/2
     right <- longitude + width/2
@@ -172,8 +151,8 @@ addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
     top <- latitude+height
     
   }
-    
-    
+  
+  
   argsList <- list(...)
   
   argsList$image <- marker
