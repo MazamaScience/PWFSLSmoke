@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create Time of Day Spaghetti Plot
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param monitorID id for a specific monitor in the ws_monitor object
 #' @param ylim y limits for the plot
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])

@@ -25,7 +25,7 @@
 #' \item{bc}{ -- black carbon}
 #' }
 #' 
-#' @return A \code{data} dataframe for use in a emph{ws_monitor} object.
+#' @return A \code{data} dataframe for use in a \emph{ws_monitor} object.
 
 
 openaq_createDataDataframes <- function(df, parameters=NULL){

@@ -7,14 +7,14 @@
 monitor_reorder(ws_monitor, monitorIDs = NULL, dropMonitors = FALSE)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{monitorIDs}{optional vector of monitor IDs used to reorder the meta and data dataframes}
 
 \item{dropMonitors}{flag specifying whether to remove monitors with no data}
 }
 \value{
-A emph{ws_monitor} object reordered to match \code{monitorIDs}.
+A \emph{ws_monitor} object reordered to match \code{monitorIDs}.
 }
 \description{
 This function is a convenience function that merely wraps the \link{monitor_subset} function

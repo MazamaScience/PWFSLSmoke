@@ -10,7 +10,7 @@ monitor_combine(monitorList)
 \item{monitorList}{list containing one or more \emph{ws_monitor} objects}
 }
 \value{
-A emph{ws_monitor} object combining all monitoring data from \code{monitorList}.
+A \emph{ws_monitor} object combining all monitoring data from \code{monitorList}.
 }
 \description{
 Combines a list of one or more \emph{ws_monitor} objects into a single \emph{ws_monitor} object 

@@ -15,7 +15,7 @@ airsisDump_createMonitorObject(filepath, clusterDiameter = 1000,
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
-A emph{ws_monitor} object with AIRSIS data.
+A \emph{ws_monitor} object with AIRSIS data.
 }
 \description{
 Ingests an  AIRSIS dump file and converts

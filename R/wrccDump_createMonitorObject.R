@@ -4,7 +4,7 @@
 #' @param filepath absolute path of the WRCC dump file
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
-#' @return A emph{ws_monitor} object with WRCC data.
+#' @return A \emph{ws_monitor} object with WRCC data.
 #' @description Ingests a WRCC dump file and converts
 #' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
 #' ready for use with all \code{monitor_~} functions.

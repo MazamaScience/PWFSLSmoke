@@ -7,7 +7,7 @@
 monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{monitorID}{id for a specific monitor in the given ws_monitor object}
 

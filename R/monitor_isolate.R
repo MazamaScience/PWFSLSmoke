@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Isolate Individual Monitors
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param xlim optional vector with low and high longitude limits
 #' @param ylim optional vector with low and high latitude limits
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})

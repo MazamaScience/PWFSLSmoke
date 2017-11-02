@@ -1,10 +1,10 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Reorder a ws_monitor Object
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param monitorIDs optional vector of monitor IDs used to reorder the meta and data dataframes
 #' @param dropMonitors flag specifying whether to remove monitors with no data
-#' @return A emph{ws_monitor} object reordered to match \code{monitorIDs}.
+#' @return A \emph{ws_monitor} object reordered to match \code{monitorIDs}.
 #' @description This function is a convenience function that merely wraps the \link{monitor_subset} function
 #' which reorders as well as subsets. 
 

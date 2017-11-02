@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create Individual Value and Rolling Mean Plot
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
 #' in the ws_monitor object)
 #' @param width number of periods to average (e.g. for hourly data, \code{width = 24} plots 24-hour rolling means)

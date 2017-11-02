@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create Daily Barplot
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param monitorID monitor ID for a specific monitor in \code{ws_monitor} (optional
 #' if \code{ws_monitor} only has one monitor)
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
@@ -15,7 +15,7 @@
 #' @param labels_y_nudge nudge y labels down
 #' @param ... additional arguments to be passed to \code{barplot()}
 #' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor
-#' in a emph{ws_monitor} object. Each bar is colored according to its AQI category.
+#' in a \emph{ws_monitor} object. Each bar is colored according to its AQI category.
 #' 
 #' This function is a wrapper around \code{base::barplot} and any arguments to that 
 #' function may be used.

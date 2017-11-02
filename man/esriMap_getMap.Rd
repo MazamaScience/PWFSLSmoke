@@ -35,7 +35,7 @@ Creates a rasterBrick using the \pkg{raster} package with layers for red, green,
 map <- esriMap_getMap(-122.3318, 47.668)
 esriMap_plotOnStaticMap(map)
 map <- esriMap_getMap(-122.3318, 47.668, crs = sp::CRS("+init=epsg:4326"))
-raster::plotRGB(map)
+esriMap_plotOnStaticMap(map)
 }
 }
 \references{

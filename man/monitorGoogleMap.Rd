@@ -10,7 +10,7 @@ monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
   map = NULL, ...)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{slice}{either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}}
 
@@ -40,7 +40,7 @@ monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 A \emph{MyMap} RgoogleMaps map object object that can serve as a base plot.
 }
 \description{
-Creates a Google map of a emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
+Creates a Google map of a \emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
 
 If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
 will be calcualted using data from the \code{ws_monitor$meta} dataframe.

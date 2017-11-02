@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create Hourly Barplot
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param monitorID monitor ID for a specific monitor in \code{ws_monitor} (optional
 #' if \code{ws_monitor} only has one monitor)
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
@@ -23,7 +23,7 @@
 #' @param hourLty hour boundary type
 #' @param hourInterval interval for hour boundary lines
 #' @param ... additional arguments to be passed to \code{barplot(})
-#' @description Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a emph{ws_monitor} object.
+#' @description Creates a bar plot showing hourly PM 2.5 values for a specific monitor in a \emph{ws_monitor} object.
 #' Colors are assigned to one of the following styles:
 #' \itemize{
 #' \item{\code{AQI} -- hourly values colored with AQI colors using AQI 24-hour breaks}

@@ -2,7 +2,7 @@
 #' @export
 #' @import graphics
 #' @title Create a Google Map of ws_monitor Object
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
 #' @param breaks set of breaks used to assign colors
 #' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
@@ -16,7 +16,7 @@
 #' @param map optional map object returned from \code{monitorGoogleMap(})
 #' @param ... arguments passed on to \code{RgoogleMaps::PlotOnStaticMap()} (\emph{e.g.} destfile, cex, pch, etc.)
 #' @return A \emph{MyMap} RgoogleMaps map object object that can serve as a base plot.
-#' @description Creates a Google map of a emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
+#' @description Creates a Google map of a \emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
 #' 
 #' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
 #' will be calcualted using data from the \code{ws_monitor$meta} dataframe.

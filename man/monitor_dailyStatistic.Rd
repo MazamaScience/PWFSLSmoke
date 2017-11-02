@@ -8,8 +8,6 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
   na.rm = TRUE, minHours = 24)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
-
 \item{FUN}{function used to collapse a day's worth of data into a single number for each monitor in the ws_monitor object}
 
 \item{dayStart}{one of \code{sunset|midnight|sunrise}}
@@ -17,9 +15,11 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 
 \item{minHours}{minimum number of valid data hours required to calculate each daily statistic}
+
+\item{ws_monitor\emph{ws_monitor}}{object}
 }
 \value{
-A emph{ws_monitor} object with daily statistics for the local timezone.
+A\emph{ws_monitor} object with daily statistics for the local timezone.
 }
 \description{
 Calculates daily statistics for each monitor in \code{ws_monitor}.

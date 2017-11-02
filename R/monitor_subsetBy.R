@@ -1,9 +1,9 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Subset Monitoring Data
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param filter a filter to use on the ws_monitor object
-#' @return A emph{ws_monitor} object with a subset of the input ws_monitor object.
+#' @return A \emph{ws_monitor} object with a subset of the input ws_monitor object.
 #' @description The incoming ws_monitor object is filtered according to \code{filter}.
 #' Either meta data or actual data can be filtered. 
 #' @examples

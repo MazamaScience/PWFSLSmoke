@@ -12,7 +12,7 @@ airsis_createMetaDataframe(df, existingMeta = NULL)
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
-A \code{meta} dataframe for use in a emph{ws_monitor} object.
+A \code{meta} dataframe for use in a \emph{ws_monitor} object.
 }
 \description{
 After an AIRSIS dataframe has been enhanced with 

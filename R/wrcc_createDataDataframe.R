@@ -11,7 +11,7 @@
 #' contains a \code{POSIXct} time in UTC. Additional columns contain data
 #' for each separate deployment of a monitor. 
 #' 
-#' @return A \code{data} dataframe for use in a emph{ws_monitor} object.
+#' @return A \code{data} dataframe for use in a \emph{ws_monitor} object.
 
 
 wrcc_createDataDataframe <- function(df, meta) {

@@ -1,12 +1,12 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Calculate Daily Counts of Values At or Above a Threshold
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param threshold AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted
 #' @param dayStart one of \code{"sunset|midnight|sunrise"}
 #' @param minHours minimum number of hourly observations required
 #' @param na.rm logical value indicating whether NA values should be ignored
-#' @return A emph{ws_monitor} object with a daily count of hours at or above \code{threshold}.
+#' @return A \emph{ws_monitor} object with a daily count of hours at or above \code{threshold}.
 #' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
 #' For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
 #' very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.

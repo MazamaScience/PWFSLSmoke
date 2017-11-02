@@ -2,7 +2,7 @@
 #' @export
 #' @import maps mapproj
 #' @title Create Map of Monitoring Stations
-#' @param ws_monitor emph{ws_monitor} object
+#' @param ws_monitor \emph{ws_monitor} object
 #' @param slice either a time index or a function used to collapse the time axis
 #' @param breaks set of breaks used to assign colors
 #' @param colors set of colors must be one less than the number of breaks

@@ -8,7 +8,7 @@ monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
   ylim = NULL, aqiLines = TRUE, shadedNight = TRUE, title = NULL, ...)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{monitorID}{id for a specific monitor in the ws_monitor object}
 

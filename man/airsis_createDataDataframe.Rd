@@ -12,7 +12,7 @@ airsis_createDataDataframe(df, meta)
 \item{meta}{AIRSIS meta dataframe created by \code{airsis_createMetaDataframe()}}
 }
 \value{
-A \code{data} dataframe for use in a emph{ws_monitor} object.
+A \code{data} dataframe for use in a \emph{ws_monitor} object.
 }
 \description{
 After quality control has been applied to an AIRSIS dataframe,

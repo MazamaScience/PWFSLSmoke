@@ -8,7 +8,7 @@ monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
   dayStart = "midnight", minHours = 0, na.rm = TRUE)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{threshold}{AQI level name (e.g. \code{"unhealthy"}) or numerical threshold at or above which a measurement is counted}
 
@@ -19,7 +19,7 @@ monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 }
 \value{
-A emph{ws_monitor} object with a daily count of hours at or above \code{threshold}.
+A \emph{ws_monitor} object with a daily count of hours at or above \code{threshold}.
 }
 \description{
 Calculates the number of hours per day each monitor in \code{ws_monitor} was at or above a given threshold

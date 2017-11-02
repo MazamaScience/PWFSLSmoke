@@ -8,7 +8,7 @@ monitorDygraph(ws_monitor, title = "title", ylab = "PM2.5 Concentration",
   tlim = NULL, rollPeriod = 1, showLegend = TRUE)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{title}{title text}
 

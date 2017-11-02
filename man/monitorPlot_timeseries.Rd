@@ -10,7 +10,7 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
   dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{monitorID}{monitor ID for one or more monitor in the ws_monitor object}
 
@@ -41,7 +41,7 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
 \item{...}{additional arguments to be passed to \code{points()}}
 }
 \description{
-Creates a time series plot of PM2.5 data from a emph{ws_monitor} object (see note below). Optional arguments
+Creates a time series plot of PM2.5 data from a \emph{ws_monitor} object (see note below). Optional arguments
 color code by AQI index, add shading to indicate nighttime, and adjust the time display (local vs. UTC).
 
 When a named \code{style} is used, some graphical parameters will be overridden. Available styles include:
@@ -52,7 +52,7 @@ When a named \code{style} is used, some graphical parameters will be overridden.
 }
 }
 \note{
-Remember that a emph{ws_monitor} object can contain data from more than one monitor, and thus, this function may produce
+Remember that a \emph{ws_monitor} object can contain data from more than one monitor, and thus, this function may produce
 a time series of data from multiple monitors. To plot a time series of an individual monitor's data, specify a single \code{monitorID}.
 }
 \examples{

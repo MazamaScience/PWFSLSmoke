@@ -1,14 +1,14 @@
 #' @keywords ws_monitor
 #' @export
 #' @title Subset ws_monitor Object 'data' Dataframe
-#' @param data emph{ws_monitor} object \code{data} dataframe
+#' @param data \emph{ws_monitor} object \code{data} dataframe
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param vlim optional vector with low and high data value limits
 #' @param monitorIDs optional vector of monitorIDs
 #' @param dropMonitors flag specifying whether to remove columns -- defaults to \code{FALSE}
 #' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
-#' @return A emph{ws_monitor} object \code{data} dataframe, or \code{NULL} if filtering removes all monitors.
-#' @description Subsets a emph{ws_monitor} object's \code{data} dataframe by removing any monitors that
+#' @return A \emph{ws_monitor} object \code{data} dataframe, or \code{NULL} if filtering removes all monitors.
+#' @description Subsets a \emph{ws_monitor} object's \code{data} dataframe by removing any monitors that
 #' lie outisde the specified ranges of time and values and that are not mentioned in the
 #' list of monitorIDs.
 #' 

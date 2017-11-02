@@ -7,12 +7,12 @@
 monitor_timeAverage(ws_monitor, ...)
 }
 \arguments{
-\item{ws_monitor}{emph{ws_monitor} object}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{...}{additional arguments to be passed to \code{openair::timeAverage()}}
 }
 \value{
-A emph{ws_monitor} object with data that have been proccessed by \code{openair::timeAverage()}.
+A \emph{ws_monitor} object with data that have been proccessed by \code{openair::timeAverage()}.
 }
 \description{
 This function extracts the \code{data} dataframe from \code{ws_monitor} object

@@ -15,7 +15,7 @@ wrccDump_createMonitorObject(filepath, clusterDiameter = 1000,
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
-A emph{ws_monitor} object with WRCC data.
+A \emph{ws_monitor} object with WRCC data.
 }
 \description{
 Ingests a WRCC dump file and converts
