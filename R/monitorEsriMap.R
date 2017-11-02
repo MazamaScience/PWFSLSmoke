@@ -13,6 +13,8 @@
 #' @param maptype map type
 #' @param grayscale logical, if TRUE the colored map tile is rendered into a black & white image
 #' @param mapRaster optional RGB Raster* object returned from \code{esriMap_getMap})
+#' @param cex character expansion for points
+#' @param pch plotting character for points
 #' @param ... arguments passed on to \code{esriMap_plotOnStaticMap} (\emph{e.g.} destfile, cex, pch, etc.)
 #' @return Plots a map loaded from arcGIS REST with points for each monitor
 #' @description Creates a Google map of a \emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
@@ -24,7 +26,7 @@
 #' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
 #' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 #' Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
-#' monitorGoogleMap(Spokane)
+#' monitorEsriMap(Spokane)
 
 monitorEsriMap <- function(ws_monitor,
                            slice=get('max'),
@@ -104,7 +106,7 @@ monitorEsriMap <- function(ws_monitor,
   
   if ( is.null(mapRaster) ) {
     mapRaster <- esriMap_getMap(centerLon, centerLat, width = width, height = height,
-                               zoom=zoom, mapType=maptype, crs = sp::CRS("+init=epsg:4326"));
+                               zoom=zoom, maptype=maptype, crs = sp::CRS("+init=epsg:4326"));
   }
   
   # Overlay function default arguments ----------------------------------------
@@ -125,7 +127,7 @@ monitorEsriMap <- function(ws_monitor,
     col <- argsList$col
   }
   
-  points(lon, lat, pch = pch, col = col, cex = cex)
+  graphics::points(lon, lat, pch = pch, col = col, cex = cex)
   
   return(invisible(map)) 
 }

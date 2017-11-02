@@ -3,7 +3,7 @@
 #' @title Create a RGB spatial raster from arcGIS REST
 #' @param centerLon map center longitude
 #' @param centerLat map center latitude
-#' @param mapType map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme. Also accepts
+#' @param maptype map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme. Also accepts
 #' map server identity, found at \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
 #' @param zoom map zoom level; corresponds to googleMaps zoom level
 #' @param width width of image, in pixels
@@ -23,7 +23,7 @@
 
 esriMap_getMap <- function(centerLon, 
                            centerLat,
-                           mapType = "worldStreetMap", 
+                           maptype = "worldStreetMap", 
                            zoom = 12, 
                            width = 640,
                            height = 640,
@@ -48,28 +48,28 @@ esriMap_getMap <- function(centerLon,
   lathi <- centerLat+degreesPerPixelNS*height/2
   bbox <- paste(lonlo, latlo, lonhi, lathi, sep = ",")
   
-  # url text for mapType http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/
+  # url text for maptype http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/
   # NatGeo_World_Map = natGeo
   # World_Street_Map = worldStreetMap
   # World_Topo_Map = worldTopoMap
   # Specialty/DeLorme_World_Base_Map = deLorme
   # World_Imagery = satellite
   
-  if ( mapType == "natGeo" ) {
-    mapTypeText <- "NatGeo_World_map"
-  } else if ( mapType == "worldStreetMap" ) {
-    mapTypeText <- "World_Street_Map"
-  } else if ( mapType == "worldTopoMap" ) {
-    mapTypeText <- "World_Topo_Map"
-  } else if ( mapType == "deLorme" ) {
-    mapTypeText <- "Specialty/DeLorme_World_Base_Map"
+  if ( maptype == "natGeo" ) {
+    maptypeText <- "NatGeo_World_map"
+  } else if ( maptype == "worldStreetMap" ) {
+    maptypeText <- "World_Street_Map"
+  } else if ( maptype == "worldTopoMap" ) {
+    maptypeText <- "World_Topo_Map"
+  } else if ( maptype == "deLorme" ) {
+    maptypeText <- "Specialty/DeLorme_World_Base_Map"
   } else {
-    mapTypeText <- mapType
+    maptypeText <- maptype
   }
   
   # Apply arguments to url
   
-  baseurl <- paste0("http://server.arcgisonline.com/arcgis/rest/services/", mapTypeText, "/MapServer/export")
+  baseurl <- paste0("http://server.arcgisonline.com/arcgis/rest/services/", maptypeText, "/MapServer/export")
   url <- paste0(baseurl, "?bbox=", bbox, "&bboxSR=4326&size=", width, ",", height)
   urlPNG <- paste0(url, "&f=image")
   urlJSON <- paste0(url, "&f=json")

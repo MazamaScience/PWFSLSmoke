@@ -4,7 +4,7 @@
 \alias{esriMap_getMap}
 \title{Create a RGB spatial raster from arcGIS REST}
 \usage{
-esriMap_getMap(centerLon, centerLat, mapType = "worldStreetMap", zoom = 12,
+esriMap_getMap(centerLon, centerLat, maptype = "worldStreetMap", zoom = 12,
   width = 640, height = 640, crs = sp::CRS("+init=epsg:3857"))
 }
 \arguments{
@@ -12,7 +12,7 @@ esriMap_getMap(centerLon, centerLat, mapType = "worldStreetMap", zoom = 12,
 
 \item{centerLat}{map center latitude}
 
-\item{mapType}{map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme. Also accepts
+\item{maptype}{map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme. Also accepts
 map server identity, found at \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}}
 
 \item{zoom}{map zoom level; corresponds to googleMaps zoom level}
