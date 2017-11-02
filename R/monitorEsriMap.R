@@ -1,7 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @import graphics
-#' @title Create a Google Map of ws_monitor Object
+#' @title Create an ESRI Map of ws_monitor Object
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
 #' @param breaks set of breaks used to assign colors
@@ -13,9 +12,9 @@
 #' @param zoom map zoom level
 #' @param maptype map type
 #' @param grayscale logical, if TRUE the colored map tile is rendered into a black & white image
-#' @param map optional map object returned from \code{monitorGoogleMap(})
-#' @param ... arguments passed on to \code{RgoogleMaps::PlotOnStaticMap()} (\emph{e.g.} destfile, cex, pch, etc.)
-#' @return A \emph{MyMap} RgoogleMaps map object object that can serve as a base plot.
+#' @param mapRaster optional RGB Raster* object returned from \code{esriMap_getMap})
+#' @param ... arguments passed on to \code{esriMap_plotOnStaticMap} (\emph{e.g.} destfile, cex, pch, etc.)
+#' @return Plots a map loaded from arcGIS REST with points for each monitor
 #' @description Creates a Google map of a \emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
 #' 
 #' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
@@ -27,19 +26,21 @@
 #' Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
 #' monitorGoogleMap(Spokane)
 
-monitorGoogleMap <- function(ws_monitor,
-                             slice=get('max'),
-                             breaks=AQI$breaks_24,
-                             colors=AQI$colors,
-                             width=640,
-                             height=640,
-                             centerLon=NULL,
-                             centerLat=NULL,
-                             zoom=NULL,
-                             maptype='roadmap',
-                             grayscale=FALSE,
-                             map=NULL,
-                             ...) {
+monitorEsriMap <- function(ws_monitor,
+                           slice=get('max'),
+                           breaks=AQI$breaks_24,
+                           colors=AQI$colors,
+                           width=640,
+                           height=640,
+                           centerLon=NULL,
+                           centerLat=NULL,
+                           zoom=NULL,
+                           maptype='worldStreetMap',
+                           grayscale=FALSE,
+                           mapRaster=NULL,
+                           cex=par("cex")*2.0,
+                           pch=16,
+                           ...) {
   
   # ----- Data Preparation ----------------------------------------------------
   
@@ -99,33 +100,32 @@ monitorGoogleMap <- function(ws_monitor,
   }
   
   
-  # ----- Generate map --------------------------------------------------------
+  # ----- Generate RGB Raster --------------------------------------------------------
   
-  if ( is.null(map) ) {
-    map <- RgoogleMaps::GetMap(center=c(centerLat,centerLon), size=c(height,width),
-                               zoom=zoom, maptype=maptype, GRAYSCALE=grayscale);
-    map <- RgoogleMaps::PlotOnStaticMap(map)
+  if ( is.null(mapRaster) ) {
+    mapRaster <- esriMap_getMap(centerLon, centerLat, width = width, height = height,
+                               zoom=zoom, mapType=maptype, crs = sp::CRS("+init=epsg:4326"));
   }
   
   # Overlay function default arguments ----------------------------------------
   
   argsList <- list(...)
   
-  # Explicitly declare defaults for the PlotOnStaticMap() function
-  argsList$MyMap <- map
-  argsList$lat <- ws_monitor$meta$latitude
-  argsList$lon <- ws_monitor$meta$longitude
-  argsList$size <- map$size
-  argsList$add=TRUE
-  argsList$FUN <- ifelse('FUN' %in% names(argsList), argsList$FUN, points)
-  argsList$pch <- ifelse('pch' %in% names(argsList), argsList$pch, 16)
-  # "ifelse returns a value with the same shape as test ..."
-  if ( ! 'col' %in% names(argsList) ) {
-    argsList$col <- cols
-  }
-  argsList$cex <- ifelse('cex' %in% names(argsList), argsList$cex, par("cex")*2.0)
+  # Explicitly declare defaults for the esriMap_plotOnStaticMap() function
+  argsList$mapRaster <- mapRaster
+  argsList$grayscale <- grayscale
   
-  map <- do.call(RgoogleMaps::PlotOnStaticMap, argsList)
+  do.call(esriMap_plotOnStaticMap, argsList)
+  
+  lat <- ws_monitor$meta$latitude
+  lon <- ws_monitor$meta$longitude
+  if ( ! 'col' %in% names(argsList) ) {
+    col <- cols
+  } else {
+    col <- argsList$col
+  }
+  
+  points(lon, lat, pch = pch, col = col, cex = cex)
   
   return(invisible(map)) 
 }
