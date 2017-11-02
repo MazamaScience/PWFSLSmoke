@@ -31,10 +31,12 @@ A rasterBrick object which can be plotted with \code{raster::plotRGB} and serve 
 Creates a rasterBrick using the \pkg{raster} package with layers for red, green, and blue color intensity.
 }
 \examples{
+\dontrun{
 map <- esriMap_getMap(-122.3318, 47.668)
-raster::plotRGB(map)
+esriMap_plotOnStaticMap(map)
 map <- esriMap_getMap(-122.3318, 47.668, crs = sp::CRS("+init=epsg:4326"))
 raster::plotRGB(map)
+}
 }
 \references{
 \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/}

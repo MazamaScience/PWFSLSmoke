@@ -12,18 +12,17 @@ addMarker(longitude, latitude, color = "red", map = NULL, expansion = 1,
 
 \item{latitude}{vector of latitudes}
 
-\item{color}{marker color; 'red', 'green', 'yellow', 'orange', or 'blue'. Also includes AQI 
+\item{color}{marker color: 'red', 'green', 'yellow', 'orange', or 'blue'. Also includes AQI 
 category colors, specified 'AQI[number]' eg. 'AQI1'}
 
-\item{map}{optional RgoogleMaps map object or Raster* object.}
+\item{map}{optional RgoogleMaps map object or Raster* object}
 
 \item{expansion}{icon expansion factor. Ignored if width and height are specified.}
 
-\item{...}{arguments passed on to \code{rasterImage} 
-Taken from \code{map} if \code{map} is not null.}
+\item{...}{arguments passed on to \code{rasterImage}}
 }
 \description{
-Adds an icon to a plot or \code{map} -- an RgoogleMaps map object.
+Adds a marker to a plot or \code{map} -- an RgoogleMaps map object or Raster* object.
 }
 \examples{
 \dontrun{
@@ -33,8 +32,7 @@ map <- monitorGoogleMap(ca)
 addMarker(ca$meta$longitude, ca$meta$latitude, map=map)
 # line map
 monitorMap(ca)
-ca_AQI <- apply(ca$data[,-1], 2, max, na.rm = TRUE)
-ca_col <- .bincode(ca_AQI, breaks = AQI$breaks_24)
-addMarker(ca$meta$longitude, ca$meta$latitude, color = "blue")
+addMarker(ca$meta$longitude, ca$meta$latitude, color = "blue", expansion = 1)
 }
 }
+\keyword{plotting}

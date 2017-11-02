@@ -1,15 +1,15 @@
+#' @keywords plotting
 #' @export
 #' @import graphics
 #' @title Add Icons to a Map or RgoogleMap Plot
-#' @param color marker color; 'red', 'green', 'yellow', 'orange', or 'blue'. Also includes AQI 
+#' @param color marker color: 'red', 'green', 'yellow', 'orange', or 'blue'. Also includes AQI 
 #' category colors, specified 'AQI[number]' eg. 'AQI1' 
 #' @param longitude vector of longitudes
 #' @param latitude vector of latitudes
-#' @param map optional RgoogleMaps map object or Raster* object. 
+#' @param map optional RgoogleMaps map object or Raster* object
 #' @param expansion icon expansion factor. Ignored if width and height are specified.
 #' @param ... arguments passed on to \code{rasterImage} 
-#' Taken from \code{map} if \code{map} is not null.
-#' @description Adds an icon to a plot or \code{map} -- an RgoogleMaps map object. 
+#' @description Adds a marker to a plot or \code{map} -- an RgoogleMaps map object or Raster* object. 
 #'  
 #' @examples
 #' \dontrun{
@@ -19,9 +19,7 @@
 #' addMarker(ca$meta$longitude, ca$meta$latitude, map=map)
 #' # line map
 #' monitorMap(ca)
-#' ca_AQI <- apply(ca$data[,-1], 2, max, na.rm = TRUE)
-#' ca_col <- .bincode(ca_AQI, breaks = AQI$breaks_24)
-#' addMarker(ca$meta$longitude, ca$meta$latitude, color = "blue")
+#' addMarker(ca$meta$longitude, ca$meta$latitude, color = "blue", expansion = 1)
 #' }
 
 

@@ -14,10 +14,12 @@
 #' @description Creates a rasterBrick using the \pkg{raster} package with layers for red, green, and blue color intensity.
 #' @references \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/}
 #' @examples
+#' \dontrun{
 #' map <- esriMap_getMap(-122.3318, 47.668)
-#' raster::plotRGB(map)
+#' esriMap_plotOnStaticMap(map)
 #' map <- esriMap_getMap(-122.3318, 47.668, crs = sp::CRS("+init=epsg:4326"))
-#' raster::plotRGB(map)
+#' esriMap_plotOnStaticMap(map)
+#' }
 
 esriMap_getMap <- function(centerLon, 
                            centerLat,
@@ -92,7 +94,7 @@ esriMap_getMap <- function(centerLon,
   mapRaster <- raster::brick(ncol=mapInfo$width, 
                        nrow=mapInfo$height,
                        nl = 3)
-  mapRaster <- raster::setValues(mapRaster, round(imageArray*255))
+  mapRaster <- raster::setValues(mapRaster, imageArray*255)
   mapRaster <- raster::t(mapRaster) # correct because columns from the array are read in as rows
   
   names(mapRaster) <- c("red", "green", "blue")
@@ -102,7 +104,7 @@ esriMap_getMap <- function(centerLon,
   
   
   if ( rgdal::CRSargs(crs) != rgdal::CRSargs(sp::CRS(paste0("+init=epsg:", mapInfo$extent$spatialReference$latestWkid))) ) {
-    mapRaster <- raster::projectRaster(mapRaster, crs = crs)
+    mapRaster <- raster::projectRaster(mapRaster, crs = crs, method = "ngb")
   }
   
   return(mapRaster)
