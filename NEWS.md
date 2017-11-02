@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.29
+
+ * functions for ESRI Maps added: `esriMap_getMap`, `esriMap_plotOnStaticMap`, `monitorEsriMap`
+ * new `addMarker` function to add a marker to a plot
+
 ### PWFSLSmoke 0.99.28
 
  * `monitor_reorder()` now includes `dropMonitors=FALSE` default
