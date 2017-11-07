@@ -29,9 +29,9 @@
 
 esriMap_getMap <- function(centerLon = NULL, 
                            centerLat = NULL,
-                           bbox = NULL,
+                           bbox = NULL, # TODO:  change this name to bboxString to avoid confusion with sp::bbox
                            bboxSR = "4326",
-                           maptype = "worldStreetMap", 
+                           maptype = "worldStreetMap", # TODO:  use mapType with a capital 'T'
                            zoom = 12, 
                            width = 640,
                            height = 640,
@@ -48,10 +48,13 @@ esriMap_getMap <- function(centerLon = NULL,
   # degrees-NS/pixel = degreesPerPixelNS*cos(latitude)
   # Source: https://gis.stackexchange.com/questions/7430/what-ratio-scales-do-google-maps-zoom-levels-correspond-to
   
+  # TODO:  Improve logic
+  # TODO:  if (lat AND lon) { ... } else if (bboxString) { ... } else { ERROR }
   if ( is.null(centerLat) && is.null(centerLon) && is.null(bbox) ) {
     stop("centerLat, centerLon, or bbox must be specified")
   }
   
+  # TODO:  Merge this if block into the logic above
   if ( is.null(bbox) ) {
     degreesPerPixelEW <- 360/(256*2^zoom) 
     degreesPerPixelNS <- degreesPerPixelEW*cos(pi/180*centerLat) # R does trigonometry in radians
@@ -88,11 +91,25 @@ esriMap_getMap <- function(centerLon = NULL,
   
   # Apply arguments to url
   
+  # TODO:  Naming consistency: url, baseUrl, pngUrl, jsonUrl
   baseurl <- paste0("http://server.arcgisonline.com/arcgis/rest/services/", maptypeText, "/MapServer/export")
   url <- paste0(baseurl, "?bbox=", bbox, "&bboxSR=", bboxSR, "&size=", width, ",", height, additionalArgs)
   urlPNG <- paste0(url, "&f=image")
   urlJSON <- paste0(url, "&f=json")
   
+  # TODO:  Always use httr package to download stuff
+  # TODO:  Much of the code below here can be replaced with:
+  # TODO:
+  # TODO:  response <- httr::GET(jsonUrl)
+  # TODO:  # check response$status_code and issue an intelligible error message if needed
+  # TODO:  mapInfo <- jsonlite::fromJSON(httr::content(response))
+  # TODO:  response <- httr::GET(pngUrl)
+  # TODO:  # check status_code
+  # TODO:  array <- httr::content(response)
+  # TODO:  mapRaster <- raster::rasterImamge(array, ...)
+  
+  # TODO:  Test each web request by checking out 
+
   # Download and load PNG and metadata
   
   dirName <- paste("esriMap", centerLat, centerLon, sep = "_")
