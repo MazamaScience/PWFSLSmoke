@@ -1,5 +1,5 @@
 
-# ----- WRCC monitors ----------------------------------------------------------
+# ----- Internal data ---------------------------------------------------------
 
 #' Carmel Valley example dataset
 #' 
@@ -33,6 +33,8 @@ NULL
 #' documentation.
 NULL
 
+# ----- WRCC related info -----------------------------------------------------
+
 #' WRCC monitor names and stationIDs
 #' 
 #' @docType data
@@ -54,6 +56,36 @@ NULL
 #' }
 #' @note This list of monitors was created on Feb 09, 2017.
 NULL
+
+# ----- AIRSIS related info ---------------------------------------------------
+
+#' AIRSIS monitor types and codes
+#' 
+#' @docType data
+#' @name AIRSIS
+#' @title AIRSIS Unit Types
+#' @format A list of lists
+#' @description
+#' AIRSIS provides access to data by unit type at URLs like:
+#'   http://usfs.airsis.com/vision/common/CSVExport.aspx?utid=38&StartDate=2017-11-06&EndDate=2017-11-07
+#' 
+#' Unit types include:
+#' \itemize{
+#' \item{DATARAM}{ 21 = Dataram}
+#' \item{BAM1020}{ 24 = Bam 1020}
+#' \item{EBAM_NEW}{ 30 = eBam-New}
+#' \item{EBAM}{ 38 = Iridium - Ebam}
+#' \item{ESAM}{ 39 = Iridium - Esam}
+#' \item{AUTOMET}{ 43 = Automet}
+#' }
+#' @note This list of monitors was created on Feb 09, 2017.
+AIRSIS <- list(unitTypes=list(DATARAM=21,
+                              BAM1020=24,
+                              EBAM_NEW=30,
+                              EBAM=38,
+                              ESAM=39,
+                              AUTOMET=43))
+
 
 # ----- AQI breaks -------------------------------------------------------------
 

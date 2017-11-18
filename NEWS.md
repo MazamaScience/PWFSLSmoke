@@ -9,10 +9,15 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.30
+
+ * new `airsis_getAvailableUnits()` function
+ * new `AIRSIS` object with available monitor types
+
 ### PWFSLSmoke 0.99.29
 
- * functions for ESRI Maps added: `esriMap_getMap`, `esriMap_plotOnStaticMap`, `monitorEsriMap`
- * new `addMarker` function to add a marker to a plot
+ * functions for ESRI Maps added: `esriMap_getMap()`, `esriMap_plotOnStaticMap()`, `monitorEsriMap()`
+ * new `addMarker()` function to add a marker to a plot
 
 ### PWFSLSmoke 0.99.28
 
@@ -149,7 +154,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 0.9.4
 
- * new addIcon() function addis icons to maps and RgoogleMaps map objects
+ * new `addIcon()` function addis icons to maps and RgoogleMaps map objects
 
 ### PWFSLSmoke 0.9.3
 
@@ -161,7 +166,7 @@ data from AirNow, AIRSIS and WRCC.
 
 ### PWFSLSmoke 0.8.6
 
- * improved airsis_downloadHourlyData() now uses readr::read_delim() 
+ * improved `airsis_downloadHourlyData()` now uses `readr::read_delim() `
 
 ### PWFSLSmoke 0.8.5
 
