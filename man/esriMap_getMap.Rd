@@ -4,7 +4,7 @@
 \alias{esriMap_getMap}
 \title{Create a RGB spatial raster from arcGIS REST}
 \usage{
-esriMap_getMap(centerLon = NULL, centerLat = NULL, bbox = NULL,
+esriMap_getMap(centerLon = NULL, centerLat = NULL, bboxString = NULL,
   bboxSR = "4326", maptype = "worldStreetMap", zoom = 12, width = 640,
   height = 640, crs = sp::CRS("+init=epsg:4326"), additionalArgs = NULL)
 }
@@ -13,7 +13,7 @@ esriMap_getMap(centerLon = NULL, centerLat = NULL, bbox = NULL,
 
 \item{centerLat}{map center latitude}
 
-\item{bbox}{bounding box (xmin, ymin, xmax, ymax). If not null, centerLon, centerLat, and zoom are ignored.}
+\item{bboxString}{comma separated string with bounding box (xmin, ymin, xmax, ymax). If not null, centerLon, centerLat, and zoom are ignored.}
 
 \item{bboxSR}{spatial reference of the bounding box}
 
@@ -41,7 +41,7 @@ Creates a rasterBrick using the \pkg{raster} package with layers for red, green,
 The spatial reference of the image when it is downloaded is 3857. If the crs argument is different, projecting may cause 
 the size and extent of the image to differ very slightly from the input, on a scale of 1-2 pixels or 10^-3 degrees. 
 
-If bbox is specified and the bbox aspect ratio does not match the width/height aspect ratio the extent is resized to prevent
+If bboxString is specified and the bbox aspect ratio does not match the width/height aspect ratio the extent is resized to prevent
 the map image from appearing stretched, so the map extent may not match the bbox argument exactly.
 }
 \examples{

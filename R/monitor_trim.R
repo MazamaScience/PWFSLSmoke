@@ -18,16 +18,11 @@ monitor_trim <- function(ws_monitor) {
   # Vectors of first and last valid indices excluding 'datetime'
   firstValids <- unlist(lapply(ws_monitor$data, function(x) { min(which(!is.na(x))) }))[-1]
   lastValids <- unlist(lapply(ws_monitor$data, function(x) { max(which(!is.na(x))) }))[-1]
+  validIndexes <- max(firstValids):min(lastValids)
   
   # Subset the data dataframe
-  ws_monitor$data <- ws_monitor$data[max(firstValids):min(lastValids),] ### TODO:  What is going on here!
+  ws_monitor$data <- ws_monitor$data[validIndexes,]
 
-# TODO:  Need something like:
-# d <- ws_monitor$data[,-1]
-# lastValidIndex <- apply(d, 2, function(x) { return(max(which(!is.na(x)))) })
-# lastValidValue <- vector('numeric',length(lastValidIndex))
-# for (i in 1:length(lastValidIndex)) { lastValidValue[i] <- d[lastValidIndex[i],i] }
-
-  
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )
+  
 }
