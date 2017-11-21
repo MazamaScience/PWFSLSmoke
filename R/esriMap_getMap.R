@@ -6,7 +6,7 @@
 #' @param maptype map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme. Also accepts
 #' map server identity, found at \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
 #' @param zoom map zoom level; corresponds to googleMaps zoom level
-#' @param bbox bounding box (xmin, ymin, xmax, ymax). If not null, centerLon, centerLat, and zoom are ignored.
+#' @param bboxString comma separated string with bounding box (xmin, ymin, xmax, ymax). If not null, centerLon, centerLat, and zoom are ignored.
 #' @param bboxSR spatial reference of the bounding box
 #' @param width width of image, in pixels
 #' @param height height of image, in pixels
@@ -16,7 +16,7 @@
 #' @note The spatial reference of the image when it is downloaded is 3857. If the crs argument is different, projecting may cause 
 #' the size and extent of the image to differ very slightly from the input, on a scale of 1-2 pixels or 10^-3 degrees. 
 #' 
-#' If bbox is specified and the bbox aspect ratio does not match the width/height aspect ratio the extent is resized to prevent
+#' If bboxString is specified and the bbox aspect ratio does not match the width/height aspect ratio the extent is resized to prevent
 #' the map image from appearing stretched, so the map extent may not match the bbox argument exactly.
 #' @return A rasterBrick object which can be plotted with \code{raster::plotRGB} and serve as a base plot.
 #' @description Creates a rasterBrick using the \pkg{raster} package with layers for red, green, and blue color intensity.
@@ -29,9 +29,9 @@
 
 esriMap_getMap <- function(centerLon = NULL, 
                            centerLat = NULL,
-                           bbox = NULL, # TODO:  change this name to bboxString to avoid confusion with sp::bbox
+                           bboxString = NULL,
                            bboxSR = "4326",
-                           maptype = "worldStreetMap", # TODO:  use mapType with a capital 'T'
+                           maptype = "worldStreetMap",
                            zoom = 12, 
                            width = 640,
                            height = 640,
@@ -50,23 +50,23 @@ esriMap_getMap <- function(centerLon = NULL,
   
   # TODO:  Improve logic
   # TODO:  if (lat AND lon) { ... } else if (bboxString) { ... } else { ERROR }
-  if ( is.null(centerLat) && is.null(centerLon) && is.null(bbox) ) {
-    stop("centerLat, centerLon, or bbox must be specified")
+  if ( is.null(centerLat) && is.null(centerLon) && is.null(bboxString) ) {
+    stop("centerLat, centerLon, or bboxString must be specified")
   }
   
   # TODO:  Merge this if block into the logic above
-  if ( is.null(bbox) ) {
+  if ( is.null(bboxString) ) {
     degreesPerPixelEW <- 360/(256*2^zoom) 
     degreesPerPixelNS <- degreesPerPixelEW*cos(pi/180*centerLat) # R does trigonometry in radians
-    lonlo <- centerLon - degreesPerPixelEW*(width/2-.5)
-    lonhi <- centerLon + degreesPerPixelEW*(width/2-.5)
+    lonLo <- centerLon - degreesPerPixelEW*(width/2-.5)
+    lonHi <- centerLon + degreesPerPixelEW*(width/2-.5)
     
-    latlo <- centerLat-degreesPerPixelNS*(height/2-.5)
-    lathi <- centerLat+degreesPerPixelNS*(height/2-.5)
-    bbox <- c(lonlo, latlo, lonhi, lathi)
+    latLo <- centerLat-degreesPerPixelNS*(height/2-.5)
+    latHi <- centerLat+degreesPerPixelNS*(height/2-.5)
+    bbox <- c(lonLo, latLo, lonHi, latHi)
     bboxSR <- "4326"
   } 
-  bbox <- paste0(bbox, collapse = ",")
+  bboxString <- paste0(bbox, collapse = ",")
   
   # url text for maptype http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/
   # NatGeo_World_Map = natGeo
@@ -92,10 +92,10 @@ esriMap_getMap <- function(centerLon = NULL,
   # Apply arguments to url
   
   # TODO:  Naming consistency: url, baseUrl, pngUrl, jsonUrl
-  baseurl <- paste0("http://server.arcgisonline.com/arcgis/rest/services/", maptypeText, "/MapServer/export")
-  url <- paste0(baseurl, "?bbox=", bbox, "&bboxSR=", bboxSR, "&size=", width, ",", height, additionalArgs)
-  urlPNG <- paste0(url, "&f=image")
-  urlJSON <- paste0(url, "&f=json")
+  baseUrl <- paste0("http://server.arcgisonline.com/arcgis/rest/services/", maptypeText, "/MapServer/export")
+  url <- paste0(baseUrl, "?bbox=", bboxString, "&bboxSR=", bboxSR, "&size=", width, ",", height, additionalArgs)
+  pngUrl <- paste0(url, "&f=image")
+  jsonUrl <- paste0(url, "&f=json")
   
   # TODO:  Always use httr package to download stuff
   # TODO:  Much of the code below here can be replaced with:
@@ -116,8 +116,8 @@ esriMap_getMap <- function(centerLon = NULL,
   if ( dir.exists(dirName) ) { dirName <- paste0(dirName, "(temp)") }
   dir.create(dirName)
   
-  utils::download.file(urlPNG, paste0(dirName, "/image.png"))
-  utils::download.file(urlJSON, paste0(dirName, "/info.json"))
+  utils::download.file(pngUrl, paste0(dirName, "/image.png"))
+  utils::download.file(jsonUrl, paste0(dirName, "/info.json"))
   
   imageArray <- png::readPNG(paste0(dirName, "/image.png"))
   mapInfoJSON <- readr::read_file(paste0(dirName, "/info.json"))

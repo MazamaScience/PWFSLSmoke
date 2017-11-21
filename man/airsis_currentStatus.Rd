@@ -20,6 +20,9 @@ A dataframe with unit ID, alias, location, and latest update time, in UTC.
 Scrape current monitor status from Airsis website (http://xxxx.airsis.com
 where xxxx %in% c("usfs", "apcd", "arb2", "epa").
 }
+\details{
+###@export
+}
 \examples{
 \dontrun{
 epa <- airsis_currentStatus(provider="epa")

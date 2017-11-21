@@ -1,4 +1,4 @@
-#' @export
+#' ###@export
 #' @title Load Current Status from Airsis Site
 #' @description Scrape current monitor status from Airsis website (http://xxxx.airsis.com
 #' where xxxx %in% c("usfs", "apcd", "arb2", "epa").

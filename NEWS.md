@@ -11,8 +11,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 0.99.30
 
- * new `airsis_getAvailableUnits()` function
+ * new `airsis_availableUnits()` function
  * new `AIRSIS` object with available monitor types
+ * fix to `esriMap_getMap()` to ensure that projected maps are the correct size
+ * `esriMap_getMap()` arguments changed to: `bboxString` and `mapType`
 
 ### PWFSLSmoke 0.99.29
 
