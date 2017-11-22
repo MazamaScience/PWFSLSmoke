@@ -29,13 +29,13 @@ ca_daily_mean <- monitor_dailyStatistic(ca, minHours=18)
 par(mar=c(3,4,2,6)+.1)
 layout(matrix(seq(2)))
 monitorPlot_timeseries(nw_daily_mean, style='gnats', xlab='', ylab='', localTime=FALSE, ylim=c(0,400), xpd=NA)
-addAQILines()
+addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:6], AQI$names[2:6], pos=4, xpd=NA)
-title(paste0(nrow(nw$meta), ' Monitors in WA-OR-ID'))
+title(paste0('Hourly PM2.5 for ', nrow(nw$meta), ' Monitors in WA-OR-ID'))
 monitorPlot_timeseries(ca_daily_mean, style='gnats', xlab='', ylab='', localtime=FALSE, ylim=c(0,400), xpd=NA)
-addAQILines()
+addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:6], AQI$names[2:6], pos=4, xpd=NA)
-title(paste0(nrow(nw$meta), ' Monitors in CA'))
+title(paste0('Hourly PM2.5 for ', nrow(nw$meta), ' Monitors in CA'))
 layout(1)
 par(mar=c(5,4,4,2)+.1)
 # -----------------------------------------------------------------------------
@@ -81,74 +81,90 @@ offRez <- monitor_combine(list(Clarkston,
                                Cottonwood,
                                Grangeville))
 
+oldPar <- par()
 # PLOT -- Google Map of Nezperce area -----
-monitorGoogleMap(Nezperce_area, zoom=9)
 monitorGoogleMap(Nezperce_area, zoom=7)
 # -----------------------------------------------------------------------------
 
+# PLOT -- Google Map of Nezperce area -----
+monitorGoogleMap(Nezperce_area, zoom=9, cex=4)
+# -----------------------------------------------------------------------------
+par(oldPar)
 
 Nezperce_single <- monitor_collapse(Nezperce_area, monitorID='Nezperce_single')
 unhealthyHours <- monitor_dailyThreshold(Nezperce_single, threshold="unhealthy")
 
 # PLOT -- Google Map of Nezperce area -----
-unhealthyHours$data[unhealthyHours$data == 0] <- 0.2 # so we don't get blank bars
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=6, ylab="Hours per day")
+unhealthyHours$data[unhealthyHours$data == 0] <- 0.1 # so we don't get blank bars
+monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=6,
+                       col='black',
+                       ylab="Hours per day")
 usr <- par('usr')
 rect(usr[1],18,usr[2],24, col=adjustcolor('red',.2), border=NA)
 monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=6, ylab="Hours per day", add=TRUE)
 title("Nezperce Area -- Hours per day Above 'Unhealthy'")
-text(usr[1], 21, "18-24 Hours per day!", pos=4, font=2, col='red')
-# -----------------------------------------------------------------------------
-
-
-# PLOT -- dailyBarplot for offRez
-par(mar=c(3,4,2,2)+.1)
-layout(matrix(seq(5)))
-monitorPlot_dailyBarplot(Clarkston, ylim=c(0,300), ylab='', main='Clarkston', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Lewiston, ylim=c(0,300), ylab='', main='Lewiston', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Juliaetta, ylim=c(0,300), ylab='', main='Juliaetta', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Cottonwood, ylim=c(0,300), ylab='', main='Cottonwood', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Grangeville, ylim=c(0,300), ylab='', main='Grangeville', labels_x_nudge=1.0, labels_y_nudge=50)
-layout(1)
-par(mar=c(5,4,4,2)+.1)
+text(usr[1], 21, "18-24 Hours per day in 'Unhealthy'", pos=4, font=2, col='red')
 # -----------------------------------------------------------------------------
 
 
 # PLOT -- dailyBarplot for onRez
 par(mar=c(3,4,2,2)+.1)
 layout(matrix(seq(5)))
-monitorPlot_dailyBarplot(Orofino, ylim=c(0,300), ylab='', main='Orofino', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Lapwai, ylim=c(0,300), ylab='', main='Lapwai', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Reubens, ylim=c(0,300), ylab='', main='Reubens', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Nezperce, ylim=c(0,300), ylab='', main='Nezperce', labels_x_nudge=1.0, labels_y_nudge=50)
-monitorPlot_dailyBarplot(Kamiah, ylim=c(0,300), ylab='', main='Kamiah', labels_x_nudge=1.0, labels_y_nudge=50)
+monitorPlot_dailyBarplot(Orofino, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Orofino', line=-1)
+monitorPlot_dailyBarplot(Lapwai, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Lapwai', line=-1)
+monitorPlot_dailyBarplot(Reubens, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Reubens', line=-1)
+monitorPlot_dailyBarplot(Nezperce, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Nezperce', line=-1)
+monitorPlot_dailyBarplot(Kamiah, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Kamiah', line=-1)
 layout(1)
 par(mar=c(5,4,4,2)+.1)
 # -----------------------------------------------------------------------------
 
-nowcast_Juliaetta <- monitor_nowcast(Juliaetta)
 
-bad_Juliaetta <- monitor_subset(Juliaetta, tlim=c(20170901, 20170914))
-bad_nowcast_Juliaetta <- monitor_subset(nowcast_Juliaetta, tlim=c(20170901, 20170914))
-
-# PLOT -- hourly/nowcast comparison
-monitorPlot_timeseries(bad_Juliaetta, type='p', pch=16, col='red', shadedNight=TRUE)
-monitorPlot_timeseries(bad_nowcast_Juliaetta, type='l', col='black', lwd=2, add=TRUE)
-legend("topright", legend=c('Hourly','Nowcast'), col=c('red','black'), lwd=2)
-title('Juliaetta Hourly and Nowcast')
+# PLOT -- dailyBarplot for offRez
+par(mar=c(3,4,2,2)+.1)
+layout(matrix(seq(5)))
+monitorPlot_dailyBarplot(Clarkston, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Clarkston', line=-1)
+monitorPlot_dailyBarplot(Lewiston, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Lewiston', line=-1)
+monitorPlot_dailyBarplot(Juliaetta, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Juliaetta', line=-1)
+monitorPlot_dailyBarplot(Cottonwood, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Cottonwood', line=-1)
+monitorPlot_dailyBarplot(Grangeville, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=50)
+title('Grangeville', line=-1)
+layout(1)
+par(mar=c(5,4,4,2)+.1)
 # -----------------------------------------------------------------------------
 
-bad_Juliaetta <- monitor_subset(Juliaetta, tlim=c(20170904, 20170910))
-bad_nowcast_Juliaetta <- monitor_subset(nowcast_Juliaetta, tlim=c(20170904, 20170910))
 
-# Plot -- hourlyBarplot for Juliaetta
-monitorPlot_hourlyBarplot(bad_Juliaetta, dayCol='transparent', hourLwd=0,
-                          ylab='', main='Juliaetta Hourly Nowcast',
+nowcast_Cottonwood <- monitor_nowcast(Cottonwood)
+
+bad_Cottonwood <- monitor_subset(Cottonwood, tlim=c(20170901, 20170914))
+bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170901, 20170914))
+
+# PLOT -- hourly/nowcast comparison
+monitorPlot_timeseries(bad_Cottonwood, type='p', pch=16, col='red', shadedNight=TRUE)
+monitorPlot_timeseries(bad_nowcast_Cottonwood, type='l', col='black', lwd=2, add=TRUE)
+legend("topright", legend=c('Hourly','Nowcast'), col=c('red','black'), lwd=c(NA,2), pch=c(16,NA))
+title('Cottonwood Hourly and Nowcast')
+# -----------------------------------------------------------------------------
+
+bad_Cottonwood <- monitor_subset(Cottonwood, tlim=c(20170904, 20170910))
+bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170904, 20170910))
+
+# Plot -- hourlyBarplot for Cottonwood
+monitorPlot_hourlyBarplot(bad_Cottonwood, dayCol='transparent', hourLwd=0,
+                          ylab='', main='Cottonwood Hourly Nowcast',
                           labels_x_nudge=3, border=adjustcolor('white',0.2))
 # -----------------------------------------------------------------------------
 
 
-bad_week <- monitor_subset(Nezperce_area, tlim=c(20170904, 20170910))
 
 
 
