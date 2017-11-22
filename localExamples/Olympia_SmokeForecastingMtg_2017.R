@@ -103,7 +103,7 @@ usr <- par('usr')
 rect(usr[1],18,usr[2],24, col=adjustcolor('red',.2), border=NA)
 monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=6, ylab="Hours per day", add=TRUE)
 title("Nezperce Area -- Hours per day Above 'Unhealthy'")
-text(usr[1], 21, "18-24 Hours per day in 'Unhealthy'", pos=4, font=2, col='red')
+text(usr[1], 21, "18-24 Hours per day >= 'Unhealthy'", pos=4, font=2, col='red')
 # -----------------------------------------------------------------------------
 
 
