@@ -237,8 +237,6 @@ We run the following code to get things set up to use our new funcitons.
 library(PWFSLSmoke)
 logger.setup()
 library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial')
-loadSpatialData('NaturalEarthAdm1')
 ```
 
 For the following examples we will use the Northwest Megafires data from the PWFSLSmoke package. In particular, we will look at PM~2.5~ data from Omak, WA, which was heavily impacted by smoke from wildfires during the second half of August, 2015:
@@ -541,10 +539,10 @@ plot(example5_df$datetime, example5_df$monitored)
 lines(example5_df$datetime, example5_df$aqi, col="blue")
 ```
 
-TODO: clean up and beef up this example
+<!-- TODO: clean up and beef up this example -->
 
-## Test Dataset
+<!-- ## Test Dataset -->
 
-> Under "test datasets" I'd like to see a simple CSV file with two columns: pm25_input, expected_output
+<!-- > Under "test datasets" I'd like to see a simple CSV file with two columns: pm25_input, expected_output -->
 
-TODO: add test datasets
+<!-- TODO: add test datasets -->

@@ -22,8 +22,13 @@ An plot of the map
 The map is plotted using \code{plotRGB} from \pkg{raster}.
 }
 \examples{
+\dontrun{
 map <- esriMap_getMap(-122.3318, 47.668)
 esriMap_plotOnStaticMap(map)
 esriMap_plotOnStaticMap(map, grayscale = TRUE)
+}
+}
+\seealso{
+\code{\link{esriMap_getMap}}
 }
 \keyword{plotting}

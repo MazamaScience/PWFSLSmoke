@@ -9,12 +9,25 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.33
+
+ * tweaked esriMap_~ examples for CRAN upload
+
+### PWFSLSmoke 0.99.32
+
+ * tweaked NowCast vignette for CRAN upload
+
+### PWFSLSmoke 0.99.31
+
+ * refactored `esriMap_getMap()` to use `httr` package
+ * added NowCast vignette
+
 ### PWFSLSmoke 0.99.30
 
  * new `airsis_availableUnits()` function
  * new `AIRSIS` object with available monitor types
  * fix to `esriMap_getMap()` to ensure that projected maps are the correct size
- * `esriMap_getMap()` arguments changed to: `bboxString` and `mapType`
+ * `esriMap_getMap()` arguments changed to: `bboxString`
 
 ### PWFSLSmoke 0.99.29
 
