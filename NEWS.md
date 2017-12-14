@@ -9,6 +9,17 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.37
+
+ * fixed bugs in `airsis_availableUnits()`
+ * export of `AIRSIS` object containing a list of understood `unitTypes` (primarily for internal use)
+ * new `examples/airsis_2017.R` demonstrating creation of an AIRSIS monitoring dataset for 2017.
+
+### PWFSLSmoke 0.99.36
+
+ * removed auto-execution of examples in `monitor_dailyStatistic()` and `monitor_dailyThreshold()` to avoid
+ CRAN test timeouts
+
 ### PWFSLSmoke 0.99.35
 
  * removed extraneous file for CRAN upload

@@ -39,6 +39,7 @@ object.
 The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 }
 \examples{
+\dontrun{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
 Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009')
 Twisp_dailyMean <- monitor_dailyStatistic(Twisp, FUN=get('mean'), dayStart='midnight')
@@ -46,5 +47,6 @@ monitorPlot_timeseries(Twisp_dailyMean, type='b')
 addAQILines()
 addAQILegend("topleft", lwd=1, pch=NULL)
 title("Twisp, Washington Daily Mean PM2.5, 2015")
+}
 }
 \keyword{ws_monitor}

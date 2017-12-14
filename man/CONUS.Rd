@@ -9,7 +9,7 @@
 CONUS
 }
 \description{
-State codes for the 48 states that make up the Continental US
+State codes for the 48 states +DC that make up the Continental US
 }
 \details{
 CONUS state codes

@@ -29,7 +29,7 @@ Returns a list of unitIDs with data during a particular time period.
 \dontrun{
 unitIDs <- airsis_availableUnits(20150701, 20151231,
                                  provider='USFS', 
-                                 unitType=c('EBAM','ESAM'))
+                                 unitTypes=c('EBAM','ESAM'))
 }
 }
 \references{

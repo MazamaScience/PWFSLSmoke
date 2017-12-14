@@ -54,13 +54,14 @@ NULL
 #' \item{miscellaneous}
 #' \item{usfs_regional}
 #' }
-#' @note This list of monitors was created on Feb 09, 2017.
+#' @note This list of monitor types was created on Feb 09, 2017.
 NULL
 
 # ----- AIRSIS related info ---------------------------------------------------
 
 #' AIRSIS monitor types and codes
 #' 
+#' @export
 #' @docType data
 #' @name AIRSIS
 #' @title AIRSIS Unit Types
@@ -78,7 +79,7 @@ NULL
 #' \item{ESAM}{ 39 = Iridium - Esam}
 #' \item{AUTOMET}{ 43 = Automet}
 #' }
-#' @note This list of monitors was created on Feb 09, 2017.
+#' @note This list of monitor types was created on Feb 09, 2017.
 AIRSIS <- list(unitTypes=list(DATARAM=21,
                               BAM1020=24,
                               EBAM_NEW=30,
@@ -91,11 +92,11 @@ AIRSIS <- list(unitTypes=list(DATARAM=21,
 
 #' AQI breaks and associated names and colors
 #' 
+#' @export
 #' @docType data
 #' @name AQI
 #' @title Official Air Quality Index Levels, Names and Colors
 #' @format A list with five elements
-#' @export
 #' @description
 #' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
 #' @details
@@ -118,13 +119,13 @@ AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
 
 #' CONUS state codes
 #' 
+#' @export
 #' @docType data
 #' @name CONUS
 #' @title CONUS State Codes
 #' @format A vector with 48 elements
-#' @export
 #' @description
-#' State codes for the 48 states that make up the Continental US
+#' State codes for the 48 states +DC that make up the Continental US
 
 CONUS <- c("AL","AZ","AR","CA","CO","CT","DE","FL","GA","ID",
            "IL","IN","IA","KS","KY","LA","ME","MD","MA","MI",

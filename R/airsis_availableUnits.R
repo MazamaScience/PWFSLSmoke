@@ -13,7 +13,7 @@
 #' \dontrun{
 #' unitIDs <- airsis_availableUnits(20150701, 20151231,
 #'                                  provider='USFS', 
-#'                                  unitType=c('EBAM','ESAM'))
+#'                                  unitTypes=c('EBAM','ESAM'))
 #' }
 
 airsis_availableUnits <- function(startdate=NULL,
@@ -32,19 +32,21 @@ airsis_availableUnits <- function(startdate=NULL,
     stop(paste0("Required parameter 'enddate' is missing"))
   }
   
-  if ( is.null(unitType) ) {
-    logger.error("Required parameter 'unitID' is missing")
-    stop(paste0("Required parameter 'unitID' is missing"))
-  }
-  
   unitTypes <- toupper(unitTypes)
   
   # Sanity Check
-  if ( !unitType %in% names(AIRSIS$unitTypes) ) {
-    logger.error("Parameter 'unitType=%s' is not recognized", unitType)
-    stop(paste0("Parameter 'unitType=", unitType, "' is not recognized"))
+  badUnitTypes <- setdiff(unitTypes, names(AIRSIS$unitTypes))
+  goodUnitTypes <- intersect(unitTypes, names(AIRSIS$unitTypes))
+  if ( length(badUnitTypes) > 0 ) {
+    badUnitTypesString <- paste0(badUnitTypes, collapse=", ")
+    logger.error("Unrecognized AIRSIS unitType(s): '%s'", badUnitTypesString)
   }
-    
+  if ( length(goodUnitTypes) == 0 ) {
+    err_msg <- paste0("No valid AIRSIS unitType(s): ", paste0(unitTypes, collapse=", "))
+    logger.error(err_msg)
+    stop(err_msg, call. = FALSE)
+  }
+  
   # Get UTC times
   starttime <- parseDatetime(startdate)
   endtime <- parseDatetime(enddate)
