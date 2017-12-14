@@ -9,6 +9,14 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
+### PWFSLSmoke 0.99.35
+
+ * removed extraneous file for CRAN upload
+
+### PWFSLSmoke 0.99.34
+
+ * handling for additional 'UnitID' column in AIRSIS output
+
 ### PWFSLSmoke 0.99.33
 
  * tweaked esriMap_~ examples for CRAN upload
