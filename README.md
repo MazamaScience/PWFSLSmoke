@@ -45,9 +45,7 @@ The following packages should be installed with devtools by typing the following
 # Note that vignettes require knitr and rmarkdown
 install.packages('knitr')
 install.packages('rmarkdown')
-devtools::install_github('rstudio/dygraphs')
-devtools::install_github('rstudio/leaflet')
-devtools::install_github('mazamascience/MazamaSpatialUtils', build_vignettes=TRUE)
+install.packages('MazamaSpatialUtils')
 devtools::install_github('mazamascience/PWFSLSmoke', build_vignettes=TRUE)
 ```
 

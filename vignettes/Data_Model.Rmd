@@ -36,14 +36,14 @@ sites archiving this data include [AirNow](https://www.airnow.gov), [WRCC](http:
 The data model for monitoring data consists of an **R** `list` with two dataframes: `data` and `meta`.
 
 The `data` dataframe contains all hourly measurements organized with rows (the 'unlimited' dimension) as unique timesteps and
-columns as unique monitors. The very first column is always named `datetime` and contains the `POSIXct` datetime
+columns as unique monitoring sites. The very first column is always named `datetime` and contains the `POSIXct` datetime
 in Coordinated Universal Time (UTC).
 
 The `meta` dataframe contains all metadata associated with monitoring sites and is organized with
 rows as unique sites and columns as site attributes. The following columns are guaranteed to exist
 in the `meta` dataframe:
 
- * `monitorID` -- unique ID for each monitoring site (*i.e.* each instrument deployment)
+ * `monitorID` -- unique ID for each monitoring site
  * `longitude` -- decimal degrees East
  * `latitude` -- decimal degrees North
  * `elevation` -- meters above sea level
@@ -53,8 +53,22 @@ in the `meta` dataframe:
 
 *(The [MazamaSpatialUtils](https://github.com/MazamaScience/MazamaSpatialUtils) package is used to assign timezones and state and country codes.)*
 
-Additional columns may be available in the `meta` dataframe and these will depend on the source of the
-data.
+Starting with version 1.0 of the package, the following additional columns (mostly for internal use) will always exist:
+
+ * `siteName` -- familiar name for a monitoring site
+ * `agencyName` -- agency responsible for collecting the data
+ * `countyName` -- county/province name
+ * `cbsaName` -- US Census Bureau 'Combined Statistical Area'
+ * `msaName` -- US Census Bureau 'Metropolitan/Micropolitan Statistical Area'
+ * `monitorType` -- broad instrument categories for E-Sampler, EBAM or BAM-1020
+ * `monitorInstrument` -- specific instrument identifiers
+ * `aqsID` -- AQS site identifier (often used as the `monitorID`)
+ * `pwfslID` -- PWFSL site identifier (used as the `monitorID` for temporary monitors)
+ * `telemetryAggregator` -- data provider for temporary monitors (e.g. 'wrcc' or 'usfs.airsis')
+ * `telemetryUnitID` -- unique ID for each monitoring site used within the `telemetry_aggregator`
+
+These columns of information are much more variable and, depending on the source of data, may include
+many missing values.
 
 It is important to note that the `monitorID` acts as a unique key that connects data with metadata.
 The `monitorID` is used for column names in the `data` dataframe and for row names in the `meta` dataframe.

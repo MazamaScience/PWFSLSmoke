@@ -7,6 +7,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ----
 
+## Version 1.0 -- Monitoring Data Access
+
+ * changed the non-guaranteed columns in `ws_monitor$meta`
+
 ## Version 0.99 -- Regularized and Consistent (beta)
 
 ### PWFSLSmoke 0.99.37
