@@ -58,7 +58,6 @@ Starting with version 1.0 of the package, the following additional columns (most
  * `siteName` -- familiar name for a monitoring site
  * `agencyName` -- agency responsible for collecting the data
  * `countyName` -- county/province name
- * `cbsaName` -- US Census Bureau 'Combined Statistical Area'
  * `msaName` -- US Census Bureau 'Metropolitan/Micropolitan Statistical Area'
  * `monitorType` -- broad instrument categories for E-Sampler, EBAM or BAM-1020
  * `monitorInstrument` -- specific instrument identifiers

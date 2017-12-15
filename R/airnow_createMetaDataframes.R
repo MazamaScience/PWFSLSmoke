@@ -90,24 +90,51 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   # Fix bad locations
   badLocationMask <- airnowRaw$longitude == 0 & airnowRaw$latitude == 0
   badLocationIDs <- paste(airnowRaw$AQSID[badLocationMask], collapse=", ")
-
-  logger.debug("Replacing 0,0 locations with NA,NA for IDs: %s", badLocationIDs)
-
+  
+  logger.debug("Replacing (0,0) locations with (NA,NA) for IDs: %s", badLocationIDs)
+  
   airnowRaw$longitude[badLocationMask] <- NA
   airnowRaw$latitude[badLocationMask] <- NA
   
-  # timezone
+  # NOTE:  Instead of calling addMazamaMetadata, we just add timezone "by hand"
   # Do spatial searching only for unique locations to speed things up
   sitesUnique <- airnowRaw[!duplicated(airnowRaw$AQSID),]
-  sitesUnique$timezone <- suppressWarnings( MazamaSpatialUtils::getTimezone(sitesUnique$longitude, sitesUnique$latitude,
-                                                                            countryCodes=unique(sitesUnique$countryCode), useBuffering=TRUE) )
+  sitesUnique$timezone <- suppressWarnings({
+    MazamaSpatialUtils::getTimezone(sitesUnique$longitude, sitesUnique$latitude,
+                                    countryCodes=unique(sitesUnique$countryCode), useBuffering=TRUE)
+  })
   # Now add the per-AQSID timezones to the larger dataframe
   airnowRaw <- dplyr::left_join(airnowRaw, sitesUnique[,c('AQSID','timezone')], by='AQSID')
+
+  # ----- Data cleanup --------------------------------------------------------
   
-  # countryCode and stateCode already exist
+  # remove ' ' from the end of MSAName and chante the column name
+  airnowRaw$msaName <- stringr::str_trim(airnowRaw$MSAName)
+
+  # convert countyName from all caps to title case
+  airnowRaw$countyName <- stringr::str_to_title(airnowRaw$countyName)
   
+  # TODO:  Use MazamaSpatialUtils to get stateCode when countryCode %in% c('CA','MX')
+  # TODO:  handle 'N/A' in stateCode
+  # TODO:  check for other atrocities
+  # TODO:  
+  
+  # NOTE:  Don't convert siteName because it might include all caps identifiers like "USFS"
+  
+  # > names(airnowRaw)
+  #  [1] "AQSID"          "parameterName"  "siteCode"       "siteName"       "status"        
+  #  [6] "agencyID"       "agencyName"     "EPARegion"      "latitude"       "longitude"     
+  # [11] "elevation"      "GMTOffsetHours" "countryCode"    "FIPSCMSACode"   "CMSAName"      
+  # [16] "FIPSMSACode"    "MSAName"        "FIPSStateCode"  "stateCode"      "GNISCountyCode"
+  # [21] "countyName"     "GNISCityCode"   "cityName"       "monitorID"      "timezone"
+  # [22] "msaName"
+  
+  retainedColumns <- c('monitorID', 'longitude', 'latitude', 'elevation', 
+                       'timezone', 'countryCode', 'stateCode',
+                       'siteName', 'agencyName', 'countyName', 'msaName')
+  
+
   # TODO:  Could add HUC12 or any other MazamaSpatialUtils datasets
-  
   
   # ----- Data Reshaping ------------------------------------------------------
   
@@ -131,18 +158,33 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   # Use dplyr to seprate the data by parameter
   for (parameter in parameters) {
     
-    # Create datetime variable
-    df <- dplyr::filter(airnowRaw, airnowRaw$parameterName == parameter)
-    # Guarantee unique rows
-    df <- dplyr::distinct(df)
-    # Convert from tibble to standard data.frame
-    df <- as.data.frame(df)
-    # Add rownames as per ws_monitor convention
+    # Create a tbl with unique sites for this parameter
+    tbl <- dplyr::filter(airnowRaw, airnowRaw$parameterName == parameter) %>%
+      dplyr::select(retainedColumns) %>%
+      dplyr::distinct()
+    
+    # Add extra metadata columns
+    # * `monitorType` -- broad instrument categories for E-Sampler, EBAM or BAM-1020
+    # * `monitorInstrument` -- specific instrument identifiers
+    # * `aqsID` -- AQS site identifier (often used as the `monitorID`)
+    # * `pwfslID` -- PWFSL site identifier (used as the `monitorID` for temporary monitors)
+    # * `telemetryAggregator` -- data provider for temporary monitors (e.g. 'wrcc' or 'usfs.airsis')
+    # * `telemetryUnitID` -- unique ID for each monitoring site used within the `telemetryAggregator`
+    tbl$monitorType <- as.character(NA)
+    tbl$monitorInstrument <- as.character(NA)
+    tbl$aqsID <- tbl$monitorID
+    tbl$pwfslID <- as.character(NA)
+    tbl$telemetryAggregator <- as.character(NA)
+    tbl$telemetryUnitID <- as.character(NA)
+
+    # Convert from tibble to standard data.frame so we can add rownames as per ws_monitor convention
+    df <- as.data.frame(tbl)
     rownames(df) <- df$monitorID
     dfList[[parameter]] <- df
     
   }
   
   return(dfList)
+  
 }
 
