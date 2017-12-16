@@ -1,11 +1,10 @@
 #' @keywords internal
 #' @export
 #' @title Add State, Country and Timezone to a Dataframe
-#' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
+#' @param df dataframe or tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param countryCodes vector of countryCodes
-#' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
 #' @return Input dataframe with additional columns: \code{timezone, countryCode, stateCode}.
 #' @description The \pkg{MazamaSpatialUtils} package used to determine the ISO state and country code,
 #' and the Olson timezone associated with the locations specified by the
@@ -22,12 +21,9 @@
 #' An error will be generated if these lines have not be previously run.
 #' @references \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 
-addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", countryCodes=NULL, existingMeta=NULL) {
+addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", countryCodes=NULL) {
   
   logger.info(" ----- addMazamaMetadata() ----- ")
-  
-  # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df)
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {

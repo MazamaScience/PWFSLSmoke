@@ -36,19 +36,27 @@
 #' \item{BARPR}
 #' \item{BC}
 #' \item{CO}
+#' \item{DEWPOINT}
+#' \item{H2S}
 #' \item{NO}
 #' \item{NO2}
 #' \item{NO2Y}
 #' \item{NO2X}
 #' \item{NOX}
-#' \item{NOOY}
+#' \item{NOY}
+#' \item{O3}
 #' \item{OC}
-#' \item{OZONE}
 #' \item{PM10}
 #' \item{PM2.5}
+#' \item{PM2.5-15}
+#' \item{PMC}
 #' \item{PRECIP}
 #' \item{RHUM}
+#' \item{RWS}
+#' \item{RWS}
 #' \item{SO2}
+#' \item{SO2-15}
+#' \item{SO4}
 #' \item{SRAD}
 #' \item{TEMP}
 #' \item{UV-AETH}
@@ -69,58 +77,90 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   
   logger.debug("Downloading AirNow sites metadata ...")
   
-  # Create the data frame that holds a month worth of AirNow data
+  # Create the tibble that holds a month worth of AirNow data
   result <- try( airnowRaw <- airnow_downloadSites(),
                  silent=TRUE)
   if ( "try-error" %in% class(result) ) {
     err_msg <- geterrmessage()
-    logger.error("Unable to obtain sites dataframe: %s",err_msg)
-    stop(paste0("Unable to obtain sites dataframe: ",err_msg))
+    logger.error("Unable to obtain sites tibble: %s",err_msg)
+    stop(paste0("Unable to obtain sites tibble: ",err_msg))
   }
   
   logger.debug("Downloaded %d rows of AirNow sites metadata", nrow(airnowRaw))
   
-  
-  # ----- Adding Required Columns ---------------------------------------------
-  
-  airnowRaw$monitorID <- airnowRaw$AQSID
-  
-  # latitude, longitude and elevation alreay exist
-  
-  # Fix bad locations
-  badLocationMask <- airnowRaw$longitude == 0 & airnowRaw$latitude == 0
-  badLocationIDs <- paste(airnowRaw$AQSID[badLocationMask], collapse=", ")
-  
-  logger.debug("Replacing (0,0) locations with (NA,NA) for IDs: %s", badLocationIDs)
-  
-  airnowRaw$longitude[badLocationMask] <- NA
-  airnowRaw$latitude[badLocationMask] <- NA
-  
-  # NOTE:  Instead of calling addMazamaMetadata, we just add timezone "by hand"
-  # Do spatial searching only for unique locations to speed things up
-  sitesUnique <- airnowRaw[!duplicated(airnowRaw$AQSID),]
-  sitesUnique$timezone <- suppressWarnings({
-    MazamaSpatialUtils::getTimezone(sitesUnique$longitude, sitesUnique$latitude,
-                                    countryCodes=unique(sitesUnique$countryCode), useBuffering=TRUE)
-  })
-  # Now add the per-AQSID timezones to the larger dataframe
-  airnowRaw <- dplyr::left_join(airnowRaw, sitesUnique[,c('AQSID','timezone')], by='AQSID')
-
   # ----- Data cleanup --------------------------------------------------------
   
-  # remove ' ' from the end of MSAName and chante the column name
+  # Add required column 'monitorID'
+  airnowRaw$monitorID <- airnowRaw$AQSID
+  
+  # Remove ' ' from the end of MSAName and change the column name
   airnowRaw$msaName <- stringr::str_trim(airnowRaw$MSAName)
-
-  # convert countyName from all caps to title case
+  
+  # Remove bad stateCodes
+  mask <- airnowRaw$stateCode %in% c('N/A')
+  airnowRaw$stateCode[mask] <- as.character(NA)
+  
+  # Remove bad countyNames
+  mask <- airnowRaw$countyName %in% c('N/A')
+  airnowRaw$countyName[mask] <- as.character(NA)
+  
+  # Convert countyName from all caps to title case
   airnowRaw$countyName <- stringr::str_to_title(airnowRaw$countyName)
   
-  # TODO:  Use MazamaSpatialUtils to get stateCode when countryCode %in% c('CA','MX')
-  # TODO:  handle 'N/A' in stateCode
-  # TODO:  check for other atrocities
-  # TODO:  
+  # NOTE:  Don't stringr::str_to_title(siteName) because it might include all caps identifiers like "USFS"
   
-  # NOTE:  Don't convert siteName because it might include all caps identifiers like "USFS"
+  # Fix bad locations
+  mask <- airnowRaw$longitude == 0 & airnowRaw$latitude == 0
+  badLocationIDs <- paste(airnowRaw$AQSID[mask], collapse=", ")
+  logger.debug("Replacing (0,0) locations with (NA,NA) for IDs: %s", badLocationIDs)
+  airnowRaw$longitude[mask] <- NA
+  airnowRaw$latitude[mask] <- NA
   
+  # ----- Subset and add metadata ---------------------------------------------
+  CANAMEX <- c('CA','US','MX')
+  airnowRaw <- dplyr::filter(airnowRaw, countryCode %in% CANAMEX)
+  
+  # For later testing
+  old_airnowRaw <- airnowRaw
+  
+  # Do spatial searching only for unique locations to speed things up
+  sitesUnique <- airnowRaw[!duplicated(airnowRaw$monitorID),]
+  suppressWarnings({
+    sitesUnique <- addMazamaMetadata(sitesUnique, 'longitude', 'latitude', countryCodes = CANAMEX)
+  })
+  # Now add the per-AQSID Mazama metadata to the larger dataframe
+  # NOTE:  We need to remove the columns from airnowRaw that we replace with left_join()
+  airnowRaw$countryCode <- NULL
+  airnowRaw$stateCode <- NULL
+  airnowRaw <- dplyr::left_join(airnowRaw, sitesUnique[,c('AQSID','countryCode','stateCode','timezone')], by='AQSID')
+  
+  # Sanity check
+  if ( any(airnowRaw$countryCode != old_airnowRaw$countryCode) ) {
+    indices <- which(airnowRaw$countryCode != old_airnowRaw$countryCode)
+    monitorIDString <- paste0(airnowRaw$monitorID[indices], collapse=", ")
+    logger.debug('addMazamaMetadata() changed the countryCode for monitors: %s', monitorIDString)
+    # Next line is for debugging
+    mzm_airnowRaw <- airnowRaw
+    # NOTE:  Neither the simpleCountriesEEZ nor the NaturalEarthAdm1 datasets used in MazamaSpatialUtils
+    # NOTE:  is of high enough resolution to accurately assign states and countries for sites on
+    # NOTE:  wiggly rivers near boundaries.
+    # NOTE:  Although there are some obvious mismatches between locations and sitenames in the AirNow data,
+    # NOTE:  we will use their countryCode and stateCode where they disagree with MazamaSpatialUtils.
+    airnowRaw$countryCode[indices] <- old_airnowRaw$countryCode[indices]
+    airnowRaw$stateCode[indices] <- old_airnowRaw$stateCode[indices]
+  }
+  
+  # TODO:  FIX THIS HACK
+  # NOTE:  Best guess is that at this point all monitors currently reporting frin US.MX are actually in US.TX
+  # NOTE:  CA.CC monitors are tougher
+  # NOTE:  The AirNow sites file has at least half a dozen mismatches between lat-lon and asociated location information
+  mask <- airnowRaw$countryCode == 'US' & airnowRaw$stateCode == 'MX'
+  airnowRaw$stateCode[mask] <- 'TX'
+  
+  # Set any remaining invalid stateCodes to NA
+  mask <- airnowRaw$stateCode %in% c('CC')
+  airnowRaw$stateCode[mask] <- as.character(NA)
+
   # > names(airnowRaw)
   #  [1] "AQSID"          "parameterName"  "siteCode"       "siteName"       "status"        
   #  [6] "agencyID"       "agencyName"     "EPARegion"      "latitude"       "longitude"     

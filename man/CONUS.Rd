@@ -4,12 +4,12 @@
 \name{CONUS}
 \alias{CONUS}
 \title{CONUS State Codes}
-\format{A vector with 48 elements}
+\format{A vector with 49 elements}
 \usage{
 CONUS
 }
 \description{
-State codes for the 48 states +DC that make up the Continental US
+State codes for the 48 contiguous states +DC that make up the CONtinental US
 }
 \details{
 CONUS state codes

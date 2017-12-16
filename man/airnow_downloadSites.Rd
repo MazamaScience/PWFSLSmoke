@@ -13,7 +13,7 @@ airnow_downloadSites(baseUrl = "https://files.airnowtech.org/airnow/today/",
 \item{file}{name of the AirNow monitoring site locations file}
 }
 \value{
-Dataframe of site location metadata.
+Tibble of site location metadata.
 }
 \description{
 The \url{https://airnowtech.org} site provides both air pollution

@@ -1,5 +1,5 @@
 
-# ----- Internal data ---------------------------------------------------------
+# ----- Example datasets ------------------------------------------------------
 
 #' Carmel Valley example dataset
 #' 
@@ -115,7 +115,7 @@ AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
                      grDevices::rgb(126/255,0,35/255)),
             names=c('good','moderate','USG','unhealthy','very unhealthy','hazardous'))
 
-# ----- State codes in the lower 48 --------------------------------------------
+# ----- State codes -----------------------------------------------------------
 
 #' CONUS state codes
 #' 
@@ -123,13 +123,31 @@ AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
 #' @docType data
 #' @name CONUS
 #' @title CONUS State Codes
-#' @format A vector with 48 elements
+#' @format A vector with 49 elements
 #' @description
-#' State codes for the 48 states +DC that make up the Continental US
+#' State codes for the 48 contiguous states +DC that make up the CONtinental US
 
-CONUS <- c("AL","AZ","AR","CA","CO","CT","DE","FL","GA","ID",
-           "IL","IN","IA","KS","KY","LA","ME","MD","MA","MI",
-           "MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY",
-           "NC","ND","OH","OK","OR","PA","RI","SC","SD","TN",
-           "TX","UT","VT","VA","WA","WV","WI","WY","DC")
+CONUS <- c(     "AL","AZ","AR","CA","CO","CT","DE","FL","GA",
+                "ID","IL","IN","IA","KS","KY","LA","ME","MD",
+           "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
+           "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
+           "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
+           "DC","PR")
+
+#' US state codes
+#' 
+#' @export
+#' @docType data
+#' @name US_52
+#' @title US State Codes
+#' @format A vector with 52 elements
+#' @description
+#' State codes for the 50 states +DC +PR (Puerto Rico)
+
+US_52 <- c("AK","AL","AZ","AR","CA","CO","CT","DE","FL","GA",
+           "HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
+           "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
+           "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
+           "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
+           "DC","PR")
 

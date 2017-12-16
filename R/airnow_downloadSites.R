@@ -12,7 +12,7 @@
 #' @note As of December, 2016, the \code{monitoring_site_locations.dat} file has an encoding of 
 #' "CP437" (aka "Non-ISO extended-ASCII" or "IBMPC 437") and will be converted to "UTF-8"
 #' so that French and Spanish language place names are properly encoded in the returned dataframe.
-#' @return Dataframe of site location metadata.
+#' @return Tibble of site location metadata.
 #' @seealso \link{airnow_createMetaDataframes}
 #' @examples
 #' \dontrun{
@@ -39,8 +39,8 @@ airnow_downloadSites <- function(baseUrl='https://files.airnowtech.org/airnow/to
   locale <- readr::locale(encoding="CP437")
   
   # Read in text as a dataframe
-  df <- readr::read_delim(url, delim='|', col_names=col_names, col_types=col_types, locale=locale)
+  tbl <- readr::read_delim(url, delim='|', col_names=col_names, col_types=col_types, locale=locale)
   
-  return(df)
+  return(tbl)
 }
 

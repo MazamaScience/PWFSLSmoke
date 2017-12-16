@@ -10,6 +10,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ## Version 1.0 -- Monitoring Data Access
 
  * changed the non-guaranteed columns in `ws_monitor$meta`
+ * added `initializeMazamaSpatialUtils()` convenience function
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 
@@ -18,6 +19,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * fixed bugs in `airsis_availableUnits()`
  * export of `AIRSIS` object containing a list of understood `unitTypes` (primarily for internal use)
  * new `examples/airsis_2017.R` demonstrating creation of an AIRSIS monitoring dataset for 2017.
+ * new `US_52` vector of all US state codes including `DC` and `PR`
+ * `airnow_createMetaDataframes()` now performs additional cleanup on the incoming data including a
+ guarantee that every site has a valid `stateCode`
+ * `airnow_createMetaDataframes()` filters incoming sites for `countryCode %in% c('CA','MX','US')`,
+ discarding sites associated with other countries
 
 ### PWFSLSmoke 0.99.36
 
