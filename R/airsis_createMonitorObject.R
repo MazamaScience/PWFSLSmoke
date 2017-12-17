@@ -37,9 +37,10 @@
 #' monitorLeaflet(usfs_1013)
 #' }
 
-airsis_createMonitorObject <- function(startdate=20020101,
+airsis_createMonitorObject <- function(startdate=20100101,
                                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                       provider=NULL, unitID=NULL,
+                                       provider=NULL,
+                                       unitID=NULL,
                                        clusterDiameter=1000,
                                        baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
                                        saveFile=NULL) {
@@ -105,7 +106,7 @@ airsis_createMonitorObject <- function(startdate=20020101,
   # NOTE:  This step will create a uniformly named set of properties and will
   # NOTE:  add site-specific information like timezone, elevation, address, etc.
   logger.debug("Creating 'meta' dataframe ...")
-  meta <- airsis_createMetaDataframe(df)
+  meta <- airsis_createMetaDataframe(df, provider, unitID)
   
   # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
   logger.debug("Creating 'data' dataframe ...")

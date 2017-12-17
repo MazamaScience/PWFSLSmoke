@@ -4,7 +4,7 @@
 \alias{airsis_createMonitorObject}
 \title{Obain AIRSIS Data and Create ws_monitor Object}
 \usage{
-airsis_createMonitorObject(startdate = 20020101,
+airsis_createMonitorObject(startdate = 20100101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
   provider = NULL, unitID = NULL, clusterDiameter = 1000,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",

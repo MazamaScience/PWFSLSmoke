@@ -1,6 +1,6 @@
 #' @export
 #' @title Initialize Mazama Spatial Utils
-#' @param dataDir directory where spatial datasets are created
+#' @param spatialDataDir directory where spatial datasets are created
 #' @param stateCodeDataset MazamaSpatialUtils dataset returning ISO 3166-2 alpha-2 stateCodes
 #' @param logLevel directory where spatial datasets are created
 #' @description Convenience function that wraps:

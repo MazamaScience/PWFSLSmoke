@@ -4,7 +4,7 @@
 #' @param df dataframe or tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
-#' @param countryCodes vector of countryCodes
+#' @param countryCodes vector of countryCodes (use \code{NULL} for global searches)
 #' @return Input dataframe with additional columns: \code{timezone, countryCode, stateCode}.
 #' @description The \pkg{MazamaSpatialUtils} package used to determine the ISO state and country code,
 #' and the Olson timezone associated with the locations specified by the
@@ -21,7 +21,7 @@
 #' An error will be generated if these lines have not be previously run.
 #' @references \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 
-addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", countryCodes=NULL) {
+addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", countryCodes=c('CA','US','MX')) {
   
   logger.info(" ----- addMazamaMetadata() ----- ")
   

@@ -2,7 +2,7 @@
 #' @import dplyr
 #' @import MazamaSpatialUtils
 #' @export
-#' @title Return Dataframes of AirNow Site Location Metadata
+#' @title Create Dataframes of AirNow Site Location Metadata
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @return List of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
 #' @description The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 

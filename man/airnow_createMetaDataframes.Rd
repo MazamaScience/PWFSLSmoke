@@ -2,7 +2,7 @@
 % Please edit documentation in R/airnow_createMetaDataframes.R
 \name{airnow_createMetaDataframes}
 \alias{airnow_createMetaDataframes}
-\title{Return Dataframes of AirNow Site Location Metadata}
+\title{Create Dataframes of AirNow Site Location Metadata}
 \usage{
 airnow_createMetaDataframes(parameters = NULL)
 }

@@ -4,12 +4,14 @@
 \alias{airsis_createMetaDataframe}
 \title{Create AIRSIS Site Location Metadata Dataframe}
 \usage{
-airsis_createMetaDataframe(df, existingMeta = NULL)
+airsis_createMetaDataframe(df, provider = NULL, unitID = NULL)
 }
 \arguments{
 \item{df}{single site AIRSIS dataframe after metadata enhancement}
 
-\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
+\item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
+
+\item{unitID}{character or numeric AIRSIS unit identifier}
 }
 \value{
 A \code{meta} dataframe for use in a \emph{ws_monitor} object.
@@ -27,13 +29,13 @@ set of properties associated with each monitor deployment. The list of
 columns in the returned \code{meta} dataframe is:
 
 \preformatted{
-> names(meta)
- [1] "AQSID"          "siteCode"       "siteName"       "status"        
- [5] "agencyID"       "agencyName"     "EPARegion"      "latitude"      
- [9] "longitude"      "elevation"      "timezone"       "GMTOffsetHours"
-[13] "countryCode"    "FIPSMSACode"    "MSAName"        "FIPSStateCode" 
-[17] "stateCode"      "GNISCountyCode" "countyName"     "monitorID"
-[21] "monitorType"     
+> names(p$meta)
+ [1] "monitorID"             "longitude"             "latitude"             
+ [4] "elevation"             "timezone"              "countryCode"          
+ [7] "stateCode"             "siteName"              "agencyName"           
+[10] "countyName"            "msaName"               "monitorType"          
+[13] "monitorInstrument"     "aqsID"                 "pwfslID"              
+[16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
 }
 }
 \seealso{
