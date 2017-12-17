@@ -24,6 +24,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  guarantee that every site has a valid `stateCode`
  * `airnow_createMetaDataframes()` filters incoming sites for `countryCode %in% c('CA','MX','US')`,
  discarding sites associated with other countries
+ * `monitorPlot_timeseries()` argument `aqiDots` renamed `aqidots`
 
 ### PWFSLSmoke 0.99.36
 

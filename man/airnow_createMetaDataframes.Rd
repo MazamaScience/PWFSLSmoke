@@ -39,7 +39,7 @@ one for each parameter, and performs the following cleanup:
   \item{add timezone information}
 }
 
-AirNow data parameters include at least the following list:
+Parameters included in AirNow data include at least the following list:
 \enumerate{
 \item{BARPR}
 \item{BC}

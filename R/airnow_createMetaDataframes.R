@@ -31,32 +31,24 @@
 #'   \item{add timezone information}
 #' }
 #' 
-#' AirNow data parameters include at least the following list:
+#' Parameters included in AirNow data include at least the following list:
 #' \enumerate{
 #' \item{BARPR}
 #' \item{BC}
 #' \item{CO}
-#' \item{DEWPOINT}
-#' \item{H2S}
 #' \item{NO}
 #' \item{NO2}
 #' \item{NO2Y}
 #' \item{NO2X}
 #' \item{NOX}
-#' \item{NOY}
-#' \item{O3}
+#' \item{NOOY}
 #' \item{OC}
+#' \item{OZONE}
 #' \item{PM10}
 #' \item{PM2.5}
-#' \item{PM2.5-15}
-#' \item{PMC}
 #' \item{PRECIP}
 #' \item{RHUM}
-#' \item{RWS}
-#' \item{RWS}
 #' \item{SO2}
-#' \item{SO2-15}
-#' \item{SO4}
 #' \item{SRAD}
 #' \item{TEMP}
 #' \item{UV-AETH}
@@ -89,6 +81,10 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   logger.debug("Downloaded %d rows of AirNow sites metadata", nrow(airnowRaw))
   
   # ----- Data cleanup --------------------------------------------------------
+
+  # Convert "O3" to "OZONE" as is used in all AirNow data files
+  mask <- airnowRaw$parameterName == "O3"
+  airnowRaw$parameterName[mask] <- "OZONE"
   
   # Add required column 'monitorID'
   airnowRaw$monitorID <- airnowRaw$AQSID
@@ -109,12 +105,16 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   
   # NOTE:  Don't stringr::str_to_title(siteName) because it might include all caps identifiers like "USFS"
   
-  # Fix bad locations
+  # Remove bad locations
   mask <- airnowRaw$longitude == 0 & airnowRaw$latitude == 0
   badLocationIDs <- paste(airnowRaw$AQSID[mask], collapse=", ")
   logger.debug("Replacing (0,0) locations with (NA,NA) for IDs: %s", badLocationIDs)
-  airnowRaw$longitude[mask] <- NA
-  airnowRaw$latitude[mask] <- NA
+  airnowRaw$longitude[mask] <- as.numeric(NA)
+  airnowRaw$latitude[mask] <- as.numeric(NA)
+  
+  # Remove bad elevations (zero seems to be used as a missing value flag)
+  mask <- airnowRaw$elevation <= 0.0
+  airnowRaw$elevation[mask] <- as.numeric(NA)
   
   # ----- Subset and add metadata ---------------------------------------------
   CANAMEX <- c('CA','US','MX')
@@ -214,6 +214,7 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
     tbl$monitorInstrument <- as.character(NA)
     tbl$aqsID <- tbl$monitorID
     tbl$pwfslID <- as.character(NA)
+    tbl$pwfslDataIngestSource <- 'AIRNOW'
     tbl$telemetryAggregator <- as.character(NA)
     tbl$telemetryUnitID <- as.character(NA)
 

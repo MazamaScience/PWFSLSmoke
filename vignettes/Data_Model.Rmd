@@ -63,6 +63,7 @@ Starting with version 1.0 of the package, the following additional columns (most
  * `monitorInstrument` -- specific instrument identifiers
  * `aqsID` -- AQS site identifier (often used as the `monitorID`)
  * `pwfslID` -- PWFSL site identifier (used as the `monitorID` for temporary monitors)
+ * `pwfslDataIngestSource` -- identifier for the source of monitoring data (e.g. AIRNOW, AIRSIS, WRCC_DUMPFILE, etc.)
  * `telemetryAggregator` -- data provider for temporary monitors (e.g. 'wrcc' or 'usfs.airsis')
  * `telemetryUnitID` -- unique ID for each monitoring site used within the `telemetry_aggregator`
 
