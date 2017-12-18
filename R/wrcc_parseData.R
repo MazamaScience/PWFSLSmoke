@@ -2,14 +2,14 @@
 #' @export
 #' @title Parse WRCC Data String
 #' @param fileString character string containing WRCC data
-#' @description Raw character data from WRCC are parsed into a dataframe.
+#' @description Raw character data from WRCC are parsed into a tibble.
 #' The incoming \code{fileString}
 #' can be read in directly from WRCC using \code{wrcc_downloadData()} or from a local
 #' file using \code{readr::read_file()}.
 #' 
 #' The type of monitor represented by this fileString is inferred from the column names
 #' using \code{wrcc_identifyMonitorType()} and appropriate column types are assigned.
-#' The character data are then processed, read into a dataframe and augmented in the following ways:
+#' The character data are then processed, read into a tibble and augmented in the following ways:
 #' \enumerate{
 #' \item{Spaces at the beginning and end of each line are moved.}
 #' \item{All header lines beginning with ':' are removed.}
@@ -19,7 +19,7 @@
 #' @examples
 #' \dontrun{
 #' fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
-#' df <- wrcc_parseData(fileString)
+#' tbl <- wrcc_parseData(fileString)
 #' }
 
 wrcc_parseData <- function(fileString) {
@@ -63,15 +63,15 @@ wrcc_parseData <- function(fileString) {
   # Remove header lines beginning with ":", leaving only data
   goodLines <- !is.na(lines) & !stringr::str_detect(lines,'^:')
   
-  # Read the data into a dataframe
+  # Read the data into a tibble
   fakeFile <- paste0(lines[goodLines], collapse='\n')
-  df <- readr::read_tsv(fakeFile, col_names=columnNames, col_types=columnTypes)
+  tbl <- readr::read_tsv(fakeFile, col_names=columnNames, col_types=columnTypes)
 
   # Add monitor name
-  df$monitorName <- monitorName
+  tbl$monitorName <- monitorName
   
   # Add monitor type (determined from the 'Type' column after reading in the data)
-  monitorTypeCode <- unique(df$Type)
+  monitorTypeCode <- unique(tbl$Type)
   # NOTE:  Drop all negative values to get rid of -9999 or other missing value flags.
   # NOTE:  Conversion of -9999 to NA happens in the ~QualityControl scripts so that
   # NOTE:  all raw data modifications can be found in one place.
@@ -81,15 +81,15 @@ wrcc_parseData <- function(fileString) {
   if ( length(monitorTypeCode) > 1 ) {
     logger.warn("More than one monitor type detected: %s", paste(monitorTypeCode,collapse=", "))
     # Pick the most common Type
-    typeTable <- table(df$Type)
+    typeTable <- table(tbl$Type)
     monitorTypeCode <- names(typeTable)[which(typeTable == max(typeTable))]
   }
   
   # 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
   if ( monitorTypeCode == 0 ) {
-    df$monitorType <- 'EBAM'
+    tbl$monitorType <- 'EBAM'
   } else if ( monitorTypeCode == 9 ) {
-    df$monitorType <- 'ESAM'
+    tbl$monitorType <- 'ESAM'
   } else if ( monitorTypeCode == 1 ) {
     logger.error("EBAM PM10 data parsing is not supported")
     stop(paste0("EBAM PM10 data parsing is not supported"))
@@ -98,6 +98,6 @@ wrcc_parseData <- function(fileString) {
     stop(paste0("Unsupported monitor type code: %d",monitorTypeCode))
   }
 
-  return(df)
+  return(tbl)
   
 }

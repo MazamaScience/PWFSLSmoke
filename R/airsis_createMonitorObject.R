@@ -86,31 +86,31 @@ airsis_createMonitorObject <- function(startdate=20100101,
   
   # Read csv raw data into a dataframe
   logger.debug("Parsing data ...")
-  df <- airsis_parseData(fileString)
+  tbl <- airsis_parseData(fileString)
   
   # Apply monitor-appropriate QC to the dataframe
   logger.debug("Applying QC logic ...")
-  df <- airsis_qualityControl(df)
+  tbl <- airsis_qualityControl(tbl)
   
   # See if anything gets through QC
-  if ( nrow(df) == 0 ) {
+  if ( nrow(tbl) == 0 ) {
     logger.warn("No data remaining after QC")
     stop("No data remaining after QC")
   }
   
   # Add clustering information to identify unique deployments
   logger.debug("Clustering ...")
-  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
+  tbl <- addClustering(tbl, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
   
   # Create 'meta' dataframe of site properties organized as monitorID-by-property
   # NOTE:  This step will create a uniformly named set of properties and will
   # NOTE:  add site-specific information like timezone, elevation, address, etc.
   logger.debug("Creating 'meta' dataframe ...")
-  meta <- airsis_createMetaDataframe(df, provider, unitID)
+  meta <- airsis_createMetaDataframe(tbl, provider, unitID, 'AIRSIS')
   
   # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
   logger.debug("Creating 'data' dataframe ...")
-  data <- airsis_createDataDataframe(df, meta)
+  data <- airsis_createDataDataframe(tbl, meta)
   
   # Create the 'ws_monitor' object
   ws_monitor <- list(meta=meta, data=data)

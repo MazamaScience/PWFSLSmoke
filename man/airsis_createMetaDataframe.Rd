@@ -4,14 +4,20 @@
 \alias{airsis_createMetaDataframe}
 \title{Create AIRSIS Site Location Metadata Dataframe}
 \usage{
-airsis_createMetaDataframe(df, provider = NULL, unitID = NULL)
+airsis_createMetaDataframe(tbl, provider = as.character(NA),
+  unitID = as.character(NA), pwfslDataIngestSource = "AIRSIS",
+  existingMeta = NULL)
 }
 \arguments{
-\item{df}{single site AIRSIS dataframe after metadata enhancement}
+\item{tbl}{single site AIRSIS tibble after metadata enhancement}
 
 \item{provider}{identifier used to modify baseURL \code{['APCD'|'USFS']}}
 
 \item{unitID}{character or numeric AIRSIS unit identifier}
+
+\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'AIRSIS', 'AIRSIS_DUMPFILE', ...}}
+
+\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
 \value{
 A \code{meta} dataframe for use in a \emph{ws_monitor} object.
@@ -24,7 +30,7 @@ pull out site information associated with unique deployments.
 These will be rearranged into a dataframe organized as deployment-by-property
 with one row for each monitor deployment.
 
-This site information found in \code{df} is augmented so that we end up with a uniform
+This site information found in \code{tbl} is augmented so that we end up with a uniform
 set of properties associated with each monitor deployment. The list of
 columns in the returned \code{meta} dataframe is:
 

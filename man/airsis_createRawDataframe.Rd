@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_createRawDataframe.R
 \name{airsis_createRawDataframe}
 \alias{airsis_createRawDataframe}
-\title{Obain AIRSIS Data and Create a Raw Dataframe}
+\title{Obain AIRSIS Data and Create a Raw Tibble}
 \usage{
 airsis_createRawDataframe(startdate = 20020101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
@@ -28,11 +28,11 @@ airsis_createRawDataframe(startdate = 20020101,
 \item{flagAndKeep}{flag, rather then remove, bad data during the QC process}
 }
 \value{
-Raw dataframe of WRCC data.
+Raw tibblee of AIRSIS data.
 }
 \description{
 Obtains monitor data from an AIRSIS webservice and converts
-it into a quality controlled, metadata enhanced "raw" dataframe
+it into a quality controlled, metadata enhanced "raw" tibble
 ready for use with all \code{raw_~} functions.
 
 Steps involved include:

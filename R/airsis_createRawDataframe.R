@@ -1,6 +1,6 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Obain AIRSIS Data and Create a Raw Dataframe
+#' @title Obain AIRSIS Data and Create a Raw Tibble
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
@@ -9,9 +9,9 @@
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
 #' @param flagAndKeep flag, rather then remove, bad data during the QC process
-#' @return Raw dataframe of WRCC data.
+#' @return Raw tibblee of AIRSIS data.
 #' @description Obtains monitor data from an AIRSIS webservice and converts
-#' it into a quality controlled, metadata enhanced "raw" dataframe
+#' it into a quality controlled, metadata enhanced "raw" tibble
 #' ready for use with all \code{raw_~} functions.
 #' 
 #' Steps involved include:
@@ -72,22 +72,22 @@ airsis_createRawDataframe <- function(startdate=20020101,
     # NOTE:  Processing continues even if we fail to write the local file
   }
   
-  # Read csv raw data into a dataframe
+  # Read csv raw data into a tibble
   logger.debug("Parsing data ...")
-  df <- airsis_parseData(fileString)
+  tbl <- airsis_parseData(fileString)
   
   # Add source of raw data
-  if ( nrow(df) > 0 ) {
-    df$rawSource <- "AIRSIS"
+  if ( nrow(tbl) > 0 ) {
+    tbl$rawSource <- "AIRSIS"
   }
   
-  # Apply monitor-appropriate QC to the dataframe
+  # Apply monitor-appropriate QC to the tibble
   logger.debug("Applying QC logic ...")
-  df <- airsis_qualityControl(df, flagAndKeep=flagAndKeep)
+  tbl <- airsis_qualityControl(tbl, flagAndKeep=flagAndKeep)
   
   # Add clustering information to identify unique deployments
   logger.debug("Clustering ...")
-  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
+  tbl <- addClustering(tbl, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
   
   # Rearrange columns to put QCFlag_* parameters at end if they exist
   if ( flagAndKeep ) {
@@ -103,11 +103,11 @@ airsis_createRawDataframe <- function(startdate=20020101,
                         "QCFlag_badDateAndTime",
                         "QCFlag_duplicateHr")
     # TODO: add intersection check here to remove those that do not exist in data
-    df_QC <- df[,QC_columnNames]
-    df_nonQC <- df[,-(which(names(df) %in% QC_columnNames))]
-    df <- cbind(df_nonQC,df_QC)
+    tbl_QC <- tbl[,QC_columnNames]
+    tbl_nonQC <- tbl[,-(which(names(tbl) %in% QC_columnNames))]
+    tbl <- cbind(tbl_nonQC,tbl_QC)
   }
   
-  return(df)
+  return(tbl)
   
 }

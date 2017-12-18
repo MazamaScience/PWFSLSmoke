@@ -36,21 +36,21 @@ airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000, exist
   
   # Special parsing for dump files in case the format ever changes from the AIRSIS CSV webservice
   logger.debug("Parsing data ...")
-  dfList <- airsisDump_parseData(fileString)
+  tblList <- airsisDump_parseData(fileString)
 
   # empty list for ws_monitor objects
   monitorList <- list()
   
-  # Loop over monitor dataframe list (mostly verbatim from wrcc_createMonitorObject)
-  for ( name in names(dfList) ) {
+  # Loop over monitor tibble list (mostly verbatim from wrcc_createMonitorObject)
+  for ( name in names(tblList) ) {
     
     logger.info("Processing data for %s ...", name)
     
-    df <- dfList[[name]]
+    tbl <- tblList[[name]]
 
-    # Apply monitor-appropriate QC to the dataframe
+    # Apply monitor-appropriate QC to the tibble
     logger.debug("Applying QC logic ...")
-    result <- try( df <- airsis_qualityControl(df),
+    result <- try( tbl <- airsis_qualityControl(tbl),
                    silent=TRUE ) # don't show errors
 
     if ( "try-error" %in% class(result) ) {
@@ -60,24 +60,24 @@ airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000, exist
     }
     
     # See if anything gets through QC
-    if ( nrow(df) == 0 ) {
+    if ( nrow(tbl) == 0 ) {
       logger.warn("No data remaining after QC")
       next
     }
     
     # Add clustering information to identify unique deployments
     logger.debug("Clustering ...")
-    df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
+    tbl <- addClustering(tbl, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
     
     # Create 'meta' dataframe of site properties organized as monitorID-by-property
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
     logger.debug("Creating 'meta' dataframe ...")
-    meta <- airsis_createMetaDataframe(df, existingMeta)
+    meta <- airsis_createMetaDataframe(tbl, provider, unitID, 'AIRSIS_DUMPFILE', existingMeta=NULL)
     
     # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
     logger.debug("Creating 'data' dataframe ...")
-    data <- airsis_createDataDataframe(df, meta)
+    data <- airsis_createDataDataframe(tbl, meta)
     
     # Create the 'ws_monitor' object
     ws_monitor <- list(meta=meta, data=data)

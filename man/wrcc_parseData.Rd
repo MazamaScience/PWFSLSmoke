@@ -13,14 +13,14 @@ wrcc_parseData(fileString)
 Dataframe of WRCC raw monitor data.
 }
 \description{
-Raw character data from WRCC are parsed into a dataframe.
+Raw character data from WRCC are parsed into a tibble.
 The incoming \code{fileString}
 can be read in directly from WRCC using \code{wrcc_downloadData()} or from a local
 file using \code{readr::read_file()}.
 
 The type of monitor represented by this fileString is inferred from the column names
 using \code{wrcc_identifyMonitorType()} and appropriate column types are assigned.
-The character data are then processed, read into a dataframe and augmented in the following ways:
+The character data are then processed, read into a tibble and augmented in the following ways:
 \enumerate{
 \item{Spaces at the beginning and end of each line are moved.}
 \item{All header lines beginning with ':' are removed.}
@@ -29,7 +29,7 @@ The character data are then processed, read into a dataframe and augmented in th
 \examples{
 \dontrun{
 fileString <- wrcc_downloadData(20150701, 20150930, stationID='SM16')
-df <- wrcc_parseData(fileString)
+tbl <- wrcc_parseData(fileString)
 }
 }
 \references{
