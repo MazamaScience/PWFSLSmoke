@@ -2,6 +2,7 @@
 #' @export
 #' @title Create Sites Metadata Dataframe
 #' @param tbl an EPA raw tibble after metadata enhancement
+#' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'EPA_hourly_88101_2016.zip'}
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
 #' @param addGoogleMeta logicial specifying wheter to use Google elevation and reverse geocoding services
 #' @description After addtional columns(i.e. \code{datetime}, and \code{monitorID}) 
@@ -82,7 +83,7 @@ epa_createMetaDataframe <- function(tbl,
   meta$monitorInstrument <- as.character(NA)
   meta$aqsID <- tbl$monitorID
   meta$pwfslID <- as.character(NA)
-  meta$pwfslDataIngestSource <- 'EPA'
+  meta$pwfslDataIngestSource <- pwfslDataIngestSource
   meta$telemetryAggregator <- as.character(NA)
   meta$telemetryUnitID <- as.character(NA)
   
@@ -113,7 +114,9 @@ epa_createMetaDataframe <- function(tbl,
       } else {
         endIndex <- nrow(meta)
       }
-      metaList[[i]] <- addGoogleMetadata(meta[startIndex:endIndex,], existingMeta=existingMeta)
+      m <- addGoogleElevation(meta[startIndex:endIndex,], existingMeta=existingMeta)
+      m <- addGoogleAddress(m, existingMeta=existingMeta)
+      metaList[[i]] <- m
     }
     meta <- dplyr::bind_rows(metaList)
     

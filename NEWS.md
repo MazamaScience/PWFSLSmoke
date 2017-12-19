@@ -19,6 +19,9 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  discarding sites associated with other countries
  * `monitorPlot_timeseries()` argument `aqiDots` renamed `aqidots`
  * new `airnow_createMonitorObjects()` function
+ * new `addUSGSElevation()` function
+ * deprecating `addGoogleMetadata()` in favor of new functions `addGoogleElevation()` and `addGoogleAddress()`
+ * removed all `openaq_~` data download and processing functions
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 

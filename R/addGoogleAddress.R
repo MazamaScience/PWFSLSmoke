@@ -1,24 +1,22 @@
 #' @keywords internal
 #' @export
 #' @importFrom utils installed.packages
-#' @title Add Elevation and Address Information to a Dataframe
+#' @title Add Address Information to a Dataframe
 #' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
-#' @description Google APIs are used to determine elevation and
+#' @description Google APIs are used to determine 
 #' address information associated with the locations specified by the
 #' \code{longitude} and \code{latitude} columns of the incoming dataframe.
 #' 
 #' Address information is obtained by using the \pkg{ggmap} package.
-#' @return Input dataframe with additional columns: \code{elevation, siteName, countyName}.
-#' @references \url{https://developers.google.com/maps/documentation/elevation/intro}
+#' @return Input dataframe with additional columns: \code{siteName, countyName}.
+#' @references \url{https://developers.google.com/maps/documentation/geocoding/intro}
 
-addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
+addGoogleAddress <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
   
-  logger.warn("addGoogleMetadata() is deprecated. Please use addGoogleElevation() and addGoogleAddress() instead.")
-  
-  logger.debug(" ----- addGoogleMetadata() ----- ")
+  logger.debug(" ----- addGoogleAddress() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df)
@@ -30,79 +28,18 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
     stop(paste0("Dataframe does not contain columns lonVar='",lonVar,"' or latVar='",latVar,"'"))
   }
   
+  # Initialize the elevation column if it doesn't exist
+  if ( is.null(df$siteName) ) df$siteName <- as.character(NA)
+  if ( is.null(df$countyName) ) df$countyName <- as.character(NA)
+  
   lons = df[[lonVar]]
   lats = df[[latVar]]
-  
-  # ----- Add elevation data (meters) from Google API ---------------------------
-  
-  if ( !is.null(existingMeta) ) {
-    
-    # NOTE:  If existingMeta is passed in, assume we are in an operational environment where we want to minimize google calls.
-    
-    for (i in 1:nrow(df)) {
-      monitorID <- df[i,'monitorID']
-      if ( monitorID %in% existingMeta$monitorID ) {
-        df$elevation[i] <- existingMeta[monitorID,'elevation']
-      } else {
-        df$elevation[i] <- as.numeric(NA)
-      }
-    }
-    
-  } else {
-    
-    # NOTE:  No existingMeta so go ahead and query the google elevation service
-    
-    # Create url
-    urlBase <- 'https://maps.googleapis.com/maps/api/elevation/json?locations='
-    locations <- paste(lats, lons, sep=',', collapse='|')
-    url <- paste0(urlBase, locations)
-    
-    # NOTE:  For now (2017-08-15) we aren't hitting Google limits because this service
-    # NOTE:  accepts a vector of locations in a single web service call.
-    
-    logger.debug("Getting Google elevation data for %s location(s)", nrow(df))
-    
-    # Get and parse the return which has elements 'results' and 'status'
-    response <- httr::GET(url)
-    if ( httr::http_error(response) ) {
-      stop(paste0("Google elevation service failed with: ",httr::content(response)))
-    }
-    
-    googleReturn <- httr::content(response)
-    
-    # Check results
-    if ( googleReturn$status != 'OK' ) {
-      
-      logger.warn("Google status was %s for URL %s", googleReturn$status, url)
-      df$elevation <- as.numeric(NA)
-      
-    } else {
-      
-      # Convert list of lists to list of dataframes
-      tempList <- lapply(googleReturn$results,as.data.frame)
-      # Combine individual dataframes
-      elevationDF <- dplyr::bind_rows(tempList)
-      
-      # Sanity check that things came back in the same order
-      if ( !all(df[[latVar]] == elevationDF$location.lat) || !all(df[[lonVar]] == elevationDF$location.lon) ) {
-        logger.error("Something is wrong with station elevation ordering")
-        df$elevation <- as.numeric(NA)
-      } else {
-        df$elevation <- elevationDF$elevation
-      }
-      
-    }
-    
-  } # end of !is.null(existingMetadata)
   
   # ----- Add siteName from Google API ---------------------------
   
   logger.debug("Getting site names for %s location(s)", nrow(df))
   
   # When siteName is missing, create one similar to AirNow with "locality-route"
-  
-  if ( !('siteName' %in% names(df)) ) df$siteName <- as.character(NA)
-  if ( !('coutyName' %in% names(df)) ) df$countyName <- as.character(NA)
   
   # Use ggmap::revgeocode to return a dataframe with (address, street number, route, locality , ...)
   # (2500 queries allowed per day in August, 2015)

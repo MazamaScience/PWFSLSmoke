@@ -24,7 +24,7 @@
 
 addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL, countryCodes=c('CA','US','MX')) {
   
-  # NOTE:  existingMeta is not currently used but is retained as an argument to mimic the signature of addGoogleMetadata()
+  # NOTE:  existingMeta is not currently used but is retained as an argument to mimic the signature of addGoogleElevation()
   
   logger.info(" ----- addMazamaMetadata() ----- ")
   

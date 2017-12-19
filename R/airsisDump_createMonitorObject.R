@@ -73,7 +73,7 @@ airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000, exist
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
     logger.debug("Creating 'meta' dataframe ...")
-    meta <- airsis_createMetaDataframe(tbl, provider, unitID, 'AIRSIS_DUMPFILE', existingMeta=NULL)
+    meta <- airsis_createMetaDataframe(tbl, "", "", 'AIRSIS_DUMPFILE', existingMeta=NULL)
     
     # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
     logger.debug("Creating 'data' dataframe ...")

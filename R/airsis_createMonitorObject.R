@@ -68,7 +68,6 @@ airsis_createMonitorObject <- function(startdate=20100101,
     stop(paste0("Cannot parse 'enddate' with ",enddateCount," characters"))
   }
   
-  
   # Read in AIRSIS .csv data
   logger.info("Downloading AIRSIS data ...")
   fileString <- airsis_downloadData(startdate, enddate, provider, unitID, baseUrl)

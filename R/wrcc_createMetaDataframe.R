@@ -124,7 +124,8 @@ wrcc_createMetaDataframe <- function(tbl,
   #   meta$agencyName[USFSMask] <- 'United States Forest Service'
   
   # Add elevation, siteName and countyName
-  meta <- addGoogleMetadata(meta, existingMeta=existingMeta)
+  meta <- addGoogleElevation(meta, existingMeta=existingMeta)
+  meta <- addGoogleAddress(meta, existingMeta=existingMeta)
   
   # Convert some columns to character even if they have all NA
   characterColumns <- c('siteName','agencyName','countyName','msaName','monitorType',

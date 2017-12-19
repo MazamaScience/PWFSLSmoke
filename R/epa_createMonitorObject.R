@@ -1,11 +1,7 @@
 #' @keywords EPA
 #' @export
 #' @title Download and Convert Hourly EPA Air Quality Data
-#' @param year year
-#' @param parameterName pollutant name
-#' @param parameterCode pollutant code
-#' @param baseUrl base URL for archived daily data
-#' @param downloadDir directory where files are downloaded and unzipped
+#' @param zipFile absolute path to monitoring data .zip file
 #' @param addGoogleMeta logicial specifying wheter to use Google elevation and reverse geocoding services
 #' @description Convert EPA data into a \emph{ws_monitor} object, ready for use with all \code{monitor_~} functions.
 #' @note Before running this function you must first enable spatial data capabilities as in the example.
@@ -14,21 +10,21 @@
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 #' @examples
 #' \dontrun{
-#' library(PWFSLSmoke)
-#' library(MazamaSpatialUtils)
-#' setSpatialDataDir('~/Data/Spatial')
-#' loadSpatialData('NaturalEarthAdm1') # stateCodes dataset
-#' mon <- epa_createMonitorObject(2015, "PM2.5", "88101")
+#' initializeMazamaSpatialUtils()
+#' zipFile <- epa_downloadData(2016, "88101", downloadDir='~/Data/EPA')
+#' mon <- epa_createMonitorObject(2015, "PM2.5", zipFile)
 #' }
 
-epa_createMonitorObject <- function(year=NULL,
-                                    parameterName="PM2.5",
-                                    parameterCode="88101",
-                                    baseUrl='https://aqs.epa.gov/aqsweb/airdata/',
-                                    downloadDir=tempdir(),
+epa_createMonitorObject <- function(zipFile=NULL,
                                     addGoogleMeta=TRUE) {
 
-  tbl <- epa_downloadData(year, parameterName, parameterCode, baseUrl, downloadDir)
+  # Sanity checks
+  if ( is.null(zipFile) ) {
+    logger.error("Required parameter 'zipFile' is missing")
+    stop(paste0("Required parameter 'zipFile' is missing"))
+  }
+  
+  tbl <- epa_parseData(zipFile)
       
   # Create a column with the unique monitorID using fields 1:3 in the "file format description" above
   tbl$monitorID <- paste0(tbl$`State Code`,tbl$`County Code`,tbl$`Site Num`)
@@ -45,18 +41,20 @@ epa_createMonitorObject <- function(year=NULL,
   }
   
   # Create 'meta' dataframe
-  logger.info("Creating 'meta' dataframe ...")
-  meta <- epa_createMetaDataframe(tbl, addGoogleMeta = addGoogleMeta)
+  logger.debug("Creating 'meta' dataframe ...")
+  meta <- epa_createMetaDataframe(tbl,
+                                  pwfslDataIngestSource = paste0('EPA_',basename(zipFile)),
+                                  addGoogleMeta = addGoogleMeta)
   
   # Create 'data' dataframe
-  logger.info("Creating 'data' dataframe ...")
+  logger.debug("Creating 'data' dataframe ...")
   data <- epa_createDataDataframe(tbl)
   
   # Create the 'ws_monitor' data list
   ws_monitor <- list(meta=meta, data=data)
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
-  logger.debug(paste0('   Finished creating ws_monitor object\n'))
+  logger.debug(paste0('Finished creating ws_monitor object'))
   
   return(ws_monitor)
   

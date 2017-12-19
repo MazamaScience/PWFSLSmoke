@@ -118,7 +118,7 @@ airnow_createMetaDataframes <- function(parameters=NULL) {
   
   # ----- Subset and add metadata ---------------------------------------------
   CANAMEX <- c('CA','US','MX')
-  airnowRaw <- dplyr::filter(airnowRaw, countryCode %in% CANAMEX)
+  airnowRaw <- dplyr::filter(airnowRaw, airnowRaw$countryCode %in% CANAMEX)
   
   # For later testing
   old_airnowRaw <- airnowRaw

@@ -10,6 +10,8 @@ epa_createMetaDataframe(tbl, pwfslDataIngestSource = "EPA",
 \arguments{
 \item{tbl}{an EPA raw tibble after metadata enhancement}
 
+\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'EPA_hourly_88101_2016.zip'}}
+
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 
 \item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
