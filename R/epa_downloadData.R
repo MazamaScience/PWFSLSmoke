@@ -47,11 +47,11 @@
 #'
 #' @note Unzipped files can be several hundred megabytes so downloadDir may need to be carefully chosen.
 #' Downloaded and unzipped files are removed after data are read into a dataframe.
-#' @return Dataframe of EPA data.
-#' @references \href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+#' @return Tibble of EPA data.
+#' @references \href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 #' @examples
 #' \dontrun{
-#' df <- epa_downloadData(2016, "PM2.5", "88101")
+#' tbl <- epa_downloadData(2016, "PM2.5", "88101")
 #' }
 
 
@@ -59,13 +59,13 @@
 #   parameterName="PM2.5"
 #   parameterCode=88101
 #   year=2016
-#   baseUrl='http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/'
+#   baseUrl='http://aqs.epa.gov/aqsweb/airdata/'
 # }
 
 epa_downloadData <- function(year=NULL,
                              parameterName="PM2.5",
                              parameterCode="88101",
-                             baseUrl='https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/',
+                             baseUrl='https://aqs.epa.gov/aqsweb/airdata/',
                              downloadDir=tempdir()) {
 
   # Sanity Check -- validate parameter name
@@ -118,6 +118,8 @@ epa_downloadData <- function(year=NULL,
   zipFile <- paste0(downloadDir,'/',fileBase,".zip")
   csvFile <- paste0(downloadDir,'/',fileBase,".csv")
   
+  # TODO:  Change to use httr and test for success
+  
   utils::download.file(url,zipFile)
   
   logger.debug(paste0('Uncompressing ',fileBase,'.zip ...'))
@@ -138,13 +140,13 @@ epa_downloadData <- function(year=NULL,
   
   # Read in the data
   logger.debug(paste0('Reading in ',csvFile,' ...'))
-  df <- readr::read_csv(csvFile, col_types=col_types)
+  tbl <- readr::read_csv(csvFile, col_types=col_types)
   logger.debug(paste0('Finished reading in ',csvFile))
   
   # Cleanup
   file.remove(zipFile, csvFile)
   
-  logger.info('Downloaded and parsed %d rows of EPA data', nrow(df))
+  logger.info('Downloaded and parsed %d rows of EPA data', nrow(tbl))
   
-  return(df)
+  return(tbl)
 }

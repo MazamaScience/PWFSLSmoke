@@ -12,7 +12,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * changed the non-guaranteed columns in `ws_monitor$meta`
  * added `initializeMazamaSpatialUtils()` convenience function
  * new `US_52` vector of all US state codes including `DC` and `PR`
- * upgraded `airnow_createMetaDataframes()` to produce v1.0 metadata
+ * upgraded all `~_createMetaDataframes()` to produce v1.0 metadata
  * `airnow_createMetaDataframes()` now performs additional cleanup on the incoming data including a
  guarantee that every site has a valid `stateCode`
  * `airnow_createMetaDataframes()` filters incoming sites for `countryCode %in% c('CA','MX','US')`,

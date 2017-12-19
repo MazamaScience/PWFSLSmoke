@@ -61,7 +61,12 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
     logger.debug("Getting Google elevation data for %s location(s)", nrow(df))
     
     # Get and parse the return which has elements 'results' and 'status'
-    googleReturn <- httr::content(httr::GET(url))
+    response <- httr::GET(url)
+    if ( httr::http_error(response) ) {
+      stop(paste0("Google elevation service failed with: ",httr::content(response)))
+    }
+    
+    googleReturn <- httr::content(response)
     
     # Check results
     if ( googleReturn$status != 'OK' ) {

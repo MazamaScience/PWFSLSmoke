@@ -5,8 +5,7 @@
 \title{Download Data from EPA}
 \usage{
 epa_downloadData(year = NULL, parameterName = "PM2.5",
-  parameterCode = "88101",
-  baseUrl = "https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/",
+  parameterCode = "88101", baseUrl = "https://aqs.epa.gov/aqsweb/airdata/",
   downloadDir = tempdir())
 }
 \arguments{
@@ -21,7 +20,7 @@ epa_downloadData(year = NULL, parameterName = "PM2.5",
 \item{downloadDir}{directory where files are downloaded and unzipped}
 }
 \value{
-Dataframe of EPA data.
+Tibble of EPA data.
 }
 \description{
 This function downloads air quality data from the EPA and
@@ -69,10 +68,10 @@ Downloaded and unzipped files are removed after data are read into a dataframe.
 }
 \examples{
 \dontrun{
-df <- epa_downloadData(2016, "PM2.5", "88101")
+tbl <- epa_downloadData(2016, "PM2.5", "88101")
 }
 }
 \references{
-\href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+\href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 }
 \keyword{EPA}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_createRawDataframe.R
 \name{wrcc_createRawDataframe}
 \alias{wrcc_createRawDataframe}
-\title{Obtain WRCC Data and Parse into Dataframe}
+\title{Obtain WRCC Data and Parse into Tibbler}
 \usage{
 wrcc_createRawDataframe(startdate = 20100101,
   enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
@@ -26,11 +26,11 @@ wrcc_createRawDataframe(startdate = 20100101,
 \item{flagAndKeep}{flag, rather then remove, bad data during the QC process}
 }
 \value{
-Raw dataframe of WRCC data.
+Raw tibble of WRCC data.
 }
 \description{
 Obtains monitor data from a WRCC webservice and converts
-it into a quality controlled, metadata enhanced "raw" dataframe
+it into a quality controlled, metadata enhanced "raw" tibble
 ready for use with all \code{raw_~} functions.
 
 Steps involved include:
@@ -50,7 +50,7 @@ Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
 }
 \examples{
 \dontrun{
-df <- wrcc_createRawDataframe(20150701, 20150930, unitID='SM16')
+tbl <- wrcc_createRawDataframe(20150701, 20150930, unitID='SM16')
 }
 
 }

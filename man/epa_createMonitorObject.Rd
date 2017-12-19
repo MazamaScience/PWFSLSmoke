@@ -5,9 +5,8 @@
 \title{Download and Convert Hourly EPA Air Quality Data}
 \usage{
 epa_createMonitorObject(year = NULL, parameterName = "PM2.5",
-  parameterCode = "88101",
-  baseUrl = "https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/",
-  downloadDir = tempdir())
+  parameterCode = "88101", baseUrl = "https://aqs.epa.gov/aqsweb/airdata/",
+  downloadDir = tempdir(), addGoogleMeta = TRUE)
 }
 \arguments{
 \item{year}{year}
@@ -19,6 +18,8 @@ epa_createMonitorObject(year = NULL, parameterName = "PM2.5",
 \item{baseUrl}{base URL for archived daily data}
 
 \item{downloadDir}{directory where files are downloaded and unzipped}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
 \value{
 A \emph{ws_monitor} object with EPA data.
@@ -39,8 +40,8 @@ mon <- epa_createMonitorObject(2015, "PM2.5", "88101")
 }
 }
 \references{
-\href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+\href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 
-\href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/FileFormats.html#_format_3}{file format description}
+\href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 }
 \keyword{EPA}
