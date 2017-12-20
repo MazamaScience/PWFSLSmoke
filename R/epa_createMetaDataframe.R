@@ -26,6 +26,8 @@
 #' [16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
 #' }
 #' @return A \code{meta} dataframe for use in a \emph{ws_monitor} object.
+#' @references \href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+#' @references \href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 
 epa_createMetaDataframe <- function(tbl,
                                     pwfslDataIngestSource='EPA',

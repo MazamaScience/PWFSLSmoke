@@ -43,7 +43,7 @@ The `meta` dataframe contains all metadata associated with monitoring sites and 
 rows as unique sites and columns as site attributes. The following columns are guaranteed to exist
 in the `meta` dataframe:
 
- * `monitorID` -- unique ID for each monitoring site
+ * `monitorID` -- unique ID for each site-instrument combination
  * `longitude` -- decimal degrees East
  * `latitude` -- decimal degrees North
  * `elevation` -- meters above sea level
@@ -60,9 +60,10 @@ Starting with version 1.0 of the package, the following additional columns (most
  * `countyName` -- county/province name
  * `msaName` -- US Census Bureau 'Metropolitan/Micropolitan Statistical Area'
  * `monitorType` -- broad instrument categories for E-Sampler, EBAM or BAM-1020
- * `monitorInstrument` -- specific instrument identifiers
- * `aqsID` -- AQS site identifier (often used as the `monitorID`)
- * `pwfslID` -- PWFSL site identifier (used as the `monitorID` for temporary monitors)
+ * `siteID` -- unique identifier for each site
+ * `instrumentID` -- sequential identifier for each instrument at a single site
+ * `aqsID` -- AQS site identifier (often used as the `siteID`)
+ * `pwfslID` -- PWFSL site identifier (used as the `siteID` for temporary monitors)
  * `pwfslDataIngestSource` -- identifier for the source of monitoring data (e.g. AIRNOW, AIRSIS, WRCC_DUMPFILE, etc.)
  * `telemetryAggregator` -- data provider for temporary monitors (e.g. 'wrcc' or 'usfs.airsis')
  * `telemetryUnitID` -- unique ID for each monitoring site used within the `telemetry_aggregator`
@@ -87,9 +88,6 @@ library(PWFSLSmoke)
 
 # Get some airnow data for Washington state in the summer of 2015
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
-# To work with AirNow data directly, uncomment the next two lines
-#N_M <- airnow_load(startdate=20150801, enddate=20150831)
-#WA <- monitor_subset(airnow, stateCodes=c("WA"))
 WA <- monitor_subset(N_M, stateCodes='WA')
 
 # 'ws_monitor' objects can be identified by their class

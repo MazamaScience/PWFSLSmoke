@@ -15,7 +15,7 @@ airsis_createMetaDataframe(tbl, provider = as.character(NA),
 
 \item{unitID}{character or numeric AIRSIS unit identifier}
 
-\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'AIRSIS', 'AIRSIS_DUMPFILE', ...}}
+\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'AIRSIS', 'AIRSIS_DUMPFILE'}}
 
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }

@@ -15,7 +15,7 @@
 
 addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
   
-  logger.info(" ----- addGoogleElevation() ----- ")
+  logger.debug(" ----- addGoogleElevation() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df)

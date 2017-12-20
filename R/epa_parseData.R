@@ -45,6 +45,7 @@
 #' CSV files are removed after data are read into a dataframe.
 #' @return Tibble of EPA data.
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+#' @references \href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 #' @examples
 #' \dontrun{
 #' zipFile <- epa_downloadData(2016, "88101", '~/Data/EPA')

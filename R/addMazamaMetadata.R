@@ -26,7 +26,7 @@ addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
   
   # NOTE:  existingMeta is not currently used but is retained as an argument to mimic the signature of addGoogleElevation()
   
-  logger.info(" ----- addMazamaMetadata() ----- ")
+  logger.debug(" ----- addMazamaMetadata() ----- ")
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {

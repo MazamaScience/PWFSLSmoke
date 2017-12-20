@@ -22,9 +22,6 @@ To begin, let's have a broader look at AirNow ambient monitoring data for the Pa
 ```{r Northwest_Megafires, message=FALSE}
 library(PWFSLSmoke)
 PacNW <- Northwest_Megafires
-# To work with AirNow data directly, uncomment the next two lines
-#N_M <- airnow_load(startdate=20150531, enddate=20151101)
-#PacNW <- monitor_subset(airnow, stateCodes=c("WA", "OR", "ID"))
 PacNW_24 <- monitor_rollingMean(PacNW, width=24)
 ```
 

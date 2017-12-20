@@ -64,5 +64,7 @@ tbl <- epa_parseData(zipFile, "PM2.5")
 }
 \references{
 \href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+
+\href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 }
 \keyword{EPA}

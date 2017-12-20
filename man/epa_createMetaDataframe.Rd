@@ -41,4 +41,9 @@ columns in the returned \code{meta} dataframe is:
 [16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
 }
 }
+\references{
+\href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+
+\href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
+}
 \keyword{EPA}

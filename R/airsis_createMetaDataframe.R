@@ -4,7 +4,7 @@
 #' @param tbl single site AIRSIS tibble after metadata enhancement
 #' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
 #' @param unitID character or numeric AIRSIS unit identifier
-#' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'AIRSIS', 'AIRSIS_DUMPFILE', ...}
+#' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'AIRSIS', 'AIRSIS_DUMPFILE'}
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
 #' @return A \code{meta} dataframe for use in a \emph{ws_monitor} object.
 #' @description After an AIRSIS dataframe has been enhanced with 
@@ -38,7 +38,7 @@ airsis_createMetaDataframe <- function(tbl,
                                        pwfslDataIngestSource='AIRSIS',
                                        existingMeta=NULL) {
   
-  logger.info(" ----- airsis_createMetaDataframe() ----- ")
+  logger.debug(" ----- airsis_createMetaDataframe() ----- ")
   
   # Sanity check -- tbl must have a monitorType
   if ( !'monitorType' %in% names(tbl) ) {
