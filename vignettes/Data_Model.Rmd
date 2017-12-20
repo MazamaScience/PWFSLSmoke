@@ -56,9 +56,9 @@ in the `meta` dataframe:
 Starting with version 1.0 of the package, the following additional columns (mostly for internal use) will always exist:
 
  * `siteName` -- familiar name for a monitoring site
- * `agencyName` -- agency responsible for collecting the data
  * `countyName` -- county/province name
  * `msaName` -- US Census Bureau 'Metropolitan/Micropolitan Statistical Area'
+ * `agencyName` -- agency responsible for collecting the data
  * `monitorType` -- broad instrument categories for E-Sampler, EBAM or BAM-1020
  * `siteID` -- unique identifier for each site
  * `instrumentID` -- sequential identifier for each instrument at a single site

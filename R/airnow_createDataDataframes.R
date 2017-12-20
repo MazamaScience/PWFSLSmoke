@@ -1,6 +1,6 @@
 #' @keywords AirNow
 #' @export
-#' @title Return Reshaped, Monthly Dataframes of AirNow Data
+#' @title Return Reshaped, Dataframes of AirNow Data
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
@@ -47,28 +47,34 @@
 airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24) {
   
   # Create the data frame that holds multiple days of AirNow data
-  airnowRaw <- airnow_downloadData(parameters=parameters, startdate=startdate, hours=hours)
+  airnowTbl <- airnow_downloadData(parameters=parameters, startdate=startdate, hours=hours)
+  
+  # > head(airnowTbl)
+  # # A tibble: 6 x 9
+  #   ValidDate ValidTime     AQSID           SiteName GMTOffset ParameterName ReportingUnits Value         DataSource
+  #       <chr>     <chr>     <chr>              <chr>     <int>         <chr>          <chr> <dbl>              <chr>
+  # 1  10/16/16     00:00 000020301         WELLINGTON        -4         PM2.5          UG/M3     5 Environment Canada
+  # 2  10/16/16     00:00 000030701 AYLESFORD MOUNTAIN        -4         PM2.5          UG/M3     2 Environment Canada
+  # 3  10/16/16     00:00 000040203       FOREST HILLS        -4         PM2.5          UG/M3     7 Environment Canada
+  # 4  10/16/16     00:00 000040103        FREDERICTON        -4         PM2.5          UG/M3    25 Environment Canada
+  # 5  10/16/16     00:00 000040207    SAINT JOHN WEST        -4         PM2.5          UG/M3     8 Environment Canada
   
   # ----- Data Reshaping ------------------------------------------------------
   
   logger.debug("Reshaping %d days of AirNow data ...", hours/24)
   
-  # NOTE:  Example lines from the aggregated dataframe:
-  # NOTE:
-  # NOTE:    ValidDate ValidTime     AQSID   SiteName GMTOffset ParameterName ReportingUnits Value                  DataSource
-  # NOTE:  1  08/01/14     00:00 000010102 St. John's        -4         OZONE            PPB    12 Newfoundland & Labrador DEC
-  # NOTE:  2  08/01/14     00:00 000020301 WELLINGTON        -4           NO2            PPB     0          Environment Canada
-  # NOTE:  3  08/01/14     00:00 000020301 WELLINGTON        -4         OZONE            PPB    18          Environment Canada
-  # NOTE:  4  08/01/14     00:00 000020301 WELLINGTON        -4         PM2.5          UG/M3     7          Environment Canada
-  # NOTE:  5  08/01/14     00:00 000020301 WELLINGTON        -4            NO            PPB     0          Environment Canada
+  # NOTE:  Add monitorID as AQSID + "_01" to match what is done in the "Data Reshaping"
+  # NOTE:  section of airnow_createMetaDataframes().
+  
+  airnowTbl$monitorID <- paste0(airnowTbl$AQSID, "_01")
   
   # Get a list of parameters
   if ( is.null(parameters) ) {
-    parameters <- sort(unique(airnowRaw$ParameterName))
+    parameters <- sort(unique(airnowTbl$ParameterName))
   } else {
     # Guarantee that passed in parameters actually exist
-    parameters <- dplyr::intersect(parameters, unique(airnowRaw$ParameterName))
-    invalidParameters <- dplyr::setdiff(parameters, unique(airnowRaw$ParameterName))
+    parameters <- dplyr::intersect(parameters, unique(airnowTbl$ParameterName))
+    invalidParameters <- dplyr::setdiff(parameters, unique(airnowTbl$ParameterName))
     if ( length(invalidParameters) > 0 ) {
       logger.warn("Requested parameters not found in AirNow data: %s", paste0(invalidParameters, collapse=", "))
     }
@@ -83,14 +89,14 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
     logger.debug("Reshaping data for %s ...", parameter)
     
     # Create datetime variable
-    df <- dplyr::filter(airnowRaw, airnowRaw$ParameterName == parameter)
-    datestamp <- paste0(df$ValidDate, ' ', df$ValidTime)
-    df$datetime <- lubridate::mdy_hm(datestamp) # 'mdy_hm', not 'ymd_hm'
+    tbl <- dplyr::filter(airnowTbl, airnowTbl$ParameterName == parameter)
+    datestamp <- paste0(tbl$ValidDate, ' ', tbl$ValidTime)
+    tbl$datetime <- lubridate::mdy_hm(datestamp) # 'mdy_hm', not 'ymd_hm'
     # Guarantee unique rows
-    df <- dplyr::distinct(df)
-    # Melt and recast
-    melted <- reshape2::melt(df, id.vars=c('datetime','AQSID'), measure.vars=c('Value'))
-    dfList[[parameter]] <- reshape2::dcast(melted, datetime ~ AQSID)
+    tbl <- dplyr::distinct(tbl)
+    # Melt and recast (convert tibbles to dataframes)
+    melted <- reshape2::melt(tbl, id.vars=c('datetime','monitorID'), measure.vars=c('Value'))
+    dfList[[parameter]] <- reshape2::dcast(melted, datetime ~ monitorID)
     
   }
   

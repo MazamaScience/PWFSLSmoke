@@ -2,7 +2,7 @@
 #' @export
 #' @importFrom utils installed.packages
 #' @title Add Elevation Data to a Dataframe
-#' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
+#' @param df dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
@@ -18,7 +18,7 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
   logger.debug(" ----- addGoogleElevation() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df)
+  df <- as.data.frame(df, stringsAsFactors=FALSE)
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
@@ -30,22 +30,16 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
   # Initialize the elevation column if it doesn't exist
   if ( is.null(df$elevation) ) df$elevation <- as.numeric(NA)
   
-  lons = df[[lonVar]]
-  lats = df[[latVar]]
-  
   # ----- Add elevation data (meters) from Google API ---------------------------
   
   if ( !is.null(existingMeta) ) {
     
     # NOTE:  If existingMeta is passed in, assume we are in an operational environment where we want to minimize web service calls.
     
-    # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-    df <- as.data.frame(df)
-    
     for (i in 1:nrow(df)) {
       monitorID <- df[i,'monitorID']
       if ( monitorID %in% existingMeta$monitorID ) {
-        df$elevation[i] <- existingMeta[monitorID,'elevation']
+        df$elevation[i] <- round(existingMeta[monitorID,'elevation'], 0) # round to whole meters
       } else {
         df$elevation[i] <- as.numeric(NA)
       }
@@ -57,47 +51,74 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
     
     logger.debug("Getting Google elevation data for %s location(s)", nrow(df))
     
-    # Create url
-    urlBase <- 'https://maps.googleapis.com/maps/api/elevation/json?locations='
-    locations <- paste(lats, lons, sep=',', collapse='|')
-    url <- paste0(urlBase, locations)
-    
-    # NOTE:  For now (2017-08-15) we aren't hitting Google limits because this service
-    # NOTE:  accepts a vector of locations in a single web service call.
-    
-    # Get and parse the return
-    r <- httr::GET(url)
-    if ( httr::http_error(r) ) {
-      stop(paste0("Google elevation service failed with: ",httr::content(r)))
+    # NOTE:  Check and loop to see if we need to use addGoogleMetadata multiple 
+    # NOTE:  times due to google's per-query limit
+    loopCount <- nrow(df) %/% 300
+    if ( nrow(df) %% 300 > 0) {
+      loopCount <- loopCount + 1
     }
     
-    returnObj <- httr::content(r)
-    
-    # Check results
-    if ( returnObj$status != 'OK' ) {
+    dfList <- list()
+    for (i in 1:loopCount) {
       
-      logger.warn("Google status was %s for URL %s", returnObj$status, url)
-      df$elevation <- as.numeric(NA)
-      
-    } else {
-      
-      # Convert list of lists to list of dataframes
-      tempList <- lapply(returnObj$results,as.data.frame)
-      # Combine individual dataframes
-      elevationDF <- dplyr::bind_rows(tempList)
-      
-      # Sanity check that things came back in the same order
-      if ( !all(df[[latVar]] == elevationDF$location.lat) || !all(df[[lonVar]] == elevationDF$location.lon) ) {
-        logger.error("Something is wrong with station elevation ordering")
-        df$elevation <- as.numeric(NA)
+      startIndex <- (i-1) * 300 + 1
+      if (i != loopCount) {
+        endIndex <- i * 300
       } else {
-        df$elevation <- elevationDF$elevation
+        endIndex <- nrow(df)
       }
       
+      dfSub <- df[startIndex:endIndex,]
+      
+      # Create url
+      urlBase <- 'https://maps.googleapis.com/maps/api/elevation/json?locations='
+      locations <- paste(dfSub[[latVar]], dfSub[[lonVar]], sep=',', collapse='|')
+      url <- paste0(urlBase, locations)
+      
+      # NOTE:  For now (2017-08-15) we aren't hitting Google limits because this service
+      # NOTE:  accepts a vector of locations in a single web service call.
+      
+      # Get and parse the return
+      r <- httr::GET(url)
+      if ( httr::http_error(r) ) {
+        logger.error("Google elevation service failed with: %s", httr::content(r))
+        logger.error("Google elevation service failed for URL: %s", url)
+        stop(paste0("Google elevation service failed with: ",httr::content(r)))
+      }
+      
+      returnObj <- httr::content(r)
+      
+      # Check results
+      if ( returnObj$status != 'OK' ) {
+        
+        logger.warn("Google status was %s", returnObj$status)
+        df$elevation <- as.numeric(NA)
+        
+      } else {
+        
+        # Convert list of lists to list of dataframes
+        tempList <- lapply(returnObj$results, as.data.frame, stringsAsFactors=FALSE)
+        # Combine individual dataframes
+        elevationDF <- dplyr::bind_rows(tempList)
+        
+        # Sanity check that things came back in the same order
+        if ( !all(dfSub[[latVar]] == elevationDF$location.lat) || !all(dfSub[[lonVar]] == elevationDF$location.lon) ) {
+          logger.warn("Something is wrong with station elevation ordering")
+          dfSub$elevation <- as.numeric(NA)
+        } else {
+          dfSub$elevation <- round(elevationDF$elevation, 0) # Round to whole meters
+        }
+        
+      }
+      
+      dfList[[i]] <- dfSub
+      
     }
+    
+    amendedDF <- dplyr::bind_rows(dfList)
     
   } # end of !is.null(existingMetadata)
   
-  return(df)
+  return(amendedDF)
   
 }

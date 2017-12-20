@@ -21,7 +21,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
   logger.debug(" ----- addGoogleMetadata() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df)
+  df <- as.data.frame(df, stringsAsFactors=FALSE)
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
@@ -79,7 +79,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
     } else {
       
       # Convert list of lists to list of dataframes
-      tempList <- lapply(googleReturn$results,as.data.frame)
+      tempList <- lapply(googleReturn$results, as.data.frame, stringsAsFactors=FALSE)
       # Combine individual dataframes
       elevationDF <- dplyr::bind_rows(tempList)
       

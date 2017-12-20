@@ -8,7 +8,7 @@ addGoogleElevation(df, lonVar = "longitude", latVar = "latitude",
   existingMeta = NULL)
 }
 \arguments{
-\item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
+\item{df}{dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
 
 \item{lonVar}{name of longitude variable in the incoming dataframe}
 

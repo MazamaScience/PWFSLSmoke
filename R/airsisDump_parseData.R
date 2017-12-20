@@ -145,7 +145,7 @@ airsisDump_parseData <- function(fileString) {
   
   # Split the tibble int a list of per-monitor tibbles
   tblList <- split(tbl, tbl$Alias) # list of tibbles
-  tblList <- lapply(tblList, as.data.frame)
+  ### tblList <- lapply(tblList, as.data.frame, stringsAsFactors=FALSE)
   names(tblList) <- make.names(names(tblList))
   
   return(tblList)

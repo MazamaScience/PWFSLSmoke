@@ -19,7 +19,7 @@ addGoogleAddress <- function(df, lonVar="longitude", latVar="latitude", existing
   logger.debug(" ----- addGoogleAddress() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df)
+  df <- as.data.frame(df, stringsAsFactors=FALSE)
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {

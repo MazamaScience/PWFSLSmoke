@@ -90,7 +90,7 @@ airsis_createMetaDataframe <- function(tbl,
   
   # NOTE:  'meta' must be a dataframe because it has rownames which are deprecated in tibbles
   # Create empty dataframe
-  meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=18))
+  meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=18), stringsAsFactors=FALSE)
   
   colNames <- c("monitorID", "longitude", "latitude",
                 "elevation", "timezone", "countryCode",

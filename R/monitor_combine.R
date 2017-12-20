@@ -30,6 +30,7 @@ monitor_combine <- function(monitorList) {
   
   # Create combined 'meta'
   meta <- dplyr::bind_rows(metaList)
+  meta <- as.data.frame(meta, stringsAsFactors=FALSE) # Guarantee we are still a dataframe, not a tibble
   rownames(meta) <- meta$monitorID
   
   # Create combined 'data'
@@ -37,9 +38,10 @@ monitor_combine <- function(monitorList) {
   for (i in 2:length(dataList)) {
     data <- dplyr::full_join(data,dataList[[i]],by="datetime")
   }
+  data <- as.data.frame(data, stringsAsFactors=FALSE)
   
   # Create the 'ws_monitor' object
-  ws_monitor <- list(meta=as.data.frame(meta), data=as.data.frame(data))
+  ws_monitor <- list(meta=meta, data=data)
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
   return(ws_monitor)

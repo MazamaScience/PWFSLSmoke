@@ -16,7 +16,7 @@ addUSGSElevation <- function(df, lonVar="longitude", latVar="latitude", existing
   logger.debug(" ----- addUSGSElevation() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df)
+  df <- as.data.frame(df, stringsAsFactors=FALSE)
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
@@ -38,7 +38,7 @@ addUSGSElevation <- function(df, lonVar="longitude", latVar="latitude", existing
     # NOTE:  If existingMeta is passed in, assume we are in an operational environment where we want to minimize web service calls.
     
     # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-    df <- as.data.frame(df)
+    df <- as.data.frame(df, stringsAsFactors=FALSE)
     
     for (i in 1:nrow(df)) {
       monitorID <- df[i,'monitorID']

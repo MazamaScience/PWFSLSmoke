@@ -82,10 +82,10 @@ airsis_createDataDataframe <- function(df, meta) {
 
   # Merge pm25DF into the houlyDF dataframe, inserting NA's where necessary
   # NOTE:  dplyr returns objects of class "tbl_df" which can be confusing. We undo that.
-  data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime') )
+  data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime'), stringsAsFactors=FALSE )
 
   logger.info("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
   
-  return(as.data.frame(data))
+  return(data)
   
 }

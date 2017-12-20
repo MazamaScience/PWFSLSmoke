@@ -141,6 +141,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   # Remove bad elevations (zero seems to be used as a missing value flag)
   mask <- airnowTbl$elevation <= 0.0
   airnowTbl$elevation[mask] <- as.numeric(NA)
+  airnowTbl$elevation <- round(airnowTbl$elevation, 0) # round to whole meters
   
   # ----- Subset and add Mazama metadata and USGS elevation -------------------
   CANAMEX <- c('CA','US','MX')
@@ -153,8 +154,12 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   sitesUnique <- airnowTbl[!duplicated(airnowTbl$AQSID),]
   suppressWarnings({
     sitesUnique <- addMazamaMetadata(sitesUnique, 'longitude', 'latitude', countryCodes = CANAMEX)
-    # NOTE:  move epa_createMeta~() loopCount into addGoogle~()
+    # NOTE:  Hitting OVER_QUERY_LIMIT pretty often with Google services without an APIkey
     # sitesUnique <- addGoogleElevation(sitesUnique, 'longitude', 'latitude')
+    # NOTE:  Hitting OVER_QUERY_LIMIT pretty often with addGoogleElevation
+    # sitesUnique <- addGoogleAddress(sitesUnique, 'longitude', 'latitude')
+    # NOTE:  USGS service makes individual locations requests and is very slow
+    # sitesUnique <- addUSGSElevation(sitesUnique, 'longitude', 'latitude')
   })
   # Now add the per-AQSID Mazama metadata to the larger dataframe
   # NOTE:  We need to remove the columns from airnowTbl that we replace with left_join()
@@ -223,7 +228,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     
     # NOTE:  'meta' must be a dataframe because it has rownames which are deprecated in tibbles
     # Create empty dataframe
-    meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=19))
+    meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=19), stringsAsFactors=FALSE)
     
     colNames <- c("monitorID", "longitude", "latitude",
                   "elevation", "timezone", "countryCode",
@@ -242,15 +247,15 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     meta$countryCode <- as.character(tbl$countryCode)
     meta$stateCode <- as.character(tbl$stateCode)
     meta$siteName <- as.character(tbl$siteName)
+    meta$countyName <- as.character(tbl$countyName)
+    meta$msaName <- as.character(tbl$MSAName)
     meta$agencyName <- as.character(tbl$agencyName)
-    meta$countyName <- tbl$countyName
-    meta$msaName <- tbl$MSAName
     meta$monitorType <- as.character(NA)
-    meta$siteID <- tbl$AQSID
+    meta$siteID <- as.character(tbl$AQSID)
     meta$instrumentID <- "01" # Monitors are not identified and we should only have a single site-monitor
-    meta$aqsID <- tbl$AQSID
+    meta$aqsID <- as.character(tbl$AQSID)
     meta$pwfslID <- as.character(NA)
-    meta$pwfslDataIngestSource <- pwfslDataIngestSource
+    meta$pwfslDataIngestSource <- as.character(pwfslDataIngestSource)
     meta$telemetryAggregator <- as.character(NA)
     meta$telemetryUnitID <- as.character(NA)
     

@@ -14,12 +14,12 @@ airnow_downloadData(parameters = NULL, startdate = "", hours = 24)
 \item{hours}{desired number of hours of data to assemble}
 }
 \value{
-Dataframe of aggregated AirNow data.
+Tibble of aggregated AirNow data.
 }
 \description{
 This function makes repeated calls to \link{airnow_downloadHourlyData}
-to obtain data from AirNow. All data obtained are then
-combined into a single dataframe and returned.
+to obtain data from AirNow. All data obtained are then 
+combined into a single tibble and returned.
 
 Parameters included in AirNow data include at least the following list:
 \enumerate{
@@ -47,7 +47,7 @@ Parameters included in AirNow data include at least the following list:
 }
 
 Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
-dataframe to be filtered to contain only records for those parameters.
+tibble to be filtered to contain only records for those parameters.
 }
 \note{
 As of 2016-12-27, it appears that hourly data are available only for 2016 and
@@ -55,7 +55,7 @@ not for earlier years.
 }
 \examples{
 \dontrun{
-df <- airnow_downloadData("PM2.5", 2016070112, hours=24)
+tbl <- airnow_downloadData("PM2.5", 2016070112, hours=24)
 }
 }
 \seealso{

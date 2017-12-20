@@ -48,7 +48,7 @@
 
 airnow_createMonitorObjects <- function(parameters=NULL, startdate='', hours=24) {
   
-  metaList <- airnow_createMetaDataframes(parameters)
+  metaList <- airnow_createMetaDataframes(parameters, 'AIRNOW')
   dataList <- airnow_createDataDataframes(parameters, startdate, hours)
   
   # Create empty list (no pre-allocation needed when lists are referenced by key instead of integer)
