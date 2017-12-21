@@ -22,6 +22,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * deprecating `addGoogleMetadata()` in favor of new functions `addGoogleElevation()` and `addGoogleAddress()`
  * removed all `openaq_~` data download and processing functions
  * added `zeroMinimum` parameter to data ingest functions to specify whether negative values should be converted to zero
+ * renamed `airnow_downloadData()` to `airnow_downloadParseData()`
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 

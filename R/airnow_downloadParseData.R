@@ -44,10 +44,10 @@
 #' @seealso \link{airnow_downloadHourlyData}
 #' @examples
 #' \dontrun{
-#' tbl <- airnow_downloadData("PM2.5", 2016070112, hours=24)
+#' tbl <- airnow_downloadParseData("PM2.5", 2016070112, hours=24)
 #' }
 
-airnow_downloadData <- function(parameters=NULL,
+airnow_downloadParseData <- function(parameters=NULL,
                                 startdate=strftime(lubridate::now(),"%Y%m%d00",tz="GMT"),
                                 hours=24) {
   
@@ -57,7 +57,7 @@ airnow_downloadData <- function(parameters=NULL,
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   tblList <- vector(mode="list", length=hours)
   
-  logger.info("Downloading %d hourly data files from AirNow ...",hours)
+  logger.debug("Downloading %d hourly data files from AirNow ...",hours)
   
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {
@@ -65,7 +65,7 @@ airnow_downloadData <- function(parameters=NULL,
     datetime <- starttime + lubridate::dhours(i-1)
     datestamp <- strftime(datetime, "%Y%m%d%H", tz="UTC")
 
-    logger.debug("Downloading AirNow data for %s", datestamp)
+    logger.trace("Downloading AirNow data for %s", datestamp)
     
     # Obtain an hour of AirNow data
     result <- try( tbl <- airnow_downloadHourlyData(datestamp),
@@ -106,9 +106,9 @@ airnow_downloadData <- function(parameters=NULL,
     dplyr::distinct()
   
   if ( is.null(parameters) ) {
-    logger.info("Downloaded %d rows of AirNow data", nrow(tbl))
+    logger.debug("Downloaded and parsed %d rows of AirNow data", nrow(tbl))
   } else {
-    logger.info("Downloaded %d rows of AirNow data for: %s", nrow(tbl), paste(parameters, collapse=", "))
+    logger.debug("Downloaded and parsed %d rows of AirNow data for: %s", nrow(tbl), paste(parameters, collapse=", "))
   }
   
   return(tbl)

@@ -6,7 +6,7 @@
 #' @param hours desired number of hours of data to assemble
 #' @param zeroMinimum logical specifying whether to convert negative values to zero
 #' @return List where each element contains a \emph{ws_monitor} object for a unique parameter (e.g: "PM2.5", "NOX").
-#' @description This function uses the \link{airnow_downloadData} function 
+#' @description This function uses the \link{airnow_downloadParseData} function 
 #' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
 #' 
