@@ -48,7 +48,7 @@
 #' }
 
 airnow_createMonitorObjects <- function(parameters=NULL,
-                                        startdate='',
+                                        startdate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
                                         hours=24,
                                         zeroMinimum=TRUE) {
   

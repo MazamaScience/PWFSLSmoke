@@ -55,7 +55,7 @@
 #' monitorLeaflet(usfs_1013)
 #' }
 
-airsis_createMonitorObject <- function(startdate=20170101,
+airsis_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101",tz="GMT"),
                                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
                                        provider=NULL,
                                        unitID=NULL,

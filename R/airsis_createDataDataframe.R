@@ -30,8 +30,8 @@ airsis_createDataDataframe <- function(tbl, meta) {
   
   # Sanity check -- meta must have a monitorType
   if ( !'monitorType' %in% names(meta) ) {
-    logger.error("No 'monitorType' column found in 'meta' datafra,e with columns: %s", paste0(names(meta), collapse=", "))
-    stop(paste0("No 'monitorType' column found in 'meta' dataframe"))
+    logger.error("No 'monitorType' column found in 'meta' dataframe with columns: %s", paste0(names(meta), collapse=", "))
+    stop(paste0("No 'monitorType' column found in 'meta' dataframe."))
   }
   
   monitorType <- unique(meta$monitorType)

@@ -4,7 +4,9 @@
 \alias{airnow_downloadData}
 \title{Download and Aggregate Multiple Hourly Data Files from AirNow}
 \usage{
-airnow_downloadData(parameters = NULL, startdate = "", hours = 24)
+airnow_downloadData(parameters = NULL,
+  startdate = strftime(lubridate::now(), "\%Y\%m\%d00", tz = "GMT"),
+  hours = 24)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}

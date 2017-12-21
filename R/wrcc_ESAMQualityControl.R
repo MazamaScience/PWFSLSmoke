@@ -1,7 +1,7 @@
 #' @keywords WRCC
 #' @export
-#' @title Apply Quality Control to Raw WRCC E-Sampler Dataframe
-#' @param df single site dataframe created by \code{wrcc_parseData()}
+#' @title Apply Quality Control to Raw WRCC E-Sampler Tibble
+#' @param tbl single site tibble created by \code{wrcc_parseData()}
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values
 #' @param remove_Lon_zero flag to remove rows where Longitude == 0
@@ -30,10 +30,10 @@
 #' 
 #' A \code{POSIXct datetime} column (UTC) is also added based on \code{DateTime}.
 #' 
-#' @return Cleaned up dataframe of WRCC monitor data.
+#' @return Cleaned up tibble of WRCC monitor data.
 #' @seealso \code{\link{wrcc_qualityControl}}
 
-wrcc_ESAMQualityControl <- function(df,
+wrcc_ESAMQualityControl <- function(tbl,
                                     valid_Longitude=c(-180,180),
                                     valid_Latitude=c(-90,90),
                                     remove_Lon_zero = TRUE,
@@ -46,20 +46,20 @@ wrcc_ESAMQualityControl <- function(df,
   
   # TODO:  What about Alarm?
   
-  # NOTE:  > names(df)
+  # NOTE:  > names(tbl)
   # NOTE:   [1] "DateTime"       "GPSLat"         "GPSLon"         "Type"           "SerialNumber"   "ConcRT"        
   # NOTE:   [7] "Misc1"          "AvAirFlw"       "AvAirTemp"      "RelHumidity"    "Misc2"          "SensorIntAT"   
   # NOTE:  [13] "SensorIntRH"    "WindSpeed"      "WindDir"        "BatteryVoltage" "Alarm"          "monitorName"   
   # NOTE:  [19] "monitorType"   
   
-  monitorName <- df$monitorName[1]
+  monitorName <- tbl$monitorName[1]
   
   # ----- Missing Values ------------------------------------------------------
   
   # Handle various missing value flags (lots of variants of -99x???)
-  df[df < -900] <- NA
-  df[df == -9.9899] <- NA
-  df[df == 99999] <- NA
+  tbl[tbl < -900] <- NA
+  tbl[tbl == -9.9899] <- NA
+  tbl[tbl == 99999] <- NA
   
   # ----- Setup for flagAndKeep argument utility ------------------------------
   
@@ -67,21 +67,21 @@ wrcc_ESAMQualityControl <- function(df,
     # verb for logging messages
     verb <- "Flagging"
     
-    df$rowID <- as.integer(rownames(df))
+    tbl$rowID <- as.integer(rownames(tbl))
     
-    # duplicate df and add columns for flags
-    dfFlagged <- df
-    dfFlagged$QCFlag_anyBad <- FALSE
-    dfFlagged$QCFlag_reasonCode <- NA
-    dfFlagged$QCFlag_badLon <- FALSE
-    dfFlagged$QCFlag_badLat <- FALSE
-    dfFlagged$QCFlag_badType <- FALSE # no type info for ESAMs
-    dfFlagged$QCFlag_badFlow <- FALSE
-    dfFlagged$QCFlag_badAT <- FALSE
-    dfFlagged$QCFlag_badRHi <- FALSE
-    dfFlagged$QCFlag_badConcHr <- FALSE
-    dfFlagged$QCFlag_badDateAndTime <- FALSE
-    dfFlagged$QCFlag_duplicateHr <- FALSE
+    # duplicate tbl and add columns for flags
+    tblFlagged <- tbl
+    tblFlagged$QCFlag_anyBad <- FALSE
+    tblFlagged$QCFlag_reasonCode <- NA
+    tblFlagged$QCFlag_badLon <- FALSE
+    tblFlagged$QCFlag_badLat <- FALSE
+    tblFlagged$QCFlag_badType <- FALSE # no type info for ESAMs
+    tblFlagged$QCFlag_badFlow <- FALSE
+    tblFlagged$QCFlag_badAT <- FALSE
+    tblFlagged$QCFlag_badRHi <- FALSE
+    tblFlagged$QCFlag_badConcHr <- FALSE
+    tblFlagged$QCFlag_badDateAndTime <- FALSE
+    tblFlagged$QCFlag_duplicateHr <- FALSE
   } else {
     # verb for logging messages
     verb <- "Discarding"
@@ -91,70 +91,70 @@ wrcc_ESAMQualityControl <- function(df,
   
   # Latitude and longitude must be in range
   if ( remove_Lon_zero ) {
-    goodLonMask <- !is.na(df$GPSLon) & df$GPSLon >= valid_Longitude[1] & df$GPSLon <= valid_Longitude[2] & (df$GPSLon != 0)
+    goodLonMask <- !is.na(tbl$GPSLon) & tbl$GPSLon >= valid_Longitude[1] & tbl$GPSLon <= valid_Longitude[2] & (tbl$GPSLon != 0)
   } else {
-    goodLonMask <- !is.na(df$GPSLon) & df$GPSLon >= valid_Longitude[1] & df$GPSLon <= valid_Longitude[2]
+    goodLonMask <- !is.na(tbl$GPSLon) & tbl$GPSLon >= valid_Longitude[1] & tbl$GPSLon <= valid_Longitude[2]
   }
   
   if ( remove_Lat_zero ) {
-    goodLatMask <- !is.na(df$GPSLat) & df$GPSLat >= valid_Latitude[1] & df$GPSLat <= valid_Latitude[2] & (df$GPSLat != 0)
+    goodLatMask <- !is.na(tbl$GPSLat) & tbl$GPSLat >= valid_Latitude[1] & tbl$GPSLat <= valid_Latitude[2] & (tbl$GPSLat != 0)
   } else {    
-    goodLatMask <- !is.na(df$GPSLat) & df$GPSLat >= valid_Latitude[1] & df$GPSLat <= valid_Latitude[2]
+    goodLatMask <- !is.na(tbl$GPSLat) & tbl$GPSLat >= valid_Latitude[1] & tbl$GPSLat <= valid_Latitude[2]
   }
   
   badRows <- !(goodLonMask & goodLatMask)
   badRowCount <- sum(badRows)
   if ( badRowCount > 0 ) {
     logger.info(paste(verb,"%s rows with invalid location information"), badRowCount)
-    badLocations <- paste('(',df$GPSLon[badRows],',',df$GPSLat[badRows],')',sep='')
+    badLocations <- paste('(',tbl$GPSLon[badRows],',',tbl$GPSLat[badRows],')',sep='')
     logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
     if ( flagAndKeep ) {
       # apply flags
-      dfFlagged$QCFlag_badLon[df$rowID[!goodLonMask]] <- TRUE
-      dfFlagged$QCFlag_badLat[df$rowID[!goodLatMask]] <- TRUE
-      dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badLon | dfFlagged$QCFlag_badLat
+      tblFlagged$QCFlag_badLon[tbl$rowID[!goodLonMask]] <- TRUE
+      tblFlagged$QCFlag_badLat[tbl$rowID[!goodLatMask]] <- TRUE
+      tblFlagged$QCFlag_anyBad <- tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_badLon | tblFlagged$QCFlag_badLat
       # apply reason codes
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLonMask]],"badLon")
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodLatMask]],"badLat")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLonMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLonMask]],"badLon")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLatMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLatMask]],"badLat")
     }
   }
   
-  df <- df[goodLonMask & goodLatMask,]
+  tbl <- tbl[goodLonMask & goodLatMask,]
   
   # ----- Time ----------------------------------------------------------------
   
   # Add a POSIXct datetime based on YYMMDDhhmm DateTime
-  df$datetime <- parseDatetime(paste0('20',df$DateTime))
+  tbl$datetime <- parseDatetime(paste0('20',tbl$DateTime))
   if ( flagAndKeep ) {
-    # TODO: Unable to get datetime moved from df to dfFlagged without timezone and/or display getting messed up.
+    # TODO: Unable to get datetime moved from tbl to tblFlagged without timezone and/or display getting messed up.
     # For now just duplicating the calculation, then assigning row values to NA after the fact for rows that were
-    # removed from df prior to calculating datetime above. Clean up later if possible.
-    dfFlagged$datetime <- parseDatetime(paste0('20',dfFlagged$DateTime))
-    dfFlagged$datetime[ which(!(dfFlagged$rowID %in% df$rowID)) ] <- NA
+    # removed from tbl prior to calculating datetime above. Clean up later if possible.
+    tblFlagged$datetime <- parseDatetime(paste0('20',tblFlagged$DateTime))
+    tblFlagged$datetime[ which(!(tblFlagged$rowID %in% tbl$rowID)) ] <- NA
   }
   
   # ----- Type ----------------------------------------------------------------
   
   # Type: 0=E-BAM PM2.5, 1=E-BAM PM10, 9=E-Sampler. We only want PM2.5 measurements
-  goodTypeMask <- !is.na(df$Type) & (df$Type == 9)
+  goodTypeMask <- !is.na(tbl$Type) & (tbl$Type == 9)
   
   badRows <- !goodTypeMask
   badRowCount <- sum(badRows)
   if ( badRowCount > 0 ) {
     logger.info(paste(verb,"%s rows with invalid Type information"), badRowCount)
-    logger.debug("Bad Types:  %s", paste0(sort(unique(df$Type[badRows]),na.last=TRUE), collapse=", "))
+    logger.debug("Bad Types:  %s", paste0(sort(unique(tbl$Type[badRows]),na.last=TRUE), collapse=", "))
     if ( flagAndKeep ) {
       # apply flags
-      dfFlagged$QCFlag_badType[df$rowID[!goodTypeMask]] <- TRUE
-      dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badType
+      tblFlagged$QCFlag_badType[tbl$rowID[!goodTypeMask]] <- TRUE
+      tblFlagged$QCFlag_anyBad <- tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_badType
       # apply reason code 
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodTypeMask]],"badType")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodTypeMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodTypeMask]],"badType")
     }
   }
   
-  df <- df[goodTypeMask,]
+  tbl <- tbl[goodTypeMask,]
   
-  if (nrow(df) < 1) {
+  if (nrow(tbl) < 1) {
     logger.warn("No valid PM2.5 data for %s", monitorName)
   }
   
@@ -175,22 +175,22 @@ wrcc_ESAMQualityControl <- function(df,
   ###                                         ifelse(concQA == 'Negative', 0,
   ###                                         ifelse(concQA == 'OK', ConcHr, NA)))
   
-  goodFlow <- !is.na(df$AvAirFlw) & df$AvAirFlw >= valid_Flow[1] & df$AvAirFlw <= valid_Flow[2]
-  goodAT <- !is.na(df$AvAirTemp) & df$AvAirTemp >= valid_AT[1] & df$AvAirTemp <= valid_AT[2]
-  goodRHi <- !is.na(df$SensorIntRH) & df$SensorIntRH >= valid_RHi[1] & df$SensorIntRH <= valid_RHi[2]
-  goodConcHr <- !is.na(df$ConcRT) & df$ConcRT >= valid_Conc[1] & df$ConcRT <= valid_Conc[2]
-  gooddatetime <- !is.na(df$datetime) & df$datetime < lubridate::now("UTC") # saw a future date once
+  goodFlow <- !is.na(tbl$AvAirFlw) & tbl$AvAirFlw >= valid_Flow[1] & tbl$AvAirFlw <= valid_Flow[2]
+  goodAT <- !is.na(tbl$AvAirTemp) & tbl$AvAirTemp >= valid_AT[1] & tbl$AvAirTemp <= valid_AT[2]
+  goodRHi <- !is.na(tbl$SensorIntRH) & tbl$SensorIntRH >= valid_RHi[1] & tbl$SensorIntRH <= valid_RHi[2]
+  goodConcHr <- !is.na(tbl$ConcRT) & tbl$ConcRT >= valid_Conc[1] & tbl$ConcRT <= valid_Conc[2]
+  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now("UTC") # saw a future date once
   
   logger.debug("Flow has %s missing or out of range values", sum(!goodFlow))
-  if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(unique(df$AvAirFlw[!goodFlow]),na.last=TRUE), collapse=", "))
+  if (sum(!goodFlow) > 0) logger.debug("Bad Flow values:  %s", paste0(sort(unique(tbl$AvAirFlw[!goodFlow]),na.last=TRUE), collapse=", "))
   logger.debug("AT has %s missing or out of range values", sum(!goodAT))
-  if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(unique(df$AvAirTemp[!goodAT]),na.last=TRUE), collapse=", "))
+  if (sum(!goodAT) > 0) logger.debug("Bad AT values:  %s", paste0(sort(unique(tbl$AvAirTemp[!goodAT]),na.last=TRUE), collapse=", "))
   logger.debug("RHi has %s missing or out of range values", sum(!goodRHi))
-  if (sum(!goodRHi) > 0) logger.debug("Bad RHi values:  %s", paste0(sort(unique(df$SensorIntRH[!goodRHi]),na.last=TRUE), collapse=", "))
+  if (sum(!goodRHi) > 0) logger.debug("Bad RHi values:  %s", paste0(sort(unique(tbl$SensorIntRH[!goodRHi]),na.last=TRUE), collapse=", "))
   logger.debug("Conc has %s missing or out of range values", sum(!goodConcHr))
-  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(unique(df$ConcRT[!goodConcHr]),na.last=TRUE), collapse=", "))
+  if (sum(!goodConcHr) > 0) logger.debug("Bad Conc values:  %s", paste0(sort(unique(tbl$ConcRT[!goodConcHr]),na.last=TRUE), collapse=", "))
   logger.debug("datetime has %s missing or out of range values", sum(!gooddatetime))
-  if (sum(!gooddatetime) > 0) logger.debug("Bad datetime values:  %s", paste0(sort(unique(df$datetime[!gooddatetime]),na.last=TRUE), collapse=", "))
+  if (sum(!gooddatetime) > 0) logger.debug("Bad datetime values:  %s", paste0(sort(unique(tbl$datetime[!gooddatetime]),na.last=TRUE), collapse=", "))
   
   goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
   badQCCount <- sum(!goodMask)
@@ -199,23 +199,23 @@ wrcc_ESAMQualityControl <- function(df,
     logger.info(paste(verb,"%s rows because of QC logic"), badQCCount)
     if ( flagAndKeep ) {
       # apply flags
-      dfFlagged$QCFlag_badFlow[df$rowID[!goodFlow]] <- TRUE
-      dfFlagged$QCFlag_badAT[df$rowID[!goodAT]] <- TRUE
-      dfFlagged$QCFlag_badRHi[df$rowID[!goodRHi]] <- TRUE
-      dfFlagged$QCFlag_badConcHr[df$rowID[!goodConcHr]] <- TRUE
-      dfFlagged$QCFlag_badDateAndTime[df$rowID[!gooddatetime]] <- TRUE
-      dfFlagged$QCFlag_anyBad <- (dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_badFlow | dfFlagged$QCFlag_badAT | 
-                                    dfFlagged$QCFlag_badRHi | dfFlagged$QCFlag_badConcHr | dfFlagged$QCFlag_badDateAndTime)
+      tblFlagged$QCFlag_badFlow[tbl$rowID[!goodFlow]] <- TRUE
+      tblFlagged$QCFlag_badAT[tbl$rowID[!goodAT]] <- TRUE
+      tblFlagged$QCFlag_badRHi[tbl$rowID[!goodRHi]] <- TRUE
+      tblFlagged$QCFlag_badConcHr[tbl$rowID[!goodConcHr]] <- TRUE
+      tblFlagged$QCFlag_badDateAndTime[tbl$rowID[!gooddatetime]] <- TRUE
+      tblFlagged$QCFlag_anyBad <- (tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_badFlow | tblFlagged$QCFlag_badAT | 
+                                    tblFlagged$QCFlag_badRHi | tblFlagged$QCFlag_badConcHr | tblFlagged$QCFlag_badDateAndTime)
       # apply reason codes
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodFlow]],"badFlow")
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodAT]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodAT]],"badAT")
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodRHi]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodRHi]],"badRHi")
-      dfFlagged$QCFlag_reasonCode[df$rowID[!goodConcHr]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!goodConcHr]],"badConcHr")
-      dfFlagged$QCFlag_reasonCode[df$rowID[!gooddatetime]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[!gooddatetime]],"badDateAndTime")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodFlow]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodFlow]],"badFlow")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodAT]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodAT]],"badAT")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodRHi]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodRHi]],"badRHi")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodConcHr]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodConcHr]],"badConcHr")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[!gooddatetime]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!gooddatetime]],"badDateAndTime")
     }
   }
 
-  df <- df[goodMask,]
+  tbl <- tbl[goodMask,]
   
   # ----- Duplicate Hours -----------------------------------------------------
   
@@ -224,43 +224,43 @@ wrcc_ESAMQualityControl <- function(df,
   # NOTE: want to build in functionality to ensure that the latest is picked if more than one exists
   # NOTE: (for example, if the data is not in order by timestamp for whatever reason)
   
-  dupHrMask <- duplicated(df$datetime,fromLast = TRUE)
+  dupHrMask <- duplicated(tbl$datetime,fromLast = TRUE)
   dupHrCount <- sum(dupHrMask)
   uniqueHrMask <- !dupHrMask
   
   if ( dupHrCount > 0 ) {
     logger.info(paste(verb,"%s duplicate time entries"), dupHrCount)
-    logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(df$TimeStamp[dupHrMask])), collapse=", "))
+    logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(tbl$TimeStamp[dupHrMask])), collapse=", "))
     if ( flagAndKeep ) {
       # apply flags
-      dfFlagged$QCFlag_duplicateHr[df$rowID[dupHrMask]] <- TRUE
-      dfFlagged$QCFlag_anyBad <- dfFlagged$QCFlag_anyBad | dfFlagged$QCFlag_duplicateHr
+      tblFlagged$QCFlag_duplicateHr[tbl$rowID[dupHrMask]] <- TRUE
+      tblFlagged$QCFlag_anyBad <- tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_duplicateHr
       # apply reason code
-      dfFlagged$QCFlag_reasonCode[df$rowID[dupHrMask]] <- paste(dfFlagged$QCFlag_reasonCode[df$rowID[dupHrMask]],"duplicateHr")
+      tblFlagged$QCFlag_reasonCode[tbl$rowID[dupHrMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[dupHrMask]],"duplicateHr")
     }
   }
   
-  df <- df[uniqueHrMask,]
+  tbl <- tbl[uniqueHrMask,]
   
   # ----- More QC -------------------------------------------------------------
   
   # NOTE:  Additional QC would go here
   
   if ( flagAndKeep ) {
-    logger.debug("Retaining %d rows of measurements; %d bad rows flagged", nrow(df), sum(dfFlagged$QCFlag_anyBad))    
+    logger.debug("Retaining %d rows of measurements; %d bad rows flagged", nrow(tbl), sum(tblFlagged$QCFlag_anyBad))    
   } else {
-    logger.debug("Retaining %d rows of validated measurements", nrow(df))
+    logger.debug("Retaining %d rows of validated measurements", nrow(tbl))
   }
   
   # ----- Final cleanup -------------------------------------------------------
   
   if ( flagAndKeep ) {
-    dfFlagged$QCFlag_reasonCode <- stringr::str_sub(dfFlagged$QCFlag_reasonCode, 3)
-    dfFlagged$QCFlag_reasonCode <- stringr::str_trim(dfFlagged$QCFlag_reasonCode)
-    df <- dfFlagged
-    df$rowID <- NULL
+    tblFlagged$QCFlag_reasonCode <- stringr::str_sub(tblFlagged$QCFlag_reasonCode, 3)
+    tblFlagged$QCFlag_reasonCode <- stringr::str_trim(tblFlagged$QCFlag_reasonCode)
+    tbl <- tblFlagged
+    tbl$rowID <- NULL
   }
   
-  return(df)
+  return(tbl)
   
 }

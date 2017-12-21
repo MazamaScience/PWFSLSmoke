@@ -27,7 +27,7 @@
 # USFSRegionalMonitors <- c()
 # MiscellaneousMonitors <- c()
 
-wrcc_downloadData <- function(startdate=20100101,
+wrcc_downloadData <- function(startdate=strftime(lubridate::now(),"%Y0101",tz="GMT"),
                               enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
                               unitID=NULL, 
                               baseUrl="https://wrcc.dri.edu/cgi-bin/wea_list2.pl") {
@@ -70,6 +70,8 @@ wrcc_downloadData <- function(startdate=20100101,
   
   logger.debug("Downloading WRCC data from %s", baseUrl)
   
+  ###r <- httr::POST(baseUrl, body=.params, encode='multipart', httr::accept("raw")) # TODO:  Couldn't figure out httr::POST
+
   rawBytes <- RCurl::postForm(uri=baseUrl, .params=.params)
   
   if ( class(rawBytes) == "character" ) {

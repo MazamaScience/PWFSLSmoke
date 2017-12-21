@@ -1,9 +1,9 @@
 #' @keywords WRCC
 #' @export
-#' @title Create WRCC Site Location Metadata Tibble
+#' @title Create WRCC Site Location Metadata Dataframe
 #' @param tbl single site WRCC tibble after metadata enhancement
 #' @param unitID character or numeric WRCC unit identifier
-#' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'WRCC', 'WRCC_DUMPFILE', ...}
+#' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'WRCC', 'WRCC_DUMPFILE'}
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
 #' @return A \code{meta} dataframe for use in a \emph{ws_monitor} object.
 #' @description After a WRCC tibble has been enhanced with 
@@ -36,7 +36,7 @@ wrcc_createMetaDataframe <- function(tbl,
                                      pwfslDataIngestSource='WRCC',
                                      existingMeta=NULL) {
   
-  logger.info(" ----- wrcc_createMetaDataframe() ----- ")
+  logger.debug(" ----- wrcc_createMetaDataframe() ----- ")
   
   # Sanity check -- tbl must have a monitorType
   if ( !'monitorType' %in% names(tbl) ) {
@@ -54,7 +54,7 @@ wrcc_createMetaDataframe <- function(tbl,
   
   monitorType <- monitorType[1]
   
-  # Sanity check -- tbl must have deploymentID
+  # Sanity check -- deploymentID must exist
   if ( !'deploymentID' %in% names(tbl) ) {
     logger.error("No 'deploymentID' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse=", "))
     stop(paste0("No 'deploymentID' column found in 'tbl' tibble.  Have you run addClustering()?"))
@@ -70,9 +70,9 @@ wrcc_createMetaDataframe <- function(tbl,
   # > names(tbl)
   #  [1] "DateTime"       "GPSLat"         "GPSLon"         "Type"           "SerialNumber"  
   #  [6] "ConcRT"         "Misc1"          "AvAirFlw"       "AvAirTemp"      "RelHumidity"   
-  # [11] "Misc2"          "SensorIntAT"    "SensorIntRH"    "WindSpeed"      "WindDir"       
+  # [11] "BaromPress"     "SensorIntAT"    "SensorIntRH"    "WindSpeed"      "WindDir"       
   # [16] "BatteryVoltage" "Alarm"          "monitorName"    "monitorType"    "datetime"      
-  # [21] "deploymentID"   "medoidLon"      "medoidLat"     
+  # [21] "medoidLon"      "medoidLat"      "deploymentID"  
   #
   # The PWFSLSmoke v1.0 data model contains the following parameters
   # 
@@ -82,31 +82,50 @@ wrcc_createMetaDataframe <- function(tbl,
   # [10] "countyName"            "msaName"               "monitorType"          
   # [13] "monitorInstrument"     "aqsID"                 "pwfslID"              
   # [16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
+
+  # The PWFSLSmoke v1.0 data model contains the following parameters
+  # 
+  # > names(meta)
+  #  [1] "monitorID"             "longitude"             "latitude"              "elevation"            
+  #  [5] "timezone"              "countryCode"           "stateCode"             "siteName"             
+  #  [9] "agencyName"            "countyName"            "msaName"               "monitorType"          
+  # [13] "siteID"                "instrumentID"          "aqsID"                 "pwfslID"              
+  # [17] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
   
   # NOTE:  'meta' must be a dataframe because it has rownames which are deprecated in tibbles
   # Create empty dataframe
-  meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=18))
+  meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=19), stringsAsFactors=FALSE)
   
   colNames <- c("monitorID", "longitude", "latitude",
                 "elevation", "timezone", "countryCode",
                 "stateCode", "siteName", "agencyName",
                 "countyName", "msaName", "monitorType",
-                "monitorInstrument", "aqsID", "pwfslID",
+                "siteID", "instrumentID", "aqsID", "pwfslID",
                 "pwfslDataIngestSource", "telemetryAggregator", "telemetryUnitID")
   
   names(meta) <- colNames
   
   # Assign data where we have it
-  # NOTE:  We use monitorID as a unique identifier instead of AQSID so that we can be
-  # NOTE:  consistent when working with non-AirNow datasets.
-  meta$longitude <- tbl$medoidLon
-  meta$latitude <- tbl$medoidLat
-  meta$pwfslID <- paste0( make.names(tbl$monitorName), '__', tbl$deploymentID )
-  meta$monitorID <- meta$pwfslID
-  meta$monitorType <- tbl$monitorType
-  meta$pwfslDataIngestSource <- pwfslDataIngestSource
-  meta$telemetryAggregator <- 'wrcc'
-  meta$telemetryUnitID <- unitID
+  meta$longitude <- as.numeric(tbl$medoidLon)
+  meta$latitude <- as.numeric(tbl$medoidLat)
+  meta$elevation <- as.numeric(NA)
+  meta$timezone <- as.character(NA)
+  meta$countryCode <- as.character(NA)
+  meta$stateCode <- as.character(NA)
+  meta$siteName <- as.character(NA)
+  meta$countyName <- as.character(NA)
+  meta$msaName <- as.character(NA)
+  meta$agencyName <- as.character(NA)
+  meta$monitorType <- as.character(tbl$monitorType)
+  meta$siteID <- as.character(tbl$deploymentID) # TODO:  This will be obtained from the "known_location" service
+  meta$instrumentID <- paste0('wrcc.',unitID)
+  meta$aqsID <- as.character(NA)
+  meta$pwfslID <- as.character(tbl$deploymentID) # TODO:  This will be obtained from the "known_location" service
+  meta$pwfslDataIngestSource <- as.character(pwfslDataIngestSource)
+  meta$telemetryAggregator <- paste0('wrcc')
+  meta$telemetryUnitID <- as.character(unitID)
+  
+  meta$monitorID <- paste(meta$siteID, meta$instrumentID, sep='_')
   
   # Assign rownames
   rownames(meta) <- meta$monitorID
@@ -117,22 +136,14 @@ wrcc_createMetaDataframe <- function(tbl,
   # TODO:  Could assign other spatial identifiers like EPARegion, etc.
   
   # agencyName
-  # TODO:  Can agencyName be inferred from monitorName?
-  #   NPSMask <- stringr::str_detect(meta$monitorID,'\\.NPS\\.')
-  #   USFSMask <- stringr::str_detect(meta$monitorID,'\\.USFS\\.')
-  #   meta$agencyName[NPSMask] <- 'National Park Servsice'
-  #   meta$agencyName[USFSMask] <- 'United States Forest Service'
+  NPSMask <- stringr::str_detect(tbl$monitorName,'^Smoke NPS')
+  USFSMask <- stringr::str_detect(tbl$monitorName,'^Smoke USFS')
+  meta$agencyName[NPSMask] <- 'National Park Servsice'
+  meta$agencyName[USFSMask] <- 'United States Forest Service'
   
   # Add elevation, siteName and countyName
   meta <- addGoogleElevation(meta, existingMeta=existingMeta)
   meta <- addGoogleAddress(meta, existingMeta=existingMeta)
-  
-  # Convert some columns to character even if they have all NA
-  characterColumns <- c('siteName','agencyName','countyName','msaName','monitorType',
-                        'monitorInstrument','aqsID')
-  for (colName in characterColumns) {
-    meta[[colName]] <- as.character(meta[[colName]])
-  }
   
   logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   

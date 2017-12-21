@@ -47,7 +47,9 @@
 #' tbl <- airnow_downloadData("PM2.5", 2016070112, hours=24)
 #' }
 
-airnow_downloadData <- function(parameters=NULL, startdate='', hours=24) {
+airnow_downloadData <- function(parameters=NULL,
+                                startdate=strftime(lubridate::now(),"%Y%m%d00",tz="GMT"),
+                                hours=24) {
   
   # Format the startdate integer using lubridate
   starttime <- parseDatetime(startdate)

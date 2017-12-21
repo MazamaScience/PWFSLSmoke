@@ -16,7 +16,7 @@
 #' df <- airsis_parseData(fileString)
 #' }
 
-airsis_downloadData <- function(startdate=20020101,
+airsis_downloadData <- function(startdate=strftime(lubridate::now(),"%Y0101",tz="GMT"),
                                 enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
                                 provider='USFS', unitID=NULL,
                                 baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?") {

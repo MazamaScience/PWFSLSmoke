@@ -1,6 +1,6 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Apply Quality Control to Raw AIRSIS EBAM Dataframe
+#' @title Apply Quality Control to Raw AIRSIS EBAM Tibble
 #' @param tbl single site tibble created by \code{airsis_parseData()}
 #' @param valid_Longitude range of valid Longitude values
 #' @param valid_Latitude range of valid Latitude values

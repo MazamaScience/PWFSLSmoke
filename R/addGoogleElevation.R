@@ -83,7 +83,8 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
       if ( httr::http_error(r) ) {
         logger.error("Google elevation service failed with: %s", httr::content(r))
         logger.error("Google elevation service failed for URL: %s", url)
-        stop(paste0("Google elevation service failed with: ",httr::content(r)))
+        df$elevation <- as.numeric(NA)
+        return(df)
       }
       
       returnObj <- httr::content(r)
@@ -92,7 +93,7 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
       if ( returnObj$status != 'OK' ) {
         
         logger.warn("Google status was %s", returnObj$status)
-        df$elevation <- as.numeric(NA)
+        dfSub$elevation <- as.numeric(NA)
         
       } else {
         

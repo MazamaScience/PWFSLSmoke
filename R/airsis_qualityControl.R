@@ -33,7 +33,8 @@
 #' @seealso \code{\link{airsis_EBAMQualityControl}}
 #' @seealso \code{\link{airsis_ESAMQualityControl}}
 
-airsis_qualityControl <- function(tbl, ...) {
+airsis_qualityControl <- function(tbl,
+                                  ...) {
   
   # Sanity check -- row count
   if ( nrow(tbl) == 0 ) {

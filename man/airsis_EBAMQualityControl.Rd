@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_EBAMQualityControl.R
 \name{airsis_EBAMQualityControl}
 \alias{airsis_EBAMQualityControl}
-\title{Apply Quality Control to Raw AIRSIS EBAM Dataframe}
+\title{Apply Quality Control to Raw AIRSIS EBAM Tibble}
 \usage{
 airsis_EBAMQualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,

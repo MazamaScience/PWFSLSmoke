@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_createMetaDataframe.R
 \name{wrcc_createMetaDataframe}
 \alias{wrcc_createMetaDataframe}
-\title{Create WRCC Site Location Metadata Tibble}
+\title{Create WRCC Site Location Metadata Dataframe}
 \usage{
 wrcc_createMetaDataframe(tbl, unitID = as.character(NA),
   pwfslDataIngestSource = "WRCC", existingMeta = NULL)
@@ -12,7 +12,7 @@ wrcc_createMetaDataframe(tbl, unitID = as.character(NA),
 
 \item{unitID}{character or numeric WRCC unit identifier}
 
-\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'WRCC', 'WRCC_DUMPFILE', ...}}
+\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'WRCC', 'WRCC_DUMPFILE'}}
 
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
 }
