@@ -13,16 +13,16 @@
 #' }
 
 airsis_currentStatus <- function(provider, username, password) {
-  
+
   # TODO: develop code to get response via request, cookies, etc...
   ### response <- httr::GET("http://usfs.airsis.com")  #, authenticate(username, password))
   ### response <- httr::GET("http://usfs.airsis.com/vision/Login.aspx?ReturnUrl=%2fvision", authenticate(username, password))
-  
+
   if ( FALSE ) {
 
     # ----- GET login form ----------------------------------------------------
     #   http://usfs.airsis.com/vision/Login.aspx
-    
+
     # REQUEST:
     #
     # GET /vision/Login.aspx HTTP/1.1
@@ -33,7 +33,7 @@ airsis_currentStatus <- function(provider, username, password) {
     # Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
     # Accept-Encoding: gzip, deflate
     # Accept-Language: en-US,en;q=0.8
-    
+
     # RESPONSE:
     #
     # HTTP/1.1 200 OK
@@ -47,18 +47,18 @@ airsis_currentStatus <- function(provider, username, password) {
     # loginUrl <- paste0("http://", provider, ".airsis.com/vision/Login.aspx")
     # r <- httr::GET(loginUrl)
     # loginDoc <- httr::content(r, as='parsed') # automatic conversion to "xml_document"
-    
+
     loginUrl <- paste0("http://", provider, ".airsis.com/vision/Login.aspx")
     r <- httr::GET(loginUrl)
     loginDoc <- httr::content(r, as='parsed') # automatic conversion to "xml_document"
-    
-    # Extract "hidden" input parameters 
+
+    # Extract "hidden" input parameters
     viewState <- rvest::html_attr(rvest::html_node(loginDoc, css="input#__VIEWSTATE"), "value")
     viewStateGenerator <- rvest::html_attr(rvest::html_node(loginDoc, css="input#__VIEWSTATEGENERATOR"), "value")
     eventValidation <- rvest::html_attr(rvest::html_node(loginDoc, css="input#__EVENTVALIDATION"), "value")
 
-    # ----- POST login form --------------------------------------------------- 
-    
+    # ----- POST login form ---------------------------------------------------
+
     # REQUEST:
     #
     # POST /vision/Login.aspx HTTP/1.1
@@ -75,7 +75,7 @@ airsis_currentStatus <- function(provider, username, password) {
     # Referer: http://usfs.airsis.com/vision/Login.aspx
     # Accept-Encoding: gzip, deflate
     # Accept-Language: en-US,en;q=0.8
-    
+
     # RESPONSE:
     #
     # HTTP/1.1 302 Found
@@ -104,8 +104,8 @@ airsis_currentStatus <- function(provider, username, password) {
 
     # cookiesDF <- httr::cookies(r)
     # sessionId <- cookiesDF$value[cookiesDF$name == "ASP.NET_SessionId"]
-    
-    
+
+
     # GET /vision/stattable.aspx HTTP/1.1
     # Host: usfs.airsis.com
     # Connection: keep-alive
@@ -117,43 +117,43 @@ airsis_currentStatus <- function(provider, username, password) {
     # Referer: http://usfs.airsis.com/vision/stattable.aspx
     # Accept-Encoding: gzip, deflate
     # Accept-Language: en-US,en;q=0.8
-    # Cookie: ASP.NET_SessionId=bxj4bda1lbu0vqrrjjv5fc1k; AIRSIS_Vision=FF8256F6854E7FED9F504445AF5689D12A760B0F8AD5D0902454B2DFECD718EFE0DAB18FC449119C4302CB35540E8A0C381A0DEBB3AA58872541BE6AE9BD3598C9D08EB704F81A1CC45F7F55A15CF15D979F10234BC823BB63CAD3338A80AC7D    
-    
+    # Cookie: ASP.NET_SessionId=bxj4bda1lbu0vqrrjjv5fc1k; AIRSIS_Vision=FF8256F6854E7FED9F504445AF5689D12A760B0F8AD5D0902454B2DFECD718EFE0DAB18FC449119C4302CB35540E8A0C381A0DEBB3AA58872541BE6AE9BD3598C9D08EB704F81A1CC45F7F55A15CF15D979F10234BC823BB63CAD3338A80AC7D
+
     # airsisStattableUrl <- "http://usfs.airsis.com/vision/stattable.aspx"
     # r <- httr::POST(airsisStattableUrl,
     #                 body=body,
     #                 httr::set_cookies(ASP.NET_SessionId=sessionId),
     #                 httr::verbose(info=TRUE))
-    
+
     # GET station table
     #   http://usfs.airsis.com/vision/stattable.aspx
     bopUrl <- "http://usfs.airsis.com/vision/stattable.aspx"
     r <- httr::GET(bopUrl,
                    set_cookies(ASP.NET_SessionId="lzsdznssvmz5jsw4xrvnbbk2",
                                AIRSIS_Vision="B6311DC82CDA36DC51D0232F6BE9339F669B496942058A81B5DE6DE74D6A194B5BAAE9B6A5CD4A80A099641FCA79F9EDE00C7FF05985787B55C51D6C182C8ACED6C45C8BAAB56B96C47C26DC97BCE059B20E54F53F61084D55B9321993B30C10"))
-    
+
   }
-  
+
   ### ---- temporary for development/testing purposes ------------------
   # providers <- c("usfs", "apcd", "arb2", "epa")
   # provider <- providers[4]
   response <- readr::read_file(paste0("~/Downloads/", provider, ".htm"))
   ### ------------------------------------------------------------------
-  
+
   # NOTE: It appears AIRSIS reports last update time in their computer's time zone, rather than UTC.
   AIRSIS_COMPUTATIONAL_TIMEZONE <- "America/Los_Angeles"
 
   provider <- stringr::str_to_lower(provider)
-    
+
   # parse raw html and pull out fields of interest
   logger.info("Parsing html file")
   currentStatusDoc <- xml2::read_html(response)
   currentStatusNode <- rvest::html_nodes(currentStatusDoc, css="#DataGrid1")
-  
+
   # convert node to table
   logger.info("Extracting current status table from html document")
   currentStatusTable <- rvest::html_table(currentStatusNode, header=TRUE)[[1]]
-  
+
   # get unitIDs from node
   if ( provider=="usfs") {
     linkNode <- "#DataGrid1 td:nth-child(4) a"
@@ -170,7 +170,7 @@ airsis_currentStatus <- function(provider, username, password) {
   urls <- rvest::html_nodes(currentStatusDoc, linkNode)
   urls <- rvest::html_attr(urls, 'href')
   unitIDs <- stringr::str_replace(urls, stringr::fixed("UnitHistory.aspx?uid="), "")
-  
+
   # get times
   # TODO: verify data is in local time
   # TODO: output format OK?
@@ -178,7 +178,7 @@ airsis_currentStatus <- function(provider, username, password) {
   times <- as.POSIXct(times, format="%m/%d/%y %I:%M%p", tz=AIRSIS_COMPUTATIONAL_TIMEZONE)
   times <- lubridate::with_tz(times, "UTC")
   # times <- format(times, "%Y-%m-%d %H:%M %Z")
-  
+
   # create dataframe
   logger.info("Combining unit status into a single dataframe")
   df <- data.frame(unitID=unitIDs, stringsAsFactors = FALSE)
@@ -186,7 +186,7 @@ airsis_currentStatus <- function(provider, username, password) {
   df$location <- currentStatusTable[["Location"]]
   df$lastUpdateTime <- times
   df$provider <- provider
-  
+
   return(df)
-  
+
 }

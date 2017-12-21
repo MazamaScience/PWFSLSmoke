@@ -4,7 +4,8 @@
 \alias{airnow_createMonitorObjects}
 \title{Obain AirNow Data and Create ws_monitor Objects}
 \usage{
-airnow_createMonitorObjects(parameters = NULL, startdate = "", hours = 24)
+airnow_createMonitorObjects(parameters = NULL, startdate = "", hours = 24,
+  zeroMinimum = TRUE)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
@@ -12,6 +13,8 @@ airnow_createMonitorObjects(parameters = NULL, startdate = "", hours = 24)
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
 
 \item{hours}{desired number of hours of data to assemble}
+
+\item{zeroMinimum}{logical specifying whether to convert negative values to zero}
 }
 \value{
 List where each element contains a \emph{ws_monitor} object for a unique parameter (e.g: "PM2.5", "NOX").

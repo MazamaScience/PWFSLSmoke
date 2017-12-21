@@ -10,11 +10,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ## Version 1.0 -- Monitoring Data Access
 
  * changed the non-guaranteed columns in `ws_monitor$meta`
+ * `ws_monitor$meta$monitorID` is now a combination of `siteID` and `instrumentID`
  * added `initializeMazamaSpatialUtils()` convenience function
  * new `US_52` vector of all US state codes including `DC` and `PR`
  * upgraded all `~_createMetaDataframes()` to produce v1.0 metadata
- * `airnow_createMetaDataframes()` now performs additional cleanup on the incoming data including a
- guarantee that every site has a valid `stateCode`
  * `airnow_createMetaDataframes()` filters incoming sites for `countryCode %in% c('CA','MX','US')`,
  discarding sites associated with other countries
  * `monitorPlot_timeseries()` argument `aqiDots` renamed `aqidots`
@@ -22,6 +21,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * new `addUSGSElevation()` function
  * deprecating `addGoogleMetadata()` in favor of new functions `addGoogleElevation()` and `addGoogleAddress()`
  * removed all `openaq_~` data download and processing functions
+ * added `zeroMinimum` parameter to data ingest functions to specify whether negative values should be converted to zero
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 

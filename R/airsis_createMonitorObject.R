@@ -5,9 +5,11 @@
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
 #' @param unitID character or numeric AIRSIS unit identifier
-#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
+#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering()})
+#' @param zeroMinimum logical specifying whether to convert negative values to zero
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
+#' @param ... additional parameters are passed to type-specific QC functions
 #' @return A \emph{ws_monitor} object with AIRSIS data.
 #' @description Obtains monitor data from an AIRSIS webservice and converts
 #' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
@@ -24,6 +26,22 @@
 #'  \item{reshape AIRSIS data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 #' }
 #' 
+#' QC parameters that can be passed in the \code{\dots} include the following
+#' valid data ranges as taken from \code{airsis_EBAMQualityControl()}:
+#' 
+#' \itemize{
+#' \item{\code{valid_Longitude=c(-180,180)}}
+#' \item{\code{valid_Latitude=c(-90,90)}}
+#' \item{\code{remove_Lon_zero = TRUE}}
+#' \item{\code{remove_Lat_zero = TRUE}}
+#' \item{\code{valid_Flow = c(16.7*0.95,16.7*1.05)}}
+#' \item{\code{valid_AT = c(-Inf,45)}}
+#' \item{\code{valid_RHi = c(-Inf,45)}}
+#' \item{\code{valid_Conc = c(-Inf,5.000)}}
+#' }
+#' 
+#' Note that appropriate values for QC thresholds will depend on the type of monitor.
+#' 
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
 #' @seealso \code{\link{airsis_downloadData}}
 #' @seealso \code{\link{airsis_parseData}}
@@ -37,13 +55,15 @@
 #' monitorLeaflet(usfs_1013)
 #' }
 
-airsis_createMonitorObject <- function(startdate=20100101,
+airsis_createMonitorObject <- function(startdate=20170101,
                                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
                                        provider=NULL,
                                        unitID=NULL,
                                        clusterDiameter=1000,
+                                       zeroMinimum=TRUE,
                                        baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-                                       saveFile=NULL) {
+                                       saveFile=NULL,
+                                       ...) {
 
   # Sanity checks
   if ( is.null(provider) ) {
@@ -89,7 +109,7 @@ airsis_createMonitorObject <- function(startdate=20100101,
   
   # Apply monitor-appropriate QC to the dataframe
   logger.debug("Applying QC logic ...")
-  tbl <- airsis_qualityControl(tbl)
+  tbl <- airsis_qualityControl(tbl, ...)
   
   # See if anything gets through QC
   if ( nrow(tbl) == 0 ) {
@@ -116,8 +136,10 @@ airsis_createMonitorObject <- function(startdate=20100101,
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
   # Reset all negative values that made it through QC to zero
-  logger.debug("Reset negative valus to zero ...")
-  ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
+  if ( zeroMinimum ) {
+    logger.debug("Reset negative valus to zero ...")
+    ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
+  }
   
   return(ws_monitor)
   

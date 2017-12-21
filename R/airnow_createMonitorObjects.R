@@ -4,6 +4,7 @@
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
+#' @param zeroMinimum logical specifying whether to convert negative values to zero
 #' @return List where each element contains a \emph{ws_monitor} object for a unique parameter (e.g: "PM2.5", "NOX").
 #' @description This function uses the \link{airnow_downloadData} function 
 #' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
@@ -46,7 +47,10 @@
 #' o3 <- monList$O3
 #' }
 
-airnow_createMonitorObjects <- function(parameters=NULL, startdate='', hours=24) {
+airnow_createMonitorObjects <- function(parameters=NULL,
+                                        startdate='',
+                                        hours=24,
+                                        zeroMinimum=TRUE) {
   
   metaList <- airnow_createMetaDataframes(parameters, 'AIRNOW')
   dataList <- airnow_createDataDataframes(parameters, startdate, hours)
@@ -62,8 +66,14 @@ airnow_createMonitorObjects <- function(parameters=NULL, startdate='', hours=24)
     ws_monitor <- list(meta=meta, data=data)
     # Guarantee that meta rows match data cols
     ws_monitor <- monitor_subset(ws_monitor, countryCodes = c('CA','US','MX'))
+    ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
+    # Reset all negative values that made it through QC to zero
+    if ( zeroMinimum ) {
+      logger.debug("Reset negative valus to zero ...")
+      ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
+    }
     # Add to list
-    monList[[parameter]] <- structure(ws_monitor, class = c("ws_monitor", "list"))
+    monList[[parameter]] <- ws_monitor
     
   }
   

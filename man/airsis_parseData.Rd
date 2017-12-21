@@ -13,14 +13,14 @@ airsis_parseData(fileString)
 Dataframe of AIRSIS raw monitor data.
 }
 \description{
-Raw character data from AIRSIS are parsed into a dataframe.
+Raw character data from AIRSIS are parsed into a tibble.
 The incoming \code{fileString}
 can be read in directly from AIRSIS using \code{airsis_downloadData()} or from a local
 file using \code{readr::read_file()}.
 
 The type of monitor represented by this fileString is inferred from the column names
 using \code{airsis_identifyMonitorType()} and appropriate column types are assigned.
-The character data are then read into a dataframe and augmented in the following ways:
+The character data are then read into a tibble and augmented in the following ways:
 \enumerate{
 \item{Longitude, Latitude and any System Voltage values, which are only present in GPS timestamp rows, are
 propagated foward using a last-observation-carry-forward algorithm'}
@@ -32,7 +32,7 @@ propagated backwords using a first-observation-carry-backward algorithm'}
 \examples{
 \dontrun{
 fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
-df <- airsis_parseData(fileString)
+tbl <- airsis_parseData(fileString)
 }
 }
 \references{

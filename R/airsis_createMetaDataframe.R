@@ -81,37 +81,47 @@ airsis_createMetaDataframe <- function(tbl,
   #
   # The PWFSLSmoke v1.0 data model contains the following parameters
   # 
-  #  [1] "monitorID"             "longitude"             "latitude"             
-  #  [4] "elevation"             "timezone"              "countryCode"          
-  #  [7] "stateCode"             "siteName"              "agencyName"           
-  # [10] "countyName"            "msaName"               "monitorType"          
-  # [13] "monitorInstrument"     "aqsID"                 "pwfslID"              
-  # [16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
+  # > names(meta)
+  #  [1] "monitorID"             "longitude"             "latitude"              "elevation"            
+  #  [5] "timezone"              "countryCode"           "stateCode"             "siteName"             
+  #  [9] "agencyName"            "countyName"            "msaName"               "monitorType"          
+  # [13] "siteID"                "instrumentID"          "aqsID"                 "pwfslID"              
+  # [17] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
   
   # NOTE:  'meta' must be a dataframe because it has rownames which are deprecated in tibbles
   # Create empty dataframe
-  meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=18), stringsAsFactors=FALSE)
+  meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=19), stringsAsFactors=FALSE)
   
   colNames <- c("monitorID", "longitude", "latitude",
                 "elevation", "timezone", "countryCode",
                 "stateCode", "siteName", "agencyName",
                 "countyName", "msaName", "monitorType",
-                "monitorInstrument", "aqsID", "pwfslID",
+                "siteID", "instrumentID", "aqsID", "pwfslID",
                 "pwfslDataIngestSource", "telemetryAggregator", "telemetryUnitID")
   
   names(meta) <- colNames
   
   # Assign data where we have it
-  # NOTE:  We use monitorID as a unique identifier instead of AQSID so that we can be
-  # NOTE:  consistent when working with non-AirNow datasets.
-  meta$longitude <- tbl$medoidLon
-  meta$latitude <- tbl$medoidLat
-  meta$pwfslID <- paste0( make.names(tbl$monitorName), '__', tbl$deploymentID )
-  meta$monitorID <- meta$pwfslID
-  meta$monitorType <- tbl$monitorType
-  meta$pwfslDataIngestSource <- pwfslDataIngestSource
+  meta$longitude <- as.numeric(tbl$medoidLon)
+  meta$latitude <- as.numeric(tbl$medoidLat)
+  meta$elevation <- as.numeric(NA)
+  meta$timezone <- as.character(NA)
+  meta$countryCode <- as.character(NA)
+  meta$stateCode <- as.character(NA)
+  meta$siteName <- as.character(tbl$monitorName)
+  meta$countyName <- as.character(NA)
+  meta$msaName <- as.character(NA)
+  meta$agencyName <- as.character(NA)
+  meta$monitorType <- as.character(tbl$monitorType)
+  meta$siteID <- as.character(tbl$deploymentID) # TODO:  This will be obtained from the "known_location" service
+  meta$instrumentID <- paste0(tolower(provider),'.',unitID)
+  meta$aqsID <- as.character(NA)
+  meta$pwfslID <- as.character(tbl$deploymentID) # TODO:  This will be obtained from the "known_location" service
+  meta$pwfslDataIngestSource <- as.character(pwfslDataIngestSource)
   meta$telemetryAggregator <- paste0(tolower(provider), '.airsis')
-  meta$telemetryUnitID <- unitID
+  meta$telemetryUnitID <- as.character(unitID)
+  
+  meta$monitorID <- paste(meta$siteID, meta$instrumentID, sep='_')
   
   # Assign rownames
   rownames(meta) <- meta$monitorID
@@ -129,16 +139,9 @@ airsis_createMetaDataframe <- function(tbl,
     meta$agencyName[USFSMask] <- 'United States Forest Service'
   }
   
-  # Add elevation, siteName and countyName
-  meta <- addGoogleElevation(meta, existingMeta=existingMeta)
-  meta <- addGoogleAddress(meta, existingMeta=existingMeta)
-  
-  # Convert some columns to character even if they have all NA
-  characterColumns <- c('siteName','agencyName','countyName','msaName','monitorType',
-                        'monitorInstrument','aqsID')
-  for (colName in characterColumns) {
-    meta[[colName]] <- as.character(meta[[colName]])
-  }
+  # # Add elevation, siteName and countyName
+  # meta <- addGoogleElevation(meta, existingMeta=existingMeta)
+  # meta <- addGoogleAddress(meta, existingMeta=existingMeta)
   
   logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   

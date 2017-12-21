@@ -4,10 +4,10 @@
 \alias{airsis_createDataDataframe}
 \title{Create AIRSIS Data Dataframe}
 \usage{
-airsis_createDataDataframe(df, meta)
+airsis_createDataDataframe(tbl, meta)
 }
 \arguments{
-\item{df}{single site AIRSIS dataframe created by \code{airsis_clustering()}}
+\item{tbl}{single site AIRSIS tibble created by \code{airsis_clustering()}}
 
 \item{meta}{AIRSIS meta dataframe created by \code{airsis_createMetaDataframe()}}
 }
@@ -15,7 +15,7 @@ airsis_createDataDataframe(df, meta)
 A \code{data} dataframe for use in a \emph{ws_monitor} object.
 }
 \description{
-After quality control has been applied to an AIRSIS dataframe,
+After quality control has been applied to an AIRSIS tibble,
 we can extract the PM2.5 values and store them in a \code{data} dataframe
 organized as time-by-deployment (aka time-by-site).
 

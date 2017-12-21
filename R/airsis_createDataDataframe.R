@@ -1,9 +1,9 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Create AIRSIS Data Dataframe
-#' @param df single site AIRSIS dataframe created by \code{airsis_clustering()}
+#' @param tbl single site AIRSIS tibble created by \code{airsis_clustering()}
 #' @param meta AIRSIS meta dataframe created by \code{airsis_createMetaDataframe()}
-#' @description After quality control has been applied to an AIRSIS dataframe,
+#' @description After quality control has been applied to an AIRSIS tibble,
 #' we can extract the PM2.5 values and store them in a \code{data} dataframe
 #' organized as time-by-deployment (aka time-by-site).
 #' 
@@ -14,24 +14,24 @@
 #' @return A \code{data} dataframe for use in a \emph{ws_monitor} object.
 
 
-airsis_createDataDataframe <- function(df, meta) {
+airsis_createDataDataframe <- function(tbl, meta) {
   
-  # Sanity check -- df must have deploymentID
-  if ( !'deploymentID' %in% names(df) ) {
-    logger.error("No 'deploymentID' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
-    stop(paste0("No 'deploymentID' column found in 'df' dataframe.  Have you run addClustering()?"))
+  # Sanity check -- tbl must have deploymentID
+  if ( !'deploymentID' %in% names(tbl) ) {
+    logger.error("No 'deploymentID' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse=", "))
+    stop(paste0("No 'deploymentID' column found in 'tbl' tibble.  Have you run addClustering()?"))
   }
 
-  # Sanity check -- df must have datetime
-  if ( !'datetime' %in% names(df) ) {
-    logger.error("No 'datetime' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
-    stop(paste0("No 'datetime' column found in 'df' dataframe."))
+  # Sanity check -- tbl must have datetime
+  if ( !'datetime' %in% names(tbl) ) {
+    logger.error("No 'datetime' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse=", "))
+    stop(paste0("No 'datetime' column found in 'tbl' tibble."))
   }
   
   # Sanity check -- meta must have a monitorType
   if ( !'monitorType' %in% names(meta) ) {
-    logger.error("No 'monitorType' column found in 'meta' dataframe with columns: %s", paste0(names(meta), collapse=", "))
-    stop(paste0("No 'monitorType' column found in 'meta' dataframe."))
+    logger.error("No 'monitorType' column found in 'meta' datafra,e with columns: %s", paste0(names(meta), collapse=", "))
+    stop(paste0("No 'monitorType' column found in 'meta' dataframe"))
   }
   
   monitorType <- unique(meta$monitorType)
@@ -43,7 +43,13 @@ airsis_createDataDataframe <- function(df, meta) {
   }
   
   # Create monitorID the same way we did in airsis_createMetaDataframe()
-  df$monitorID <- paste0( make.names(df$monitorName), '__', df$deploymentID )
+  # Should only have a single instrumentID
+  instrumentIDs <- sort(unique(meta$instrumentID))
+  if ( length(instrumentIDs) > 1 ) {
+    logger.warn('Multiple instrumentIDs encountered: %s', paste0(instrumentIDs,collapse=", "))
+  }
+  instrumentID <- instrumentIDs[1]
+  tbl$monitorID <- paste(as.character(tbl$deploymentID), instrumentID, sep='_')
   
   if ( monitorType == 'EBAM' ) {
     pm25Var <- 'ConcHr'
@@ -57,8 +63,8 @@ airsis_createDataDataframe <- function(df, meta) {
   }
   
   # Create minimal subset with the the variables we need for rows, columns and data
-  subDF <- df[,c('datetime','monitorID',pm25Var)]
-  melted <- reshape2::melt(subDF, id.vars=c('datetime','monitorID'), measure.vars=pm25Var)
+  subTbl <- tbl[,c('datetime','monitorID',pm25Var)]
+  melted <- reshape2::melt(subTbl, id.vars=c('datetime','monitorID'), measure.vars=pm25Var)
 
   # Unit conversion as needed (mg/m3 ==> ug/m3)
   if ( monitorType == 'EBAM' ) melted$value <- melted$value * 1000
@@ -77,7 +83,7 @@ airsis_createDataDataframe <- function(df, meta) {
   pm25DF <- pm25DF[,c('datetime',meta$monitorID)]
 
   # Create an empty hourlyDF dataframe with a full time axis (no missing hours)
-  datetime <- seq(min(df$datetime), max(df$datetime), by="hours")
+  datetime <- seq(min(tbl$datetime), max(tbl$datetime), by="hours")
   hourlyDF <- data.frame(datetime=datetime)
 
   # Merge pm25DF into the houlyDF dataframe, inserting NA's where necessary
