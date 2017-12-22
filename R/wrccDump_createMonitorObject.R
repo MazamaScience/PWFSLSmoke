@@ -73,7 +73,7 @@ wrccDump_createMonitorObject <- function(filepath, clusterDiameter=1000, existin
     # NOTE:  This step will create a uniformly named set of properties and will
     # NOTE:  add site-specific information like timezone, elevation, address, etc.
     logger.debug("Creating 'meta' dataframe ...")
-    meta <- wrcc_createMetaDataframe(tbl, existingMeta)
+    meta <- wrcc_createMetaDataframe(tbl, "", "WRCC_DUMPFILE", existingMeta=existingMeta)
     
     # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
     logger.debug("Creating 'data' dataframe ...")

@@ -10,13 +10,13 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ## Version 1.0 -- Monitoring Data Access
 
  * changed the non-guaranteed columns in `ws_monitor$meta`
- * `ws_monitor$meta$monitorID` is now a combination of `siteID` and `instrumentID`
+ * `ws_monitor$meta$monitorID` is now a combination of new metadata columns `siteID` and `instrumentID`
  * added `initializeMazamaSpatialUtils()` convenience function
  * new `US_52` vector of all US state codes including `DC` and `PR`
  * upgraded all `~_createMetaDataframes()` to produce v1.0 metadata
  * `airnow_createMetaDataframes()` filters incoming sites for `countryCode %in% c('CA','MX','US')`,
  discarding sites associated with other countries
- * `monitorPlot_timeseries()` argument `aqiDots` renamed `aqidots`
+ * `monitorPlot_timeseries()` argument `aqiDots` renamed to `aqidots`
  * new `airnow_createMonitorObjects()` function
  * new `addUSGSElevation()` function
  * deprecating `addGoogleMetadata()` in favor of new functions `addGoogleElevation()` and `addGoogleAddress()`

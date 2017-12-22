@@ -30,17 +30,10 @@ example we avoid specifying log files and instead use `logger.setLevel()` to sen
 to the console.
 
 ```{r setup}
-library(PWFSLSmoke)
-logger.setup()
+suppressPackageStartupMessages(library(PWFSLSmoke))
+
+initializeMazamaSpatialUtils()
 logger.setLevel(INFO)
-```
-
-Additionally, we need to load the **MazamaSpatialUtils** package and required datasets:
-
-```{r spatial_utils}
-library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial')
-loadSpatialData('NaturalEarthAdm1')
 ```
 
 Now we are ready to begin processing data from AIRSIS.
@@ -89,7 +82,7 @@ fileStringESAM <- airsis_downloadData(startdate=20160901,
 
 ## Parsing Data
 
-Once a raw data text string is assigned to a variable it is parsed and preliminarily cleaned by the `airsis_parseData()` function. Note that this function currently only supports EBAM and E-Sampler type monitors.
+Once a raw data text string is assigned to a variable it is parsed and preliminary cleaned by the `airsis_parseData()` function. Note that this function currently only supports EBAM and E-Sampler type monitors.
 The parsing process returns a raw data dataframe for the monitor of interest before quality control has been
 applied. The following summarizes the preliminary cleaning that is performed on the data during the parsing process:
 
@@ -106,7 +99,7 @@ dfESAM <- airsis_parseData(fileStringESAM)
 
 ## Quality Control (QC)
 
-After the raw data is parsed into a dataframe, it is then passed into the `airsis_qualityControl()` funtion.
+After the raw data is parsed into a dataframe, it is then passed into the `airsis_qualityControl()` function.
 A few preliminary checks are performed before the dataframe is passed into a type-specific QC function. Currently, two such functions exist: `airsis_EBAMQualityControl()` for EBAM, and `airsis_ESAMQualityControl()` for E-Sampler monitors.
 
 Although separate, the shared functionality between the two QC functions is nearly identical. The following sub-sections provide an overview of the different elements of the QC process.
@@ -133,7 +126,7 @@ The EBAM and E-Sampler raw data include various date/time fields. Below is a sum
 
 For the EBAM monitors, the `Date.Time.GMT` data is always at the top of an hour, and we take it at face value to represent the time associated with the data. (*In actuality we use the floor of the `TimeStamp` data minus an hour, though maybe we should revisit the appropriateness of this decision to protect against assigning data to the wrong time in case the data ever comes in more than an hour after the time for which it is representative.*) However, this nice clean `Date.Time.GMT` field is not provided for the E-Sampler monitors. For the E-Sampler monitors, we use the floor of the `TimeStamp` data, minus one hour, to assign a clean `datetime` field. (*See the Hourly Time Stamp Standard section below for a discussion on why we subtract one hour from both monitor types' time stamps.*)
 
-While the EBAM monitors' `TimeStamp` data is typically just a few minutes after the top of an hour, this is not the case with the E-Sampler monitors. The E-Sampler monitors' `TimeStamp` data is observed to drift by a few minutes more than 60 between readings (60 is the inteval we would expect between hourly readings), except for once a day when the readings appear to "reset" to being captured just a few minutes past the top of the hour. For example, the following plot shows the number of minutes __*after*__ the top of the hour of each `TimeStamp` row for USFS monitor ID 1049 (E-Sampler) in September 2016.
+While the EBAM monitors' `TimeStamp` data is typically just a few minutes after the top of an hour, this is not the case with the E-Sampler monitors. The E-Sampler monitors' `TimeStamp` data is observed to drift by a few minutes more than 60 between readings (60 is the interval we would expect between hourly readings), except for once a day when the readings appear to "reset" to being captured just a few minutes past the top of the hour. For example, the following plot shows the number of minutes __*after*__ the top of the hour of each `TimeStamp` row for USFS monitor ID 1049 (E-Sampler) in September 2016.
 
 ```{r timingPlot}
 tsESAM <- lubridate::mdy_hms(dfESAM$TimeStamp)
@@ -182,7 +175,7 @@ a dataframe with columns of longitude and latitude data and a `clusterDiameter` 
 Details of the clustering algorithm and tests of its robustness are given in the blog post
 [When k-means Clustering Fails](http://mazamascience.com/WorkingWithData/?p=1694).
 
-With the default setting of `clusterDiameter=1000` the `addClustering()` function will differentaiate between sites that are over 1km apart.
+With the default setting of `clusterDiameter=1000` the `addClustering()` function will differentiate between sites that are over 1km apart.
 
 There are several `raw~()` functions in the package that are designed to work with "raw"" dataframes once clustering has been applied.
 
@@ -190,7 +183,7 @@ There are several `raw~()` functions in the package that are designed to work wi
 
 ## Plotting with a Raw Dataframe
 
-After describing the gory details of how AIRSIS data are procerssed, let's do some work with a "raw" dataframe.
+After describing the gory details of how AIRSIS data are processed, let's do some work with a "raw" dataframe.
 After creating the raw dataframe we will immediately call `raw_enhance()` to create a uniform time axis and 
 standardized column names.
 
