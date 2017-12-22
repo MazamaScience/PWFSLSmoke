@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_subsetBy.R
 \name{monitor_subsetBy}
 \alias{monitor_subsetBy}
-\title{Subset Monitoring Data}
+\title{Subset ws_monitor Object with a Filter}
 \usage{
 monitor_subsetBy(ws_monitor, filter)
 }

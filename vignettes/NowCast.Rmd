@@ -243,7 +243,7 @@ For the following examples we will use the Northwest Megafires data from the PWF
 
 ```{r}
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(2015080100,2015083123))
-Omak <- monitor_subset(N_M, monitorIDs='530470013')
+Omak <- monitor_subset(N_M, monitorIDs='530470013_01')
 Omak_nowcast <- monitor_nowcast(Omak)
 ```
 
@@ -270,7 +270,7 @@ Omak_2015_08_21 <- monitor_subset(Omak, tlim=c(2015082100, 2015082111))
 First we'll pull out just the values themselves, and reverse them so the most recent values come first (i.e. so the vector represents $c_1$, $c_2$, $...$, $c_N$).
 
 ```{r}
-(example1_values <- rev(example1_df$`530470013`))
+(example1_values <- rev(example1_df$`530470013_01`))
 ```
 
 Per the NowCast algorithm, we define $w*$ as $\frac{c_{min}}{c_{max}}$:
@@ -352,7 +352,7 @@ Let's see if we can verify the accuracy of the NowCast value for Hour 23.
 We again begin by pulling out our vector of values $c_1$, $c_2$, $...$, $c_N$
 
 ```{r}
-(example2_values <- rev(example2_df$`530470013`))
+(example2_values <- rev(example2_df$`530470013_01`))
 ```
 
 and calculating $w*$ and $w$
@@ -386,7 +386,7 @@ Again, right on!
 A quick look at the monitored data alongside the NowCast data shows that all NowCast hours are valid, as we would expect since only one monitored hour is invalid.
 
 ```{r}
-example2_df$nowcast <- monitor_subset(Omak_nowcast, tlim=c(2015082412, 2015082423))$data$`530470013`
+example2_df$nowcast <- monitor_subset(Omak_nowcast, tlim=c(2015082412, 2015082423))$data$`530470013_01`
 colnames(example2_df) <- c("datetime", "monitored", "nowcast")
 example2_df
 ```
@@ -409,7 +409,7 @@ Let's see if we can verify the accuracy of the NowCast value for Hour 23.
 We again begin by pulling out our vector of values $c_1$, $c_2$, $...$, $c_N$
 
 ```{r}
-(example3_values <- rev(example3_df$`530470013`))
+(example3_values <- rev(example3_df$`530470013_01`))
 ```
 
 and calculating $w*$ and $w$
@@ -443,7 +443,7 @@ Again, right on!
 Now we'll look at the monitored data alongside the NowCast data to see how the validity of the NowCast data was affected by the missing monitored hours.
 
 ```{r}
-example3_df$nowcast <- monitor_subset(Omak_nowcast, tlim=c(2015082312, 2015082323))$data$`530470013`
+example3_df$nowcast <- monitor_subset(Omak_nowcast, tlim=c(2015082312, 2015082323))$data$`530470013_01`
 colnames(example3_df) <- c("datetime", "monitored", "nowcast")
 example3_df
 ```
@@ -493,7 +493,7 @@ Suppose we wanted to know the NowCast values for Omak for the first half of 8/25
 
 ```{r}
 tlim <- c(2015082500,2015082523)
-Omak2 <- monitor_subset(Northwest_Megafires, tlim=tlim, monitorIDs = '530470013')
+Omak2 <- monitor_subset(Northwest_Megafires, tlim=tlim, monitorIDs = '530470013_01')
 Omak2_nowcast <- monitor_nowcast(Omak2)
 Omak2_nowcast$data
 ```
@@ -513,7 +513,7 @@ As an experiment, let's see how the NowCast values would look if we calculated t
 
 ```{r}
 example4_df <- monitor_subset(Omak_nowcast, tlim=tlim)$data
-example4_df$shortTerm_T <- Omak2_nowcast$data$`530470013`
+example4_df$shortTerm_T <- Omak2_nowcast$data$`530470013_01`
 colnames(example4_df) <- c("datetime", "fullDataset", "shortTerm")
 example4_df
 ```
@@ -530,7 +530,7 @@ Finally, we'll perform a brief demonstration of the `monitor_aqi()` function usi
 
 ```{r}
 aqi <- monitor_aqi(Omak)
-example5_df <- data.frame("datetime"=Omak$data$datetime, "monitored"=Omak$data$`530470013`, "aqi"=aqi$data$`530470013`)
+example5_df <- data.frame("datetime"=Omak$data$datetime, "monitored"=Omak$data$`530470013_01`, "aqi"=aqi$data$`530470013_01`)
 example5_df <- example5_df[500:650,]
 ```
 

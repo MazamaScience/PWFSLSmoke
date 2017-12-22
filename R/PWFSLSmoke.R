@@ -5,7 +5,7 @@
 #' 
 #' @docType data
 #' @keywords datasets
-#' @name CarmelValley
+#' @name Carmel_Valley
 #' @title Carmel Valley Example Dataset
 #' @format A list with two elements
 #' @description

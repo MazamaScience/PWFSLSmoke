@@ -1,6 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Subset Monitoring Data
+#' @title Replace ws_monitor Data with Another Value
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param filter an \R{R} expression used to identify values for replacement
 #' @param value replacement value

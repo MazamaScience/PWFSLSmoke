@@ -48,7 +48,7 @@ The `monitorMap()` and `monitorLeaflet()` plots show us pretty much the same inf
 In this manner, we can assemble a list of monitorIDs in and around the Nez Perce Reservation in northern Idaho and generate a timeseries plot showing the terrible smoke in late August.
 
 ```{r dygraph}
-NezPerceIDs <- c("160571012","160690012","160690013","160690014","160490003","160491012")
+NezPerceIDs <- c("160571012_01","160690012_01","160690013_01","160690014_01","160490003_01","160491012_01")
 NezPerce <- monitor_subset(PacNW, monitorIDs=NezPerceIDs)
 monitorPlot_timeseries(NezPerce, style='gnats')
 ```
@@ -135,8 +135,8 @@ large fires resulted from smoke drifting SE with the prevailing winds and bunchi
 We will now take a closer look at two tribal monitors:
 
 ```{r tribalMonitors_daily}
-Omak <- monitor_subset(PacNW, monitorIDs="530470013")
-Kamiah <- monitor_subset(PacNW, monitorIDs="160490003")
+Omak <- monitor_subset(PacNW, monitorIDs="530470013_01")
+Kamiah <- monitor_subset(PacNW, monitorIDs="160490003_01")
 layout(matrix(seq(2)))
 monitorPlot_dailyBarplot(Omak, main="August 2015 Daiy AQI -- Omak, WA",
                          labels_x_nudge=0.8, labels_y_nudge=250)

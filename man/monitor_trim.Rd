@@ -20,7 +20,7 @@ after the last valid datapoint for any monitor.
 \dontrun{
 sm13 <- wrcc_createMonitorObject(20150101, 20151231, stationID='sm13')
 sm13$meta[,c('stateCode','countyName','siteName','monitorID')]
-Deschutes <- monitor_subset(sm13, monitorIDs='Smoke..13__001')
+Deschutes <- monitor_subset(sm13, monitorIDs='lon_.121.453_lat_43.878_wrcc.sm13')
 Deschutes <- monitor_trim(Deschutes)
 monitorPlot_dailyBarplot(Deschutes)
 }

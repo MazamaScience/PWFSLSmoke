@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_subset.R
 \name{monitor_subset}
 \alias{monitor_subset}
-\title{Create a Subset of a ws_monitor Object}
+\title{Subset ws_monitor Object}
 \usage{
 monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
   vlim = NULL, monitorIDs = NULL, stateCodes = NULL,

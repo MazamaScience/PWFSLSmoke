@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_rollingMean.R
 \name{monitor_rollingMean}
 \alias{monitor_rollingMean}
-\title{Calculate Rolling Means of ws_monitor PM2.5 Data}
+\title{Calculate Rolling Means}
 \usage{
 monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
   align = "center")

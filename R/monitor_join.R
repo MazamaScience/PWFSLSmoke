@@ -1,24 +1,25 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Stitch Together Monitors with Shared monitorIDs
+#' @title Merge Data for Monitors with Shared monitorIDs
 #' @param ws_monitor1 \emph{ws_monitor} object
 #' @param ws_monitor2 \emph{ws_monitor} object
 #' @param monitorIDs vector of shared monitorIDs that are to be joined together
 #' @return A \emph{ws_monitor} object with merged timeseries.
 #' @description For each monitor in \code{monitorIDs}, an attempt is made to merge
-#' the associated data from \code{ws_monitor} and \code{ws_monitor2} and.
+#' the associated data from \code{ws_monitor1} and \code{ws_monitor2} and.
 #' 
 #' This is useful when the same \code{monitorID} appears in different \emph{ws_monitor}
-#' objects representing different time periods.
+#' objects representing different time periods. The returned \emph{ws_monitor}
+#' object will cover both time periods.
 #' @examples
 #' \dontrun{
 #' Jul <- monitor_subset(Northwest_Megafires,
-#'                       tlim=c(20150701,20150730),
+#'                       tlim=c(2015070100,2015073123),
 #'                       timezone='America/Los_Angeles')
 #' Aug <- monitor_subset(Northwest_Megafires,
-#'                       tlim=c(20150801,20150831),
+#'                       tlim=c(2015080100,2015083123),
 #'                       timezone='America/Los_Angeles')
-#' Methow_Valley <- monitor_join(Jul, Aug, monitorIDs=c('530470010','530470009'))
+#' Methow_Valley <- monitor_join(Jul, Aug, monitorIDs=c('530470010_01','530470009_01'))
 #' }
 monitor_join <- function(ws_monitor1=NULL,
                          ws_monitor2=NULL,

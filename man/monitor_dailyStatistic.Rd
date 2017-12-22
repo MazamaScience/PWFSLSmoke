@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_dailyStatistic.R
 \name{monitor_dailyStatistic}
 \alias{monitor_dailyStatistic}
-\title{Calculate Daily Statistics for each Monitor in a ws_monitor Object}
+\title{Calculate Daily Statistics}
 \usage{
 monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
   na.rm = TRUE, minHours = 24)
@@ -41,7 +41,7 @@ The returned \emph{ws_monitor} object has a daily time axis where each time is s
 \examples{
 \dontrun{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
-Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009')
+Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009_01')
 Twisp_dailyMean <- monitor_dailyStatistic(Twisp, FUN=get('mean'), dayStart='midnight')
 monitorPlot_timeseries(Twisp_dailyMean, type='b')
 addAQILines()

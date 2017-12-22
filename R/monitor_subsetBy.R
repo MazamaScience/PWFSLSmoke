@@ -1,6 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Subset Monitoring Data
+#' @title Subset ws_monitor Object with a Filter
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param filter a filter to use on the ws_monitor object
 #' @return A \emph{ws_monitor} object with a subset of the input ws_monitor object.
