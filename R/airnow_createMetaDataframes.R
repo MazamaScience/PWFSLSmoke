@@ -5,6 +5,7 @@
 #' @title Create Dataframes of AirNow Site Location Metadata
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'AIRNOW'}
+#' @param addGoogleMeta logicial specifying wheter to use Google elevation and reverse geocoding services
 #' @return List of 'meta' dataframes with site metadata for unique parameters (e.g: "PM2.5", "NOX").
 #' @description The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 
 #' to download site metadata from AirNow and restructures that data into a format that is compatible
@@ -65,7 +66,8 @@
 #' }
 
 airnow_createMetaDataframes <- function(parameters=NULL,
-                                        pwfslDataIngestSource='AIRNOW') {
+                                        pwfslDataIngestSource='AIRNOW',
+                                        addGoogleMeta=TRUE) {
   
   # ----- Data Download -------------------------------------------------------
   
@@ -144,6 +146,8 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   airnowTbl$elevation <- round(airnowTbl$elevation, 0) # round to whole meters
   
   # ----- Subset and add Mazama metadata and USGS elevation -------------------
+  
+  # Restrict to North America
   CANAMEX <- c('CA','US','MX')
   airnowTbl <- dplyr::filter(airnowTbl, airnowTbl$countryCode %in% CANAMEX)
   
@@ -154,12 +158,12 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   sitesUnique <- airnowTbl[!duplicated(airnowTbl$AQSID),]
   suppressWarnings({
     sitesUnique <- addMazamaMetadata(sitesUnique, 'longitude', 'latitude', countryCodes = CANAMEX)
-    # NOTE:  Hitting OVER_QUERY_LIMIT pretty often with Google services without an APIkey
-    # sitesUnique <- addGoogleElevation(sitesUnique, 'longitude', 'latitude')
-    # NOTE:  Hitting OVER_QUERY_LIMIT pretty often with addGoogleElevation
-    # sitesUnique <- addGoogleAddress(sitesUnique, 'longitude', 'latitude')
-    # NOTE:  USGS service makes individual locations requests and is very slow
-    # sitesUnique <- addUSGSElevation(sitesUnique, 'longitude', 'latitude')
+    # TODO:  Handle addGoogleMeta
+    # if ( addGoogleMeta ) {
+    #   # Add elevation, siteName and countyName
+    #   sitesUnique <- addGoogleElevation(sitesUnique, 'longitude', 'latitude')
+    #   sitesUnique <- addGoogleAddress(sitesUnique, 'longitude', 'latitude')
+    # }
   })
   # Now add the per-AQSID Mazama metadata to the larger dataframe
   # NOTE:  We need to remove the columns from airnowTbl that we replace with left_join()

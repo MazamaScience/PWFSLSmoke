@@ -6,7 +6,7 @@
 \usage{
 airnow_createMonitorObjects(parameters = NULL,
   startdate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
-  hours = 24, zeroMinimum = TRUE)
+  hours = 24, zeroMinimum = TRUE, addGoogleMeta = TRUE)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
@@ -16,12 +16,14 @@ airnow_createMonitorObjects(parameters = NULL,
 \item{hours}{desired number of hours of data to assemble}
 
 \item{zeroMinimum}{logical specifying whether to convert negative values to zero}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
 \value{
 List where each element contains a \emph{ws_monitor} object for a unique parameter (e.g: "PM2.5", "NOX").
 }
 \description{
-This function uses the \link{airnow_downloadData} function 
+This function uses the \link{airnow_downloadParseData} function 
 to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 with the PWFSLSmoke package \emph{ws_monitor} data model.
 

@@ -15,6 +15,15 @@
 
 epa_createDataDataframe <- function(tbl) {
 
+  # Create a column with the datetime
+  tbl$datetime <- lubridate::ymd_hms(paste0(tbl$`Date GMT`,' ',tbl$`Time GMT`,':00'))
+
+  # NOTE:  Add monitorID to match what is done in epa_createMetaDataframes().
+  
+  tbl$siteID <- paste0(tbl$`State Code`,tbl$`County Code`,tbl$`Site Num`)
+  tbl$instrumentID <- sprintf("%02d", as.numeric(tbl$POC))
+  tbl$monitorID <- paste(tbl$siteID, tbl$instrumentID, sep='_')
+  
   # "melt" the data frame into long-format data
   # The "melt" function will turn the column names into their own column and the rest of the data into a second.
   melted <- reshape2::melt(data=tbl, id.vars = c("datetime","monitorID"), measure.vars="Sample Measurement")
@@ -28,7 +37,7 @@ epa_createDataDataframe <- function(tbl) {
   pm25DF <- reshape2::dcast(melted, datetime ~ monitorID, stats::median)
   
   # create a dataframe for hours
-  hourlyDF <- data.frame(seq(min(melted$datetime),max(melted$datetime),by="hours"))
+  hourlyDF <- data.frame(seq(min(melted$datetime), max(melted$datetime), by="hours"))
   names(hourlyDF) <- "datetime"
   
   # combine the two dataframes together by doing a left join

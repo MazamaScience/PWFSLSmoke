@@ -107,14 +107,14 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   # Guarantee that all times are present by starting with a dataframe containing only a uniform time axis.
   starttime <- parseDatetime(startdate)
   timeAxis <- seq(starttime, starttime + lubridate::dhours(hours-1), by='hours')
-  timeDF <- data.frame(datetime=timeAxis)
+  hourlyDF <- data.frame(datetime=timeAxis)
   
   logger.info("Putting data on a uniform time axis ...")
 
   for ( parameter in parameters ) {
     
     # Join data to uniform time axis
-    dfList[[parameter]] <- suppressMessages( dplyr::full_join(timeDF, dfList[[parameter]]) )
+    dfList[[parameter]] <- suppressMessages( dplyr::full_join(hourlyDF, dfList[[parameter]]) )
     
     # NOTE:  Check this URL for some EPA defined levels:
     # NOTE:    https://aqs.epa.gov/aqsweb/documents/codetables/aqi_breakpoints.csv

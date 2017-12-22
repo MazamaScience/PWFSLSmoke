@@ -6,7 +6,7 @@
 \usage{
 airsis_createMetaDataframe(tbl, provider = as.character(NA),
   unitID = as.character(NA), pwfslDataIngestSource = "AIRSIS",
-  existingMeta = NULL)
+  existingMeta = NULL, addGoogleMeta = TRUE)
 }
 \arguments{
 \item{tbl}{single site AIRSIS tibble after metadata enhancement}
@@ -18,6 +18,8 @@ airsis_createMetaDataframe(tbl, provider = as.character(NA),
 \item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'AIRSIS', 'AIRSIS_DUMPFILE'}}
 
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
 \value{
 A \code{meta} dataframe for use in a \emph{ws_monitor} object.

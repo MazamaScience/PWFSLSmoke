@@ -23,6 +23,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * removed all `openaq_~` data download and processing functions
  * added `zeroMinimum` parameter to data ingest functions to specify whether negative values should be converted to zero
  * renamed `airnow_downloadData()` to `airnow_downloadParseData()`
+ * new `monitor_join()` function allows you to merge the data of ws_monitor objects with shared monitorIDs
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 

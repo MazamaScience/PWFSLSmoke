@@ -5,12 +5,14 @@
 \title{Create Dataframes of AirNow Site Location Metadata}
 \usage{
 airnow_createMetaDataframes(parameters = NULL,
-  pwfslDataIngestSource = "AIRNOW")
+  pwfslDataIngestSource = "AIRNOW", addGoogleMeta = TRUE)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
 
 \item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'AIRNOW'}}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
 \value{
 List of 'meta' dataframes with site metadata for unique parameters (e.g: "PM2.5", "NOX").

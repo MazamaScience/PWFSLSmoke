@@ -32,6 +32,6 @@ df <- airnow_downloadHourlyData(2016070112)
 \seealso{
 \link{airnow_createDataDataframes}
 
-\link{airnow_downloadData}
+\link{airnow_downloadParseData}
 }
 \keyword{AirNow}

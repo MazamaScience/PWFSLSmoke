@@ -4,10 +4,13 @@
 \alias{epa_createMonitorObject}
 \title{Download and Convert Hourly EPA Air Quality Data}
 \usage{
-epa_createMonitorObject(zipFile = NULL, addGoogleMeta = TRUE)
+epa_createMonitorObject(zipFile = NULL, zeroMinimum = TRUE,
+  addGoogleMeta = TRUE)
 }
 \arguments{
 \item{zipFile}{absolute path to monitoring data .zip file}
+
+\item{zeroMinimum}{logical specifying whether to convert negative values to zero}
 
 \item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
