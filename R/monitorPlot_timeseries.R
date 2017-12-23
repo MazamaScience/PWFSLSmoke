@@ -58,6 +58,23 @@ monitorPlot_timeseries <- function(ws_monitor,
                                    hourLwd=0,
                                    hourInterval=6,
                                    ...) {
+
+  # For testing
+  if ( FALSE ) {
+    monitorID=NULL
+    tlim=NULL
+    localTime=TRUE
+    style=NULL
+    shadedNight=FALSE
+    add=FALSE
+    gridPos=''
+    gridCol='black'
+    gridLwd=1
+    gridLty='solid'
+    dayLwd=0
+    hourLwd=0
+    hourInterval=6
+  }
   
   # ----- Data Preparation ------------
   
@@ -119,7 +136,7 @@ monitorPlot_timeseries <- function(ws_monitor,
   argsList <- list(...)
   
   argsList$x=times
-  argsList$y=data[,2]
+  argsList$y=data[,2] # TODO:  This is a problem when the monitor in this position has all NAs
   
   # set range for plotting
   if ( !('ylim' %in% names(argsList)) ) {

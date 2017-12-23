@@ -127,9 +127,6 @@ wrcc_createMetaDataframe <- function(tbl,
   
   meta$monitorID <- paste(meta$siteID, meta$instrumentID, sep='_')
   
-  # Assign rownames
-  rownames(meta) <- meta$monitorID
-  
   # Add timezones, state and country codes
   meta <- addMazamaMetadata(meta, existingMeta=existingMeta)
   
@@ -144,6 +141,9 @@ wrcc_createMetaDataframe <- function(tbl,
   # Add elevation, siteName and countyName
   meta <- addGoogleElevation(meta, existingMeta=existingMeta)
   meta <- addGoogleAddress(meta, existingMeta=existingMeta)
+  
+  # Assign rownames
+  rownames(meta) <- meta$monitorID
   
   logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   

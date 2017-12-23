@@ -1,32 +1,31 @@
-#!/opt/local/bin/Rscript
+#!/usr/local/bin/RScript
 
 # November 2016 Note:
 # This Rscript will go to fetch air-quality data for a specified year and specified parameter
 
 # This script is desgined to be run on demand as a cron job or 'at' job, see the example below
 
-# 1 2 3 4 5 /Users/aliceyang/Projects/PWFSLSmoke/localExecutables/epa_createAnnualDataframes_exec.R --parameterName='PM2.5' --parameterCode='88101' --year=2008 --outputDir=/Users/aliceyang/Data/Smoke --logDir=/Users/aliceyang/Data/Logs 
+# 1 2 3 4 5 /Users/jonathan/Projects/PWFSL/PWFSLSmoke/localExecutables/epa_createAnnualDataframes_exec.R --parameterName=PM2.5 --parameterCode=88101 --year=2010 --downloadDir=/Users/jonathan/Data/EPA --outputDir=/Users/jonathan/Data/EPA --logDir=/Users/jonathan/my_logs/EPA
 
-VERSION = "0.1.0"
+VERSION = "1.0.0"
 
 library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
-###suppressPackageStartupMessages( library(PWFSLSmoke) )
-suppressPackageStartupMessages( library(PWFSLSmoke) )
-suppressPackageStartupMessages( library(MazamaSpatialUtils) )
+suppressPackageStartupMessages({
+  library(PWFSLSmoke)
+})
 
 # Set up OptionParser
 option_list <- list(
-  make_option(c("--parameterName"),default='PM2.5', help="parameter name"),
-  make_option(c("--parameterCode"), default='88101', help="a character string of parameter code"),
-  make_option(c("--year"), default=2016, help="Specify a single year to download data for"),
-  make_option(c("--baseUrl"), default='https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/', help="url link where EPA data exists"),
-  make_option(c("--outputDir"), default=getwd(), help="Output directory for generated .csv files [default=\"%default\"]"),
-  make_option(c("--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
-  make_option(c("--spatialDataDir"), default='~/Data/Spatial', help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
-  make_option(c("--smokeDataDir"), default='~/Data/Smoke', help="Directory to save EPA zip and csv files temoporarily"),
+  make_option(c("-n","--parameterName"),default='PM2.5', help="parameter name"),
+  make_option(c("-c","--parameterCode"), default='88101', help="a character string of parameter code"),
+  make_option(c("-y","--year"), default=2016, help="Specify a single year to download data for"),
+  make_option(c("-d","--downloadDir"), default=getwd(), help="Output directory for downloaded EPA .zip files [default=\"%default\"]"),
+  make_option(c("-o","--outputDir"), default=getwd(), help="Output directory for generated .RData files [default=\"%default\"]"),
+  make_option(c("-l","--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
+  make_option(c("-s","--spatialDataDir"), default='~/Data/Spatial', help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
   make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default=\"%default\"]")
 )
 
@@ -56,7 +55,6 @@ options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
 # Set up MazamaSpatialUtils
 setSpatialDataDir(opt$spatialDataDir) ##FOR bash
-setSmokeDataDir(opt$smokeDataDir)
 loadSpatialData("NaturalEarthAdm1")
 
 logger.info('Running epa_createAnnualDataframes_exec.R version %s',VERSION)
@@ -67,36 +65,20 @@ logger.debug('R session:\n\n%s\n', sessionString)
 # ------Downloading and processing data --------------------------
 
 logger.info("Downloading epa data...")
-df <- epa_downloadData(opt$parameterName, opt$parameterCode, opt$year, opt$baseUrl)
 
-dataSource <- 'EPA'
-
-# Create a column with the unique monitorID using the method described above
-df$monitorID <- paste(df$`State Code`,df$`County Code`,df$`Site Num`,df$`Parameter Code`,df$POC,sep='_')
-
-# Create a column with the datetime
-df$datetime <- lubridate::ymd_hms(paste0(df$`Date GMT`,' ',df$`Time GMT`,':00'))
-
-# Create 'meta' dataframe
-logger.info("Creating meta dataframe...")
-meta <- suppressMessages(epa_createMetaDataframe(df))
-
-#Create 'data' dataframe
-logger.info("Creating data dataframe...")
-data <- suppressMessages(epa_createDataDataframe(df))
-
-# Create the 'ws_monitor' data list
-logger.info("Creating ws_monitor object...")
-ws_monitor <- list(meta=meta,
-                   data=data)
-
-ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
+filename <- paste0('hourly','_',opt$parameterCode,'_',opt$year,'.zip')
+zipFile <- file.path(opt$downloadDir,filename)
+if ( !exists(zipFile) ) {
+  zipFile <- epa_downloadData(opt$year, opt$parameterCode,
+                              downloadDir=opt$downloadDir)
+}
+ws_monitor <- epa_createMonitorObject(zipFile, addGoogleMeta=FALSE)
 
 # Create appropriate data object and file name and write the data to disk
-dfName <- paste(dataSource, opt$parameterName, opt$parameterCode, opt$year,sep='_')  
-assign(dfName, ws_monitor)
-fileName <- paste0(opt$outputDir, '/', dfName, '.RData')
-save(list=dfName, file=fileName)
+basename <- paste('EPA', opt$parameterName, opt$parameterCode, opt$year,sep='_')  
+assign(basename, ws_monitor)
+filename <- paste0(opt$outputDir, '/', basename, '.RData')
+save(list=basename, file=filename)
 
 logger.debug(paste0('   Finished creating ws_monitor object\n'))
 logger.info('Completed successfully!')

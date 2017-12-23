@@ -1,6 +1,6 @@
 # Washington_2015
 #
-# Various functions for a Washgington Summer of 2015 project
+# Various functions for a Washington Summer of 2015 project
 #
 
 library(PWFSLSmoke)

@@ -27,7 +27,7 @@ Before running this function you must first enable spatial data capabilities as 
 \dontrun{
 initializeMazamaSpatialUtils()
 zipFile <- epa_downloadData(2016, "88101", downloadDir='~/Data/EPA')
-mon <- epa_createMonitorObject(2015, "PM2.5", zipFile)
+mon <- epa_createMonitorObject(zipFile, addGoogleMeta=FALSE)
 }
 }
 \references{

@@ -96,9 +96,6 @@ epa_createMetaDataframe <- function(tbl,
   
   meta$monitorID <- paste(meta$siteID, meta$instrumentID, sep='_')
   
-  # Assign rownames
-  rownames(meta) <- meta$monitorID
-  
   # Add timezones, state and country codes
   meta <- addMazamaMetadata(meta, existingMeta=existingMeta)
   
@@ -112,7 +109,10 @@ epa_createMetaDataframe <- function(tbl,
 
   # Restrict to North America
   CANAMEX <- c('CA','US','MX')
-  airnowTbl <- dplyr::filter(airnowTbl, airnowTbl$countryCode %in% CANAMEX)
+  meta <- dplyr::filter(meta, meta$countryCode %in% CANAMEX)
+  
+  # Assign rownames
+  rownames(meta) <- meta$monitorID
   
   logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   
