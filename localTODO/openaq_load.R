@@ -55,7 +55,7 @@ openaq_load <- function(startdate, enddate, monitorIDs=NULL, parameter='pm25',
   starttime <- parseDatetime(startdate)
   endtime <- parseDatetime(enddate) + 60*60*24 - 1
   
-  timeVec <- unique(strftime(seq(starttime, endtime, by='days'), '%Y%m', tz='GMT'))
+  timeVec <- unique(strftime(seq(starttime, endtime, by='days'), "%Y%m", tz="UTC"))
   
   if (length(timeVec) == 1) {
     

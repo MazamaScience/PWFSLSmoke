@@ -25,6 +25,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * renamed `airnow_downloadData()` to `airnow_downloadParseData()`
  * new `monitor_join()` function allows you to merge the data of ws_monitor objects with shared monitorIDs
  * renamed `CarmelValley` dataset to `Carmel_Valley`
+ * converted all uses of `GMT` to `UTC`
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 

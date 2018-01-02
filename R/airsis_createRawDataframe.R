@@ -38,9 +38,10 @@
 #' }
 #' 
 
-airsis_createRawDataframe <- function(startdate=20020101,
-                                      enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                      provider=NULL, unitID=NULL,
+airsis_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
+                                      enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
+                                      provider=NULL,
+                                      unitID=NULL,
                                       clusterDiameter=1000,
                                       baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
                                       saveFile=NULL,

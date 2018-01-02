@@ -4,8 +4,8 @@
 \alias{wrcc_downloadData}
 \title{Download Data from WRCC}
 \usage{
-wrcc_downloadData(startdate = strftime(lubridate::now(), "\%Y0101", tz =
-  "GMT"), enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
+wrcc_downloadData(startdate = strftime(lubridate::now(), "\%Y010101", tz =
+  "UTC"), enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz = "UTC"),
   unitID = NULL, baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl")
 }
 \arguments{

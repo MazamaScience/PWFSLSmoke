@@ -38,9 +38,9 @@ monitor_combineLibraryFiles <- function(outputDir=getwd(), inputFiles=NULL, outp
   
   # Find the overall starttime and endtime
   starttime <- min( sapply(monitorList, function(x) { min(x$data$datetime) }) )
-  starttime <- as.POSIXct(starttime, tz="GMT", origin=lubridate::origin)
+  starttime <- as.POSIXct(starttime, tz="UTC", origin=lubridate::origin)
   endtime <- max( sapply(monitorList, function(x) { max(x$data$datetime) }) )
-  endtime <- as.POSIXct(endtime, tz="GMT", origin=lubridate::origin)
+  endtime <- as.POSIXct(endtime, tz="UTC", origin=lubridate::origin)
   
   # Create a empty dataframe with just the datetime
   datetime <- seq(starttime,endtime,by="hours")

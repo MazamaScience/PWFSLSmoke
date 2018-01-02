@@ -48,12 +48,12 @@
 #' }
 
 airnow_downloadParseData <- function(parameters=NULL,
-                                startdate=strftime(lubridate::now(),"%Y%m%d00",tz="GMT"),
-                                hours=24) {
+                                     startdate=strftime(lubridate::now(),"%Y%m%d00",tz="UTC"),
+                                     hours=24) {
   
   # Format the startdate integer using lubridate
   starttime <- parseDatetime(startdate)
-
+  
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   tblList <- vector(mode="list", length=hours)
   
@@ -61,10 +61,10 @@ airnow_downloadParseData <- function(parameters=NULL,
   
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {
-
+    
     datetime <- starttime + lubridate::dhours(i-1)
     datestamp <- strftime(datetime, "%Y%m%d%H", tz="UTC")
-
+    
     logger.trace("Downloading AirNow data for %s", datestamp)
     
     # Obtain an hour of AirNow data
@@ -75,13 +75,13 @@ airnow_downloadParseData <- function(parameters=NULL,
       logger.warn("Unable to download data: %s",err_msg)
       next
     }
-
+    
     if ( is.null(parameters) ) {
-
+      
       tblList[[i]] <- tbl
       
     } else {
-
+      
       # NOTE:  Filter inside the loop to avoid generating very large tibbles in memory
       
       logger.debug("Filtering to retain only data for: %s", paste(parameters, collapse=", "))

@@ -54,8 +54,8 @@
 #' monitorLeaflet(sm13)
 #' }
 
-wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101",tz="GMT"),
-                                     enddate=strftime(lubridate::now(),"%Y%m%d",tz="UTC"),
+wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
+                                     enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
                                      unitID=NULL,
                                      clusterDiameter=1000,
                                      zeroMinimum=TRUE,
@@ -65,8 +65,8 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
   
   # FOR TESTING
   if ( FALSE ) {
-    startdate <- strftime(lubridate::now(),"%Y0101",tz="GMT")
-    enddate <- strftime(lubridate::now(),"%Y%m%d",tz="UTC")
+    startdate <- strftime(lubridate::now(),"%Y010101",tz="UTC")
+    enddate <- strftime(lubridate::now(),"%Y%m%d23",tz="UTC")
     unitID <- 'sm21'
     clusterDiameter <- 1000
     zeroMinimum <- TRUE

@@ -57,7 +57,7 @@
 #'   # Loop through days and store each datafame in the list
 #'   for (i in 1:days) {
 #'     datetime <- startdate + lubridate::days(i-1)
-#'     datestamp <- strftime(datetime,'%Y-%m-%d', tz='GMT')
+#'     datestamp <- strftime(datetime,"%Y-%m-%d", tz="UTC")
 #'     logger.debug("Downloading data for %s", datestamp)
 #'     url <- paste0(baseUrl,datestamp,'.csv')
 #'     df <- suppressMessages( readr::read_csv(url, skip=1, col_names=col_names, col_types=col_types, progress=FALSE) )

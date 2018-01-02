@@ -16,8 +16,8 @@
 #'                                  unitTypes=c('EBAM','ESAM'))
 #' }
 
-airsis_availableUnits <- function(startdate=NULL,
-                                  enddate=NULL,
+airsis_availableUnits <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
+                                  enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
                                   provider='USFS', unitTypes=c('BAM1020','EBAM','ESAM'),
                                   baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?") {
   
@@ -62,8 +62,8 @@ airsis_availableUnits <- function(startdate=NULL,
     
     # Create URL
     url <- paste0(baseUrl, 'utid=', AIRSIS$unitTypes[[unitType]],
-                  '&StartDate=', strftime(starttime, "%F", tz="GMT"),
-                  '&EndDate=', strftime(endtime, "%F", tz="GMT"))
+                  '&StartDate=', strftime(starttime, "%Y-%m-%d", tz="UTC"),
+                  '&EndDate=', strftime(endtime, "%Y-%m-%d", tz="UTC"))
     
     logger.debug("Downloading AIRSIS data from %s", url)
     

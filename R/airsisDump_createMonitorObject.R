@@ -27,7 +27,9 @@
 #' @seealso \code{\link{airsis_createMetaDataframe}}
 #' @seealso \code{\link{airsis_createDataDataframe}}
 
-airsisDump_createMonitorObject <- function(filepath, clusterDiameter=1000, existingMeta=NULL) {
+airsisDump_createMonitorObject <- function(filepath,
+                                           clusterDiameter=1000,
+                                           existingMeta=NULL) {
   
   logger.info(" ----- airsisDump_createMonitorObject() ----- ")
   

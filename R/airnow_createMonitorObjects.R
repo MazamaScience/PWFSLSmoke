@@ -49,7 +49,7 @@
 #' }
 
 airnow_createMonitorObjects <- function(parameters=NULL,
-                                        startdate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+                                        startdate=strftime(lubridate::now(),"%Y%m%d",tz="UTC"),
                                         hours=24,
                                         zeroMinimum=TRUE,
                                         addGoogleMeta=TRUE) {

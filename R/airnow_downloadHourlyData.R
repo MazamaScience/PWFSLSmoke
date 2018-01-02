@@ -18,7 +18,7 @@
 #' df <- airnow_downloadHourlyData(2016070112)
 #' }
 
-airnow_downloadHourlyData <- function(datestamp=strftime(lubridate::now(),"%Y%m%d00",tz="GMT"),
+airnow_downloadHourlyData <- function(datestamp=strftime(lubridate::now(),"%Y%m%d00",tz="UTC"),
                                       baseUrl='https://files.airnowtech.org/airnow') {
   
   # Strip off any final '/'

@@ -5,7 +5,7 @@
 \title{Download and Aggregate Multiple Hourly Data Files from AirNow}
 \usage{
 airnow_downloadParseData(parameters = NULL,
-  startdate = strftime(lubridate::now(), "\%Y\%m\%d00", tz = "GMT"),
+  startdate = strftime(lubridate::now(), "\%Y\%m\%d00", tz = "UTC"),
   hours = 24)
 }
 \arguments{

@@ -27,8 +27,8 @@
 # USFSRegionalMonitors <- c()
 # MiscellaneousMonitors <- c()
 
-wrcc_downloadData <- function(startdate=strftime(lubridate::now(),"%Y0101",tz="GMT"),
-                              enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
+wrcc_downloadData <- function(startdate=strftime(lubridate::now(),"%Y010101",tz="UTC"),
+                              enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
                               unitID=NULL, 
                               baseUrl="https://wrcc.dri.edu/cgi-bin/wea_list2.pl") {
   
@@ -44,12 +44,12 @@ wrcc_downloadData <- function(startdate=strftime(lubridate::now(),"%Y0101",tz="G
   
   # Create CGI parameters
   .params <- list(stn=toupper(unitID),
-                  smon=strftime(starttime,"%m",tz="GMT"),
-                  sday=strftime(starttime,"%d",tz="GMT"),
-                  syea=strftime(starttime,"%y",tz="GMT"),
-                  emon=strftime(endtime,"%m",tz="GMT"),
-                  eday=strftime(endtime,"%d",tz="GMT"),
-                  eyea=strftime(endtime,"%y",tz="GMT"),
+                  smon=strftime(starttime,"%m",tz="UTC"),
+                  sday=strftime(starttime,"%d",tz="UTC"),
+                  syea=strftime(starttime,"%y",tz="UTC"),
+                  emon=strftime(endtime,"%m",tz="UTC"),
+                  eday=strftime(endtime,"%d",tz="UTC"),
+                  eyea=strftime(endtime,"%y",tz="UTC"),
                   'Submit Info'='Submit Info',
                   dfor='04',
                   src='W',

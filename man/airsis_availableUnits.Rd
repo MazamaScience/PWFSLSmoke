@@ -4,8 +4,9 @@
 \alias{airsis_availableUnits}
 \title{Get Available Unit Identifiers from AIRSIS}
 \usage{
-airsis_availableUnits(startdate = NULL, enddate = NULL, provider = "USFS",
-  unitTypes = c("BAM1020", "EBAM", "ESAM"),
+airsis_availableUnits(startdate = strftime(lubridate::now(), "\%Y010100", tz =
+  "UTC"), enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz = "UTC"),
+  provider = "USFS", unitTypes = c("BAM1020", "EBAM", "ESAM"),
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
 }
 \arguments{

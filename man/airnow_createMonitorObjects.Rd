@@ -5,7 +5,7 @@
 \title{Obain AirNow Data and Create ws_monitor Objects}
 \usage{
 airnow_createMonitorObjects(parameters = NULL,
-  startdate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "GMT"),
+  startdate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "UTC"),
   hours = 24, zeroMinimum = TRUE, addGoogleMeta = TRUE)
 }
 \arguments{

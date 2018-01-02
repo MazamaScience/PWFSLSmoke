@@ -33,7 +33,7 @@ openaq_createDataDataframe <- function(df){
   
   # combine the two dataframes together by doing a left join
   data <- dplyr::left_join(hourlyDF,pm25DF,by="datetime")
-  rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="GMT")
+  rownames(data) <- format(data$datetime,"%Y%m%d%H",tz="UTC")
   
   return(data)
 }
