@@ -13,6 +13,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
  * `monitor~` functions now test for empty `ws_monitor` objects
  * `~_loadLatest()` functions now explicitly create and close connections
+ * fixed bug in `monitor_dailyStatistic()` that didn't test for `minHours` properly
 
 ### PWFSLSmoke 1.0.0
 
