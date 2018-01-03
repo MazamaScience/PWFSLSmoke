@@ -27,11 +27,11 @@
 # 
 #   # Create a DF
 #   pm25 <- ws_monitor$data[[monitorID]]
-#   GMTTime <- ws_monitor$data$datetime 
+#   UTCTime <- ws_monitor$data$datetime 
 #   index <- which(ws_monitor$meta$monitorID %in% monitorID)
 #   
 #   # Create a local time vector and then subset it into the desired number of stacks.
-#   localTime <- lubridate::with_tz(GMTTime,ws_monitor$meta$timezone[index])
+#   localTime <- lubridate::with_tz(UTCTime,ws_monitor$meta$timezone[index])
 #   localTime <- localTime[(lubridate::hour(localTime) %% (24 / stacks)) == 0]
 #   day <- lubridate::day(localTime)
 #   hour <- lubridate::hour(localTime)

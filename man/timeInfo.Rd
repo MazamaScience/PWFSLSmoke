@@ -39,7 +39,7 @@ and will contain the following columns:
 }
 }
 \examples{
-carmel <- monitor_subset(CarmelValley, tlim=c(20160801,20160810))
+carmel <- monitor_subset(Carmel_Valley, tlim=c(20160801,20160810))
 
 # Create timeInfo object for this monitor
 ti <- timeInfo(carmel$data$datetime,

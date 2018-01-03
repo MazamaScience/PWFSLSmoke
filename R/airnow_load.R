@@ -19,7 +19,10 @@
 #' monitorLeaflet(airnow_conus)
 #' }
 
-airnow_load <- function(startdate, enddate, stateCodes=NULL, monitorIDs=NULL,
+airnow_load <- function(startdate=strftime(lubridate::now(),"%Y%m0100",tz="UTC"),
+                        enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
+                        stateCodes=NULL,
+                        monitorIDs=NULL,
                         parameter='PM2.5',
                         baseUrl='https://smoke.airfire.org/RData/AirNowTech/') {
   
@@ -54,7 +57,7 @@ airnow_load <- function(startdate, enddate, stateCodes=NULL, monitorIDs=NULL,
   starttime <- parseDatetime(startdate)
   endtime <- parseDatetime(enddate)
   
-  timeVec <- unique(strftime(seq(starttime, endtime, by='days'), '%Y%m', tz='GMT'))
+  timeVec <- unique(strftime(seq(starttime, endtime, by='days'), '%Y%m', tz='UTC'))
   
   if (length(timeVec) == 1) {
     

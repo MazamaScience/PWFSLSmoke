@@ -4,75 +4,54 @@
 \alias{epa_downloadData}
 \title{Download Data from EPA}
 \usage{
-epa_downloadData(year = NULL, parameterName = "PM2.5",
-  parameterCode = "88101",
-  baseUrl = "https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/",
-  downloadDir = tempdir())
+epa_downloadData(year = NULL, parameterCode = "88101",
+  downloadDir = tempdir(), baseUrl = "https://aqs.epa.gov/aqsweb/airdata/")
 }
 \arguments{
 \item{year}{year}
 
-\item{parameterName}{pollutant name}
-
 \item{parameterCode}{pollutant code}
 
-\item{baseUrl}{base URL for archived daily data}
+\item{downloadDir}{directoroy where monitoring data .zip file will be saved}
 
-\item{downloadDir}{directory where files are downloaded and unzipped}
+\item{baseUrl}{base URL for archived daily data}
 }
 \value{
-Dataframe of EPA data.
+Filepath of the downloaded zip file.
 }
 \description{
 This function downloads air quality data from the EPA and
-converts it into a dataframe.
-
-Available parameters include:
-\enumerate{
-\item{Ozone}
-\item{SO2}
-\item{CO}
-\item{NO2}
-\item{PM2.5}
-\item{PM10}
-\item{Wind}
-\item{Temperatue}
-\item{Barometric_Pressure}
-\item{RH_and_Dewpoint}
-\item{HAPs}
-\item{VOCs}
-\item{NONOxNOy}
-}
+saves it to a directory.
 
 Available parameter codes include:
 \enumerate{
-\item{44201}{ --Ozone}
-\item{42401}{ --SO2}
-\item{42101}{ --CO}
-\item{42602}{ --NO2}
-\item{88101}{ --PM2.5}
-\item{88502}{ --PM2.5}
-\item{81102}{ --PM10}
-\item{SPEC}{ --PM2.5}
-\item{WIND}{ --Wind}
-\item{TEMP}{ --Temperature}
-\item{PRESS}{ --Barometric Pressure}
-\item{RH_DP}{ --RH and dewpoint}
-\item{HAPS}{ --HAPs}
-\item{VOCS}{ --VOCs}
+\item{44201}{ -- Ozone}
+\item{42401}{ -- SO2}
+\item{42101}{ -- CO}
+\item{42602}{ -- NO2}
+\item{88101}{ -- PM2.5}
+\item{88502}{ -- PM2.5}
+\item{81102}{ -- PM10}
+\item{SPEC}{ -- PM2.5}
+\item{WIND}{ -- Wind}
+\item{TEMP}{ -- Temperature}
+\item{PRESS}{ -- Barometric Pressure}
+\item{RH_DP}{ -- RH and dewpoint}
+\item{HAPS}{ -- HAPs}
+\item{VOCS}{ -- VOCs}
 \item{NONOxNOy}
 }
 }
 \note{
-Unzipped files can be several hundred megabytes so downloadDir may need to be carefully chosen.
-Downloaded and unzipped files are removed after data are read into a dataframe.
+Unzipped CSV files are almost 100X larger than the compressed .zip files.
 }
 \examples{
 \dontrun{
-df <- epa_downloadData(2016, "PM2.5", "88101")
+zipFile <- epa_downloadData(2016, "88101", '~/Data/EPA')
+tbl <- epa_parseData(zipFile, "PM2.5")
 }
 }
 \references{
-\href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+\href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 }
 \keyword{EPA}

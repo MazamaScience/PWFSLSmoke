@@ -1,13 +1,12 @@
-FROM mazamascience/spatialutils:v0.4.9
+FROM mazamascience/spatialutils:v0.5.2
 
 #######################################################################
 # For PWFSLSmoke
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-    libv8-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
-  && installGithub.r \
-    mazamascience/PWFSLSmoke
+  ## Install R packages from CRAN
+  && install2.r --error -r "https://cran.rstudio.com" \
+    PWFSLSmoke
 

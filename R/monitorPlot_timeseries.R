@@ -7,7 +7,7 @@
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
 #' @param localTime logical specifying whether \code{tlim} is in local time or UTC
 #' @param shadedNight add nighttime shading
-#' @param style custom styling, one of \code{'aqiDots'}
+#' @param style custom styling, one of \code{'aqidots'}
 #' @param add logical specifying whether to add to the current plot
 #' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)
 #' @param gridCol grid line color
@@ -23,7 +23,7 @@
 #' When a named \code{style} is used, some graphical parameters will be overridden. Available styles include:
 #' 
 #' \itemize{
-#' \item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+#' \item{\code{aqidots}}{-- hourly values are individually colored by 24-hr AQI levels}
 #' \item{\code{gnats}}{-- semi-transparent dots like a cloud of gnats}
 #' }
 #' 
@@ -35,7 +35,7 @@
 #' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 #' monitorPlot_timeseries(Spokane, style='gnats')
 #' title('Spokane PM2.5 values, 2015')
-#' monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqiDots', pch=16)
+#' monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqidots', pch=16)
 #' addAQILegend()
 #' title('Spokane PM2.5 values, August 2015')
 #' monitorPlot_timeseries(Spokane, tlim=c(20150821,20150828), shadedNight=TRUE, style='gnats')
@@ -58,6 +58,23 @@ monitorPlot_timeseries <- function(ws_monitor,
                                    hourLwd=0,
                                    hourInterval=6,
                                    ...) {
+
+  # For testing
+  if ( FALSE ) {
+    monitorID=NULL
+    tlim=NULL
+    localTime=TRUE
+    style=NULL
+    shadedNight=FALSE
+    add=FALSE
+    gridPos=''
+    gridCol='black'
+    gridLwd=1
+    gridLty='solid'
+    dayLwd=0
+    hourLwd=0
+    hourInterval=6
+  }
   
   # ----- Data Preparation ------------
   
@@ -119,7 +136,7 @@ monitorPlot_timeseries <- function(ws_monitor,
   argsList <- list(...)
   
   argsList$x=times
-  argsList$y=data[,2]
+  argsList$y=data[,2] # TODO:  This is a problem when the monitor in this position has all NAs
   
   # set range for plotting
   if ( !('ylim' %in% names(argsList)) ) {
@@ -195,7 +212,7 @@ monitorPlot_timeseries <- function(ws_monitor,
   # choose AQI breaks 
   if ( !is.null(style) ) {
     
-    if ( style == 'aqiDots' ) {
+    if ( style == 'aqidots' ) {
       
       # # Set opacity based on number of points
       # dims <- dim(as.matrix(data[,-1]))

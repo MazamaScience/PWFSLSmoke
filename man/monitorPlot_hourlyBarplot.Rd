@@ -67,7 +67,7 @@ The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to
 tweak the date labeling. Units used are the same as those in the plot.
 }
 \examples{
-C_V <- monitor_subset(CarmelValley, tlim=c(2016080800,2016081023),
+C_V <- monitor_subset(Carmel_Valley, tlim=c(2016080800,2016081023),
                       timezone='America/Los_Angeles')
 monitorPlot_hourlyBarplot(C_V, main='1-Hourly Average PM2.5',
                           labels_x_nudge=1, labels_y_nudge=0)

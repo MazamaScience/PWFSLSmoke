@@ -2,15 +2,20 @@
 % Please edit documentation in R/airnow_createMetaDataframes.R
 \name{airnow_createMetaDataframes}
 \alias{airnow_createMetaDataframes}
-\title{Return Dataframes of AirNow Site Location Metadata}
+\title{Create Dataframes of AirNow Site Location Metadata}
 \usage{
-airnow_createMetaDataframes(parameters = NULL)
+airnow_createMetaDataframes(parameters = NULL,
+  pwfslDataIngestSource = "AIRNOW", addGoogleMeta = TRUE)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
+
+\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'AIRNOW'}}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
 \value{
-List of dataframes where each dataframe contains all metadata for a unique parameter (e.g: "PM2.5", "NOX").
+List of 'meta' dataframes with site metadata for unique parameters (e.g: "PM2.5", "NOX").
 }
 \description{
 The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 
@@ -39,7 +44,7 @@ one for each parameter, and performs the following cleanup:
   \item{add timezone information}
 }
 
-AirNow data parameters include at least the following list:
+Parameters included in AirNow data include at least the following list:
 \enumerate{
 \item{BARPR}
 \item{BC}

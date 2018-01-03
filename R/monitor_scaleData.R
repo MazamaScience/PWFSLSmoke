@@ -1,6 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Scale Monitoring Data
+#' @title Scale ws_monitor Data
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param factor numeric used to scale the data
 #' @description Scale the data in a \emph{ws_monitor} object by mutiplying it with \code{factor}.

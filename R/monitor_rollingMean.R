@@ -1,9 +1,9 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Calculate Rolling Means of ws_monitor PM2.5 Data
+#' @title Calculate Rolling Means
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param width number of periods to average (e.g. for hourly data, \code{width = 24} calculates 24-hour rolling means)
-#' @param data.thresh minimum number of valid observations required as a percent of \code{width}; NA is returned if insufficicnet valid data to calculate mean
+#' @param data.thresh minimum number of valid observations required as a percent of \code{width}; NA is returned if insufficient valid data to calculate mean
 #' @param align alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}
 #' @return A \emph{ws_monitor} object with data thaty have been processed by a rolling mean algorithm.
 #' @description Calculates rolling means for each monitor in \code{ws_monitor} using the

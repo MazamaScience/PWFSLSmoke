@@ -24,26 +24,26 @@ with groups of individual monitors.
 
 To work efficiently with the package it is important to understand the structure of this
 data object and which functions operate on it. Package functions that begin with `monitor_`, 
-expect objects of class `ws_monitor` as their first argument. (*Note that 'ws_' stands for 'wildfire smoke'.*)
+expect objects of class `ws_monitor` as their first argument. (*'ws_' stands for 'wildfire smoke'*)
 
 ## Monitoring Data
 
 Monitoring data will typically be obtained from an agency charged with archiving data
 acquired at monitoring sites. For wildifre smoke, the primary pollutant is PM 2.5 and the
-sites archiving this data include [AirNow](https://www.airnow.gov), [WRCC](http://www.wrcc.dri.edu) and
-[AIRSIS](https://app.airsis.com/USFS).
+sites archiving this data include [EPA[(https://www.epa.gov/outdoor-air-quality-data),
+[AirNow](https://www.airnow.gov), [AIRSIS](https://app.airsis.com/USFS) and [WRCC](http://www.wrcc.dri.edu).
 
 The data model for monitoring data consists of an **R** `list` with two dataframes: `data` and `meta`.
 
 The `data` dataframe contains all hourly measurements organized with rows (the 'unlimited' dimension) as unique timesteps and
-columns as unique monitors. The very first column is always named `datetime` and contains the `POSIXct` datetime
+columns as unique monitor deployments. The very first column is always named `datetime` and contains the `POSIXct` datetime
 in Coordinated Universal Time (UTC).
 
-The `meta` dataframe contains all metadata associated with monitoring sites and is organized with
-rows as unique sites and columns as site attributes. The following columns are guaranteed to exist
+The `meta` dataframe contains all metadata associated with monitor deployment sites and is organized with
+rows as unique monitor deployments and columns as site attributes. The following columns are guaranteed to exist
 in the `meta` dataframe:
 
- * `monitorID` -- unique ID for each monitoring site (*i.e.* each instrument deployment)
+ * `monitorID` -- unique ID for each site-instrument combination
  * `longitude` -- decimal degrees East
  * `latitude` -- decimal degrees North
  * `elevation` -- meters above sea level
@@ -53,8 +53,23 @@ in the `meta` dataframe:
 
 *(The [MazamaSpatialUtils](https://github.com/MazamaScience/MazamaSpatialUtils) package is used to assign timezones and state and country codes.)*
 
-Additional columns may be available in the `meta` dataframe and these will depend on the source of the
-data.
+Starting with version 1.0 of the package, the following additional columns (mostly for internal use) will always exist:
+
+ * `siteName` -- familiar name for a monitoring site
+ * `countyName` -- county/province name
+ * `msaName` -- US Census Bureau 'Metropolitan/Micropolitan Statistical Area'
+ * `agencyName` -- agency responsible for collecting the data
+ * `monitorType` -- broad instrument categories for E-Sampler, EBAM or BAM-1020
+ * `siteID` -- unique identifier for each site
+ * `instrumentID` -- sequential identifier for each instrument at a single site
+ * `aqsID` -- AQS site identifier (often used as the `siteID`)
+ * `pwfslID` -- PWFSL site identifier (used as the `siteID` for temporary monitors)
+ * `pwfslDataIngestSource` -- identifier for the source of monitoring data (e.g. AIRNOW, AIRSIS, WRCC_DUMPFILE, *etc.*)
+ * `telemetryAggregator` -- data provider for temporary monitors (*e.g.* 'wrcc' or 'usfs.airsis')
+ * `telemetryUnitID` -- unique ID for each monitoring site used within the `telemetry_aggregator`
+
+These additional columns of information are much more variable and, depending on the source of data, may include
+many missing values.
 
 It is important to note that the `monitorID` acts as a unique key that connects data with metadata.
 The `monitorID` is used for column names in the `data` dataframe and for row names in the `meta` dataframe.
@@ -69,13 +84,13 @@ We will use the built-in "Northwest_Megafires" dataset and the `monitor_subset()
 which we can then explore.
 
 ```{r}
-library(PWFSLSmoke)
+suppressPackageStartupMessages(library(PWFSLSmoke))
 
 # Get some airnow data for Washington state in the summer of 2015
-N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
-# To work with AirNow data directly, uncomment the next two lines
-#N_M <- airnow_load(startdate=20150801, enddate=20150831)
-#WA <- monitor_subset(airnow, stateCodes=c("WA"))
+# NONE:  'tlim' is interpreted as UTC unless we specify 'timezone' 
+N_M <- monitor_subset(Northwest_Megafires,
+                      tlim=c(20150801,20150831),
+                      timezone="America/Los_Angeles")
 WA <- monitor_subset(N_M, stateCodes='WA')
 
 # 'ws_monitor' objects can be identified by their class
@@ -100,6 +115,38 @@ The **PWFSLSmoke** package has numerous functions that can work with `ws_monitor
 all of which begin with `monitor_`. If you need to do something that the package functions do not
 provide you can manipulate `ws_monitor` objects directly as long as you retain the structure
 of the data model.
+
+Functions that accept and return `ws_monitor` objects include:
+
+ * `monitor_aqi()`
+ * `monitor_collapse()`
+ * `monitor_dailyStatistic()`
+ * `monitor_dailyThreshold()`
+ * `monitor_join()`
+ * `monitor_nowcast()`
+ * `monitor_reorder()`
+ * `monitor_replaceData()`
+ * `monitor_rollingMean()`
+ * `monitor_scaleData()`
+ * `monitor_subset()`
+ * `monitor_subsetBy()`
+ * `monitor_subsetByDistance()`
+ * `monitor_trim()`
+
+These functions can be used with the **magrittr** package `%>%` pipe as in the following example:
+
+```{r magrittr}
+# Calculate daily means for the Methow from monitors in Twisp and Winthrop
+TwispID <- '530470009_01'
+WinthropID <- '530470010_01'
+Methow_Valley_JulyMeans <- Northwest_Megafires %>%
+  monitor_subset(monitorIDs=c(TwispID,WinthropID)) %>%
+  monitor_collapse(monitorID='MethowValley') %>%
+  monitor_subset(tlim=c(20150701,20150731), timezone='America/Los_Angeles') %>%
+  monitor_dailyStatistic(minHours=18)
+# Look at the first week
+Methow_Valley_JulyMeans$data[1:7,]
+```
 
 The following code mixes use of package functions with direct manipulation of the `ws_monitor` object.
 

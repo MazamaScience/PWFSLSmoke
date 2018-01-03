@@ -5,9 +5,11 @@
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
 #' @param unitID character or numeric AIRSIS unit identifier
-#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering})
+#' @param clusterDiameter diameter in meters used to determine the number of clusters (see \code{addClustering()})
+#' @param zeroMinimum logical specifying whether to convert negative values to zero
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
+#' @param ... additional parameters are passed to type-specific QC functions
 #' @return A \emph{ws_monitor} object with AIRSIS data.
 #' @description Obtains monitor data from an AIRSIS webservice and converts
 #' it into a quality controlled, metadata enhanced \emph{ws_monitor} object
@@ -24,6 +26,22 @@
 #'  \item{reshape AIRSIS data into deployment-by-property \code{meta} and and time-by-deployment \code{data} dataframes}
 #' }
 #' 
+#' QC parameters that can be passed in the \code{\dots} include the following
+#' valid data ranges as taken from \code{airsis_EBAMQualityControl()}:
+#' 
+#' \itemize{
+#' \item{\code{valid_Longitude=c(-180,180)}}
+#' \item{\code{valid_Latitude=c(-90,90)}}
+#' \item{\code{remove_Lon_zero = TRUE}}
+#' \item{\code{remove_Lat_zero = TRUE}}
+#' \item{\code{valid_Flow = c(16.7*0.95,16.7*1.05)}}
+#' \item{\code{valid_AT = c(-Inf,45)}}
+#' \item{\code{valid_RHi = c(-Inf,45)}}
+#' \item{\code{valid_Conc = c(-Inf,5.000)}}
+#' }
+#' 
+#' Note that appropriate values for QC thresholds will depend on the type of monitor.
+#' 
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
 #' @seealso \code{\link{airsis_downloadData}}
 #' @seealso \code{\link{airsis_parseData}}
@@ -37,12 +55,15 @@
 #' monitorLeaflet(usfs_1013)
 #' }
 
-airsis_createMonitorObject <- function(startdate=20020101,
-                                       enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                       provider=NULL, unitID=NULL,
+airsis_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
+                                       enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
+                                       provider=NULL,
+                                       unitID=NULL,
                                        clusterDiameter=1000,
+                                       zeroMinimum=TRUE,
                                        baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-                                       saveFile=NULL) {
+                                       saveFile=NULL,
+                                       ...) {
 
   # Sanity checks
   if ( is.null(provider) ) {
@@ -67,7 +88,6 @@ airsis_createMonitorObject <- function(startdate=20020101,
     stop(paste0("Cannot parse 'enddate' with ",enddateCount," characters"))
   }
   
-  
   # Read in AIRSIS .csv data
   logger.info("Downloading AIRSIS data ...")
   fileString <- airsis_downloadData(startdate, enddate, provider, unitID, baseUrl)
@@ -85,39 +105,41 @@ airsis_createMonitorObject <- function(startdate=20020101,
   
   # Read csv raw data into a dataframe
   logger.debug("Parsing data ...")
-  df <- airsis_parseData(fileString)
+  tbl <- airsis_parseData(fileString)
   
   # Apply monitor-appropriate QC to the dataframe
   logger.debug("Applying QC logic ...")
-  df <- airsis_qualityControl(df)
+  tbl <- airsis_qualityControl(tbl, ...)
   
   # See if anything gets through QC
-  if ( nrow(df) == 0 ) {
+  if ( nrow(tbl) == 0 ) {
     logger.warn("No data remaining after QC")
     stop("No data remaining after QC")
   }
   
   # Add clustering information to identify unique deployments
   logger.debug("Clustering ...")
-  df <- addClustering(df, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
+  tbl <- addClustering(tbl, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
   
   # Create 'meta' dataframe of site properties organized as monitorID-by-property
   # NOTE:  This step will create a uniformly named set of properties and will
   # NOTE:  add site-specific information like timezone, elevation, address, etc.
   logger.debug("Creating 'meta' dataframe ...")
-  meta <- airsis_createMetaDataframe(df)
+  meta <- airsis_createMetaDataframe(tbl, provider, unitID, 'AIRSIS')
   
   # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
   logger.debug("Creating 'data' dataframe ...")
-  data <- airsis_createDataDataframe(df, meta)
+  data <- airsis_createDataDataframe(tbl, meta)
   
   # Create the 'ws_monitor' object
   ws_monitor <- list(meta=meta, data=data)
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
   # Reset all negative values that made it through QC to zero
-  logger.debug("Reset negative valus to zero ...")
-  ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
+  if ( zeroMinimum ) {
+    logger.debug("Reset negative valus to zero ...")
+    ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
+  }
   
   return(ws_monitor)
   

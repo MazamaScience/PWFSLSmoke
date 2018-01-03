@@ -4,18 +4,18 @@
 \alias{airsis_qualityControl}
 \title{Apply Quality Control to Raw AIRSIS Dataframe}
 \usage{
-airsis_qualityControl(df, ...)
+airsis_qualityControl(tbl, ...)
 }
 \arguments{
-\item{df}{single site dataframe created by airsis_downloadData()}
+\item{tbl}{single site tibble created by airsis_downloadData()}
 
 \item{...}{additional parameters are passed to type-specific QC functions}
 }
 \value{
-Cleaned up dataframe of AIRSIS monitor data.
+Cleaned up tibble of AIRSIS monitor data.
 }
 \description{
-Various QC steps are taken to clean up the incoming raw dataframe including:
+Various QC steps are taken to clean up the incoming raw tibble including:
 
 \enumerate{
 \item{Ensure GPS location data are included in each measurement record.}
@@ -24,6 +24,22 @@ Various QC steps are taken to clean up the incoming raw dataframe including:
 }
 
 See the individual \code{airsis_~QualityControl()} functions for details.
+
+QC parameters that can be passed in the \code{\dots} include the following
+valid data ranges as taken from \code{airsis_EBAMQualityControl()}:
+
+\itemize{
+\item{\code{valid_Longitude=c(-180,180)}}
+\item{\code{valid_Latitude=c(-90,90)}}
+\item{\code{remove_Lon_zero = TRUE}}
+\item{\code{remove_Lat_zero = TRUE}}
+\item{\code{valid_Flow = c(16.7*0.95,16.7*1.05)}}
+\item{\code{valid_AT = c(-Inf,45)}}
+\item{\code{valid_RHi = c(-Inf,45)}}
+\item{\code{valid_Conc = c(-Inf,5.000)}}
+}
+
+Note that appropriate values for QC thresholds will depend on the type of monitor.
 }
 \seealso{
 \code{\link{airsis_EBAMQualityControl}}

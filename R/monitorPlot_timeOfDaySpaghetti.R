@@ -13,7 +13,7 @@
 #' @description Creates a spaghetti plot of PM2.5 levels by hour for one or more days. The average by hour over 
 #' the period is also calculated and plotted as a thick red line.
 #' @examples
-#' monitorPlot_timeOfDaySpaghetti(CarmelValley, tlim=c(20160801,20160809))
+#' monitorPlot_timeOfDaySpaghetti(Carmel_Valley, tlim=c(20160801,20160809))
 
 monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
                                            monitorID=NULL,

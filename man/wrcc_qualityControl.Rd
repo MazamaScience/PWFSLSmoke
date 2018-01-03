@@ -2,20 +2,20 @@
 % Please edit documentation in R/wrcc_qualityControl.R
 \name{wrcc_qualityControl}
 \alias{wrcc_qualityControl}
-\title{Apply Quality Control to Raw WRCC Dataframe}
+\title{Apply Quality Control to Raw WRCC Tibble}
 \usage{
-wrcc_qualityControl(df, ...)
+wrcc_qualityControl(tbl, ...)
 }
 \arguments{
-\item{df}{single site dataframe created by \code{wrcc_downloadData()}}
+\item{tbl}{single site tibble created by \code{wrcc_downloadData()}}
 
 \item{...}{additional parameters are passed to type-specific QC functions}
 }
 \value{
-Cleaned up dataframe of WRCC monitor data.
+Cleaned up tibble of WRCC monitor data.
 }
 \description{
-Various QC steps are taken to clean up the incoming raw dataframe including:
+Various QC steps are taken to clean up the incoming raw tibble including:
 
 \enumerate{
 \item{Convert numeric missing value flags to \code{NA}.}

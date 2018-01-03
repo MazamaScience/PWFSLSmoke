@@ -16,10 +16,12 @@
 
 addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
   
-  logger.info(" ----- addGoogleMetadata() ----- ")
+  logger.warn("addGoogleMetadata() is deprecated. Please use addGoogleElevation() and addGoogleAddress() instead.")
+  
+  logger.debug(" ----- addGoogleMetadata() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df)
+  df <- as.data.frame(df, stringsAsFactors=FALSE)
   
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
@@ -61,7 +63,12 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
     logger.debug("Getting Google elevation data for %s location(s)", nrow(df))
     
     # Get and parse the return which has elements 'results' and 'status'
-    googleReturn <- httr::content(httr::GET(url))
+    response <- httr::GET(url)
+    if ( httr::http_error(response) ) {
+      stop(paste0("Google elevation service failed with: ",httr::content(response)))
+    }
+    
+    googleReturn <- httr::content(response)
     
     # Check results
     if ( googleReturn$status != 'OK' ) {
@@ -72,7 +79,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
     } else {
       
       # Convert list of lists to list of dataframes
-      tempList <- lapply(googleReturn$results,as.data.frame)
+      tempList <- lapply(googleReturn$results, as.data.frame, stringsAsFactors=FALSE)
       # Combine individual dataframes
       elevationDF <- dplyr::bind_rows(tempList)
       

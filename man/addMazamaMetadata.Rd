@@ -5,18 +5,18 @@
 \title{Add State, Country and Timezone to a Dataframe}
 \usage{
 addMazamaMetadata(df, lonVar = "longitude", latVar = "latitude",
-  countryCodes = NULL, existingMeta = NULL)
+  existingMeta = NULL, countryCodes = c("CA", "US", "MX"))
 }
 \arguments{
-\item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
+\item{df}{dataframe or tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
 
 \item{lonVar}{name of longitude variable in the incoming dataframe}
 
 \item{latVar}{name of the latitude variable in the incoming dataframe}
 
-\item{countryCodes}{vector of countryCodes}
-
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
+
+\item{countryCodes}{vector of countryCodes (use \code{NULL} for global searches)}
 }
 \value{
 Input dataframe with additional columns: \code{timezone, countryCode, stateCode}.

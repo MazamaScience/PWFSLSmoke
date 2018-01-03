@@ -38,10 +38,12 @@ from different regions should have daily statistics calculated separately.
 The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 }
 \examples{
+\dontrun{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
-Twisp <- monitor_subset(N_M, monitorIDs='530470009')
+Twisp <- monitor_subset(N_M, monitorIDs='530470009_01')
 Twisp_daily <- monitor_dailyThreshold(Twisp, "unhealthy", dayStart='midnight', minHours=1)
 monitorPlot_timeseries(Twisp_daily, type='h', lwd=6, ylab="Hours")
 title("Twisp, Washington Hours per day Above 'Unhealthy', 2015")
+}
 }
 \keyword{ws_monitor}

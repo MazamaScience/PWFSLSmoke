@@ -67,6 +67,39 @@ airsis_identifyMonitorType <- function(df) {
   olderEbam_2_names <- make.names(olderEbam_2_rawNames)
   olderEbam_2_types <- 'ccddcc'
   
+  # Need to duplicate these to handle the addition of the 'UnitID' column before 'Alias'
+  
+  # provider=USFS, unitID=1002, year=2010
+  unitid_esam_header <- "MasterTable_ID,UnitID,Alias,Latitude,Longitude,Conc(mg/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Start Date/Time (GMT),Serial Number,System Volts,Data 1,Data 2,TimeStamp,PDate"
+  unitid_esam_rawNames <- unlist(stringr::str_split(unitid_esam_header, ','))
+  unitid_esam_names <- make.names(unitid_esam_rawNames)
+  unitid_esam_types <- 'cccdddddddddddiccdcccc'
+  
+  # provider=USFS, unitID=1026, year=2010
+  unitid_ebam_header <- "MasterTable_ID,UnitID,Alias,Latitude,Longitude,Date/Time/GMT,Start Date/Time (GMT),COncRT,ConcHr,Flow,W/S,W/D,AT,RHx,RHi,BV,FT,Alarm,Type,Serial Number,Version,Sys. Volts,TimeStamp,PDate"
+  unitid_ebam_rawNames <- unlist(stringr::str_split(unitid_ebam_header, ','))
+  unitid_ebam_names <- make.names(unitid_ebam_rawNames)
+  unitid_ebam_types <- 'cccddccddddddddddicccdcc'
+  
+  # provider=USFS, unitID=49, year=2010
+  unitid_bam1020_header <- "MasterTable_ID,UnitID,Alias,Latitude,Longitude,Conc (\u00B5g/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),TimeStamp,PDate"
+  unitid_bam1020_rawNames <- unlist(stringr::str_split(unitid_bam1020_header, ','))
+  unitid_bam1020_names <- make.names(unitid_bam1020_rawNames)
+  unitid_bam1020_types <- 'cccdddddddddcc'
+  
+  # provider=USFS, unitID=70, year=2010
+  unitid_olderEbam_1_header <- "MasterTable_ID,UnitID,Alias,Latitude,Longitude,Time,DataCol1,eBam,TimeStamp,PDate"
+  unitid_olderEbam_1_rawNames <- unlist(stringr::str_split(unitid_olderEbam_1_header, ','))
+  unitid_olderEbam_1_names <- make.names(unitid_olderEbam_1_rawNames)
+  unitid_olderEbam_1_types <- 'cccddcdccc'
+  
+  # provider=APCD, unitID=4, year=2010
+  unitid_olderEbam_2_header <- "MasterTable_ID,UnitID,Alias,Latitude,Longitude,TimeStamp,PDate"
+  unitid_olderEbam_2_rawNames <- unlist(stringr::str_split(unitid_olderEbam_2_header, ','))
+  unitid_olderEbam_2_names <- make.names(unitid_olderEbam_2_rawNames)
+  unitid_olderEbam_2_types <- 'cccddcc'
+  
+  
   
   #     Determine file type     -----------------------------------------------
   
@@ -86,17 +119,36 @@ airsis_identifyMonitorType <- function(df) {
   rawNames <- vector('character')
   columnNames <- vector('character')
   columnTypes <- vector('character')
-  if ( length(setdiff(esam_names, colNames)) == 0 ) {
+  
+  # NOTE:  Compare the more specific header lines first
+  if ( dplyr::setequal(unitid_esam_names, colNames) ) {
+    monitorType <- "ESAM"
+    rawNames <- unitid_esam_rawNames
+    columnNames <- unitid_esam_names
+    columnTypes <- unitid_esam_types
+  } else if ( dplyr::setequal(unitid_ebam_names, colNames) ) {
+    monitorType <- "EBAM"
+    rawNames <- unitid_ebam_rawNames
+    columnNames <- unitid_ebam_names
+    columnTypes <- unitid_ebam_types
+  } else if ( dplyr::setequal(unitid_bam1020_names, colNames) ) {
+    monitorType <- "BAM1020"
+    rawNames <- unitid_bam1020_rawNames
+    columnNames <- unitid_bam1020_names
+    columnTypes <- unitid_bam1020_types
+
+  # NOTE:  Now check for the older, pre-unitid headers in the same order
+  } else if ( dplyr::setequal(esam_names, colNames) ) {
     monitorType <- "ESAM"
     rawNames <- esam_rawNames
     columnNames <- esam_names
     columnTypes <- esam_types
-  } else if ( length(setdiff(ebam_names, colNames)) == 0 ) {
+  } else if ( dplyr::setequal(ebam_names, colNames) ) {
     monitorType <- "EBAM"
     rawNames <- ebam_rawNames
     columnNames <- ebam_names
     columnTypes <- ebam_types
-  } else if ( length(setdiff(bam1020_names, colNames)) == 0 ) {
+  } else if ( dplyr::setequal(bam1020_names, colNames) ) {
     monitorType <- "BAM1020"
     rawNames <- bam1020_rawNames
     columnNames <- bam1020_names

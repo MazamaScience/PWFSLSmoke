@@ -42,7 +42,7 @@
 #' @examples
 #' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
-#' Omak <- monitor_subset(N_M, monitorIDs='530470013')
+#' Omak <- monitor_subset(N_M, monitorIDs='530470013_01')
 #' Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
 #' monitorPlot_timeseries(Omak, type='l', lwd=2)
 #' monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)

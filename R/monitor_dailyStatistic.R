@@ -1,6 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Calculate Daily Statistics for each Monitor in a ws_monitor Object
+#' @title Calculate Daily Statistics
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param FUN function used to collapse a day's worth of data into a single number for each monitor in the ws_monitor object
 #' @param dayStart one of \code{sunset|midnight|sunrise}
@@ -19,16 +19,21 @@
 #' 
 #' The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
 #' @examples 
+#' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
-#' Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009')
+#' Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009_01')
 #' Twisp_dailyMean <- monitor_dailyStatistic(Twisp, FUN=get('mean'), dayStart='midnight')
 #' monitorPlot_timeseries(Twisp_dailyMean, type='b')
 #' addAQILines()
 #' addAQILegend("topleft", lwd=1, pch=NULL)
 #' title("Twisp, Washington Daily Mean PM2.5, 2015")
+#' }
 
-monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,
-                                   minHours=24) {
+monitor_dailyStatistic <- function(ws_monitor,
+                                   FUN=get("mean"),
+                                   dayStart="midnight",
+                                   na.rm=TRUE,
+                                   minHours=18) {
   
   # Pull out dataframes
   data <- ws_monitor$data
@@ -78,6 +83,9 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   data$datetime <- as.numeric(data$datetime)
   df <- stats::aggregate(data, by=list(day), FUN=FUN, na.rm=na.rm)
   df$datetime <- meanDF$datetime
+  
+  # TODO:  Current implementation just checks number of hours per day, not number of valid measurements per day.
+  # TODO:  Need to reimplement this.
   
   # Check on the number of hours per day
   # NOTE:  The table will use day # as the names. We create hoursPerday

@@ -2,14 +2,14 @@
 #' @export
 #' @title Parse AIRSIS Dump File Data String
 #' @param fileString character string containing AIRSIS dump file
-#' @description Raw character data from AIRSIS are parsed into a dataframe.
+#' @description Raw character data from AIRSIS are parsed into a tibble.
 #' The incoming \code{fileString} can be read from a local
 #' file using \code{readr::read_file()}.
 #' 
 #' This function is intended for internal use at the Pacific Wildland
 #' Fire Sciences Lab.
 #' 
-#' @return List of dataframes of WRCC raw monitor data from multiple monitors.
+#' @return List of tibbles of AIRSIS raw monitor data from multiple monitors.
 
 # NOTE:  AIRSIS dump files have a format that similar to data downloaded form AIRSIS.
 # NOTE:  Each contains a single header line followed by data records. Dump files have
@@ -100,10 +100,10 @@ airsisDump_parseData <- function(fileString) {
   # NOTE:  a single data record as literal data and now a path.
   fakeFile <- paste0(paste0(lines[-1], collapse='\n'),'\n')
 
-  df <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
+  tbl <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
   
   # Print out any problems encountered by readr::read_csv
-  problemsDF <- readr::problems(df)
+  problemsDF <- readr::problems(tbl)
   if ( dim(problemsDF)[1] > 0 ) {
     logger.debug("Records skipped with parsing errors:")
     problems <- utils::capture.output(format(problemsDF))
@@ -119,10 +119,10 @@ airsisDump_parseData <- function(fileString) {
     # UnitID=1050 in July, 2016 has extra rows with some sort of metadata in columns Serial.Number and Data.1
     # We remove those here.
     
-    serialNumberMask <- (df$Serial.Number != "") & !is.na(df$Serial.Number)
+    serialNumberMask <- (tbl$Serial.Number != "") & !is.na(tbl$Serial.Number)
     if ( sum(serialNumberMask) > 0 ) {
       logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
-      df <- df[!serialNumberMask,]
+      tbl <- tbl[!serialNumberMask,]
     }
     
   }
@@ -130,7 +130,7 @@ airsisDump_parseData <- function(fileString) {
   #     Various fixes     -----------------------------------------------------
 
   # Check to see if any records remain
-  if ( nrow(df) == 0 ) {
+  if ( nrow(tbl) == 0 ) {
     logger.warn("No data remaining after parsing cleanup")
     stop("No data remaining after parsing cleanup", call.=FALSE)
   }
@@ -138,15 +138,15 @@ airsisDump_parseData <- function(fileString) {
   # NOTE:  No need to fix Latitude and Longitude as they are already present  
 
   # Add monitor name and type
-  df$monitorName <- df$Alias
-  df$monitorType <- monitorType
+  tbl$monitorName <- tbl$Alias
+  tbl$monitorType <- monitorType
   
-  logger.debug('Retaining %d rows of raw %s measurements', nrow(df), monitorType)
+  logger.debug('Retaining %d rows of raw %s measurements', nrow(tbl), monitorType)
   
-  # Split the dataframe int a list of per-monitor dataframes
-  dfList <- split(df, df$Alias) # list of tibbles
-  dfList <- lapply(dfList, as.data.frame)
-  names(dfList) <- make.names(names(dfList))
+  # Split the tibble int a list of per-monitor tibbles
+  tblList <- split(tbl, tbl$Alias) # list of tibbles
+  ### tblList <- lapply(tblList, as.data.frame, stringsAsFactors=FALSE)
+  names(tblList) <- make.names(names(tblList))
   
-  return(dfList)
+  return(tblList)
 }

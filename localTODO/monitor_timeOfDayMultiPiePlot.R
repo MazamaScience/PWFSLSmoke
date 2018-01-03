@@ -34,14 +34,14 @@
 #   
 #   # Data Preparation ----------------------------------------------------------
 #   
-#   # NOTE:  Incomting insituTime is GMT
+#   # NOTE:  Incomting insituTime is UTC
 #   
 #   # Insitu data requested 
 #   pm25 <- ws_monitor$data[[monitorID]]
-#   GMTTime <- ws_monitor$data$datetime 
+#   UTCTime <- ws_monitor$data$datetime 
 #   index <- which(ws_monitor$meta$monitorID %in% monitorID)
 #   
-#   localTime <- lubridate::with_tz(GMTTime,ws_monitor$meta$timezone[index])
+#   localTime <- lubridate::with_tz(UTCTime,ws_monitor$meta$timezone[index])
 #   day <- lubridate::day(localTime)
 #   hour <- lubridate::hour(localTime)
 #   

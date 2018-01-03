@@ -4,14 +4,14 @@
 \alias{airsis_ESAMQualityControl}
 \title{Apply Quality Control to Raw AIRSIS E-Sampler Dataframe}
 \usage{
-airsis_ESAMQualityControl(df, valid_Longitude = c(-180, 180),
+airsis_ESAMQualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,
   remove_Lat_zero = TRUE, valid_Flow = c(1.999, 2.001), valid_AT = c(-Inf,
   150), valid_RHi = c(-Inf, 55), valid_Conc = c(-Inf, 5000),
   flagAndKeep = FALSE)
 }
 \arguments{
-\item{df}{single site dataframe created by \code{airsis_downloadData()}}
+\item{tbl}{single site tibble created by \code{airsis_downloadData()}}
 
 \item{valid_Longitude}{range of valid Longitude values}
 
@@ -32,7 +32,7 @@ airsis_ESAMQualityControl(df, valid_Longitude = c(-180, 180),
 \item{flagAndKeep}{flag, rather then remove, bad data during the QC process}
 }
 \value{
-Cleaned up dataframe of AIRSIS monitor data.
+Cleaned up tibble of AIRSIS monitor data.
 }
 \description{
 Perform various QC measures on AIRSIS E-Sampler data.

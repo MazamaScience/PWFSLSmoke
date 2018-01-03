@@ -2,7 +2,7 @@
 % Please edit documentation in R/addAQILines.R
 \name{addAQILines}
 \alias{addAQILines}
-\title{Adds AQI Lines to a Plot}
+\title{Add AQI Lines to a Plot}
 \usage{
 addAQILines(...)
 }

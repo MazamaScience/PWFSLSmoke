@@ -4,19 +4,19 @@
 \alias{wrcc_createDataDataframe}
 \title{Create WRCC Data Dataframe}
 \usage{
-wrcc_createDataDataframe(df, meta)
+wrcc_createDataDataframe(tbl, meta)
 }
 \arguments{
-\item{df}{single site WRCC dataframe created by \code{wrcc_clustering()}}
+\item{tbl}{single site WRCC tibble created by \code{wrcc_clustering()}}
 
-\item{meta}{WRCC meta dataframe created by \code{wrcc_createMetaDataframe()}}
+\item{meta}{WRCC meta datafra,e created by \code{wrcc_createMetaDataframe()}}
 }
 \value{
 A \code{data} dataframe for use in a \emph{ws_monitor} object.
 }
 \description{
-After quality control has been applied to an WRCC dataframe,
-we can extract the PM2.5 values and store them in a \code{data} dataframe
+After quality control has been applied to an WRCC tibble,
+we can extract the PM2.5 values and store them in a \code{data} tibble
 organized as time-by-deployment (aka time-by-site).
 
 The first column of the returned dataframe is named \code{'datetime'} and

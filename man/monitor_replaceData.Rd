@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_replaceData.R
 \name{monitor_replaceData}
 \alias{monitor_replaceData}
-\title{Subset Monitoring Data}
+\title{Replace ws_monitor Data with Another Value}
 \usage{
 monitor_replaceData(ws_monitor, filter, value)
 }

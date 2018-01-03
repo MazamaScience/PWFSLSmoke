@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_rollingMean.R
 \name{monitor_rollingMean}
 \alias{monitor_rollingMean}
-\title{Calculate Rolling Means of ws_monitor PM2.5 Data}
+\title{Calculate Rolling Means}
 \usage{
 monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
   align = "center")
@@ -12,7 +12,7 @@ monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
 
 \item{width}{number of periods to average (e.g. for hourly data, \code{width = 24} calculates 24-hour rolling means)}
 
-\item{data.thresh}{minimum number of valid observations required as a percent of \code{width}; NA is returned if insufficicnet valid data to calculate mean}
+\item{data.thresh}{minimum number of valid observations required as a percent of \code{width}; NA is returned if insufficient valid data to calculate mean}
 
 \item{align}{alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}}
 }

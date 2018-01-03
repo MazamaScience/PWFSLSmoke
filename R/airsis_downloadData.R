@@ -16,9 +16,10 @@
 #' df <- airsis_parseData(fileString)
 #' }
 
-airsis_downloadData <- function(startdate=20020101,
-                                enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                                provider='USFS', unitID=NULL,
+airsis_downloadData <- function(startdate=strftime(lubridate::now(),"%Y0101",tz="UTC"),
+                                enddate=strftime(lubridate::now(),"%Y%m%d",tz="UTC"),
+                                provider='USFS',
+                                unitID=NULL,
                                 baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?") {
   
   # Sanity check
@@ -39,8 +40,8 @@ airsis_downloadData <- function(startdate=20020101,
   
   # Create URL
   url <- paste0(baseUrl, 'uid=', unitID,
-                '&StartDate=', strftime(starttime, "%F", tz="GMT"),
-                '&EndDate=', strftime(endtime, "%F", tz="GMT"))
+                '&StartDate=', strftime(starttime, "%Y-%m-%d", tz="UTC"),
+                '&EndDate=', strftime(endtime, "%Y-%m-%d", tz="UTC"))
   
   logger.debug("Downloading AIRSIS data from %s", url)
   

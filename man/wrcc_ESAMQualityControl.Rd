@@ -2,16 +2,16 @@
 % Please edit documentation in R/wrcc_ESAMQualityControl.R
 \name{wrcc_ESAMQualityControl}
 \alias{wrcc_ESAMQualityControl}
-\title{Apply Quality Control to Raw WRCC E-Sampler Dataframe}
+\title{Apply Quality Control to Raw WRCC E-Sampler Tibble}
 \usage{
-wrcc_ESAMQualityControl(df, valid_Longitude = c(-180, 180),
+wrcc_ESAMQualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,
   remove_Lat_zero = TRUE, valid_Flow = c(1.999, 2.001), valid_AT = c(-Inf,
   150), valid_RHi = c(-Inf, 55), valid_Conc = c(-Inf, 5000),
   flagAndKeep = FALSE)
 }
 \arguments{
-\item{df}{single site dataframe created by \code{wrcc_parseData()}}
+\item{tbl}{single site tibble created by \code{wrcc_parseData()}}
 
 \item{valid_Longitude}{range of valid Longitude values}
 
@@ -32,7 +32,7 @@ wrcc_ESAMQualityControl(df, valid_Longitude = c(-180, 180),
 \item{flagAndKeep}{flag, rather than remove, bad data during the QC process}
 }
 \value{
-Cleaned up dataframe of WRCC monitor data.
+Cleaned up tibble of WRCC monitor data.
 }
 \description{
 Perform various QC measures on WRCC EBAM data.

@@ -1,10 +1,10 @@
 #' @keywords internal
 #' @export
 #' @title Add Clustering Information to a Dataframe
-#' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
+#' @param tbl tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see description)
-#' @param lonVar name of longitude variable in the incoming dataframe
-#' @param latVar name of the latitude variable in the incoming dataframe
+#' @param lonVar name of longitude variable in the incoming tibble
+#' @param latVar name of the latitude variable in the incoming tibble
 #' @param maxClusters maximum number of clusters to try
 #' @param flagAndKeep flag, rather then remove, bad data during clustering
 #' @description Clustering is used to assign individual measurements to deployment locations.
@@ -12,49 +12,46 @@
 #' The value of \code{clusterRadius} is compared with the output of \code{cluster::pam(...)$clusinfo[,'av_diss']}
 #' to determine the number of clusters.
 #' 
-#' @return Input dataframe with additional columns: \code{deploymentID, medoidLon, mediodLat}.
+#' @return Input tibble with additional columns: \code{deploymentID, medoidLon, mediodLat}.
 #' @references \href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
 
-addClustering <- function(df, clusterDiameter=1000,
+addClustering <- function(tbl, clusterDiameter=1000,
                           lonVar="longitude", latVar="latitude",
                           maxClusters=50, flagAndKeep=FALSE) {
   
-  # Sanity check -- make sure df does not have class "tbl_df"
-  df <- as.data.frame(df)
-  
   # Sanity check -- row count
-  if ( nrow(df) == 0 ) {
-    logger.error("Unable to perform clustering: dataframe empty")
-    stop(paste0("Unable to perform clustering: dataframe empty"))
+  if ( nrow(tbl) == 0 ) {
+    logger.error("Unable to perform clustering: tibble empty")
+    stop(paste0("Unable to perform clustering: tibble empty"))
   }
   
   # Sanity check -- names
-  if ( !lonVar %in% names(df) ) {
-    logger.error("No lonVar='%s' column found in 'df' dataframe with columns: %s", lonVar, paste0(names(df), collapse=", "))
+  if ( !lonVar %in% names(tbl) ) {
+    logger.error("No lonVar='%s' column found in 'tbl' tibble with columns: %s", lonVar, paste0(names(tbl), collapse=", "))
     stop(paste0("Longitudes could not be found.  Did you specify the lonVar argument?"))
   }
-  if ( !latVar %in% names(df) ) {
-    logger.error("No latVar='%s' column found in 'df' dataframe with columns: %s", latVar, paste0(names(df), collapse=", "))
+  if ( !latVar %in% names(tbl) ) {
+    logger.error("No latVar='%s' column found in 'tbl' tibble with columns: %s", latVar, paste0(names(tbl), collapse=", "))
     stop(paste0("Latitudes could not be found.  Did you specify the latVar argument?"))
   }
   
   # If we only have a single row, return immediately
-  if ( nrow(df) == 1 ) {
-    df$medoidLon <- df[[lonVar]][1]
-    df$medoidLat <- df[[latVar]][1]
-    lonString <- format( round(df$medoidLon,3), nsmall=3 ) # 3 decimal places
-    latString <- format( round(df$medoidLat,3), nsmall=3 ) # 3 decimal places
+  if ( nrow(tbl) == 1 ) {
+    tbl$medoidLon <- tbl[[lonVar]][1]
+    tbl$medoidLat <- tbl[[latVar]][1]
+    lonString <- format( round(tbl$medoidLon,3), nsmall=3 ) # 3 decimal places
+    latString <- format( round(tbl$medoidLat,3), nsmall=3 ) # 3 decimal places
     locationString <- paste0( 'lon_', lonString, '_lat_', latString )
-    df$deploymentID <- make.names(locationString)
-    return(df)
+    tbl$deploymentID <- make.names(locationString)
+    return(tbl)
   }
   
   # temporarily remove rows with bad locations if flagAndKeep = TRUE
   if ( flagAndKeep ) {
-    df$rowID <- as.integer(rownames(df))
-    badLocationMask <- is.na(df[lonVar]) | is.na(df[latVar])
-    badLocationRows <- df[badLocationMask,]
-    df <- df[!badLocationMask,]
+    tbl$rowID <- as.integer(rownames(tbl))
+    badLocationMask <- is.na(tbl[lonVar]) | is.na(tbl[latVar])
+    badLocationRows <- tbl[badLocationMask,]
+    tbl <- tbl[!badLocationMask,]
   }
   
   # NOTE:  A monitor wil be moved around from time to time, sometimes across the country
@@ -88,13 +85,13 @@ addClustering <- function(df, clusterDiameter=1000,
   # NOTE:  (Is there really any difference between 'max_diss' and 'distance'?)
   
   # Perform clustering
-  for (clusterCount in 1:maxClusters) {
-    if ( nrow(df) < 2000 ) {
+  for ( clusterCount in 1:maxClusters ) {
+    if ( nrow(tbl) < 2000 ) {
       logger.trace("\ttesting %d clusters using cluster::pam", clusterCount)
-      clusterObj <- cluster::pam(df[,c(lonVar,latVar)],clusterCount)
+      clusterObj <- cluster::pam(tbl[,c(lonVar,latVar)],clusterCount)
     } else {
       logger.trace("\ttesting %d clusters using cluster::clara", clusterCount)
-      clusterObj <- cluster::clara(df[,c(lonVar,latVar)],clusterCount, samples=50)
+      clusterObj <- cluster::clara(tbl[,c(lonVar,latVar)],clusterCount, samples=50)
     }
     medoidLats <- clusterObj$medoids[,latVar]
     diameters <- 2 * clusterObj$clusinfo[,'max_diss'] # decimal degrees
@@ -109,25 +106,25 @@ addClustering <- function(df, clusterDiameter=1000,
   logger.debug("Using %d cluster(s) with a diameter of %d meters", clusterCount, clusterDiameter)
   
   # Create the vector of deployment identifiers
-  if ( nrow(df) < 2000 ) {
-    clusterObj <- cluster::pam(df[,c(lonVar,latVar)],clusterCount)
+  if ( nrow(tbl) < 2000 ) {
+    clusterObj <- cluster::pam(tbl[,c(lonVar,latVar)],clusterCount)
   } else {
-    clusterObj <- cluster::clara(df[,c(lonVar,latVar)],clusterCount, samples=50)
+    clusterObj <- cluster::clara(tbl[,c(lonVar,latVar)],clusterCount, samples=50)
   }
 
-  # Add medoid lons and lats to the dataframe for use by wrcc_createMetaDataframe
-  df$medoidLon <- clusterObj$medoids[,lonVar][clusterObj$clustering]
-  df$medoidLat <- clusterObj$medoids[,latVar][clusterObj$clustering]
+  # Add medoid lons and lats to the tibble for use by wrcc_createMetaDataframe
+  tbl$medoidLon <- clusterObj$medoids[,lonVar][clusterObj$clustering]
+  tbl$medoidLat <- clusterObj$medoids[,latVar][clusterObj$clustering]
 
   # NOTE:  Each deploymentID identifies a unique location. We paste together
   # NOTE:  longitude and latitude rounded to 3 decimal places to create this identifier.
   # NOTE:  This should be enough accuracy for a unique deploymentID as
   # NOTE:  0.001 degrees of longitude = 102.47m at 23N, 43.496m at 67N
   
-  lonString <- format( round(df$medoidLon,3), nsmall=3 ) # 3 decimal places
-  latString <- format( round(df$medoidLat,3), nsmall=3 ) # 3 decimal places
+  lonString <- format( round(tbl$medoidLon,3), nsmall=3 ) # 3 decimal places
+  latString <- format( round(tbl$medoidLat,3), nsmall=3 ) # 3 decimal places
   locationString <- paste0( 'lon_', lonString, '_lat_', latString )
-  df$deploymentID <- make.names(locationString)
+  tbl$deploymentID <- make.names(locationString)
 
   # reinsert rows with bad locations if flagAndKeep = TRUE
   if ( flagAndKeep ) {
@@ -136,13 +133,12 @@ addClustering <- function(df, clusterDiameter=1000,
       badLocationRows$deploymentID <- NA
       badLocationRows$medoidLon <- NA
       badLocationRows$medoidLat <- NA
-      # merge dataframes and sort based on dummy rowID
-      df <- rbind(df, badLocationRows)
-      df <- df[order(df$rowID),]
+      # merge tibbles and sort based on dummy rowID
+      tbl <- rbind(tbl, badLocationRows)
+      tbl <- tbl[order(tbl$rowID),]
     }
-    df$rowID <- NULL
+    tbl$rowID <- NULL
   }
   
-  return(as.data.frame(df))
-  
+  return(tbl)
 }

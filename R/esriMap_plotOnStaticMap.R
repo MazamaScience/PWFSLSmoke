@@ -6,12 +6,15 @@
 #' @param grayscale logical, if TRUE one layer is plotted with grayscale values. If FALSE, a color
 #' map is plotted from red, green, and blue colors. 
 #' @param ... arguments passed on to \code{plot} (for grayscale = TRUE) or \code{plotRGB} (for grayscale = FALSE)
-#' @return An plot of the map
 #' @description The map is plotted using \code{plotRGB} from \pkg{raster}. 
+#' @return An plot of the map
 #' @examples
+#' \dontrun{
 #' map <- esriMap_getMap(-122.3318, 47.668)
 #' esriMap_plotOnStaticMap(map)
 #' esriMap_plotOnStaticMap(map, grayscale = TRUE)
+#' }
+#' @seealso \code{\link{esriMap_getMap}}
 
 esriMap_plotOnStaticMap <- function(mapRaster, 
                                     grayscale = FALSE,

@@ -1,9 +1,9 @@
 #' @keywords AIRSIS
 #' @export
 #' @title Apply Quality Control to Raw AIRSIS Dataframe
-#' @param df single site dataframe created by airsis_downloadData()
+#' @param tbl single site tibble created by airsis_downloadData()
 #' @param ... additional parameters are passed to type-specific QC functions
-#' @description Various QC steps are taken to clean up the incoming raw dataframe including:
+#' @description Various QC steps are taken to clean up the incoming raw tibble including:
 #' 
 #' \enumerate{
 #' \item{Ensure GPS location data are included in each measurement record.}
@@ -12,30 +12,48 @@
 #' }
 #' 
 #' See the individual \code{airsis_~QualityControl()} functions for details.
-#' @return Cleaned up dataframe of AIRSIS monitor data.
+#' 
+#' QC parameters that can be passed in the \code{\dots} include the following
+#' valid data ranges as taken from \code{airsis_EBAMQualityControl()}:
+#' 
+#' \itemize{
+#' \item{\code{valid_Longitude=c(-180,180)}}
+#' \item{\code{valid_Latitude=c(-90,90)}}
+#' \item{\code{remove_Lon_zero = TRUE}}
+#' \item{\code{remove_Lat_zero = TRUE}}
+#' \item{\code{valid_Flow = c(16.7*0.95,16.7*1.05)}}
+#' \item{\code{valid_AT = c(-Inf,45)}}
+#' \item{\code{valid_RHi = c(-Inf,45)}}
+#' \item{\code{valid_Conc = c(-Inf,5.000)}}
+#' }
+#' 
+#' Note that appropriate values for QC thresholds will depend on the type of monitor.
+#' 
+#' @return Cleaned up tibble of AIRSIS monitor data.
 #' @seealso \code{\link{airsis_EBAMQualityControl}}
 #' @seealso \code{\link{airsis_ESAMQualityControl}}
 
-airsis_qualityControl <- function(df, ...) {
+airsis_qualityControl <- function(tbl,
+                                  ...) {
   
   # Sanity check -- row count
-  if ( nrow(df) == 0 ) {
-    logger.error("Unable to perform QC: dataframe empty")
-    stop(paste0("Unable to perform QC: dataframe empty"))
+  if ( nrow(tbl) == 0 ) {
+    logger.error("Unable to perform QC: tibble empty")
+    stop(paste0("Unable to perform QC: tibble empty"))
   }
   
-  # Sanity check -- df must have a monitorType
-  if ( !'monitorType' %in% names(df) ) {
-    logger.error("No 'monitorType' column found in 'df' dataframe with columns: %s", paste0(names(df), collapse=", "))
-    stop(paste0("No 'monitorType' column found in 'df' dataframe."))
+  # Sanity check -- tbl must have a monitorType
+  if ( !'monitorType' %in% names(tbl) ) {
+    logger.error("No 'monitorType' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse=", "))
+    stop(paste0("No 'monitorType' column found in 'tbl' tibble."))
   }
   
-  monitorType <- unique(df$monitorType)
+  monitorType <- unique(tbl$monitorType)
   
-  # Sanity check -- df must have only one monitorType
+  # Sanity check -- tbl must have only one monitorType
   if ( length(monitorType) > 1 ) {
-    logger.error("Multilpe monitor types found in 'df' dataframe: %s", paste0(monitorType, collapse=", "))
-    stop(paste0("Multiple monitor types found in 'df' dataframe."))
+    logger.error("Multilpe monitor types found in 'tbl' tibble: %s", paste0(monitorType, collapse=", "))
+    stop(paste0("Multiple monitor types found in 'tbl' tibble."))
   }
   
   monitorType <- monitorType[1]
@@ -44,22 +62,22 @@ airsis_qualityControl <- function(df, ...) {
   
   if ( monitorType == 'BAM1020' ) {
     
-    df <- airsis_BAM1020QualityControl(df, ...)
+    tbl <- airsis_BAM1020QualityControl(tbl, ...)
 
   } else if ( monitorType == 'EBAM' ) {
     
-    df <- airsis_EBAMQualityControl(df, ...)
+    tbl <- airsis_EBAMQualityControl(tbl, ...)
     
   } else if ( monitorType == 'ESAM' ) {
     
-    df <- airsis_ESAMQualityControl(df, ...)
+    tbl <- airsis_ESAMQualityControl(tbl, ...)
     
   } else {
     
-    logger.warn("Dataframe contains %s data -- no QC available, original dataframe being returned", monitorType)
+    logger.warn("Dataframe contains %s data -- no QC available, original tibble being returned", monitorType)
     
   }
   
-  return(df)
+  return(tbl)
   
 }

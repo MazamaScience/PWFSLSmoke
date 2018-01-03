@@ -1,7 +1,7 @@
 #' @keywords ws_monitor
 #' @export
 #' @import graphics
-#' @title Create Individual Value and Rolling Mean Plot
+#' @title Create Rolling Mean Plot
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
 #' in the ws_monitor object)
@@ -33,7 +33,7 @@
 #' @examples
 #' N_M <- Northwest_Megafires
 #' Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
-#'                            monitorIDs=c('410190002'))
+#'                            monitorIDs=c('410190002_01'))
 #' monitorPlot_rollingMean(Roseburg, shadedNight=TRUE)
 
 monitorPlot_rollingMean <- function(ws_monitor,

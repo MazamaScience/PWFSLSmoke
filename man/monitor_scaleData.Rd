@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_scaleData.R
 \name{monitor_scaleData}
 \alias{monitor_scaleData}
-\title{Scale Monitoring Data}
+\title{Scale ws_monitor Data}
 \usage{
 monitor_scaleData(ws_monitor, factor)
 }

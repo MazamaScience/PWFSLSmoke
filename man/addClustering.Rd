@@ -4,24 +4,24 @@
 \alias{addClustering}
 \title{Add Clustering Information to a Dataframe}
 \usage{
-addClustering(df, clusterDiameter = 1000, lonVar = "longitude",
+addClustering(tbl, clusterDiameter = 1000, lonVar = "longitude",
   latVar = "latitude", maxClusters = 50, flagAndKeep = FALSE)
 }
 \arguments{
-\item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
+\item{tbl}{tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}
 
 \item{clusterDiameter}{diameter in meters used to determine the number of clusters (see description)}
 
-\item{lonVar}{name of longitude variable in the incoming dataframe}
+\item{lonVar}{name of longitude variable in the incoming tibble}
 
-\item{latVar}{name of the latitude variable in the incoming dataframe}
+\item{latVar}{name of the latitude variable in the incoming tibble}
 
 \item{maxClusters}{maximum number of clusters to try}
 
 \item{flagAndKeep}{flag, rather then remove, bad data during clustering}
 }
 \value{
-Input dataframe with additional columns: \code{deploymentID, medoidLon, mediodLat}.
+Input tibble with additional columns: \code{deploymentID, medoidLon, mediodLat}.
 }
 \description{
 Clustering is used to assign individual measurements to deployment locations.

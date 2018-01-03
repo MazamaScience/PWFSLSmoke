@@ -2,7 +2,7 @@
 % Please edit documentation in R/esriMap_getMap.R
 \name{esriMap_getMap}
 \alias{esriMap_getMap}
-\title{Create a RGB spatial raster from arcGIS REST}
+\title{Download a Spatial Raster Object from ESRI}
 \usage{
 esriMap_getMap(centerLon = NULL, centerLat = NULL, bboxString = NULL,
   bboxSR = "4326", maptype = "worldStreetMap", zoom = 12, width = 640,
@@ -17,8 +17,7 @@ esriMap_getMap(centerLon = NULL, centerLat = NULL, bboxString = NULL,
 
 \item{bboxSR}{spatial reference of the bounding box}
 
-\item{maptype}{map type. natGeo, worldStreetMap, worldTopoMap, satellite, or deLorme. Also accepts
-map server identity, found at \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}}
+\item{maptype}{map type}
 
 \item{zoom}{map zoom level; corresponds to googleMaps zoom level}
 
@@ -29,13 +28,26 @@ map server identity, found at \url{http://resources.arcgis.com/en/help/arcgis-re
 \item{crs}{object of class CRS. The Coordinate Reference System (CRS) for the returned map. If the CRS of the downloaded
 map does not match, it will be projected to the specified CRS using \code{raster::projectRaster}.}
 
-\item{additionalArgs}{additional arguments to be pasted into the image URL eg. \code{"&rotation=90"}}
+\item{additionalArgs}{character string with additional arguments to be pasted into the image URL eg. \code{"&rotation=90"}}
 }
 \value{
-A rasterBrick object which can be plotted with \code{raster::plotRGB} and serve as a base plot.
+A rasterBrick object which can be plotted with \code{esriMap_plotOnStaticMap()} or \code{raster::plotRGB()} and serve as a base plot.
 }
 \description{
-Creates a rasterBrick using the \pkg{raster} package with layers for red, green, and blue color intensity.
+Downloads a PNG from ESRI and creates a \code{raster::rasterBrick} object with layers for red, green, and blue.
+This can then passed as the \code{mapRaster} object to the \code{esriMap_plotOnStaticMap()} function for plotting.
+
+Available \code{maptypes} include:
+\itemize{
+\item{natGeo}
+\item{worldStreetMap}
+\item{worldTopoMap}
+\item{satellite}
+\item{deLorme}
+}
+
+Additional base maps are found at:
+\url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
 }
 \note{
 The spatial reference of the image when it is downloaded is 3857. If the crs argument is different, projecting may cause 
@@ -52,5 +64,8 @@ esriMap_plotOnStaticMap(map)
 }
 \references{
 \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/}
+}
+\seealso{
+\code{\link{esriMap_plotOnStaticMap}}
 }
 \keyword{plotting}

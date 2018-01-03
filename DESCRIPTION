@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 0.99.30
+Version: 1.0.0
 Title: Utilities for Working with Air Quality Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -24,6 +24,7 @@ Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
     R (>= 3.1.0),
     dplyr,
+    magrittr,
     maps,
     MazamaSpatialUtils (>= 0.4.4)
 Imports:

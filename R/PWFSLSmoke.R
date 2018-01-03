@@ -1,11 +1,11 @@
 
-# ----- Internal data ---------------------------------------------------------
+# ----- Example datasets ------------------------------------------------------
 
 #' Carmel Valley example dataset
 #' 
 #' @docType data
 #' @keywords datasets
-#' @name CarmelValley
+#' @name Carmel_Valley
 #' @title Carmel Valley Example Dataset
 #' @format A list with two elements
 #' @description
@@ -54,13 +54,14 @@ NULL
 #' \item{miscellaneous}
 #' \item{usfs_regional}
 #' }
-#' @note This list of monitors was created on Feb 09, 2017.
+#' @note This list of monitor types was created on Feb 09, 2017.
 NULL
 
 # ----- AIRSIS related info ---------------------------------------------------
 
 #' AIRSIS monitor types and codes
 #' 
+#' @export
 #' @docType data
 #' @name AIRSIS
 #' @title AIRSIS Unit Types
@@ -78,7 +79,7 @@ NULL
 #' \item{ESAM}{ 39 = Iridium - Esam}
 #' \item{AUTOMET}{ 43 = Automet}
 #' }
-#' @note This list of monitors was created on Feb 09, 2017.
+#' @note This list of monitor types was created on Feb 09, 2017.
 AIRSIS <- list(unitTypes=list(DATARAM=21,
                               BAM1020=24,
                               EBAM_NEW=30,
@@ -91,11 +92,11 @@ AIRSIS <- list(unitTypes=list(DATARAM=21,
 
 #' AQI breaks and associated names and colors
 #' 
+#' @export
 #' @docType data
 #' @name AQI
 #' @title Official Air Quality Index Levels, Names and Colors
 #' @format A list with five elements
-#' @export
 #' @description
 #' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
 #' @details
@@ -114,21 +115,39 @@ AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
                      grDevices::rgb(126/255,0,35/255)),
             names=c('good','moderate','USG','unhealthy','very unhealthy','hazardous'))
 
-# ----- State codes in the lower 48 --------------------------------------------
+# ----- State codes -----------------------------------------------------------
 
 #' CONUS state codes
 #' 
+#' @export
 #' @docType data
 #' @name CONUS
 #' @title CONUS State Codes
-#' @format A vector with 48 elements
-#' @export
+#' @format A vector with 49 elements
 #' @description
-#' State codes for the 48 states that make up the Continental US
+#' State codes for the 48 contiguous states +DC that make up the CONtinental US
 
-CONUS <- c("AL","AZ","AR","CA","CO","CT","DE","FL","GA","ID",
-           "IL","IN","IA","KS","KY","LA","ME","MD","MA","MI",
-           "MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY",
-           "NC","ND","OH","OK","OR","PA","RI","SC","SD","TN",
-           "TX","UT","VT","VA","WA","WV","WI","WY","DC")
+CONUS <- c(     "AL","AZ","AR","CA","CO","CT","DE","FL","GA",
+                "ID","IL","IN","IA","KS","KY","LA","ME","MD",
+           "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
+           "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
+           "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
+           "DC"     )
+
+#' US state codes
+#' 
+#' @export
+#' @docType data
+#' @name US_52
+#' @title US State Codes
+#' @format A vector with 52 elements
+#' @description
+#' State codes for the 50 states +DC +PR (Puerto Rico)
+
+US_52 <- c("AK","AL","AZ","AR","CA","CO","CT","DE","FL","GA",
+           "HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
+           "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
+           "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
+           "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
+           "DC","PR")
 

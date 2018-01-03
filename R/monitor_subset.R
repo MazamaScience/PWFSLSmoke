@@ -1,6 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Create a Subset of a ws_monitor Object
+#' @title Subset ws_monitor Object
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param xlim optional vector with low and high longitude limits
 #' @param ylim optional vector with low and high latitude limits

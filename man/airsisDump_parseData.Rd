@@ -10,10 +10,10 @@ airsisDump_parseData(fileString)
 \item{fileString}{character string containing AIRSIS dump file}
 }
 \value{
-List of dataframes of WRCC raw monitor data from multiple monitors.
+List of tibbles of AIRSIS raw monitor data from multiple monitors.
 }
 \description{
-Raw character data from AIRSIS are parsed into a dataframe.
+Raw character data from AIRSIS are parsed into a tibble.
 The incoming \code{fileString} can be read from a local
 file using \code{readr::read_file()}.
 

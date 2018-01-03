@@ -26,6 +26,6 @@ Unit types include:
 AIRSIS monitor types and codes
 }
 \note{
-This list of monitors was created on Feb 09, 2017.
+This list of monitor types was created on Feb 09, 2017.
 }
 \keyword{datasets}

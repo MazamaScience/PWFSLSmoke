@@ -18,7 +18,7 @@ monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
 
 \item{localTime}{logical specifying whether \code{tlim} is in local time or UTC}
 
-\item{style}{custom styling, one of \code{'aqiDots'}}
+\item{style}{custom styling, one of \code{'aqidots'}}
 
 \item{shadedNight}{add nighttime shading}
 
@@ -47,7 +47,7 @@ color code by AQI index, add shading to indicate nighttime, and adjust the time 
 When a named \code{style} is used, some graphical parameters will be overridden. Available styles include:
 
 \itemize{
-\item{\code{aqiDots}}{-- hourly values are individually colored by 24-hr AQI levels}
+\item{\code{aqidots}}{-- hourly values are individually colored by 24-hr AQI levels}
 \item{\code{gnats}}{-- semi-transparent dots like a cloud of gnats}
 }
 }
@@ -61,7 +61,7 @@ N_M <- Northwest_Megafires
 Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 monitorPlot_timeseries(Spokane, style='gnats')
 title('Spokane PM2.5 values, 2015')
-monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqiDots', pch=16)
+monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqidots', pch=16)
 addAQILegend()
 title('Spokane PM2.5 values, August 2015')
 monitorPlot_timeseries(Spokane, tlim=c(20150821,20150828), shadedNight=TRUE, style='gnats')

@@ -4,21 +4,15 @@
 \alias{epa_createMonitorObject}
 \title{Download and Convert Hourly EPA Air Quality Data}
 \usage{
-epa_createMonitorObject(year = NULL, parameterName = "PM2.5",
-  parameterCode = "88101",
-  baseUrl = "https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/",
-  downloadDir = tempdir())
+epa_createMonitorObject(zipFile = NULL, zeroMinimum = TRUE,
+  addGoogleMeta = TRUE)
 }
 \arguments{
-\item{year}{year}
+\item{zipFile}{absolute path to monitoring data .zip file}
 
-\item{parameterName}{pollutant name}
+\item{zeroMinimum}{logical specifying whether to convert negative values to zero}
 
-\item{parameterCode}{pollutant code}
-
-\item{baseUrl}{base URL for archived daily data}
-
-\item{downloadDir}{directory where files are downloaded and unzipped}
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
 \value{
 A \emph{ws_monitor} object with EPA data.
@@ -31,16 +25,14 @@ Before running this function you must first enable spatial data capabilities as 
 }
 \examples{
 \dontrun{
-library(PWFSLSmoke)
-library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial')
-loadSpatialData('NaturalEarthAdm1') # stateCodes dataset
-mon <- epa_createMonitorObject(2015, "PM2.5", "88101")
+initializeMazamaSpatialUtils()
+zipFile <- epa_downloadData(2016, "88101", downloadDir='~/Data/EPA')
+mon <- epa_createMonitorObject(zipFile, addGoogleMeta=FALSE)
 }
 }
 \references{
-\href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+\href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 
-\href{https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/FileFormats.html#_format_3}{file format description}
+\href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 }
 \keyword{EPA}

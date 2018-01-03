@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitorPlot_rollingMean.R
 \name{monitorPlot_rollingMean}
 \alias{monitorPlot_rollingMean}
-\title{Create Individual Value and Rolling Mean Plot}
+\title{Create Rolling Mean Plot}
 \usage{
 monitorPlot_rollingMean(ws_monitor, monitorID = NULL, width = 3,
   align = "center", data.thresh = 75, tlim = NULL, ylim = NULL,
@@ -62,7 +62,7 @@ This function attempts to provide a 'publication ready' rolling mean plot.
 \examples{
 N_M <- Northwest_Megafires
 Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
-                           monitorIDs=c('410190002'))
+                           monitorIDs=c('410190002_01'))
 monitorPlot_rollingMean(Roseburg, shadedNight=TRUE)
 }
 \keyword{ws_monitor}

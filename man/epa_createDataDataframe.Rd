@@ -4,10 +4,10 @@
 \alias{epa_createDataDataframe}
 \title{Create EPA Data Dataframe}
 \usage{
-epa_createDataDataframe(df)
+epa_createDataDataframe(tbl)
 }
 \arguments{
-\item{df}{an EPA raw dataframe after metadata enhancement}
+\item{tbl}{an EPA raw tibble after metadata enhancement}
 }
 \value{
 A \code{data} dataframe for use in a \emph{ws_monitor} object.

@@ -17,14 +17,12 @@ This vignette demonstrates the mapping and plotting capabilities of the **PWFSLS
 
 In the summer of 2015 Washington state had several catastrophic wildfires that led to heavy smoke in eastern Washington and northern Idaho for quite a few days. We will show how the mapping and timeseries plotting functions in the **PWFSLSmoke** package can help us visualize the spatial and temporal extent of wildfire smoke during these events.
 
-To begin, let's have a broader look at AirNow ambient monitoring data for the Pacific Northwest -- Washington, Oregon and Idaho -- from June 1 through October 31, 2015. First, we create a 24-hr rolling mean for each monitor:
+To begin, let's have a broader look at AirNow ambient monitoring data for the Pacific Northwest (Washington, Oregon and Idaho) from June 1 through October 31, 2015. First, we create a 24-hr rolling mean for each monitor:
 
 ```{r Northwest_Megafires, message=FALSE}
-library(PWFSLSmoke)
+suppressPackageStartupMessages(library(PWFSLSmoke))
+
 PacNW <- Northwest_Megafires
-# To work with AirNow data directly, uncomment the next two lines
-#N_M <- airnow_load(startdate=20150531, enddate=20151101)
-#PacNW <- monitor_subset(airnow, stateCodes=c("WA", "OR", "ID"))
 PacNW_24 <- monitor_rollingMean(PacNW, width=24)
 ```
 
@@ -36,11 +34,11 @@ addAQILegend(title="Max AQI", cex=0.7)
 ```
 
 The map shows that many areas of the Pacific NW had days with unhealthy air but a cluster of sites in
-Idaho were particularly bad.
+Idaho had particularly bad air quality.
 
 (*__Note__ that this is not the regulatory midnight-to-midnight AQI but a continuous 24-hr rolling mean.*)
 
-We can us an interactive "leaflet" map oo zoom in and get more information:
+We can us an interactive "leaflet" map to zoom in and get more information:
 
 ```{r leaflet}
 # Commented out for the vignette
@@ -51,17 +49,23 @@ The `monitorMap()` and `monitorLeaflet()` plots show us pretty much the same inf
 In this manner, we can assemble a list of monitorIDs in and around the Nez Perce Reservation in northern Idaho and generate a timeseries plot showing the terrible smoke in late August.
 
 ```{r dygraph}
-NezPerceIDs <- c("160571012","160690012","160690013","160690014","160490003","160491012")
+NezPerceIDs <- c("160571012_01","160690012_01","160690013_01",
+                 "160690014_01","160490003_01","160491012_01")
 NezPerce <- monitor_subset(PacNW, monitorIDs=NezPerceIDs)
 monitorPlot_timeseries(NezPerce, style='gnats')
+addAQILines()
+addAQILegend(cex=0.7)
 ```
 
 At this point it is clear that August is the month of interest so we'll subset all of our existing `ws_monitor` objects to cover the month of August with full days according to West Coast time.
 
 ```{r august}
-PacNW <- monitor_subset(PacNW, tlim=c(20150801,20150831), timezone="America/Los_Angeles")
-PacNW_24 <- monitor_subset(PacNW_24, tlim=c(20150801,20150831), timezone="America/Los_Angeles")
-NezPerce <- monitor_subset(NezPerce, tlim=c(20150801,20150831), timezone="America/Los_Angeles")
+PacNW <- monitor_subset(PacNW, tlim=c(20150801,20150831),
+                        timezone="America/Los_Angeles")
+PacNW_24 <- monitor_subset(PacNW_24, tlim=c(20150801,20150831),
+                           timezone="America/Los_Angeles")
+NezPerce <- monitor_subset(NezPerce, tlim=c(20150801,20150831),
+                           timezone="America/Los_Angeles")
 ```
 
 We can use the `monitorPlot_dailyBarplot()` function to look at official, midnight-to-midnight AQI levels for each monitor during the month of August:
@@ -82,8 +86,8 @@ We could also take a more automated approach and directly calculate the location
 
 ```{r acute}
 data <- PacNW$data[,-1] # omit 'datetime' column
-maxPM25 <- apply(data, 2, max, na.rm=TRUE)
-worstAcute <- names(sort(maxPM25, decreasing=TRUE))[1:6]
+maxPM25 <- apply(data, 2, max, na.rm=TRUE) # maximum value at each site
+worstAcute <- names(sort(maxPM25, decreasing=TRUE))[1:6] # monitorIDs for the six worst sites in PacNW
 intersect(worstAcute, NezPerceIDs)
 PacNW$meta[worstAcute[1],c('siteName','countyName','stateCode')]
 ```
@@ -96,7 +100,7 @@ the AQI "unhealthy" level:
 ```{r}
 PacNW_dailyAvg <- monitor_dailyStatistic(PacNW, FUN=mean, minHours=20)
 data <- PacNW_dailyAvg$data[,-1]
-unhealthyDays <- apply(data, 2, function(x){ sum(x >= AQI$breaks_24[4], na.rm=TRUE) })
+unhealthyDays <- apply(data, 2, function(x) { sum(x >= AQI$breaks_24[4], na.rm=TRUE) })
 worstChronic <- names(sort(unhealthyDays, decreasing=TRUE))[1:6]
 intersect(worstChronic, NezPerceIDs)
 PacNW$meta[worstChronic[1],c('siteName','countyName','stateCode')]
@@ -131,15 +135,15 @@ title("August, 2015", line=-1.5, cex.main=2)
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of "extreme"
+From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of "hazardous"
 as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these
 large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho. 
 
 We will now take a closer look at two tribal monitors:
 
 ```{r tribalMonitors_daily}
-Omak <- monitor_subset(PacNW, monitorIDs="530470013")
-Kamiah <- monitor_subset(PacNW, monitorIDs="160490003")
+Omak <- monitor_subset(PacNW, monitorIDs="530470013_01")
+Kamiah <- monitor_subset(PacNW, monitorIDs="160490003_01")
 layout(matrix(seq(2)))
 monitorPlot_dailyBarplot(Omak, main="August 2015 Daiy AQI -- Omak, WA",
                          labels_x_nudge=0.8, labels_y_nudge=250)

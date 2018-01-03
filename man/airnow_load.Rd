@@ -4,8 +4,9 @@
 \alias{airnow_load}
 \title{Load AirNow Monitoring Data}
 \usage{
-airnow_load(startdate, enddate, stateCodes = NULL, monitorIDs = NULL,
-  parameter = "PM2.5",
+airnow_load(startdate = strftime(lubridate::now(), "\%Y\%m0100", tz = "UTC"),
+  enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz = "UTC"),
+  stateCodes = NULL, monitorIDs = NULL, parameter = "PM2.5",
   baseUrl = "https://smoke.airfire.org/RData/AirNowTech/")
 }
 \arguments{

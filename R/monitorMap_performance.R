@@ -33,7 +33,7 @@
 #' # Spokane summer of 2015
 #' wa <- airnow_load(20150701, 20150930, stateCodes='WA')
 #' wa <- monitor_rollingMean(wa, width=3)
-#' MonroeSt <- monitor_subset(wa, monitorIDs=530630047)
+#' MonroeSt <- monitor_subset(wa, monitorIDs="530630047_01")
 #' monitorMap_performance(wa, MonroeSt, cex=2)
 #' title('Heidike Skill of monitors predicting another monitor.')
 #' }

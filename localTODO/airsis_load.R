@@ -15,8 +15,9 @@
 #' }
 
 airsis_load <- function(startdate=20000101,
-                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="GMT"),
-                        monitorIDs=NULL, stateCodes=NULL, 
+                        enddate=strftime(lubridate::now(),"%Y%m%d",tz="UTC"),
+                        monitorIDs=NULL,
+                        stateCodes=NULL, 
                         url='https://smoke.airfire.org/RData/AIRSIS/AIRSIS_monitors.RData') {
   
   # data is already stored in a single ws_monitor object

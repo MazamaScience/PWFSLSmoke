@@ -5,7 +5,6 @@
 
 library(PWFSLSmoke)
 
-
 # ---- AirNow monitors ----
 
 # Load airnow monitor data for Washington for August, 2015
@@ -77,9 +76,8 @@ monitorLeaflet(merged_worst, maptype="Stamen.Terrain")
 monitorDygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
 
 # Plot with monitor_timeseriesPlot
-monitorPlot_timeseries(merged_worst, style='aqiDots')
-###legend('topleft', legend=rev(AQI$names), pch=16, col=rev(AQI$colors))
-addAQILegend()
+monitorPlot_timeseries(merged_worst, style='aqidots')
+addAQILegend(pch=1)
 title('Terrible Smoke in late August')
 
 # Create a new ws_monitor object by appling 24hr right-aligned rolling mean

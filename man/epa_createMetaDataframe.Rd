@@ -4,10 +4,17 @@
 \alias{epa_createMetaDataframe}
 \title{Create Sites Metadata Dataframe}
 \usage{
-epa_createMetaDataframe(df)
+epa_createMetaDataframe(tbl, pwfslDataIngestSource = "EPA",
+  existingMeta = NULL, addGoogleMeta = TRUE)
 }
 \arguments{
-\item{df}{an EPA raw dataframe after metadata enhancement}
+\item{tbl}{an EPA raw tibble after metadata enhancement}
+
+\item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'EPA_hourly_88101_2016.zip'}}
+
+\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
 }
 \value{
 A \code{meta} dataframe for use in a \emph{ws_monitor} object.
@@ -20,15 +27,23 @@ pull out site information associated with unique monitorID.
 These will be rearranged into a dataframe organized as deployment-by-property
 with one row for each monitorID.
 
-This site information found in \code{df} is augmented so that we end up with a uniform
+This site information found in \code{tbl} is augmented so that we end up with a uniform
 set of properties associated with each monitorID. The list of
 columns in the returned \code{meta} dataframe is:
 
 \preformatted{
-> names(meta)
-[1] "monitorID"        "siteName"         "latitude"         "longitude"        "elevation"        "timezone"         "stateCode"       
-[8] "Site.Num"         "Parameter.Code"   "POC"              "Units.of.Measure" "MDL"              "Method.Type"      "Method.Name"     
-[15] "State.Name"       "County.Name" 
+> names(p$meta)
+ [1] "monitorID"             "longitude"             "latitude"             
+ [4] "elevation"             "timezone"              "countryCode"          
+ [7] "stateCode"             "siteName"              "agencyName"           
+[10] "countyName"            "msaName"               "monitorType"          
+[13] "monitorInstrument"     "aqsID"                 "pwfslID"              
+[16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
 }
+}
+\references{
+\href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
+
+\href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 }
 \keyword{EPA}

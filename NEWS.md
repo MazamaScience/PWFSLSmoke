@@ -7,14 +7,66 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ----
 
+## Version 1.0 -- Monitoring Data Access
+
+ * changed the non-guaranteed columns in `ws_monitor$meta`
+ * `ws_monitor$meta$monitorID` is now a combination of new metadata columns `siteID` and `instrumentID`
+ * added `initializeMazamaSpatialUtils()` convenience function
+ * new `US_52` vector of all US state codes including `DC` and `PR`
+ * upgraded all `~_createMetaDataframes()` to produce v1.0 metadata
+ * `airnow_createMetaDataframes()` filters incoming sites for `countryCode %in% c('CA','MX','US')`,
+ discarding sites associated with other countries
+ * `monitorPlot_timeseries()` argument `aqiDots` renamed to `aqidots`
+ * new `airnow_createMonitorObjects()` function
+ * new `addUSGSElevation()` function
+ * deprecating `addGoogleMetadata()` in favor of new functions `addGoogleElevation()` and `addGoogleAddress()`
+ * removed all `openaq_~` data download and processing functions
+ * added `zeroMinimum` parameter to data ingest functions to specify whether negative values should be converted to zero
+ * renamed `airnow_downloadData()` to `airnow_downloadParseData()`
+ * new `monitor_join()` function allows you to merge the data of ws_monitor objects with shared monitorIDs
+ * renamed `CarmelValley` dataset to `Carmel_Valley`
+ * converted all uses of `GMT` to `UTC`
+
 ## Version 0.99 -- Regularized and Consistent (beta)
+
+### PWFSLSmoke 0.99.37
+
+ * fixed bugs in `airsis_availableUnits()`
+ * export of `AIRSIS` object containing a list of understood `unitTypes` (primarily for internal use)
+ * new `examples/airsis_2017.R` demonstrating creation of an AIRSIS monitoring dataset for 2017.
+
+### PWFSLSmoke 0.99.36
+
+ * removed auto-execution of examples in `monitor_dailyStatistic()` and `monitor_dailyThreshold()` to avoid
+ CRAN test timeouts
+
+### PWFSLSmoke 0.99.35
+
+ * removed extraneous file for CRAN upload
+
+### PWFSLSmoke 0.99.34
+
+ * handling for additional 'UnitID' column in AIRSIS output
+
+### PWFSLSmoke 0.99.33
+
+ * tweaked esriMap_~ examples for CRAN upload
+
+### PWFSLSmoke 0.99.32
+
+ * tweaked NowCast vignette for CRAN upload
+
+### PWFSLSmoke 0.99.31
+
+ * refactored `esriMap_getMap()` to use `httr` package
+ * added NowCast vignette
 
 ### PWFSLSmoke 0.99.30
 
  * new `airsis_availableUnits()` function
  * new `AIRSIS` object with available monitor types
  * fix to `esriMap_getMap()` to ensure that projected maps are the correct size
- * `esriMap_getMap()` arguments changed to: `bboxString` and `mapType`
+ * `esriMap_getMap()` arguments changed to: `bboxString`
 
 ### PWFSLSmoke 0.99.29
 

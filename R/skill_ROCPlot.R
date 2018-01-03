@@ -15,8 +15,8 @@
 #' # Spokane summer of 2015
 #' airnow <- airnow_load(20150701,20150930)
 #' airnow <- monitor_rollingMean(airnow, width=3)
-#' MonroeSt <- monitor_subset(airnow, monitorIDs=530630047)
-#' EBroadway <- monitor_subset(airnow, monitorIDs=530639997)
+#' MonroeSt <- monitor_subset(airnow, monitorIDs="530630047_01")
+#' EBroadway <- monitor_subset(airnow, monitorIDs="530639997_01")
 #' skill_ROCPlot(EBroadway, MonroeSt)
 #' }
 

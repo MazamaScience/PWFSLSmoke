@@ -4,8 +4,8 @@
 \alias{airnow_downloadHourlyData}
 \title{Download Hourly Data from AirNow}
 \usage{
-airnow_downloadHourlyData(datestamp = "",
-  baseUrl = "https://files.airnowtech.org/airnow")
+airnow_downloadHourlyData(datestamp = strftime(lubridate::now(),
+  "\%Y\%m\%d00", tz = "UTC"), baseUrl = "https://files.airnowtech.org/airnow")
 }
 \arguments{
 \item{datestamp}{integer or character representing YYYYMMDDHH}
@@ -32,6 +32,6 @@ df <- airnow_downloadHourlyData(2016070112)
 \seealso{
 \link{airnow_createDataDataframes}
 
-\link{airnow_downloadData}
+\link{airnow_downloadParseData}
 }
 \keyword{AirNow}

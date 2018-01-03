@@ -12,13 +12,13 @@
 #' @note As of 2016-12-27, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
 #' @seealso \link{airnow_createDataDataframes}
-#' @seealso \link{airnow_downloadData}
+#' @seealso \link{airnow_downloadParseData}
 #' @examples
 #' \dontrun{
 #' df <- airnow_downloadHourlyData(2016070112)
 #' }
 
-airnow_downloadHourlyData <- function(datestamp='',
+airnow_downloadHourlyData <- function(datestamp=strftime(lubridate::now(),"%Y%m%d00",tz="UTC"),
                                       baseUrl='https://files.airnowtech.org/airnow') {
   
   # Strip off any final '/'
