@@ -18,19 +18,9 @@
 
 airsis_availableUnits <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
                                   enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
-                                  provider='USFS', unitTypes=c('BAM1020','EBAM','ESAM'),
+                                  provider='USFS',
+                                  unitTypes=c('BAM1020','EBAM','ESAM'),
                                   baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?") {
-  
-  # Sanity checks
-  if ( is.null(startdate) ) {
-    logger.error("Required parameter 'startdate' is missing")
-    stop(paste0("Required parameter 'startdate' is missing"))
-  }
-  
-  if ( is.null(startdate) ) {
-    logger.error("Required parameter 'enddate' is missing")
-    stop(paste0("Required parameter 'enddate' is missing"))
-  }
   
   unitTypes <- toupper(unitTypes)
   

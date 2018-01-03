@@ -29,8 +29,8 @@ airsis_downloadData <- function(startdate=strftime(lubridate::now(),"%Y0101",tz=
   }
   
   # Get UTC times
-  starttime <- lubridate::ymd(as.character(startdate))
-  endtime <- lubridate::ymd(as.character(enddate))
+  starttime <- parseDatetime(startdate)
+  endtime <- parseDatetime(enddate)
   
   # Example URL:
   #   http://usfs.airsis.com/vision/common/CSVExport.aspx?uid=1026&StartDate=2016-02-03&EndDate=2016-02-03
