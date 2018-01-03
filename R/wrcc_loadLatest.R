@@ -14,7 +14,10 @@
 wrcc_loadLatest <- function(baseUrl='https://haze.airfire.org/monitoring/RData/',
                             file='wrcc_pm25_latest.RData') {
   
-  ws_monitor <- get(load(url(paste0(baseUrl,file))))
+  # Define a 'connection' object so we can be sure to close it
+  conn <- url(paste0(baseUrl,file))
+  ws_monitor <- get(load(conn))
+  if ( isOpen(conn) ) close(conn)
   
   return(ws_monitor)
 }

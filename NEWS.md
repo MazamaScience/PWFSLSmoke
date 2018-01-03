@@ -12,6 +12,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.0.1
 
  * `monitor~` functions now test for empty `ws_monitor` objects
+ * `~_loadLatest()` functions now explicitly create and close connections
 
 ### PWFSLSmoke 1.0.0
 
