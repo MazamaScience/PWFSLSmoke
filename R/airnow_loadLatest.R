@@ -23,5 +23,8 @@ airnow_loadLatest <- function(baseUrl='https://haze.airfire.org/monitoring/RData
   ws_monitor <- list(meta=meta, data=data)
   ws_monitor <- structure(ws_monitor, class=c("ws_monitor", "list"))
   
+  # Use monitor_subset to enforce: all(c('datetime',rownames(ws_monitor$meta)) == colnames(ws_monitor$data))
+  ws_monitor <- monitor_subset(ws_monitor, countryCodes = c('CA','US','MX'))
+  
   return(ws_monitor)
 }

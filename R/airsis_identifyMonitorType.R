@@ -120,34 +120,35 @@ airsis_identifyMonitorType <- function(df) {
   columnNames <- vector('character')
   columnTypes <- vector('character')
   
-  # NOTE:  compare the more specific header lines first
-  if ( length(setdiff(unitid_esam_names, colNames)) == 0 ) {
+  # NOTE:  Compare the more specific header lines first
+  if ( dplyr::setequal(unitid_esam_names, colNames) ) {
     monitorType <- "ESAM"
     rawNames <- unitid_esam_rawNames
     columnNames <- unitid_esam_names
     columnTypes <- unitid_esam_types
-  } else if ( length(setdiff(unitid_ebam_names, colNames)) == 0 ) {
+  } else if ( dplyr::setequal(unitid_ebam_names, colNames) ) {
     monitorType <- "EBAM"
     rawNames <- unitid_ebam_rawNames
     columnNames <- unitid_ebam_names
     columnTypes <- unitid_ebam_types
-  } else if ( length(setdiff(unitid_bam1020_names, colNames)) == 0 ) {
+  } else if ( dplyr::setequal(unitid_bam1020_names, colNames) ) {
     monitorType <- "BAM1020"
     rawNames <- unitid_bam1020_rawNames
     columnNames <- unitid_bam1020_names
     columnTypes <- unitid_bam1020_types
 
-  } else if ( length(setdiff(esam_names, colNames)) == 0 ) {
+  # NOTE:  Now check for the older, pre-unitid headers in the same order
+  } else if ( dplyr::setequal(esam_names, colNames) ) {
     monitorType <- "ESAM"
     rawNames <- esam_rawNames
     columnNames <- esam_names
     columnTypes <- esam_types
-  } else if ( length(setdiff(ebam_names, colNames)) == 0 ) {
+  } else if ( dplyr::setequal(ebam_names, colNames) ) {
     monitorType <- "EBAM"
     rawNames <- ebam_rawNames
     columnNames <- ebam_names
     columnTypes <- ebam_types
-  } else if ( length(setdiff(bam1020_names, colNames)) == 0 ) {
+  } else if ( dplyr::setequal(bam1020_names, colNames) ) {
     monitorType <- "BAM1020"
     rawNames <- bam1020_rawNames
     columnNames <- bam1020_names

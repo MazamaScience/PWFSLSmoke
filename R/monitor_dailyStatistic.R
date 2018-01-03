@@ -29,8 +29,11 @@
 #' title("Twisp, Washington Daily Mean PM2.5, 2015")
 #' }
 
-monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnight", na.rm=TRUE,
-                                   minHours=24) {
+monitor_dailyStatistic <- function(ws_monitor,
+                                   FUN=get("mean"),
+                                   dayStart="midnight",
+                                   na.rm=TRUE,
+                                   minHours=18) {
   
   # Pull out dataframes
   data <- ws_monitor$data
@@ -80,6 +83,9 @@ monitor_dailyStatistic <- function(ws_monitor, FUN=get("mean"), dayStart="midnig
   data$datetime <- as.numeric(data$datetime)
   df <- stats::aggregate(data, by=list(day), FUN=FUN, na.rm=na.rm)
   df$datetime <- meanDF$datetime
+  
+  # TODO:  Current implementation just checks number of hours per day, not number of valid measurements per day.
+  # TODO:  Need to reimplement this.
   
   # Check on the number of hours per day
   # NOTE:  The table will use day # as the names. We create hoursPerday
