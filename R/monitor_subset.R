@@ -29,25 +29,34 @@
 
 # TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting
 
-monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NULL,
-                           monitorIDs=NULL, stateCodes=NULL, countryCodes=NULL,
-                           dropMonitors=TRUE, timezone="UTC") {
+monitor_subset <- function(ws_monitor,
+                           xlim=NULL,
+                           ylim=NULL,
+                           tlim=NULL,
+                           vlim=NULL,
+                           monitorIDs=NULL,
+                           stateCodes=NULL,
+                           countryCodes=NULL,
+                           dropMonitors=TRUE,
+                           timezone="UTC") {
   
   # subset metadata
   meta <- monitor_subsetMeta(ws_monitor$meta, xlim=xlim, ylim=ylim, 
                              stateCodes=stateCodes, countryCodes=countryCodes,monitorIDs=monitorIDs)
   
   # sanity check
-  if ( is.null(meta) ) {
+  if ( nrow(meta) == 0 ) {
     warning("No matching monitors found")
-    ws_monitor <- list(meta=NULL, data=NULL)
+    data <- as.data.frame(ws_monitor$data$datetime)
+    names(data) <- 'datetime'
+    ws_monitor <- list(meta=meta, data=data)
     ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
     return (ws_monitor)
   }
   
   # Determine potentially reduced subset of monitorIDs
-  # NOTE:  We can only work with monitors that have metadata and data so
-  # NOTE:  only inclde those in the list of valid monitors.
+  # NOTE:  We can only work with monitors that have metadata and data
+  # NOTE:  so only inclde those in the list of valid monitors.
   dataMonIDs <- colnames(ws_monitor$data)[-1]
   validMonIDs <- dplyr::intersect(meta$monitorID, dataMonIDs)
   
@@ -56,15 +65,18 @@ monitor_subset <- function(ws_monitor, xlim=NULL, ylim=NULL, tlim=NULL, vlim=NUL
                              monitorIDs=validMonIDs, dropMonitors=dropMonitors, timezone=timezone)
   
   # sanity check
-  if ( is.null(data) ) {
+  if ( ncol(data) == 1 ) {
     warning("No matching monitors found")
-    return ( list(data=NULL, meta=NULL) )
+    meta <- createEmptyMetaDataframe(rows=0)
+    ws_monitor <- list(meta=meta, data=data)
+    ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
+    return (ws_monitor)
   }
   
   # Determine potentially reduced subset of monitorIDs due to tlim, vlim constraints
   validMonIDs <- names(data)[-1]
   
-  # subset metadata one more time
+  # Subset metadata one more time
   meta <- monitor_subsetMeta(ws_monitor$meta, monitorIDs=validMonIDs)
   
   ws_monitor <- list(meta=meta, data=data)

@@ -90,18 +90,7 @@ airsis_createMetaDataframe <- function(tbl,
   # [13] "siteID"                "instrumentID"          "aqsID"                 "pwfslID"              
   # [17] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
   
-  # NOTE:  'meta' must be a dataframe because it has rownames which are deprecated in tibbles
-  # Create empty dataframe
-  meta <- as.data.frame(matrix(nrow=nrow(tbl),ncol=19), stringsAsFactors=FALSE)
-  
-  colNames <- c("monitorID", "longitude", "latitude",
-                "elevation", "timezone", "countryCode",
-                "stateCode", "siteName", "agencyName",
-                "countyName", "msaName", "monitorType",
-                "siteID", "instrumentID", "aqsID", "pwfslID",
-                "pwfslDataIngestSource", "telemetryAggregator", "telemetryUnitID")
-  
-  names(meta) <- colNames
+  meta <- createEmptyMetaDataframe(nrow(tbl))
   
   # Assign data where we have it
   meta$longitude <- as.numeric(tbl$medoidLon)
