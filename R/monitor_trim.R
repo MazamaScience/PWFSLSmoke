@@ -15,6 +15,9 @@
 #' }
 monitor_trim <- function(ws_monitor) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   # Vectors of first and last valid indices excluding 'datetime'
   firstValids <- unlist(lapply(ws_monitor$data, function(x) { min(which(!is.na(x))) }))[-1]
   lastValids <- unlist(lapply(ws_monitor$data, function(x) { max(which(!is.na(x))) }))[-1]

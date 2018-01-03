@@ -51,6 +51,11 @@ monitorPlot_rollingMean <- function(ws_monitor,
                                     grid3hr=FALSE,
                                     showLegend=TRUE) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
+  
   # ----- Style ---------------------------------------------------------------
   
   # points

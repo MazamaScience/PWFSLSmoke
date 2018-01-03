@@ -40,6 +40,9 @@ monitor_subset <- function(ws_monitor,
                            dropMonitors=TRUE,
                            timezone="UTC") {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   # subset metadata
   meta <- monitor_subsetMeta(ws_monitor$meta, xlim=xlim, ylim=ylim, 
                              stateCodes=stateCodes, countryCodes=countryCodes,monitorIDs=monitorIDs)

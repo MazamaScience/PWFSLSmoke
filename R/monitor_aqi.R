@@ -18,8 +18,14 @@
 
 # NOTE: set up with argument to handle pm25 only; but write code to handle other pollutants if we ever get there
 
-monitor_aqi <- function(ws_monitor, aqiParameter='pm25', nowcastVersion='pm', includeShortTerm=FALSE) {
+monitor_aqi <- function(ws_monitor,
+                        aqiParameter='pm25',
+                        nowcastVersion='pm',
+                        includeShortTerm=FALSE) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+
   # assign breakpoints
   breakpointsTable <- .assignBreakpointsTable(aqiParameter)
   

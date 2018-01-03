@@ -35,6 +35,9 @@ monitor_dailyStatistic <- function(ws_monitor,
                                    na.rm=TRUE,
                                    minHours=18) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   # Pull out dataframes
   data <- ws_monitor$data
   meta <- ws_monitor$meta

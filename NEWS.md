@@ -9,6 +9,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.1
+
+ * `monitor~` functions now test for empty `ws_monitor` objects
+
+### PWFSLSmoke 1.0.0
+
  * changed the non-guaranteed columns in `ws_monitor$meta`
  * `ws_monitor$meta$monitorID` is now a combination of new metadata columns `siteID` and `instrumentID`
  * added `initializeMazamaSpatialUtils()` convenience function

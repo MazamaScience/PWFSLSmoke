@@ -44,7 +44,12 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
                                      labels_x_nudge=0,
                                      labels_y_nudge=0,
                                      ...) {
- 
+
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
+    
   # Data Preparation ----------------------------------------------------------
   
   # Allow single monitor objects to be used without specifying monitorID

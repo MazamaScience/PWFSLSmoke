@@ -59,6 +59,11 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
                                       hourInterval=6,
                                       ...) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
+  
   # Style ---------------------------------------------------------------------
   
   shadedNightCol <- 'gray90'

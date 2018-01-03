@@ -24,6 +24,11 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
                                            title=NULL,
                                            ...) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
+  
   # Plot Style ----------------------------------------------------------------
   
   lwd_day <- 2

@@ -19,6 +19,9 @@ monitor_subsetBy <- function(ws_monitor, filter) {
     stop("ws_monitor object is not of class 'ws_monitor'.")
   }
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   # Create a condition call, basically an expression that isn't run yet.
   condition_call <- substitute(filter)
   filterString <- paste(as.character(condition_call)[2], as.character(condition_call)[1],

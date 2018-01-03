@@ -32,7 +32,11 @@ monitor_collapse <- function(ws_monitor,
                              longitude=NULL,
                              latitude=NULL,
                              monitorID='generated_id',
-                             FUN=mean, na.rm=TRUE, ...) {
+                             FUN=mean,
+                             na.rm=TRUE, ...) {
+  
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
   data <- as.matrix(ws_monitor$data[,-1])
   
