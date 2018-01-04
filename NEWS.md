@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.3
+
+ * tweaks for CRAN submission
+
 ### PWFSLSmoke 1.0.2
 
  * `monitor~` functions now test for empty `ws_monitor` objects
