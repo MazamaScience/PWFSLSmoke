@@ -9,22 +9,16 @@
 
 VERSION <- "0.0.1"
 
-suppressPackageStartupMessages(
-  {
+suppressPackageStartupMessages({
     library(methods)
     library(optparse)
     library(PWFSLSmoke)
     library(MazamaSpatialUtils)
-  }
-)
+})
 
 ##########################################
 
 saveAirsisData <- function(opt) {
-  
-  # Get all unitids 
-  usfs_unitids <- airsis_availableUnits(opt$startdate, opt$enddate, provider = 'USFS')
-  apcd_unitids <- airsis_availableUnits(opt$startdate, opt$enddate, provider = 'APCD')
   
   # for usfs and apcd, make a list of ws_monitor objects for all units
   monitors <- list()

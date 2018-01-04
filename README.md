@@ -61,18 +61,18 @@ installSpatialData()
 
 ## Examples
 
-Additional vignettes that demonstrate the functionality of the package can be found in the
-[localVignettes](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localVignettes)
-directory on github. These vignettes are not part of the package because they require
+Additional R Notebooks that demonstrate the functionality of the package can be found in the
+[localNotebooks](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localNotebooks)
+directory on github. These notebooks are not part of the package because they require
 installation of the **MazamaSpatialUtils** datasets.
 
 To run them you should:
 
  * make sure you have the proper spatial data installed in `~/Data/Spatial/`
  * make sure you have both the **knitr** and **rmarkdown** packages installed
- * download the localVignettes
- * open one with RStudio
- * click the "Knit" button
+ * download the `localNotebooks/` directory
+ * open a notebook with RStudio
+ * click the "Knit" or "Preview" button in RStudio
 
 ----
 

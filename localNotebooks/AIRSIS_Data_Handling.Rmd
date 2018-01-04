@@ -2,11 +2,9 @@
 title: "AIRSIS Data Acquisition and Handling"
 author: "Mazama Science"
 date: '`r Sys.Date()`'
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{AIRSIS Data Acquisition and Handling}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output:
+  html_notebook: default
+  html_document: default
 ---
 
 ```{r, echo=FALSE}

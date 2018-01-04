@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.2
+
+ * `monitor~` functions now test for empty `ws_monitor` objects
+ * new Github `localNotebooks/` directory contains detailed examples
+
 ### PWFSLSmoke 1.0.1
 
  * `monitor~` functions now test for empty `ws_monitor` objects

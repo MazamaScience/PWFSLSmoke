@@ -2,7 +2,9 @@
 title: "Yearly AIRSIS Data"
 author: "Mazama Science"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document: default
+  html_notebook: default
 ---
 
 ```{r, echo=FALSE}
@@ -18,8 +20,8 @@ suppressPackageStartupMessages({
   library(PWFSLSmoke)
   library(ggplot2)
   library(gridExtra)
-}
-  )
+})
+
 logger.setLevel(ERROR)
 load("~/Data/airsis/airsis_2015.RData")
 load("~/Data/airsis/airsis_2016.Rdata")
