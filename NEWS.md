@@ -12,6 +12,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.0.3
 
  * tweaks for CRAN submission
+ * fixed bug in `monitor_subsetBy()` when filtering on metadata columns with `NAs` present
 
 ### PWFSLSmoke 1.0.2
 

@@ -35,11 +35,12 @@ monitor_subsetBy <- function(ws_monitor, filter) {
   if ( any(stringr::str_detect(filterString, names(ws_monitor$meta))) ) {
     
     metaMask <- eval(condition_call, ws_monitor$meta)
+    metaMask <- replace(metaMask, is.na(metaMask), FALSE) # convert NA to FALSE
     monitorIDs <- ws_monitor$meta$monitorID[metaMask]
     # omit the first 'datetime' column
     data <- ws_monitor$data[,-1]
     dataMask <- names(data) %in% monitorIDs
-    dataMask <- replace(dataMask, is.na(dataMask), FALSE) # drop NAs
+    dataMask <- replace(dataMask, is.na(dataMask), FALSE) # convert NA to FALSE
     # Add back first 'datetime' column
     dataMask <- c(TRUE, dataMask)
     
@@ -53,9 +54,10 @@ monitor_subsetBy <- function(ws_monitor, filter) {
     data <- as.data.frame(ws_monitor$data[,-1])
     colnames(data) <- colnames(ws_monitor$data)[-1]
     dataMask <- apply(data, 2, FUN)
-    dataMask <- replace(dataMask, is.na(dataMask), FALSE) # drop NAs
+    dataMask <- replace(dataMask, is.na(dataMask), FALSE) # convert NA to FALSE
     monitorIDs <- names(data[dataMask])
     metaMask <- ws_monitor$meta$monitorID %in% monitorIDs
+    metaMask <- replace(metaMask, is.na(metaMask), FALSE) # convert NA to FALSE
     # Add back first 'datetime' column
     dataMask <- c(TRUE, dataMask)
     
