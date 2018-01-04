@@ -24,8 +24,8 @@ more easily work with PM2.5 data from monitoring locations across North America.
 
 The package makes it easier to obtain data, perform analyses and generate reports. It includes functionality to:
 
- * download and easily work with regulatory PM2.5 data from AirNow
- * download and quality control raw monitoring data from other sources
+ * download and easily work with regulatory PM2.5 data from the EPA and AirNow
+ * download and quality control raw monitoring data from AIRSIS and WRCC
  * convert between UTC and local timezones
  * apply various algorithms to the data (nowcast, rolling means, aggregation, etc.)
  * provide interactive timeseries and maps through RStudio’s Viewer pane
@@ -33,13 +33,13 @@ The package makes it easier to obtain data, perform analyses and generate report
 
 ## Installation
 
-This package is designed to be used with [R](https://cran.r-project.org) (>= 3.1.0) and
+This package is designed to be used with [R](https://cran.r-project.org) (>= 3.3) and
 [RStudio](https://www.rstudio.com) so make sure you have those installed first.
 
-Users will want to install the **devtools** package to have access to latest versions
-of some packages that are not yet available on CRAN.
+Users will want to install the **devtools** package to have access to the latest version
+of the package from Github.
 
-The following packages should be installed with devtools by typing the following at the RStudio console:
+The following packages should be installed by typing the following at the RStudio console:
 
 ```
 # Note that vignettes require knitr and rmarkdown
@@ -49,14 +49,14 @@ install.packages('MazamaSpatialUtils')
 devtools::install_github('mazamascience/PWFSLSmoke', build_vignettes=TRUE)
 ```
 
-Any work with spatial data, *e.g.* assigning counties or watersheds, will require installation of required
-spatial datasets. To get these datasets you should execute the following commands from a shell terminal:
+Any work with spatial data, *e.g.* assigning countries, states and timezones, will require installation of required
+spatial datasets. To get these datasets you should type the following at the RStudio console:
 
 ```
-mkdir ~/Data
-cd ~/Data
-curl -O http://mazamascience.com/RData/Spatial.tar.gz
-tar -xzf Spatial.tar.gz
+library(MazamaSpatialUtils)
+dir.create('~/Data/Spatial', recursive=TRUE)
+setSpatialDataDir('~/Data/Spatial')
+installSpatialData()
 ```
 
 ## Examples
@@ -68,10 +68,10 @@ installation of the **MazamaSpatialUtils** datasets.
 
 To run them you should:
 
- * make sure you have the proper spatial data installed in ~/Data/Spatial/
+ * make sure you have the proper spatial data installed in `~/Data/Spatial/`
  * make sure you have both the **knitr** and **rmarkdown** packages installed
  * download the localVignettes
- * load one into RStudio
+ * open one with RStudio
  * click the "Knit" button
 
 ----
