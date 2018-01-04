@@ -9,6 +9,14 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.1
+
+ * `monitor~` functions now test for empty `ws_monitor` objects
+ * `~_loadLatest()` functions now explicitly create and close connections
+ * fixed bug in `monitor_dailyStatistic()` that didn't test for `minHours` properly
+
+### PWFSLSmoke 1.0.0
+
  * changed the non-guaranteed columns in `ws_monitor$meta`
  * `ws_monitor$meta$monitorID` is now a combination of new metadata columns `siteID` and `instrumentID`
  * added `initializeMazamaSpatialUtils()` convenience function
@@ -26,6 +34,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * new `monitor_join()` function allows you to merge the data of ws_monitor objects with shared monitorIDs
  * renamed `CarmelValley` dataset to `Carmel_Valley`
  * converted all uses of `GMT` to `UTC`
+ * new `createEmptyMetaDataframe()` function
+ * `monitor_subset~()` functions now return 'meta' dataframes with zero rows and 'data' dataframes with a single `datetime` column rather than `NULL` when no monitors exist in the subset.
 
 ## Version 0.99 -- Regularized and Consistent (beta)
 

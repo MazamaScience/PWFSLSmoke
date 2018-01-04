@@ -17,6 +17,9 @@
 
 monitor_timeAverage <- function(ws_monitor, ...) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   # Extract and prepare data
   meta <- ws_monitor$meta
   data <- ws_monitor$data

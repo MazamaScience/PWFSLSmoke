@@ -44,6 +44,11 @@ monitorEsriMap <- function(ws_monitor,
                            pch=16,
                            ...) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
+  
   # ----- Data Preparation ----------------------------------------------------
   
   if ( is.null(centerLon) ) {

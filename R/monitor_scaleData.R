@@ -15,6 +15,9 @@ monitor_scaleData <- function(ws_monitor, factor) {
     stop("ws_monitor object is not of class 'ws_monitor'.")
   }
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   ws_monitor$data[,-1] <- ws_monitor$data[,-1] * factor
   
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )

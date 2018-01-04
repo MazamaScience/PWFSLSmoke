@@ -23,8 +23,12 @@
 #'     
 #'  \code{x > vlim[1] & x <= vlim[2]}
 
-monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
-                               dropMonitors=FALSE, timezone="UTC") {
+monitor_subsetData <- function(data,
+                               tlim=NULL,
+                               vlim=NULL,
+                               monitorIDs=NULL,
+                               dropMonitors=FALSE,
+                               timezone="UTC") {
   
   if ( !is.null(tlim) ) {
     
@@ -49,7 +53,7 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
   # Sanity check
   if ( length(data[,-1]) < 1 ) {
     warning("No matching monitors found")
-    return(NULL)    
+    return(data)    
   }
   
   # If specified, remove any data columns that have no valid data after time range subsetting
@@ -61,9 +65,11 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
       anyMask <- c(TRUE, apply(data[,-1],2,function(x) { any(!is.na(x),na.rm=TRUE) }))
       # Sanity check
       if ( sum(anyMask) == 1 ) {
-        # All data missing, only 'datetime' has valid values
-        warning("All data are missing values.")
-        return(NULL)
+        # All data missing
+        warning("All data are missing values. Returning dataframe with 'datetime' only.")
+        data <- as.data.frame(data$datetime)
+        names(data) <- 'datetime'
+        return(data)
       }
       data <- data[,anyMask]
       
@@ -92,12 +98,12 @@ monitor_subsetData <- function(data, tlim=NULL, vlim=NULL, monitorIDs=NULL,
     
   }
   
-  # NOTE: If no monitors are returned, we are only left with a time vector,
-  # which has no names attached. We set data to NULL in this case
-  # since it's easy to test for as the result of a calculation. 
+  # If no monitors are returned, we are only left with a time vector. 
   if ( is.null(names(data)) ) {
     warning("No matching monitors found")
-    return (NULL)  # TODO:  ticket #86 (must be coordinated with monitor_subsetMeta and any code that checks for this)
+    data <- as.data.frame(data$datetime)
+    names(data) <- 'datetime'
+    return(data)
   }
 
   # Guarantee that monitors are returned in the order requested

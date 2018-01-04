@@ -17,16 +17,28 @@
 #' number of hours in the first and last daily records of the returned \emph{ws_monitor}
 #' object.
 #' 
-#' The returned \emph{ws_monitor} object has a daily time axis where each time is set to 00:00, local time.
+#' The returned \emph{ws_monitor} object has a daily time axis where each \code{datetime} is set to 
+#' the beginning of each day, 00:00:00, local time.
 #' @examples 
 #' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
-#' Twisp <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs='530470009_01')
-#' Twisp_dailyMean <- monitor_dailyStatistic(Twisp, FUN=get('mean'), dayStart='midnight')
-#' monitorPlot_timeseries(Twisp_dailyMean, type='b')
+#' WinthropID <- '530470010_01'
+#' TwispID <- '530470009_01'
+#' MethowValley <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs=c(WinthropID,TwispID))
+#' MethowValley_dailyMean <- monitor_dailyStatistic(MethowValley, FUN=get('mean'), dayStart='midnight')
+#' # Get the full Y scale
+#' monitorPlot_timeseries(MethowValley, style='gnats', col='transparent')
+#' monitorPlot_timeseries(MethowValley, style='gnats', monitorID=TwispID,
+#'                        col='forestgreen', add=TRUE)
+#' monitorPlot_timeseries(MethowValley, style='gnats', monitorID=WinthropID,
+#'                        col='purple', add=TRUE)
+#' monitorPlot_timeseries(MethowValley_dailyMean, type='s', lwd=2, monitorID=TwispID,
+#'                        col='forestgreen', add=TRUE)
+#' monitorPlot_timeseries(MethowValley_dailyMean, type='s', lwd=2, monitorID=WinthropID,
+#'                        col='purple', add=TRUE)
 #' addAQILines()
 #' addAQILegend("topleft", lwd=1, pch=NULL)
-#' title("Twisp, Washington Daily Mean PM2.5, 2015")
+#' title("Winthrop & Twisp, Washington Daily Mean PM2.5, 2015")
 #' }
 
 monitor_dailyStatistic <- function(ws_monitor,
@@ -34,6 +46,9 @@ monitor_dailyStatistic <- function(ws_monitor,
                                    dayStart="midnight",
                                    na.rm=TRUE,
                                    minHours=18) {
+  
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
   # Pull out dataframes
   data <- ws_monitor$data
@@ -45,9 +60,6 @@ monitor_dailyStatistic <- function(ws_monitor,
     warning(paste0('Found ',timezoneCount,' timezones. Only the first will be used'))      
   }
   timezone <- meta$timezone[1]
-  
-  # TODO:  For single monitor, 'midnight-to-midnight', the monitorPlot_dailyBarplot in v0.8.16 had
-  # TODO:  a dplyr method that seemed significantly faster than this method.
   
   # NOTE:  We will generate only a single timeInfo dataframe to guarantee that we apply
   # NOTE:  the same daily aggregation logic to all monitors. Otherwise we could potentially
@@ -76,44 +88,51 @@ monitor_dailyStatistic <- function(ws_monitor,
   # Create the aggregated dataset
   # NOTE:  Some functions don't work on the POSIXct datetime column.
   # NOTE:  But we still want to keep it. So we'll start by calculating the mean
-  # NOTE:  so as to have an "average" POSIXct for each grouping. Then we'll convert
-  # NOTE:  it to numeric so that it can be operated on by the likes of 'sum'. Finally
-  # NOTE:  we'll restore the average datetime.
-  meanDF <- stats::aggregate(data, by=list(day), FUN=get('mean'), na.rm=na.rm)
+  # NOTE:  so as to have an "average" POSIXct for each grouping. Then we get the
+  # NOTE:  dayStart for each day.
+  dailyMean <- stats::aggregate(data, by=list(day), FUN=get("mean"), na.rm=na.rm)
+  dayStarts <- lubridate::floor_date(dailyMean$datetime, unit="day")
+  
+  # Convert the dayStart back to numeric so that it can be operated on by the likes of 'sum'.
   data$datetime <- as.numeric(data$datetime)
-  df <- stats::aggregate(data, by=list(day), FUN=FUN, na.rm=na.rm)
-  df$datetime <- meanDF$datetime
   
-  # TODO:  Current implementation just checks number of hours per day, not number of valid measurements per day.
-  # TODO:  Need to reimplement this.
+  # Get the daily count of valid data points
+  validData <- !is.na(data)
+  dailyValids <- stats::aggregate(validData, by=list(day), FUN=get("sum"))
   
-  # Check on the number of hours per day
-  # NOTE:  The table will use day # as the names. We create hoursPerday
-  # NOTE:  which is a named vector whose names will match df$Group.1.
-  hoursPerDay <- unlist(table(day))
-  fullDayMask <- hoursPerDay[as.character(df$Group.1)] >= minHours
-  
-  df[!fullDayMask,names(data)] <- NA
+  # Get the daily statistic
+  dailyStats <- stats::aggregate(data, by=list(day), FUN=FUN, na.rm=na.rm)
+  dailyStats$datetime <- dayStarts
   
   # Only retain the original columns (omit "Group.1", etc.)
-  df <- df[,names(data)]
+  dailyValids <- dailyValids[,names(data)]
+  dailyStats <- dailyStats[,names(data)]
   
-  # NOTE:  It appears that aggregating a day with all NAs will result in NaN
-  # Convert any NaN to NA
-  nanMask <- is.nan(as.matrix(df))
-  df[nanMask] <- NA
+  # # TODO:  Current implementation just checks number of hours per day, not number of valid measurements per day.
+  # # TODO:  Need to reimplement this.
+  # 
+  # # Check on the number of hours per day
+  # # NOTE:  The table will use day # as the names. We create hoursPerday
+  # # NOTE:  which is a named vector whose names will match dailyStats$Group.1.
+  # hoursPerDay <- unlist(table(day))
+  # fullDayMask <- hoursPerDay[as.character(dailyStats$Group.1)] >= minHours
+  # 
+  # dailyStats[!fullDayMask,names(data)] <- NA
+  # 
+  # # NOTE:  It appears that aggregating a day with all NAs will result in NaN
+  # # Convert any NaN to NA
+  # nanMask <- is.nan(as.matrix(dailyStats))
+  # dailyStats[nanMask] <- NA
 
-  # Restore POSIXct daily datetimes
-  df$datetime <- meanDF$datetime
+  # Mask for days with enough valid data points
+  insufficientDataMask <- dailyValids < minHours # returns a matrix
+  insufficientDataMask[,1] <- FALSE # never mask out the first ('datetime') column
   
-  # Set df$datetime to the beginning of each day
-  lubridate::hour(df$datetime) <- 00
-  lubridate::minute(df$datetime) <- 00
-  lubridate::second(df$datetime) <- 00
-  lubridate::tz(df$datetime) <- timezone
-  
+  # Apply the mask
+  dailyStats[insufficientDataMask] <- NA
+    
   # Create a new ws_monitor object
-  ws_monitor <- list(meta=meta, data=df)
+  ws_monitor <- list(meta=meta, data=dailyStats)
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
   return (ws_monitor)

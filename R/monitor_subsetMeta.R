@@ -15,7 +15,12 @@
 #' @description Intended for use by the monitor_subset function.
 #' @details Longitudes must be specified in the domain [-180,180].
 
-monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, countryCodes=NULL, monitorIDs=NULL) {
+monitor_subsetMeta <- function(meta,
+                               xlim=NULL,
+                               ylim=NULL,
+                               stateCodes=NULL,
+                               countryCodes=NULL,
+                               monitorIDs=NULL) {
   
   if ( !is.null(xlim) ) {
     # Sanity check -- longitude domain
@@ -67,17 +72,19 @@ monitor_subsetMeta <- function(meta, xlim=NULL, ylim=NULL, stateCodes=NULL, coun
   }
   
   if ( nrow(meta) == 0 ) {
+    
     warning("No matching monitors found.")
-    return (NULL) # TODO:  ticket #86 (must be coordinated with monitor_subsetData and any code that checks for this)
-  }
-  
-  # Restore rownames that dplyr::filter discards
-  rownames(meta) <- meta$monitorID
-  
-  # Guarantee that monitors are returned in the order requested
-  if ( !is.null(monitorIDs) ) {
-    foundMonitorIDs <- intersect(monitorIDs, rownames(meta)) # perhaps not all monitorIDs were found
-    meta <- meta[foundMonitorIDs,]
+    
+  } else {
+    
+    # Restore rownames that dplyr::filter discards
+    rownames(meta) <- meta$monitorID
+    # Guarantee that monitors are returned in the order requested
+    if ( !is.null(monitorIDs) ) {
+      foundMonitorIDs <- intersect(monitorIDs, rownames(meta)) # perhaps not all monitorIDs were found
+      meta <- meta[foundMonitorIDs,]
+    }
+    
   }
   
   return(meta)

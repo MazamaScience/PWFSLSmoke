@@ -19,8 +19,17 @@
 #' monitorDygraph(King_Fire, title='KingFire/California/2014', rollPeriod=3)
 #' } 
 
-monitorDygraph <- function(ws_monitor, title='title', ylab='PM2.5 Concentration', 
-                           tlim=NULL, rollPeriod=1, showLegend=TRUE) {
+monitorDygraph <- function(ws_monitor,
+                           title='title',
+                           ylab='PM2.5 Concentration', 
+                           tlim=NULL,
+                           rollPeriod=1,
+                           showLegend=TRUE) {
+  
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
   
   # Sanity check
   tzCount <- length(unique(ws_monitor$meta$timezone))

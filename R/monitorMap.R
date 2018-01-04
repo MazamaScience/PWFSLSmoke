@@ -43,6 +43,11 @@ monitorMap <- function(ws_monitor,
                        add=FALSE, 
                        ...) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
+  
   lon <- ws_monitor$meta$longitude
   lat <- ws_monitor$meta$latitude
   

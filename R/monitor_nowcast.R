@@ -76,7 +76,12 @@
 # 5. Compute the NowCast by summing these products and dividing by the sum of the weight factors raised to the power of
 #    how many hours ago the concentration was measured.
 
-monitor_nowcast <- function(ws_monitor, version='pm', includeShortTerm=FALSE) {
+monitor_nowcast <- function(ws_monitor,
+                            version='pm',
+                            includeShortTerm=FALSE) {
+  
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
   # Set parameters based on version
   if (version =='pm') {

@@ -23,7 +23,14 @@
 #' monitorLeaflet(KingFire)
 #' } 
 
-monitor_subsetByDistance <- function(ws_monitor, longitude=NULL, latitude=NULL, radius=50, count=NULL) {
+monitor_subsetByDistance <- function(ws_monitor,
+                                     longitude=NULL,
+                                     latitude=NULL,
+                                     radius=50,
+                                     count=NULL) {
+  
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
   # Create distance vector and mask
   # distanceMask <- distances <= radius
@@ -31,8 +38,9 @@ monitor_subsetByDistance <- function(ws_monitor, longitude=NULL, latitude=NULL, 
   distanceMask <- distanceVector <= radius
   
   if ( !(any(distanceMask)) ) {
-    meta <- NULL
-    data <- NULL
+    meta <- createEmptyMetaDataframe(rows=0)
+    data <- as.data.frame(ws_monitor$data$datetime)
+    names(data) <- 'datetime'
   } else {
     meta <- ws_monitor$meta[distanceMask,]
     data <- monitor_subsetData(ws_monitor$data, monitorIDs=meta$monitorID, dropMonitors=TRUE)

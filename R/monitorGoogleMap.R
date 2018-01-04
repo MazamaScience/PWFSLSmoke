@@ -41,6 +41,11 @@ monitorGoogleMap <- function(ws_monitor,
                              map=NULL,
                              ...) {
   
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
+  
   # ----- Data Preparation ----------------------------------------------------
   
   if ( is.null(centerLon) ) {

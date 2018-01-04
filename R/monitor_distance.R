@@ -20,8 +20,14 @@
 #' N_M$meta[closestIndex,]
 
 monitor_distance <- function(ws_monitor, longitude, latitude) { 
+  
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   distance <- distance(longitude, latitude, ws_monitor$meta$longitude, ws_monitor$meta$latitude)  
   names(distance) <- ws_monitor$meta$monitorID
+  
   return(distance)
+  
 }
 
