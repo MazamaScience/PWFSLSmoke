@@ -87,7 +87,7 @@ which we can then explore.
 suppressPackageStartupMessages(library(PWFSLSmoke))
 
 # Get some airnow data for Washington state in the summer of 2015
-# NONE:  'tlim' is interpreted as UTC unless we specify 'timezone' 
+# NOTE:  'tlim' is interpreted as UTC unless we specify 'timezone' 
 N_M <- monitor_subset(Northwest_Megafires,
                       tlim=c(20150801,20150831),
                       timezone="America/Los_Angeles")
