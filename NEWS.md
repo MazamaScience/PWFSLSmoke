@@ -12,6 +12,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.0.4
 
  * fixed vignette typos
+ * new `epa_load()` function accesses pre-generated annual .RData
+ * fixed bug in `monitorPlot_timeseries()` when using `style="aqidots"`
 
 ### PWFSLSmoke 1.0.3
 
