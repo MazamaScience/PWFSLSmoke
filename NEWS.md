@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.5
+
+ * tweak to localExecutables/epa_createAnnualDataframes_exec.R
+
 ### PWFSLSmoke 1.0.4
 
  * fixed vignette typos
