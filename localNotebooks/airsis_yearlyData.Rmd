@@ -21,12 +21,12 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-setSpatialDataDir("C:/Users/mille/OneDrive/Data/Spatial")
+setSpatialDataDir("~/Data/Spatial")
 
 logger.setLevel(ERROR)
-load("C:/Users/mille/OneDrive/Data/airsis/airsis_2015.RData")
-load("C:/Users/mille/OneDrive/Data/airsis/airsis_2016.RData")
-load("C:/Users/mille/OneDrive/Data/airsis/airsis_2017.RData")
+load("~/Data/airsis/airsis_2015.RData")
+load("~/Data/airsis/airsis_2016.RData")
+load("~/Data/airsis/airsis_2017.RData")
 ```
 
 # Orientation
