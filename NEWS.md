@@ -9,6 +9,16 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.5
+
+ * tweak to localExecutables/epa_createAnnualDataframes_exec.R
+
+### PWFSLSmoke 1.0.4
+
+ * fixed vignette typos
+ * new `epa_load()` function accesses pre-generated annual .RData
+ * fixed bug in `monitorPlot_timeseries()` when using `style="aqidots"`
+
 ### PWFSLSmoke 1.0.3
 
  * tweaks for CRAN submission

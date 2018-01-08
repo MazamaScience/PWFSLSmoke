@@ -77,9 +77,7 @@ monitorPlot_timeseries <- function(ws_monitor,
   }
   
   # Sanity check
-  if ( monitor_isEmpty(ws_monitor) ) {
-    stop("ws_monitor object contains zero monitors")
-  }
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
   # ----- Data Preparation ------------
   
@@ -219,6 +217,8 @@ monitorPlot_timeseries <- function(ws_monitor,
     
     if ( style == 'aqidots' ) {
       
+      userCex <- 'cex' %in% names(argsList)
+      
       # # Set opacity based on number of points
       # dims <- dim(as.matrix(data[,-1]))
       # naCount <- length(which(is.na(data[,-1])))
@@ -232,7 +232,7 @@ monitorPlot_timeseries <- function(ws_monitor,
         levels <- .bincode(argsList$y, breaks)
         argsList$col <- AQI$colors[levels]
         argsList$col <- adjustcolor(argsList$col, alpha.f=opacity)
-        if ( !'cex' %in% names(argsList) ) {
+        if ( !userCex ) {
           argsList$cex <- argsList$y / 200 + .3
           argsList$cex <- pmin(argsList$cex,2)
         }

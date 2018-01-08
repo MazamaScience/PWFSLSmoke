@@ -1,4 +1,4 @@
-#!/usr/local/bin/RScript
+#!/usr/local/bin/Rscript
 
 # This Rscript will go to fetch air-quality data for a specified year and specified parameter
 
@@ -6,7 +6,7 @@
 
 # 1 2 3 4 5 /Users/jonathan/Projects/PWFSL/PWFSLSmoke/localExecutables/epa_createAnnualDataframes_exec.R --parameterName=PM2.5 --parameterCode=88101 --year=2010 --downloadDir=/Users/jonathan/Data/EPA/raw --outputDir=/Users/jonathan/Data/EPA/RData --logDir=/Users/jonathan/Data/EPA/RData
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags
