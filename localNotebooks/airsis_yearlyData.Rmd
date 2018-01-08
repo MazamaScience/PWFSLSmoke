@@ -19,15 +19,14 @@ Start by loading the PWFSLSmoke package and loading the data.
 suppressPackageStartupMessages({
   library(PWFSLSmoke)
   library(ggplot2)
-  library(gridExtra)
 })
 
-setSpatialDataDir("~/Data/Spatial")
+setSpatialDataDir("C:/Users/mille/OneDrive/Data/Spatial")
 
 logger.setLevel(ERROR)
-load("~/Data/airsis/airsis_2015.RData")
-load("~/Data/airsis/airsis_2016.RData")
-load("~/Data/airsis/airsis_2017.RData")
+load("C:/Users/mille/OneDrive/Data/airsis/airsis_2015.RData")
+load("C:/Users/mille/OneDrive/Data/airsis/airsis_2016.RData")
+load("C:/Users/mille/OneDrive/Data/airsis/airsis_2017.RData")
 ```
 
 # Orientation
@@ -72,7 +71,7 @@ plot3 <- ggplot(counts2017, aes(time, count))+
   geom_bar(stat="identity")+
   labs(subtitle='2017')+
   ylim(0,35)
-grid.arrange(plot1, plot2, plot3, nrow = 3)
+gridExtra::grid.arrange(plot1, plot2, plot3, nrow = 3)
 ```
   
 

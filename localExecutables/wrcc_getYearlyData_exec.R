@@ -10,41 +10,43 @@
 VERSION <- "0.0.1"
 
 suppressPackageStartupMessages({
-    library(methods)
-    library(optparse)
-    library(PWFSLSmoke)
-    library(MazamaSpatialUtils)
+  library(methods)
+  library(optparse)
+  library(PWFSLSmoke)
+  library(MazamaSpatialUtils)
 })
 
 ##########################################
 
-saveAirsisData <- function(opt) {
+saveWrccData <- function(opt, unitids =  c("sm11", "sm13", "sm15", "sm16", "sm17", "sm19", "sm20", "sm21", "sm22", 
+                                           "sm23", "sm24", "sm65", "sm66", "sm67", "sm68", "sm96", "sm84", "sm215", 
+                                           "sm216", "sm217", "e231", "e418", "e591", "e592", "e840", "e866", "e882", 
+                                           "e925", "e969", "s139", "s152", "s153", "s1306", "s1307", "s269", "s278", 
+                                           "s2264", "s2265", "s2922", "s2923", "s2924", "s328", "s386", 
+                                           "s539", "s549", "s833", "s835", "s855", "s856", "s915", "s916", 
+                                           "917", "s960", "s315", "s316", "s317", "s318", "sm25", "sm86", "sm52", 
+                                           "sm65", "smf1", "smn1", "smn2", "smn3", "smy1", "smrs", "sml1", "sml2")) {
   
-  # for usfs and apcd, make a list of ws_monitor objects for all units
+  # unitids = all possible unit ids, from https://wrcc.dri.edu/cgi-bin/smoke.pl
+  
   monitors <- list()
   
-  for ( provider in c("USFS", "APCD", "ARB2", "EPA")) {
-    
-    unitids <- airsis_availableUnits(opt$startdate, opt$enddate, provider = provider)
-    logger.debug("----- retrieving monitro data from ", provider, " -----")
-    for ( unitid in unitids ) {
-      logger.debug(paste0("----- trying ", provider, " ", unitid, " -----"))
-      result <- try (monitor <- airsis_createMonitorObject(startdate = opt$startdate, enddate = opt$enddate, provider = provider, unitID = unitid))
-      if ("try-error" %in% class(result)) {
-        print(paste0("error loading ", provider, " ", unitid, ": ", geterrmessage()))
-      } else {
-        monitors[[paste0(unitid, "_", provider)]] <- monitor
-        logger.debug("successfully loaded monitor data")
-      }
+  for ( unitid in unitids ) {
+    logger.debug(paste0("----- trying ", unitid, " -----"))
+    result <- try (monitor <- wrcc_createMonitorObject(startdate = opt$startdate, enddate = opt$enddate, unitID = unitid))
+    if ("try-error" %in% class(result)) {
+      print(paste0("error loading ", unitid, ": ", geterrmessage()))
+    } else {
+      monitors[[unitid]] <- monitor
+      logger.debug("successfully loaded monitor data")
     }
-    
   }
-  
+    
   all_monitors <- monitor_combine(monitors)
   
   # Set the name of all_monitors to fileName
   if (is.null(opt$fileName)) {
-    fileName <- paste0('airsis_', opt$startdate, "_", opt$enddate)
+    fileName <- paste0('wrcc_', opt$startdate, "_", opt$enddate)
   } else {
     fileName <- opt$fileName
   }
@@ -78,7 +80,7 @@ opt <- parse_args(OptionParser(option_list=option_list))
 
 # Print out version and quit
 if ( opt$version ) {
-  cat(paste0('createCSV_exec.R ',VERSION,'\n'))
+  cat(paste0('wrcc_getYearlyData_exec.R ',VERSION,'\n'))
   quit()
 }
 
@@ -89,9 +91,9 @@ if ( !file.exists(opt$outputDir) ) stop(paste0("outputDir not found:  ",opt$outp
 if ( !file.exists(opt$logDir) ) stop(paste0("logDir not found:  ",opt$logDir))
 
 # Assign log file names
-debugLog <- file.path(opt$logDir, paste0('airsis_getYearlyData_', '_DEBUG.log'))
-infoLog  <- file.path(opt$logDir, paste0('airsis_getYearlyData_', '_INFO.log'))
-errorLog <- file.path(opt$logDir, paste0('airsis_getYearlyData_', '_ERROR.log'))
+debugLog <- file.path(opt$logDir, paste0('wrcc_getYearlyData_', '_DEBUG.log'))
+infoLog  <- file.path(opt$logDir, paste0('wrcc_getYearlyData_', '_INFO.log'))
+errorLog <- file.path(opt$logDir, paste0('wrcc_getYearlyData_', '_ERROR.log'))
 
 # Set up logging
 logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
@@ -100,17 +102,17 @@ logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
 # Set up MazamaSpatialUtils
-setSpatialDataDir(opt$spatialDataDir) ##FOR bash
+setSpatialDataDir(opt$spatialDataDir) 
 
 loadSpatialData("NaturalEarthAdm1")
 
 
 # ----- Save airnow ws_monitor object as a RData file ------
 
-result <- try( saveAirsisData(opt) )
+result <- try( saveWrccData(opt) )
 
 if ( "try-error" %in% class(result) ) {
-  msg <- paste("Error saving airsis data: ", geterrmessage())
+  msg <- paste("Error saving wrcc data: ", geterrmessage())
   logger.fatal(msg)
 } else {
   # Guarantee that the errorLog exists
