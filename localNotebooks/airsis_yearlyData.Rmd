@@ -52,7 +52,7 @@ There were `r deployments2015` different deployments in 2015, `r deployments2016
 
 Let's see how they were distributed through time:
 
-```{r deployment_boxplot, fig.height=7}
+```{r deployment_boxplot, fig.height=7, cache = TRUE}
 counts2015 <-  data.frame(time = airsis_2015$data$datetime, 
                           count = apply(airsis_2015$data[-1], 1, function(x) sum(!is.na(x))))
 counts2016 <-  data.frame(time = airsis_2016$data$datetime, 
@@ -77,7 +77,7 @@ gridExtra::grid.arrange(plot1, plot2, plot3, nrow = 3)
 
 Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. monitorEsriMap() will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and is very similar to monitorGoogleMap except that it uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is monitorMap() which plots the points over polygons instead of a map image. 
   
-```{r monthly_maps, fig.width = 8, fig.height=24.5}
+```{r monthly_maps, fig.width = 8, fig.height=24.5, cache = TRUE}
 basemap <- esriMap_getMap(bboxString = '-168.9,20.18,-58.68,70.51')
 layout(matrix(c(1:(4*13)), 13, 4, byrow = TRUE), widths=c(.8,4,4,4), heights = c(1, rep(4, 13)))
 par(mar = c(0,0,0,0))
@@ -189,6 +189,19 @@ Let's see how PM2.5 levels change throughout the day for one monitor. This plot 
 monitorPlot_timeOfDaySpaghetti(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170708, 20170720), title = "Yreka Jul 8 - Jul 20 2017")
 ```
 
+  
+Later in the season, smoke really starts picking up in August. Let's take a closer look at the week of August 21 - 30, once again looking at the Yreka monitor.
+
+```{r daily_barplot}
+monitorPlot_dailyBarplot(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170821, 20170830))
+```
+
+A daily barplot is good for summarizing trends, but it can erase some dramatic highs and lows. A rolling mean plot includes the hourly values as points but draws a rolling-mean line which helps smooth out the data. 
+
+```{r rolling_mean}
+monitorPlot_rollingMean(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170821, 20170830))
+```
+
 Air quality in this location tends to peak around 9am, and disappate throughout the day. Smoke will settle in valleys when there is little wind, then disappate when winds pick back up again, so patterns like this are due to the typical weather patterns in the area.
 
 Let's look at 2017 and see how air quality is related to major fires in the region. From the [Cal Fire report](http://cdfdata.fire.ca.gov/pub/cdf/images/incidentstatsevents_273.pdf) we can see that there were three fires in Siskiyou County which burned over 10,000 acres: The [Eclipse Complex](https://inciweb.nwcg.gov/incident/5511/), [Salmon August Complex](https://inciweb.nwcg.gov/incident/5501/), and [Orleans Complex](https://inciweb.nwcg.gov/incident/5430/). We can find their locations in (InciWeb)[https://inciweb.nwcg.gov/]. Here are their locations, with markers indicating the locations of temporary monitors:
@@ -224,6 +237,4 @@ text(fireDF$startDate, c(-20, -50, -80), fireDF$name, pos = 2, cex = .8)
 ```
 
 We start seeing elevated PM2.5 levels shortly after the Orleans Complex is sparked. It's not until the middle of August, however, when two large fires start in the county that we really start seeing high PM2.5 concentrations. The PM2.5 concentrations drop to pre-fire levels around the middle of September and generally stay down, even as the fires continue burning well into October. 
-
-
 
