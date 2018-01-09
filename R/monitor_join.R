@@ -25,20 +25,11 @@ monitor_join <- function(ws_monitor1=NULL,
                          ws_monitor2=NULL,
                          monitorIDs=NULL) {
   
-  # Sanity check
-  if ( !"ws_monitor" %in% class(ws_monitor1) ) {
-    logger.error("Required argument 'ws_monitor1' is not a ws_monitor object")
-    stop("Required argument 'ws_monitor1' is not a ws_monitor object")
-  }
-  if ( !"ws_monitor" %in% class(ws_monitor2) ) {
-    logger.error("Required argument 'ws_monitor2' is not a ws_monitor object")
-    stop("Required argument 'ws_monitor2' is not a ws_monitor object")
-  }
-  if ( is.null(monitorIDs) ) {
-    logger.error("Required argument 'monitorIDs' is missing")
-    stop("Required argument 'monitorIDs' is missing")
-  }
-  
+  # Sanity checks
+  if ( !"ws_monitor" %in% class(ws_monitor1) ) stop("Required argument 'ws_monitor1' is not a ws_monitor object")
+  if ( !"ws_monitor" %in% class(ws_monitor2) ) stop("Required argument 'ws_monitor2' is not a ws_monitor object")
+  if ( is.null(monitorIDs) ) stop("Required argument 'monitorIDs' is missing")
+
   # Create an overall time axis  
   starttime <- min(ws_monitor1$data$datetime, ws_monitor2$data$datetime)
   endtime <- max(ws_monitor1$data$datetime, ws_monitor2$data$datetime)
@@ -63,9 +54,11 @@ monitor_join <- function(ws_monitor1=NULL,
     joinedData <- data1
     joinedData[[monitorID]][mask2] <- data2[[monitorID]][mask2]
     if ( sum(mask3) > 0 ) {
-      logger.warn("Averaging distinct data values for %d shared timesteps for monitorID '%s'", sum(mask3), monitorID)
       indices <- which(mask3)
-      joinedData[[monitorID]][indices] <- mean(c(data1[[monitorID]][indices],data2[[monitorID]][indices]))
+      if ( !all(data1[[monitorID]][indices] == data2[[monitorID]][indices]) ) {
+        warning(paste0("Averaging distinct data values for ",sum(mask3)," shared timesteps for monitorID ",monitorID))
+        joinedData[[monitorID]][indices] <- (data1[[monitorID]][indices] + data2[[monitorID]][indices]) / 2
+      }
     }
 
     # Create the 'ws_monitor' object

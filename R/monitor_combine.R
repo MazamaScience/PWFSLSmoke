@@ -29,15 +29,12 @@ monitor_combine <- function(monitorList) {
   duplicateIDs <- allMonitorIDs[which(duplicated(allMonitorIDs))]
   if ( length(duplicateIDs) > 0 ) {
     
-    logger.warn('Duplicate monitorIDs found: %s', paste0(duplicateIDs, collapse=", "))
-    
     # If there are only two ws_monitor objects we can join them
     if ( length(monitorList) > 2 ) {
-      logger.error("Joining of duplicate monitors requires that monitorList have only two ws_monitor objects.")
       stop("Joining of duplicate monitors requires that monitorList have only two ws_monitor objects.")
     }
     
-    logger.warn('Joining data with shared monitorIDs')
+    warning('Joining data with shared monitorIDs')
     
     # Create a new monitorList which separates mon1-only, mon2-only and joined
     monitorIDs1 <- setdiff(monitorList[[1]]$meta$monitorID, duplicateIDs)
