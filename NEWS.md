@@ -9,16 +9,20 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.6
+
+ * updates
+
 ### PWFSLSmoke 1.0.5
 
- * tweak to localExecutables/epa_createAnnualDataframes_exec.R
+ * tweak to `localExecutables/epa_createAnnualDataframes_exec.R`
  * removed `logger` statements from `monitor_combine()` and `monitor_join()`
  * fixed bug in `monitor_join()` when averaging overlapping measurements
 
 ### PWFSLSmoke 1.0.4
 
  * fixed vignette typos
- * new `epa_load()` function accesses pre-generated annual .RData
+ * new `epa_load()` function accesses pre-generated annual .RData files
  * fixed bug in `monitorPlot_timeseries()` when using `style="aqidots"`
 
 ### PWFSLSmoke 1.0.3
@@ -33,8 +37,6 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.1
 
- * `monitor~` functions now test for empty `ws_monitor` objects
- * `~_loadLatest()` functions now explicitly create and close connections
  * fixed bug in `monitor_dailyStatistic()` that didn't test for `minHours` properly
 
 ### PWFSLSmoke 1.0.0
