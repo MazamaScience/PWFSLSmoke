@@ -1,0 +1,86 @@
+---
+title: "Summary of ws_monitor data"
+author: "Mazama Science"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  html_notebook: default
+params:
+  ws_monitor: load("~/data/wrcc/wrcc_2015") 
+  spatialDataDir: "~/Data/Spatial"
+---
+
+```{r Setup, message=FALSE}
+suppressPackageStartupMessages({
+  library(PWFSLSmoke)
+  library(ggplot2)
+})
+setSpatialDataDir(params$spatialDataDir)
+ws_monitor <- params$ws_monitor
+```
+
+# Monitor Leaflet map
+
+```{r mapping}
+monitorLeaflet(ws_monitor)
+```
+
+# Monthly Maps
+
+```{r monthly_maps, fig.width = 8, fig.height=24.5, warning = FALSE}
+basemap <- esriMap_getMap(bboxString = '-168.9,20.18,-58.68,70.51')
+yearCount <- length(unique(lubridate::year(ws_monitor$data$datetime)))
+monthCount <-length(unique(lubridate::month(ws_monitor$data$datetime)))
+layout(matrix(1:((monthCount+1)*(yearCount+1)), monthCount+1, yearCount+1, byrow = FALSE), 
+       widths=c(.8,rep(4, yearCount)), heights = c(1,rep(4, monthCount+1)))
+par(mar = c(0,0,0,0))
+plot.new()
+
+# Write the month names
+for( month in sort(unique(lubridate::month(ws_monitor$data$datetime))) ){
+  text <- month.name[month]
+  plot(0,0,col="transparent", axes = F)
+  text(0,0,text, srt = 90, cex = 1.5)
+}
+
+# Map monitors from every month in each year
+for ( year in sort(unique(lubridate::year(ws_monitor$data$datetime))) ){
+  plot(0,0,col="transparent", axes = F)
+  text(0,0, as.character(year), cex = 2)
+  yearlyMonitor <- monitor_subset(ws_monitor, tlim = paste0(as.character(c(year, year+1)),'0101'))
+  
+  for ( month in sort(unique(lubridate::month(ws_monitor$data$datetime))) ) {
+    if ( month < 12 ) {
+      tlim <- paste0(as.character(year), stringr::str_pad(as.character(c(month, month+1)), 2, side = 'left', "0"), '01')
+    } else {
+      tlim <- paste0(as.character(year), c("1201", "123123"))
+    }
+    monitor <- monitor_subset(yearlyMonitor, tlim = tlim)
+    
+    result <- try (
+      monitorEsriMap(monitor, mapRaster = basemap)
+    )
+    if ("try-error" %in% class(result)) {
+      esriMap_plotOnStaticMap(basemap)
+    }
+    box("figure", col = 'gray50')
+  }
+}
+```
+
+# Deployments
+
+```{r deployment_boxplot}
+counts2015 <-  data.frame(time = ws_monitor$data$datetime, 
+                          count = apply(ws_monitor$data[-1], 1, function(x) sum(!is.na(x))))
+ggplot(counts2015, aes(time, count))+
+  geom_bar(stat="identity")+
+  labs(title='Number of valid data points by hour', subtitle='2015')
+```
+
+# Timeseries of all readings
+
+```{r gnats, fig.height=10}
+monitorPlot_timeseries(ws_monitor, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,1000))
+```
+
