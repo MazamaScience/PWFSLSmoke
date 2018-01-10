@@ -84,7 +84,7 @@ airnow_downloadParseData <- function(parameters=NULL,
       
       # NOTE:  Filter inside the loop to avoid generating very large tibbles in memory
       
-      logger.debug("Filtering to retain only data for: %s", paste(parameters, collapse=", "))
+      logger.trace("Filtering to retain only data for: %s", paste(parameters, collapse=", "))
       # Generate a mask of records to retain
       parametersMask <- rep(FALSE, nrow(tbl))
       for (parameter in parameters) {
