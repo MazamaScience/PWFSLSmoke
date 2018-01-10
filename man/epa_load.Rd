@@ -24,8 +24,8 @@ monitoring data.
 
 EPA parameter codes include:
 \enumerate{
-\item{88101}{ -- PM2.5 FRM/FEM Mass}
-\item{88502}{ -- PM2.5 non FRM/FEM Mass}
+\item{88101}{ -- PM2.5 FRM/FEM Mass (begins in 2008)}
+\item{88502}{ -- PM2.5 non FRM/FEM Mass (begins in 1998)}
 }
 
 Avaialble RData and associated log files can be seen at:

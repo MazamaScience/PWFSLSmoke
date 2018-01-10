@@ -12,6 +12,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.0.5
 
  * tweak to localExecutables/epa_createAnnualDataframes_exec.R
+ * removed `logger` statements from `monitor_combine()` and `monitor_join()`
+ * fixed bug in `monitor_join()` when averaging overlapping measurements
 
 ### PWFSLSmoke 1.0.4
 
