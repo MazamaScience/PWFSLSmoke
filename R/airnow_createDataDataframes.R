@@ -109,7 +109,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   timeAxis <- seq(starttime, starttime + lubridate::dhours(hours-1), by='hours')
   hourlyDF <- data.frame(datetime=timeAxis)
   
-  logger.info("Putting data on a uniform time axis ...")
+  logger.debug("Putting data on a uniform time axis ...")
 
   for ( parameter in parameters ) {
     

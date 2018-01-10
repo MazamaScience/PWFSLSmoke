@@ -11,7 +11,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.6
 
- * updates
+ * consistent use of log levels during data processing
 
 ### PWFSLSmoke 1.0.5
 

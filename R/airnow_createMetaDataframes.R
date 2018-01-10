@@ -136,7 +136,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   # Remove bad locations
   mask <- airnowTbl$longitude == 0 & airnowTbl$latitude == 0
   badLocationIDs <- paste(airnowTbl$AQSID[mask], collapse=", ")
-  logger.debug("Replacing (0,0) locations with (NA,NA) for IDs: %s", badLocationIDs)
+  logger.debug("Replacing (0,0) locations with (NA,NA) for AQSIDs: %s", badLocationIDs)
   airnowTbl$longitude[mask] <- as.numeric(NA)
   airnowTbl$latitude[mask] <- as.numeric(NA)
   
