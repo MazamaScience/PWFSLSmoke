@@ -20,7 +20,7 @@ suppressPackageStartupMessages({
 
 saveAirsisData <- function(opt) {
   
-  # for usfs and apcd, make a list of ws_monitor objects for all units
+  # Make a list of ws_monitor objects for all units
   monitors <- list()
   
   for ( provider in c("USFS", "APCD", "ARB2", "EPA")) {
