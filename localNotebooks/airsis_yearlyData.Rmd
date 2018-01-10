@@ -31,13 +31,15 @@ load("~/Data/airsis/airsis_2017.RData")
 
 # Orientation
 
-Create some maps and plots to get an idea about what the data looks like. 
+Create some maps and plots to get an idea about what the data looks like. MonitorLeaflet creates an interactive map with monitors plotted as points and colored to correspond to the AQI level of the maximum PM2.5 value in the data. 
 
 ```{r mapping}
 monitorLeaflet(airsis_2015)
 monitorLeaflet(airsis_2016)
 monitorLeaflet(airsis_2017)
 ```
+
+We can get some other summary statistics by querying the data attribute of the ws_monitor object. 
 
 ```{r}
 days2015 <- sum(!is.na(airsis_2015$data[-1]))/24
@@ -56,7 +58,7 @@ deployments2017
 
 There were `r deployments2015` different deployments in 2015, `r deployments2016` deployments in 2016, and `r deployments2017` deployments in 2017. Monitors were deployed for a combined total of `r days2015` days in 2015, `r days2016` days in 2016, and `r days2017` days in 2017. This means that each deployment lasted an average of `r days2015/deployments2015` days in 2015, `r days2016/deployments2016` days in 2016, and `r days2017/deployments2017` days in 2017.  
 
-Let's see how they were distributed through time:
+Let's see how the data were distributed through time:
 
 ```{r deployment_boxplot, fig.height=7, cache = TRUE}
 # Create dataframes for each year with a column for the time, and another for the 
@@ -108,9 +110,10 @@ ggplot(counts, aes(time, count))+
 
 ```
 
-There are also some ways to look at summaries of the PM2.5 values throughout the months. Let's take the example of 2015 values
 
-```{r pm25_summary, cache = TRUE, warning=FALSE, message=FALSE}
+```{r pm25_summary, cache = TRUE, warning=FALSE, message=FALSE, include=FALSE, eval = FALSE}
+# This plot turned out to be pretty unhelpful... Could include it in some other form. 
+
 dailyMeans <- monitor_dailyStatistic(airsis_2015, FUN = get("mean"), na.rm = TRUE)
 superMean <- monitor_collapse(dailyMeans, FUN = get("mean"))
 
@@ -136,14 +139,15 @@ legend("topleft", c("max", "min", "median", "mean"),
 title("Aggregated values from PM2.5 monitors, 2015")
 ```
   
+Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitorEsriMap()` and `monitorGoogleMap()` will result in very similar images. Each will plot points for each monitor with AQI colors indicating the maximum PM2.5 value over a map image, sourced either from ESRI or GoogleMaps. `monitorEsriMap` uses R's base plotting capabilities so it is easier to add points or polygons on top. For either one, there is an option to plot the points on a map object which already exists in memory, retrieved with either `esriMap_getMap()` or `RgoogleMaps::getMap()`. Retrieving the map image from the server will probably take the longest time in plotting the map, so use this option when plotting many maps with the same extent. 
 
-Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. monitorEsriMap() will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and is very similar to monitorGoogleMap except that it uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is monitorMap() which plots the points over polygons instead of a map image. 
+The other option for plotting monitor locations is `monitorMap()` which plots the points over polygons instead of an image. 
   
 ```{r monthly_maps, fig.width = 10, fig.height=37.5, cache = TRUE}
 # Load a basemap from ESRI
 basemap <- esriMap_getMap(bboxString = '-124.68,30.19,-106.15,49.70')
 
-# Set the layout so all maps wil be plotted in one figure
+# Set the layout so all maps will be plotted in one figure
 layout(matrix(1:(13*4), 13, 4, byrow = FALSE), 
        widths=c(.8,4,4,4), heights = c(1,rep(4, 13)))
 par(mar = c(0,0,0,0))
@@ -191,16 +195,14 @@ for ( year in c(2015, 2016, 2017) ){
 
 # Northern California Fires
 
-Northern California tends to be prone to wildfires. Let's take a look at how air quality in Northen California in each of the three years to see what stories that might be able to tell us about the fire season in 2015, 2016, and 2017 and how they changed. We'll start by just looking at monitors in Siskiyou County. 
+Northern California tends to be prone to wildfires. Let's take a look at air quality in Northen California in each of the three years to see what stories that might be able to tell us about the fire season in 2015, 2016, and 2017 and how they changed. We'll start by just looking at monitors in Siskiyou County, CA. 
 
-```{r subset_monitors}
+```{r subset and plot monitors, fig.width=9, fig.height=2.5}
 # Subset objects to include only monitors in Siskiyou county
 sisk2015 <- monitor_subsetBy(airsis_2015, countyName=='Siskiyou')
 sisk2016 <- monitor_subsetBy(airsis_2016, countyName=='Siskiyou')
 sisk2017 <- monitor_subsetBy(airsis_2017, countyName=='Siskiyou')
-```
 
-```{r plot monitors, fig.width=9, fig.height=3}
 # Set the layout so all maps will print in one figure
 layout(matrix(c(1,2,3,4), 1, byrow = TRUE), widths=c(1,1)) 
 par(mar = c(0,0,4,0))
@@ -245,7 +247,7 @@ monitorPlot_timeseries(sisk2017, style='gnats', xlab = "", localTime = FALSE, yl
 mtext("2017", 4, padj = 1)
 ```
 
-Just from looking at these plots, we can say some things about the fire season in Northern California. There is little smoke before July, and PM2.5 levels tend to peak around August or September, and then air quality returns to normal around the beginning of November. PM2.5 levels to not follow a smooth curve. During high-smoke season, PM2.5 levels tend to stay above a baseline, and spike briefly before returning to near the baseline. 
+Just from looking at these plots, we can say some things about the fire season in Northern California. Other than a short deployment in 2015, there are no monitor deployments before July or after the end of November. PM2.5 levels tend to peak around August or September. PM2.5 levels to not follow a smooth curve. During high-smoke season, PM2.5 levels tend to stay above a baseline, and spike briefly before returning to near the baseline. 
 
 We can see that 2015 and 2017 had more smoke, and for a longer time, than 2016. Using this as a proxy for fire intensity and duration, we can say that 2015 and 2017 had longer fire seasons than 2016. It appears that there were two distinct smoke events in 2016, the first much more intense than the second. Upon closer examination, however, we see that there is no data from 2016 between September 23 and October 5. 
 
@@ -270,7 +272,7 @@ Zooming in closer, a periodic pattern emerges between the dramatic smoke events.
 monitorDygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
 ```
 
-Let's see how PM2.5 levels change throughout the day for one monitor. This plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
+Let's see how PM2.5 levels change throughout the day for one monitor. The timeOfDaySpaghetti plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
 
 ```{r monitor_spaghetti}
 # pull out data for one monitor 
@@ -284,7 +286,7 @@ monitorPlot_timeOfDaySpaghetti(monitor_subset(yreka, tlim = c(20170708, 20170720
 addAQILegend()
 ```
 
-Air quality in this location tends to peak around 9am, and disappate throughout the day. It is common to see similar patterns from day-to-day at one location. This might be due to weather patterns, smoke settling in a valley overnight, or human activites. In this case, Yreka is close to a major highway so one possibility could be that the spike around 9am corresponds to heavy traffic, and the PM2.5 levels lower as traffic slows down and wind picks up.
+Air quality in Yreka tends to peak around 9am, and disappate throughout the day. It is common to see similar patterns from day-to-day at one location. This might be due to weather patterns, smoke settling in a valley overnight, or human activites. In this case, Yreka is close to a major highway so one possibility could be that the spike around 9am corresponds to heavy traffic, and the PM2.5 levels lower as traffic slows down and wind picks up.
   
 Later in the season, smoke really starts picking up in August. Let's take a closer look at the week of August 21 - 30, once again looking at the Yreka monitor.
 
@@ -360,7 +362,7 @@ addIcon('orangeFlame', fireDF$longitude, fireDF$latitude, expansion = .001)
 text(fireLongitudes, fireLatitudes, fireNames, pos = 1)
 ```
 
-Let's see if the timing of the fires lines up with spikes in PM2.5 concentrations. One way to summarize the data from the different monitors is by collapsing them into one. The PM2.5, latitude, and longitude values will be the means of the different monitors. 
+Let's see if the timing of the fires lines up with spikes in PM2.5 concentrations. One way to summarize the data from the different monitors is by collapsing them into one. The PM2.5, latitude, and longitude values will be the means of the values from all the different monitors. 
 
 ```{r collapsed}
 # Join the monitors into one monitor object with average PM2.5 values
