@@ -59,7 +59,9 @@ ggplot(counts2015, aes(time, count))+
 Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. monitorEsriMap() will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and is very similar to monitorGoogleMap except that it uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is monitorMap() which plots the points over polygons instead of a map image. 
   
 ```{r monthly_maps, fig.width = 8, fig.height=24.5}
-basemap <- esriMap_getMap(bboxString = '-168.9,20.18,-58.68,70.51')
+# Get the bbox for the map
+bbox <- RgoogleMaps::qbbox(ws_monitor$meta$latitude, ws_monitor$meta$longitude, margin = list(m = c(10,10,10,10), TYPE = "perc"))
+basemap <- esriMap_getMap(bboxString = paste0(bbox$lonR[1], ",", bbox$latR[1], ",", bbox$lonR[2], ",", bbox$latR[2]))
 layout(matrix(c(1:(4*13)), 13, 4, byrow = TRUE), widths=c(.8,4,4,4), heights = c(1, rep(4, 13)))
 par(mar = c(0,0,0,0))
 plot.new()

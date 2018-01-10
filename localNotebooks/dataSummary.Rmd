@@ -28,7 +28,13 @@ monitorLeaflet(ws_monitor)
 # Monthly Maps
 
 ```{r monthly_maps, fig.width = 8, fig.height=24.5, warning = FALSE}
-basemap <- esriMap_getMap(bboxString = '-168.9,20.18,-58.68,70.51')
+# Get a bounding box that will include all monitor locations
+bbox <- RgoogleMaps::qbbox(ws_monitor$meta$latitude, ws_monitor$meta$longitude, margin = list(m = c(10,10,10,10), TYPE = "perc"))
+
+# Get the map image from esri
+basemap <- esriMap_getMap(bboxString = paste0(bbox$lonR[1], ",", bbox$latR[1], ",", bbox$lonR[2], ",", bbox$latR[2]))
+
+
 yearCount <- length(unique(lubridate::year(ws_monitor$data$datetime)))
 monthCount <-length(unique(lubridate::month(ws_monitor$data$datetime)))
 layout(matrix(1:((monthCount+1)*(yearCount+1)), monthCount+1, yearCount+1, byrow = FALSE), 
@@ -47,15 +53,14 @@ for( month in sort(unique(lubridate::month(ws_monitor$data$datetime))) ){
 for ( year in sort(unique(lubridate::year(ws_monitor$data$datetime))) ){
   plot(0,0,col="transparent", axes = F)
   text(0,0, as.character(year), cex = 2)
-  yearlyMonitor <- monitor_subset(ws_monitor, tlim = paste0(as.character(c(year, year+1)),'0101'))
   
   for ( month in sort(unique(lubridate::month(ws_monitor$data$datetime))) ) {
     if ( month < 12 ) {
       tlim <- paste0(as.character(year), stringr::str_pad(as.character(c(month, month+1)), 2, side = 'left', "0"), '01')
     } else {
-      tlim <- paste0(as.character(year), c("1201", "123123"))
+      tlim <- paste0(as.character(year), c("120100", "123123"))
     }
-    monitor <- monitor_subset(yearlyMonitor, tlim = tlim)
+    monitor <- monitor_subset(ws_monitor, tlim = tlim)
     
     result <- try (
       monitorEsriMap(monitor, mapRaster = basemap)

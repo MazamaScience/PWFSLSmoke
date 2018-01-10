@@ -31,7 +31,7 @@ load("~/Data/airsis/airsis_2017.RData")
 
 # Orientation
 
-Create some maps and plots to get an idea about what the data looks like. 
+Create some maps and plots to get an idea about what the data looks like. MonitorLeaflet creates an interactive map with monitors plotted as points and colored to correspond to the AQI level of the maximum PM2.5 value in the data. 
 
 ```{r mapping}
 monitorLeaflet(airsis_2015)
@@ -39,101 +39,175 @@ monitorLeaflet(airsis_2016)
 monitorLeaflet(airsis_2017)
 ```
 
+We can get some other summary statistics by querying the data attribute of the ws_monitor object. 
+
 ```{r}
 days2015 <- sum(!is.na(airsis_2015$data[-1]))/24
+days2015
 days2016 <- sum(!is.na(airsis_2016$data[-1]))/24
+days2016
 days2017 <- sum(!is.na(airsis_2017$data[-1]))/24
+days2017
 deployments2015 <- ncol(airsis_2015$data) - 1
+deployments2015
 deployments2016 <- ncol(airsis_2016$data) - 1
+deployments2016
 deployments2017 <- ncol(airsis_2017$data) - 1
+deployments2017
 ```
 
 There were `r deployments2015` different deployments in 2015, `r deployments2016` deployments in 2016, and `r deployments2017` deployments in 2017. Monitors were deployed for a combined total of `r days2015` days in 2015, `r days2016` days in 2016, and `r days2017` days in 2017. This means that each deployment lasted an average of `r days2015/deployments2015` days in 2015, `r days2016/deployments2016` days in 2016, and `r days2017/deployments2017` days in 2017.  
 
-Let's see how they were distributed through time:
+Let's see how the data were distributed through time:
 
 ```{r deployment_boxplot, fig.height=7, cache = TRUE}
+# Create dataframes for each year with a column for the time, and another for the 
+# number of valid data points that hour
 counts2015 <-  data.frame(time = airsis_2015$data$datetime, 
                           count = apply(airsis_2015$data[-1], 1, function(x) sum(!is.na(x))))
 counts2016 <-  data.frame(time = airsis_2016$data$datetime, 
                           count = apply(airsis_2016$data[-1], 1, function(x) sum(!is.na(x))))
 counts2017 <-  data.frame(time = airsis_2017$data$datetime, 
                           count = apply(airsis_2017$data[-1], 1, function(x) sum(!is.na(x))))
+
+# Create plots of the number of valid data points per hour
 plot1 <- ggplot(counts2015, aes(time, count))+
-  geom_bar(stat="identity")+
+  geom_area(col = "gray20")+
+  geom_line(col = "gray20")+
   labs(title='Number of valid data points by hour', subtitle='2015')+
   ylim(0,35)
 plot2 <- ggplot(counts2016, aes(time, count))+
-  geom_bar(stat="identity")+
+  geom_area(col = "gray20")+
+  geom_line(col = "gray20")+
   labs(subtitle='2016')+
   ylim(0,35)
 plot3 <- ggplot(counts2017, aes(time, count))+
-  geom_bar(stat="identity")+
+  geom_area(col = "gray20")+
+  geom_line(col = "gray20")+
   labs(subtitle='2017')+
   ylim(0,35)
+
+# Arrange all plots together
 gridExtra::grid.arrange(plot1, plot2, plot3, nrow = 3)
 ```
-  
 
-Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. monitorEsriMap() will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and is very similar to monitorGoogleMap except that it uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is monitorMap() which plots the points over polygons instead of a map image. 
+Using monitor_combine, we can combine all three years into one monitor object and then make the previous plot on a continuous timeline.
+
+```{r long_deployment_boxplot, cache = TRUE}
+# Combine the monitors
+airsis <- monitor_combine(list(airsis_2015, airsis_2016))
+airsis <- monitor_combine(list(airsis, airsis_2017))
+
+# Get the deployment counts
+counts <- data.frame(time = airsis$data$datetime, 
+                          count = apply(airsis$data[-1], 1, function(x) sum(!is.na(x))))
+
+# Plot the whole thing
+ggplot(counts, aes(time, count))+
+  geom_area(col = "gray20")+
+  geom_line(col = "gray20")+
+  labs(title = "Number of valid data points by hour")
+
+```
+
+
+```{r pm25_summary, cache = TRUE, warning=FALSE, message=FALSE, include=FALSE, eval = FALSE}
+# This plot turned out to be pretty unhelpful... Could include it in some other form. 
+
+dailyMeans <- monitor_dailyStatistic(airsis_2015, FUN = get("mean"), na.rm = TRUE)
+superMean <- monitor_collapse(dailyMeans, FUN = get("mean"))
+
+dailyMax <- monitor_dailyStatistic(airsis_2015, FUN = get("max"), na.rm = TRUE)
+superMax <- monitor_collapse(dailyMax, FUN = get("max"))
+
+dailyMin <- monitor_dailyStatistic(airsis_2015, FUN = get("min"),  na.rm = TRUE)
+superMin <- monitor_collapse(airsis_2015, FUN = get("min"))
+
+dailyMedian <- monitor_dailyStatistic(airsis_2015, FUN = get("median"), na.rm = TRUE)
+superMedian <- monitor_collapse(airsis_2015, FUN = get("median"))
+
+monitorPlot_timeseries(superMax, type = "l", lwd = 1, col = adjustcolor('royalblue', alpha.f = .5))
+monitorPlot_timeseries(superMin, type = "l", lwd = 1, col = adjustcolor('purple4', alpha.f = .5), add = TRUE)
+monitorPlot_timeseries(superMean, type = "l", lwd = 1, col = adjustcolor('seagreen', alpha.f = .5), add = TRUE)
+monitorPlot_timeseries(superMedian, type = "l", lwd = 1, col = adjustcolor('orangered4', alpha.f = .5), add = TRUE)
+legend("topleft", c("max", "min", "median", "mean"), 
+       col = c(adjustcolor('royalblue', alpha.f = .5), 
+               adjustcolor('purple4', alpha.f = .5),
+               adjustcolor('orangered4', alpha.f = .5),
+               adjustcolor('seagreen', alpha.f = .5)),
+       lty = c(1,1,1,1), lwd = c(1.5, 1.5, 1.5, 1.5))
+title("Aggregated values from PM2.5 monitors, 2015")
+```
   
-```{r monthly_maps, fig.width = 8, fig.height=24.5, cache = TRUE}
-basemap <- esriMap_getMap(bboxString = '-168.9,20.18,-58.68,70.51')
-layout(matrix(c(1:(4*13)), 13, 4, byrow = TRUE), widths=c(.8,4,4,4), heights = c(1, rep(4, 13)))
+Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitorEsriMap()` and `monitorGoogleMap()` will result in very similar images. Each will plot points for each monitor with AQI colors indicating the maximum PM2.5 value over a map image, sourced either from ESRI or GoogleMaps. `monitorEsriMap` uses R's base plotting capabilities so it is easier to add points or polygons on top. For either one, there is an option to plot the points on a map object which already exists in memory, retrieved with either `esriMap_getMap()` or `RgoogleMaps::getMap()`. Retrieving the map image from the server will probably take the longest time in plotting the map, so use this option when plotting many maps with the same extent. 
+
+The other option for plotting monitor locations is `monitorMap()` which plots the points over polygons instead of an image. 
+  
+```{r monthly_maps, fig.width = 10, fig.height=37.5, cache = TRUE}
+# Load a basemap from ESRI
+basemap <- esriMap_getMap(bboxString = '-124.68,30.19,-106.15,49.70')
+
+# Set the layout so all maps will be plotted in one figure
+layout(matrix(1:(13*4), 13, 4, byrow = FALSE), 
+       widths=c(.8,4,4,4), heights = c(1,rep(4, 13)))
 par(mar = c(0,0,0,0))
 plot.new()
-for(year in c("2015", "2016", "2017")){
+
+# Write the month names
+for( month in 1:12 ){
+  text <- month.name[month]
   plot(0,0,col="transparent", axes = F)
-  text(0,0, year, cex = 2)
+  text(0,0,text, srt = 90, cex = 1.5)
 }
 
-for ( month in 1:12) {
-  # First 2015
-  tlim2015 <- if (month < 12) {
-    paste0('2015', stringr::str_pad(as.character(c(month, month+1)), 2, side = 'left', "0"), '01')
-  } else {
-    c('20151201', '20160101')
-  }
-  ws_monitor2015 <- monitor_subset(airsis_2015, tlim = tlim2015)
-  month_str <- strftime(ws_monitor2015$data$datetime[30], format = "%B")
-  plot(0,0,col="transparent", axes = F)
-  text(0,0,month_str, srt = 90, cex = 1.5)
-  tlim2016 <- if (month < 12) {
-    paste0('2016', stringr::str_pad(as.character(c(month, month+1)), 2, side = 'left', "0"), '01')
-  } else {
-    c('20161201', '20170101')
-  }
-  ws_monitor2016 <- monitor_subset(airsis_2016, tlim = tlim2016)
+# Plot a map of monitors for every month in each year
+for ( year in c(2015, 2016, 2017) ){
   
-  tlim2017 <- if (month < 12) {
-    paste0('2017', stringr::str_pad(as.character(c(month, month+1)), 2, side = 'left', "0"), '01')
-  } else {
-    c('20171201', '20180101')
+  # Add a year label
+  plot(0,0,col="transparent", axes = F)
+  text(0,0, as.character(year), cex = 2)
+  
+  # Add a plot for each month
+  for ( month in 1:12 ) {
+    
+    # Create the tlim
+    if ( month < 12 ) {
+      tlim <- paste0(as.character(year), stringr::str_pad(as.character(c(month, month+1)), 2, side = 'left', "0"), '01')
+    } else {
+      tlim <- paste0(as.character(year), c("120100", "123123"))
+    }
+    
+    # Get subset the monitor object (including all years) for desired tlim
+    monitor <- monitor_subset(airsis, tlim = tlim)
+    
+    # Try to plot the map
+    # If there is an error, plot a map with no points
+    result <- try (
+      monitorEsriMap(monitor, mapRaster = basemap, cex = 2.5)
+    )
+    if ("try-error" %in% class(result)) {
+      esriMap_plotOnStaticMap(basemap)
+    }
+    box("figure", col = 'gray50')
   }
-  ws_monitor2017 <- monitor_subset(airsis_2017, tlim = tlim2017)
-  monitorEsriMap(ws_monitor2015, mapRaster = basemap)
-  box("figure", col = 'gray50')
-  monitorEsriMap(ws_monitor2016, mapRaster = basemap)
-  box("figure", col = 'gray50')
-  monitorEsriMap(ws_monitor2017, mapRaster = basemap)
-  box("figure", col = 'gray50')
-  }
+}
 ```
 
 # Northern California Fires
 
-Northern California tends to be prone to wildfires. Let's take a look at how air quality in Northen California in each of the three years to see what stories that might be able to tell us about the fire season in 2015, 2016, and 2017 and how they changed. We'll start by just looking at monitors in Siskiyou County. 
+Northern California tends to be prone to wildfires. Let's take a look at air quality in Northen California in each of the three years to see what stories that might be able to tell us about the fire season in 2015, 2016, and 2017 and how they changed. We'll start by just looking at monitors in Siskiyou County, CA. 
 
-```{r subset_monitors}
+```{r subset and plot monitors, fig.width=9, fig.height=2.5}
+# Subset objects to include only monitors in Siskiyou county
 sisk2015 <- monitor_subsetBy(airsis_2015, countyName=='Siskiyou')
 sisk2016 <- monitor_subsetBy(airsis_2016, countyName=='Siskiyou')
 sisk2017 <- monitor_subsetBy(airsis_2017, countyName=='Siskiyou')
-```
 
-```{r plot monitors, fig.width=7, fig.height=3}
-loadSpatialData("USCensusCounties")
-layout(matrix(c(1,2,3), 1, byrow = TRUE), widths=c(1,1)) 
+# Set the layout so all maps will print in one figure
+layout(matrix(c(1,2,3,4), 1, byrow = TRUE), widths=c(1,1)) 
 par(mar = c(0,0,4,0))
+
+# Add maps of monitors for each year
 monitorMap(sisk2015, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
 box('plot')
 title("2015", cex.main = 3)
@@ -143,35 +217,49 @@ title("2016", cex.main = 3)
 monitorMap(sisk2017, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
 box('plot')
 title("2017", cex.main = 3)
+
+# Add an AQI legend plot
+plot.new()
+addAQILegend('topleft', pt.cex = 2)
 ```
 
 Now, let's take a look at the pm2.5 data from each year. 
 
 ```{r gnatplots, fig.height = 9}
+# Set the layout so all plots will in one figure
 layout(matrix(c(1,2,3), 3, 1), heights = c(1,1,1))
 par(xaxt = "n", mar = c(0,4.1,4,3), xpd = NA)
+
+# Add timeseries plots for each year
 monitorPlot_timeseries(sisk2015, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2015", 4, padj = 1)
+par(xaxt = 's')
+axis.POSIXct(1, sisk2015$data$datetime, labels = FALSE)
+par(xaxt = 'n')
 title("All pm2.5 readings from monitors in Siskiyou County")
 par(mar=c(2,4.1,2,3))
 monitorPlot_timeseries(sisk2016, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2016", 4, padj = 1)
-par(xaxt = "s", mar=c(4,4.1,0,3))
+par(xaxt = 's')
+axis.POSIXct(1, sisk2016$data$datetime, labels = FALSE)
+par(mar=c(4,4.1,0,3))
 monitorPlot_timeseries(sisk2017, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2017", 4, padj = 1)
 ```
 
-Just from looking at these plots, we can say some things about the fire season in Northern California. There is little smoke before July, and PM2.5 levels tend to peak around August or September, and then air quality returns to normal around the beginning of November. PM2.5 levels to not follow a smooth curve. During high-smoke season, PM2.5 levels tend to stay above a baseline, and spike briefly before returning to near the baseline. 
+Just from looking at these plots, we can say some things about the fire season in Northern California. Other than a short deployment in 2015, there are no monitor deployments before July or after the end of November. PM2.5 levels tend to peak around August or September. PM2.5 levels to not follow a smooth curve. During high-smoke season, PM2.5 levels tend to stay above a baseline, and spike briefly before returning to near the baseline. 
 
 We can see that 2015 and 2017 had more smoke, and for a longer time, than 2016. Using this as a proxy for fire intensity and duration, we can say that 2015 and 2017 had longer fire seasons than 2016. It appears that there were two distinct smoke events in 2016, the first much more intense than the second. Upon closer examination, however, we see that there is no data from 2016 between September 23 and October 5. 
 
 ```{r missingData}
+# Create a timeseries plot with a time limit surrounding missing values
 monitorPlot_timeseries(sisk2016, tlim = c(20160920, 20161010), type = "l")
 ```
 
 Let's look a little closer at the smokiest part of the summer for the three years: July to October.
 
 ```{r dygraphs}
+# Create dygraphs for the summer of each year
 monitorDygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
 monitorDygraph(sisk2016, tlim = c(20160701, 20161001), title = "2016")
 monitorDygraph(sisk2017, tlim = c(20170701, 20171001), title = "2017")
@@ -180,33 +268,85 @@ monitorDygraph(sisk2017, tlim = c(20170701, 20171001), title = "2017")
 Zooming in closer, a periodic pattern emerges between the dramatic smoke events. 
 
 ```{r Yreka_Dygraph}
+# Plot zoomed-in dygraph
 monitorDygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
 ```
 
-Let's see how PM2.5 levels change throughout the day for one monitor. This plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
+Let's see how PM2.5 levels change throughout the day for one monitor. The timeOfDaySpaghetti plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
 
 ```{r monitor_spaghetti}
-monitorPlot_timeOfDaySpaghetti(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170708, 20170720), title = "Yreka Jul 8 - Jul 20 2017")
+# pull out data for one monitor 
+yreka <- monitor_subset(sisk2017, monitorID = "lon_.122.634_lat_41.727_apcd.1014")
+
+# Plot the monitor location
+monitorLeaflet(yreka)
+
+# Create spaghetti plot of hourly values over the week
+monitorPlot_timeOfDaySpaghetti(monitor_subset(yreka, tlim = c(20170708, 20170720)), title = "Yreka Jul 8 - Jul 20 2017")
+addAQILegend()
 ```
 
+Air quality in Yreka tends to peak around 9am, and disappate throughout the day. It is common to see similar patterns from day-to-day at one location. This might be due to weather patterns, smoke settling in a valley overnight, or human activites. In this case, Yreka is close to a major highway so one possibility could be that the spike around 9am corresponds to heavy traffic, and the PM2.5 levels lower as traffic slows down and wind picks up.
   
 Later in the season, smoke really starts picking up in August. Let's take a closer look at the week of August 21 - 30, once again looking at the Yreka monitor.
 
 ```{r daily_barplot}
-monitorPlot_dailyBarplot(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170821, 20170830))
+# Pull out the interesting week
+yrekaWeek <- monitor_subset(yreka, tlim = c(20170821, 20170830))
+monitorPlot_rollingMean(yrekaWeek)
+addAQILegend()
 ```
 
-A daily barplot is good for summarizing trends, but it can erase some dramatic highs and lows. A rolling mean plot includes the hourly values as points but draws a rolling-mean line which helps smooth out the data. 
+The rolling mean plots plots all the points overlaid with a rolling mean line. The rolling mean helps smooth the data to make it easier to see trends.
 
-```{r rolling_mean}
-monitorPlot_rollingMean(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170821, 20170830))
+Another built-in function for smoothing is NowCast. Here, NowCast values are plotted over the rolling mean to show the difference between NowCast and rolling mean. NowCast values will appear to trail the observed data by an hour or so. One use of NowCast is as an estimate of what the daily average will be before the day is over. 
+
+Notice that the NowCast was calculated from the monitor object including all days -- not just those included in the plot. This is because the NowCast calculation is based on previous data. For the best NowCast calculations, calculate from the full timeseries even if only a subset will be used for analysis or plotting. 
+
+```{r nowcast}
+# Calculate NowCast values
+yrekaNowcast <- monitor_nowcast(yreka)
+
+# Plot NowCast over rolling mean plot
+monitorPlot_rollingMean(yrekaWeek, showLegend = FALSE)
+monitorPlot_timeseries(yrekaNowcast, type = "l", add = TRUE, col = adjustcolor('royalblue', alpha.f = .7), 
+                       tlim = c(20170121, 20170830), lwd = 2)
+legend('topleft', legend = c("hourly PM2.5", "nowcast", "3-hour rolling mean"), pch = c(16, NA, NA), 
+       lty = c(NA, 1, 1), col = c('gray80', adjustcolor('royalblue', alpha.f = .7), 'black'), lwd = c(NA, 2, 1))
+addAQILegend()
 ```
 
-Air quality in this location tends to peak around 9am, and disappate throughout the day. Smoke will settle in valleys when there is little wind, then disappate when winds pick back up again, so patterns like this are due to the typical weather patterns in the area.
-
-Let's look at 2017 and see how air quality is related to major fires in the region. From the [Cal Fire report](http://cdfdata.fire.ca.gov/pub/cdf/images/incidentstatsevents_273.pdf) we can see that there were three fires in Siskiyou County which burned over 10,000 acres: The [Eclipse Complex](https://inciweb.nwcg.gov/incident/5511/), [Salmon August Complex](https://inciweb.nwcg.gov/incident/5501/), and [Orleans Complex](https://inciweb.nwcg.gov/incident/5430/). We can find their locations in (InciWeb)[https://inciweb.nwcg.gov/]. Here are their locations, with markers indicating the locations of temporary monitors:
+While hourly timeseries plots provide detail about PM2.5 levels throughout the day, sometimes it is better to look at more aggregated data to eliminate distractions of sudden, short-lived spikes or drops. The dailyBarplot function will summarize each day by plotting the average PM2.5 value. 
 
 ```{r}
+# Create a daily barplot
+monitorPlot_dailyBarplot(yrekaWeek, labels_y_nudge = 12, labels_x_nudge = .2)
+addAQILegend()
+```
+
+Another good way to summarize the data is by looking at the number of hours per day that the PM2.5 value was over a certain level. 
+
+```{r daily_threshold}
+# Calculate the number of hours over 'unhealthy'
+unhealthyHours <- monitor_dailyThreshold(yrekaWeek, threshold =  "unhealthy")
+
+# Plot unhealthy hours per day
+barplot(unhealthyHours$data[,2], names.arg = strftime(unhealthyHours$data[,1], "%b %d"), cex.names = .8, ylim = c(0,25))
+title("Hours where pm2.5 was unhealthy or worse", line = 2)
+
+# Calculate the number of hours over 'very unhealthy'
+veryUnhealthyHours <- monitor_dailyThreshold(yrekaWeek,threshold = "very unhealthy")
+
+# Plot very unhealhty hours per day
+barplot(veryUnhealthyHours$data[,2], names.arg = strftime(veryUnhealthyHours$data[,1], "%b %d"), cex.names = .8, ylim = c(0,25))
+title("Hours where pm2.5 was very unhealthy or worse", line = 2)
+```
+
+
+Let's look at 2017 and see how air quality relates to major fires in the region. From the [Cal Fire report](http://cdfdata.fire.ca.gov/pub/cdf/images/incidentstatsevents_273.pdf) we can see that there were three fires in Siskiyou County which burned over 10,000 acres: The [Eclipse Complex](https://inciweb.nwcg.gov/incident/5511/), [Salmon August Complex](https://inciweb.nwcg.gov/incident/5501/), and [Orleans Complex](https://inciweb.nwcg.gov/incident/5430/). We can find their locations via (InciWeb)[https://inciweb.nwcg.gov/]. Here are their locations, with markers indicating the locations of temporary monitors:
+
+```{r}
+# Manually enter fire data
 fireNames <- c("Eclipse Complex", "Salmon August Complex", "Orleans Complex")
 fireLongitudes <- c(-123.493, -123.099, -123.647)
 fireLatitudes <- c(41.792, 41.263, 41.566)
@@ -214,18 +354,29 @@ fireStartDate <- strptime(c("20170815", "20170813", "20170725"), format = "%Y%m%
 fireEndDate <- strptime(c("20171010", "20171020", "20171012"), format = "%Y%m%d")
 fireDF <- data.frame(name = fireNames, longitude =fireLongitudes, latitude = fireLatitudes, 
                      startDate = fireStartDate, endDate = fireEndDate)
+
+# Map fires and monitors
 monitorMap(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
 addMarker(sisk2017$meta$longitude, sisk2017$meta$latitude, color = "blue")
 addIcon('orangeFlame', fireDF$longitude, fireDF$latitude, expansion = .001)
 text(fireLongitudes, fireLatitudes, fireNames, pos = 1)
 ```
 
-Let's see if the timing of the fires lines up with spikes in PM2.5 concentrations. 
+Let's see if the timing of the fires lines up with spikes in PM2.5 concentrations. One way to summarize the data from the different monitors is by collapsing them into one. The PM2.5, latitude, and longitude values will be the means of the values from all the different monitors. 
 
-```{r}
+```{r collapsed}
 # Join the monitors into one monitor object with average PM2.5 values
 collapsed2017 <- monitor_collapse(sisk2017, monitorID = "siskiyou_2017")
-monitorPlot_timeseries(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40")
+
+# Map monitors and collapsed monitor object
+monitorMap(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
+addMarker(sisk2017$meta$longitude, sisk2017$meta$latitude, expansion = .5, color = "blue")
+addMarker(collapsed2017$meta$longitude, collapsed2017$meta$latitude, expansion = 1)
+text(collapsed2017$meta$longitude, collapsed2017$meta$latitude, "collapsed \n monitor", pos=1, cex = .8)
+
+# Plot timeseries of average values
+par(mar = c(2, 4.5, 4, 2) + .1)
+monitorPlot_timeseries(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40", xlab = "")
 title("Siskiyou County, CA 2017 fires and smoke")
 abline(0,0,col = 'gray80')
 
