@@ -15,6 +15,11 @@ A \emph{ws_monitor} object combining all monitoring data from \code{monitorList}
 \description{
 Combines a list of one or more \emph{ws_monitor} objects into a single \emph{ws_monitor} object 
 by merging the \code{meta} and \code{data} dataframes from each object in \code{monitorList}.
+
+When \code{monitorList} contains only two \emph{ws_monitor} objects the \code{monitor_combine()} 
+function can be used to extend time ranges for monitorIDs that are found in both \emph{ws_monitor}
+objects. This can be used to 'grow' a \emph{ws_monitor} object by appending subsequent months
+or years. (Note, however, that this can be CPU intensive process.)
 }
 \examples{
 \dontrun{

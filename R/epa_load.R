@@ -77,7 +77,7 @@ epa_load <- function(year=strftime(lubridate::now(),"%Y",tz="UTC"),
   # Define a 'connection' object so we can be sure to close it
   conn <- url(paste0(baseUrl,filepath))
   ws_monitor <- get(load(conn))
-  if ( isOpen(conn) ) close(conn)
+  close(conn)
   
   return(ws_monitor)
   

@@ -2,22 +2,15 @@
 % Please edit documentation in R/airnow_load.R
 \name{airnow_load}
 \alias{airnow_load}
-\title{Load AirNow Monitoring Data}
+\title{Load Processed AirNow Monitoring Data}
 \usage{
-airnow_load(startdate = strftime(lubridate::now(), "\%Y\%m0100", tz = "UTC"),
-  enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz = "UTC"),
-  stateCodes = NULL, monitorIDs = NULL, parameter = "PM2.5",
-  baseUrl = "https://smoke.airfire.org/RData/AirNowTech/")
+airnow_load(year = 2017, month = NULL, parameter = "PM2.5",
+  baseUrl = "https://haze.airfire.org/monitoring/AirNow/RData/")
 }
 \arguments{
-\item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
+\item{year}{desired year (integer or character representing YYYY)}
 
-\item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
-
-\item{stateCodes}{vector of state codes passed on to \link{monitor_subset}}
-
-\item{monitorIDs}{vector of monitor IDs passed on to \link{monitor_subset}
-When set to NULL, the function returns all the monitor IDs available in the metadata}
+\item{month}{desired month (integer or character representing MM)}
 
 \item{parameter}{parameter of interest}
 
@@ -27,13 +20,19 @@ When set to NULL, the function returns all the monitor IDs available in the meta
 A \emph{ws_monitor} object with AirNow data.
 }
 \description{
-When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 
-meta and data files from the archive at \code{baseUrl} (or local directory) and returns a \emph{ws_monitor} object
-after subsetting by time, state and monitor ID.
+Loads pre-generated .RData files containing AirNow data.
+
+AirNow parameters include the following:
+\enumerate{
+\item{PM2.5}
+}
+
+Avaialble RData and associated log files can be seen at:
+\href{https://haze.airfire.org/monitoring/AirNow/RData/}{https://haze.airfire.org/monitoring/AirNow/RData/}
 }
 \examples{
 \dontrun{
-airnow <- airnow_load(20150901, 20150930)
+airnow <- airnow_load(2017, 09)
 airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
 monitorLeaflet(airnow_conus)
 }

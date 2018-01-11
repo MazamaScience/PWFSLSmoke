@@ -1,115 +1,77 @@
 #' @keywords AirNow
 #' @export
-#' @title Load AirNow Monitoring Data
-#' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
-#' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
-#' @param stateCodes vector of state codes passed on to \link{monitor_subset}
-#' @param monitorIDs vector of monitor IDs passed on to \link{monitor_subset}
-#' When set to NULL, the function returns all the monitor IDs available in the metadata
+#' @title Load Processed AirNow Monitoring Data
+#' @param year desired year (integer or character representing YYYY)
+#' @param month desired month (integer or character representing MM)
 #' @param parameter parameter of interest
 #' @param baseUrl base URL for AirNow meta and data files
 #' @return A \emph{ws_monitor} object with AirNow data.
-#' @description When given the startdate, enddate, monitorIDs and parameter of interest, the function retrieves the 
-#' meta and data files from the archive at \code{baseUrl} (or local directory) and returns a \emph{ws_monitor} object
-#' after subsetting by time, state and monitor ID.
+#' @description Loads pre-generated .RData files containing AirNow data.
+#' 
+#' AirNow parameters include the following:
+#' \enumerate{
+# #' \item{BARPR}
+# #' \item{BC}
+# #' \item{CO}
+# #' \item{NO}
+# #' \item{NO2}
+# #' \item{NO2Y}
+# #' \item{NO2X}
+# #' \item{NOX}
+# #' \item{NOOY}
+# #' \item{OC}
+# #' \item{OZONE}
+# #' \item{PM10}
+#' \item{PM2.5}
+# #' \item{PRECIP}
+# #' \item{RHUM}
+# #' \item{SO2}
+# #' \item{SRAD}
+# #' \item{TEMP}
+# #' \item{UV-AETH}
+# #' \item{WD}
+# #' \item{WS}
+#' }
+#' 
+#' Avaialble RData and associated log files can be seen at:
+#' \href{https://haze.airfire.org/monitoring/AirNow/RData/}{https://haze.airfire.org/monitoring/AirNow/RData/}
 #' @examples
 #' \dontrun{
-#' airnow <- airnow_load(20150901, 20150930)
+#' airnow <- airnow_load(2017, 09)
 #' airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
 #' monitorLeaflet(airnow_conus)
 #' }
 
-airnow_load <- function(startdate=strftime(lubridate::now(),"%Y%m0100",tz="UTC"),
-                        enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
-                        stateCodes=NULL,
-                        monitorIDs=NULL,
+airnow_load <- function(year=2017,
+                        month=NULL,
                         parameter='PM2.5',
-                        baseUrl='https://smoke.airfire.org/RData/AirNowTech/') {
+                        baseUrl='https://haze.airfire.org/monitoring/AirNow/RData/') {
   
-  # Sanity Check
-  
-  if ( is.null(startdate) | is.null(enddate) ) {
-    
-    stop("The time interval is not defined")
-    
+  # Sanity check
+  validParams <- c("PM2.5")
+  if ( !parameter %in% validParams ) {
+    paramsString <- paste(validParams, collapse=", ")
+    stop(paste0("Parameter '", parameter, "' is not supported. Try one of: ", paramsString))
   }
   
-  # Get relevant metadata (The url will change once PWFSL has its own archive url)
-  
-  if (stringr::str_sub(baseUrl,1,4) == 'http') {
-    
-    meta <- get(load(url(paste0(baseUrl,'AirNowTech_', 'PM2.5_', 'SitesMetadata', '.RData'))))
-    
-  } else if (stringr::str_sub(baseUrl,1,6) == '/Users') { #  TODO:  See logic in hms_loadSmoke for an improvement
-    
-    meta <- get(load(paste0(baseUrl,'AirNowTech_', 'PM2.5_', 'SitesMetadata', '.RData')))
-    
+
+  # Create filepath
+  if ( is.null(month) ) {
+    yearMonth <- lubridate::ymd(paste0(year,"0101"))
+    part1 <- strftime(yearMonth, "%Y/airnow_", tz="UTC")
+    part2 <- strftime(yearMonth, "_%Y.RData", tz="UTC")
   } else {
-    
-    stop("Please provide a web url or an absolute path to the local directory")
+    yearMonth <- lubridate::ymd(paste0(year,month,"01"))
+    part1 <- strftime(yearMonth, "%Y/%m/airnow_", tz="UTC")
+    part2 <- strftime(yearMonth, "_%Y_%m.RData", tz="UTC")
   }
+  filepath <- paste0(part1,parameter,part2)
   
-  # Get relevant data
-  # Concatenate using dplyr::row_bind if there are multiple files
+  # Define a 'connection' object so we can be sure to close it
+  conn <- url(paste0(baseUrl,filepath))
+  ws_monitor <- get(load(conn))
+  close(conn)
   
-  dataList <- list()
-  
-  starttime <- parseDatetime(startdate)
-  endtime <- parseDatetime(enddate)
-  
-  timeVec <- unique(strftime(seq(starttime, endtime, by='days'), '%Y%m', tz='UTC'))
-  
-  if (length(timeVec) == 1) {
-    
-    YearMonth <- timeVec
-    
-    if (stringr::str_sub(baseUrl,1,4) == 'http') {
-      
-      joinedData <- get(load(url(paste0(baseUrl,'AirNowTech_',parameter,'_', YearMonth,'.RData'))))
-      
-    } else {
-      
-      joinedData <- get(load(paste0(baseUrl,'AirNowTech_',parameter,'_', YearMonth,'.RData')))
-      
-    }
-    
-  } else {
-    
-    if (stringr::str_sub(baseUrl,1,4) == 'http') {
-      
-      for (time in timeVec) {
-        
-        YearMonth <- time
-        dataList[[YearMonth]] <- get(load(url(paste0(baseUrl,'AirNowTech_',parameter,'_', YearMonth,'.RData'))))
-        
-      }
-      
-    } else {
-      
-      for (time in timeVec) {
-        
-        YearMonth <- time
-        dataList[[YearMonth]] <- get(load(paste0(baseUrl,'AirNowTech_',parameter,'_', YearMonth,'.RData')))
-        
-      }
-      
-    }
-    
-    joinedData <- suppressMessages(dplyr::bind_rows(dataList))
-    joinedData <- joinedData[!duplicated(joinedData$datetime),]
-    joinedData <- as.data.frame(joinedData)
-    
-  }
-  
-  # Subset time and monitor ID
-  
-  ws_monitor <- list(meta=meta, data=joinedData)
-  tlim <- c(starttime,endtime)
-  
-  ws_monitor <- monitor_subset(ws_monitor, tlim=tlim, stateCodes=stateCodes, monitorIDs=monitorIDs)
-  
-  # Return ws_monitor object
-  
-  return(structure(ws_monitor, class = c("ws_monitor", "list")))
+  return(ws_monitor)
   
 }
