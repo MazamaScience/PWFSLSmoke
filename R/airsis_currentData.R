@@ -13,7 +13,7 @@ airsis_currentData <- function(lookbackDays=7, providers=c("usfs","apcd","arb2",
   # get combined currentStatus table
   currentStatusList <- list()
   for ( i in 1:length(providers) ) {
-    logger.info(paste0("Generating currentStatus table for: ", providers[i]))
+    logger.debug(paste0("Generating currentStatus table for: ", providers[i]))
     currentStatusList[[providers[i]]] <- airsis_currentStatus(providers[i], usernames[i], passwords[i])
   }
   currentStatus <- dplyr::bind_rows(currentStatusList)
@@ -33,7 +33,7 @@ airsis_currentData <- function(lookbackDays=7, providers=c("usfs","apcd","arb2",
   for ( rowID in 1:nrow(currentStatus) ) {
     provider <- currentStatus$provider[rowID]
     unitID <- currentStatus$unitID[rowID]
-    logger.info(paste0("Creating ws_monitor object for ", provider, " ", unitID))
+    logger.debug(paste0("Creating ws_monitor object for ", provider, " ", unitID))
     ws_monitorTemp <- try(airsis_createMonitorObject(startdate, enddate, provider, unitID), silent = TRUE)
     if ( !( "try-error" %in% class(ws_monitorTemp))) {
       monitorList[[paste0(provider, "_", unitID)]] <- ws_monitorTemp

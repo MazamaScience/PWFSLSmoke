@@ -68,20 +68,20 @@ airsis_parseData <- function(fileString) {
     
   } else if ( monitorType == "OTHER_1" ) {
     
-    logger.warn("Older EBAM 1 file parsing is not supported")
     logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    logger.error("Older EBAM 1 file parsing is not supported")
     stop(paste0("Older EBAM 1 file parsing is not supported", call.=FALSE))
     
   } else if ( monitorType == "OTHER_2" ) {
     
-    logger.warn("Older EBAM 2 file parsing is not supported")
     logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    logger.error("Older EBAM 2 file parsing is not supported")
     stop(paste0("Older EBAM 2 file parsing is not supported", call.=FALSE))
     
   } else {
     
-    logger.warn("Unkown file parsing is not supported")
     logger.debug("Header line:\n\t%s", paste0(rawNames,collapse=','))
+    logger.error("Unkown file parsing is not supported")
     stop(paste0("Unknown file parsing is not supported", call.=FALSE))
     
   }
@@ -138,7 +138,7 @@ airsis_parseData <- function(fileString) {
   
   # Check to see if any records remain
   if ( nrow(tbl) == 0 ) {
-    logger.warn("No data remaining after parsing cleanup")
+    logger.error("No data remaining after parsing cleanup")
     stop("No data remaining after parsing cleanup", call.=FALSE)
   }
   

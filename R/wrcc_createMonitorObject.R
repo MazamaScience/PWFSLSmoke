@@ -141,7 +141,7 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
 
   # Reset all negative values that made it through QC to zero
   if ( zeroMinimum ) {
-    logger.debug("Reset negative valus to zero ...")
+    logger.debug("Reset negative values to zero ...")
     ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
   }
   

@@ -18,7 +18,7 @@ addGoogleMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
   
   logger.warn("addGoogleMetadata() is deprecated. Please use addGoogleElevation() and addGoogleAddress() instead.")
   
-  logger.debug(" ----- addGoogleMetadata() ----- ")
+  logger.trace(" ----- addGoogleMetadata() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df, stringsAsFactors=FALSE)

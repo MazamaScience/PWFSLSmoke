@@ -16,7 +16,7 @@
 
 addGoogleAddress <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
   
-  logger.debug(" ----- addGoogleAddress() ----- ")
+  logger.trace(" ----- addGoogleAddress() ----- ")
   
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df, stringsAsFactors=FALSE)

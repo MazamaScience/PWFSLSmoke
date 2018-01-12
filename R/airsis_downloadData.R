@@ -43,7 +43,7 @@ airsis_downloadData <- function(startdate=strftime(lubridate::now(),"%Y0101",tz=
                 '&StartDate=', strftime(starttime, "%Y-%m-%d", tz="UTC"),
                 '&EndDate=', strftime(endtime, "%Y-%m-%d", tz="UTC"))
   
-  logger.debug("Downloading AIRSIS data from %s", url)
+  logger.debug("Downloading data from: %s", url)
   
   # Read the url output into a string
   fileString <- readr::read_file(url)
