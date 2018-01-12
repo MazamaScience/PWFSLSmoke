@@ -47,6 +47,9 @@ airnow_load <- function(year=2017,
                         parameter='PM2.5',
                         baseUrl='https://haze.airfire.org/monitoring/AirNow/RData/') {
   
+  # Convert to character for consistency
+  year <- as.character(year)
+  
   # Sanity check
   validParams <- c("PM2.5")
   if ( !parameter %in% validParams ) {
@@ -54,7 +57,6 @@ airnow_load <- function(year=2017,
     stop(paste0("Parameter '", parameter, "' is not supported. Try one of: ", paramsString))
   }
   
-
   # Create filepath
   if ( is.null(month) ) {
     yearMonth <- lubridate::ymd(paste0(year,"0101"))

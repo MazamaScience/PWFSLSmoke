@@ -11,7 +11,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.7
 
- * more consistency in the use of log levels during data processing
+ * more consistent error handling and logging during AIRSIS data processing
+ * new `airsis_load()` function to access pre-generated annual .RData files
 
 ### PWFSLSmoke 1.0.6
 

@@ -110,6 +110,13 @@ airsis_EBAMQualityControl <- function(tbl,
 
   tbl <- tbl[goodLonMask & goodLatMask,]
   
+  # Sanity check -- row count
+  if ( nrow(tbl) < 1 && !flagAndKeep ) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.warn(err_msg) # This is more of a warning than some error in the data.
+    stop(err_msg, call.=FALSE)
+  }
+  
   # ----- Time ----------------------------------------------------------------
   
   # Add a POSIXct datetime
@@ -150,8 +157,11 @@ airsis_EBAMQualityControl <- function(tbl,
 
   tbl <- tbl[goodTypeMask,]
   
-  if (nrow(tbl) < 1) {
-    logger.warn("No valid PM2.5 data for %s", monitorName)
+  # Sanity check -- row count
+  if ( nrow(tbl) < 1 && !flagAndKeep ) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.warn(err_msg) # This is more of a warning than some error in the data.
+    stop(err_msg, call.=FALSE)
   }
   
   # Leland Tarnay QC -----------------------------------------------------------
@@ -212,6 +222,13 @@ airsis_EBAMQualityControl <- function(tbl,
   
   tbl <- tbl[goodMask,]
   
+  # Sanity check -- row count
+  if ( nrow(tbl) < 1 && !flagAndKeep ) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.warn(err_msg) # This is more of a warning than some error in the data.
+    stop(err_msg, call.=FALSE)
+  }
+  
   # ----- Duplicate Hours -----------------------------------------------------
   
   # For hours with multiple records, discard all but the one with the latest processing date/time
@@ -236,6 +253,13 @@ airsis_EBAMQualityControl <- function(tbl,
   }
   
   tbl <- tbl[uniqueHrMask,]
+  
+  # Sanity check -- row count
+  if ( nrow(tbl) < 1 && !flagAndKeep ) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.warn(err_msg) # This is more of a warning than some error in the data.
+    stop(err_msg, call.=FALSE)
+  }
   
   # ----- More QC -------------------------------------------------------------
   

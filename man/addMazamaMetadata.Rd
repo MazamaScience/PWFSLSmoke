@@ -26,17 +26,12 @@ The \pkg{MazamaSpatialUtils} package used to determine the ISO state and country
 and the Olson timezone associated with the locations specified by the
 \code{longitude} and \code{latitude} columns of the incoming dataframe.
 
-This function requires previous setup of the \pkg{MazamaSpatialUtils} package:
-
-\preformatted{
-library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial')
-loadSpatialData('NaturalEarthAdm1')
-}
-
-An error will be generated if these lines have not be previously run.
+This function requires previous setup of the \pkg{MazamaSpatialUtils} package with \code{initializeMazamaSpatialUtils()}.
 }
 \references{
 \url{https://github.com/MazamaScience/MazamaSpatialUtils}
+}
+\seealso{
+\code{\link{initializeMazamaSpatialUtils}}
 }
 \keyword{internal}

@@ -31,7 +31,7 @@ airsisDump_createMonitorObject <- function(filepath,
                                            clusterDiameter=1000,
                                            existingMeta=NULL) {
   
-  logger.info(" ----- airsisDump_createMonitorObject() ----- ")
+  logger.trace(" ----- airsisDump_createMonitorObject() ----- ")
   
   logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
