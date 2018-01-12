@@ -15,16 +15,48 @@ suppressPackageStartupMessages({
 
 ##########################################
 
-saveAirnowYearlyData <- function(opt) {
+# For debugging
+if ( FALSE ) {
   
-  airnowYear <- load("path to January file goes here")
+  opt <- list(parameterName = "PM2.5",
+              year = "2017",
+              inputDir = "/Users/helen/Data/airnow/2017/PM25",
+              outputDir = "/Users/helen/Data/airnow/2017/PM25",
+              logDir = "/Users/helen/Data/airnow/2017/PM25")  
   
-  for (month in 2:12){
-    # Retrieve the correct ws_monitor object
-    airnowMonth <- load("Path to correct file goes here")
+}
+
+combineAirnowMonths <- function(opt) {
+  
+  firstMonth <- TRUE
+  for (month in 1:12){
     
-    # add it to the yearly ws_monitor object
-    monitor_combine(airnowYear, airnowMonth)
+    # Build the filepath
+    fileName <- paste0("airnow_", opt$parameterName, "_", opt$year, "_", stringr::str_pad(month, 2, pad = 0), ".RData")
+    filePath <- file.path(opt$inputDir, fileName)
+    logger.debug(paste0("loading ", filePath))
+    print(paste0("loading ", filePath))
+    if ( !file.exists(filePath) ) {
+      logger.debug(paste0("File ", filePath, " does not exist."))
+      print(paste0("File ", filePath, " does not exist."))
+    } else {
+      
+      # Load the correct ws_monitor object
+      airnowMonth <- load(filePath)
+      airnowMonth <- eval(parse(text = airnowMonth))
+      
+      if ( firstMonth ) {
+        airnowYear <- airnowMonth
+        firstMonth <- FALSE
+      } else {
+        # NOTE:  The way we grow the ws_monitor object is an example of what NOT to do in R but
+        # NOTE:  we are limited by the fact that monitor_join() can only join 2 monitors.
+        print("combining months...")
+        airnowYear <- monitor_combine(list(airnowYear, airnowMonth))
+      }
+      logger.debug(paste0("successfully combined month ", month))
+      print(paste0("successfully combined month ", month))
+    }
   }
   
   # Set the name of airnowYear to fileName
@@ -35,7 +67,7 @@ saveAirnowYearlyData <- function(opt) {
   }
   
   assign(fileName, airnowYear)
-  filePath <- paste0(opt$outputDir, '/', fileName, '.RData')
+  filePath <- file.path(opt$outputDir, fileName)
   
   # Save the RData file
   save(list = fileName, file = filePath)
@@ -50,12 +82,13 @@ saveAirnowYearlyData <- function(opt) {
 # Set up option parser
 option_list <- list(
   make_option(c("-n","--parameterName"),default='PM2.5', help="parameter name"),
-  make_option(c("-y","--year"), default=2016, help="Specify a single year to download data for"),
-  make_option(c("-d","--downloadDir"), default=getwd(), help="Output directory for downloaded EPA .zip files [default=\"%default\"]"),
+  make_option(c("-y","--year"), default=2016, help="Specify a single year to combine months for"),
+  make_option(c("-d","--inputDir"), default=getwd(), help="Directory containing airnow monthly .RData files [default=\"%default\"]"),
   make_option(c("-o","--outputDir"), default=getwd(), help="Output directory for generated .RData files [default=\"%default\"]"),
-  make_option(c("-f","--fileName"), default="airnow_[year]", help="Name for the RData file"),
+  make_option(c("-f","--fileName"), default="airnow_[year]", help="Name for the resultant .RData file"),
   make_option(c("-l","--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
-  make_option(c("-s","--spatialDataDir"), default='~/Data/Spatial', help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
+  # make_option(c("-s","--spatialDataDir"), default='~/Data/Spatial', 
+  # help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"),
   make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default=\"%default\"]")
 )
 
@@ -69,24 +102,24 @@ if ( opt$version ) {
 }
 
 # Sanity checks
-if ( !dir.exists(opt$downloadDir) ) stop(paste0("downloadDir not found:  ",opt$downloadDir))
+if ( !dir.exists(opt$inputDir) ) stop(paste0("inputDir not found:  ",opt$downloadDir))
 if ( !dir.exists(opt$outputDir) ) stop(paste0("outputDir not found:  ",opt$outputDir))
 if ( !dir.exists(opt$logDir) ) stop(paste0("logDir not found:  ",opt$logDir))
-
-# Add year subdirectories
-opt$downloadDir <- file.path(opt$downloadDir,opt$year)
-opt$outputDir <- file.path(opt$outputDir,opt$year)
-opt$logDir <- file.path(opt$logDir,opt$year)
-
-# Make sure the year subdirectories exist
-dir.create(opt$downloadDir, showWarnings=FALSE)
-dir.create(opt$outputDir, showWarnings=FALSE)
-dir.create(opt$logDir, showWarnings=FALSE)
+# 
+# # Add year subdirectories
+# opt$downloadDir <- file.path(opt$downloadDir,opt$year)
+# opt$outputDir <- file.path(opt$outputDir,opt$year)
+# opt$logDir <- file.path(opt$logDir,opt$year)
+# 
+# # Make sure the year subdirectories exist
+# dir.create(opt$downloadDir, showWarnings=FALSE)
+# dir.create(opt$outputDir, showWarnings=FALSE)
+# dir.create(opt$logDir, showWarnings=FALSE)
 
 # Assign log file names
-debugLog <- file.path(opt$logDir, paste0('airsis_getYearlyData_', '_DEBUG.log'))
-infoLog  <- file.path(opt$logDir, paste0('airsis_getYearlyData_', '_INFO.log'))
-errorLog <- file.path(opt$logDir, paste0('airsis_getYearlyData_', '_ERROR.log'))
+debugLog <- file.path(opt$logDir, paste0('airnow_combineMonths', '_DEBUG.log'))
+infoLog  <- file.path(opt$logDir, paste0('airnow_combineMonths', '_INFO.log'))
+errorLog <- file.path(opt$logDir, paste0('airnow_combineMonths', '_ERROR.log'))
 
 # Set up logging
 logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
@@ -94,18 +127,13 @@ logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
-# Set up MazamaSpatialUtils
-setSpatialDataDir(opt$spatialDataDir) ##FOR bash
-
-loadSpatialData("NaturalEarthAdm1")
-
 
 # ----- Save airnow ws_monitor object as a RData file ------
 
-result <- try( saveAirsisData(opt) )
+result <- try( combineAirnowMonths(opt) )
 
 if ( "try-error" %in% class(result) ) {
-  msg <- paste("Error saving airsis data: ", geterrmessage())
+  msg <- paste("Error combining airnow months: ", geterrmessage())
   logger.fatal(msg)
 } else {
   # Guarantee that the errorLog exists
