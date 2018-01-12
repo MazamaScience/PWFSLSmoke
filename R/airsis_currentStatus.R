@@ -146,12 +146,12 @@ airsis_currentStatus <- function(provider, username, password) {
   provider <- stringr::str_to_lower(provider)
 
   # parse raw html and pull out fields of interest
-  logger.info("Parsing html file")
+  logger.debug("Parsing html file")
   currentStatusDoc <- xml2::read_html(response)
   currentStatusNode <- rvest::html_nodes(currentStatusDoc, css="#DataGrid1")
 
   # convert node to table
-  logger.info("Extracting current status table from html document")
+  logger.debug("Extracting current status table from html document")
   currentStatusTable <- rvest::html_table(currentStatusNode, header=TRUE)[[1]]
 
   # get unitIDs from node
@@ -166,7 +166,7 @@ airsis_currentStatus <- function(provider, username, password) {
   } else {
     stop('provider not supported')
   }
-  logger.info("Extracting unit IDs via URLs from html document")
+  logger.debug("Extracting unit IDs via URLs from html document")
   urls <- rvest::html_nodes(currentStatusDoc, linkNode)
   urls <- rvest::html_attr(urls, 'href')
   unitIDs <- stringr::str_replace(urls, stringr::fixed("UnitHistory.aspx?uid="), "")
@@ -180,7 +180,7 @@ airsis_currentStatus <- function(provider, username, password) {
   # times <- format(times, "%Y-%m-%d %H:%M %Z")
 
   # create dataframe
-  logger.info("Combining unit status into a single dataframe")
+  logger.debug("Combining unit status into a single dataframe")
   df <- data.frame(unitID=unitIDs, stringsAsFactors = FALSE)
   df$alias <- currentStatusTable[["Alias"]]
   df$location <- currentStatusTable[["Location"]]

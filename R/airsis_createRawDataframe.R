@@ -59,7 +59,7 @@ airsis_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y010
   }
   
   # Read in AIRSIS .csv data
-  logger.info("Downloading AIRSIS data ...")
+  logger.debug("Downloading data ...")
   fileString <- airsis_downloadData(startdate, enddate, provider, unitID, baseUrl)
   
   # Optionally save as a raw .csv file

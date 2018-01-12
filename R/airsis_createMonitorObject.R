@@ -89,7 +89,6 @@ airsis_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y01
   }
   
   # Read in AIRSIS .csv data
-  logger.info("Downloading AIRSIS data ...")
   fileString <- airsis_downloadData(startdate, enddate, provider, unitID, baseUrl)
   
   # Optionally save as a raw .csv file
@@ -137,7 +136,7 @@ airsis_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y01
   
   # Reset all negative values that made it through QC to zero
   if ( zeroMinimum ) {
-    logger.debug("Reset negative valus to zero ...")
+    logger.debug("Reset negative values to zero ...")
     ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
   }
   

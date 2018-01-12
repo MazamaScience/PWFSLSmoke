@@ -71,7 +71,7 @@ airnow_createMonitorObjects <- function(parameters=NULL,
     ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
     # Reset all negative values that made it through QC to zero
     if ( zeroMinimum ) {
-      logger.debug("Reset negative valus to zero ...")
+      logger.debug("Reset negative values to zero ...")
       ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
     }
     # Add to list

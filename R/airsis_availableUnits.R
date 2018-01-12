@@ -29,7 +29,7 @@ airsis_availableUnits <- function(startdate=strftime(lubridate::now(),"%Y010100"
   goodUnitTypes <- intersect(unitTypes, names(AIRSIS$unitTypes))
   if ( length(badUnitTypes) > 0 ) {
     badUnitTypesString <- paste0(badUnitTypes, collapse=", ")
-    logger.error("Unrecognized AIRSIS unitType(s): '%s'", badUnitTypesString)
+    logger.warn("Unrecognized AIRSIS unitType(s): '%s'", badUnitTypesString)
   }
   if ( length(goodUnitTypes) == 0 ) {
     err_msg <- paste0("No valid AIRSIS unitType(s): ", paste0(unitTypes, collapse=", "))

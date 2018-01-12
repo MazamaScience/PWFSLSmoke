@@ -40,7 +40,7 @@ airsis_createMetaDataframe <- function(tbl,
                                        existingMeta=NULL,
                                        addGoogleMeta=TRUE) {
   
-  logger.debug(" ----- airsis_createMetaDataframe() ----- ")
+  logger.trace(" ----- airsis_createMetaDataframe() ----- ")
   
   # Sanity check -- tbl must have a monitorType
   if ( !'monitorType' %in% names(tbl) ) {
@@ -136,7 +136,7 @@ airsis_createMetaDataframe <- function(tbl,
   # Assign rownames
   rownames(meta) <- meta$monitorID
   
-  logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   
   return(meta)
   
