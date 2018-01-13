@@ -35,18 +35,19 @@ NULL
 
 # ----- WRCC related info -----------------------------------------------------
 
-#' WRCC monitor names and stationIDs
+#' WRCC monitor names and unitIDs
 #' 
 #' @docType data
 #' @keywords datasets
 #' @name WRCC
-#' @title WRCC Monitor Names and Station IDs
-#' @format A list with three elements
+#' @title WRCC Monitor Names and Unit IDs
+#' @format A list of lists
 #' @description
 #' The WRCC \url{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
 #' provides access to a variety of monitors that can be accessed with the \link{wrcc_createMonitorObject}
-#' function. Use of this funciton requires a valid stationID. The \code{WRCC} object is 
-#' a list of three named vectors, each containing the stationIDs and associated names for
+#' function. Use of this funciton requires a valid unitID. The \code{WRCC} object is 
+#' a list of lists. The element named \code{unitIDs} is itself a list of three named vectors, 
+#' each containing the unitIDs and associated names for
 #' one of the categories of monitors available at WRCC:
 #' 
 #' \itemize{
@@ -69,6 +70,9 @@ NULL
 #' @description
 #' AIRSIS provides access to data by unit type at URLs like:
 #'   http://usfs.airsis.com/vision/common/CSVExport.aspx?utid=38&StartDate=2017-11-06&EndDate=2017-11-07
+#' 
+#' The \code{AIRSIS} objectis a list of lists. The element named \code{unitTypes} is itself
+#' a list of named unit types:
 #' 
 #' Unit types include:
 #' \itemize{

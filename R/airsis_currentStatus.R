@@ -149,8 +149,8 @@
 #'   content <- httr::content(r)
 #'   html <- xml2::read_html(r)
 #'   ###
-#'   
-#'   
+#' 
+#' 
 #'   # parse raw html and pull out fields of interest
 #'   logger.debug("Parsing html file")
 #'   currentStatusDoc <- xml2::read_html(response)

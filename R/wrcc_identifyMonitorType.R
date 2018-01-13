@@ -26,7 +26,7 @@
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{WRCC Fire Cache Smoke Monitor Archive}
 #' @examples
 #' \dontrun{
-#' fileString <- wrcc_downloadData(20160701, 20160930, stationID='1307')
+#' fileString <- wrcc_downloadData(20160701, 20160930, unitID='1307')
 #' monitorTypeList <- wrcc_identifyMonitorType(fileString)
 #' }
 

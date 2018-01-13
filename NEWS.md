@@ -9,6 +9,13 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.8
+
+ * removed dependency on *RCurl* package
+ * internal `WRCC` object with unitIDs is now a list of lists
+ * more consistent error handling and logging during WRCC data processing
+ * new `wrcc_load()` function to access pre-generated annual .RData files
+
 ### PWFSLSmoke 1.0.7
 
  * more consistent error handling and logging during AIRSIS data processing

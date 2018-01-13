@@ -68,26 +68,20 @@ wrcc_downloadData <- function(startdate=strftime(lubridate::now(),"%Y010101",tz=
                   WeHou='24',
                   .cgifields=c('unit','flag','srce'))
   
-  logger.debug("Downloading WRCC data from %s", baseUrl)
+  logger.debug("Downloading WRCC data for unitID %s", unitID)
   
-  ###r <- httr::POST(baseUrl, body=.params, encode='multipart', httr::accept("raw")) # TODO:  Couldn't figure out httr::POST
+  suppressWarnings({
+    r <- httr::POST(baseUrl, body=.params)
+  })
 
-  rawBytes <- RCurl::postForm(uri=baseUrl, .params=.params)
-  
-  if ( class(rawBytes) == "character" ) {
-    logger.debug(rawBytes)
-    if ( stringr::str_detect(rawBytes, "WRCC data access information") ) {
-      logger.warn("No data available")
-      stop("No data available")
-    } else {
-      logger.error("WRCC FTP request returns an error")
-      stop(rawBytes)
-    }
+  if ( httr::http_error(r) ) {
+    logger.error("WRCC data service failed for unitID: %s", unitID)
+    logger.error("WRCC data service failed with: %s", httr::content(r))
+    return("")
   }
   
-  # Convert raw bytes into a string
-  fileString <- base::rawToChar(rawBytes)
-  
+  fileString <- httr::content(r, 'text', encoding='UTF-8')
+
   # NOTE:  Data downloaded directly from WRCC is well formatted:
   # NOTE:    single header line, unicode
   # NOTE:

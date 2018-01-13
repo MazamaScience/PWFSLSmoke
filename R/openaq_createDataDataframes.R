@@ -86,7 +86,7 @@
 #'     dataDF <- dplyr::left_join(hourlyDF,parameterDF,by="datetime")
 #' 
 #'     dfList[[parameter]] <- dataDF
-#'     logger.info("Created 'data' dataframe for parameter %s with %d rows and %d columns", parameter, nrow(dataDF), ncol(dataDF))
+#'     logger.debug("Created 'data' dataframe for parameter %s with %d rows and %d columns", parameter, nrow(dataDF), ncol(dataDF))
 #'     
 #'   }
 #' 

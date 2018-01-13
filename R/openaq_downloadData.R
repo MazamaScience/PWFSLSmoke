@@ -52,7 +52,7 @@
 #'   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
 #'   dfList <- vector(mode="list", length=days)
 #'   
-#'   logger.info("Downloading %d daily data files from OpenAQ ...",days)
+#'   logger.debug("Downloading %d daily data files from OpenAQ ...",days)
 #'   
 #'   # Loop through days and store each datafame in the list
 #'   for (i in 1:days) {
@@ -81,7 +81,7 @@
 #'   # Remove any duplicate rows
 #'   df <- dplyr::distinct(df)
 #'   
-#'   logger.info("Downloaded %d rows of OpenAQ data", nrow(df))
+#'   logger.debug("Downloaded %d rows of OpenAQ data", nrow(df))
 #'   
 #'   return(df)
 #'   

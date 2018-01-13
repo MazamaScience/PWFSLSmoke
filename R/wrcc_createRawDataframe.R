@@ -58,7 +58,7 @@ wrcc_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y01010
   }
   
   # Read in WRCC .csv data
-  logger.info("Downloading WRCC data ...")
+  logger.debug("Downloading WRCC data ...")
   fileString <- wrcc_downloadData(startdate, enddate, unitID, baseUrl)
   
   # Optionally save as a raw .csv file

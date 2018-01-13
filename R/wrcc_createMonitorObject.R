@@ -50,6 +50,7 @@
 #' @seealso \code{\link{wrcc_createDataDataframe}}
 #' @examples
 #' \dontrun{
+#' initializeMazamaSpatialUtils()
 #' sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID='sm13')
 #' monitorLeaflet(sm13)
 #' }
@@ -93,7 +94,7 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
   }
   
   # Read in WRCC .csv data
-  logger.info("Downloading WRCC data ...")
+  logger.debug("Downloading WRCC data ...")
   fileString <- wrcc_downloadData(startdate, enddate, unitID, baseUrl)
   
   # Optionally save as a raw .csv file

@@ -36,7 +36,7 @@ wrcc_createMetaDataframe <- function(tbl,
                                      pwfslDataIngestSource='WRCC',
                                      existingMeta=NULL) {
   
-  logger.debug(" ----- wrcc_createMetaDataframe() ----- ")
+  logger.trace(" ----- wrcc_createMetaDataframe() ----- ")
   
   # Sanity check -- tbl must have a monitorType
   if ( !'monitorType' %in% names(tbl) ) {
@@ -134,7 +134,7 @@ wrcc_createMetaDataframe <- function(tbl,
   # Assign rownames
   rownames(meta) <- meta$monitorID
   
-  logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   
   return(meta)
   
