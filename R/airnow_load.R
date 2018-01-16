@@ -6,7 +6,10 @@
 #' @param parameter parameter of interest
 #' @param baseUrl base URL for AirNow meta and data files
 #' @return A \emph{ws_monitor} object with AirNow data.
-#' @description Loads pre-generated .RData files containing AirNow data.
+#' @description Loads pre-generated .RData files containing AirNow data. This function
+#' loads annual or monthly fiels from the data archive.
+#' 
+#' For the most recent data, use \code{airnow_loadLatest()}.
 #' 
 #' AirNow parameters include the following:
 #' \enumerate{
@@ -35,6 +38,8 @@
 #' 
 #' Avaialble RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/AirNow/RData/}{https://haze.airfire.org/monitoring/AirNow/RData/}
+#' @seealso \code{\link{airnow_loadDaily}}
+#' @seealso \code{\link{airnow_loadLatest}}
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(2017, 09)

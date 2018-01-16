@@ -15,6 +15,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * internal `WRCC` object with unitIDs is now a list of lists
  * more consistent error handling and logging during WRCC data processing
  * new `wrcc_load()` function to access pre-generated annual .RData files
+ * updated `airnow_loadLatest()` function to access real-time, last 10 day files
+ * new `airnow_loadDaily()` function to access daily-updated, last 45 day files
 
 ### PWFSLSmoke 1.0.7
 
