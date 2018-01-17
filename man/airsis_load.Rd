@@ -28,4 +28,9 @@ airsis_conus <- monitor_subset(airsis, stateCodes=CONUS)
 monitorLeaflet(airsis_conus)
 }
 }
+\seealso{
+\code{\link{airsis_loadDaily}}
+
+\code{\link{airsis_loadLatest}}
+}
 \keyword{AIRSIS}

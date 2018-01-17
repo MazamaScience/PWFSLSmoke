@@ -8,6 +8,8 @@
 #' 
 #' Avaialble RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/WRCC/RData/}{https://haze.airfire.org/monitoring/WRCC/RData/}
+#' @seealso \code{\link{wrcc_loadDaily}}
+#' @seealso \code{\link{wrcc_loadLatest}}
 #' @examples
 #' \dontrun{
 #' wrcc <- wrcc_load(2017)

@@ -28,4 +28,9 @@ wrcc_conus <- monitor_subset(wrcc, stateCodes=CONUS)
 monitorLeaflet(wrcc_conus)
 }
 }
+\seealso{
+\code{\link{wrcc_loadDaily}}
+
+\code{\link{wrcc_loadLatest}}
+}
 \keyword{WRCC}

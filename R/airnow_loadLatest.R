@@ -55,10 +55,15 @@ airnow_loadLatest <- function(parameter='PM2.5',
   # Create filepath
   filepath <- paste0("latest/airnow_", parameter, "_latest10.RData")
   
-  # Define a 'connection' object so we can be sure to close it
+  # Define a 'connection' object so we can be sure to close it no matter what happens
   conn <- url(paste0(baseUrl,filepath))
-  ws_monitor <- get(load(conn))
+  result <- try( suppressWarnings(ws_monitor <- get(load(conn))),
+                 silent=TRUE )
   close(conn)
+  
+  if ( "try-error" %in% class(result) ) {
+    stop(paste0("URL unavailable: ",paste0(baseUrl,filepath)), call.=FALSE)
+  }
   
   return(ws_monitor)
   

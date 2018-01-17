@@ -8,6 +8,8 @@
 #' 
 #' Avaialble RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/AIRSIS/RData/}{https://haze.airfire.org/monitoring/AIRSIS/RData/}
+#' @seealso \code{\link{airsis_loadDaily}}
+#' @seealso \code{\link{airsis_loadLatest}}
 #' @examples
 #' \dontrun{
 #' airsis <- airsis_load(2017)
