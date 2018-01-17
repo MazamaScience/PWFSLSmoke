@@ -74,10 +74,19 @@ airnow_load <- function(year=2017,
   }
   filepath <- paste0(part1,parameter,part2)
   
-  # Define a 'connection' object so we can be sure to close it
+  # Define a 'connection' object so we can be sure to close it no matter what happens
   conn <- url(paste0(baseUrl,filepath))
-  ws_monitor <- get(load(conn))
+  result <- try( suppressWarnings(ws_monitor <- get(load(conn))),
+                 silent=TRUE )
   close(conn)
+  
+  if ( "try-error" %in% class(result) ) {
+    if ( is.null(month) ) {
+      stop(paste0("No AirNow data available for ",year), call.=FALSE)
+    } else {
+      stop(paste0("No AirNow data available for ",stringr::str_sub(yearMonth,1,6)), call.=FALSE)
+    }
+  }
   
   return(ws_monitor)
   
