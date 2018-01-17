@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.9
+
+ * tweaks for CRAN submission
+ * removed dependency on **xml2** and **rvest** packages
+
 ### PWFSLSmoke 1.0.8
 
  * removed dependency on *RCurl* package
