@@ -74,10 +74,16 @@ epa_load <- function(year=strftime(lubridate::now(),"%Y",tz="UTC"),
   }
 
   
-  # Define a 'connection' object so we can be sure to close it
+  # Define a 'connection' object so we can be sure to close it no matter what happens
   conn <- url(paste0(baseUrl,filepath))
-  ws_monitor <- get(load(conn))
+  result <- try( suppressWarnings(ws_monitor <- get(load(conn))),
+                 silent=TRUE )
   close(conn)
+  
+  if ( "try-error" %in% class(result) ) {
+    stop(paste0("No EPA data available for ",year), call.=FALSE)
+  }
+  
   
   return(ws_monitor)
   

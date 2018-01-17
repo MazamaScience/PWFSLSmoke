@@ -18,7 +18,7 @@ wrcc_getData <- function(startdate=20150601, enddate=20150930) {
   # NOTE:  No cache monitors data is available for summer of 2015
   cacheList <- list()
   i <- 0
-  for ( stationID in WRCC$cache ) {
+  for ( stationID in WRCC$unitIDs$cache ) {
     logger.info('Working on %s', stationID)
     i <- i + 1
     result <- try( mon <- wrcc_createMonitorObject(startdate, enddate, stationID),
@@ -35,7 +35,7 @@ wrcc_getData <- function(startdate=20150601, enddate=20150930) {
   # NOTE:  No miscellaneous monitors data is available for summer of 2015
   miscellaneousList <- list()
   i <- 0
-  for ( stationID in WRCC$cache ) {
+  for ( stationID in WRCC$unitIDs$miscellaneous ) {
     logger.info('Working on %s', stationID)
     i <- i + 1
     result <- try( mon <- wrcc_createMonitorObject(startdate, enddate, stationID),
@@ -52,7 +52,7 @@ wrcc_getData <- function(startdate=20150601, enddate=20150930) {
   # NOTE:  No usfs_regional monitors data is available for summer of 2015
   usfs_regionalList <- list()
   i <- 0
-  for ( stationID in WRCC$usfs_regional ) {
+  for ( stationID in WRCC$unitIDs$usfs_regional ) {
     logger.info('Working on %s', stationID)
     i <- i + 1
     result <- try( mon <- wrcc_createMonitorObject(startdate, enddate, stationID),

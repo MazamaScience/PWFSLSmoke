@@ -42,7 +42,7 @@ wrcc_createDataDataframe <- function(tbl, meta) {
     stop(paste0("Multiple monitor types found in 'meta' dataframe."))
   }
   
-  # Create monitorID the same way we did in airsis_createMetaDataframe()
+  # Create monitorID the same way we did in wrcc_createMetaDataframe()
   # Should only have a single instrumentID
   instrumentIDs <- sort(unique(meta$instrumentID))
   if ( length(instrumentIDs) > 1 ) {
@@ -88,7 +88,7 @@ wrcc_createDataDataframe <- function(tbl, meta) {
   # NOTE:  dplyr returns objects of class "tbl_df" which can be confusing. We undo that.
   data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime'), stringsAsFactors=FALSE )
 
-  logger.info("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
+  logger.debug("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
   
   return(data)
   

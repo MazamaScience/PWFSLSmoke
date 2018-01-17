@@ -31,7 +31,7 @@ airsisDump_createMonitorObject <- function(filepath,
                                            clusterDiameter=1000,
                                            existingMeta=NULL) {
   
-  logger.info(" ----- airsisDump_createMonitorObject() ----- ")
+  logger.trace(" ----- airsisDump_createMonitorObject() ----- ")
   
   logger.debug("Reading data ...")
   fileString <- readr::read_file(filepath)
@@ -46,7 +46,7 @@ airsisDump_createMonitorObject <- function(filepath,
   # Loop over monitor tibble list (mostly verbatim from wrcc_createMonitorObject)
   for ( name in names(tblList) ) {
     
-    logger.info("Processing data for %s ...", name)
+    logger.debug("Processing data for %s ...", name)
     
     tbl <- tblList[[name]]
 

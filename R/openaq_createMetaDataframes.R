@@ -54,7 +54,7 @@
 #'   
 #'   metaDF$siteName <- df$location
 #'   
-#'   logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(metaDF), ncol(metaDF))
+#'   logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(metaDF), ncol(metaDF))
 #'   
 #'   # ----- Data Reshaping ------------------------------------------------------
 #'   

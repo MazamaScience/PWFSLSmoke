@@ -113,6 +113,13 @@ airsis_ESAMQualityControl <- function(tbl,
   
   tbl <- tbl[goodLonMask & goodLatMask,]
   
+  # Sanity check -- row count
+  if (nrow(tbl) < 1 && !flagAndKeep) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.warn(err_msg) # This is more of a warning than some error in the data.
+    stop(err_msg, call.=FALSE)
+  }
+  
   # ----- Time ----------------------------------------------------------------
   
   # NOTE:  Assume all times downloaded from are UTC
@@ -199,6 +206,13 @@ airsis_ESAMQualityControl <- function(tbl,
   
   tbl <- tbl[goodMask,]
   
+  # Sanity check -- row count
+  if (nrow(tbl) < 1 && !flagAndKeep) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.warn(err_msg) # This is more of a warning than some error in the data.
+    stop(err_msg, call.=FALSE)
+  }
+  
   # ----- Duplicate Hours -----------------------------------------------------
     
   # For hours with multiple records, discard all but the one with the latest processing date/time
@@ -223,6 +237,13 @@ airsis_ESAMQualityControl <- function(tbl,
   }
 
   tbl <- tbl[uniqueHrMask,]
+  
+  # Sanity check -- row count
+  if (nrow(tbl) < 1 && !flagAndKeep) {
+    err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+    logger.warn(err_msg) # This is more of a warning than some error in the data.
+    stop(err_msg, call.=FALSE)
+  }
   
   # ----- More QC -------------------------------------------------------------
   

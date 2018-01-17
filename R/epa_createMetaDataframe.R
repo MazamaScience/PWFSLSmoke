@@ -103,7 +103,7 @@ epa_createMetaDataframe <- function(tbl,
   # Assign rownames
   rownames(meta) <- meta$monitorID
   
-  logger.info("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
   
   return(meta)
   

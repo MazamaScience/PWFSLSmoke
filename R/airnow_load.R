@@ -6,7 +6,10 @@
 #' @param parameter parameter of interest
 #' @param baseUrl base URL for AirNow meta and data files
 #' @return A \emph{ws_monitor} object with AirNow data.
-#' @description Loads pre-generated .RData files containing AirNow data.
+#' @description Loads pre-generated .RData files containing AirNow data. This function
+#' loads annual or monthly fiels from the data archive.
+#' 
+#' For the most recent data, use \code{airnow_loadLatest()}.
 #' 
 #' AirNow parameters include the following:
 #' \enumerate{
@@ -35,6 +38,8 @@
 #' 
 #' Avaialble RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/AirNow/RData/}{https://haze.airfire.org/monitoring/AirNow/RData/}
+#' @seealso \code{\link{airnow_loadDaily}}
+#' @seealso \code{\link{airnow_loadLatest}}
 #' @examples
 #' \dontrun{
 #' airnow <- airnow_load(2017, 09)
@@ -47,6 +52,9 @@ airnow_load <- function(year=2017,
                         parameter='PM2.5',
                         baseUrl='https://haze.airfire.org/monitoring/AirNow/RData/') {
   
+  # Convert to character for consistency
+  year <- as.character(year)
+  
   # Sanity check
   validParams <- c("PM2.5")
   if ( !parameter %in% validParams ) {
@@ -54,7 +62,6 @@ airnow_load <- function(year=2017,
     stop(paste0("Parameter '", parameter, "' is not supported. Try one of: ", paramsString))
   }
   
-
   # Create filepath
   if ( is.null(month) ) {
     yearMonth <- lubridate::ymd(paste0(year,"0101"))
@@ -67,10 +74,19 @@ airnow_load <- function(year=2017,
   }
   filepath <- paste0(part1,parameter,part2)
   
-  # Define a 'connection' object so we can be sure to close it
+  # Define a 'connection' object so we can be sure to close it no matter what happens
   conn <- url(paste0(baseUrl,filepath))
-  ws_monitor <- get(load(conn))
+  result <- try( suppressWarnings(ws_monitor <- get(load(conn))),
+                 silent=TRUE )
   close(conn)
+  
+  if ( "try-error" %in% class(result) ) {
+    if ( is.null(month) ) {
+      stop(paste0("No AirNow data available for ",year), call.=FALSE)
+    } else {
+      stop(paste0("No AirNow data available for ",stringr::str_sub(yearMonth,1,6)), call.=FALSE)
+    }
+  }
   
   return(ws_monitor)
   

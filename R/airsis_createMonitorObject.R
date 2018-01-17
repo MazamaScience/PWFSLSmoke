@@ -51,6 +51,7 @@
 #' @seealso \code{\link{airsis_createDataDataframe}}
 #' @examples
 #' \dontrun{
+#' initializeMazamaSpatialUtils()
 #' usfs_1013 <- airsis_createMonitorObject(20150301, 20150831, 'USFS', unitID='1013')
 #' monitorLeaflet(usfs_1013)
 #' }
@@ -112,7 +113,7 @@ airsis_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y01
   
   # See if anything gets through QC
   if ( nrow(tbl) == 0 ) {
-    logger.warn("No data remaining after QC")
+    logger.warn("No data remaining after QC") # This is more of a warning than some error in the data.
     stop("No data remaining after QC")
   }
   

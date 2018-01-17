@@ -9,9 +9,30 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.10
+
+ * tweaks for CRAN submission
+ 
+### PWFSLSmoke 1.0.9
+
+ * tweaks for CRAN submission
+ * removed dependency on **xml2** and **rvest** packages
+
+### PWFSLSmoke 1.0.8
+
+ * removed dependency on **RCurl** package
+ * internal `WRCC` object with unitIDs is now a list of lists
+ * more consistent error handling and logging during WRCC data processing
+ * updated `airnow_loadLatest()` function to access real-time, last 10 day files
+ * new `airnow_loadDaily()` function to access daily-updated, last 45 day files
+ * new `wrcc_load()` function to access pre-generated annual .RData files
+ * updated `wrcc_loadLatest()` function to access real-time, last 10 day files
+ * new `wrcc_loadDaily()` function to access daily-updated, last 45 day files
+
 ### PWFSLSmoke 1.0.7
 
- * more consistency in the use of log levels during data processing
+ * more consistent error handling and logging during AIRSIS data processing
+ * new `airsis_load()` function to access pre-generated annual .RData files
 
 ### PWFSLSmoke 1.0.6
 

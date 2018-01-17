@@ -107,7 +107,7 @@ wrcc_EBAMQualityControl <- function(tbl,
   badRows <- !(goodLonMask & goodLatMask)
   badRowCount <- sum(badRows)
   if ( badRowCount > 0 ) {
-    logger.info(paste(verb,"%s rows with invalid location information"), badRowCount)
+    logger.debug(paste(verb,"%s rows with invalid location information"), badRowCount)
     badLocations <- paste('(',tbl$GPSLon[badRows],',',tbl$GPSLat[badRows],')',sep='')
     logger.debug("Bad locations: %s", paste0(badLocations, collapse=", "))
     if ( flagAndKeep ) {
@@ -143,7 +143,7 @@ wrcc_EBAMQualityControl <- function(tbl,
   badRows <- !goodTypeMask
   badRowCount <- sum(badRows)
   if ( badRowCount > 0 ) {
-    logger.info(paste(verb,"%s rows with invalid Type information"), badRowCount)
+    logger.debug(paste(verb,"%s rows with invalid Type information"), badRowCount)
     logger.debug("Bad Types:  %s", paste0(sort(unique(tbl$Type[badRows]),na.last=TRUE), collapse=", "))
     if ( flagAndKeep ) {
       # apply flags
@@ -197,7 +197,7 @@ wrcc_EBAMQualityControl <- function(tbl,
   badQCCount <- sum(!goodMask)
   
   if ( badQCCount > 0 ) {
-    logger.info(paste(verb,"%s rows because of QC logic"), badQCCount)
+    logger.debug(paste(verb,"%s rows because of QC logic"), badQCCount)
     if ( flagAndKeep ) {
       # apply flags
       tblFlagged$QCFlag_badFlow[tbl$rowID[!goodFlow]] <- TRUE
@@ -230,7 +230,7 @@ wrcc_EBAMQualityControl <- function(tbl,
   uniqueHrMask <- !dupHrMask
   
   if ( dupHrCount > 0 ) {
-    logger.info(paste(verb,"%s duplicate time entries"), dupHrCount)
+    logger.debug(paste(verb,"%s duplicate time entries"), dupHrCount)
     logger.debug("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(tbl$TimeStamp[dupHrMask])), collapse=", "))
     if ( flagAndKeep ) {
       # apply flags

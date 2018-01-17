@@ -95,7 +95,7 @@ epa_parseData <- function(zipFile=NULL) {
   # Cleanup
   file.remove(csvFile)
   
-  logger.info('Downloaded and parsed %d rows of EPA data', nrow(tbl))
+  logger.debug('Downloaded and parsed %d rows of EPA data', nrow(tbl))
   
   return(tbl)
 }
