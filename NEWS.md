@@ -12,6 +12,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.0.11
 
  * new `monitor_asDataframe()` function
+ * fixed bug in `monitor_dailyStatistics()` that appeared when the host computer runs in the UTC timezone
  
 ### PWFSLSmoke 1.0.10
 

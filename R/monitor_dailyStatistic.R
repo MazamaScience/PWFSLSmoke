@@ -85,6 +85,12 @@ monitor_dailyStatistic <- function(ws_monitor,
     
   }
   
+  # Only retain days with enough hours
+  goodDays <- which( table(day) >= minHours )
+  goodDayMask <- day %in% goodDays
+  data <- data[goodDayMask,]
+  day <- day[goodDayMask]
+  
   # Create the aggregated dataset
   # NOTE:  Some functions don't work on the POSIXct datetime column.
   # NOTE:  But we still want to keep it. So we'll start by calculating the mean
@@ -92,6 +98,11 @@ monitor_dailyStatistic <- function(ws_monitor,
   # NOTE:  dayStart for each day.
   dailyMean <- stats::aggregate(data, by=list(day), FUN=get("mean"), na.rm=na.rm)
   dayStarts <- lubridate::floor_date(dailyMean$datetime, unit="day")
+  
+  # Sanity check
+  if ( any(duplicated(dayStarts)) ) {
+    stop('duplicate dayStarts created in monitor_dailyStatistic')
+  }
   
   # Convert the dayStart back to numeric so that it can be operated on by the likes of 'sum'.
   data$datetime <- as.numeric(data$datetime)
@@ -108,22 +119,6 @@ monitor_dailyStatistic <- function(ws_monitor,
   dailyValids <- dailyValids[,names(data)]
   dailyStats <- dailyStats[,names(data)]
   
-  # # TODO:  Current implementation just checks number of hours per day, not number of valid measurements per day.
-  # # TODO:  Need to reimplement this.
-  # 
-  # # Check on the number of hours per day
-  # # NOTE:  The table will use day # as the names. We create hoursPerday
-  # # NOTE:  which is a named vector whose names will match dailyStats$Group.1.
-  # hoursPerDay <- unlist(table(day))
-  # fullDayMask <- hoursPerDay[as.character(dailyStats$Group.1)] >= minHours
-  # 
-  # dailyStats[!fullDayMask,names(data)] <- NA
-  # 
-  # # NOTE:  It appears that aggregating a day with all NAs will result in NaN
-  # # Convert any NaN to NA
-  # nanMask <- is.nan(as.matrix(dailyStats))
-  # dailyStats[nanMask] <- NA
-
   # Mask for days with enough valid data points
   insufficientDataMask <- dailyValids < minHours # returns a matrix
   insufficientDataMask[,1] <- FALSE # never mask out the first ('datetime') column

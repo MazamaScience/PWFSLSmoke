@@ -10,3 +10,7 @@ RUN apt-get update \
   && install2.r --error -r "https://cran.rstudio.com" \
     PWFSLSmoke
 
+# For the latest updates in PWFSLSmoke
+RUN installGithub.r \
+    mazamascience/pwfslsmoke
+
