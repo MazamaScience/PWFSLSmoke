@@ -11,6 +11,9 @@ monitor_scaleData(ws_monitor, factor)
 
 \item{factor}{numeric used to scale the data}
 }
+\value{
+A \emph{ws_monitor} object with scaled data.
+}
 \description{
 Scale the data in a \emph{ws_monitor} object by mutiplying it with \code{factor}.
 }

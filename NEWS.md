@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.11
+
+ * new `monitor_asDataframe()` function
+ 
 ### PWFSLSmoke 1.0.10
 
  * tweaks for CRAN submission

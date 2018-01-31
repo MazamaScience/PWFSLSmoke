@@ -3,6 +3,7 @@
 #' @title Scale ws_monitor Data
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param factor numeric used to scale the data
+#' @return A \emph{ws_monitor} object with scaled data.
 #' @description Scale the data in a \emph{ws_monitor} object by mutiplying it with \code{factor}.
 #' @examples
 #' wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')

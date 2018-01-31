@@ -32,6 +32,6 @@ distance[closestIndex]
 N_M$meta[closestIndex,]
 }
 \seealso{
-distance
+\code{\link{distance}}
 }
 \keyword{ws_monitor}

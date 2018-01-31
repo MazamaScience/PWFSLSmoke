@@ -8,7 +8,7 @@
 #' a location of interest. These distances can be used to create a mask identifying
 #' monitors within a certain radius of the location of interest.
 #' @return vector of of distances (km)
-#' @seealso distance
+#' @seealso \code{\link{distance}}
 #' @examples 
 #' N_M <- Northwest_Megafires
 #' # Walla Walla
