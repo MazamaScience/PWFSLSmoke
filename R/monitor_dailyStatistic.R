@@ -97,6 +97,8 @@ monitor_dailyStatistic <- function(ws_monitor,
   # NOTE:  so as to have an "average" POSIXct for each grouping. Then we get the
   # NOTE:  dayStart for each day.
   dailyMean <- stats::aggregate(data, by=list(day), FUN=get("mean"), na.rm=na.rm)
+  # NOTE:  aggregate() resets datetime to the computer timezone which causes trouble later on.
+  dailyMean$datetime <- lubridate::with_tz(dailyMean$datetime, timezone)
   dayStarts <- lubridate::floor_date(dailyMean$datetime, unit="day")
   
   # Sanity check
