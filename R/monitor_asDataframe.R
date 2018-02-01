@@ -94,8 +94,8 @@ monitor_asDataframe <- function(ws_monitor,
   UTCTime <- lubridate::with_tz(ws_monitor$data$datetime, tzone = "UTC")
   
   # Save character string representations of UTCTime and localTime
-  UTCTimeString <- strftime(UTCTime, "%Y-%m-%d %H:%M:%S %Z", tz="UTC")
-  localTimeString <- strftime(UTCTime, "%Y-%m-%d %H:%M:%S %Z", tz=timezone)
+  UTCTimeString <- strftime(UTCTime, "%Y-%m-%d %H:%M:%S %z", tz="UTC")
+  localTimeString <- strftime(UTCTime, "%Y-%m-%d %H:%M:%S %z", tz=timezone)
   
   monitorDataframe <- data.frame(ws_monitor$data$datetime, UTCTimeString, localTimeString, ws_monitor$data[,-1],
                                  check.names = FALSE, stringsAsFactors = FALSE)
