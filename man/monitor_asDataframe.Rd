@@ -44,7 +44,7 @@ to the vector of \code{extraColumns{}}
 \itemize{
 \item{\code{aqi}}{ hourly AQI values as calculated with \code{monitor_aqi()}}
 \item{\code{nowcast}}{ hourly Nowcast values as calcualted with \code{monitor_nowcast()}}
-\item{\code{daily_avg}}{ daily average PM2.5 values as calculated with \code{monitor_dailyStatistic()}}
+\item{\code{dailyAvg}}{ daily average PM2.5 values as calculated with \code{monitor_dailyStatistic()}}
 }
 }
 \note{
@@ -53,7 +53,7 @@ The \code{tlim} argument is interpreted as localtime, not UTC.
 \examples{
 wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
 Omak_df <- monitor_asDataframe(wa, monitorID='530470013_01',
-                               extraColumns=c('nowcast','daily_avg'),
+                               extraColumns=c('nowcast','dailyAvg'),
                                metaColumns=c('aqsID','siteName','timezone'),
                                tlim=c(20150801,20150901))
 }

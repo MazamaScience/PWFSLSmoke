@@ -29,7 +29,7 @@
 #' \itemize{
 #' \item{\code{aqi}}{ hourly AQI values as calculated with \code{monitor_aqi()}}
 #' \item{\code{nowcast}}{ hourly Nowcast values as calcualted with \code{monitor_nowcast()}}
-#' \item{\code{daily_avg}}{ daily average PM2.5 values as calculated with \code{monitor_dailyStatistic()}}
+#' \item{\code{dailyAvg}}{ daily average PM2.5 values as calculated with \code{monitor_dailyStatistic()}}
 #' }
 #' @note The \code{tlim} argument is interpreted as localtime, not UTC.
 #' @seealso \code{\link{monitor_aqi}}
@@ -38,7 +38,7 @@
 #' @examples
 #' wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
 #' Omak_df <- monitor_asDataframe(wa, monitorID='530470013_01',
-#'                                extraColumns=c('nowcast','daily_avg'),
+#'                                extraColumns=c('nowcast','dailyAvg'),
 #'                                metaColumns=c('aqsID','siteName','timezone'),
 #'                                tlim=c(20150801,20150901))
 
@@ -74,8 +74,8 @@ monitor_asDataframe <- function(ws_monitor,
   
   # Sanity check extraColumns
   if ( !is.null(extraColumns) ) {
-    if ( length(setdiff(extraColumns,c('aqi','nowcast','daily_avg'))) > 0 ) {
-      badMetaString <- paste(setdiff(metaColumns,c('aqi','nowcast','daily_avg')), collapse=", ")
+    if ( length(setdiff(extraColumns,c('aqi','nowcast','dailyAvg'))) > 0 ) {
+      badMetaString <- paste(setdiff(metaColumns,c('aqi','nowcast','dailyAvg')), collapse=", ")
       stop(paste0("The following are not valid metaColumns: ", badMetaString))
     }
   }
@@ -115,10 +115,10 @@ monitor_asDataframe <- function(ws_monitor,
     monitorDataframe <- dplyr::left_join(monitorDataframe, mon_nowcast$data, by='datetime')
   }
   
-  if ( 'daily_avg' %in% extraColumns ) {
+  if ( 'dailyAvg' %in% extraColumns ) {
     mon_daily <- monitor_dailyStatistic(ws_monitor)
-    names(mon_daily$data) <- c('datetime','daily_avg')
-    mon_daily$data$daily_avg <- round(mon_daily$data$daily_avg, 1)
+    names(mon_daily$data) <- c('datetime','dailyAvg')
+    mon_daily$data$dailyAvg <- round(mon_daily$data$dailyAvg, 1)
     # Add columns to both dataframes that we can join by
     mon_daily$data$localDateString <- strftime(mon_daily$data$datetime, "%Y-%m-%d", tz=timezone)
     mon_daily$data$datetime <- NULL # remove datetime 
