@@ -8,5 +8,5 @@ DATE=`date --rfc-3339='date'`
 
 # OPERATIONAL version -------------------------------------------------------------
 operational_build:
-	docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.11 -t mazamascience/pwfslsmoke:latest .
+	docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.12 -t mazamascience/pwfslsmoke:latest .
 
