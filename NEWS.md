@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.13
+
+ * fixed bug in `monitor_dailyStatistics()` that ignored the last full day. Thanks to [jmatchett](https://github.com/jmatchett-usgs) for the fix.
+ 
 ### PWFSLSmoke 1.0.12
 
  * changed `daily_avg` to `dailyAvg` in `monitor_dailyStatistics()` argument `extraColumns`

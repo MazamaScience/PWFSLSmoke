@@ -68,7 +68,7 @@ monitor_dailyStatistic <- function(ws_monitor,
   
   # Create the day vector
   day <- rep(0,nrow(timeInfo))
-  dayNum <- 1
+  dayNum <- 0
   for ( i in 1:nrow(timeInfo) ) {
     
     if (dayStart == "sunset") {
