@@ -14,7 +14,7 @@
 #' wrcc <- wrcc_loadLatest()
 #' }
 
-wrcc_loadLatest <- function(baseUrl='https://haze.airfire.org/monitoring/RData/') {
+wrcc_loadLatest <- function(baseUrl='https://haze.airfire.org/monitoring/WRCC/RData/') {
   
   # Create filepath
   filepath <- paste0("latest/wrcc_PM2.5_latest10.RData")
