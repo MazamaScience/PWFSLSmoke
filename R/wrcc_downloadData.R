@@ -39,8 +39,8 @@ wrcc_downloadData <- function(startdate=strftime(lubridate::now(),"%Y010101",tz=
   }
   
   # Get UTC times
-  starttime <- lubridate::ymd(startdate)
-  endtime <- lubridate::ymd(enddate)
+  starttime <- parseDatetime(startdate)
+  endtime <- parseDatetime(enddate)
   
   # Create CGI parameters
   .params <- list(stn=toupper(unitID),

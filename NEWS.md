@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.15
+
+ * `wrcc_downloadData()` now uses `parseDatetime()` like other functions
+ 
 ### PWFSLSmoke 1.0.14
 
  * corrected `baseUrl` argument in `wrcc_loadLatest()` and `wrcc_loadDaily()`
