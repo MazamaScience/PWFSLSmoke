@@ -3,7 +3,7 @@
 #' @title Merge Data for Monitors with Shared monitorIDs
 #' @param ws_monitor1 \emph{ws_monitor} object
 #' @param ws_monitor2 \emph{ws_monitor} object
-#' @param monitorIDs vector of shared monitorIDs that are to be joined together
+#' @param monitorIDs vector of shared monitorIDs that are to be joined together. Defaults to all shared monitorIDs.
 #' @return A \emph{ws_monitor} object with merged timeseries.
 #' @description For each monitor in \code{monitorIDs}, an attempt is made to merge
 #' the associated data from \code{ws_monitor1} and \code{ws_monitor2} and.
@@ -28,7 +28,9 @@ monitor_join <- function(ws_monitor1=NULL,
   # Sanity checks
   if ( !"ws_monitor" %in% class(ws_monitor1) ) stop("Required argument 'ws_monitor1' is not a ws_monitor object")
   if ( !"ws_monitor" %in% class(ws_monitor2) ) stop("Required argument 'ws_monitor2' is not a ws_monitor object")
-  if ( is.null(monitorIDs) ) stop("Required argument 'monitorIDs' is missing")
+  if ( is.null(monitorIDs) ) {
+    monitorIDs <- intersect(ws_monitor1$meta$monitorID, ws_monitor2$meta$monitorID)
+  }
 
   # Create an overall time axis  
   starttime <- min(ws_monitor1$data$datetime, ws_monitor2$data$datetime)

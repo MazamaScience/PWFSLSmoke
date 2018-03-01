@@ -11,7 +11,7 @@ monitor_join(ws_monitor1 = NULL, ws_monitor2 = NULL, monitorIDs = NULL)
 
 \item{ws_monitor2}{\emph{ws_monitor} object}
 
-\item{monitorIDs}{vector of shared monitorIDs that are to be joined together}
+\item{monitorIDs}{vector of shared monitorIDs that are to be joined together. Defaults to all shared monitorIDs.}
 }
 \value{
 A \emph{ws_monitor} object with merged timeseries.
