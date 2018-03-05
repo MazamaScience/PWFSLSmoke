@@ -63,7 +63,7 @@ monitor_combine <- function(monitorList) {
   # Create combined 'data'
   data <- dataList[[1]]
   for (i in 2:length(dataList)) {
-    data <- dplyr::full_join(data, dataList[[i]], by="datetime") %>% arrange(datetime)
+    data <- dplyr::full_join(data, dataList[[i]], by="datetime") %>% arrange(data$datetime)
   }
   data <- as.data.frame(data, stringsAsFactors=FALSE)
   
