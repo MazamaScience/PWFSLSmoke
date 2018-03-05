@@ -36,11 +36,13 @@
 #' @seealso \code{\link{monitor_nowcast}}
 #' @seealso \code{\link{monitor_dailyStatistic}}
 #' @examples
+#' \dontrun{
 #' wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
 #' Omak_df <- monitor_asDataframe(wa, monitorID='530470013_01',
 #'                                extraColumns=c('nowcast','dailyAvg'),
 #'                                metaColumns=c('aqsID','siteName','timezone'),
 #'                                tlim=c(20150801,20150901))
+#' }
 
 
 monitor_asDataframe <- function(ws_monitor,
