@@ -11,10 +11,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.15
 
- * `monitor_combine()` always returns a ws_monitor object with data arranged chronologically.
-
-### PWFSLSmoke 1.0.15
-
+ * fixed chronoligical ordering bug in `monitor_combine()`
  * `wrcc_downloadData()` now uses `parseDatetime()` like other functions
  * `monitorID` argument is no longer required in `monitor_join()`. Defaults to joining all shared monitorIDs.
  
