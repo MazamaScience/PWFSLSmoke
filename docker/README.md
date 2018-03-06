@@ -11,11 +11,11 @@ make operational_build
 This is just shorthand for the following `docker build` line:
 
 ```
-$ docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.12 -t mazamascience/pwfslsmoke:latest .
+$ docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.16 -t mazamascience/pwfslsmoke:latest .
 $ docker images
-REPOSITORY                        TAG                 IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke          latest              c2403de11f34        About a minute ago   1.74GB
-mazamascience/pwfslsmoke          v1.0.12             c2403de11f34        About a minute ago   1.74GB
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+mazamascience/pwfslsmoke       latest              f4945f0c24e6        4 minutes ago       1.75GB
+mazamascience/pwfslsmoke       v1.0.16             f4945f0c24e6        4 minutes ago       1.75GB
 ...
 ```
 
@@ -26,7 +26,7 @@ Spatial data required by the **MazamaSpatialUtils** package already exists in th
 
 ## Test the Docker Image ##
 
-Having built the docker image we can now test it. The following output was obtained on December 12, 2017:
+Having built the docker image we can now test it. The following output was obtained on Marh 06, 2018:
 
 ```
 docker run -ti mazamascience/pwfslsmoke R --vanilla
@@ -38,13 +38,14 @@ maxValues <- sort(apply(wa$data[,-1], 2, max, na.rm=TRUE), decreasing=TRUE)[1:6]
 ids <- names(maxValues)
 df <- wa$meta[ids,c('siteName','countyName')]
 df$max_pm25 <- maxValues
-print(df)                 siteName   countyName max_pm25
-530770005         Sunnyside-S 16th       YAKIMA    193.0
-530270011   Taholah-Quinault Tribe GRAYS HARBOR    141.2
-530610020        Darrington-Fir St    SNOHOMISH     93.6
-530630021 Spokane-Augusta Ave (SO)      SPOKANE     83.0
-530611007       Marysville-7th Ave    SNOHOMISH     81.8
-530090017    Port Angeles-E 5th St      CLALLAM     79.7
+print(df)
+                             siteName countyName max_pm25
+530611007_01       Marysville-7th Ave  Snohomish     55.8
+530530029_01              Tacoma-L St     Pierce     46.4
+530630021_01 Spokane-Augusta Ave (SO)    Spokane     42.0
+530610020_01        Darrington-Fir St  Snohomish     39.5
+530610005_01           Lynnwood-212th  Snohomish     38.8
+530470009_01          Twisp-Glover St     Chelan     38.0
 ```
 
 
@@ -53,7 +54,7 @@ print(df)                 siteName   countyName max_pm25
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:v1.0.12
+docker push mazamascience/pwfslsmoke:v1.0.16
 ```
 
 
@@ -62,6 +63,6 @@ docker push mazamascience/pwfslsmoke:v1.0.12
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:v1.0.12
+docker pull mazamascience/pwfslsmoke:v1.0.16
 ```
 
