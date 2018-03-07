@@ -63,9 +63,13 @@ monitor_combine <- function(monitorList) {
   # Create combined 'data'
   data <- dataList[[1]]
   for (i in 2:length(dataList)) {
-    data <- dplyr::full_join(data, dataList[[i]], by="datetime") %>% arrange(data$datetime)
+    data <- dplyr::full_join(data, dataList[[i]], by="datetime")
   }
   data <- as.data.frame(data, stringsAsFactors=FALSE)
+
+  # Guarantee that everything is in 'datetime' order
+  data <- dplyr::arrange(data, data$datetime)
+
   
   # Create the 'ws_monitor' object
   ws_monitor <- list(meta=meta, data=data)
