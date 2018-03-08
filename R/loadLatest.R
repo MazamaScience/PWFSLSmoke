@@ -18,9 +18,7 @@
 #' @seealso \code{\link{airsis_loadDaily}}
 #' @return A \emph{ws_monitor} object with PM2.5 monitoring data.
 #' @examples
-#' \dontrun{
 #' ca <- loadLatest() %>% monitor_subset(stateCodes='CA')
-#' }
 
 loadLatest <- function() {
   

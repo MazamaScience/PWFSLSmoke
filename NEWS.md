@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.19
+
+ * added example test for `monitor_load()` which then tests `monitor_combine()`
+
 ### PWFSLSmoke 1.0.18
 
  * fixed newly introduced bug in `monitor_combine()`

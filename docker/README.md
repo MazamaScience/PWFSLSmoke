@@ -11,11 +11,11 @@ make operational_build
 This is just shorthand for the following `docker build` line:
 
 ```
-$ docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.16 -t mazamascience/pwfslsmoke:latest .
+$ docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.18 -t mazamascience/pwfslsmoke:latest .
 $ docker images
 REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
 mazamascience/pwfslsmoke       latest              f4945f0c24e6        4 minutes ago       1.75GB
-mazamascience/pwfslsmoke       v1.0.16             f4945f0c24e6        4 minutes ago       1.75GB
+mazamascience/pwfslsmoke       v1.0.18             f4945f0c24e6        4 minutes ago       1.75GB
 ...
 ```
 
@@ -54,7 +54,7 @@ print(df)
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:v1.0.16
+docker push mazamascience/pwfslsmoke:v1.0.18
 ```
 
 
@@ -63,6 +63,6 @@ docker push mazamascience/pwfslsmoke:v1.0.16
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:v1.0.16
+docker pull mazamascience/pwfslsmoke:v1.0.18
 ```
 

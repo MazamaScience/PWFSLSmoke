@@ -24,9 +24,7 @@ Avaialble RData and associated log files can be seen at:
 \href{https://haze.airfire.org/monitoring/latest/RData/}{https://haze.airfire.org/monitoring/latest/RData/}
 }
 \examples{
-\dontrun{
 ca <- loadLatest() \%>\% monitor_subset(stateCodes='CA')
-}
 }
 \seealso{
 \code{\link{airsis_loadDaily}}
