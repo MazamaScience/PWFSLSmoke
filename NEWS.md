@@ -11,6 +11,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.19
 
+ * capitalized `AQI$names`: 'Good', 'Moderate', ...
+ * added `addAQIStackedBars()` function
  * added example test for `monitor_load()` which then tests `monitor_combine()`
 
 ### PWFSLSmoke 1.0.18

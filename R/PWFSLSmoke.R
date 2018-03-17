@@ -117,7 +117,7 @@ AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
                      grDevices::rgb(255/255,0,0),
                      grDevices::rgb(143/255,63/255,151/255),
                      grDevices::rgb(126/255,0,35/255)),
-            names=c('good','moderate','USG','unhealthy','very unhealthy','hazardous'))
+            names=c('Good','Moderate','USG','Unhealthy','Very Unhealthy','Hazardous'))
 
 # ----- State codes -----------------------------------------------------------
 

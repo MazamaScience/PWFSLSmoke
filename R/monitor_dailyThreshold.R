@@ -10,7 +10,7 @@
 #' @details \strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
 #' For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
 #' very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.
-#' @details AQI levels for \code{threshold} argument = one of \code{"good|moderate|USG|unhealthy|very unhealthy|extreme"}
+#' @details AQI levels for \code{threshold} argument = one of \code{"good|moderate|usg|unhealthy|very unhealthy|extreme"}
 #' @description Calculates the number of hours per day each monitor in \code{ws_monitor} was at or above a given threshold
 #' @details Sunrise and sunset times are calculated based on the first monitor encountered.
 #' This should be accurate enough for all use cases involving co-located monitors. Monitors
@@ -47,7 +47,7 @@ monitor_dailyThreshold <- function(ws_monitor,
   
   # Check if official AQI level name is provided
   if ( typeof(threshold) == "character" ) {
-    index <- which(AQI$names == threshold)
+    index <- which(tolower(AQI$names) == tolower(threshold))
     threshold <- AQI$breaks_24[index]
   }
   

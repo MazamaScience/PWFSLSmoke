@@ -2,9 +2,9 @@
 
 library(PWFSLSmoke)
 
-airsis <- get(load('~/Data/monitoring/RData/v4/airsis_PM2.5_2017.RData'))
-airnow <- get(load('~/Data/monitoring/RData/v4/airnow_PM2.5_2017.RData'))
-wrcc <- get(load('~/Data/monitoring/RData/v4/wrcc_PM2.5_2017.RData'))
+airnow <- airnow_load(2017)
+airsis <- airsis_load(2017)
+wrcc <- wrcc_load(2017)
 
 oridwa <- monitor_combine(list(airsis, airnow, wrcc)) %>%
   monitor_subset(stateCodes=c('OR','ID','WA'))
@@ -15,81 +15,83 @@ oridwa <- monitor_combine(list(airsis, airnow, wrcc)) %>%
 
 jas <- monitor_subset(oridwa, tlim=c(20170701,20171001))
 
-# monitorPlot_timeseries(jas, style='gnats', ylim=c(0,500), xpd=NA)
-# addAQILines(lwd=2)
+# Save default graphical parameters
+oldPar <- par()
 
-dailyAvg <- monitor_dailyStatistic(jas)
-monitorPlot_timeseries(dailyAvg, style='gnats', ylim=c(0,150), xpd=NA)
-addAQILines(lwd=2)
+# -----------------------------------------------------------------------------
+# All hourly data plot
 
-# TODO:  Helen's left side box would be nice
+dataCount <- nrow(jas$data) * (ncol(jas$data) - 1)
+dataCountString <- prettyNum(dataCount, big.mark=",")
 
-id <- monitor_subset(jas, stateCodes='ID', tlim=c(20170730,20170920))
-monitorPlot_timeseries(id, style='gnats', ylim=c(0,300), xpd=NA)
+png('oridwa_hourly.png', width=800, height=600)
 
-# Compare upwind/downwind
-
-IdahoCity <- monitor_subset(id, monitorIDs='160150001_01')
-
-upwind <- monitor_subsetBy(id, longitude < -115)
-downwind <- monitor_subsetBy(id, longitude >= -115)
-
-upwind_daily <- monitor_dailyStatistic(upwind)
-downwind_daily <- monitor_dailyStatistic(downwind)
-
-monitorPlot_timeseries(upwind_daily)
-monitorPlot_timeseries(downwind_daily, col='red', add=TRUE)
-
-monitorPlot_timeseries(upwind_single, type='S')
-monitorPlot_timeseries(downwind_single, type='S', col='red', lwd=2, add=TRUE)
-
-
-
-
-
-
-
-
-
-
-# PLOT -- All measurements in Aug-Sep -----
-png('all_daily_means.png', width=1000, height=750)
-#layout(matrix(seq(2)))
-par(mar=c(5,4,4,6)+.1, cex=1.5)
-monitorPlot_timeseries(nw_daily_mean, style='gnats', xlab='', ylab='', localTime=FALSE, ylim=c(0,400), xpd=NA)
+par(mar=c(5.1,4.1,9.1,8.1))
+monitorPlot_timeseries(jas, style='gnats', xlab='2017', ylim=c(0,400), xpd=NA)
+addAQIStackedBar(pos='left', width=0.01, labels=FALSE, title=FALSE)
 addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:6], AQI$names[2:6], pos=4, xpd=NA)
-title(paste0('Daily Mean PM2.5 for ', nrow(nw$meta), ' Monitors in WA-OR-ID'))
-# monitorPlot_timeseries(ca_daily_mean, style='gnats', xlab='', ylab='', localtime=FALSE, ylim=c(0,400), xpd=NA)
-# addAQILines(lwd=2)
-# text(par('usr')[2], AQI$breaks_24[2:6], AQI$names[2:6], pos=4, xpd=NA)
-# title(paste0('Daily Mean PM2.5 for ', nrow(nw$meta), ' Monitors in CA'))
-par(mar=c(5,4,4,2)+.1, cex=1)
-layout(1)
+mtext('Hourly PM2.5', side=3, line=6, adj=0, cex=2.0, font=2)
+mtext('Washginton-Oregon-Idaho', side=3, line=4, adj=0, cex=1.8, font=1)
+mtext(paste0(dataCountString,' measurements'), side=3, line=2, adj=0, cex=1.8, font=1)
+
 dev.off()
-# -----------------------------------------------------------------------------
 
-# PLOT -- Map of Maxima in Aug-Sep -----
-png('nw_maxima_map.png', width=1000, height=750)
-par(cex=1.5)
-monitorMap(nw_daily_mean, max, cex=1.5)
-addAQILegend("topright", pt.cex=1.5)
-title('Maximum of Daily Average at Each Site')
-par(cex=1)
+par(oldPar)
+
+# -----------------------------------------------------------------------------
+# All daily data plot
+
+dailyMean <- monitor_dailyStatistic(jas)
+
+dataCount <- nrow(dailyMean$data) * (ncol(dailyMean$data) - 1)
+dataCountString <- prettyNum(dataCount, big.mark=",")
+
+png('oridwa_daily.png', width=800, height=600)
+
+par(mar=c(5.1,4.1,9.1,8.1))
+monitorPlot_timeseries(dailyMean, style='gnats', xlab='2017', ylim=c(0,200), xpd=NA)
+addAQIStackedBar(pos='left', width=0.01, labels=FALSE, title=FALSE)
+addAQILines(lwd=2)
+text(par('usr')[2], AQI$breaks_24[2:5], AQI$names[2:5], pos=4, xpd=NA)
+mtext('Daily Mean PM2.5', side=3, line=6, adj=0, cex=2.0, font=2)
+mtext('Washginton-Oregon-Idaho', side=3, line=4, adj=0, cex=1.8, font=1)
+mtext(paste0(dataCountString,' daily means'), side=3, line=2, adj=0, cex=1.8, font=1)
+
 dev.off()
+
+par(oldPar)
+
+
 # -----------------------------------------------------------------------------
+# Daily max map
 
-Lewiston <- monitor_subset(nw, monitorIDs='160690012')
-Clarkston <- monitor_subset(nw, monitorIDs='530030004')
+png('daily_max_map.png', width=800, height=600)
 
-Juliaetta <- monitor_subset(nw, monitorIDs='160571012')
-Orofino <- monitor_subset(nw, monitorIDs='NPT1000__lon_.116.235_lat_46.465')
-Lapwai <- monitor_subset(nw, monitorIDs='160690013')
-Reubens <- monitor_subset(nw, monitorIDs='160690014')
-Nezperce <- monitor_subset(nw, monitorIDs='Idaho1002__lon_.116.248_lat_46.234')
-Kamiah <- monitor_subset(nw, monitorIDs='160490003')
-Cottonwood <- monitor_subset(nw, monitorIDs='160491012')
-Grangeville <- monitor_subset(nw, monitorIDs='160490002')
+monitorMap(dailyMean, max, mar=c(1,1,9.1,1), cex=1.8)
+addAQILegend("topright", cex=1.2, pt.cex=1.5)
+mtext('Highest Daily Mean PM2.5 during Jul-Aug-Sep', side=3, line=2, adj=0, cex=2.0, font=1)
+
+dev.off()
+
+par(oldPar)
+
+
+# -----------------------------------------------------------------------------
+# Nez Perce monitors
+
+as <- monitor_subset(jas, tlim=c(20170801,20170915))
+Lewiston <- monitor_subset(as, monitorIDs='160690012_01')
+Clarkston <- monitor_subset(as, monitorIDs='530030004_01')
+
+Juliaetta <- monitor_subset(as, monitorIDs='160571012_01')
+Orofino <- monitor_subset(as, monitorIDs='lon_.116.235_lat_46.465_apcd.1000')
+Lapwai <- monitor_subset(as, monitorIDs='160690013_01')
+Reubens <- monitor_subset(as, monitorIDs='160690014_01')
+Nezperce <- monitor_subset(as, monitorIDs='lon_.116.248_lat_46.234_apcd.1006')
+Kamiah <- monitor_subset(as, monitorIDs='160490003_01')
+Cottonwood <- monitor_subset(as, monitorIDs='160491012_01')
+Grangeville <- monitor_subset(as, monitorIDs='160490002_01')
 
 Nezperce_area <- monitor_combine(list(Clarkston,
                                       Lewiston,
@@ -114,49 +116,63 @@ offRez <- monitor_combine(list(Clarkston,
                                Cottonwood,
                                Grangeville))
 
-oldPar <- par()
-# PLOT -- Google Map of Nezperce area -----
-png('nezperce_zoom7.png', width=1000, height=750)
-par(cex=1.5)
-monitorGoogleMap(Nezperce_area, zoom=7)
-addAQILegend(pt.cex=2)
-par(cex=1)
-dev.off()
-# -----------------------------------------------------------------------------
 
-# PLOT -- Google Map of Nezperce area -----
-png('nezperce_zoom9.png', width=1000, height=750)
-par(cex=1.5)
-monitorGoogleMap(Nezperce_area, zoom=9, cex=3)
-addAQILegend(pt.cex=2)
-par(cex=1)
-dev.off()
 # -----------------------------------------------------------------------------
+# Nez Perce zoom out map
+
+Nezperce_area_daily <- monitor_dailyStatistic(Nezperce_area)
+
+png('nezperce_map_zoom_out.png', width=800, height=600)
+
+monitorGoogleMap(Nezperce_area_daily, zoom=7, width=640, height=640, cex=3)
+addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
+
+dev.off()
+
 par(oldPar)
+
+
+
+png('nezperce_map_zoom_in.png', width=800, height=600)
+
+monitorGoogleMap(Nezperce_area_daily, zoom=9, width=640, height=640, cex=5)
+addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
+
+dev.off()
+
+par(oldPar)
+
+
+# -----------------------------------------------------------------------------
+# Nez Perce area unhealthy hours
 
 Nezperce_single <- monitor_collapse(Nezperce_area, monitorID='Nezperce_single')
 unhealthyHours <- monitor_dailyThreshold(Nezperce_single, threshold="unhealthy")
 
-# PLOT -- Hours per day Unhealty -----
-png('hours_per_day.png', width=1000, height=750)
+png('nezperce_area_unhealthy.png', width=800, height=600)
+
 par(cex=1.5)
+
 unhealthyHours$data[unhealthyHours$data == 0] <- 0.1 # so we don't get blank bars
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=6,
+monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12,
                        col='black',
-                       ylab="Hours per day")
+                       xlab='2017', ylab="Hours per day")
 usr <- par('usr')
 rect(usr[1],18,usr[2],24, col=adjustcolor('red',.2), border=NA)
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=6, ylab="Hours per day", add=TRUE)
+monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12, ylab="Hours per day", add=TRUE)
 title("Nezperce Area -- Hours per day Above 'Unhealthy'")
 text(usr[1], 21, "18-24 Hours per day >= 'Unhealthy'", pos=4, font=2, col='red')
+
 par(cex=1)
+
 dev.off()
+
+
+
 # -----------------------------------------------------------------------------
-
-
 # PLOT -- dailyBarplot for onRez
 
-png('daily_barplot_onrez.png', width=1000, height=750)
+png('daily_barplot_onrez.png', width=800, height=600)
 layout(matrix(seq(5)))
 par(cex=1.0)
 par(mar=c(3,4,1,2)+.1)
@@ -174,11 +190,12 @@ par(mar=c(5,4,4,2)+.1)
 par(cex=1)
 layout(1)
 dev.off()
+
 # -----------------------------------------------------------------------------
 
 
 # PLOT -- dailyBarplot for offRez
-png('daily_barplot_offrez.png', width=1000, height=750)
+png('daily_barplot_offrez.png', width=800, height=600)
 layout(matrix(seq(5)))
 par(cex=1.0)
 par(mar=c(3,4,1,2)+.1)
@@ -199,6 +216,48 @@ par(cex=1)
 layout(1)
 dev.off()
 # -----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hours_1 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[1])
+hours_2 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[2])
+hours_3 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[3])
+hours_4 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[4])
+hours_5 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[5])
+
+datetime <- hours_1$data[,1]
+h5 <- hours_5$data[,2]
+h4 <- hours_4$data[,2] - h5
+h3 <- hours_3$data[,2] - h5 - h4 
+h2 <- hours_2$data[,2] - h5 - h4 - h3
+h1 <- hours_1$data[,2] - h5 - h4 - h3 - h2
+
+mat <- cbind(h1,h2,h3,h4,h5)
+
+barplot(t(mat), col=AQI$colors[1:5], border='white')
+axis(2, at=seq(0,24,6), las=1)
+
+
+
+# -----------------------------------------------------------------------------
+
 
 
 nowcast_Cottonwood <- monitor_nowcast(Cottonwood)
@@ -234,60 +293,3 @@ dev.off()
 
 
 
-###############################################################################
-###############################################################################
-###############################################################################
-
-# One time only, read in all data and write back out as a single object
-if ( FALSE ) {
-  
-  # ----- AirNow -----
-  
-  airnow_05 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201705-201706.RData'))
-  airnow_06 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201706.RData'))
-  airnow_07 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201707.RData'))
-  airnow_08 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201708.RData'))
-  airnow_09 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201709.RData'))
-  
-  # NOTE:  All ws_monitor objects have the same set of monitors. Test with:
-  # NOTE:    setdiff(airnow_05$monitorID, airnow_09$monitorID)
-  
-  meta <- airnow_05$meta
-  
-  dataList <- list(airnow_05$data,
-                   airnow_06$data,
-                   airnow_07$data,
-                   airnow_08$data,
-                   airnow_09$data)
-  
-  joinedData <- suppressMessages(dplyr::bind_rows(dataList))
-  joinedData <- joinedData[!duplicated(joinedData$datetime),]
-  joinedData <- as.data.frame(joinedData)
-  
-  ws_monitor <- list(meta=meta, data=joinedData)
-  airnow_2017 <- structure(ws_monitor, class = c("ws_monitor", "list"))
-  
-  save(airnow_2017, file='~/Data/monitoring/RData/airnow_pm25_2017.RData')
-  
-  # ----- AIRSIS -----
-  
-  apcd <- get(load('~/Data/monitoring/RData/AIRSIS_APCD_2017.RData'))
-  arb2 <- get(load('~/Data/monitoring/RData/AIRSIS_ARB2_2017.RData'))
-  mariposa <- get(load('~/Data/monitoring/RData/AIRSIS_MARIPOSA_2017.RData'))
-  usfs <- get(load('~/Data/monitoring/RData/AIRSIS_USFS_2017.RData'))
-
-  airsis_2017 <- monitor_combine(list(apcd,arb2,mariposa,usfs))
-  
-  save(airsis_2017, file='~/Data/monitoring/RData/airsis_pm25_2017.RData')
-  
-  # ----- WRCC -----
-  
-  cache <- get(load('~/Data/monitoring/RData/WRCC_Cache_2017.RData'))
-  misc <- get(load('~/Data/monitoring/RData/WRCC_MISC_2017.RData'))
-  usfs <- get(load('~/Data/monitoring/RData/WRCC_USFSRegions_2017.RData'))
-
-  wrcc_2017 <- monitor_combine(list(cache,misc,usfs))
-  
-  save(wrcc_2017, file='~/Data/monitoring/RData/wrcc_pm25_2017.RData')
-  
-}
