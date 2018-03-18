@@ -116,6 +116,21 @@ offRez <- monitor_combine(list(Clarkston,
                                Cottonwood,
                                Grangeville))
 
+onRezList <- list(Orofino,
+                  Lapwai,
+                  Reubens,
+                  Nezperce,
+                  Kamiah)
+
+onRezLabels <- c('Orofino','Lapwai','Reubens','Nezperce','Kamiah')
+
+offRezList <- list(Clarkston,
+                   Lewiston,
+                   Juliaetta,
+                   Cottonwood,
+                   Grangeville)
+
+offRezLabels <- c('Clarkston','Lewiston','Juliaetta','Cottonwood','Grangeville')
 
 # -----------------------------------------------------------------------------
 # Nez Perce zoom out map
@@ -156,11 +171,11 @@ par(cex=1.5)
 unhealthyHours$data[unhealthyHours$data == 0] <- 0.1 # so we don't get blank bars
 monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12,
                        col='black',
-                       xlab='2017', ylab="Hours per day")
+                       xlab='2017', ylab="Hours Above Unhealthy")
 usr <- par('usr')
 rect(usr[1],18,usr[2],24, col=adjustcolor('red',.2), border=NA)
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12, ylab="Hours per day", add=TRUE)
-title("Nezperce Area -- Hours per day Above 'Unhealthy'")
+monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12, add=TRUE)
+title("Nez Perce Area 10 Monitor Average")
 text(usr[1], 21, "18-24 Hours per day >= 'Unhealthy'", pos=4, font=2, col='red')
 
 par(cex=1)
@@ -215,45 +230,49 @@ par(mar=c(5,4,4,2)+.1)
 par(cex=1)
 layout(1)
 dev.off()
+
 # -----------------------------------------------------------------------------
+# stacked barplot
 
+#png('stacked_bars_onrez.png', width=800, height=600)
+png('stacked_bars_offrez.png', width=800, height=600)
 
+par(mar=c(1.1,4.1,3.1,2.1))
 
+layout(matrix(seq(5)))
 
+for ( i in 1:5 ) {
+  
+  #mon <- onRezList[[i]]
+  mon <- offRezList[[i]]
+  
+  hours_1 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[1])
+  hours_2 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[2])
+  hours_3 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[3])
+  hours_4 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[4])
+  hours_5 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[5])
+  
+  datetime <- hours_1$data[,1]
+  h5 <- hours_5$data[,2]
+  h4 <- hours_4$data[,2] - h5
+  h3 <- hours_3$data[,2] - h5 - h4 
+  h2 <- hours_2$data[,2] - h5 - h4 - h3
+  h1 <- hours_1$data[,2] - h5 - h4 - h3 - h2
+  
+  mat <- cbind(h1,h2,h3,h4,h5)
+  
+  barplot(t(mat), col=AQI$colors[1:5], border='white', axes=FALSE)
+  #title(onRezLabels[i], cex.main=3)
+  title(offRezLabels[i], cex.main=3)
+  axis(2, at=seq(0,24,6), las=1)
+  
+}
 
+layout(1)
 
+par(oldPar)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-hours_1 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[1])
-hours_2 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[2])
-hours_3 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[3])
-hours_4 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[4])
-hours_5 <- monitor_dailyThreshold(Nezperce_single, threshold=AQI$breaks_24[5])
-
-datetime <- hours_1$data[,1]
-h5 <- hours_5$data[,2]
-h4 <- hours_4$data[,2] - h5
-h3 <- hours_3$data[,2] - h5 - h4 
-h2 <- hours_2$data[,2] - h5 - h4 - h3
-h1 <- hours_1$data[,2] - h5 - h4 - h3 - h2
-
-mat <- cbind(h1,h2,h3,h4,h5)
-
-barplot(t(mat), col=AQI$colors[1:5], border='white')
-axis(2, at=seq(0,24,6), las=1)
-
+dev.off()
 
 
 # -----------------------------------------------------------------------------
@@ -280,11 +299,12 @@ bad_Cottonwood <- monitor_subset(Cottonwood, tlim=c(20170904, 20170910))
 bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170904, 20170910))
 
 # PLOT -- hourlyBarplot for Cottonwood
-png('cottonwood_nowcast.png', width=1000, height=750)
+png('cottonwood_hourly.png', width=800, height=600)
 par(cex=1.5)
 monitorPlot_hourlyBarplot(bad_Cottonwood, dayCol='transparent', hourLwd=0,
-                          ylab='', main='Cottonwood Hourly Nowcast',
-                          labels_x_nudge=3, border=adjustcolor('white',0.2))
+                          ylab='', main='Cottonwood Hourly',
+                          labels_x_nudge=3, labels_y_nudge=20,
+                          border=adjustcolor('white',0.2))
 par(cex=1)
 dev.off()
 # -----------------------------------------------------------------------------
