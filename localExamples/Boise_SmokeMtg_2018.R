@@ -80,7 +80,7 @@ par(oldPar)
 # -----------------------------------------------------------------------------
 # Nez Perce monitors
 
-as <- monitor_subset(jas, tlim=c(20170801,20170915))
+as <- monitor_subset(jas, tlim=c(20170801,20170915), tz="America/Los_Angeles")
 Lewiston <- monitor_subset(as, monitorIDs='160690012_01')
 Clarkston <- monitor_subset(as, monitorIDs='530030004_01')
 
@@ -234,38 +234,46 @@ dev.off()
 # -----------------------------------------------------------------------------
 # stacked barplot
 
-#png('stacked_bars_onrez.png', width=800, height=600)
-png('stacked_bars_offrez.png', width=800, height=600)
+png('stacked_bars_onrez.png', width=800, height=600)
+#png('stacked_bars_offrez.png', width=800, height=600)
 
-par(mar=c(1.1,4.1,3.1,2.1))
+par(mar=c(3.1,4.1,3.1,2.1))
 
 layout(matrix(seq(5)))
 
 for ( i in 1:5 ) {
   
-  #mon <- onRezList[[i]]
-  mon <- offRezList[[i]]
+  mon <- onRezList[[i]]
+  #mon <- offRezList[[i]]
   
   hours_1 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[1])
   hours_2 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[2])
   hours_3 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[3])
   hours_4 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[4])
   hours_5 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[5])
+  hours_6 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[6])
   
   datetime <- hours_1$data[,1]
-  h5 <- hours_5$data[,2]
-  h4 <- hours_4$data[,2] - h5
-  h3 <- hours_3$data[,2] - h5 - h4 
-  h2 <- hours_2$data[,2] - h5 - h4 - h3
-  h1 <- hours_1$data[,2] - h5 - h4 - h3 - h2
+  h6 <- hours_6$data[,2]
+  h5 <- hours_5$data[,2] - h6
+  h4 <- hours_4$data[,2] - h6 - h5
+  h3 <- hours_3$data[,2] - h6 - h5 - h4 
+  h2 <- hours_2$data[,2] - h6 - h5 - h4 - h3
+  h1 <- hours_1$data[,2] - h6 - h5 - h4 - h3 - h2
   
-  mat <- cbind(h1,h2,h3,h4,h5)
+  mat <- cbind(h1,h2,h3,h4,h5,h6)
   
-  barplot(t(mat), col=AQI$colors[1:5], border='white', axes=FALSE)
-  #title(onRezLabels[i], cex.main=3)
-  title(offRezLabels[i], cex.main=3)
-  axis(2, at=seq(0,24,6), las=1)
-  
+  barplot(t(mat), col=AQI$colors[1:6], border='white', axes=FALSE)
+  title(onRezLabels[i], cex.main=3)
+  #title(offRezLabels[i], cex.main=3)
+  ###axis(2, at=seq(0,24,6), las=1)
+  ###axis.POSIXct(1, mon$data$datetime)
+  aug09Index <- which(hours_1$data$datetime == lubridate::ymd_h("2017-08-09 00", tz="America/Los_Angeles"))
+  sep05Index <- which(hours_1$data$datetime == lubridate::ymd_h("2017-09-05 00", tz="America/Los_Angeles"))
+  # NOTE:  Need to account for 0.2 spacing between bars so 1.2 axis units per label
+  at <- 1.2 * c(aug09Index,sep05Index) - 0.6
+  axis(1, at=at, labels=c('Aug 9', 'Sep 5'), lwd=0, lwd.ticks=2, cex.axis=2)
+
 }
 
 layout(1)
