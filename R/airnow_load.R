@@ -68,7 +68,7 @@ airnow_load <- function(year=2017,
     part1 <- strftime(yearMonth, "%Y/airnow_", tz="UTC")
     part2 <- strftime(yearMonth, "_%Y.RData", tz="UTC")
   } else {
-    yearMonth <- lubridate::ymd(paste0(year,month,"01"))
+    yearMonth <- lubridate::ymd(paste0(year,sprintf("%02d",month),"01"))
     part1 <- strftime(yearMonth, "%Y/%m/airnow_", tz="UTC")
     part2 <- strftime(yearMonth, "_%Y_%m.RData", tz="UTC")
   }
