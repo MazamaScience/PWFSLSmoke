@@ -303,15 +303,15 @@ par(cex=1)
 dev.off()
 # -----------------------------------------------------------------------------
 
-bad_Cottonwood <- monitor_subset(Cottonwood, tlim=c(20170904, 20170910))
-bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170904, 20170910))
+bad_Cottonwood <- monitor_subset(Cottonwood, tlim=c(20170903, 20170911))
+bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170904, 20170911))
 
 # PLOT -- hourlyBarplot for Cottonwood
 png('cottonwood_hourly.png', width=800, height=600)
 par(cex=1.5)
 monitorPlot_hourlyBarplot(bad_Cottonwood, dayCol='transparent', hourLwd=0,
                           ylab='', main='Cottonwood Hourly',
-                          labels_x_nudge=3, labels_y_nudge=20,
+                          labels_x_nudge=5, labels_y_nudge=20,
                           border=adjustcolor('white',0.2))
 par(cex=1)
 dev.off()
