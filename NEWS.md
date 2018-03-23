@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.20
+
+ * fixed bug in `esriMap_getMap()`
+
 ### PWFSLSmoke 1.0.19
 
  * fixed single-digit month parsing in `airnow_load()`
