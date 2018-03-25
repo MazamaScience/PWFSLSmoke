@@ -126,7 +126,7 @@ esriMap_getMap <- function(centerLon = NULL,
                        nrow=mapInfo$height,
                        nl = 3)
   mapRaster <- raster::setValues(mapRaster, imageArray*255)
-  mapRaster <- raster::t(mapRaster) # correct because columns from the array are read in as rows
+  if (width == height) {mapRaster <- raster::t(mapRaster)} # rows and columns are confused when width = height
   
   names(mapRaster) <- c("red", "green", "blue")
   
