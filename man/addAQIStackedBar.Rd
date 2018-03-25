@@ -4,23 +4,14 @@
 \alias{addAQIStackedBar}
 \title{Create Stacked AQI Bar}
 \usage{
-addAQIStackedBar(width = 0.02, height = 1, labels = TRUE, pos = "right",
-  title = TRUE, cex.title = 1.2, srt.title = 0)
+addAQIStackedBar(width = 0.01, height = 1, pos = "left")
 }
 \arguments{
 \item{width}{width of the bar as a fraction of the width of the plot area (default = .02)}
 
 \item{height}{height of the bar as a fraction of the height of the plot area (default = 1)}
 
-\item{labels}{logical indicating whether to draw labels for AQI levels}
-
 \item{pos}{position of the stacked bar. Either 'left' or 'right'}
-
-\item{title}{logical indicating whether to include a title for the bar}
-
-\item{cex.title}{character expansion for the title}
-
-\item{srt.title}{string rotation in degrees for the title}
 }
 \value{
 Stacked AQI Bar
@@ -28,3 +19,4 @@ Stacked AQI Bar
 \description{
 Draws a stacked bar indicating AQI levels on one side of a plot
 }
+\keyword{plotting}
