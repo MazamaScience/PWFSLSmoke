@@ -31,12 +31,6 @@ monitorDygraph <- function(ws_monitor,
     stop("ws_monitor object contains zero monitors")
   }
   
-  # Sanity check
-  tzCount <- length(unique(ws_monitor$meta$timezone))
-  if (tzCount > 1) {
-    stop(paste0('Dygraphs cannot be made for data with multiple timezones: ',tzCount,' were found'))
-  }
-  
   # Convert tlim to POSIXct
   if ( !is.null(tlim) ) {
     dateWindow <- parseDatetime(tlim)
@@ -44,9 +38,17 @@ monitorDygraph <- function(ws_monitor,
     dateWindow <- NULL
   }
   
+  # Set timezone
+  tzCount <- length(unique(ws_monitor$meta$timezone))
+  if (tzCount > 1) {
+    warning(paste0(tzCount, ' timezones found. Using UTC time.'))
+    tzone <- 'UTC'
+  } else {
+    tzone <- unique(ws_monitor$meta$timezone)
+  }
+  
   # Simplify access to variables
   datetime <- ws_monitor$data$datetime
-  tzone <- ws_monitor$meta[1,'timezone']
   
   # Create an xts from all data columns except the first which is 'datetime'
   timeseriesData <- xts::xts(ws_monitor$data[,-1],datetime,tzone=tzone)
@@ -66,7 +68,7 @@ monitorDygraph <- function(ws_monitor,
   # Create dygraph
   dygraphs::dygraph(timeseriesData, main=title, ylab=ylab) %>%
     dygraphs::dyOptions(useDataTimezone=TRUE) %>%                       # Always show local time
-    dygraphs::dyLegend(show=show, width=500, labelsSeparateLines=TRUE) %>%
+    dygraphs::dyLegend(show=show, width=250, labelsSeparateLines=TRUE) %>%
     dygraphs::dyRangeSelector(dateWindow=dateWindow) %>%
     dygraphs::dyRoller(rollPeriod=rollPeriod)
   

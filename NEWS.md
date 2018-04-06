@@ -16,6 +16,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * capitalized `AQI$names`: 'Good', 'Moderate', ...
  * added `addAQIStackedBars()` function
  * added example test for `monitor_load()` which then tests `monitor_combine()`
+ * shrunk legend in `monitorDygraph()`
+ * changed `monitorDygraph()` to default to UTC when more than one timezone is present
 
 ### PWFSLSmoke 1.0.18
 
