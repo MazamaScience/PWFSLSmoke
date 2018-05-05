@@ -36,7 +36,7 @@ to be much smaller, perhaps ~ 0.001.
 }
 \examples{
 \dontrun{
-ca <- airnow_load(20160801, 20160831, stateCodes='ca')
+ca <- loadLatest() \%>\% monitor_subset(stateCodes='CA')
 # Google map
 map <- monitorGoogleMap(ca)
 addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)

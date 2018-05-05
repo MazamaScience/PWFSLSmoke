@@ -33,22 +33,25 @@
 #' @return Initiates the interactive leaflet plot in Rstudio's 'Viewer' tab.
 #' @examples
 #' \dontrun{
-#' airnow <- airnow_load(20140913, 20141010)
-#' v_low <- AQI$breaks_24[4] 
-#' CA_unhealthy_monitors <- monitor_subset(airnow, stateCodes='CA', vlim=c(v_low, Inf))
-#' monitorLeaflet(CA_unhealthy_monitors, maptype="toner")
+#' ca <- airnow_load(2017) %>%
+#'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+#' v_low <- AQI$breaks_24[5] 
+#' CA_very_unhealthy_monitors <- monitor_subset(ca, vlim=c(v_low, Inf))
+#' monitorLeaflet(CA_very_unhealthy_monitors,
+#'                legendTitle = "October, 2017",
+#'                maptype = "toner")
 #' }
 
 monitorLeaflet <- function(ws_monitor,
-                           slice=get('max'),
-                           breaks=AQI$breaks_24,
-                           colors=AQI$colors,
-                           labels=AQI$names,
-                           legendTitle='Max AQI Level',
-                           radius=10,
-                           opacity=0.7,
-                           maptype="terrain",
-                           popupInfo=c('siteName','monitorID','elevation')) {
+                           slice = get('max'),
+                           breaks = AQI$breaks_24,
+                           colors = AQI$colors,
+                           labels = AQI$names,
+                           legendTitle = 'Max AQI Level',
+                           radius = 10,
+                           opacity = 0.7,
+                           maptype = "terrain",
+                           popupInfo = c('siteName','monitorID','elevation')) {
   
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {

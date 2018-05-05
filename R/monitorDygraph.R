@@ -11,20 +11,22 @@
 #' @return Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.
 #' @examples
 #' \dontrun{
-#' airnow <- airnow_load(20140913, 20141010)
-#' King_Fire <- monitor_subsetByDistance(airnow,
-#'                                       longitude=-120.604,
-#'                                       latitude=38.782,
-#'                                       radius=50)
-#' monitorDygraph(King_Fire, title='KingFire/California/2014', rollPeriod=3)
+#' ca <- airnow_load(2017) %>%
+#'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+#' Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
+#' Napa_Fires <- monitor_subsetByDistance(ca,
+#'                                        longitude = Vallejo$meta$longitude,
+#'                                        latitude = Vallejo$meta$latitude,
+#'                                        radius = 50)
+#' monitorDygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
 #' } 
 
 monitorDygraph <- function(ws_monitor,
-                           title='title',
-                           ylab='PM2.5 Concentration', 
-                           tlim=NULL,
-                           rollPeriod=1,
-                           showLegend=TRUE) {
+                           title = 'title',
+                           ylab = 'PM2.5 Concentration', 
+                           tlim = NULL,
+                           rollPeriod = 1,
+                           showLegend = TRUE) {
   
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
