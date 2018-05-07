@@ -196,13 +196,14 @@ AQI_es <- list(
              grDevices::rgb(143/255,63/255,151/255),
              grDevices::rgb(126/255,0,35/255)),
   names = c('Buena','	Moderada','IGS','Insalubre','Muy insalubre','Peligrosa'),
+  # NOTE:  R packages require that unicode characters be escaped.
   actions = c(
-    'None.',
-    'Unusually sensitive individuals should consider limiting prolonged or heavy exertion.',
-    'People within Sensitive Groups should reduce prolonged or heavy outdoor exertion.',
-    'People within Sensitive Groups should avoid all physical outdoor activity.',
-    'Everyone should avoid prolonged or heavy exertion.',
-    'Everyone should avoid any outdoor activity.'
+    'Ninguna.',
+    'Personas inusualmente sensitivas deber\\u00edan considerar limitar la labor prolongada \\u00f3 intensa.',
+    'Personas dentro de los grupos sensitivos deben reducir la labor prolongada \\u00f3 intensa al aire libre.',
+    'Personas dentro de los grupos sensitivos deben evitar toda actividad f\\u00edsica al aire libre.',
+    'Todos deben evitar la labor prolongada \\u00f3 intensa.',
+    'Todos deben evitar cualquier actividad al aire libre.'
   )
 )
 

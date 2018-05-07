@@ -12,12 +12,12 @@
 #' @seealso \link{skill_ROC}
 #' @examples 
 #' \dontrun{
-#' # Spokane summer of 2015
-#' airnow <- airnow_load(20150701,20150930)
-#' airnow <- monitor_rollingMean(airnow, width=3)
-#' MonroeSt <- monitor_subset(airnow, monitorIDs="530630047_01")
-#' EBroadway <- monitor_subset(airnow, monitorIDs="530639997_01")
-#' skill_ROCPlot(EBroadway, MonroeSt)
+#' # Napa Fires -- October, 2017
+#' ca <- airnow_load(2017) %>%
+#'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+#' Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
+#' Napa <- monitor_subset(ca, monitorIDs='060550003_01')
+#' skill_ROCPlot(Vallejo, Napa)
 #' }
 
 skill_ROCPlot <- function(predicted, observed,

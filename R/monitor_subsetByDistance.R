@@ -18,9 +18,15 @@
 #' @seealso monitorDistance
 #' @examples
 #' \dontrun{
-#' airnow <- airnow_load(20140913, 20141010)
-#' KingFire <- monitor_subsetByDistance(airnow, longitude=-120.604, latitude=38.782, radius=50)
-#' monitorLeaflet(KingFire)
+#' # Napa Fires -- October, 2017
+#' ca <- airnow_load(2017) %>%
+#'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+#' Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
+#' Napa_Fires <- monitor_subsetByDistance(ca,
+#'                                        longitude = Vallejo$meta$longitude,
+#'                                        latitude = Vallejo$meta$latitude,
+#'                                        radius = 50)
+#' monitorLeaflet(Napa_Fires)
 #' } 
 
 monitor_subsetByDistance <- function(ws_monitor,

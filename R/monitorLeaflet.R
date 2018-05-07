@@ -33,6 +33,7 @@
 #' @return Initiates the interactive leaflet plot in Rstudio's 'Viewer' tab.
 #' @examples
 #' \dontrun{
+#' # Napa Fires -- October, 2017
 #' ca <- airnow_load(2017) %>%
 #'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
 #' v_low <- AQI$breaks_24[5] 

@@ -13,12 +13,13 @@
 #' @seealso \link{skill_ROCPlot}
 #' @examples 
 #' \dontrun{
-#' # Spokane summer of 2015
-#' airnow <- airnow_load(20150701,20150930)
-#' airnow <- monitor_rollingMean(airnow, width=3)
-#' MonroeSt <- monitor_subset(airnow, monitorIDs="530630047_01")
-#' EBroadway <- monitor_subset(airnow, monitorIDs="530639997_01")
-#' rocList <- skill_ROC(EBroadway, MonroeSt, t1Range=c(0,100), t2=55)
+#' # Napa Fires -- October, 2017
+#' ca <- airnow_load(2017) %>%
+#'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+#' Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
+#' Napa <- monitor_subset(ca, monitorIDs='060550003_01')
+#' t2 <- AQI$breaks_24[4] # 'Unhealthy'
+#' rocList <- skill_ROC(Vallejo, Napa, t1Range=c(0,100), t2=t2)
 #' roc <- rocList$roc
 #' auc <- rocList$auc
 #' plot(roc$TPR ~ roc$FPR, type='S')
