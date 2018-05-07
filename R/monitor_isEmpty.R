@@ -5,6 +5,9 @@
 #' @return \code{TRUE} if no monitors exist in \code{ws_monitor}, \code{FALSE} otherwise.
 #' @description Convenience function for \code{nrow(ws_monitor$meta) == 0}.
 #' This makes for more readable code in the many functions that need to test for this.
+#' @examples
+#' monitor_isEmpty(Carmel_Valley)
+
 monitor_isEmpty <- function(ws_monitor) {
   
   return( nrow(ws_monitor$meta) == 0 )

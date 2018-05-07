@@ -16,6 +16,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * capitalized `AQI$names`: 'Good', 'Moderate', ...
  * added `addAQIStackedBars()` function
  * added example test for `monitor_load()` which then tests `monitor_combine()`
+ * shrunk legend in `monitorDygraph()`
+ * changed `monitorDygraph()` to default to UTC when more than one timezone is present
+ * added `AQI$actions` -- text with suggested actions to protect health
+ * added language specific versions of `AQI`: `AQI_en` and `AQI_es`
+ * added `monitor_isMonitor()` to valide the structure of a *ws_monitor* object
+ * updated example code in all functions
 
 ### PWFSLSmoke 1.0.18
 
@@ -102,7 +108,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.2
 
- * `monitor~` functions now test for empty `ws_monitor` objects
+ * `monitor~` functions now test for empty *ws_monitor* objects
  * new Github `localNotebooks/` directory contains detailed examples
 
 ### PWFSLSmoke 1.0.1
@@ -125,7 +131,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * removed all `openaq_~` data download and processing functions
  * added `zeroMinimum` parameter to data ingest functions to specify whether negative values should be converted to zero
  * renamed `airnow_downloadData()` to `airnow_downloadParseData()`
- * new `monitor_join()` function allows you to merge the data of ws_monitor objects with shared monitorIDs
+ * new `monitor_join()` function allows you to merge the data of *ws_monitor* objects with shared monitorIDs
  * renamed `CarmelValley` dataset to `Carmel_Valley`
  * converted all uses of `GMT` to `UTC`
  * new `createEmptyMetaDataframe()` function

@@ -26,7 +26,7 @@ Adds a marker to a plot or \code{map} -- an RgoogleMaps map object or Raster* ob
 }
 \examples{
 \dontrun{
-ca <- airnow_load(20160801, 20160831, stateCodes='ca')
+ca <- loadLatest() \%>\% monitor_subset(stateCodes='CA')
 # Google map
 map <- monitorGoogleMap(ca)
 addMarker(ca$meta$longitude, ca$meta$latitude, map=map)

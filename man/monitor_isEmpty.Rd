@@ -16,4 +16,7 @@ monitor_isEmpty(ws_monitor)
 Convenience function for \code{nrow(ws_monitor$meta) == 0}.
 This makes for more readable code in the many functions that need to test for this.
 }
+\examples{
+monitor_isEmpty(Carmel_Valley)
+}
 \keyword{ws_monitor}

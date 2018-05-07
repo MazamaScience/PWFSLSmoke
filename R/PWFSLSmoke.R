@@ -100,24 +100,111 @@ AIRSIS <- list(unitTypes=list(DATARAM=21,
 #' @docType data
 #' @name AQI
 #' @title Official Air Quality Index Levels, Names and Colors
-#' @format A list with five elements
+#' @format A list with named elements
 #' @description
 #' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
 #' @details
+#' The \code{AQI} object contains english language text.
+#'
+#' AQI breaks and colors are defined in
+#' \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
+#' @note
+#' The low end of each break category is used as the breakpoint.
+#' @seealso \code{\link{AQI_en}} \code{\link{AQI_es}}
+
+AQI <- list(
+  breaks_24 = c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
+  colors = c(grDevices::rgb(0,228/255,0),
+             grDevices::rgb(255/255,255/255,0),
+             grDevices::rgb(255/255,126/255,0),
+             grDevices::rgb(255/255,0,0),
+             grDevices::rgb(143/255,63/255,151/255),
+             grDevices::rgb(126/255,0,35/255)),
+  names = c('Good','Moderate','USG','Unhealthy','Very Unhealthy','Hazardous'),
+  actions = c(
+    'None.',
+    'Unusually sensitive individuals should consider limiting prolonged or heavy exertion.',
+    'People within Sensitive Groups should reduce prolonged or heavy outdoor exertion.',
+    'People within Sensitive Groups should avoid all physical outdoor activity.',
+    'Everyone should avoid prolonged or heavy exertion.',
+    'Everyone should avoid any outdoor activity.'
+  )
+)
+
+#' AQI breaks and associated names and colors (english language)
+#' 
+#' @export
+#' @docType data
+#' @name AQI_en
+#' @title Official Air Quality Index Levels, Names and Colors
+#' @format A list with named elements
+#' @description
+#' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
+#' @details
+#' The \code{AQI_es} object contains english language text. It is equalivalent to the
+#' \code{AQI} object and provided for consistency with other language versions.
+#'
+#' AQI breaks and colors are defined in
+#' \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
+#' @note
+#' The low end of each break category is used as the breakpoint.
+#' @seealso \code{\link{AQI}} \code{\link{AQI_es}}
+
+AQI_en <- list(
+  breaks_24 = c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
+  colors = c(grDevices::rgb(0,228/255,0),
+             grDevices::rgb(255/255,255/255,0),
+             grDevices::rgb(255/255,126/255,0),
+             grDevices::rgb(255/255,0,0),
+             grDevices::rgb(143/255,63/255,151/255),
+             grDevices::rgb(126/255,0,35/255)),
+  names = c('Good','Moderate','USG','Unhealthy','Very Unhealthy','Hazardous'),
+  actions = c(
+    'None.',
+    'Unusually sensitive individuals should consider limiting prolonged or heavy exertion.',
+    'People within Sensitive Groups should reduce prolonged or heavy outdoor exertion.',
+    'People within Sensitive Groups should avoid all physical outdoor activity.',
+    'Everyone should avoid prolonged or heavy exertion.',
+    'Everyone should avoid any outdoor activity.'
+  )
+)
+
+#' AQI breaks and associated names and colors (spanish language)
+#' 
+#' @export
+#' @docType data
+#' @name AQI_es
+#' @title Official Air Quality Index Levels, Names and Colors
+#' @format A list with named elements
+#' @description
+#' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
+#' @details
+#' The \code{AQI_es} object contains spanish language text.
 #' 
 #' AQI breaks and colors are defined in
 #' \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
 #' @note
 #' The low end of each break category is used as the breakpoint.
+#' @seealso \code{\link{AQI_en}} \code{\link{AQI}}
 
-AQI <- list(breaks_24=c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
-            colors=c(grDevices::rgb(0,228/255,0),
-                     grDevices::rgb(255/255,255/255,0),
-                     grDevices::rgb(255/255,126/255,0),
-                     grDevices::rgb(255/255,0,0),
-                     grDevices::rgb(143/255,63/255,151/255),
-                     grDevices::rgb(126/255,0,35/255)),
-            names=c('Good','Moderate','USG','Unhealthy','Very Unhealthy','Hazardous'))
+AQI_es <- list(
+  breaks_24 = c(-Inf, 12, 35.5, 55.5, 150.5, 250.5, Inf),
+  colors = c(grDevices::rgb(0,228/255,0),
+             grDevices::rgb(255/255,255/255,0),
+             grDevices::rgb(255/255,126/255,0),
+             grDevices::rgb(255/255,0,0),
+             grDevices::rgb(143/255,63/255,151/255),
+             grDevices::rgb(126/255,0,35/255)),
+  names = c('Buena','	Moderada','IGS','Insalubre','Muy insalubre','Peligrosa'),
+  actions = c(
+    'None.',
+    'Unusually sensitive individuals should consider limiting prolonged or heavy exertion.',
+    'People within Sensitive Groups should reduce prolonged or heavy outdoor exertion.',
+    'People within Sensitive Groups should avoid all physical outdoor activity.',
+    'Everyone should avoid prolonged or heavy exertion.',
+    'Everyone should avoid any outdoor activity.'
+  )
+)
 
 # ----- State codes -----------------------------------------------------------
 
