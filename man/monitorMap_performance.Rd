@@ -60,11 +60,15 @@ the size/colors to remain constant.
 }
 \examples{
 \dontrun{
-# Spokane summer of 2015
-wa <- airnow_load(20150701, 20150930, stateCodes='WA')
-wa <- monitor_rollingMean(wa, width=3)
-MonroeSt <- monitor_subset(wa, monitorIDs="530630047_01")
-monitorMap_performance(wa, MonroeSt, cex=2)
+# Napa Fires -- October, 2017
+ca <- airnow_load(2017) \%>\%
+  monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
+Napa_Fires <- monitor_subsetByDistance(ca,
+                                       longitude = Vallejo$meta$longitude,
+                                       latitude = Vallejo$meta$latitude,
+                                       radius = 50)
+monitorMap_performance(ca, Vallejo, cex=2)
 title('Heidike Skill of monitors predicting another monitor.')
 }
 }

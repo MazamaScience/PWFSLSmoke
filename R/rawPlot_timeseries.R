@@ -226,11 +226,16 @@ rawPlot_timeseries <- function(df,
     # Add vertical lines to denote days and/or hour breaks
     hour_indices <- which(as.numeric(strftime(times,format="%H",tz=timezone)) %% hourInterval == 0)
     day_indices <- which(as.numeric(strftime(times,format="%H",tz=timezone)) %% 24 == 0)
-    abline(v=times[hour_indices], lwd=hourLwd) # at beginning of hour
-    abline(v=times[day_indices], lwd=dayLwd) # at beginning of day
+    # NOTE:  Windows doesn't support lwd=0
+    if ( hourLwd > 0 ) {
+      abline(v=times[hour_indices], lwd=hourLwd) # at beginning of hour
+    }
+    if ( dayLwd > 0 ) {
+      abline(v=times[day_indices], lwd=dayLwd) # at beginning of day
+    }
     
     # Add horizontal grid lines (before points if grid=='under')
-    if ( gridPos == 'under' ) {
+    if ( gridPos == 'under' && gridLwd > 0 ) {
       abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
     }
     
@@ -252,11 +257,9 @@ rawPlot_timeseries <- function(df,
   # Add lines
   do.call(lines,argsList)
   
-  if ( gridPos == 'over' ) {
-    
+  if ( gridPos == 'over' && gridLwd > 0 ) {
     # Horizontal lines
     abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
-    
   }
   
 }

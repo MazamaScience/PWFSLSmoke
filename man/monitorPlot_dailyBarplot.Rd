@@ -14,7 +14,7 @@ monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
 \item{monitorID}{monitor ID for a specific monitor in \code{ws_monitor} (optional
 if \code{ws_monitor} only has one monitor)}
 
-\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH])}
+\item{tlim}{optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})}
 
 \item{minHours}{minimum number of valid data hours required to calculate each daily average}
 
@@ -50,7 +50,7 @@ tweak the date labeling. Units used are the same as those in the plot.
 \dontrun{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150715,20150930))
 main <- "Daily Average PM2.5 for Omak, WA"
-monitorPlot_dailyBarplot(N_M, monitorID="530470013", main=main,
+monitorPlot_dailyBarplot(N_M, monitorID="530470013_01", main=main,
                          labels_x_nudge=1)
 addAQILegend(fill=rev(AQI$colors), pch=NULL)
 }

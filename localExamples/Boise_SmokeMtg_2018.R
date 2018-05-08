@@ -28,7 +28,7 @@ png('oridwa_hourly.png', width=800, height=600)
 
 par(mar=c(5.1,4.1,9.1,8.1))
 monitorPlot_timeseries(jas, style='gnats', xlab='2017', ylim=c(0,400), xpd=NA)
-addAQIStackedBar(pos='left', width=0.01, labels=FALSE, title=FALSE)
+addAQIStackedBar(pos='left', width=0.01)
 addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:6], AQI$names[2:6], pos=4, xpd=NA)
 mtext('Hourly PM2.5', side=3, line=6, adj=0, cex=2.0, font=2)
@@ -51,7 +51,7 @@ png('oridwa_daily.png', width=800, height=600)
 
 par(mar=c(5.1,4.1,9.1,8.1))
 monitorPlot_timeseries(dailyMean, style='gnats', xlab='2017', ylim=c(0,200), xpd=NA)
-addAQIStackedBar(pos='left', width=0.01, labels=FALSE, title=FALSE)
+addAQIStackedBar(pos='left', width=0.01)
 addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:5], AQI$names[2:5], pos=4, xpd=NA)
 mtext('Daily Mean PM2.5', side=3, line=6, adj=0, cex=2.0, font=2)
@@ -80,7 +80,7 @@ par(oldPar)
 # -----------------------------------------------------------------------------
 # Nez Perce monitors
 
-as <- monitor_subset(jas, tlim=c(20170801,20170915), tz="America/Los_Angeles")
+as <- monitor_subset(jas, tlim=c(20170801,20170915), timezone="America/Los_Angeles")
 Lewiston <- monitor_subset(as, monitorIDs='160690012_01')
 Clarkston <- monitor_subset(as, monitorIDs='530030004_01')
 

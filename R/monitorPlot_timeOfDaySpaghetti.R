@@ -149,17 +149,17 @@ monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
     # Left edge to sunrise
     rect(par('usr')[1], ybottom=par('usr')[3],
          xright=sunrise, ytop=par('usr')[4],
-         col=col_shadedNight, lwd=0)
+         col=col_shadedNight, border=NA)
     
     # Sunset to right edge
     rect(xleft=sunset, ybottom=par('usr')[3],
          xright=par('usr')[2], ytop=par('usr')[4],
-         col=col_shadedNight, lwd=0)
+         col=col_shadedNight, border=NA)
     
   }
   
   # AQI Lines
-  if ( aqiLines ) {
+  if ( aqiLines && lwd_aqi > 0 ) {
     abline(h=AQI$breaks_24[2:6], col=col_aqi, lwd=lwd_aqi)
   }
   

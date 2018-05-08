@@ -36,16 +36,21 @@ all available metrics are returned.
 }
 \examples{
 \dontrun{
-airnow <- airnow_load(20150101, 20151231)
-airnow_dailyAvg <- monitor_dailyStatistic(airnow, mean)
-airnow_dailyAvg <- monitor_subset(airnow_dailyAvg, stateCodes='WA')
-airnow_m1 <- airnow_load(20141231, 20151230)
-airnow_dailyAvg_m1 <- monitor_dailyStatistic(airnow_m1, mean)
-airnow_dailyAvg_m1 <- monitor_subset(airnow_dailyAvg_m1, stateCodes='WA')
-threshold <- AQI$breaks_24[3]
-performanceMetrices <- monitor_performance(airnow_dailyAvg_m1, 
-                                           airnow_dailyAve,
-                                           threshold, threshold)
+# If daily avg data were the prediciton and Spokane were
+# the observed, which WA State monitors had skill?
+wa <- airnow_load(2017) \%>\% monitor_subset(stateCodes='WA')
+wa_dailyAvg <- monitor_dailyStatistic(wa, mean)
+Spokane_dailyAvg <- monitor_subset(wa_dailyAvg, monitorIDs='530630021_01')
+threshold <- AQI$breaks_24[4] # Unhealthy
+performanceMetrics <- monitor_performance(wa_dailyAvg, 
+                                          Spokane_dailyAvg,
+                                          threshold, threshold)
+monitorIDs <- rownames(performanceMetrics)
+mask <- performanceMetrics$heidikeSkill &
+        !is.na(performanceMetrics$heidikeSkill)
+skillfulIDs <- monitorIDs[mask]
+skillful <- monitor_subset(wa_dailyAvg, monitorIDs=skillfulIDs)
+monitorLeaflet(skillful)
 }
 }
 \seealso{

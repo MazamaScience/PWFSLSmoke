@@ -5,7 +5,7 @@
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param monitorID monitor ID for a specific monitor in \code{ws_monitor} (optional
 #' if \code{ws_monitor} only has one monitor)
-#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
+#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param minHours minimum number of valid data hours required to calculate each daily average
 #' @param gridPos position of grid lines either 'over', 'under' ('' for no grid lines)
 #' @param gridCol color of grid lines (see graphical parameter 'col')
@@ -28,7 +28,7 @@
 #' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150715,20150930))
 #' main <- "Daily Average PM2.5 for Omak, WA"
-#' monitorPlot_dailyBarplot(N_M, monitorID="530470013", main=main,
+#' monitorPlot_dailyBarplot(N_M, monitorID="530470013_01", main=main,
 #'                          labels_x_nudge=1)
 #' addAQILegend(fill=rev(AQI$colors), pch=NULL)
 #' }
@@ -62,16 +62,21 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
     }
   }
   
-  # TODO:  tlim in monitorPlot_dailyBarplot should accept POSIXct
   # When tlim is specified in whole days we should add hours to get the requsted full days
   if ( !is.null(tlim) ) {
-    tlimStrings <- as.character(tlim)
+    if ( 'POSIXct' %in% class(tlim) ) {
+      tlimStrings <- strftime(tlim, "%Y%m%d", tz='UTC')
+    } else {
+      tlimStrings <- as.character(tlim)
+    }
     if ( stringr::str_length(tlimStrings)[1] == 8 ) {
-      tlim[1] <- paste0(tlim[1],'00')
+      tlimStrings[1] <- paste0(tlimStrings[1],'00')
     }
     if ( stringr::str_length(tlimStrings)[2] == 8 ) {
-      tlim[2] <- paste0(tlim[2],'23')
+      tlimStrings[2] <- paste0(tlimStrings[2],'23')
     }
+    # Recreate tlim
+    tlim <- tlimStrings
   }
   
   # Subset to a single monitor

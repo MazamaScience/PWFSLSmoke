@@ -134,12 +134,12 @@ rawPlot_timeOfDaySpaghetti <- function(df,
     # Left edge to sunrise
     rect(par('usr')[1], ybottom=par('usr')[3],
          xright=sunrise, ytop=par('usr')[4],
-         col=col_shadedNight, lwd=0)
+         col=col_shadedNight, border=NA)
     
     # Sunset to right edge
     rect(xleft=sunset, ybottom=par('usr')[3],
          xright=par('usr')[2], ytop=par('usr')[4],
-         col=col_shadedNight, lwd=0)
+         col=col_shadedNight, border=NA)
     
   }
   

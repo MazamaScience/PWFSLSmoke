@@ -22,7 +22,7 @@ addShadedNight <- function(timeInfo, col=adjustcolor('black',0.1)) {
   if ( localTime[1] < sunrise[1] ) {
     rect(par('usr')[1], ybottom=par('usr')[3], 
          xright=sunrise[1], ytop=par('usr')[4], 
-         col=col, lwd=0)
+         col=col, border=NA)
   }
   
   # Complete nights
@@ -30,14 +30,14 @@ addShadedNight <- function(timeInfo, col=adjustcolor('black',0.1)) {
     for (i in seq(length(sunset)-1)) {
       rect(xleft=sunset[i], ybottom=par('usr')[3], 
            xright=sunrise[i+1], ytop=par('usr')[4], 
-           col=col, lwd=0)              
+           col=col, border=NA)              
     }
   }
   
   # Last sunset to right edge
   rect(xleft=sunset[length(sunset)], ybottom=par('usr')[3], 
        xright=par('usr')[2], ytop=par('usr')[4], 
-       col=col, lwd=0)        
+       col=col, border=NA)        
   
 }
 

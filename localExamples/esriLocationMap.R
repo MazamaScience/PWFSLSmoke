@@ -46,7 +46,7 @@ downloadEsriLocationMap <- function(latitude, longitude, maptype = "World_Street
 
 # Map for Wenatchee
 airnow <- airnow_loadLatest()
-wenatchee <- monitor_subset(airnow, monitorIDs = "530070011")
+wenatchee <- monitor_subset(airnow, monitorIDs = "530070011_01")
 
 downloadEsriLocationMap(wenatchee$meta$latitude, wenatchee$meta$longitude, zoom = 9, size = 250, 
                         maptype = "World_Street_Map", destination = "~/Desktop/esrimaps/worldstreet.png")

@@ -22,6 +22,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
  * added language specific versions of `AQI`: `AQI_en` and `AQI_es`
  * added `monitor_isMonitor()` to valide the structure of a *ws_monitor* object
  * updated example code in all functions
+ * turning off grid lines with `~Lwd=0` in `monitorPlot_timeseries()` now works on Windows
+ * `monitorPlot_dailyBarplot()` accepts `tlim` argument of class `POSIXct` 
 
 ### PWFSLSmoke 1.0.18
 
