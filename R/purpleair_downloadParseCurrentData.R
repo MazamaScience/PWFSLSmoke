@@ -92,6 +92,9 @@ purpleair_downloadParseCurrentData <- function(baseUrl='https://www.purpleair.co
 
   tbl <- dplyr::bind_cols(resultsDF, statsTbl)
   tbl$Stats <- NULL
+  
+  # TODO:  In another function, use information from this table to create URLs like this:
+  # TODO:    https://thingspeak.com/channels/<THINGSPEAK_PRIMARY_ID>/feed.json?api_key=<THINGSPEAK_PRIMARY_ID_READ_KEY>
 
   return(tbl)
   
