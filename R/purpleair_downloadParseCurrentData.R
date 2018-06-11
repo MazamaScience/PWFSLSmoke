@@ -9,10 +9,10 @@
 #' 
 #' @examples
 #' \dontrun{
-#' df <- purpleair_downloadCurrentData()
+#' df <- purpleair_downloadParseCurrentData()
 #' }
 
-purpleair_downloadCurrentData <- function(baseUrl='https://www.purpleair.com/json') {
+purpleair_downloadParseCurrentData <- function(baseUrl='https://www.purpleair.com/json') {
   
   # Strip off any final '/'
   baseUrl <- stringr::str_replace(baseUrl,'/$','')
@@ -90,7 +90,7 @@ purpleair_downloadCurrentData <- function(baseUrl='https://www.purpleair.com/jso
   # [1] "v"                 "v1"                "v2"                "v3"                "v4"               
   # [6] "v5"                "v6"                "pm"                "lastModified"      "timeSinceModified"  
 
-  tbl <- dplyr::bind_rows(resultsDF, statsTbl)
+  tbl <- dplyr::bind_cols(resultsDF, statsTbl)
   tbl$Stats <- NULL
 
   return(tbl)
