@@ -11,11 +11,11 @@ make operational_build
 This is just shorthand for the following `docker build` line:
 
 ```
-$ docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.18 -t mazamascience/pwfslsmoke:latest .
+$ docker build --no-cache -t mazamascience/pwfslsmoke:v1.0.20 -t mazamascience/pwfslsmoke:latest .
 $ docker images
 REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
 mazamascience/pwfslsmoke       latest              f4945f0c24e6        4 minutes ago       1.75GB
-mazamascience/pwfslsmoke       v1.0.18             f4945f0c24e6        4 minutes ago       1.75GB
+mazamascience/pwfslsmoke       v1.0.20             f4945f0c24e6        4 minutes ago       1.75GB
 ...
 ```
 
@@ -26,7 +26,7 @@ Spatial data required by the **MazamaSpatialUtils** package already exists in th
 
 ## Test the Docker Image ##
 
-Having built the docker image we can now test it. The following output was obtained on Marh 06, 2018:
+Having built the docker image we can now test it. The following output was obtained on May 08, 2018:
 
 ```
 docker run -ti mazamascience/pwfslsmoke R --vanilla
@@ -39,13 +39,13 @@ ids <- names(maxValues)
 df <- wa$meta[ids,c('siteName','countyName')]
 df$max_pm25 <- maxValues
 print(df)
-                             siteName countyName max_pm25
-530611007_01       Marysville-7th Ave  Snohomish     55.8
-530530029_01              Tacoma-L St     Pierce     46.4
-530630021_01 Spokane-Augusta Ave (SO)    Spokane     42.0
-530610020_01        Darrington-Fir St  Snohomish     39.5
-530610005_01           Lynnwood-212th  Snohomish     38.8
-530470009_01          Twisp-Glover St     Chelan     38.0
+                                  siteName countyName max_pm25
+530650002_01       Wellpinit-Spokane Tribe    Stevens    125.0
+530330030_01         Seattle-10th & Weller       King     28.0
+530639999_01 Airway Heights-West 12th (US)    Spokane     26.0
+530470010_01           Winthrop-Chewuch Rd   Okanogan     25.8
+530331011_01            Seattle-South Park       King     25.5
+530330057_01              Seattle-Duwamish       King     25.1
 ```
 
 
@@ -54,7 +54,7 @@ print(df)
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:v1.0.18
+docker push mazamascience/pwfslsmoke:v1.0.20
 ```
 
 
@@ -63,6 +63,6 @@ docker push mazamascience/pwfslsmoke:v1.0.18
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:v1.0.18
+docker pull mazamascience/pwfslsmoke:v1.0.20
 ```
 
