@@ -41,15 +41,28 @@ monitor_join <- function(ws_monitor1=NULL,
   monList <- list()
   for ( monitorID in monitorIDs ) {
     
-    # Get trimmed, single monitors
-    mon1 <- monitor_subset(ws_monitor1, monitorIDs=monitorID) %>% monitor_trim()
-    mon2 <- monitor_subset(ws_monitor2, monitorIDs=monitorID) %>% monitor_trim()
-    # Put data from each monitor on the shared time axis
-    data1 <- dplyr::full_join(hourlyDF, mon1$data, by="datetime")
-    data2 <- dplyr::full_join(hourlyDF, mon2$data, by="datetime")
-    # Find out where each has data and where both have data
+    # Get trimmed, single version of mon1
+    mon1 <- monitor_subset(ws_monitor1, monitorIDs=monitorID)
+    if ( monitor_isEmpty(mon1) ) {
+      data1 <- hourlyDF
+      data1[[monitorID]] <- NA
+    } else {
+      mon1 <- monitor_trim(mon1)
+      data1 <- dplyr::full_join(hourlyDF, mon1$data, by="datetime")
+    }
     mask1 <- !is.na(data1[[monitorID]])
+    
+    # Get trimmed, single version of mon2
+    mon2 <- monitor_subset(ws_monitor2, monitorIDs=monitorID)
+    if ( monitor_isEmpty(mon2) ) {
+      data2 <- hourlyDF
+      data2[[monitorID]] <- NA
+    } else {
+      mon2 <- monitor_trim(mon2)
+      data2 <- dplyr::full_join(hourlyDF, mon2$data, by="datetime")
+    }
     mask2 <- !is.na(data2[[monitorID]])
+    
     mask3 <- mask1 & mask2
     
     # Join the data
@@ -63,8 +76,16 @@ monitor_join <- function(ws_monitor1=NULL,
       }
     }
 
-    # Create the 'ws_monitor' object
-    mon <- list(meta=mon1$meta, data=joinedData)
+    # Get metadata (while handling the possibility that one of the monitor objects might be empty)
+    if ( nrow(mon1$meta) == 1 ) {
+      mon <- list(meta=mon1$meta, data=joinedData)
+    } else if ( nrow(mon2$meta == 1) ) {
+      mon <- list(meta=mon2$meta, data=joinedData)
+    } else {
+      stop(paste0("monitor '", monitorID,"' is not found in ws_monitor1 or ws_monitor2"))
+    }
+    
+    # Create valid monitor object
     monList[[monitorID]] <- structure(mon, class = c("ws_monitor", "list"))
     
   }  

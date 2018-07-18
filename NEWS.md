@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.22
+
+ * fixed bug in `monitor_join()` which failed when a monitorID was missing from one of the *ws_monitor* objects being joined
+
 ### PWFSLSmoke 1.0.21
 
  * removed errant TAB character from AQI_es$names
