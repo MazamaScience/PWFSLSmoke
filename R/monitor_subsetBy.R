@@ -20,8 +20,11 @@ monitor_subsetBy <- function(ws_monitor, filter) {
   }
   
   # Sanity check
-  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  if ( monitor_isEmpty(ws_monitor) ) {
+    stop("ws_monitor object contains zero monitors")
+  }
   
+  # NOTE:  http://courses.had.co.nz/12-devtools/slides/2-evaluation.pdf
   # Create a condition call, basically an expression that isn't run yet.
   condition_call <- substitute(filter)
   filterString <- paste(as.character(condition_call)[2], as.character(condition_call)[1],
@@ -34,7 +37,7 @@ monitor_subsetBy <- function(ws_monitor, filter) {
   # If the condition_call is valid for ws_monitor$meta
   if ( any(stringr::str_detect(filterString, names(ws_monitor$meta))) ) {
     
-    metaMask <- eval(condition_call, ws_monitor$meta)
+    metaMask <- eval(condition_call, envir = ws_monitor$meta, enclos = parent.frame())
     metaMask <- replace(metaMask, is.na(metaMask), FALSE) # convert NA to FALSE
     monitorIDs <- ws_monitor$meta$monitorID[metaMask]
     # omit the first 'datetime' column
@@ -47,7 +50,7 @@ monitor_subsetBy <- function(ws_monitor, filter) {
   # If the condition_call is intended for ws_monitor$data
   } else if ( any(stringr::str_detect(filterString, 'data')) ) {
     
-    FUN <- function(list) { any(eval(condition_call, data.frame(data = list))) }
+    FUN <- function(list) { any(eval(condition_call, envir = data.frame(data = list))) }
     # Omit the first 'datetime' column
     # NOTE:  We must do extra work to avoid conversion to numeric in the case 
     # NOTE:  where there is only a single column of data.
