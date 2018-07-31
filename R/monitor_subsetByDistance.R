@@ -56,6 +56,14 @@ monitor_subsetByDistance <- function(ws_monitor,
   ws_monitor <- list(meta=meta, data=data)
   ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
   
+  # Return now if no monitors are found
+  if ( monitor_isEmpty(ws_monitor) ) {
+    ws_monitor[['distance']] <- vector('numeric') # empty vector
+    return(ws_monitor)
+  }
+  
+  # ----- Found some monitors -------------------------------------------------
+    
   # Update the distanceVector for the new subset of monitors
   distanceVector <- monitor_distance(ws_monitor, longitude, latitude) 
   

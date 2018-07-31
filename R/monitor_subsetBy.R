@@ -50,7 +50,7 @@ monitor_subsetBy <- function(ws_monitor, filter) {
   # If the condition_call is intended for ws_monitor$data
   } else if ( any(stringr::str_detect(filterString, 'data')) ) {
     
-    FUN <- function(list) { any(eval(condition_call, envir = data.frame(data = list))) }
+    FUN <- function(list) { any(eval(condition_call, data.frame(data = list))) }
     # Omit the first 'datetime' column
     # NOTE:  We must do extra work to avoid conversion to numeric in the case 
     # NOTE:  where there is only a single column of data.
