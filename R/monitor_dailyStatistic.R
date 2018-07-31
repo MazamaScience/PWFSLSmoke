@@ -86,7 +86,7 @@ monitor_dailyStatistic <- function(ws_monitor,
   }
   
   # Only retain days with enough hours
-  goodDays <- which( table(day) >= minHours )
+  goodDays <- names( which( table(day) >= minHours ) ) # table() names == day #
   goodDayMask <- day %in% goodDays
   data <- data[goodDayMask,]
   day <- day[goodDayMask]

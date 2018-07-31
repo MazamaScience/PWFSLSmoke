@@ -11,6 +11,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.23
 
+ * fixed bug in `monitor_dailyStatistic()` which did not return the first daily average
  * fixed bug in `monitor_subsetByDistance()` which failed when no monitors were found within the radius
  * fixed bug in `monitor_subsetBy()` which failed when a filter used variables defined within a calling function
 
