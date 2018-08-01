@@ -64,10 +64,7 @@ monitorMap <- function(ws_monitor,
   }
   
   # Colors for each point 
-  
-  # Create levels and use them to create a set of colors
-  levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
-  cols <- colors[levels]
+  cols <- aqiColors(pm25, palette=colors, bins=breaks)
   
   # ------------------------------- GRAPHICS --------------------------------------
   

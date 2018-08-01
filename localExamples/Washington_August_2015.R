@@ -7,9 +7,12 @@ library(PWFSLSmoke)
 
 # ---- AirNow monitors ----
 
-# Load airnow monitor data for Washington for August, 2015
-airnow <- airnow_load(startdate = 20150801, enddate = 20150831)
-airnow_wa <- monitor_subset(airnow, stateCodes = 'WA')
+# Load EPA monitor data for Washington for August, 2015
+epa_88101 <- epa_load(2015, "88101") %>%
+  monitor_subset(stateCodes='WA',tlim = c(20150801,20150831))
+epa_88502 <- epa_load(2015, "88502") %>%
+  monitor_subset(stateCodes='WA',tlim = c(20150801,20150831))
+airnow_wa <- monitor_combine(list(epa_88101, epa_88502))
 
 # Interactive plot of maximum values with monitor_leaflet(),
 monitorLeaflet(airnow_wa, maptype="Stamen.Terrain")
@@ -18,7 +21,7 @@ monitorLeaflet(airnow_wa, maptype="Stamen.Terrain")
 # * create value limits ('vlim') extending from 'unhealthy' levels to Infinity
 # * apply 3-hour rolling mean
 # * subset the rolling mean data with 'very unhealthy' levels
-bad_limits <- c(AQI$breaks_24[which(AQI$names == 'very unhealthy')], Inf)
+bad_limits <- c(AQI$breaks_24[5], Inf)
 airnow_wa_3hr <- monitor_rollingMean(airnow_wa, width=3)
 airnow_wa_unhealthy_data <- monitor_subset(airnow_wa_3hr, vlim=bad_limits)
 monitorIDs = airnow_wa_unhealthy_data$meta$monitorID

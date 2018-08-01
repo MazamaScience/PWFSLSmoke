@@ -98,8 +98,7 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   
   # Default colors come from pm25Daily means
   if ( !('col' %in% names(argsList)) ) {
-    aqiColors <- AQI$colors
-    argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
+    argsList$col <- aqiColors(pm25)
   }
   
   # X axis labeling is handled after the plot

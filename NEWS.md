@@ -11,6 +11,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.0.23
 
+ * new `aqiColors()` function to simplify creation of color vectors for use in maps and plots
  * new `monitor_print()` function to generate human readable CSV files
  * fixed bug in `monitor_dailyStatistic()` which did not return the first daily average
  * fixed bug in `monitor_subsetByDistance()` which failed when no monitors were found within the radius

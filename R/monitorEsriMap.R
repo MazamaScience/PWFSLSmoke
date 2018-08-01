@@ -80,9 +80,8 @@ monitorEsriMap <- function(ws_monitor,
                 " specified. You must specify both paramaters or neither."))
   }
   
-  # Create levels and use them to create a color mask
-  levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
-  cols <- colors[levels]
+  # Colors for each point 
+  cols <- aqiColors(pm25, palette=colors, bins=breaks)
   
   # Guess at zoom level if not specified
   if ( is.null(zoom) ) {

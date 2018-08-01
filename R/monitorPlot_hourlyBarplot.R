@@ -127,10 +127,11 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
   # TODO:  We will eventually need a couple of different choices for assigning colors based on
   # TODO:  hourly, nowcast, AQI, etc.
   
+  # TODO:  cleanup unused options and use aqiColors() throughout?
+  
   # 'AirFire' colors use hourly values with 24 hour colors
   if ( style == 'AQI' ) {
-    aqiColors <- AQI$colors
-    argsList$col <- aqiColors[ .bincode(pm25, AQI$breaks_24, include.lowest=TRUE) ]
+    argsList$col <- aqiColors(pm25)
   } else if ( style == 'grayscaleAQI' ) {
     # NOTE:  Greyscale coded 
     aqiColors <- RColorBrewer::brewer.pal(6,'Greys')

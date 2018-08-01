@@ -112,6 +112,7 @@ monitorMap_performance <- function (predicted,
       probs <- seq(0,1,length.out=(breaks+1))
       breaks <- stats::quantile(performanceDF[[colorBy]], probs=probs, na.rm=TRUE)
     }
+    # TODO:  Use aqiColors() to do this?
     indices <- .bincode(performanceDF[[colorBy]], breaks=breaks, include.lowest=TRUE)
     colors <- paletteFunc((length(breaks)-1))
     cols <- colors[indices]

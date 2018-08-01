@@ -77,10 +77,9 @@ monitorGoogleMap <- function(ws_monitor,
                 " specified. You must specify both paramaters or neither."))
   }
   
-  # Create levels and use them to create a color mask
-  levels <- .bincode(pm25, breaks, include.lowest=TRUE)  
-  cols <- colors[levels]
-  
+  # Colors for each point 
+  cols <- aqiColors(pm25, palette=colors, bins=breaks)
+
   # Guess at zoom level if not specified
   if ( is.null(zoom) ) {
     maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
