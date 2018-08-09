@@ -9,6 +9,14 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.24
+
+ * `airsis_createMonitorObject()` and `wrcc_createMonitorObject()` now both accept arguments `existingMeta` with
+ a default value of `NULL` and `addGoogleMeta` and `addEsriMeta` with default values of `FALSE`
+ * `airsis_createMetaDataframe()` and `wrcc_createMetaDataframe()` now both accept arguments `existingMeta` with
+ a default value of `NULL` and `addGoogleMeta` and `addEsriMeta` with default values of `FALSE`
+ * removed deprecated `addGoogleMetadata()`
+
 ### PWFSLSmoke 1.0.23
 
  * new `aqiColors()` function to simplify creation of color vectors for use in maps and plots

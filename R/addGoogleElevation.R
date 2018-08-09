@@ -35,13 +35,15 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
   if ( !is.null(existingMeta) ) {
     
     # NOTE:  If existingMeta is passed in, assume we are in an operational environment where we want to minimize web service calls.
+
+    amendedDF <- df
     
-    for (i in 1:nrow(df)) {
-      monitorID <- df[i,'monitorID']
+    for (i in 1:nrow(amendedDF)) {
+      monitorID <- amendedDF[i,'monitorID']
       if ( monitorID %in% existingMeta$monitorID ) {
-        df$elevation[i] <- round(existingMeta[monitorID,'elevation'], 0) # round to whole meters
+        amendedDF$elevation[i] <- round(existingMeta[monitorID,'elevation'], 0) # round to whole meters
       } else {
-        df$elevation[i] <- as.numeric(NA)
+        amendedDF$elevation[i] <- as.numeric(NA)
       }
     }
     
@@ -71,6 +73,7 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
       dfSub <- df[startIndex:endIndex,]
       
       # Create url
+      #           https://maps.googleapis.com/maps/api/elevation/json?locations=39.7391536,-104.9847034&key=YOUR_API_KEY
       urlBase <- 'https://maps.googleapis.com/maps/api/elevation/json?locations='
       locations <- paste(dfSub[[latVar]], dfSub[[lonVar]], sep=',', collapse='|')
       url <- paste0(urlBase, locations)

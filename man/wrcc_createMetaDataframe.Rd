@@ -5,7 +5,8 @@
 \title{Create WRCC Site Location Metadata Dataframe}
 \usage{
 wrcc_createMetaDataframe(tbl, unitID = as.character(NA),
-  pwfslDataIngestSource = "WRCC", existingMeta = NULL)
+  pwfslDataIngestSource = "WRCC", existingMeta = NULL,
+  addGoogleMeta = FALSE, addEsriMeta = FALSE)
 }
 \arguments{
 \item{tbl}{single site WRCC tibble after metadata enhancement}
@@ -15,6 +16,10 @@ wrcc_createMetaDataframe(tbl, unitID = as.character(NA),
 \item{pwfslDataIngestSource}{identifier for the source of monitoring data, e.g. \code{'WRCC', 'WRCC_DUMPFILE'}}
 
 \item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
+
+\item{addEsriMeta}{logicial specifying wheter to use ESRI elevation and reverse geocoding services}
 }
 \value{
 A \code{meta} dataframe for use in a \emph{ws_monitor} object.

@@ -9,7 +9,8 @@ airsis_createMonitorObject(startdate = strftime(lubridate::now(), "\%Y010100",
   "UTC"), provider = NULL, unitID = NULL, clusterDiameter = 1000,
   zeroMinimum = TRUE,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-  saveFile = NULL, ...)
+  saveFile = NULL, existingMeta = NULL, addGoogleMeta = FALSE,
+  addEsriMeta = FALSE, ...)
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
@@ -27,6 +28,12 @@ airsis_createMonitorObject(startdate = strftime(lubridate::now(), "\%Y010100",
 \item{baseUrl}{base URL for data queries}
 
 \item{saveFile}{optional filename where raw CSV will be written}
+
+\item{existingMeta}{existing 'meta' dataframe from which to obtain metadata for known monitor deployments}
+
+\item{addGoogleMeta}{logicial specifying wheter to use Google elevation and reverse geocoding services}
+
+\item{addEsriMeta}{logicial specifying wheter to use ESRI elevation and reverse geocoding services}
 
 \item{...}{additional parameters are passed to type-specific QC functions}
 }

@@ -8,6 +8,9 @@
 #' @param zeroMinimum logical specifying whether to convert negative values to zero
 #' @param baseUrl base URL for data queries
 #' @param saveFile optional filename where raw CSV will be written
+#' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
+#' @param addGoogleMeta logicial specifying wheter to use Google elevation and reverse geocoding services
+#' @param addEsriMeta logicial specifying wheter to use ESRI elevation and reverse geocoding services
 #' @param ... additional parameters are passed to type-specific QC functions
 #' @return A \emph{ws_monitor} object with WRCC data.
 #' @description Obtains monitor data from an WRCC webservice and converts
@@ -62,6 +65,9 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
                                      zeroMinimum=TRUE,
                                      baseUrl="https://wrcc.dri.edu/cgi-bin/wea_list2.pl",
                                      saveFile=NULL,
+                                     existingMeta=NULL,
+                                     addGoogleMeta=FALSE,
+                                     addEsriMeta=FALSE,
                                      ...) {
   
   # FOR TESTING
@@ -130,7 +136,10 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
   # NOTE:  This step will create a uniformly named set of properties and will
   # NOTE:  add site-specific information like timezone, elevation, address, etc.
   logger.debug("Creating 'meta' dataframe ...")
-  meta <- wrcc_createMetaDataframe(tbl, unitID, 'WRCC')
+  meta <- wrcc_createMetaDataframe(tbl, unitID, 'WRCC',
+                                   existingMeta = existingMeta,
+                                   addGoogleMeta = addGoogleMeta,
+                                   addEsriMeta = addEsriMeta)
   
   # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
   logger.debug("Creating 'data' dataframe ...")
