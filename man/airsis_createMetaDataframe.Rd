@@ -49,8 +49,6 @@ columns in the returned \code{meta} dataframe is:
 }
 }
 \seealso{
-\code{\link{addGoogleMetadata}}
-
 \code{\link{addMazamaMetadata}}
 }
 \keyword{AIRSIS}

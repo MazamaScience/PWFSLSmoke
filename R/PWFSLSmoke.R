@@ -33,6 +33,89 @@ NULL
 #' documentation.
 NULL
 
+# ----- Internal Package State -------------------------------------------------
+
+pwfslSmokeEnv <- new.env(parent = emptyenv())
+pwfslSmokeEnv$googleApiKey <- NULL
+pwfslSmokeEnv$esriToken <- NULL
+
+#' @docType data
+#' @keywords environment
+#' @name googleApiKey
+#' @title API Key used for Google Geocoding Requests
+#' @format Character string.
+#' @description All package functions that interact with Google location services will
+#' use API key whenever a request is made.
+#' @seealso addGoogleAddress
+#' @seealso addGoogleElevation
+NULL
+
+#' @keywords environment
+#' @export
+#' @title Get Google API Key
+#' @description Returns the current Google API key.
+#' @return String.
+#' @seealso addGoogleAddress
+#' @seealso addGoogleElevation
+#' @seealso googleApiKey
+#' @seealso setGoogleApiKey
+getGoogleApiKey <- function() {
+  return(pwfslSmokeEnv$googleApiKey)    
+}
+
+#' @keywords environment
+#' @export
+#' @title Set Google API Key
+#' @param key Google API key used when interacting with Google location services
+#' @description Sets the current Google API key.
+#' @return Silently returns previous value of googleApiKey.
+#' @seealso addGoogleAddress
+#' @seealso addGoogleElevation
+#' @seealso getGoogleApiKey
+#' @seealso googleApiKey
+setGoogleApiKey <- function(key) {
+  old <- pwfslSmokeEnv$googleApiKey
+  pwfslSmokeEnv$googleApiKey <- key
+  return(invisible(old))
+}
+
+#' @docType data
+#' @keywords environment
+#' @name esriToken
+#' @title Token used for ESRI Geocoding Requests
+#' @format Character string.
+#' @description All package functions that interact with ESRI location services will
+#' use the token whenever a request is made.
+#' @seealso addEsriAddress
+NULL
+
+#' @keywords environment
+#' @export
+#' @title Get ESRI Token
+#' @description Returns the current esriToken.
+#' @return String.
+#' @seealso addEsriAddress
+#' @seealso esriToken
+#' @seealso setEsriToken
+getEsriToken <- function() {
+  return(pwfslSmokeEnv$esriToken)    
+}
+
+#' @keywords environment
+#' @export
+#' @title Set ESRI Token
+#' @param token ESRI token used when interacting with ESRI location services
+#' @description Sets the current esriToken.
+#' @return Silently returns previous value of esriToken.
+#' @seealso addEsriAddress
+#' @seealso getEsriToken
+#' @seealso esriToken
+setEsriToken <- function(token) {
+  old <- pwfslSmokeEnv$esriToken
+  pwfslSmokeEnv$esriToken <- token
+  return(invisible(old))
+}
+
 # ----- WRCC related info -----------------------------------------------------
 
 #' WRCC monitor names and unitIDs

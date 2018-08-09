@@ -76,7 +76,11 @@ addGoogleElevation <- function(df, lonVar="longitude", latVar="latitude", existi
       #           https://maps.googleapis.com/maps/api/elevation/json?locations=39.7391536,-104.9847034&key=YOUR_API_KEY
       urlBase <- 'https://maps.googleapis.com/maps/api/elevation/json?locations='
       locations <- paste(dfSub[[latVar]], dfSub[[lonVar]], sep=',', collapse='|')
-      url <- paste0(urlBase, locations)
+      keyString <- NULL
+      if ( !is.null(getGoogleApiKey()) ) {
+        keyString <- paste0("&key=", getGoogleApiKey())
+      }
+      url <- paste0(urlBase, locations, keyString)
       
       # NOTE:  For now (2017-08-15) we aren't hitting Google limits because this service
       # NOTE:  accepts a vector of locations in a single web service call.

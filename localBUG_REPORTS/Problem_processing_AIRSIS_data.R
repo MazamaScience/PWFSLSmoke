@@ -22,5 +22,5 @@ provider <- 'usfs'
 unitID <- '1013'
 
 
-monitor <- airsis_createMonitorObject(startdate=startdate, enddate=enddate, provider=provider, unitID=unitID)
+monitor <- airsis_createMonitorObject(startdate=startdate, enddate=enddate, provider=provider, unitID=unitID, addEsriMeta = TRUE)
 

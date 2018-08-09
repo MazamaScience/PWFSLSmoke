@@ -29,7 +29,6 @@
 #' [16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
 #' }
 #' 
-#' @seealso \code{\link{addGoogleMetadata}}
 #' @seealso \code{\link{addMazamaMetadata}}
 
 
@@ -138,28 +137,21 @@ wrcc_createMetaDataframe <- function(tbl,
     if ( "try-error" %in% class(result) ) {
       logger.warn("Unable to add Google elevations: %s", geterrmessage())
     }
-    # Add siteName and countyName
-    result <- try( meta <- addGoogleAddress(meta, existingMeta=existingMeta),
-                   silent=TRUE )
-    if ( "try-error" %in% class(result) ) {
-      logger.warn("Unable to add Google addresses: %s", geterrmessage())
-    }
+    # # Add siteName and countyName
+    # result <- try( meta <- addGoogleAddress(meta, existingMeta=existingMeta),
+    #                silent=TRUE )
+    # if ( "try-error" %in% class(result) ) {
+    #   logger.warn("Unable to add Google addresses: %s", geterrmessage())
+    # }
   } 
   
   if ( addEsriMeta ) {
-    # TODO:
-    # # Add elevation
-    # result <- try( meta <- addEsriElevation(meta, existingMeta=existingMeta),
-    #                silent=TRUE )
-    # if ( "try-error" %in% class(result) ) {
-    #   logger.warn("Unable to add ESRI elevations: %s", geterrmessage())
-    # }
-    # # Add siteName and countyName
-    # result <- try( meta <- addEsriAddress(meta, existingMeta=existingMeta),
-    #                silent=TRUE )
-    # if ( "try-error" %in% class(result) ) {
-    #   logger.warn("Unable to add ESRI addresses: %s", geterrmessage())
-    # }
+    # Add siteName and countyName
+    result <- try( meta <- addEsriAddress(meta, existingMeta=existingMeta),
+                   silent=TRUE )
+    if ( "try-error" %in% class(result) ) {
+      logger.warn("Unable to add ESRI addresses: %s", geterrmessage())
+    }
   } 
   
   # Assign rownames

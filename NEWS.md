@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.25
+
+ * added package environment with `googleApiKey`, `esriApiKey` and getter/setter functions for each
+ * added `addEsriAddress()` function 
+ 
 ### PWFSLSmoke 1.0.24
 
  * `airsis_createMonitorObject()` and `wrcc_createMonitorObject()` now both accept arguments `existingMeta` with
