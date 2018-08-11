@@ -75,7 +75,7 @@ addEsriAddress <- function(df, lonVar="longitude", latVar="latitude", existingMe
   #   }
   # }
   
-  logger.debug("Getting site names for %s location(s)", nrow(df))
+  logger.trace("Getting site names for %s location(s)", nrow(df))
   
   # When siteName is missing, create one similar to AirNow with "locality-route"
   
@@ -107,7 +107,7 @@ addEsriAddress <- function(df, lonVar="longitude", latVar="latitude", existingMe
       
       # Query ESRI for siteName and countyName
       location <- c(df[i,lonVar],df[i,latVar])
-      logger.trace("\tesri address request for location = %s, %s", location[1], location[2])
+      logger.trace("\tESRI address request for location = %s, %s", location[1], location[2])
       if ( !anyNA(location) ) {
         # Always wrap any webservice reqeust
         result <- try({
@@ -155,7 +155,7 @@ addEsriAddress <- function(df, lonVar="longitude", latVar="latitude", existingMe
         }, silent=TRUE)
         if ( "try-error" %in% class(result) ) {
           logger.trace("\t%s", url)
-          logger.warn("Unable to add Esri address: %s", geterrmessage())
+          logger.warn("Unable to add ESRI address: %s", geterrmessage())
         }
         
       }
