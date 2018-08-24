@@ -5,7 +5,7 @@
 \title{Write Current Monitor Data to GeoJSON}
 \usage{
 monitor_writeCurrentGeoJSON(ws_monitor, filename, properties = NULL,
-  propertyNames = NULL)
+  propertyNames = NULL, metadataList = list())
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
@@ -17,6 +17,10 @@ If NULL all are included. May include any ws_monitor metadata and additional col
 
 \item{propertyNames}{optional character vector supplying custom names for properties in geoJSON. If NULL or different length 
 than \code{properties} defaults will be used.}
+
+\item{metadataList}{list of top-level foreign members to include. May include nested lists as long as they can be converted into 
+JSON using \code{jsonlite::toJSON()}. For more information on what can be included see 
+\href{https://tools.ietf.org/html/rfc7946#section-6.1}{https://tools.ietf.org/html/rfc7946#section-6.1}}
 }
 \value{
 invisibly returns geoJSON string.
@@ -30,7 +34,6 @@ Writes a geoJSON file containing current monitor data. For details on what is in
 wa <- loadLatest() \%>\% monitor_subset(stateCodes = 'WA')
 wa_current_geojson <- monitor_writeCurrentGeoJSON(wa, 'wa_monitors.geojson')
 wa_current_list <- jsonlite::fromJSON(wa_current)
-wa_spdf <- rgdal::readOGR(dsn='wa_monitors.geojson', layer='currentTbl')
 wa_spdf <- rgdal::readOGR(dsn='wa_monitors.geojson', layer="OGRGeoJSON")
 plot(wa_spdf)
 }

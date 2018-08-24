@@ -7,6 +7,9 @@
 #' If NULL all are included. May include any ws_monitor metadata and additional columns generated in \code{\link{monitor_currentData}}
 #' @param propertyNames optional character vector supplying custom names for properties in geoJSON. If NULL or different length 
 #' than \code{properties} defaults will be used.
+#' @param metadataList list of top-level foreign members to include. May include nested lists as long as they can be converted into 
+#' JSON using \code{jsonlite::toJSON()}. For more information on what can be included see 
+#' \href{https://tools.ietf.org/html/rfc7946#section-6.1}{https://tools.ietf.org/html/rfc7946#section-6.1}
 #' @return invisibly returns geoJSON string. 
 #' @description Writes a geoJSON file containing current monitor data. For details on what is included, see 
 #' \code{\link{monitor_currentData}}
@@ -15,7 +18,6 @@
 #' wa <- loadLatest() %>% monitor_subset(stateCodes = 'WA')
 #' wa_current_geojson <- monitor_writeCurrentGeoJSON(wa, 'wa_monitors.geojson')
 #' wa_current_list <- jsonlite::fromJSON(wa_current)
-#' wa_spdf <- rgdal::readOGR(dsn='wa_monitors.geojson', layer='currentTbl')
 #' wa_spdf <- rgdal::readOGR(dsn='wa_monitors.geojson', layer="OGRGeoJSON")
 #' plot(wa_spdf)
 #' }
@@ -23,7 +25,8 @@
 monitor_writeCurrentGeoJSON <- function(ws_monitor,
                                         filename,
                                         properties = NULL,
-                                        propertyNames = NULL) {
+                                        propertyNames = NULL,
+                                        metadataList = list()) {
   
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
@@ -89,7 +92,7 @@ monitor_writeCurrentGeoJSON <- function(ws_monitor,
                                             simplifyMatrix=FALSE,
                                             flatten=FALSE))
   
-  geojsonList$lastUpdateTimestampUTC <- strftime(lubridate::now('UTC'), "%Y-%m-%d %H:%M:%S %z", tz='UTC')
+  geojsonList <- append(geojsonList, metadataList)
   geojsonText <- jsonlite::toJSON(geojsonList, auto_unbox=TRUE, null='null', na='null')
   cat(geojsonText, file=filename)
   
