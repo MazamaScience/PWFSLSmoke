@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.27
+
+  * added `monitor_writeCsv()` function
+  * enabled `monitor_print()` `quietly=TRUE`
+
 ### PWFSLSmoke 1.0.26
 
   * added `monitor_currentData()` function

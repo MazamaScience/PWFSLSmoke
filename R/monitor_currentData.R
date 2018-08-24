@@ -7,6 +7,7 @@
 #' \itemize{
 #' \item{\code{monitorID} - the PWFSL monitor ID}
 #' \item{\code{lastValidTime} - UTC POSIXct time corresponding to the last valid pm25 datum}
+#' \item{\code{lastValidLocalTimestamp} - ASCII version of \code{lastValidTime} in monitor-local timezone}
 #' \item{\code{processingTime} - UTC POSIXct when the function is run (\emph{i.e.} 'now')}
 #' \item{\code{latency} - (difference between processingTime -1 hr) and lastValidTime, floored to the hour}
 #' \item{\code{PM2.5_latest_nowcast} - NowCast value at lastValidTime}
