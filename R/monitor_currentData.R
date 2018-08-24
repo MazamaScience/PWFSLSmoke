@@ -2,26 +2,31 @@
 #' @export
 #' @title Create a dataframe of current monitor data
 #' @param ws_monitor \emph{ws_monitor} object
-#' @return A tibble of current status data with the following columns: 
-#' monitorID, pm25, nowcast, yesterdayAqi, lastValidUpdateTime, processingTime.
-#' @description Extracts current status data from a ws_monitor object. This data includes the following:
+#' @return A tibble of "latest" data and associated timing information.
+#' @description Extracts current status data from a ws_monitor object. Returned data include the following:
 #' \itemize{
-#' \item{monitorID - the PWFSL monitor ID}
-#' \item{lastValidUpdateTime - UTC POSIXct time corresponding to the last valid pm25 datum}
-#' \item{processingTime - UTC POSIXct when the function is run (= 'now')}
-#' \item{latency - (difference between processingTime -1 hr) and lastValidUpdateTime, floored to the hour}
-#' \item{PM2.5_nowcast - NowCast value at lastValidUpdateTime}
-#' \item{PM2.5_latest_1 - PM2.5 value at lastValidUpdateTime (should never be null)}
-#' \item{PM2.5_latest_3 - mean of the three hours preceeding lastValidUpdateTime}
-#' \item{PM2.5_yesterday - local time midnight-to-midnight 24-hour mean for the day prior to processingTime}
+#' \item{\code{monitorID} - the PWFSL monitor ID}
+#' \item{\code{lastValidTime} - UTC POSIXct time corresponding to the last valid pm25 datum}
+#' \item{\code{processingTime} - UTC POSIXct when the function is run (\emph{i.e.} 'now')}
+#' \item{\code{latency} - (difference between processingTime -1 hr) and lastValidTime, floored to the hour}
+#' \item{\code{PM2.5_latest_nowcast} - NowCast value at lastValidTime}
+#' \item{\code{PM2.5_latest_1} - PM2.5 value at lastValidTime (should never be null)}
+#' \item{\code{PM2.5_latest_3} - mean of the three hours preceeding lastValidTime}
+#' \item{\code{PM2.5_yesterday} - local time midnight-to-midnight 24-hour mean for the day prior to processingTime}
 #' }
-#' @note
+#' The three-hour average will remove missing values and may represent an average of 1-3 hours.
+#' 
+#' The yesterday average will remove up to six missing values, returning \code{NA} if more than six hours of yesterday's data are missing.
+#' 
+#' \strong{NOTE:} \code{PM2.5_yesterday} represents yesterday relative to \code{processingTime} -- \emph{i.e.} actually yesterday.
+#' The various 'latest' values describe the most recent values, whenever they occurred.
+#' @details
 #' Data are assigned to the beginning of the hour they represent. So a PM2.5 value assigned to 2pm
 #' will represent data averaged over the period 14:00 - 14:59. This is in keeping with a day representing
 #' 00:00 - 23:59 and a month representing the beginning of the month until the end of the month.
 #' 
 #' Because of this, data for 2pm should never be available until just after 3pm. If it is currently 3:15pm
-#' then we need to subtract 1 hour from the current \code{processingTime} before subtracting the \code{lastValidUpdateTime}
+#' then we need to subtract 1 hour from the current \code{processingTime} before subtracting the \code{lastValidTime}
 #' to generate the \code{latency}.
 #' @examples
 #' \dontrun{
@@ -43,17 +48,26 @@ monitor_currentData <- function(ws_monitor) {
     stop('No sites found with PM2.5 data')
   }
   
-  # Apply the nowcast algorithm 
-  nowcast <- monitor_nowcast(ws_monitor, includeShortTerm = TRUE)
-  data_nowcast <- nowcast$data
-  
-  # Add lastValidUdateTime and latency columns
-
-  lastIndex <- apply(as.matrix(data), 2, function(x) { max(which(!is.na(x))) }) # this is a named vector
-  lastUTCTime <- data$datetime[lastIndex]
-  currentData$lastValidUpdateTime <- lastUTCTime[-1] # remove 'datetime'
+  # Add processingTime
   processingTime <- lubridate::now('UTC')
   currentData$processingTime <- processingTime
+  
+  # Add lastValidTime
+  lastIndex <- apply(as.matrix(data), 2, function(x) { max(which(!is.na(x))) }) # this is a named vector
+  lastUTCTime <- data$datetime[lastIndex]
+  currentData$lastValidTime <- lastUTCTime[-1] # remove 'datetime'
+  
+  # Add lastValidLocalTimestamp
+  currentData$lastValidLocalTimestamp <- ""
+  for ( i in 1:nrow(currentData) ) { # loop because strftime is not vectorized over tz
+    result <- try({
+      currentData$lastValidLocalTimestamp[i] <- strftime(currentData$lastValidTime[i], format="%Y-%m-%d %H:%M:%S %Z", tz=meta$timezone[i])
+    }, silent=TRUE)
+    if ( "try-error" %in% class(result) ) {
+      currentData$lastValidLocalTimestamp[i] <- strftime(meta$lastValidTime[i], format="%Y-%m-%d %H:%M:%S %Z", tz='UTC')
+    }
+  }
+  
   # Calculate the latency in hours
   # NOTE:  According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
   # NOTE:  a datum assigned to 2pm represents the average of data between 2pm and 3pm.
@@ -61,39 +75,41 @@ monitor_currentData <- function(ws_monitor) {
   # NOTE:  then the data are completely up-to-date with zero latency. That's why we
   # NOTE:  subtract an hour from 'processingTime' in the line below.
   zeroLatencyTime <- lubridate::floor_date(processingTime, unit="hour") - lubridate::dhours(1)
-  currentData$latency <- as.numeric( difftime(zeroLatencyTime, currentData$lastValidUpdateTime, units="hour") )
-  
+  currentData$latency <- as.numeric( difftime(zeroLatencyTime, currentData$lastValidTime, units="hour") )
+
   # ----- Add data values to currentData tbl -----------------------------------
+
+  # Apply the nowcast algorithm 
+  nowcast <- monitor_nowcast(ws_monitor, includeShortTerm = TRUE)
+  data_nowcast <- nowcast$data
   
   # Add new columns of the proper type
-  currentData$PM2.5_nowcast <- as.numeric(NA)
+  currentData$PM2.5_latest_nowcast <- as.numeric(NA)
   currentData$PM2.5_latest_1 <- as.numeric(NA)
   currentData$PM2.5_latest_3 <- as.numeric(NA)
   currentData$PM2.5_yesterday <- as.numeric(NA)
   
-  # Additional values that must be calculated per-monitoring-site
+  # Values that must be calculated per-monitoring-site
   for ( monitorID in currentData$monitorID ) {
     
-    lastRow <- lastIndex[monitorID]
+    lastRow <- lastIndex[monitorID] # lastIndex is a named vector
     last3Rows <- (lastRow-2):lastRow
     
-    # NOTE:  If a monitor was recently installed, the nowcast algorithm will return NAs for the first 12 hours.
-    
     # latest nowcast value
-    currentData[currentData$monitorID == monitorID,'PM2.5_nowcast'] <- round(data_nowcast[lastRow,monitorID], digits=1)
+    currentData[currentData$monitorID == monitorID,'PM2.5_latest_nowcast'] <- round(data_nowcast[lastRow,monitorID], digits=1)
     
     # latest hourly data
     currentData[currentData$monitorID == monitorID,'PM2.5_latest_1'] <- round(data[lastRow,monitorID], digits=1)
     
     # latest 3-hour mean
-    threeHourMean <- round(mean(data[last3Rows,monitorID], na.rm=FALSE), digits=1)
+    threeHourMean <- round(mean(data[last3Rows,monitorID], na.rm=TRUE), digits=1)
     if ( !is.nan(threeHourMean) ) { # you get NaN when all input data are NA
       currentData[currentData$monitorID == monitorID,'PM2.5_latest_3'] <- threeHourMean
     }
     
     # Determine monitor-local-time 'yesterdayMask'
     localDatetime <- lubridate::with_tz(data$datetime, meta[monitorID,'timezone'])
-    localNow <- lubridate::with_tz(lubridate::now(), meta[monitorID,'timezone'])
+    localNow <- lubridate::with_tz(lubridate::now('UTC'), meta[monitorID,'timezone'])
     yesterdayEnd <- lubridate::floor_date(localNow,'day')
     yesterdayStart <- yesterdayEnd - lubridate::ddays(1)
     yesterdayMask <- localDatetime >= yesterdayStart & localDatetime < yesterdayEnd
