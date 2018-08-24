@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.27
+
+  * added `monitor_writeCurrentGeoJSON()` function
+  * `monitor_currentData()` returns metadata in addition to current data
+
 ### PWFSLSmoke 1.0.26
 
   * added `monitor_currentData()` function

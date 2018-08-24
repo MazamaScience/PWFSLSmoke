@@ -3,7 +3,7 @@
 #' @title Create a dataframe of current monitor data
 #' @param ws_monitor \emph{ws_monitor} object
 #' @return A tibble of "latest" data and associated timing information.
-#' @description Extracts current status data from a ws_monitor object. Returned data include the following:
+#' @description Extracts current status data from a ws_monitor object. In addition to monitor metadata, the returned data include the following:
 #' \itemize{
 #' \item{\code{monitorID} - the PWFSL monitor ID}
 #' \item{\code{lastValidTime} - UTC POSIXct time corresponding to the last valid pm25 datum}
@@ -36,13 +36,16 @@
 
 monitor_currentData <- function(ws_monitor) {
   
+  
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
   # Pull out data
   data <- ws_monitor$data
   meta <- ws_monitor$meta
   
-  # Initialize currentData tbl with monitorIDs
-  monitorIDs <- ws_monitor$meta$monitorID
-  currentData <- tibble(monitorID = monitorIDs)
+  # Convert meta to tbl without rownames
+  currentData <- as_tibble(meta, rownames = NULL)
   
   if ( nrow(currentData) == 0 ) {
     stop('No sites found with PM2.5 data')
@@ -120,6 +123,9 @@ monitor_currentData <- function(ws_monitor) {
     if ( length(yesterdayValues) >= 18 && sum(is.na(yesterdayValues)) <= 6 ) {
       currentData[currentData$monitorID == monitorID,'PM2.5_yesterday'] <- round(mean(yesterdayValues, na.rm=TRUE), digits=1)
     }
+    
+    # Monitoring Site Url
+    currentData$monitoringSiteUrl = paste0('http://tools.airfire.org/monitoring/v4/#/?monitors=',monitorID)
     
   }
   

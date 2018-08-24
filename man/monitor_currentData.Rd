@@ -13,7 +13,7 @@ monitor_currentData(ws_monitor)
 A tibble of "latest" data and associated timing information.
 }
 \description{
-Extracts current status data from a ws_monitor object. Returned data include the following:
+Extracts current status data from a ws_monitor object. In addition to monitor metadata, the returned data include the following:
 \itemize{
 \item{\code{monitorID} - the PWFSL monitor ID}
 \item{\code{lastValidTime} - UTC POSIXct time corresponding to the last valid pm25 datum}
