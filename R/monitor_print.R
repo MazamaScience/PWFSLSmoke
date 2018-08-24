@@ -7,7 +7,7 @@
 #' @param dataOnly flag specifying whether to return \code{ws_monitor$data} only as a machine parseable CSV
 #' @param quietly do not print to console, just return the string representation of the CSV
 #' @description Prints out the contents of the \code{ws_monitor} object as CSV.
-#' By default, the output is text string with "human readable" CSV that includes both \code{meta} and \code{data}.
+#' By default, the output is a text string with "human readable" CSV that includes both \code{meta} and \code{data}.
 #' When saved as a file, this format is useful for point-and-click spreadsheet users who want to have 
 #' everything on a single sheet.
 #' 
@@ -106,7 +106,9 @@ monitor_print <- function(ws_monitor,
     # NOTE:  Processing continues even if we fail to write the local file
   }
   
-  cat(csvText)
+  if ( !quietly ) {
+    cat(csvText)
+  }
   
   return(invisible(csvText))
   

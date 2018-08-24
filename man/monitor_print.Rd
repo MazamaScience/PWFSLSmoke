@@ -20,7 +20,7 @@ monitor_print(ws_monitor, saveFile = NULL, metaOnly = FALSE,
 }
 \description{
 Prints out the contents of the \code{ws_monitor} object as CSV.
-By default, the output is text string with "human readable" CSV that includes both \code{meta} and \code{data}.
+By default, the output is a text string with "human readable" CSV that includes both \code{meta} and \code{data}.
 When saved as a file, this format is useful for point-and-click spreadsheet users who want to have 
 everything on a single sheet.
 
