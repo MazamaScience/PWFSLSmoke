@@ -3,16 +3,16 @@
 #' @title Create a dataframe of current monitor data
 #' @param ws_monitor \emph{ws_monitor} object
 #' @return A tibble of current status data with the following columns: 
-#' monitorID, pm25, nowcast, yesterdayAqi, lastValidUpdateTime, processingTime.
+#' monitorID, pm25, nowcast, yesterdayAqi, lastValidData, processingTime.
 #' @description Extracts current status data from a ws_monitor object. This data includes the following:
 #' \itemize{
 #' \item{monitorID - the PWFSL monitor ID}
-#' \item{lastValidUpdateTime - the UTC timestamp corresponding to the last valid pm25 datum}
+#' \item{lastValidData - the UTC timestamp corresponding to the last valid pm25 datum}
 #' \item{processingTime - the UTC timestamp that the function is run}
-#' \item{latency - the difference between processingTime and lastValidUpdateTime, floored to the hour}
-#' \item{PM2.5_nowcast - the NowCast value at lastValidUpdateTime}
-#' \item{PM2.5_latest_1 - the PM2.5 value at lastValidUpdateTime (should never be null)}
-#' \item{PM2.5_latest_3 - the mean of the three hours preceeding lastValidUpdateTime}
+#' \item{latency - the difference between processingTime and lastValidData, floored to the hour}
+#' \item{PM2.5_nowcast - the NowCast value at lastValidData}
+#' \item{PM2.5_latest_1 - the PM2.5 value at lastValidData (should never be null)}
+#' \item{PM2.5_latest_3 - the mean of the three hours preceeding lastValidData}
 #' \item{PM2.5_yesterday - the 24-hour mean from midnight-to-midnight of the day before processingTime}
 #' }
 #' @examples
@@ -43,7 +43,7 @@ monitor_currentData <- function(ws_monitor) {
 
   lastIndex <- apply(as.matrix(data),2, function(x) { max(which(!is.na(x))) }) # this is a named vector
   lastUTCTime <- data$datetime[lastIndex]
-  currentData$lastValidUpdateTime <- lastUTCTime[-1] # remove 'datetime'
+  currentData$lastValidData <- lastUTCTime[-1] # remove 'datetime'
   processingTime <- lubridate::now('UTC')
   currentData$processingTime <- processingTime
   # Calculate the latency in hours
@@ -54,6 +54,17 @@ monitor_currentData <- function(ws_monitor) {
   # NOTE:  subtract an hour from 'now' in the line below.
   nowIndex <- max(which(data$datetime <= (processingTime - lubridate::dhours(1)))) # this is a single number
   currentData$latency <- (nowIndex - lastIndex)[-1] # remove 'datetime'
+  
+  # Add localTimestamp
+  currentData$localTimestamp <- ""
+  for ( i in 1:nrow(currentData) ) { # loop to ignore errors due to invalid timezone
+    result <- try({
+      currentData$localTimestamp[i] <- strftime(currentData$lastValidData[i], format="%Y-%m-%d %l%p, %Z", tz=meta$timezone[i])
+    }, silent=TRUE)
+    if ( "try-error" %in% class(result) ) {
+      meta$localTimestamp[i] <- strftime(meta$lastValidData[i], format="%Y-%m-%d %l%p, %Z", tz='UTC')
+    }
+  }
   
   
   # ----- Add data values to currentData tbl -----------------------------------

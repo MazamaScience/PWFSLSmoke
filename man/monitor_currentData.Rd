@@ -11,18 +11,18 @@ monitor_currentData(ws_monitor)
 }
 \value{
 A tibble of current status data with the following columns: 
-monitorID, pm25, nowcast, yesterdayAqi, lastValidUpdateTime, processingTime.
+monitorID, pm25, nowcast, yesterdayAqi, lastValidData, processingTime.
 }
 \description{
 Extracts current status data from a ws_monitor object. This data includes the following:
 \itemize{
 \item{monitorID - the PWFSL monitor ID}
-\item{lastValidUpdateTime - the UTC timestamp corresponding to the last valid pm25 datum}
+\item{lastValidData - the UTC timestamp corresponding to the last valid pm25 datum}
 \item{processingTime - the UTC timestamp that the function is run}
-\item{latency - the difference between processingTime and lastValidUpdateTime, floored to the hour}
-\item{PM2.5_nowcast - the NowCast value at lastValidUpdateTime}
-\item{PM2.5_latest_1 - the PM2.5 value at lastValidUpdateTime (should never be null)}
-\item{PM2.5_latest_3 - the mean of the three hours preceeding lastValidUpdateTime}
+\item{latency - the difference between processingTime and lastValidData, floored to the hour}
+\item{PM2.5_nowcast - the NowCast value at lastValidData}
+\item{PM2.5_latest_1 - the PM2.5 value at lastValidData (should never be null)}
+\item{PM2.5_latest_3 - the mean of the three hours preceeding lastValidData}
 \item{PM2.5_yesterday - the 24-hour mean from midnight-to-midnight of the day before processingTime}
 }
 }
