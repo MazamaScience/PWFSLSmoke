@@ -2,6 +2,7 @@
 #' @export
 #' @title Create a dataframe of current monitor data
 #' @param ws_monitor \emph{ws_monitor} object
+#' @param monitoringUrlBase base URL for constructing a link to the PWFSL Smoke Monitoring site
 #' @return A tibble of "lastValid" data and associated timing information.
 #' @description Extracts current status data from a ws_monitor object. In addition to monitor metadata, the returned data include the following:
 #' \itemize{
@@ -14,7 +15,7 @@
 #' \item{\code{lastValid_PM2.5_1hr} - PM2.5 value at lastValidTime (should never be null)}
 #' \item{\code{lastValid_PM2.5_3hr} - mean of the three hours preceeding lastValidTime}
 #' \item{\code{yesterday_PM2.5_24hr} - local time midnight-to-midnight 24-hour mean for the day prior to processingTime}
-#' \item{\code{monitoringSiteUrl} - URL to PWFSL Monitoring v4 site, initialized with a specific monitor
+#' \item{\code{monitoringSiteUrl} - URL to PWFSL Monitoring v4 site, initialized with a specific monitor}
 #' }
 #' The three-hour average will remove missing values and may represent an average of 1-3 hours.
 #' 
