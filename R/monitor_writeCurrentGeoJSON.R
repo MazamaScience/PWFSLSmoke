@@ -20,6 +20,7 @@
 #' wa_current_list <- jsonlite::fromJSON(wa_current)
 #' wa_spdf <- rgdal::readOGR(dsn='wa_monitors.geojson', layer="OGRGeoJSON")
 #' plot(wa_spdf)
+#' map('state', 'washington', add = TRUE)
 #' }
 
 monitor_writeCurrentGeoJSON <- function(ws_monitor,
@@ -31,20 +32,21 @@ monitor_writeCurrentGeoJSON <- function(ws_monitor,
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
-  result <- try(
+  result <- try({
     currentTbl <- monitor_currentData(ws_monitor)
-  )
+  }, silent=TRUE)
   if ( "try-error" %in% class(result) ) {
     err_msg <- geterrmessage()
     stop(paste0("error getting current data: ", err_msg))
   }
   
   
-  
   # NOTE:  For highest values to be plotted last on Leaflet Maps we want monitors with NA's
   # NOTE:  to come first and then everything in increasing order.
-  myOrder <- rev( order(currentTbl$PM2.5_yesterday, decreasing=TRUE) )
-  currentTbl <- currentTbl[myOrder,]
+  if ( !is.null(currentTbl$yesterday_PM2.5_24hr) ) {
+    myOrder <- rev( order(currentTbl$yesterday_PM2.5_24hr, decreasing=TRUE) )
+    currentTbl <- currentTbl[myOrder,]
+  }
   
   # ----- Get coords from meta and create SPDF --------------------------------
   
