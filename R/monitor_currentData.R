@@ -2,6 +2,9 @@
 #' @export
 #' @title Create a dataframe of current monitor data
 #' @param ws_monitor \emph{ws_monitor} object
+#' @param datetime Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}. 
+#' If not \code{POSIXct}, interpreted as UTC time). 
+#' So if \code{datetime} is 3 hours ago, a dataframe with the most current data from 3 hours ago will be returned.
 #' @return A tibble of "latest" data and associated timing information.
 #' @description Extracts current status data from a ws_monitor object. In addition to monitor metadata, the returned data include the following:
 #' \itemize{
@@ -35,11 +38,24 @@
 #' wa_current <- monitor_currentData(wa)
 #' }
 
-monitor_currentData <- function(ws_monitor) {
+monitor_currentData <- function(ws_monitor, 
+                                datetime = lubridate::now('UTC')) {
   
   
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
+  
+  datetime <- parseDatetime(datetime)
+  if (is.na(datetime)) stop("failed to parse datetime")
+  
+  if (datetime < min(ws_monitor$data$datetime)) stop(paste0("no data from before ", datetime))
+  
+  # Subset data to include only data from before datetime
+  ws_monitor <- monitor_subset(ws_monitor, 
+                               tlim = c(min(ws_monitor$data$datetime), datetime))
+  
+  
+  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors with data from before ", datetime)
   
   # Pull out data
   data <- ws_monitor$data
@@ -55,6 +71,9 @@ monitor_currentData <- function(ws_monitor) {
   # Add processingTime
   processingTime <- lubridate::now('UTC')
   currentData$processingTime <- processingTime
+  
+  # Remove rows from data where datetime is later than desired datetime
+  data <- data[data$datetime < datetime, ]
   
   # Add lastValidTime
   lastIndex <- apply(as.matrix(data), 2, function(x) { max(which(!is.na(x))) }) # this is a named vector
