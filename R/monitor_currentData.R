@@ -24,6 +24,8 @@
 #' 
 #' The yesterday average will remove up to six missing values, returning \code{NA} if more than six hours of yesterday's data are missing.
 #' 
+#' Any monitors with no data from before the desired datetime will be excluded. 
+#' 
 #' \strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to \code{processingTime} -- \emph{i.e.} actually yesterday.
 #' The various 'lastValid' values describe the most recent valid values, whenever they occurred.
 #' @details
@@ -34,6 +36,10 @@
 #' Because of this, data for 2pm should never be available until just after 3pm. If it is currently 3:15pm
 #' then we need to subtract 1 hour from the current \code{processingTime} before subtracting the \code{lastValidTime}
 #' to generate the \code{latency}.
+#' 
+#' The parameter \code{datetime} is meant to simulate current data at a time different from the current time. Therefore, when \code{datetime}
+#' is specified, the returned dataframe will represent data up to an hour before \code{datetime}.
+#' 
 #' @examples
 #' \dontrun{
 #' wa <- loadLatest() %>% monitor_subset(stateCodes = 'WA')
@@ -41,22 +47,23 @@
 #' }
 
 monitor_currentData <- function(ws_monitor, 
-                                monitoringUrlBase = 'http://tools.airfire.org/monitoring/v4/#/?monitors=',
-                                datetime = lubridate::now('UTC')) {
+                                datetime = lubridate::now("UTC"),
+                                monitoringUrlBase = 'http://tools.airfire.org/monitoring/v4/#/?monitors=') {
 
   
   
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
+  
   datetime <- parseDatetime(datetime)
   if (is.na(datetime)) stop("failed to parse datetime")
-  
+    
   if (datetime < min(ws_monitor$data$datetime)) stop(paste0("no data from before ", datetime))
   
-  # Subset data to include only data from before datetime
+  # Subset data to include only data from before datetime (not including data from the same time as datetime)
   ws_monitor <- monitor_subset(ws_monitor, 
-                               tlim = c(min(ws_monitor$data$datetime), datetime))
+                               tlim = c(min(ws_monitor$data$datetime), datetime - lubridate::dhours(1)))
   
   
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors with data from before ", datetime)
@@ -76,8 +83,6 @@ monitor_currentData <- function(ws_monitor,
   processingTime <- lubridate::now('UTC')
   currentData$processingTime <- processingTime
   
-  # Remove rows from data where datetime is later than desired datetime
-  data <- data[data$datetime < datetime, ]
   
   # Add lastValidTime
   lastIndex <- apply(as.matrix(data), 2, function(x) { max(which(!is.na(x))) }) # this is a named vector
@@ -100,8 +105,9 @@ monitor_currentData <- function(ws_monitor,
   # NOTE:  a datum assigned to 2pm represents the average of data between 2pm and 3pm.
   # NOTE:  So, if we check at 3:15 and see that we have a value for 2pm but not 3pmm 
   # NOTE:  then the data are completely up-to-date with zero latency. That's why we
-  # NOTE:  subtract an hour from 'processingTime' in the line below.
-  zeroLatencyTime <- lubridate::floor_date(processingTime, unit="hour") - lubridate::dhours(1)
+  # NOTE:  subtract an hour from 'datetime' in the line below.
+  
+  zeroLatencyTime <- lubridate::floor_date(datetime, unit="hour") - lubridate::dhours(1)
   currentData$latency <- as.numeric( difftime(zeroLatencyTime, currentData$lastValidTime, units="hour") )
 
   # ----- Add data values to currentData tbl -----------------------------------
@@ -134,9 +140,9 @@ monitor_currentData <- function(ws_monitor,
       currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_3hr'] <- threeHourMean
     }
     
-    # Determine monitor-local-time 'yesterdayMask'
+    # Determine monitor-local-time 'yesterdayMask' relative to 'datetime'
+    localNow <- lubridate::with_tz(datetime, meta[monitorID,'timezone']) # get 'datetime' in local-time
     localDatetime <- lubridate::with_tz(data$datetime, meta[monitorID,'timezone'])
-    localNow <- lubridate::with_tz(lubridate::now('UTC'), meta[monitorID,'timezone'])
     yesterdayEnd <- lubridate::floor_date(localNow,'day')
     yesterdayStart <- yesterdayEnd - lubridate::ddays(1)
     yesterdayMask <- localDatetime >= yesterdayStart & localDatetime < yesterdayEnd

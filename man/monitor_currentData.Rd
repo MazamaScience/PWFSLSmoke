@@ -4,11 +4,15 @@
 \alias{monitor_currentData}
 \title{Create a dataframe of current monitor data}
 \usage{
-monitor_currentData(ws_monitor,
+monitor_currentData(ws_monitor, datetime = lubridate::now("UTC"),
   monitoringUrlBase = "http://tools.airfire.org/monitoring/v4/#/?monitors=")
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
+
+\item{datetime}{Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}. 
+If not \code{POSIXct}, interpreted as UTC time). 
+So if \code{datetime} is 3 hours ago, a dataframe with the most current data from 3 hours ago will be returned.}
 
 \item{monitoringUrlBase}{base URL for constructing a link to the PWFSL Smoke Monitoring site}
 }
@@ -33,6 +37,8 @@ The three-hour average will remove missing values and may represent an average o
 
 The yesterday average will remove up to six missing values, returning \code{NA} if more than six hours of yesterday's data are missing.
 
+Any monitors with no data from before the desired datetime will be excluded. 
+
 \strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to \code{processingTime} -- \emph{i.e.} actually yesterday.
 The various 'lastValid' values describe the most recent valid values, whenever they occurred.
 }
@@ -44,6 +50,9 @@ will represent data averaged over the period 14:00 - 14:59. This is in keeping w
 Because of this, data for 2pm should never be available until just after 3pm. If it is currently 3:15pm
 then we need to subtract 1 hour from the current \code{processingTime} before subtracting the \code{lastValidTime}
 to generate the \code{latency}.
+
+The parameter \code{datetime} is meant to simulate current data at a time different from the current time. Therefore, when \code{datetime}
+is specified, the returned dataframe will represent data up to an hour before \code{datetime}.
 }
 \examples{
 \dontrun{
