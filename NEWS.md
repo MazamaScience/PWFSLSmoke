@@ -13,7 +13,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
   * added `monitor_writeCurrentGeoJSON()` function
   * `monitor_currentData()` returns metadata in addition to current data
-  * added `monitor_writeCsv()` function
+  * added `monitor_writeCSV()` function
   * enabled `monitor_print()` `quietly=TRUE`
 
 ### PWFSLSmoke 1.0.26

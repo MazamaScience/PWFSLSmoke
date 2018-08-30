@@ -5,7 +5,8 @@
 #' @param datetime Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}. 
 #' If not \code{POSIXct}, interpreted as UTC time). 
 #' So if \code{datetime} is 3 hours ago, a dataframe with the most current data from 3 hours ago will be returned.
-#' @return A tibble of "latest" data and associated timing information.
+#' @param monitoringUrlBase base URL for constructing a link to the PWFSL Smoke Monitoring site
+#' @return A tibble of "lastValid" data and associated timing information.
 #' @description Extracts current status data from a ws_monitor object. In addition to monitor metadata, the returned data include the following:
 #' \itemize{
 #' \item{\code{monitorID} - the PWFSL monitor ID}
@@ -13,17 +14,18 @@
 #' \item{\code{lastValidLocalTimestamp} - ASCII version of \code{lastValidTime} in monitor-local timezone}
 #' \item{\code{processingTime} - UTC POSIXct when the function is run (\emph{i.e.} 'now')}
 #' \item{\code{latency} - (difference between processingTime -1 hr) and lastValidTime, floored to the hour}
-#' \item{\code{PM2.5_latest_nowcast} - NowCast value at lastValidTime}
-#' \item{\code{PM2.5_latest_1} - PM2.5 value at lastValidTime (should never be null)}
-#' \item{\code{PM2.5_latest_3} - mean of the three hours preceeding lastValidTime}
-#' \item{\code{PM2.5_yesterday} - local time midnight-to-midnight 24-hour mean for the day prior to processingTime}
+#' \item{\code{lastValid_PM2.5_nowcast} - NowCast value at lastValidTime}
+#' \item{\code{lastValid_PM2.5_1hr} - PM2.5 value at lastValidTime (should never be null)}
+#' \item{\code{lastValid_PM2.5_3hr} - mean of the three hours preceeding lastValidTime}
+#' \item{\code{yesterday_PM2.5_24hr} - local time midnight-to-midnight 24-hour mean for the day prior to processingTime}
+#' \item{\code{monitoringSiteUrl} - URL to PWFSL Monitoring v4 site, initialized with a specific monitor}
 #' }
 #' The three-hour average will remove missing values and may represent an average of 1-3 hours.
 #' 
 #' The yesterday average will remove up to six missing values, returning \code{NA} if more than six hours of yesterday's data are missing.
 #' 
-#' \strong{NOTE:} \code{PM2.5_yesterday} represents yesterday relative to \code{processingTime} -- \emph{i.e.} actually yesterday.
-#' The various 'latest' values describe the most recent values, whenever they occurred.
+#' \strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to \code{processingTime} -- \emph{i.e.} actually yesterday.
+#' The various 'lastValid' values describe the most recent valid values, whenever they occurred.
 #' @details
 #' Data are assigned to the beginning of the hour they represent. So a PM2.5 value assigned to 2pm
 #' will represent data averaged over the period 14:00 - 14:59. This is in keeping with a day representing
@@ -39,7 +41,9 @@
 #' }
 
 monitor_currentData <- function(ws_monitor, 
+                                monitoringUrlBase = 'http://tools.airfire.org/monitoring/v4/#/?monitors=',
                                 datetime = lubridate::now('UTC')) {
+
   
   
   # Sanity check
@@ -107,10 +111,10 @@ monitor_currentData <- function(ws_monitor,
   data_nowcast <- nowcast$data
   
   # Add new columns of the proper type
-  currentData$PM2.5_latest_nowcast <- as.numeric(NA)
-  currentData$PM2.5_latest_1 <- as.numeric(NA)
-  currentData$PM2.5_latest_3 <- as.numeric(NA)
-  currentData$PM2.5_yesterday <- as.numeric(NA)
+  currentData$lastValid_PM2.5_nowcast <- as.numeric(NA)
+  currentData$lastValid_PM2.5_1hr <- as.numeric(NA)
+  currentData$lastValid_PM2.5_3hr <- as.numeric(NA)
+  currentData$yesterday_PM2.5_24hr <- as.numeric(NA)
   
   # Values that must be calculated per-monitoring-site
   for ( monitorID in currentData$monitorID ) {
@@ -118,16 +122,16 @@ monitor_currentData <- function(ws_monitor,
     lastRow <- lastIndex[monitorID] # lastIndex is a named vector
     last3Rows <- (lastRow-2):lastRow
     
-    # latest nowcast value
-    currentData[currentData$monitorID == monitorID,'PM2.5_latest_nowcast'] <- round(data_nowcast[lastRow,monitorID], digits=1)
+    # lastValid nowcast value
+    currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_nowcast'] <- round(data_nowcast[lastRow,monitorID], digits=1)
     
-    # latest hourly data
-    currentData[currentData$monitorID == monitorID,'PM2.5_latest_1'] <- round(data[lastRow,monitorID], digits=1)
+    # lastValid hourly data
+    currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_1hr'] <- round(data[lastRow,monitorID], digits=1)
     
-    # latest 3-hour mean
+    # lastValid 3-hour mean
     threeHourMean <- round(mean(data[last3Rows,monitorID], na.rm=TRUE), digits=1)
     if ( !is.nan(threeHourMean) ) { # you get NaN when all input data are NA
-      currentData[currentData$monitorID == monitorID,'PM2.5_latest_3'] <- threeHourMean
+      currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_3hr'] <- threeHourMean
     }
     
     # Determine monitor-local-time 'yesterdayMask'
@@ -141,11 +145,11 @@ monitor_currentData <- function(ws_monitor,
     yesterdayValues <- data[yesterdayMask, monitorID]
     # Use data.thresh=75 just as in openair::rollingMean() (missing 6 or fewer/24 hours)
     if ( length(yesterdayValues) >= 18 && sum(is.na(yesterdayValues)) <= 6 ) {
-      currentData[currentData$monitorID == monitorID,'PM2.5_yesterday'] <- round(mean(yesterdayValues, na.rm=TRUE), digits=1)
+      currentData[currentData$monitorID == monitorID,'yesterday_PM2.5_24hr'] <- round(mean(yesterdayValues, na.rm=TRUE), digits=1)
     }
     
     # Monitoring Site Url
-    currentData$monitoringSiteUrl = paste0('http://tools.airfire.org/monitoring/v4/#/?monitors=',monitorID)
+    currentData$monitoringSiteUrl = paste0(monitoringUrlBase,monitorID)
     
   }
   

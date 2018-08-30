@@ -16,12 +16,12 @@
 #' \dontrun{
 #' data("Carmel_Valley")
 #' Carmel_Valley <- monitor_subset(Carmel_Valley, tlim=c(20160802,20160803))
-#' monitor_writeCsv(Carmel_Valley, 'CarmelValley.csv')
-#' monitor_writeCsv(Carmel_Valley, 'CarmelValley_meta.csv', metaOnly = TRUE)
-#' monitor_writeCsv(Carmel_Valley, 'CarmelValley_data.csv', dataOnly = TRUE)
+#' monitor_writeCSV(Carmel_Valley, 'CarmelValley.csv')
+#' monitor_writeCSV(Carmel_Valley, 'CarmelValley_meta.csv', metaOnly = TRUE)
+#' monitor_writeCSV(Carmel_Valley, 'CarmelValley_data.csv', dataOnly = TRUE)
 #' }
 
-monitor_writeCsv <- function(ws_monitor,
+monitor_writeCSV <- function(ws_monitor,
                              saveFile = "ws_monitor.csv",
                              metaOnly = FALSE,
                              dataOnly = FALSE) {
