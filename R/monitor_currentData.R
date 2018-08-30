@@ -13,6 +13,7 @@
 #' \item{\code{lastValidTime} - UTC POSIXct time corresponding to the last valid pm25 datum}
 #' \item{\code{lastValidLocalTimestamp} - ASCII version of \code{lastValidTime} in monitor-local timezone}
 #' \item{\code{processingTime} - UTC POSIXct when the function is run (\emph{i.e.} 'now')}
+#' \item{\code{datetime} - UTC POSIXct of the datetime that the data represents. See \code{datetime} parameter. In most instances, the same as \code{processingTime}}
 #' \item{\code{latency} - (difference between processingTime -1 hr) and lastValidTime, floored to the hour}
 #' \item{\code{lastValid_PM2.5_nowcast} - NowCast value at lastValidTime}
 #' \item{\code{lastValid_PM2.5_1hr} - PM2.5 value at lastValidTime (should never be null)}
@@ -26,8 +27,8 @@
 #' 
 #' Any monitors with no data from before the desired datetime will be excluded. 
 #' 
-#' \strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to \code{processingTime} -- \emph{i.e.} actually yesterday.
-#' The various 'lastValid' values describe the most recent valid values, whenever they occurred.
+#' \strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to \code{datetime} -- \emph{i.e.} actually yesterday.
+#' The various 'lastValid' values describe the most recent valid values -- before \code{datetime}, whenever they occurred.
 #' @details
 #' Data are assigned to the beginning of the hour they represent. So a PM2.5 value assigned to 2pm
 #' will represent data averaged over the period 14:00 - 14:59. This is in keeping with a day representing
@@ -82,6 +83,7 @@ monitor_currentData <- function(ws_monitor,
   # Add processingTime
   processingTime <- lubridate::now('UTC')
   currentData$processingTime <- processingTime
+  currentData$datetime <- lubridate::with_tz(datetime, 'UTC')
   
   
   # Add lastValidTime
