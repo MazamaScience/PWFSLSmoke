@@ -3,6 +3,9 @@
 #' @title Write Current Monitor Data to GeoJSON
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param filename filename where geojson file will be saved
+#' @param datetime Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}. 
+#' If not \code{POSIXct}, interpreted as UTC time). 
+#' So if \code{datetime} is 3 hours ago, a dataframe with the most current data from 3 hours ago will be returned.
 #' @param properties optional character vector of properties to include for each monitor in geoJSON. 
 #' If NULL all are included. May include any ws_monitor metadata and additional columns generated in \code{\link{monitor_currentData}}
 #' @param propertyNames optional character vector supplying custom names for properties in geoJSON. If NULL or different length 
@@ -25,6 +28,7 @@
 
 monitor_writeCurrentGeoJSON <- function(ws_monitor,
                                         filename,
+                                        datetime = lubridate::now('UTC'),
                                         properties = NULL,
                                         propertyNames = NULL,
                                         metadataList = list()) {
@@ -33,7 +37,7 @@ monitor_writeCurrentGeoJSON <- function(ws_monitor,
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
   
   result <- try({
-    currentTbl <- monitor_currentData(ws_monitor)
+    currentTbl <- monitor_currentData(ws_monitor, datetime)
   }, silent=TRUE)
   if ( "try-error" %in% class(result) ) {
     err_msg <- geterrmessage()

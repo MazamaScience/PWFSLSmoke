@@ -4,13 +4,18 @@
 \alias{monitor_writeCurrentGeoJSON}
 \title{Write Current Monitor Data to GeoJSON}
 \usage{
-monitor_writeCurrentGeoJSON(ws_monitor, filename, properties = NULL,
+monitor_writeCurrentGeoJSON(ws_monitor, filename,
+  datetime = lubridate::now("UTC"), properties = NULL,
   propertyNames = NULL, metadataList = list())
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
 \item{filename}{filename where geojson file will be saved}
+
+\item{datetime}{Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}. 
+If not \code{POSIXct}, interpreted as UTC time). 
+So if \code{datetime} is 3 hours ago, a dataframe with the most current data from 3 hours ago will be returned.}
 
 \item{properties}{optional character vector of properties to include for each monitor in geoJSON. 
 If NULL all are included. May include any ws_monitor metadata and additional columns generated in \code{\link{monitor_currentData}}}
