@@ -133,7 +133,26 @@ monitor_nowcast <- function(ws_monitor,
       # If two or more of the most recent 3 hours are missing, no valid Nowcast will be reported
       
       x[i] <- NA
+
+    } else if ( is.na(concByHour[1]) ) {
+ 
+      # If the current hour is missing, no valid Nowcast will be reported
       
+      # NOTE:  This conflicts with the algorithm as described here:
+      # NOTE:    https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf
+      # NOTE:
+      # NOTE:  But experience shows that NowCast replacements for missing values for missing
+      # NOTE:  PM2.5 values are very problematic.
+      # NOTE:
+      # NOTE:  The Wikipedia page: https://en.wikipedia.org/wiki/NowCast_(air_quality_index)
+      # NOTE:  has the following statement without citation:
+      # NOTE:    "Because the most recent hours of data are weighted so heavily in the NowCast when
+      # NOTE:    PM levels are changing, EPA does not report the NowCast when data is missing for c1 or c2."
+      # NOTE:
+      # NOTE:  We take a compromise approach and only invalidate NowCast when data is missing for c1.
+      
+      x[i] <- NA
+     
     } else {
       
       # Calculate the weight factor according to the type of air quality data

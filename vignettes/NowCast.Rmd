@@ -161,7 +161,8 @@ However, note that https://en.wikipedia.org/wiki/NowCast_(air_quality_index) say
 
 > Because the most recent hours of data are weighted so heavily in the NowCast when PM levels are changing, EPA does not report the NowCast when data is missing for c~1~ or c~2~.  
 
-While this seems like a reasonable approach, we could not find a source for this statement (in the Wikipedia page sources nor elsewhere), so for now we still allow valid NowCast values to be calculated even if one of c~1~ or c~2~ is invalid.
+While this seems like a reasonable approach, we could not find a source for this statement (in the Wikipedia page sources or elsewhere).
+We take a compromise approach  and still allow valid NowCast values to be calculated when c~2~ is invalid but return `NA` when c~1~ is invalid.
 
 ### Argument: `includeShortTerm`
 
@@ -173,7 +174,7 @@ In most cases a user will have created a ws_monitor object using one of the `~_c
 
 However, we provide a manual override in `includeShortTerm=TRUE` which causes the function to return valid values as per the bare-bones data availability requirements described above, treating the hours before the beginning of the data as invalid. Thus, it can return "valid" NowCast values as early as the second (valid) hour in the data.  
 
-This argument may be useful (or even appropriate) for datasets where the beginning of the data truly corresponds to the beginning of the monitoring, such as if a new monitor has just been installed. In this case, data prior to the first hour is truly invalid since it does not exist. The argument may also be useful for field personnel looking to ensure that their monitor has been successfully plugged in to the data processing pipeline, even if the values themselves are not truly representative of the data for the past $N$ hours.  
+This argument may be useful (or even appropriate) for datasets where the beginning of the data truly corresponds to the beginning of the monitoring, such as when a new monitor has just been installed. In this case, data prior to the first hour is truly invalid since it does not exist. The argument may also be useful for field personnel looking to ensure that their monitor has been successfully plugged in to the data processing pipeline, even if the values themselves are not truly representative of the data for the past $N$ hours.  
 
 ### Negative Values
 
@@ -376,7 +377,7 @@ Again, right on!
 
 #### Missing Data Verification
 
-A quick look at the monitored data alongside the NowCast data shows that all NowCast hours are valid, as we would expect since only one monitored hour is invalid.
+A quick look at the monitored data alongside the NowCast data shows that all NowCast hours are valid except for the c~1~ moment when the monitoring data is also invalid.
 
 ```{r}
 example2_df$nowcast <- monitor_subset(Omak_nowcast, tlim=c(2015082412, 2015082423))$data$`530470013_01`
@@ -446,10 +447,10 @@ There's a lot going on here so let's walk through the data one step at a time.
 **Hours 12-15**: NowCast data is valid because the monitored data is valid for all of the three most recent hours.  
 Status: <span style="color:limegreen">GOOD</span>
 
-**Hour 16**: This is the first hour for which the monitored data is invalid. However, NowCast still returns a valid value this hour since the monitored data is still valid for two of the three most recent hours (Hours 14 and 15).  
+**Hour 16**: This is the first hour for which the monitored data is invalid. NowCast should also return invalid for this c~1~ timestep.  
 Status: <span style="color:limegreen">GOOD</span>
 
-**Hour 17**: This is the first hour for which the NowCast data is invalid. This is because the monitored data is only valid for one of the three most recent hours (Hour 15).  
+**Hour 17**: This NowCast value is invalid because the monitored data is only valid for one of the three most recent hours (Hour 15).  
 Status: <span style="color:limegreen">GOOD</span>
 
 **Hours 18-20**: NowCast is invalid since the monitored data is valid for none of the three most recent hours.  
