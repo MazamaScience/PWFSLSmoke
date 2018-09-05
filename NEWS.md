@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.24
+
+ * new `monitor_toTidy()` function to convert `ws_monitor` objects into tidyverse 'tidy-formatted' data (see more [here](http://vita.had.co.nz/papers/tidy-data.html))
+ * new `monitor_isTidy()` function to check if given data is in a 'tidy' format
+
 ### PWFSLSmoke 1.0.23
 
  * new `monitor_print()` function to generate human readable CSV files

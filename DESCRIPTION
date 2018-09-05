@@ -48,6 +48,8 @@ Imports:
     reshape2,
     sp,
     stringr,
+    tibble,
+    tidyr,
     xts,
     zoo
 Suggests:
