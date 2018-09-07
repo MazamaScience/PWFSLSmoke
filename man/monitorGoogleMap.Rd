@@ -4,10 +4,10 @@
 \alias{monitorGoogleMap}
 \title{Create a Google Map of ws_monitor Object}
 \usage{
-monitorGoogleMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
-  centerLat = NULL, zoom = NULL, maptype = "roadmap", grayscale = FALSE,
-  map = NULL, ...)
+monitorGoogleMap(ws_monitor, slice = get("max"),
+  breaks = AQI$breaks_24, colors = AQI$colors, width = 640,
+  height = 640, centerLon = NULL, centerLat = NULL, zoom = NULL,
+  maptype = "roadmap", grayscale = FALSE, map = NULL, ...)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

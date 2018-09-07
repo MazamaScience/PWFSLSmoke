@@ -4,10 +4,11 @@
 \alias{rawPlot_timeseries}
 \title{Create Timeseries Plot from a Raw Dataframe}
 \usage{
-rawPlot_timeseries(df, parameter = "pm25", tlim = NULL, localTime = TRUE,
-  shadedNight = TRUE, shadedBackground = NULL, sbLwd = 1, add = FALSE,
-  gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
-  dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
+rawPlot_timeseries(df, parameter = "pm25", tlim = NULL,
+  localTime = TRUE, shadedNight = TRUE, shadedBackground = NULL,
+  sbLwd = 1, add = FALSE, gridPos = "", gridCol = "black",
+  gridLwd = 1, gridLty = "solid", dayLwd = 0, hourLwd = 0,
+  hourInterval = 6, ...)
 }
 \arguments{
 \item{df}{enhanced, raw dataframe as created by the raw_enhance() function}

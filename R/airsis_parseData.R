@@ -31,6 +31,7 @@ airsis_parseData <- function(fileString) {
   monitorTypeList <- airsis_identifyMonitorType(fileString)
   
   monitorType <- monitorTypeList$monitorType
+  monitorSubtype <- monitorTypeList$monitorSubtype
   rawNames <- monitorTypeList$rawNames
   columnNames <- monitorTypeList$columnNames
   columnTypes <- monitorTypeList$columnTypes
@@ -49,7 +50,11 @@ airsis_parseData <- function(fileString) {
     
   } else if ( monitorType == "EBAM" ) {
     
-    logger.debug("Parsing EBAM data ...")
+    if ( monitorSubtype == "MULTI" ) {
+      logger.debug("Parsing EBAM-Multi data ...")
+    } else {
+      logger.debug("Parsing EBAM data ...")
+    }
     
   } else if ( monitorType == "ESAM" ) {
     
@@ -109,6 +114,34 @@ airsis_parseData <- function(fileString) {
   # Add monitor name and type
   tbl$monitorName <- tbl$Alias
   tbl$monitorType <- monitorType
+  
+  #     EBAM-Multi fixes     --------------------------------------------------
+
+  if ( monitorType == "EBAM" && monitorSubtype == "MULTI" ) {
+    
+    # HACK
+    # arb2 UnitID=1044 in August, 2018 does not return a "Date.Time.GMT" column
+    # We add one here by flooring the "TimeStamp" colum.
+
+    logger.debug("Adding Date.Time.GMT column to EBAM-Multi data.")
+    if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
+      # Remove rows where TimeStamp is NA
+      badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
+      tbl <- tbl[!badMask,]
+      datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz="UTC")
+      assignedHour <- lubridate::floor_date(datetime, unit = "hour")
+      tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz='UTC')
+    } 
+    
+    # Add "Sys..Volts" column
+    if ( !"Sys..Volts" %in% names(tbl) && "Oceaneering.Unit.Voltage" %in% names(tbl) ) {
+      tbl$Sys..Volts <- tbl$Oceaneering.Unit.Voltage
+    } else {
+      tbl$Sys..Volts <- as.numeric(NA)
+    }
+
+  }
+  
   
   #     E-Sampler fixes     ---------------------------------------------------
   

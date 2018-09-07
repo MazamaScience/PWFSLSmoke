@@ -4,9 +4,10 @@
 \alias{airsis_createRawDataframe}
 \title{Obain AIRSIS Data and Create a Raw Tibble}
 \usage{
-airsis_createRawDataframe(startdate = strftime(lubridate::now(), "\%Y010100",
-  tz = "UTC"), enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz =
-  "UTC"), provider = NULL, unitID = NULL, clusterDiameter = 1000,
+airsis_createRawDataframe(startdate = strftime(lubridate::now(),
+  "\%Y010100", tz = "UTC"), enddate = strftime(lubridate::now(),
+  "\%Y\%m\%d23", tz = "UTC"), provider = NULL, unitID = NULL,
+  clusterDiameter = 1000,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
   saveFile = NULL, flagAndKeep = FALSE)
 }

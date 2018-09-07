@@ -5,7 +5,8 @@
 \title{Download Data from EPA}
 \usage{
 epa_downloadData(year = NULL, parameterCode = "88101",
-  downloadDir = tempdir(), baseUrl = "https://aqs.epa.gov/aqsweb/airdata/")
+  downloadDir = tempdir(),
+  baseUrl = "https://aqs.epa.gov/aqsweb/airdata/")
 }
 \arguments{
 \item{year}{year}

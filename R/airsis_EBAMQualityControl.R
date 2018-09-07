@@ -129,6 +129,8 @@ airsis_EBAMQualityControl <- function(tbl,
     tblFlagged$datetime[ which(!(tblFlagged$rowID %in% tbl$rowID)) ] <- NA
   }
 
+  # TODO:  Check that this hour-adjustment still applies to AIRSIS EBAM data across the board
+  
   # NOTE: The time above truncates the timestamp to the top of an hour, and then subtracts one hour,
   # NOTE: since the measurement that comes in at a few minutes past the hour is actually representative
   # NOTE: of the data over the previous hour (e.g. reading received at 12:04 is actually the average of 

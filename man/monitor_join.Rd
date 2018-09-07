@@ -4,7 +4,8 @@
 \alias{monitor_join}
 \title{Merge Data for Monitors with Shared monitorIDs}
 \usage{
-monitor_join(ws_monitor1 = NULL, ws_monitor2 = NULL, monitorIDs = NULL)
+monitor_join(ws_monitor1 = NULL, ws_monitor2 = NULL,
+  monitorIDs = NULL)
 }
 \arguments{
 \item{ws_monitor1}{\emph{ws_monitor} object}
