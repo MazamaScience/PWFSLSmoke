@@ -6,7 +6,7 @@
 # PWFSLSmoke R Package
 
 ```
-Utilities for Working with Air Quality Monitoring Data
+Utilities for Working with PM2.5 Air Quality Monitoring Data
 ```
 
 ## Background
