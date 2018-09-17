@@ -5,7 +5,7 @@
 \title{Create a dataframe of current monitor data}
 \usage{
 monitor_currentData(ws_monitor, datetime = lubridate::now("UTC"),
-  monitoringUrlBase = "http://tools.airfire.org/monitoring/v4/#/?monitors=")
+  monitoringUrlBase = "http://tools.airfire.org/monitoring/v4/#!/?monitors=")
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

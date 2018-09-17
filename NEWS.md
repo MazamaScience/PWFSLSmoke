@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.31
+
+  * bug fix for "negative subscripts" error from `monitor_writeCurrentGeoJSON()`*
+  * modified `Maps_and_Timeseries_Plots` vignette to use ESRI maps instead of Google maps.
+
 ### PWFSLSmoke 1.0.30
 
   * added support for parsing for AIRSIS ARB2 EBAM-Multi file format (ARB2 unitIDs 1044-1049)
