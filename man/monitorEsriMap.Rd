@@ -7,8 +7,8 @@
 monitorEsriMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
   colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
   centerLat = NULL, zoom = NULL, maptype = "worldStreetMap",
-  grayscale = FALSE, mapRaster = NULL, cex = par("cex") * 2, pch = 16,
-  ...)
+  grayscale = FALSE, mapRaster = NULL, cex = par("cex") * 2,
+  pch = 16, ...)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

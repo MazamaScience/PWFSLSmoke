@@ -7,8 +7,8 @@
 airsis_EBAMQualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,
   remove_Lat_zero = TRUE, valid_Flow = c(16.7 * 0.95, 16.7 * 1.05),
-  valid_AT = c(-Inf, 45), valid_RHi = c(-Inf, 45), valid_Conc = c(-Inf,
-  5), flagAndKeep = FALSE)
+  valid_AT = c(-Inf, 45), valid_RHi = c(-Inf, 45),
+  valid_Conc = c(-Inf, 5), flagAndKeep = FALSE)
 }
 \arguments{
 \item{tbl}{single site tibble created by \code{airsis_parseData()}}

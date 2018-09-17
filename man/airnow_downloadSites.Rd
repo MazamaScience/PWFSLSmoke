@@ -4,7 +4,8 @@
 \alias{airnow_downloadSites}
 \title{Download AirNow Site Location Metadata}
 \usage{
-airnow_downloadSites(baseUrl = "https://files.airnowtech.org/airnow/today/",
+
+  airnow_downloadSites(baseUrl = "https://files.airnowtech.org/airnow/today/",
   file = "monitoring_site_locations.dat")
 }
 \arguments{
