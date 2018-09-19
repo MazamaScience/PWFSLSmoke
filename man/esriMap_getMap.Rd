@@ -5,8 +5,9 @@
 \title{Download a Spatial Raster Object from ESRI}
 \usage{
 esriMap_getMap(centerLon = NULL, centerLat = NULL, bboxString = NULL,
-  bboxSR = "4326", maptype = "worldStreetMap", zoom = 12, width = 640,
-  height = 640, crs = sp::CRS("+init=epsg:4326"), additionalArgs = NULL)
+  bboxSR = "4326", maptype = "worldStreetMap", zoom = 12,
+  width = 640, height = 640, crs = sp::CRS("+init=epsg:4326"),
+  additionalArgs = NULL)
 }
 \arguments{
 \item{centerLon}{map center longitude}

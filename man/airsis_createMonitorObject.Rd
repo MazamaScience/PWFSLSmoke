@@ -4,10 +4,10 @@
 \alias{airsis_createMonitorObject}
 \title{Obain AIRSIS Data and Create ws_monitor Object}
 \usage{
-airsis_createMonitorObject(startdate = strftime(lubridate::now(), "\%Y010100",
-  tz = "UTC"), enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz =
-  "UTC"), provider = NULL, unitID = NULL, clusterDiameter = 1000,
-  zeroMinimum = TRUE,
+airsis_createMonitorObject(startdate = strftime(lubridate::now(),
+  "\%Y010100", tz = "UTC"), enddate = strftime(lubridate::now(),
+  "\%Y\%m\%d23", tz = "UTC"), provider = NULL, unitID = NULL,
+  clusterDiameter = 1000, zeroMinimum = TRUE,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
   saveFile = NULL, existingMeta = NULL, addGoogleMeta = FALSE,
   addEsriMeta = FALSE, ...)

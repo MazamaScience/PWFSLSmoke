@@ -4,8 +4,8 @@
 \alias{addMarker}
 \title{Add Icons to a Map or RgoogleMap Plot}
 \usage{
-addMarker(longitude, latitude, color = "red", map = NULL, expansion = 1,
-  ...)
+addMarker(longitude, latitude, color = "red", map = NULL,
+  expansion = 1, ...)
 }
 \arguments{
 \item{longitude}{vector of longitudes}

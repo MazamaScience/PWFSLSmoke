@@ -4,8 +4,9 @@
 \alias{monitorPlot_timeOfDaySpaghetti}
 \title{Create Time of Day Spaghetti Plot}
 \usage{
-monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL, tlim = NULL,
-  ylim = NULL, aqiLines = TRUE, shadedNight = TRUE, title = NULL, ...)
+monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL,
+  tlim = NULL, ylim = NULL, aqiLines = TRUE, shadedNight = TRUE,
+  title = NULL, ...)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

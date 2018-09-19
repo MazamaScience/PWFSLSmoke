@@ -6,7 +6,8 @@
 \usage{
 monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
   colors = AQI$colors, cex = par("cex"), stateCol = "grey60",
-  stateLwd = 2, countyCol = "grey70", countyLwd = 1, add = FALSE, ...)
+  stateLwd = 2, countyCol = "grey70", countyLwd = 1, add = FALSE,
+  ...)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

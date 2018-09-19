@@ -4,8 +4,8 @@
 \alias{monitor_dailyStatistic}
 \title{Calculate Daily Statistics}
 \usage{
-monitor_dailyStatistic(ws_monitor, FUN = get("mean"), dayStart = "midnight",
-  na.rm = TRUE, minHours = 18)
+monitor_dailyStatistic(ws_monitor, FUN = get("mean"),
+  dayStart = "midnight", na.rm = TRUE, minHours = 18)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

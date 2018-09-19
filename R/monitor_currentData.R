@@ -49,7 +49,7 @@
 
 monitor_currentData <- function(ws_monitor, 
                                 datetime = lubridate::now("UTC"),
-                                monitoringUrlBase = 'http://tools.airfire.org/monitoring/v4/#/?monitors=') {
+                                monitoringUrlBase = 'http://tools.airfire.org/monitoring/v4/#!/?monitors=') {
 
   
   
@@ -126,38 +126,46 @@ monitor_currentData <- function(ws_monitor,
   
   # Values that must be calculated per-monitoring-site
   for ( monitorID in currentData$monitorID ) {
-    
-    lastRow <- lastIndex[monitorID] # lastIndex is a named vector
-    last3Rows <- (lastRow-2):lastRow
-    
-    # lastValid nowcast value
-    currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_nowcast'] <- round(data_nowcast[lastRow,monitorID], digits=1)
-    
-    # lastValid hourly data
-    currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_1hr'] <- round(data[lastRow,monitorID], digits=1)
-    
-    # lastValid 3-hour mean
-    threeHourMean <- round(mean(data[last3Rows,monitorID], na.rm=TRUE), digits=1)
-    if ( !is.nan(threeHourMean) ) { # you get NaN when all input data are NA
-      currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_3hr'] <- threeHourMean
-    }
-    
-    # Determine monitor-local-time 'yesterdayMask' relative to 'datetime'
-    localNow <- lubridate::with_tz(datetime, meta[monitorID,'timezone']) # get 'datetime' in local-time
-    localDatetime <- lubridate::with_tz(data$datetime, meta[monitorID,'timezone'])
-    yesterdayEnd <- lubridate::floor_date(localNow,'day')
-    yesterdayStart <- yesterdayEnd - lubridate::ddays(1)
-    yesterdayMask <- localDatetime >= yesterdayStart & localDatetime < yesterdayEnd
-    
-    # 24-hour mean for yesterday
-    yesterdayValues <- data[yesterdayMask, monitorID]
-    # Use data.thresh=75 just as in openair::rollingMean() (missing 6 or fewer/24 hours)
-    if ( length(yesterdayValues) >= 18 && sum(is.na(yesterdayValues)) <= 6 ) {
-      currentData[currentData$monitorID == monitorID,'yesterday_PM2.5_24hr'] <- round(mean(yesterdayValues, na.rm=TRUE), digits=1)
-    }
-    
+
     # Monitoring Site Url
     currentData$monitoringSiteUrl = paste0(monitoringUrlBase,monitorID)
+    
+    # Put everything data related inside a try block so one monitor won't cause everything to stop
+    result <- try({
+
+      lastRow <- lastIndex[monitorID] # lastIndex is a named vector
+      last3Rows <- (lastRow-2):lastRow
+      
+      # lastValid nowcast value
+      currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_nowcast'] <- round(data_nowcast[lastRow,monitorID], digits=1)
+      
+      # lastValid hourly data
+      currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_1hr'] <- round(data[lastRow,monitorID], digits=1)
+      
+      # lastValid 3-hour mean
+      # NOTE:  Test that lastRow is >=3. Otherwise we would generate invalid indices for last3Rows.
+      if ( lastRow >= 3 ) {
+        threeHourMean <- round(mean(data[last3Rows,monitorID], na.rm=TRUE), digits=1)
+        if ( !is.nan(threeHourMean) ) { # you get NaN when all input data are NA
+          currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_3hr'] <- threeHourMean
+        }
+      }
+      
+      # Determine monitor-local-time 'yesterdayMask' relative to 'datetime'
+      localNow <- lubridate::with_tz(datetime, meta[monitorID,'timezone']) # get 'datetime' in local-time
+      localDatetime <- lubridate::with_tz(data$datetime, meta[monitorID,'timezone'])
+      yesterdayEnd <- lubridate::floor_date(localNow,'day')
+      yesterdayStart <- yesterdayEnd - lubridate::ddays(1)
+      yesterdayMask <- localDatetime >= yesterdayStart & localDatetime < yesterdayEnd
+      
+      # 24-hour mean for yesterday
+      yesterdayValues <- data[yesterdayMask, monitorID]
+      # Use data.thresh=75 just as in openair::rollingMean() (missing 6 or fewer/24 hours)
+      if ( length(yesterdayValues) >= 18 && sum(is.na(yesterdayValues)) <= 6 ) {
+        currentData[currentData$monitorID == monitorID,'yesterday_PM2.5_24hr'] <- round(mean(yesterdayValues, na.rm=TRUE), digits=1)
+      }
+      
+    }, silent = TRUE)
     
   }
   

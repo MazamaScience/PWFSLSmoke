@@ -4,7 +4,8 @@
 \alias{airnow_createDataDataframes}
 \title{Return Reshaped, Dataframes of AirNow Data}
 \usage{
-airnow_createDataDataframes(parameters = NULL, startdate = "", hours = 24)
+airnow_createDataDataframes(parameters = NULL, startdate = "",
+  hours = 24)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}

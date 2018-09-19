@@ -9,10 +9,19 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
-### PWFSLSmoke 1.0.30
+### PWFSLSmoke 1.0.32
 
  * new `monitor_toTidy()` function to convert `ws_monitor` objects into tidyverse 'tidy-formatted' data (see more [here](http://vita.had.co.nz/papers/tidy-data.html))
  * new `monitor_isTidy()` function to check if given data is in a 'tidy' format
+
+### PWFSLSmoke 1.0.31
+
+  * bug fix for "negative subscripts" error from `monitor_writeCurrentGeoJSON()`*
+  * modified `Maps_and_Timeseries_Plots` vignette to use ESRI maps instead of Google maps.
+
+### PWFSLSmoke 1.0.30
+
+  * added support for parsing for AIRSIS ARB2 EBAM-Multi file format (ARB2 unitIDs 1044-1049)
 
 ### PWFSLSmoke 1.0.29
 
