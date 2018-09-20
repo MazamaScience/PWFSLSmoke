@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 1.0.31
+Version: 1.0.33
 Title: Utilities for Working with Air Quality Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -9,6 +9,7 @@ Authors@R: c(
     person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("aut")),
     person("Jimin", "Kim", email="jk55@uw.edu", role=c("aut")),
     person("Helen", "Miller", email="helen@ohana.org", role=c("aut")),
+    person("Spencer", "Pease", email="spencerpease618@gmail.com", role=c("aut")),
     person("Rex", "Thompson", email="rexs.thompson@gmail.com", role=c("aut")),
     person("Alice", "Yang", email="wenhuy@uw.edu", role=c("aut"))
     )
@@ -46,6 +47,7 @@ Imports:
     RgoogleMaps,
     readr,
     reshape2,
+    rlang,
     sp,
     stringr,
     tibble,

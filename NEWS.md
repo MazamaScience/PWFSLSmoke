@@ -9,6 +9,10 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.33
+
+ * updated docker/ to use mazamascience/spatialutils:0.5.4 which is based off of rocker/tidyverse:3.5.1
+
 ### PWFSLSmoke 1.0.32
 
  * new `monitor_toTidy()` function to convert `ws_monitor` objects into tidyverse 'tidy-formatted' data (see more [here](http://vita.had.co.nz/papers/tidy-data.html))
