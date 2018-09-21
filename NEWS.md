@@ -12,6 +12,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.0.33
 
  * updated docker/ to use mazamascience/spatialutils:0.5.4 which is based off of rocker/tidyverse:3.5.1
+ * tweaks for CRAN submission
 
 ### PWFSLSmoke 1.0.32
 

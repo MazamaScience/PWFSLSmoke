@@ -30,7 +30,7 @@ We provide algorithm specifics for PM2.5, PM10, and O3 below.
 
 Sources:  
 https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf  
-https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
+<pre>https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172</pre>
 
 ## The NowCast Algorithm (Reff Method)
 
@@ -59,7 +59,7 @@ The NowCast algorithm uses hourly averages from the prior $N$ clock hours, where
 The hourly averages are denoted below by $c_i$, where $i$ represents the number of hours before present. For example, $c_1$, $c_2$, $c_3$, $...$, $c_N$ represent the hourly averages for the most recent 1, 2, 3, $...$, $N$ hours.  
 
 Source:  
-https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
+<pre>https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172</pre>
 
 ### Weight Factor
 
@@ -77,8 +77,8 @@ where
 NowCast-related literature usually gives the equation for $w^*$ in one of two basic forms, both of which are included above for reference. Note that both forms are equivalent.
 
 Sources:  
-https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172  
 https://en.wikipedia.org/wiki/NowCast_(air_quality_index)
+<pre>https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172</pre>
 
 ### Minimum Weight Factor
 
@@ -95,7 +95,7 @@ $$
 For O3, there is no minimum weight factor, so we define $w = w^*$
 
 Source:  
-https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
+<pre>https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172</pre>
 
 ### Truncation
 
@@ -106,7 +106,7 @@ Final NowCast values are truncated based on the type of data being processed:
 - **O3**: 1 ppb (0.001 ppm)
 
 Source:  
-https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
+<pre>https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172</pre>
 
 ## Algorithm Expansion
 
@@ -180,7 +180,7 @@ This argument may be useful (or even appropriate) for datasets where the beginni
 
 In the NowCast literature we find no mention of negative values, which, while aphysical, are common in air quality monitoring data (see https://www3.epa.gov/ttn/amtic/files/2014conference/monpmpart3.pdf). Thus, we do not adjust negative values up to zero in the `monitor_nowcast()` function itself. However, note that this may be done when creating a `ws_monitor` object in the first place.
 
-Negative values are handled prior to converting NowCast or other values to AQI, per https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143.
+Negative values are handled prior to converting NowCast or other values to AQI.
 
 ### Negative Weight Factors
 

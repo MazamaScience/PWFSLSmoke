@@ -19,6 +19,7 @@ Author: Jonathan Callahan [aut, cre],
     Jon Hagg [aut],
     Jimin Kim [aut],
     Helen Miller [aut],
+    Spencer Pease [aut],
     Rex Thompson [aut],
     Alice Yang [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
@@ -65,7 +66,7 @@ Description: Utilities for working with air quality monitoring data
     Additional sources of PM2.5 data made accessible by the package include:
     'AIRSIS' (password protected) <https://www.oceaneering.com/data-management/>
     and 'WRCC' <https://wrcc.dri.edu/cgi-bin/smoke.pl>.
-    Pregenerated data compilations are provided by 'PWFSL'
+    Data compilations are provided by 'PWFSL'
     <https://www.fs.fed.us/pnw/pwfsl/>.
 License: GPL-3
 VignetteBuilder: knitr

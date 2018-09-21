@@ -68,12 +68,12 @@ title("Missing values")
 
 \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
 
-\url{https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172}
-
-\url{https://forum.airnowtech.org/t/the-aqi-equation/169}
-
 \url{https://airnow.zendesk.com/hc/en-us/articles/211625598-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-}
 
-\url{https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143}
+https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
+
+https://forum.airnowtech.org/t/the-aqi-equation/169
+
+https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143
 }
 \keyword{ws_monitor}

@@ -34,10 +34,10 @@
 #' @references \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
 #' @references \url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
 #' @references \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
-#' @references \url{https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172}
-#' @references \url{https://forum.airnowtech.org/t/the-aqi-equation/169}
 #' @references \url{https://airnow.zendesk.com/hc/en-us/articles/211625598-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-}
-#' @references \url{https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143}
+#' @references https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
+#' @references https://forum.airnowtech.org/t/the-aqi-equation/169
+#' @references https://forum.airnowtech.org/t/how-does-airnow-handle-negative-hourly-concentrations/143
 #' 
 #' @examples
 #' \dontrun{
