@@ -1,0 +1,12 @@
+# git branch "version-1.0" created on2018-09-24
+#
+# This branch represents the near final status of the PWFSLSmoke package at the
+# end of the 2018 fire season. This branch was created so that work can begin
+# on modifications for the 2019 fire season.
+
+git branch -a
+
+git branch
+
+git checkout version-1.0
+
