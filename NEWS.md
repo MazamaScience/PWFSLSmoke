@@ -7,7 +7,14 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ----
 
-## Version 1.0 -- Monitoring Data Access
+## Version 1.1 -- Initial refactoring for 2019 fire season
+
+### PWFSLSmoke 1.1.0
+
+ * version bump
+
+
+## Version 1.0 -- Monitoring Data Access (2018 fire season)
 
 ### PWFSLSmoke 1.0.33
 
