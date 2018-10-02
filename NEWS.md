@@ -9,6 +9,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.1 -- Initial refactoring for 2019 fire season
 
+### PWFSLSmoke 1.1.1
+
+ * added linting configuriation and suggest `lintr` package
+ * added `PWFSLSmoke.Rproj` for consistent development
+ * added Travis-CI configuration
+
 ### PWFSLSmoke 1.1.0
 
  * version bump
