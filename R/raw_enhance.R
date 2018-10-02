@@ -108,10 +108,10 @@ raw_enhance <- function(df) {
   # NOTE:  no location information is harmless in any case.
   
   # Apply timezone to missing hours based on timezone of prior good hour
-  df$timezone[df$timezone == ""] <- NA
-  df$timezone <- zoo::na.locf(df$timezone, na.rm=FALSE, fromLast=FALSE)
 
-  df$timezones[1]
+  df <- df %>%
+    mutate(timezone = dplyr::na_if(.data$timezone, "")) %>%
+    tidyr::fill(.data$timezone)
 
   return(df)
 
