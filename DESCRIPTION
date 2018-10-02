@@ -53,8 +53,7 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    xts,
-    zoo
+    xts
 Suggests:
     knitr,
     rmarkdown
