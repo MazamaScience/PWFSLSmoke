@@ -31,6 +31,7 @@ propagated backwords using a first-observation-carry-backward algorithm'}
 }
 \examples{
 \dontrun{
+library(MazamaWebUtils)
 fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
 tbl <- airsis_parseData(fileString)
 }

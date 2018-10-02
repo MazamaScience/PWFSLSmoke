@@ -21,6 +21,7 @@
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
+#' library(MazamaWebUtils)
 #' fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
 #' tbl <- airsis_parseData(fileString)
 #' }
