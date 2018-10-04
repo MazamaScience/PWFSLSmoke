@@ -8,3 +8,5 @@
 ^local.*$
 ^LICENSE$
 ^NEWS\.md$
+^\.lintr$
+^\.travis\.yml$
