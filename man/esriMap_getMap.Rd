@@ -51,8 +51,8 @@ Additional base maps are found at:
 \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
 }
 \note{
-The spatial reference of the image when it is downloaded is 3857. If the crs argument is different, projecting may cause 
-the size and extent of the image to differ very slightly from the input, on a scale of 1-2 pixels or 10^-3 degrees. 
+The spatial reference of the image when it is downloaded is 3857. If the crs argument is different, projecting may cause
+the size and extent of the image to differ very slightly from the input, on a scale of 1-2 pixels or 10^-3 degrees.
 
 If bboxString is specified and the bbox aspect ratio does not match the width/height aspect ratio the extent is resized to prevent
 the map image from appearing stretched, so the map extent may not match the bbox argument exactly.
