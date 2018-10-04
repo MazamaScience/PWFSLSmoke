@@ -13,6 +13,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
  * removed dependence on `zoo` package in favor of `tidyr` for filling data
 
+### PWFSLSmoke 1.1.1
+
+ * added linting configuriation and suggest `lintr` package
+ * added `PWFSLSmoke.Rproj` for consistent development
+ * added Travis-CI configuration
+
 ### PWFSLSmoke 1.1.0
 
  * version bump
