@@ -19,8 +19,10 @@
 #' }
 #' @return Dataframe of AIRSIS raw monitor data.
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
+#' @importFrom rlang .data
 #' @examples
 #' \dontrun{
+#' library(MazamaWebUtils)
 #' fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
 #' tbl <- airsis_parseData(fileString)
 #' }
@@ -180,21 +182,24 @@ airsis_parseData <- function(fileString) {
   # NOTE:  forward so they appear in all rows.
   
   gpsMask <- !is.na(tbl$Longitude)
-  
-  # Carry data forward to fill in all missing values
-  tbl$Longitude <- zoo::na.locf(tbl$Longitude, na.rm=FALSE)
-  tbl$Latitude <- zoo::na.locf(tbl$Latitude, na.rm=FALSE)
-  # NOTE: BAM1020s don't have voltage data
-  if ( monitorType == "EBAM" ) tbl$Sys..Volts <- zoo::na.locf(tbl$Sys..Volts, na.rm=FALSE)
-  if ( monitorType == "ESAM" ) tbl$System.Volts <- zoo::na.locf(tbl$System.Volts, na.rm=FALSE)
-  
-  # Now fill in any missing values at the front end
-  tbl$Longitude <- zoo::na.locf(tbl$Longitude, na.rm=FALSE, fromLast=TRUE)
-  tbl$Latitude <- zoo::na.locf(tbl$Latitude, na.rm=FALSE, fromLast=TRUE)
-  # NOTE: BAM1020s don't have voltage data
-  if ( monitorType == "EBAM" ) tbl$Sys..Volts <- zoo::na.locf(tbl$Sys..Volts, na.rm=FALSE, fromLast=TRUE)
-  if ( monitorType == "ESAM" ) tbl$System.Volts <- zoo::na.locf(tbl$System.Volts, na.rm=FALSE, fromLast=TRUE)
-  
+
+  if (monitorType == "EBAM") {
+    voltLabel <- "Sys..Volts"
+  } else if (monitorType == "ESAM") {
+    voltLabel <- "System.Volts"
+  } else {
+    # NOTE: BAM1020s don't have voltage data
+    voltLabel <- NULL
+  }
+
+  # use "quosures" to let us use a variable as a column name
+  voltColumn <- rlang::enquo(voltLabel)
+
+  # Propagate data forwards, then backwards to fill in missing values
+  tbl <- tbl %>%
+    tidyr::fill(.data$Longitude, .data$Latitude, !!voltColumn) %>%
+    tidyr::fill(.data$Longitude, .data$Latitude, !!voltColumn, .direction = "up")
+
   logger.debug("Removing %d 'GPS' records from raw data", sum(gpsMask))
   tbl <- tbl[!gpsMask,]
   

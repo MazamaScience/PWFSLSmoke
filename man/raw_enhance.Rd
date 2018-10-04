@@ -33,6 +33,7 @@ uniform, hourly axes with missing data fields added for data columns.
 }
 \examples{
 \dontrun{
+library(MazamaWebUtils)
 df <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
 df <- raw_enhance(df)
 rawPlot_timeseries(df, tlim=c(20160908,20160917))

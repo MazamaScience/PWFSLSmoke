@@ -23,6 +23,7 @@
 #' @return Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 #' @examples
 #' \dontrun{
+#' library(MazamaWebUtils)
 #' df <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
 #' df <- raw_enhance(df)
 #' rawPlot_timeseries(df, tlim=c(20160908,20160917))
@@ -107,10 +108,10 @@ raw_enhance <- function(df) {
   # NOTE:  no location information is harmless in any case.
   
   # Apply timezone to missing hours based on timezone of prior good hour
-  df$timezone[df$timezone == ""] <- NA
-  df$timezone <- zoo::na.locf(df$timezone, na.rm=FALSE, fromLast=FALSE)
 
-  df$timezones[1]
+  df <- df %>%
+    mutate(timezone = dplyr::na_if(.data$timezone, "")) %>%
+    tidyr::fill(.data$timezone)
 
   return(df)
 
