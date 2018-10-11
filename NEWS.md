@@ -9,12 +9,17 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.1 -- Initial refactoring for 2019 fire season
 
-### PWFSLSmoke 1.1.3
+
+### PWFSLSmoke 1.1.4
 
  * tweaks for CRAN submission
  * cleanup recommneded by *goodpractice* package
  * removed non-functioning `monitorGooglMap()` and updated examples to use `monitorEsriMap()` instead
  * additional logging in `esriMap_getMap()`
+
+### PWFSLSmoke 1.1.3
+
+ * added logging functionality to `esriMap_getMap()`
 
 ### PWFSLSmoke 1.1.2
 
