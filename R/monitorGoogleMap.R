@@ -17,7 +17,7 @@
 #' @param ... arguments passed on to \code{RgoogleMaps::PlotOnStaticMap()} (\emph{e.g.} destfile, cex, pch, etc.)
 #' @return A \emph{MyMap} RgoogleMaps map object object that can serve as a base plot.
 #' @description Creates a Google map of a \emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
-#' 
+#'
 #' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
 #' will be calcualted using data from the \code{ws_monitor$meta} dataframe.
 #' @examples
@@ -42,96 +42,99 @@ monitorGoogleMap <- function(ws_monitor,
                              grayscale=FALSE,
                              map=NULL,
                              ...) {
-  
-  # Sanity check
-  if ( monitor_isEmpty(ws_monitor) ) {
-    stop("ws_monitor object contains zero monitors")
-  }
-  
-  # ----- Data Preparation ----------------------------------------------------
-  
-  if ( is.null(centerLon) ) {
-    centerLon <- base::mean(ws_monitor$meta$longitude)
-  }
-  
-  if ( is.null(centerLat) ) {
-    centerLat <- base::mean(ws_monitor$meta$latitude)
-  }
-  
-  # Create the 'slice'
-  if ( class(slice) == "function" ) {
-    # NOTE:  Need as.matrix in case we only have a single monitor
-    allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
-    data <- as.matrix(ws_monitor$data[,-1])
-    pm25 <- apply(as.matrix(data[,!allMissingMask]), 2, slice, na.rm=TRUE)
-  } else if ( class(slice) == "integer" || class(slice) == "numeric" ) {
-    pm25 <- ws_monitor$data[as.integer(slice),][-1]
-  } else {
-    stop("Improper use of slice parameter")
-  }
-  
-  # If the user only specifies breaks and not the colors or vice versa then complain
-  if ( xor(missing(breaks), missing(colors)) ) {
-    stop(paste0("The breaks paramater ", ifelse(missing(breaks), "wasn't", "was"),
-                " specified but the colors ", ifelse(missing(colors), "wasn't", "was"),
-                " specified. You must specify both paramaters or neither."))
-  }
-  
-  # Colors for each point 
-  cols <- aqiColors(pm25, palette=colors, bins=breaks)
 
-  # Guess at zoom level if not specified
-  if ( is.null(zoom) ) {
-    maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
-    if ( maxRange > 50 ) {
-      zoom <- 3
-    } else if ( maxRange > 20 ) {
-      zoom <- 4
-    } else if ( maxRange > 10 ) {
-      zoom <- 5
-    } else if ( maxRange > 5 ) {
-      zoom <- 6
-    } else if ( maxRange > 2 ) {
-      zoom <- 7
-    } else if ( maxRange > 1 ) {
-      zoom <- 8
-    } else if ( maxRange > 0.5 ) {
-      zoom <- 9
-    } else {
-      zoom <- 9
-    }
-  } else {
-    zoom <- round(zoom)
-  }
-  
-  
-  # ----- Generate map --------------------------------------------------------
-  
-  if ( is.null(map) ) {
-    map <- RgoogleMaps::GetMap(center=c(centerLat,centerLon), size=c(height,width),
-                               zoom=zoom, maptype=maptype, GRAYSCALE=grayscale);
-    map <- RgoogleMaps::PlotOnStaticMap(map)
-  }
-  
-  # Overlay function default arguments ----------------------------------------
-  
-  argsList <- list(...)
-  
-  # Explicitly declare defaults for the PlotOnStaticMap() function
-  argsList$MyMap <- map
-  argsList$lat <- ws_monitor$meta$latitude
-  argsList$lon <- ws_monitor$meta$longitude
-  argsList$size <- map$size
-  argsList$add=TRUE
-  argsList$FUN <- ifelse('FUN' %in% names(argsList), argsList$FUN, points)
-  argsList$pch <- ifelse('pch' %in% names(argsList), argsList$pch, 16)
-  # "ifelse returns a value with the same shape as test ..."
-  if ( ! 'col' %in% names(argsList) ) {
-    argsList$col <- cols
-  }
-  argsList$cex <- ifelse('cex' %in% names(argsList), argsList$cex, par("cex")*2.0)
-  
-  map <- do.call(RgoogleMaps::PlotOnStaticMap, argsList)
-  
-  return(invisible(map)) 
+  stop("'monitorGoogleMap' is no longer supported. Use 'monitorEsriMap' instead")
+
+  # # Sanity check
+  # if ( monitor_isEmpty(ws_monitor) ) {
+  #   stop("ws_monitor object contains zero monitors")
+  # }
+  #
+  # # ----- Data Preparation ----------------------------------------------------
+  #
+  # if ( is.null(centerLon) ) {
+  #   centerLon <- base::mean(ws_monitor$meta$longitude)
+  # }
+  #
+  # if ( is.null(centerLat) ) {
+  #   centerLat <- base::mean(ws_monitor$meta$latitude)
+  # }
+  #
+  # # Create the 'slice'
+  # if ( class(slice) == "function" ) {
+  #   # NOTE:  Need as.matrix in case we only have a single monitor
+  #   allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
+  #   data <- as.matrix(ws_monitor$data[,-1])
+  #   pm25 <- apply(as.matrix(data[,!allMissingMask]), 2, slice, na.rm=TRUE)
+  # } else if ( class(slice) == "integer" || class(slice) == "numeric" ) {
+  #   pm25 <- ws_monitor$data[as.integer(slice),][-1]
+  # } else {
+  #   stop("Improper use of slice parameter")
+  # }
+  #
+  # # If the user only specifies breaks and not the colors or vice versa then complain
+  # if ( xor(missing(breaks), missing(colors)) ) {
+  #   stop(paste0("The breaks paramater ", ifelse(missing(breaks), "wasn't", "was"),
+  #               " specified but the colors ", ifelse(missing(colors), "wasn't", "was"),
+  #               " specified. You must specify both paramaters or neither."))
+  # }
+  #
+  # # Colors for each point
+  # cols <- aqiColors(pm25, palette=colors, bins=breaks)
+  #
+  # # Guess at zoom level if not specified
+  # if ( is.null(zoom) ) {
+  #   maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
+  #   if ( maxRange > 50 ) {
+  #     zoom <- 3
+  #   } else if ( maxRange > 20 ) {
+  #     zoom <- 4
+  #   } else if ( maxRange > 10 ) {
+  #     zoom <- 5
+  #   } else if ( maxRange > 5 ) {
+  #     zoom <- 6
+  #   } else if ( maxRange > 2 ) {
+  #     zoom <- 7
+  #   } else if ( maxRange > 1 ) {
+  #     zoom <- 8
+  #   } else if ( maxRange > 0.5 ) {
+  #     zoom <- 9
+  #   } else {
+  #     zoom <- 9
+  #   }
+  # } else {
+  #   zoom <- round(zoom)
+  # }
+  #
+  #
+  # # ----- Generate map --------------------------------------------------------
+  #
+  # if ( is.null(map) ) {
+  #   map <- RgoogleMaps::GetMap(center=c(centerLat,centerLon), size=c(height,width),
+  #                              zoom=zoom, maptype=maptype, GRAYSCALE=grayscale)
+  #   map <- RgoogleMaps::PlotOnStaticMap(map)
+  # }
+  #
+  # # Overlay function default arguments ----------------------------------------
+  #
+  # argsList <- list(...)
+  #
+  # # Explicitly declare defaults for the PlotOnStaticMap() function
+  # argsList$MyMap <- map
+  # argsList$lat <- ws_monitor$meta$latitude
+  # argsList$lon <- ws_monitor$meta$longitude
+  # argsList$size <- map$size
+  # argsList$add=TRUE
+  # argsList$FUN <- ifelse('FUN' %in% names(argsList), argsList$FUN, points)
+  # argsList$pch <- ifelse('pch' %in% names(argsList), argsList$pch, 16)
+  # # "ifelse returns a value with the same shape as test ..."
+  # if ( ! 'col' %in% names(argsList) ) {
+  #   argsList$col <- cols
+  # }
+  # argsList$cex <- ifelse('cex' %in% names(argsList), argsList$cex, par("cex")*2.0)
+  #
+  # map <- do.call(RgoogleMaps::PlotOnStaticMap, argsList)
+  #
+  # return(invisible(map))
+
 }

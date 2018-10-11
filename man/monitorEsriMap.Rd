@@ -45,7 +45,19 @@ monitorEsriMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 Plots a map loaded from arcGIS REST with points for each monitor
 }
 \description{
-Creates a Google map of a \emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
+Creates an ESRI map of a \emph{ws_monitor} object.
+
+#' Available \code{maptypes} include:
+\itemize{
+\item{natGeo}
+\item{worldStreetMap}
+\item{worldTopoMap}
+\item{satellite}
+\item{deLorme}
+}
+
+Additional base maps are found at:
+\url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
 
 If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
 will be calcualted using data from the \code{ws_monitor$meta} dataframe.
@@ -58,5 +70,8 @@ Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'
 Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
 monitorEsriMap(Spokane)
 }
+}
+\seealso{
+\code{\link{esriMap_plotOnStaticMap}}
 }
 \keyword{ws_monitor}

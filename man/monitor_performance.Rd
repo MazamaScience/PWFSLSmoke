@@ -42,7 +42,7 @@ wa <- airnow_load(2017) \%>\% monitor_subset(stateCodes='WA')
 wa_dailyAvg <- monitor_dailyStatistic(wa, mean)
 Spokane_dailyAvg <- monitor_subset(wa_dailyAvg, monitorIDs='530630021_01')
 threshold <- AQI$breaks_24[4] # Unhealthy
-performanceMetrics <- monitor_performance(wa_dailyAvg, 
+performanceMetrics <- monitor_performance(wa_dailyAvg,
                                           Spokane_dailyAvg,
                                           threshold, threshold)
 monitorIDs <- rownames(performanceMetrics)

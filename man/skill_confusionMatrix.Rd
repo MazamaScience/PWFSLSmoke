@@ -28,7 +28,7 @@ in weather forecasting. The standard approach involves making binary classificat
 binary contingency table known as a \emph{confusion matrix}.
 
 This function creates a \code{confusion matrix} from predicted and observed values and calculates
-a wide range of common statistics including: 
+a wide range of common statistics including:
 \itemize{
   \item{TP}{ (true postive)}
   \item{FP}{ (false postive) (type I error)}

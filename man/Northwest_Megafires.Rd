@@ -8,7 +8,7 @@
 \description{
 In the summer of 2015 Washington state had several catastrophic wildfires that led
 to many days of heavy smoke in eastern Washington, Oregon and northern Idaho.
-The Northwest_Megafires dataset contains AirNow ambient monitoring data for the 
+The Northwest_Megafires dataset contains AirNow ambient monitoring data for the
 Pacific Northwest from May 31 through November 01, 2015 (UTC). Data are stored
 as a \emph{ws_monitor} object and are used in many examples in the package
 documentation.

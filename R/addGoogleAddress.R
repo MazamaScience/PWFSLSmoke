@@ -6,20 +6,20 @@
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
-#' @description Google APIs are used to determine 
+#' @description Google APIs are used to determine
 #' address information associated with the locations specified by the
 #' \code{longitude} and \code{latitude} columns of the incoming dataframe.
-#' 
+#'
 #' Address information is obtained by using the \pkg{ggmap} package.
 #' @return Input dataframe with additional columns: \code{siteName, countyName}.
 #' @references \url{https://developers.google.com/maps/documentation/geocoding/intro}
 
 addGoogleAddress <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
-  
+
   ###logger.trace(" ----- addGoogleAddress() ----- ")
-  
+
   message("addGoogleAddress() is currently disabled after discontinuation of free querys in July, 2018")
-  
+
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df, stringsAsFactors=FALSE)
 
@@ -34,8 +34,8 @@ addGoogleAddress <- function(df, lonVar="longitude", latVar="latitude", existing
   if ( is.null(df$siteName) ) df$siteName <- as.character(NA)
   if ( is.null(df$countyName) ) df$countyName <- as.character(NA)
 
-  lons = df[[lonVar]]
-  lats = df[[latVar]]
+  lons <- df[[lonVar]]
+  lats <- df[[latVar]]
 
   # ----- Add siteName from Google API ---------------------------
 
@@ -95,7 +95,7 @@ addGoogleAddress <- function(df, lonVar="longitude", latVar="latitude", existing
     }
 
   }
-  
+
   return(df)
-  
+
 }

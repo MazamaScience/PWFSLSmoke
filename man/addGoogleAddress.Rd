@@ -20,7 +20,7 @@ addGoogleAddress(df, lonVar = "longitude", latVar = "latitude",
 Input dataframe with additional columns: \code{siteName, countyName}.
 }
 \description{
-Google APIs are used to determine 
+Google APIs are used to determine
 address information associated with the locations specified by the
 \code{longitude} and \code{latitude} columns of the incoming dataframe.
 

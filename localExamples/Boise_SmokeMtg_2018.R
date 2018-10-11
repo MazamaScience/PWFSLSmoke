@@ -1,4 +1,4 @@
-# 
+#
 
 library(PWFSLSmoke)
 
@@ -139,7 +139,7 @@ Nezperce_area_daily <- monitor_dailyStatistic(Nezperce_area)
 
 png('nezperce_map_zoom_out.png', width=800, height=600)
 
-monitorGoogleMap(Nezperce_area_daily, zoom=7, width=640, height=640, cex=3)
+monitorEsriMap(Nezperce_area_daily, zoom=7, width=640, height=640, cex=3)
 addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
 
 dev.off()
@@ -150,7 +150,7 @@ par(oldPar)
 
 png('nezperce_map_zoom_in.png', width=800, height=600)
 
-monitorGoogleMap(Nezperce_area_daily, zoom=9, width=640, height=640, cex=5)
+monitorEsriMap(Nezperce_area_daily, zoom=9, width=640, height=640, cex=5)
 addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
 
 dev.off()
@@ -242,27 +242,27 @@ par(mar=c(3.1,4.1,3.1,2.1))
 layout(matrix(seq(5)))
 
 for ( i in 1:5 ) {
-  
+
   mon <- onRezList[[i]]
   #mon <- offRezList[[i]]
-  
+
   hours_1 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[1])
   hours_2 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[2])
   hours_3 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[3])
   hours_4 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[4])
   hours_5 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[5])
   hours_6 <- monitor_dailyThreshold(mon, threshold=AQI$breaks_24[6])
-  
+
   datetime <- hours_1$data[,1]
   h6 <- hours_6$data[,2]
   h5 <- hours_5$data[,2] - h6
   h4 <- hours_4$data[,2] - h6 - h5
-  h3 <- hours_3$data[,2] - h6 - h5 - h4 
+  h3 <- hours_3$data[,2] - h6 - h5 - h4
   h2 <- hours_2$data[,2] - h6 - h5 - h4 - h3
   h1 <- hours_1$data[,2] - h6 - h5 - h4 - h3 - h2
-  
+
   mat <- cbind(h1,h2,h3,h4,h5,h6)
-  
+
   barplot(t(mat), col=AQI$colors[1:6], border='white', axes=FALSE)
   title(onRezLabels[i], cex.main=3)
   #title(offRezLabels[i], cex.main=3)

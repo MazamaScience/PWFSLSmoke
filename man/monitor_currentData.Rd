@@ -10,8 +10,8 @@ monitor_currentData(ws_monitor, datetime = lubridate::now("UTC"),
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{datetime}{Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}. 
-If not \code{POSIXct}, interpreted as UTC time). 
+\item{datetime}{Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}.
+If not \code{POSIXct}, interpreted as UTC time).
 So if \code{datetime} is 3 hours ago, a dataframe with the most current data from 3 hours ago will be returned.}
 
 \item{monitoringUrlBase}{base URL for constructing a link to the PWFSL Smoke Monitoring site}
@@ -38,7 +38,7 @@ The three-hour average will remove missing values and may represent an average o
 
 The yesterday average will remove up to six missing values, returning \code{NA} if more than six hours of yesterday's data are missing.
 
-Any monitors with no data from before the desired datetime will be excluded. 
+Any monitors with no data from before the desired datetime will be excluded.
 
 \strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to \code{datetime} -- \emph{i.e.} actually yesterday.
 The various 'lastValid' values describe the most recent valid values -- before \code{datetime}, whenever they occurred.

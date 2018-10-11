@@ -17,8 +17,20 @@
 #' @param pch plotting character for points
 #' @param ... arguments passed on to \code{esriMap_plotOnStaticMap} (\emph{e.g.} destfile, cex, pch, etc.)
 #' @return Plots a map loaded from arcGIS REST with points for each monitor
-#' @description Creates a Google map of a \emph{ws_monitor} object using the \pkg{RgoogleMaps} package.
-#' 
+#' @description Creates an ESRI map of a \emph{ws_monitor} object.
+#'
+#' #' Available \code{maptypes} include:
+#' \itemize{
+#' \item{natGeo}
+#' \item{worldStreetMap}
+#' \item{worldTopoMap}
+#' \item{satellite}
+#' \item{deLorme}
+#' }
+#'
+#' Additional base maps are found at:
+#' \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
+#'
 #' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
 #' will be calcualted using data from the \code{ws_monitor$meta} dataframe.
 #' @examples
@@ -29,6 +41,7 @@
 #' Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
 #' monitorEsriMap(Spokane)
 #' }
+#' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
 monitorEsriMap <- function(ws_monitor,
                            slice=get('max'),
@@ -45,22 +58,22 @@ monitorEsriMap <- function(ws_monitor,
                            cex=par("cex")*2.0,
                            pch=16,
                            ...) {
-  
+
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")
   }
-  
+
   # ----- Data Preparation ----------------------------------------------------
-  
+
   if ( is.null(centerLon) ) {
     centerLon <- base::mean(ws_monitor$meta$longitude)
   }
-  
+
   if ( is.null(centerLat) ) {
     centerLat <- base::mean(ws_monitor$meta$latitude)
   }
-  
+
   # Create the 'slice'
   if ( class(slice) == "function" ) {
     # NOTE:  Need as.matrix in case we only have a single monitor
@@ -72,17 +85,17 @@ monitorEsriMap <- function(ws_monitor,
   } else {
     stop("Improper use of slice parameter")
   }
-  
+
   # If the user only specifies breaks and not the colors or vice versa then complain
   if ( xor(missing(breaks), missing(colors)) ) {
     stop(paste0("The breaks paramater ", ifelse(missing(breaks), "wasn't", "was"),
                 " specified but the colors ", ifelse(missing(colors), "wasn't", "was"),
                 " specified. You must specify both paramaters or neither."))
   }
-  
-  # Colors for each point 
+
+  # Colors for each point
   cols <- aqiColors(pm25, palette=colors, bins=breaks)
-  
+
   # Guess at zoom level if not specified
   if ( is.null(zoom) ) {
     maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
@@ -106,25 +119,25 @@ monitorEsriMap <- function(ws_monitor,
   } else {
     zoom <- round(zoom)
   }
-  
-  
+
+
   # ----- Generate RGB Raster --------------------------------------------------------
-  
+
   if ( is.null(mapRaster) ) {
     mapRaster <- esriMap_getMap(centerLon, centerLat, width = width, height = height,
-                               zoom=zoom, maptype=maptype, crs = sp::CRS("+init=epsg:4326"));
+                               zoom=zoom, maptype=maptype, crs = sp::CRS("+init=epsg:4326"))
   }
-  
+
   # Overlay function default arguments ----------------------------------------
-  
+
   argsList <- list(...)
-  
+
   # Explicitly declare defaults for the esriMap_plotOnStaticMap() function
   argsList$mapRaster <- mapRaster
   argsList$grayscale <- grayscale
-  
+
   do.call(esriMap_plotOnStaticMap, argsList)
-  
+
   lat <- ws_monitor$meta$latitude
   lon <- ws_monitor$meta$longitude
   if ( ! 'col' %in% names(argsList) ) {
@@ -132,8 +145,8 @@ monitorEsriMap <- function(ws_monitor,
   } else {
     col <- argsList$col
   }
-  
+
   graphics::points(lon, lat, pch = pch, col = col, cex = cex)
-  
-  return(invisible(map)) 
+
+  return(invisible(map))
 }

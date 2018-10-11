@@ -2,7 +2,7 @@
 # ----- Example datasets ------------------------------------------------------
 
 #' Carmel Valley example dataset
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @name Carmel_Valley
@@ -18,7 +18,7 @@
 NULL
 
 #' Northwest_Megafires example dataset
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @name Northwest_Megafires
@@ -27,7 +27,7 @@ NULL
 #' @description
 #' In the summer of 2015 Washington state had several catastrophic wildfires that led
 #' to many days of heavy smoke in eastern Washington, Oregon and northern Idaho.
-#' The Northwest_Megafires dataset contains AirNow ambient monitoring data for the 
+#' The Northwest_Megafires dataset contains AirNow ambient monitoring data for the
 #' Pacific Northwest from May 31 through November 01, 2015 (UTC). Data are stored
 #' as a \emph{ws_monitor} object and are used in many examples in the package
 #' documentation.
@@ -60,7 +60,7 @@ NULL
 #' @seealso googleApiKey
 #' @seealso setGoogleApiKey
 getGoogleApiKey <- function() {
-  return(pwfslSmokeEnv$googleApiKey)    
+  return(pwfslSmokeEnv$googleApiKey)
 }
 
 #' @keywords environment
@@ -98,7 +98,7 @@ NULL
 #' @seealso esriToken
 #' @seealso setEsriToken
 getEsriToken <- function() {
-  return(pwfslSmokeEnv$esriToken)    
+  return(pwfslSmokeEnv$esriToken)
 }
 
 #' @keywords environment
@@ -119,7 +119,7 @@ setEsriToken <- function(token) {
 # ----- WRCC related info -----------------------------------------------------
 
 #' WRCC monitor names and unitIDs
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @name WRCC
@@ -128,11 +128,11 @@ setEsriToken <- function(token) {
 #' @description
 #' The WRCC \url{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
 #' provides access to a variety of monitors that can be accessed with the \link{wrcc_createMonitorObject}
-#' function. Use of this funciton requires a valid unitID. The \code{WRCC} object is 
-#' a list of lists. The element named \code{unitIDs} is itself a list of three named vectors, 
+#' function. Use of this funciton requires a valid unitID. The \code{WRCC} object is
+#' a list of lists. The element named \code{unitIDs} is itself a list of three named vectors,
 #' each containing the unitIDs and associated names for
 #' one of the categories of monitors available at WRCC:
-#' 
+#'
 #' \itemize{
 #' \item{cache}
 #' \item{miscellaneous}
@@ -144,7 +144,7 @@ NULL
 # ----- AIRSIS related info ---------------------------------------------------
 
 #' AIRSIS monitor types and codes
-#' 
+#'
 #' @export
 #' @docType data
 #' @name AIRSIS
@@ -153,10 +153,10 @@ NULL
 #' @description
 #' AIRSIS provides access to data by unit type at URLs like:
 #'   http://usfs.airsis.com/vision/common/CSVExport.aspx?utid=38&StartDate=2017-11-06&EndDate=2017-11-07
-#' 
+#'
 #' The \code{AIRSIS} objectis a list of lists. The element named \code{unitTypes} is itself
 #' a list of named unit types:
-#' 
+#'
 #' Unit types include:
 #' \itemize{
 #' \item{DATARAM}{ 21 = Dataram}
@@ -178,7 +178,7 @@ AIRSIS <- list(unitTypes=list(DATARAM=21,
 # ----- AQI breaks -------------------------------------------------------------
 
 #' AQI breaks and associated names and colors
-#' 
+#'
 #' @export
 #' @docType data
 #' @name AQI
@@ -190,7 +190,7 @@ AIRSIS <- list(unitTypes=list(DATARAM=21,
 #' The \code{AQI} object contains english language text.
 #'
 #' AQI breaks and colors are defined in
-#' \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
+#' \url{https://airnow.gov/sites/default/files/2018-09/aqi-technical-assistance-document-sept-2018_0.pdf}
 #' @note
 #' The low end of each break category is used as the breakpoint.
 #' @seealso \code{\link{AQI_en}} \code{\link{AQI_es}}
@@ -215,7 +215,7 @@ AQI <- list(
 )
 
 #' AQI breaks and associated names and colors (english language)
-#' 
+#'
 #' @export
 #' @docType data
 #' @name AQI_en
@@ -228,7 +228,7 @@ AQI <- list(
 #' \code{AQI} object and provided for consistency with other language versions.
 #'
 #' AQI breaks and colors are defined in
-#' \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
+#' \url{https://airnow.gov/sites/default/files/2018-09/aqi-technical-assistance-document-sept-2018_0.pdf}
 #' @note
 #' The low end of each break category is used as the breakpoint.
 #' @seealso \code{\link{AQI}} \code{\link{AQI_es}}
@@ -253,7 +253,7 @@ AQI_en <- list(
 )
 
 #' AQI breaks and associated names and colors (spanish language)
-#' 
+#'
 #' @export
 #' @docType data
 #' @name AQI_es
@@ -263,9 +263,9 @@ AQI_en <- list(
 #' Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
 #' @details
 #' The \code{AQI_es} object contains spanish language text.
-#' 
+#'
 #' AQI breaks and colors are defined in
-#' \url{https://www3.epa.gov/airnow/aqi-technical-assistance-document-may2016.pdf}
+#' \url{https://airnow.gov/sites/default/files/2018-09/aqi-technical-assistance-document-sept-2018_0.pdf}
 #' @note
 #' The low end of each break category is used as the breakpoint.
 #' @seealso \code{\link{AQI_en}} \code{\link{AQI}}
@@ -293,7 +293,7 @@ AQI_es <- list(
 # ----- State codes -----------------------------------------------------------
 
 #' CONUS state codes
-#' 
+#'
 #' @export
 #' @docType data
 #' @name CONUS
@@ -310,7 +310,7 @@ CONUS <- c(     "AL","AZ","AR","CA","CO","CT","DE","FL","GA",
            "DC"     )
 
 #' US state codes
-#' 
+#'
 #' @export
 #' @docType data
 #' @name US_52

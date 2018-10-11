@@ -10,41 +10,41 @@
 #' @description The \pkg{MazamaSpatialUtils} package used to determine the ISO state and country code,
 #' and the Olson timezone associated with the locations specified by the
 #' \code{longitude} and \code{latitude} columns of the incoming dataframe.
-#' 
+#'
 #' This function requires previous setup of the \pkg{MazamaSpatialUtils} package with \code{initializeMazamaSpatialUtils()}.
 #' @references \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 #' @seealso \code{\link{initializeMazamaSpatialUtils}}
 
 addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL, countryCodes=c('CA','US','MX')) {
-  
+
   # NOTE:  existingMeta is not currently used but is retained as an argument to mimic the signature of addGoogleElevation()
-  
+
   logger.trace(" ----- addMazamaMetadata() ----- ")
-  
+
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
     logger.error("Dataframe does not contain columns lonVar='%s' or latVar='%s'", lonVar, latVar)
     stop(paste0("Dataframe does not contain columns lonVar='",lonVar,"' or latVar='",latVar,"'"))
   }
-  
-  lons = df[[lonVar]]
-  lats = df[[latVar]]
-  
+
+  lons <- df[[lonVar]]
+  lats <- df[[latVar]]
+
   if ( exists('NaturalEarthAdm1') ) {
-    
+
     logger.debug("Getting Mazama spatial data for %s location(s)", nrow(df))
     df$timezone <- MazamaSpatialUtils::getTimezone(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
     df$countryCode <- MazamaSpatialUtils::getCountryCode(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
     df$stateCode <- MazamaSpatialUtils::getStateCode(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
-    
+
   } else {
-    
+
     # NOTE:  Timezone, countryCode and stateCode information is mandatory for ws_monitor objects.
     logger.error("MazamaSpatialUtils package was not properly initialized -- no Mazama metadata added")
     stop("MazamaSpatialUtils package was not properly initialized. See initializeMazamaSpatialUtils()")
-    
+
   }
-  
+
   return(df)
-  
+
 }

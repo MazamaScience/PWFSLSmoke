@@ -33,7 +33,7 @@ pm25 <- wa$data[,-1]
 plot(time, pm25[,1], col=colorMatrix[,1],
      ylim=range(pm25, na.rm=TRUE),
      xlab="2015", ylab="PM 2.5 (ug/m3)", main="Washington State Smoke")
-for ( i in 1:ncol(pm25) ) {
+for ( i in seq_along(pm25) ) {
   points(time, pm25[,i], col=colorMatrix[,i], pch=16)
 }
 }

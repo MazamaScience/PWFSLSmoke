@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 1.1.2
+Version: 1.1.3
 Title: Utilities for Working with Air Quality Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -26,7 +26,6 @@ Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
     R (>= 3.3.0),
     dplyr,
-    magrittr,
     maps,
     MazamaSpatialUtils (>= 0.5.4)
 Imports:
@@ -38,6 +37,7 @@ Imports:
     jsonlite,
     leaflet (>= 1.0.0),
     lubridate,
+    magrittr,
     maptools,
     mapproj,
     openair,
@@ -71,5 +71,8 @@ Description: Utilities for working with air quality monitoring data
 License: GPL-3
 VignetteBuilder: knitr
 Repository: CRAN
+URL: https://github.com/MazamaScience/PWFSLSmoke
+BugReports: https://github.com/MazamaScience/MazamaPWFSLSmoke/issues
+Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0

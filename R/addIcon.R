@@ -9,21 +9,21 @@
 #' @param pos position of icon relative to location (0=center, 1=bottom, 2=left, 3=top,4=right)
 #' @description Adds an icon to \code{map} -- an RgoogleMaps map object.
 #' The following icons are available:
-#' 
+#'
 #' \itemize{
 #' \item{\code{orangeFlame}}{ -- yellow-orange flame}
 #' \item{\code{redFlame}}{ -- orange-red flame}
 #' }
-#' 
+#'
 #' You can use other .png files as icons by passing an absolute path as the \code{icon} argument.
-#' 
+#'
 #' @note For RgoogleMaps, the \code{expansion} will be ~ 0.1 while for basic plots it may need
 #' to be much smaller, perhaps ~ 0.001.
 #' @examples
 #' \dontrun{
 #' ca <- loadLatest() %>% monitor_subset(stateCodes='CA')
 #' # Google map
-#' map <- monitorGoogleMap(ca)
+#' map <- monitorEsriMap(ca)
 #' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)
 #' # line map
 #' monitorMap(ca)
@@ -32,7 +32,7 @@
 
 
 addIcon <- function(icon, longitude, latitude, map=NULL, expansion=0.1, pos=0) {
-  
+
   # Test for absolute path
   if ( dirname(icon) == "." ) {
     # package icon
@@ -44,50 +44,50 @@ addIcon <- function(icon, longitude, latitude, map=NULL, expansion=0.1, pos=0) {
     # non-package icon, must be valid absolute path
     pngFile <- icon
   }
-  
+
   if ( pngFile == "" ) {
     stop("Cannot find package file 'inst/icons/",icon,"'")
   }
-  
+
   # Read in the png file
   icon <- png::readPNG(pngFile)
-  
+
   if ( !is.null(map) ) {
     # RgoogleMap
-    
+
     if ( !"staticMap" %in% class(map) ) {
       stop("'map' argument is not of class 'staticMap'")
     }
-    
+
     # limit longitude, latitude to those within bounding box
     lon_lo <- map$BBOX$ll[,'lon']
     lon_hi <- map$BBOX$ur[,'lon']
     lat_lo <- map$BBOX$ll[,'lat']
     lat_hi <- map$BBOX$ur[,'lat']
-    
+
     lonMask <- longitude >= lon_lo & longitude <= lon_hi
     latMask <- latitude >= lat_lo & latitude <= lat_hi
     goodMask <- lonMask & latMask
-    
+
     longitude <- longitude[goodMask]
     latitude <- latitude[goodMask]
-    
+
     # Get plot coordinates
     newXY <- RgoogleMaps::LatLon2XY.centered(map, latitude, longitude)
     x <- newXY$newX
     y <- newXY$newY
-    
+
   } else {
     # basic plot from maps::map()
     x <- longitude
     y <- latitude
-    
+
   }
 
   # Calculate final icon size
   icon_height <- dim(icon)[1] * expansion
   icon_width <- dim(icon)[2] * expansion
-  
+
   # Calcualte "nudge" based on pos
   nudge_x <- 0
   nudge_y <- 0
@@ -104,11 +104,11 @@ addIcon <- function(icon, longitude, latitude, map=NULL, expansion=0.1, pos=0) {
     nudge_x <- icon_width/2
     nudge_y <- 0
   }
-  
+
   graphics::rasterImage(icon,
                         x - icon_width/2 + nudge_x,
                         y - icon_height/2 + nudge_y,
                         x + icon_width/2 + nudge_x,
                         y + icon_height/2 + nudge_y)
-  
+
 }

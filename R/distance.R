@@ -7,7 +7,7 @@
 #' @description This funciton uses the Haversine forumula for calculating great
 #' circle distances between points. This formula is purpoted to work better
 #' than the spherical law of cosines for very short distances.
-#' @references \url{https://www.r-bloggers.com/great-circle-distance-calculations-in-r/} 
+#' @references \url{https://www.r-bloggers.com/great-circle-distance-calculations-in-r/}
 #' @return Vector of distances in km.
 #' @examples
 #' # Seattle to Portland airports
@@ -18,20 +18,20 @@
 #' distance(SEA_lon, SEA_lat, PDX_lon, PDX_lat)
 
 distance <- function(targetLon, targetLat, longitude, latitude) {
-  
+
   if (length(longitude) != length(latitude)) {
     stop(paste0('longitude [',length(longitude),'] and latitude [',length(latitude),'] are requried to be of the same length'))
   }
-  
+
   # Algorithm copied directly from https://www.r-bloggers.com/great-circle-distance-calculations-in-r/
-    
+
   # Set up vector to be filled in
   distance <- rep(as.numeric(NA),length(longitude))
-  
+
   # Convert to radians
   targetLon <- targetLon*pi/180
   targetLat <- targetLat*pi/180
-  
+
   # Haversine formula
   for (i in seq(length(longitude))) {
     lon <- longitude[i]*pi/180
@@ -41,9 +41,9 @@ distance <- function(targetLon, targetLat, longitude, latitude) {
     delta.lat <- (lat - targetLat)
     a <- sin(delta.lat/2)^2 + cos(targetLat) * cos(lat) * sin(delta.lon/2)^2
     c <- 2 * asin(min(1,sqrt(a)))
-    distance[i] = R * c # distance in km
+    distance[i] <- R * c # distance in km
   }
-  
+
   return(distance)
-  
+
 }

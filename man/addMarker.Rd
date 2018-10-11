@@ -12,7 +12,7 @@ addMarker(longitude, latitude, color = "red", map = NULL,
 
 \item{latitude}{vector of latitudes}
 
-\item{color}{marker color: 'red', 'green', 'yellow', 'orange', or 'blue'. Also includes AQI 
+\item{color}{marker color: 'red', 'green', 'yellow', 'orange', or 'blue'. Also includes AQI
 category colors, specified 'AQI[number]' eg. 'AQI1'}
 
 \item{map}{optional RgoogleMaps map object or Raster* object}
@@ -28,7 +28,7 @@ Adds a marker to a plot or \code{map} -- an RgoogleMaps map object or Raster* ob
 \dontrun{
 ca <- loadLatest() \%>\% monitor_subset(stateCodes='CA')
 # Google map
-map <- monitorGoogleMap(ca)
+map <- monitorEsriMap(ca)
 addMarker(ca$meta$longitude, ca$meta$latitude, map=map)
 # line map
 monitorMap(ca)
