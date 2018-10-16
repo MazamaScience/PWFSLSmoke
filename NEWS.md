@@ -9,6 +9,9 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.1 -- Initial refactoring for 2019 fire season
 
+### PWFSLSmoke 1.1.5
+
+ * add `testthat` framework to package
 
 ### PWFSLSmoke 1.1.4
 
