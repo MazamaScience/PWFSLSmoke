@@ -3,8 +3,8 @@
 #' @title Parse Datetime Strings
 #'
 #' @description
-#' Transforms numeric and string representations of YYYYMMDD[HHMMSS] datetimes
-#' to \code{POSIXct} format.
+#' Transforms numeric and string representations of Ymd[HMS] datetimes to
+#' \code{POSIXct} format.
 #'
 #' Ymd, YmdH, YmdHM, and YmdHMS formats are understood, where:
 #'
@@ -32,11 +32,11 @@
 #'
 #' @section Implementation:
 #' \code{parseDatetime} is essentially a wrapper around
-#' \code{\link[packagename]{functioname}}, handling which formats we want to
+#' \code{\link[lubridate]{pares_date_time}}, handling which formats we want to
 #' account for.
 #'
-#' @param datetime vector of character or integer datetimes in YYYYMMDD[HHMMSS]
-#'   format (or POSIXct).
+#' @param datetime vector of character or integer datetimes in Ymd[HMS] format
+#'   (or POSIXct).
 #' @param timezone Olson timezone at the location of interest (default "UTC").
 #' @param expectAll Logical value determining if the function should fail if
 #'   any elements fail to parse (default \code{FALSE}).
