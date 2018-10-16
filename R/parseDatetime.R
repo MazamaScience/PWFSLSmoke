@@ -68,5 +68,5 @@ parseDatetime <- function(datetime, timezone= "UTC", expectAll = FALSE) {
 
   }
 
-  return(datetime)
+  return(parsedDatetime)
 }
