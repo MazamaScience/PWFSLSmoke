@@ -48,24 +48,43 @@
 #' @examples
 #' starttime <- parseDatetime(2015080718, timezone = "America/Los_Angeles")
 
-parseDatetime <- function(datetime, timezone= "UTC", expectAll = FALSE) {
+parseDatetime <- function(datetime, timezone = "UTC", expectAll = FALSE) {
+
+# parse datetimes ---------------------------------------------------------
 
   orders <- c("Ymd", "YmdH", "YmdHM", "YmdHMS")
   parsedDatetime <- lubridate::parse_date_time(datetime, orders, tz = timezone)
 
-  if (all(is.na(datetime))) {
+
+# error handling ----------------------------------------------------------
+
+  if (all(is.na(parsedDatetime))) {
     stop(paste0("No datetimes could be parsed."))
   }
 
-  # If there already exist NAs in datetime, we don't want to accidently fail
-  # if all non-NA values were parsed
-  if (expectAll && which(is.na(datetime)) != which(is.na(parsedDatetime))) {
+  if (expectAll) {
 
-    stop(paste0(
-      sum(is.na(datetime)), " datetimes could not be parsed",
-      " (at indices: ", which(is.na(datetime)), ")."
-    ))
+    ## NAs that appear in the parsed datetimes and not in the original datetimes
+    #  are datetimes that failed to parse (ie, not originally NA).
+    failedIndices <- setdiff(
+      which(is.na(parsedDatetime)),
+      which(is.na(datetime))
+    )
 
+    ## If there already exist NAs in datetime, we don't want to accidently fail
+    #  if all non-NA values were parsed
+    if (length(failedIndices) == 1) {
+      stop(paste0(
+        "1 datetime failed to parse (at index: ", failedIndices, ")."
+      ))
+
+    # account for differences in plural spellings
+    } else if (length(failedIndices) > 1) {
+      stop(paste0(
+        length(failedIndices), " datetimes failed to parse (at indices: ",
+        paste0(failedIndices, collapse = ", "), ")."
+      ))
+    }
   }
 
   return(parsedDatetime)
