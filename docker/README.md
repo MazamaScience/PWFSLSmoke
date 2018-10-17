@@ -14,12 +14,12 @@ This is just shorthand for the following `docker build` line:
 $ docker build --no-cache -t mazamascience/pwfslsmoke:1.0.34 -t mazamascience/pwfslsmoke:latest-2018 .
 $ docker images
 REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke       latest              f4945f0c24e6        4 minutes ago       1.75GB
+mazamascience/pwfslsmoke       latest-2018         f4945f0c24e6        4 minutes ago       1.75GB
 mazamascience/pwfslsmoke       1.0.34              f4945f0c24e6        4 minutes ago       1.75GB
 ...
 ```
 
-> It is best practice to create versioned images and tag the most recent one with "latest".
+> It is best practice to create versioned images and tag the most recent one with "latest-2018".
 
 Spatial data required by the **MazamaSpatialUtils** package already exists in the docker image in `/home/mazama/data/Spatial`.
 
