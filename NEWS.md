@@ -9,6 +9,12 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.0 -- Monitoring Data Access
 
+### PWFSLSmoke 1.0.34
+
+ * updated `docker/Makefile` to create image `latest-2018` instead of `latest`
+ * fixed bug in `monitor_currentData()` that caused all `monitoringSiteUrl`
+ values to be the same
+
 ### PWFSLSmoke 1.0.33
 
  * updated docker/ to use mazamascience/spatialutils:0.5.4 which is based off of rocker/tidyverse:3.5.1
