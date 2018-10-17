@@ -62,6 +62,13 @@
 
 parseDatetime <- function(datetime, timezone = "UTC", expectAll = FALSE) {
 
+# check if POSIXct --------------------------------------------------------
+
+  if (lubridate::is.POSIXct(datetime)) {
+    return(lubridate::with_tz(datetime, tzone = timezone))
+  }
+
+
 # parse datetimes ---------------------------------------------------------
 
   orders <- c("Ymd", "YmdH", "YmdHM", "YmdHMS")
