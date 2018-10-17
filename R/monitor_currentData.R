@@ -125,7 +125,7 @@ monitor_currentData <- function(ws_monitor,
   currentData$yesterday_PM2.5_24hr <- as.numeric(NA)
   
   # Monitoring Site Url
-  currentData$monitoringSiteUrl = paste0(monitoringUrlBase,monitorID)
+  currentData$monitoringSiteUrl = paste0(monitoringUrlBase,currentData$monitorID)
   
   # Values that must be calculated per-monitoring-site
   for ( monitorID in currentData$monitorID ) {
