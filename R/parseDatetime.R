@@ -47,6 +47,18 @@
 #'
 #' @examples
 #' starttime <- parseDatetime(2015080718, timezone = "America/Los_Angeles")
+#' datetimes <- parseDatetime(c("20181014 12", "20181015 12", "20181016 12"))
+#'
+#' \dontrun {
+#' badInput <- c("20181013", NA, "20181015", "181016", "10172018")
+#'
+#' # This will return a vector with the date that were able to parse
+#' parseDatetime(badInput, expectAll = FALSE)
+#'
+#' # This will return an error, since some non-NA indices didn't parse
+#' parseDatetime(badInput, expectAll = TRUE)
+#' }
+#'
 
 parseDatetime <- function(datetime, timezone = "UTC", expectAll = FALSE) {
 
