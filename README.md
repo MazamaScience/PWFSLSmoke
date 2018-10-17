@@ -3,9 +3,8 @@
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
 [![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
 
-# PWFSLSmoke R Package
+# PWFSLSmoke R Package (version-1.0)
 
-----
 > **NOTE:  This is branch `version-1.0` which is associated with calendar year 2018.**
 ----
 
