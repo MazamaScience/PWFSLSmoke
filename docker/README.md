@@ -11,7 +11,7 @@ make operational_build
 This is just shorthand for the following `docker build` line:
 
 ```
-$ docker build --no-cache -t mazamascience/pwfslsmoke:1.0.34 -t mazamascience/pwfslsmoke:latest-2018 .
+$ docker build --no-cache -t mazamascience/pwfslsmoke:1.0.34 mazamascience/pwfslsmoke:latest-2018 .
 $ docker images
 REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
 mazamascience/pwfslsmoke       latest-2018         f4945f0c24e6        4 minutes ago       1.75GB
@@ -29,25 +29,23 @@ Spatial data required by the **MazamaSpatialUtils** package already exists in th
 Having built the docker image we can now test it. The following output was obtained on May 08, 2018:
 
 ```
-docker run -ti mazamascience/pwfslsmoke R --vanilla
+docker run -ti mazamascience/pwfslsmoke:1.0.34 R --vanilla
 ...
 library(PWFSLSmoke)
-airnow <- airnow_loadLatest()
-wa <- monitor_subset(airnow, stateCodes='wa')
-maxValues <- sort(apply(wa$data[,-1], 2, max, na.rm=TRUE), decreasing=TRUE)[1:6]
-ids <- names(maxValues)
-df <- wa$meta[ids,c('siteName','countyName')]
-df$max_pm25 <- maxValues
-print(df)
-                                  siteName countyName max_pm25
-530650002_01       Wellpinit-Spokane Tribe    Stevens    125.0
-530330030_01         Seattle-10th & Weller       King     28.0
-530639999_01 Airway Heights-West 12th (US)    Spokane     26.0
-530470010_01           Winthrop-Chewuch Rd   Okanogan     25.8
-530331011_01            Seattle-South Park       King     25.5
-530330057_01              Seattle-Duwamish       King     25.1
+wrcc <- wrcc_loadLatest()
+df <- monitor_currentData(wrcc)
+df$monitoringSiteUrl
+ [1] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.124_lat_39.714_wrcc.sm11"
+ [2] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.124_lat_39.714_wrcc.sm13"
+ [3] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.930_lat_40.077_wrcc.sm15"
+ [4] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.124_lat_39.714_wrcc.sm19"
+ [5] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.106.098_lat_40.074_wrcc.sm21"
+ [6] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.124_lat_39.714_wrcc.sm24"
+ [7] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.124_lat_39.714_wrcc.sm69"
+ [8] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.124_lat_39.714_wrcc.s215"
+ [9] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.105.504_lat_39.514_wrcc.s216"
+[10] "http://tools.airfire.org/monitoring/v4/#!/?monitors=lon_.108.516_lat_37.461_wrcc.e925"
 ```
-
 
 ## Publish the Docker Image ##
 
