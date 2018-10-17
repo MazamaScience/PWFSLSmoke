@@ -5,10 +5,13 @@
 
 # PWFSLSmoke R Package
 
+> NOTE:  This is branch `version-1.0` which is associated with calendar year 2018.
+
+----
+
 ```
 Utilities for Working with PM2.5 Air Quality Monitoring Data
 ```
-> NOTE:  This is branch `version-1.0` which is associated with calendar year 2018.
 
 ## Background
 
