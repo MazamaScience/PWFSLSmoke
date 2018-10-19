@@ -9,6 +9,16 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.1 -- Initial refactoring for 2019 fire season
 
+### PWFSLSmoke 1.1.6
+
+Update implementation and functionality of `parseDatetime`, including:
+
+ * actual parsing done by `lubridate::parse_date_time`
+ * vectorized for inputs
+ * handle any format of **Ymd[_HMS_]** (including mutlitple formats within same input)
+ * new parameter `expectAll`, which controls how strict the parsing should be about accepting failures
+ * added unit tests
+
 ### PWFSLSmoke 1.1.5
 
  * add `testthat` framework to package
