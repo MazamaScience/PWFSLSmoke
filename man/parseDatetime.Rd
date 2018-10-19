@@ -7,8 +7,8 @@
 parseDatetime(datetime, timezone = "UTC", expectAll = FALSE)
 }
 \arguments{
-\item{datetime}{vector of character or integer datetimes in YYYYMMDD[HHMMSS]
-format (or POSIXct).}
+\item{datetime}{vector of character or integer datetimes in Ymd[HMS] format
+(or POSIXct).}
 
 \item{timezone}{Olson timezone at the location of interest (default "UTC").}
 
@@ -19,8 +19,8 @@ any elements fail to parse (default \code{FALSE}).}
 POSIXct datetimes.
 }
 \description{
-Transforms numeric and string representations of YYYYMMDD[HHMMSS] datetimes
-to \code{POSIXct} format.
+Transforms numeric and string representations of Ymd[HMS] datetimes to
+\code{POSIXct} format.
 
 Ymd, YmdH, YmdHM, and YmdHMS formats are understood, where:
 
@@ -51,12 +51,24 @@ represented as decimal values with no separation (ex: 20181012,
 \section{Implementation}{
 
 \code{parseDatetime} is essentially a wrapper around
-\code{\link[packagename]{functioname}}, handling which formats we want to
+\code{\link[lubridate]{parse_date_time}}, handling which formats we want to
 account for.
 }
 
 \examples{
 starttime <- parseDatetime(2015080718, timezone = "America/Los_Angeles")
+datetimes <- parseDatetime(c("20181014 12", "20181015 12", "20181016 12"))
+
+\dontrun{
+badInput <- c("20181013", NA, "20181015", "181016", "10172018")
+
+# This will return a vector with the date that were able to parse
+parseDatetime(badInput, expectAll = FALSE)
+
+# This will return an error, since some non-NA indices didn't parse
+parseDatetime(badInput, expectAll = TRUE)
+}
+
 }
 \seealso{
 \code{\link[lubridate]{parse_date_time}} for implementation details.

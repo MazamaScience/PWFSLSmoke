@@ -32,7 +32,7 @@
 #'
 #' @section Implementation:
 #' \code{parseDatetime} is essentially a wrapper around
-#' \code{\link[lubridate]{pares_date_time}}, handling which formats we want to
+#' \code{\link[lubridate]{parse_date_time}}, handling which formats we want to
 #' account for.
 #'
 #' @param datetime vector of character or integer datetimes in Ymd[HMS] format
@@ -49,7 +49,7 @@
 #' starttime <- parseDatetime(2015080718, timezone = "America/Los_Angeles")
 #' datetimes <- parseDatetime(c("20181014 12", "20181015 12", "20181016 12"))
 #'
-#' \dontrun {
+#' \dontrun{
 #' badInput <- c("20181013", NA, "20181015", "181016", "10172018")
 #'
 #' # This will return a vector with the date that were able to parse
