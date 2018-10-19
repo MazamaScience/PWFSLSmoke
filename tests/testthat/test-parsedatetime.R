@@ -27,3 +27,14 @@ test_that("POSIXct inputs are unaltered", {
   )
 
 })
+
+test_that("Fail on some NA outputs when ExpectAll is true", {
+
+  input <- c("20181013", NA, "20181015", "181016", "10172018")
+
+  expect_error(
+    parseDatetime(input, expectAll = TRUE),
+    "2 datetimes failed to parse (at indices: 4, 5).", fixed = TRUE
+  )
+
+})
