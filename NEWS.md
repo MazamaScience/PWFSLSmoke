@@ -9,6 +9,13 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.1 -- Initial refactoring for 2019 fire season
 
+### PWFSLSmoke 1.1.7
+
+ * added `loadData()` to load monitoring data covering any time period within a
+ single year
+ * fixed `monitor_join()` to skip over monitorIDs that are not found in either
+ of the monitor objects being joined together
+
 ### PWFSLSmoke 1.1.6
 
 Update implementation and functionality of `parseDatetime`, including:
