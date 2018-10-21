@@ -1,39 +1,78 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Load Recent AIRSIS Monitoring Data
-#' @param baseUrl location of the AIRSIS latest data file
+#' @title Load recent AIRSIS monitoring data
+#' @param parameter Parameter of interest.
+#' @param baseUrl Base URL for 'daily' AirNow data files.
+#' @param dataDir Local directory containing 'daily' data files.
 #' @return A \emph{ws_monitor} object with AIRSIS data.
-#' @description Loads pre-generated .RData files containing the most recent AIRSIS data.
-#' 
-#' The daily files are generated once a day, shortly after midnight and contain data for the
-#' previous 45 days. 
-#' 
+#' @description Loads pre-generated .RData files containing recent
+#' AIRSIS data.
+#'
+#' If \code{dataDir} is defined, data will be loaded from this local
+#' dirctory. Otherwise, data will be loaded from the monitoring data repository
+#' maintained by PWFSL.
+#'
+#' The daily files loaded by this function are updated once a day, shortly
+#' after midnight and contain data for the previous 45 days.
+#'
 #' For the most recent data, use \code{airsis_loadLatest()}.
-#' 
-#' Avaialble RData and associated log files can be seen at:
+#'
+#' For data extended more than 45 days into the past, use \code{airsis_load()}.
+#'
+#' AIRSIS parameters include the following:
+#' \enumerate{
+# #' \item{BARPR}
+# #' \item{BC}
+# #' \item{CO}
+# #' \item{NO}
+# #' \item{NO2}
+# #' \item{NO2Y}
+# #' \item{NO2X}
+# #' \item{NOX}
+# #' \item{NOOY}
+# #' \item{OC}
+# #' \item{OZONE}
+# #' \item{PM10}
+#' \item{PM2.5}
+# #' \item{PRECIP}
+# #' \item{RHUM}
+# #' \item{SO2}
+# #' \item{SRAD}
+# #' \item{TEMP}
+# #' \item{UV-AETH}
+# #' \item{WD}
+# #' \item{WS}
+#' }
+#'
+#' Avaialble AIRSIS RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}
 #' @seealso \code{\link{airsis_load}}
 #' @seealso \code{\link{airsis_loadLatest}}
 #' @examples
 #' \dontrun{
-#' airsis <- airsis_loadDaily()
+#' airsis_loadDaily() %>%
+#'   monitor_subset(stateCodes=CONUS) %>%
+#'   monitorMap()
 #' }
 
-airsis_loadDaily <- function(baseUrl='https://haze.airfire.org/monitoring/AIRSIS/RData/') {
-  
-  # Create filepath
-  filepath <- paste0("latest/airsis_PM2.5_latest45.RData")
-  
-  # Define a 'connection' object so we can be sure to close it no matter what happens
-  conn <- url(paste0(baseUrl,filepath))
-  result <- try( suppressWarnings(ws_monitor <- get(load(conn))),
-                 silent=TRUE )
-  close(conn)
-  
-  if ( "try-error" %in% class(result) ) {
-    stop(paste0("URL unavailable: ",paste0(baseUrl,filepath)), call.=FALSE)
+airsis_loadDaily <- function(parameter = 'PM2.5',
+                             baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
+                             dataDir = NULL) {
+
+  # Validate parameter
+  validParams <- c("PM2.5")
+  if ( !parameter %in% validParams ) {
+    paramsString <- paste(validParams, collapse=", ")
+    stop(paste0("'", parameter,
+                "' is not a supported parameter. Use 'parameter = ",
+                paramsString, "'"), call.=FALSE)
   }
-  
-  
+
+  # Create filename according to the PWFSLSmoke naming scheme
+  filename <- paste0("airsis_", parameter, "_latest45.RData")
+
+  ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+
   return(ws_monitor)
+
 }

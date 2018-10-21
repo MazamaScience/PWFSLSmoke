@@ -2,31 +2,50 @@
 % Please edit documentation in R/airsis_loadDaily.R
 \name{airsis_loadDaily}
 \alias{airsis_loadDaily}
-\title{Load Recent AIRSIS Monitoring Data}
+\title{Load recent AIRSIS monitoring data}
 \usage{
-
-  airsis_loadDaily(baseUrl = "https://haze.airfire.org/monitoring/AIRSIS/RData/")
+airsis_loadDaily(parameter = "PM2.5",
+  baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
+  dataDir = NULL)
 }
 \arguments{
-\item{baseUrl}{location of the AIRSIS latest data file}
+\item{parameter}{Parameter of interest.}
+
+\item{baseUrl}{Base URL for 'daily' AirNow data files.}
+
+\item{dataDir}{Local directory containing 'daily' data files.}
 }
 \value{
 A \emph{ws_monitor} object with AIRSIS data.
 }
 \description{
-Loads pre-generated .RData files containing the most recent AIRSIS data.
+Loads pre-generated .RData files containing recent
+AIRSIS data.
 
-The daily files are generated once a day, shortly after midnight and contain data for the
-previous 45 days. 
+If \code{dataDir} is defined, data will be loaded from this local
+dirctory. Otherwise, data will be loaded from the monitoring data repository
+maintained by PWFSL.
+
+The daily files loaded by this function are updated once a day, shortly
+after midnight and contain data for the previous 45 days.
 
 For the most recent data, use \code{airsis_loadLatest()}.
 
-Avaialble RData and associated log files can be seen at:
+For data extended more than 45 days into the past, use \code{airsis_load()}.
+
+AIRSIS parameters include the following:
+\enumerate{
+\item{PM2.5}
+}
+
+Avaialble AIRSIS RData and associated log files can be seen at:
 \href{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}
 }
 \examples{
 \dontrun{
-airsis <- airsis_loadDaily()
+airsis_loadDaily() \%>\%
+  monitor_subset(stateCodes=CONUS) \%>\%
+  monitorMap()
 }
 }
 \seealso{

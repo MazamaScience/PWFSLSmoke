@@ -1,11 +1,24 @@
 context("loadData")
 
-test_that("Times are validated", {
-  now <- lubridate::now()
-  expect_error(loadData())
-  expect_error(loadData(20180601))
-  # bad date
-  expect_error(loadData(20180601,20181301))
-  # joining annual and latest without monitorIDs
-  expect_error(loadData(20180101, now))
+test_that("Bad input generates errors", {
+  expect_error( airnow_loadLatest(parameter = "DUMMY") )
+  expect_error( airnow_loadLatest(dataDir = "/DUMMY") )
+  expect_error( airsis_loadLatest(parameter = "DUMMY") )
+  expect_error( airsis_loadLatest(dataDir = "/DUMMY") )
+  expect_error( wrcc_loadLatest(parameter = "DUMMY") )
+  expect_error( wrcc_loadLatest(dataDir = "/DUMMY") )
+  expect_error( airnow_loadDaily(parameter = "DUMMY") )
+  expect_error( airnow_loadDaily(dataDir = "/DUMMY") )
+  expect_error( airsis_loadDaily(parameter = "DUMMY") )
+  expect_error( airsis_loadDaily(dataDir = "/DUMMY") )
+  expect_error( wrcc_loadDaily(parameter = "DUMMY") )
+  expect_error( wrcc_loadDaily(dataDir = "/DUMMY") )
+  # On CRAN -- skip all internet based testing
+  skip_on_cran()
+  expect_error( airnow_loadLatest(baseUrl = "https://haze.airfire.org/DUMMY") )
+  expect_error( airsis_loadLatest(baseUrl = "https://haze.airfire.org/DUMMY") )
+  expect_error( wrcc_loadLatest(baseUrl = "https://haze.airfire.org/DUMMY") )
+  expect_error( airnow_loadDaily(baseUrl = "https://haze.airfire.org/DUMMY") )
+  expect_error( airsis_loadDaily(baseUrl = "https://haze.airfire.org/DUMMY") )
+  expect_error( wrcc_loadDaily(baseUrl = "https://haze.airfire.org/DUMMY") )
 })

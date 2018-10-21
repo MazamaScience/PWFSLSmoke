@@ -2,39 +2,50 @@
 % Please edit documentation in R/airnow_loadDaily.R
 \name{airnow_loadDaily}
 \alias{airnow_loadDaily}
-\title{Load Recent Processed AirNow Monitoring Data}
+\title{Load recent AirNow monitoring data}
 \usage{
 airnow_loadDaily(parameter = "PM2.5",
-  baseUrl = "https://haze.airfire.org/monitoring/AirNow/RData/")
+  baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
+  dataDir = NULL)
 }
 \arguments{
-\item{parameter}{parameter of interest}
+\item{parameter}{Parameter of interest.}
 
-\item{baseUrl}{base URL for AirNow data}
+\item{baseUrl}{Base URL for 'daily' AirNow data files.}
+
+\item{dataDir}{Local directory containing 'daily' data files.}
 }
 \value{
 A \emph{ws_monitor} object with AirNow data.
 }
 \description{
-Loads pre-generated .RData files containing recent AirNow data.
+Loads pre-generated .RData files containing recent
+AirNow data.
 
-The daily files are generated once a day, shortly after midnight and contain data for the
-previous 45 days. 
+If \code{dataDir} is defined, data will be loaded from this local
+dirctory. Otherwise, data will be loaded from the monitoring data repository
+maintained by PWFSL.
+
+The daily files loaded by this function are updated once a day, shortly
+after midnight and contain data for the previous 45 days.
 
 For the most recent data, use \code{airnow_loadLatest()}.
+
+For data extended more than 45 days into the past, use \code{airnow_load()}.
 
 AirNow parameters include the following:
 \enumerate{
 \item{PM2.5}
 }
 
-Avaialble RData and associated log files can be seen at:
+Available AirNow RData and associated log files can be seen at:
 \href{https://haze.airfire.org/monitoring/AirNow/RData/latest}{https://haze.airfire.org/monitoring/AirNow/RData/latest}
 }
 \examples{
 \dontrun{
-airnow <- airnow_loadDaily()
-airnow \%>\% monitor_subset(stateCodes=CONUS) \%>\% monitorMap()
+airnow_loadDaily() \%>\%
+  monitor_subset(stateCodes=CONUS) \%>\%
+  monitorMap()
 }
 }
 \seealso{

@@ -2,21 +2,36 @@
 % Please edit documentation in R/airnow_loadLatest.R
 \name{airnow_loadLatest}
 \alias{airnow_loadLatest}
-\title{Load Most Recent Processed AirNow Monitoring Data}
+\title{Load most recent AirNow monitoring data}
 \usage{
 airnow_loadLatest(parameter = "PM2.5",
-  baseUrl = "https://haze.airfire.org/monitoring/AirNow/RData/")
+  baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
+  dataDir = NULL)
 }
 \arguments{
-\item{parameter}{parameter of interest}
+\item{parameter}{Parameter of interest.}
 
-\item{baseUrl}{base URL for AirNow data}
+\item{baseUrl}{Base URL for 'daily' AirNow data files.}
+
+\item{dataDir}{Local directory containing 'daily' data files.}
 }
 \value{
 A \emph{ws_monitor} object with AirNow data.
 }
 \description{
-Loads pre-generated .RData files containing the most recent AirNow data.
+Loads pre-generated .RData files containing the most recent
+AirNow data.
+
+If \code{dataDir} is defined, data will be loaded from this local
+dirctory. Otherwise, data will be loaded from the monitoring data repository
+maintained by PWFSL.
+
+The  files loaded by this function are updated multiple times an hour and
+contain data for the previous 10 days.
+
+For daily updates covering the most recent 45 days, use \code{airnow_loadDaily()}.
+
+For data extended more than 45 days into the past, use \code{airnow_load()}.
 
 AirNow parameters include the following:
 \enumerate{
@@ -28,10 +43,9 @@ Avaialble RData and associated log files can be seen at:
 }
 \examples{
 \dontrun{
-airnow <- airnow_loadLatest()
-ca_mean <- monitor_subset(airnow, stateCodes='CA') \%>\%
-           monitor_collapse()
-monitorPlot_timeseries(ca_mean, shadedNight=TRUE)
+airnow_loadLatest() \%>\%
+  monitor_subset(stateCodes=CONUS) \%>\%
+  monitorMap()
 }
 }
 \seealso{

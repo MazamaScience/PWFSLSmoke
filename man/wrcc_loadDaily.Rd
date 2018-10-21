@@ -2,31 +2,50 @@
 % Please edit documentation in R/wrcc_loadDaily.R
 \name{wrcc_loadDaily}
 \alias{wrcc_loadDaily}
-\title{Load Recent WRCC Monitoring Data}
+\title{Load recent WRCC monitoring data}
 \usage{
-
-  wrcc_loadDaily(baseUrl = "https://haze.airfire.org/monitoring/WRCC/RData/")
+wrcc_loadDaily(parameter = "PM2.5",
+  baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
+  dataDir = NULL)
 }
 \arguments{
-\item{baseUrl}{location of the WRCC latest data file}
+\item{parameter}{Parameter of interest.}
+
+\item{baseUrl}{Base URL for 'daily' AirNow data files.}
+
+\item{dataDir}{Local directory containing 'daily' data files.}
 }
 \value{
 A \emph{ws_monitor} object with WRCC data.
 }
 \description{
-Loads pre-generated .RData files containing the most recent WRCC data.
+Loads pre-generated .RData files containing recent
+WRCC data.
 
-The daily files are generated once a day, shortly after midnight and contain data for the
-previous 45 days. 
+If \code{dataDir} is defined, data will be loaded from this local
+dirctory. Otherwise, data will be loaded from the monitoring data repository
+maintained by PWFSL.
+
+The daily files loaded by this function are updated once a day, shortly
+after midnight and contain data for the previous 45 days.
 
 For the most recent data, use \code{wrcc_loadLatest()}.
 
-Avaialble RData and associated log files can be seen at:
+For data extended more than 45 days into the past, use \code{wrcc_load()}.
+
+WRCC parameters include the following:
+\enumerate{
+\item{PM2.5}
+}
+
+Avaialble WRCC RData and associated log files can be seen at:
 \href{https://haze.airfire.org/monitoring/WRCC/RData/latest}{https://haze.airfire.org/monitoring/WRCC/RData/latest}
 }
 \examples{
 \dontrun{
-wrcc <- wrcc_loadDaily()
+wrcc_loadDaily() \%>\%
+  monitor_subset(stateCodes=CONUS) \%>\%
+  monitorMap()
 }
 }
 \seealso{
