@@ -7,6 +7,8 @@
 #' @param parameter Parameter of interest.
 #' @param baseUrl Base URL for 'daily' AirNow data files.
 #' @param dataDir Local directory containing 'daily' data files.
+#' @param aqsPreference Preferred data source for AQS data when annual data
+#' files are available from both `epa` and `airnow`.
 #' @return A \emph{ws_monitor} object with PM2.5 monitoring data.
 #' @description Wrapper function to load and combine annual
 #' data from AirNow, AIRSIS and WRCC.
@@ -62,7 +64,8 @@
 monitor_loadAnnual <- function(year = NULL,
                                parameter='PM2.5',
                                baseUrl='https://haze.airfire.org/monitoring',
-                               dataDir = NULL) {
+                               dataDir = NULL,
+                               aqsPreference = "airnow") {
 
   # Validate parameters --------------------------------------------------------
 
@@ -75,34 +78,66 @@ monitor_loadAnnual <- function(year = NULL,
 
   # Load data ------------------------------------------------------------------
 
-  # Only add to the monitorsList if data are available
-  monitorsList <- list()
+  # Cutoff years
+  firstAirnowYear <- 2016
+  firstAirsisYear <- 2004
+  firstWrccYear <- 2010
+  firstEpa88101Year <- 2008
+  firstEpa88502Year <- 1998
+  lastYear <- lubridate::now() %>% lubridate::year() - 1
+
+  # Only add to the monitorList if data are available
+  monitorList <- list()
 
   # AirNow annual files start in 2016
-  if ( as.numeric(year) >= 2016 ) {
-    monitorsList$airnow <- airnow_loadAnnual(year, parameter, baseUrl, dataDir)
+  if ( as.numeric(year) >= firstAirnowYear ) {
+    if ( aqsPreference == 'airnow' || year > lastYear ) {
+      monitorList$airnow <- airnow_loadAnnual(year, parameter, baseUrl, dataDir)
+    }
   }
 
   # AIRSIS annual files start in 2004
-  if ( as.numeric(year >= 2004) ) {
-    monitorsList$airsis <- airsis_loadAnnual(year, parameter, baseUrl, dataDir)
+  if ( as.numeric(year >= firstAirsisYear) ) {
+    monitorList$airsis <- airsis_loadAnnual(year, parameter, baseUrl, dataDir)
   }
 
   # WRCC annual files start in 2010
-  if ( as.numeric(year >= 2010) ) {
-    monitorsList$wrcc <- wrcc_loadAnnual(year, parameter, baseUrl, dataDir)
+  if ( as.numeric(year >= firstWrccYear) ) {
+    monitorList$wrcc <- wrcc_loadAnnual(year, parameter, baseUrl, dataDir)
   }
 
-  # EPA annual files
-  lastYear <- lubridate::now() %>% lubridate::year() - 1
-  if ( year %in% 2008:lastYear) {
-    monitorsList$epa_88101 <- epa_loadAnnual(year, "88101", baseUrl, dataDir)
+  # NOTE:  EPA 88101 and 88502 share monitor IDs and usually need to go
+  # NOTE:  a monitor_join() step. Because of the fact that monitor_join()
+  # NOTE:  can only handle two monitors at a time, we combine the two epa
+  # NOTE:  ws_monitor objects by themselves before combining them with other
+  # NOTE:  ws_monitor objects that all use different monitorIDs.
+
+  # TODO:  The epa_PM2.5_88502_2014.RData file is missing
+
+  # Assemble EPA ws_monitor object ---------------------------------------------
+  epaList <- list()
+  if ( year %in% firstEpa88101Year:lastYear ) {
+    if ( aqsPreference == "epa" || year < firstAirnowYear ) {
+      result <- try({
+        epaList$epa_88101 <- epa_loadAnnual(year, "88101", baseUrl, dataDir)
+      }, silent = FALSE)
+    }
   }
-  if ( year %in% 1998:lastYear) {
-    monitorsList$epa_88502 <- epa_loadAnnual(year, "88502", baseUrl, dataDir)
+  if ( year %in% firstEpa88502Year:lastYear ) {
+    if ( aqsPreference == "epa" || year < firstAirnowYear ) {
+      result <- try({
+        epaList$epa_88502 <- epa_loadAnnual(year, "88502", baseUrl, dataDir)
+      }, silent = FALSE)
+    }
+  }
+  if ( length(epaList) == 2 ) {
+    monitorList$epa <- monitor_combine(epaList)
+  } else if  (length(epaList) == 1 ) {
+    monitorList$epa <- epaList[[1]]
   }
 
-  ws_monitor <- monitor_combine(monitorsList)
+  # Final combination
+  ws_monitor <- monitor_combine(monitorList)
 
   return(ws_monitor)
 
