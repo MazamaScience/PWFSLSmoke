@@ -11,8 +11,9 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ### PWFSLSmoke 1.1.8
 
- * added new `monitor_loadLatest()` and `monitor_loadDaily()` functions
- * refactored `airnow`, `airsis` and `wrcc` `~_load~()` functions to include
+ * `%>%` is now exported
+ * added new `monitor_loadLatest()`, `monitor_loadDaily()` and `monitor_loadAnnual()` functions
+ * refactored `airnow`, `airsis`, `epa` and `wrcc` `~_load~()` functions to include
  a `dataDir` parameter to allow data loading from a local directory rathern than
  always from the internet. the `airsis` and `wrcc` functions now support the
  (unused) `parameter` argument to match the `airnow` function signature
