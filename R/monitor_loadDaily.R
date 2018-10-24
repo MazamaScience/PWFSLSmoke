@@ -64,7 +64,7 @@
 #' }
 
 monitor_loadDaily <- function(parameter='PM2.5',
-                              baseUrl='https://haze.airfire.org/monitoring/latest/RData/',
+                              baseUrl='https://haze.airfire.org/monitoring/latest/RData',
                               dataDir = NULL) {
 
   airnow <- airnow_loadDaily(parameter, baseUrl, dataDir)

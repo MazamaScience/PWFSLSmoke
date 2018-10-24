@@ -2,7 +2,7 @@
 #' @keywords AIRSIS
 #' @keywords WRCC
 #' @export
-#' @title Load Recent PM2.5 Monitoring Data
+#' @title Load most recent PM2.5 monitoring data
 #' @param parameter Parameter of interest.
 #' @param baseUrl Base URL for 'daily' AirNow data files.
 #' @param dataDir Local directory containing 'daily' data files.
@@ -24,7 +24,7 @@
 #' The files loaded by this function are updated multiple times an hour and
 #' contain data for the previous 10 days.
 #'
-#' For daily updates covering the most recent 45 days, use \code{monitor_loadLatest()}.
+#' For daily updates covering the most recent 45 days, use \code{monitor_loadDaily()}.
 #'
 #' For data extended more than 45 days into the past, use \code{monitor_load()}.
 #'
