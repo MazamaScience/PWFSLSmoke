@@ -9,6 +9,11 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 
 ## Version 1.1 -- Initial refactoring for 2019 fire season
 
+### PWFSLSmoke 1.1.9
+
+ * removed `airsis` and `wrcc` functions deailing with processing data from 
+ 'DUMP' files
+
 ### PWFSLSmoke 1.1.8
 
  * `%>%` is now exported
