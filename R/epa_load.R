@@ -7,7 +7,7 @@
 #' @return A \emph{ws_monitor} object with EPA data for an entire year.
 #' @description Loads a pre-generated .RData file containing a year's worth of
 #' monitoring data.
-#' 
+#'
 #' EPA parameter codes include:
 #' \enumerate{
 # #' \item{44201}{ -- Ozone}
@@ -40,11 +40,11 @@
 epa_load <- function(year=strftime(lubridate::now(),"%Y",tz="UTC"),
                      parameterCode='88101',
                      baseUrl='https://haze.airfire.org/monitoring/EPA/RData/') {
-  
+
   # Sanity Check -- validate parameter code
   validParameterCodes <- c("44201", "42401", "42101", "42602", "88101", "88502", "81102", "SPEC",
                            "WIND", "TEMP", "PRESS", "RH_DP", "HAPS", "VOCS", "NONOxNOy")
-  
+
   if ( is.null(parameterCode) ) {
     stop("Required parameter 'parameterCode' is missing")
   } else {
@@ -53,19 +53,19 @@ epa_load <- function(year=strftime(lubridate::now(),"%Y",tz="UTC"),
       stop(paste0("parameterCode '",parameterCode,"' is not in: ", paste0(validParameterCodes, collapse=", ")))
     }
   }
-  
+
   # Sanity check: year is supplied and valid
   if ( is.null(year) ) {
     stop(paste0("Required parameter 'year' is missing"))
   } else if ( year < 1990 ) {
     stop(paste0("No data available before 1990"))
   } else if ( (parameterCode=="88101" && year<2008) ||
-              (parameterCode=="88502" && year<1998) || 
+              (parameterCode=="88502" && year<1998) ||
               (parameterCode=="SPEC" && year<2001) ||
               (parameterCode=="HAPS" && year<1993) ) {
     stop(sprintf("No data available for parameter code %s in year %i", parameterCode, year))
   }
-  
+
   # Create a filename based on the parameter code
   if ( parameterCode %in% c('88101','88502') ) {
     filepath <- paste0(year,'/epa_PM2.5_',parameterCode,'_',year,'.RData')
@@ -73,18 +73,18 @@ epa_load <- function(year=strftime(lubridate::now(),"%Y",tz="UTC"),
     stop(paste0("PWFSL has not yet processed data for parameterCode '",parameterCode,"'"))
   }
 
-  
+
   # Define a 'connection' object so we can be sure to close it no matter what happens
   conn <- url(paste0(baseUrl,filepath))
   result <- try( suppressWarnings(ws_monitor <- get(load(conn))),
                  silent=TRUE )
   close(conn)
-  
+
   if ( "try-error" %in% class(result) ) {
     stop(paste0("No EPA data available for ",year), call.=FALSE)
   }
-  
-  
+
+
   return(ws_monitor)
-  
+
 }

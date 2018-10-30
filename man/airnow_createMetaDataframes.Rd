@@ -18,7 +18,7 @@ airnow_createMetaDataframes(parameters = NULL,
 List of 'meta' dataframes with site metadata for unique parameters (e.g: "PM2.5", "NOX").
 }
 \description{
-The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 
+The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function
 to download site metadata from AirNow and restructures that data into a format that is compatible
 with the PWFSLSmoke package \emph{ws_monitor} data model.
 

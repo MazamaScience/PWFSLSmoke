@@ -1,5 +1,6 @@
 #' @keywords AirNow
 #' @import dplyr
+#' @import MazamaCoreUtils
 #' @import MazamaSpatialUtils
 #' @export
 #' @title Create Dataframes of AirNow Site Location Metadata
@@ -7,10 +8,10 @@
 #' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'AIRNOW'}
 #' @param addGoogleMeta logicial specifying wheter to use Google elevation and reverse geocoding services
 #' @return List of 'meta' dataframes with site metadata for unique parameters (e.g: "PM2.5", "NOX").
-#' @description The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function 
+#' @description The \code{airnow_createMetaDataframes()} function uses the \code{airnow_downloadSites()} function
 #' to download site metadata from AirNow and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
-#' 
+#'
 #' The \code{meta} dataframe in the \emph{ws_monitor} data model has metadata associated with monitoring
 #' site locations for a specific parameter and must contain at least the following columns:
 #' \itemize{
@@ -22,9 +23,9 @@
 #'   \item{countryCode -- ISO 3166-1 alpha-2}
 #'   \item{stateCode -- ISO 3166-2 alpha-2}
 #' }
-#' 
+#'
 #' The \code{meta} dataframe will have rownames matching \code{monitorID}.
-#' 
+#'
 #' This function takes a dataframe obtained from AirNowTech's
 #' \code{monitoring_site_locations.dat} file, splits it up into separate dataframes,
 #' one for each parameter, and performs the following cleanup:
@@ -32,7 +33,7 @@
 #'   \item{convert incorrect values to \code{NA} e.g. longitude=0 & latitude=0}
 #'   \item{add timezone information}
 #' }
-#' 
+#'
 #' Parameters included in AirNow data include at least the following list:
 #' \enumerate{
 #' \item{BARPR}
@@ -57,7 +58,7 @@
 #' \item{WD}
 #' \item{WS}
 #' }
-#' 
+#'
 #' Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
 #' @seealso \link{airnow_downloadSites}
 #' @examples
@@ -68,11 +69,11 @@
 airnow_createMetaDataframes <- function(parameters=NULL,
                                         pwfslDataIngestSource='AIRNOW',
                                         addGoogleMeta=TRUE) {
-  
+
   # ----- Data Download -------------------------------------------------------
-  
+
   logger.debug("Downloading AirNow sites metadata ...")
-  
+
   # Create the tibble that holds a month worth of AirNow data
   result <- try( airnowTbl <- airnow_downloadSites(),
                  silent=TRUE)
@@ -81,15 +82,15 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     logger.error("Unable to obtain sites tibble: %s",err_msg)
     stop(paste0("Unable to obtain sites tibble: ",err_msg))
   }
-  
+
   logger.debug("Downloaded %d rows of AirNow sites metadata", nrow(airnowTbl))
 
   # > names(airnowTbl)
-  #  [1] "AQSID"          "parameterName"  "siteCode"       "siteName"       "status"        
-  #  [6] "agencyID"       "agencyName"     "EPARegion"      "latitude"       "longitude"     
-  # [11] "elevation"      "GMTOffsetHours" "countryCode"    "FIPSCMSACode"   "CMSAName"      
+  #  [1] "AQSID"          "parameterName"  "siteCode"       "siteName"       "status"
+  #  [6] "agencyID"       "agencyName"     "EPARegion"      "latitude"       "longitude"
+  # [11] "elevation"      "GMTOffsetHours" "countryCode"    "FIPSCMSACode"   "CMSAName"
   # [16] "FIPSMSACode"    "MSAName"        "FIPSStateCode"  "stateCode"      "GNISCountyCode"
-  # [21] "countyName"     "GNISCityCode"   "cityName"      
+  # [21] "countyName"     "GNISCityCode"   "cityName"
 
   # Get a list of parameters
   if ( is.null(parameters) ) {
@@ -102,7 +103,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
       logger.warn("Requested parameters not found in AirNow sites metadata: %s", paste0(invalidParameters, collapse=", "))
     }
   }
-  
+
   # Filter for parameters
   airnowTbl <- dplyr::filter(airnowTbl, airnowTbl$parameterName %in% parameters)
   if ( nrow(airnowTbl) == 0 ) {
@@ -110,50 +111,50 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     logger.error("No available sites for: %s",parametersString)
     stop(paste0("No available sites for: ",parametersString))
   }
-  
+
   # ----- Data cleanup --------------------------------------------------------
 
   # Convert "O3" to "OZONE" as is used in all AirNow data files
   mask <- airnowTbl$parameterName == "O3"
   airnowTbl$parameterName[mask] <- "OZONE"
-  
+
   # Remove ' ' from the end of MSAName
   airnowTbl$MSAName <- stringr::str_trim(airnowTbl$MSAName)
-  
+
   # Remove bad stateCodes
   mask <- airnowTbl$stateCode %in% c('N/A')
   airnowTbl$stateCode[mask] <- as.character(NA)
-  
+
   # Remove bad countyNames
   mask <- airnowTbl$countyName %in% c('N/A')
   airnowTbl$countyName[mask] <- as.character(NA)
-  
+
   # Convert countyName from all caps to title case
   airnowTbl$countyName <- stringr::str_to_title(airnowTbl$countyName)
-  
+
   # NOTE:  Don't stringr::str_to_title(siteName) because it might include all caps identifiers like "USFS"
-  
+
   # Remove bad locations
   mask <- airnowTbl$longitude == 0 & airnowTbl$latitude == 0
   badLocationIDs <- paste(airnowTbl$AQSID[mask], collapse=", ")
   logger.debug("Replacing (0,0) locations with (NA,NA) for AQSIDs: %s", badLocationIDs)
   airnowTbl$longitude[mask] <- as.numeric(NA)
   airnowTbl$latitude[mask] <- as.numeric(NA)
-  
+
   # Remove bad elevations (zero seems to be used as a missing value flag)
   mask <- airnowTbl$elevation <= 0.0
   airnowTbl$elevation[mask] <- as.numeric(NA)
   airnowTbl$elevation <- round(airnowTbl$elevation, 0) # round to whole meters
-  
+
   # ----- Subset and add Mazama metadata and USGS elevation -------------------
-  
+
   # Restrict to North America
   CANAMEX <- c('CA','US','MX')
   airnowTbl <- dplyr::filter(airnowTbl, airnowTbl$countryCode %in% CANAMEX)
-  
+
   # For later testing
   old_airnowTbl <- airnowTbl
-  
+
   # Do spatial searching only for unique locations to speed things up
   sitesUnique <- airnowTbl[!duplicated(airnowTbl$AQSID),]
   suppressWarnings({
@@ -170,7 +171,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   airnowTbl$countryCode <- NULL
   airnowTbl$stateCode <- NULL
   airnowTbl <- dplyr::left_join(airnowTbl, sitesUnique[,c('AQSID','countryCode','stateCode','timezone')], by='AQSID')
-  
+
   # Sanity check
   if ( any(airnowTbl$countryCode != old_airnowTbl$countryCode) ) {
     indices <- which(airnowTbl$countryCode != old_airnowTbl$countryCode)
@@ -186,28 +187,28 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     airnowTbl$countryCode[indices] <- old_airnowTbl$countryCode[indices]
     airnowTbl$stateCode[indices] <- old_airnowTbl$stateCode[indices]
   }
-  
+
   # TODO:  FIX THIS HACK
   # NOTE:  Best guess is that at this point all monitors currently reporting frin US.MX are actually in US.TX
   # NOTE:  CA.CC monitors are tougher
   # NOTE:  The AirNow sites file has at least half a dozen mismatches between lat-lon and asociated location information
   mask <- airnowTbl$countryCode == 'US' & airnowTbl$stateCode == 'MX'
   airnowTbl$stateCode[mask] <- 'TX'
-  
+
   # Set any remaining invalid stateCodes to NA
   mask <- airnowTbl$stateCode %in% c('CC')
   airnowTbl$stateCode[mask] <- as.character(NA)
 
   # ----- Data Reshaping ------------------------------------------------------
-  
+
   logger.debug("Reshaping AirNow sites metadata ...")
-  
+
   # Create empty list (no pre-allocation needed when lists are referenced by key instead of integer)
   dfList <- list()
-  
+
   # Use dplyr to seprate the data by parameter
   for ( parameter in parameters ) {
-    
+
     # Create a tbl with unique sites for this parameter
     tbl <- dplyr::filter(airnowTbl, airnowTbl$parameterName == parameter) %>%
       distinct()
@@ -215,23 +216,23 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     # Our tibble now contains the following columns:
     #
     # > names(airnowTbl)
-    #  [1] "AQSID"          "parameterName"  "siteCode"       "siteName"       "status"        
-    #  [6] "agencyID"       "agencyName"     "EPARegion"      "latitude"       "longitude"     
-    # [11] "elevation"      "GMTOffsetHours" "FIPSCMSACode"   "CMSAName"       "FIPSMSACode"   
-    # [16] "MSAName"        "FIPSStateCode"  "GNISCountyCode" "countyName"     "GNISCityCode"  
-    # [21] "cityName"       "countryCode"    "stateCode"      "timezone"      
+    #  [1] "AQSID"          "parameterName"  "siteCode"       "siteName"       "status"
+    #  [6] "agencyID"       "agencyName"     "EPARegion"      "latitude"       "longitude"
+    # [11] "elevation"      "GMTOffsetHours" "FIPSCMSACode"   "CMSAName"       "FIPSMSACode"
+    # [16] "MSAName"        "FIPSStateCode"  "GNISCountyCode" "countyName"     "GNISCityCode"
+    # [21] "cityName"       "countryCode"    "stateCode"      "timezone"
     #
     # The PWFSLSmoke v1.0 data model contains the following parameters
-    # 
+    #
     # > names(meta)
-    #  [1] "monitorID"             "longitude"             "latitude"              "elevation"            
-    #  [5] "timezone"              "countryCode"           "stateCode"             "siteName"             
-    #  [9] "agencyName"            "countyName"            "msaName"               "monitorType"          
-    # [13] "siteID"                "instrumentID"          "aqsID"                 "pwfslID"              
-    # [17] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
-    
+    #  [1] "monitorID"             "longitude"             "latitude"              "elevation"
+    #  [5] "timezone"              "countryCode"           "stateCode"             "siteName"
+    #  [9] "agencyName"            "countyName"            "msaName"               "monitorType"
+    # [13] "siteID"                "instrumentID"          "aqsID"                 "pwfslID"
+    # [17] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"
+
     meta <- createEmptyMetaDataframe(nrow(tbl))
-    
+
     # Assign data where we have it
     meta$longitude <- as.numeric(tbl$longitude)
     meta$latitude <- as.numeric(tbl$latitude)
@@ -251,17 +252,17 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     meta$pwfslDataIngestSource <- as.character(pwfslDataIngestSource)
     meta$telemetryAggregator <- as.character(NA)
     meta$telemetryUnitID <- as.character(NA)
-    
+
     meta$monitorID <- paste(meta$siteID, meta$instrumentID, sep='_')
-    
+
     # Assign rownames
     rownames(meta) <- meta$monitorID
-    
+
     dfList[[parameter]] <- meta
-    
+
   }
-  
+
   return(dfList)
-  
+
 }
 

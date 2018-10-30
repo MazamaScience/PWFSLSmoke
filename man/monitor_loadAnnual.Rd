@@ -5,7 +5,8 @@
 \title{Load annual PM2.5 monitoring data}
 \usage{
 monitor_loadAnnual(year = NULL, parameter = "PM2.5",
-  baseUrl = "https://haze.airfire.org/monitoring", dataDir = NULL)
+  baseUrl = "https://haze.airfire.org/monitoring", dataDir = NULL,
+  aqsPreference = "airnow")
 }
 \arguments{
 \item{year}{Desired year (integer or character representing YYYY).}
@@ -15,6 +16,9 @@ monitor_loadAnnual(year = NULL, parameter = "PM2.5",
 \item{baseUrl}{Base URL for 'daily' AirNow data files.}
 
 \item{dataDir}{Local directory containing 'daily' data files.}
+
+\item{aqsPreference}{Preferred data source for AQS data when annual data
+files are available from both `epa` and `airnow`.}
 }
 \value{
 A \emph{ws_monitor} object with PM2.5 monitoring data.
