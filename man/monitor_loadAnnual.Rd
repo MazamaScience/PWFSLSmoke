@@ -13,7 +13,7 @@ monitor_loadAnnual(year = NULL, parameter = "PM2.5",
 
 \item{parameter}{Parameter of interest.}
 
-\item{baseUrl}{Base URL for 'daily' AirNow data files.}
+\item{baseUrl}{Base URL for data files.}
 
 \item{dataDir}{Local directory containing 'daily' data files.}
 

@@ -5,7 +5,7 @@
 #' @title Load annual PM2.5 monitoring data
 #' @param year Desired year (integer or character representing YYYY).
 #' @param parameter Parameter of interest.
-#' @param baseUrl Base URL for 'daily' AirNow data files.
+#' @param baseUrl Base URL for data files.
 #' @param dataDir Local directory containing 'daily' data files.
 #' @param aqsPreference Preferred data source for AQS data when annual data
 #' files are available from both `epa` and `airnow`.

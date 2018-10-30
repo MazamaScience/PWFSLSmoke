@@ -1,6 +1,7 @@
 
 # PWFSLSmoke 1.1.9
 
+ * renamed `loadData()` to `monitor_load()`
  * new dependency on *MazamaCoreUtils*
  * removed code associated with `DUMP` files
 

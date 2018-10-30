@@ -3,16 +3,16 @@
 #' @keywords WRCC
 #' @export
 #' @title Load Recent PM2.5 Monitoring Data
-#' @description Wrapper function to load and combine the most recent 
+#' @description Wrapper function to load and combine the most recent
 #' data from AirNow, AIRSIS and WRCC:
-#' 
+#'
 #' \preformatted{
 #' airnow <- airnow_loadLatest()
 #' airsis <- airsis_loadLatest()
 #' wrcc <- wrcc_loadLatest()
 #' ws_monitor <- monitor_combine(list(airnow, airsis, wrcc))
 #' }
-#' 
+#'
 #' Avaialble RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/latest/RData/}{https://haze.airfire.org/monitoring/latest/RData/}
 #' @seealso \code{\link{airsis_loadDaily}}
@@ -23,12 +23,16 @@
 #' }
 
 loadLatest <- function() {
-  
-  airnow <- airnow_loadLatest()
-  airsis <- airsis_loadLatest()
-  wrcc <- wrcc_loadLatest()
-  ws_monitor <- monitor_combine(list(airnow, airsis, wrcc))
-  
+
+  # TODO:  .Deprecate() this function at some point
+
+  # airnow <- airnow_loadLatest()
+  # airsis <- airsis_loadLatest()
+  # wrcc <- wrcc_loadLatest()
+  # ws_monitor <- monitor_combine(list(airnow, airsis, wrcc))
+
+  ws_monitor <- monitor_loadLatest()
+
   return(ws_monitor)
-  
+
 }
