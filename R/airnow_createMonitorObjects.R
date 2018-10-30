@@ -1,5 +1,6 @@
 #' @keywords AirNow
 #' @export
+#' @import MazamaCoreUtils
 #' @title Obain AirNow Data and Create ws_monitor Objects
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
@@ -7,10 +8,10 @@
 #' @param zeroMinimum logical specifying whether to convert negative values to zero
 #' @param addGoogleMeta logicial specifying wheter to use Google elevation and reverse geocoding services
 #' @return List where each element contains a \emph{ws_monitor} object for a unique parameter (e.g: "PM2.5", "NOX").
-#' @description This function uses the \link{airnow_downloadParseData} function 
+#' @description This function uses the \link{airnow_downloadParseData} function
 #' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
-#' 
+#'
 #' AirNow data parameters include at least the following list:
 #' \enumerate{
 #' \item{BARPR}
@@ -35,7 +36,7 @@
 #' \item{WD}
 #' \item{WS}
 #' }
-#' 
+#'
 #' Setting \code{parameters=NULL} will generate a separate \emph{ws_monitor} object for each of the above parameters.
 #' @note As of 2017-12-17, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
@@ -53,15 +54,15 @@ airnow_createMonitorObjects <- function(parameters=NULL,
                                         hours=24,
                                         zeroMinimum=TRUE,
                                         addGoogleMeta=TRUE) {
-  
+
   metaList <- airnow_createMetaDataframes(parameters, 'AIRNOW', addGoogleMeta=addGoogleMeta)
   dataList <- airnow_createDataDataframes(parameters, startdate, hours)
-  
+
   # Create empty list (no pre-allocation needed when lists are referenced by key instead of integer)
   monList <- list()
-  
+
   for ( parameter in names(metaList) ) {
-    
+
     # Create the 'ws_monitor' object
     meta <- metaList[[parameter]]
     data <- dataList[[parameter]]
@@ -76,10 +77,10 @@ airnow_createMonitorObjects <- function(parameters=NULL,
     }
     # Add to list
     monList[[parameter]] <- ws_monitor
-    
+
   }
-  
+
   return(monList)
-  
+
 }
 

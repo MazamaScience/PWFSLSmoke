@@ -1,14 +1,15 @@
 #' @keywords AirNow
 #' @export
+#' @import MazamaCoreUtils
 #' @title Return Reshaped, Dataframes of AirNow Data
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
 #' @return List of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
-#' @description This function uses the \link{airnow_downloadParseData} function 
+#' @description This function uses the \link{airnow_downloadParseData} function
 #' to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 #' with the PWFSLSmoke package \emph{ws_monitor} data model.
-#' 
+#'
 #' AirNow data parameters include at least the following list:
 #' \enumerate{
 #' \item{BARPR}
@@ -33,7 +34,7 @@
 #' \item{WD}
 #' \item{WS}
 #' }
-#' 
+#'
 #' Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
 #' @note As of 2016-12-27, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
@@ -45,10 +46,10 @@
 #' }
 
 airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24) {
-  
+
   # Create the data frame that holds multiple days of AirNow data
   airnowTbl <- airnow_downloadParseData(parameters=parameters, startdate=startdate, hours=hours)
-  
+
   # > head(airnowTbl)
   # # A tibble: 6 x 9
   #   ValidDate ValidTime     AQSID           SiteName GMTOffset ParameterName ReportingUnits Value         DataSource
@@ -58,16 +59,16 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   # 3  10/16/16     00:00 000040203       FOREST HILLS        -4         PM2.5          UG/M3     7 Environment Canada
   # 4  10/16/16     00:00 000040103        FREDERICTON        -4         PM2.5          UG/M3    25 Environment Canada
   # 5  10/16/16     00:00 000040207    SAINT JOHN WEST        -4         PM2.5          UG/M3     8 Environment Canada
-  
+
   # ----- Data Reshaping ------------------------------------------------------
-  
+
   logger.debug("Reshaping %d days of AirNow data ...", hours/24)
-  
+
   # NOTE:  Add monitorID as AQSID + "_01" to match what is done in the "Data Reshaping"
   # NOTE:  section of airnow_createMetaDataframes().
-  
+
   airnowTbl$monitorID <- paste0(airnowTbl$AQSID, "_01")
-  
+
   # Get a list of parameters
   if ( is.null(parameters) ) {
     parameters <- sort(unique(airnowTbl$ParameterName))
@@ -79,15 +80,15 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
       logger.warn("Requested parameters not found in AirNow data: %s", paste0(invalidParameters, collapse=", "))
     }
   }
-  
+
   # Create empty list (no pre-allocation needed when lists are referenced by key instead of integer)
   dfList <- list()
-  
+
   # Use dplyr and reshape2 packages to seprate the data by parameter and restructure each data frame
   for ( parameter in parameters ) {
-    
+
     logger.debug("Reshaping data for %s ...", parameter)
-    
+
     # Create datetime variable
     tbl <- dplyr::filter(airnowTbl, airnowTbl$ParameterName == parameter)
     datestamp <- paste0(tbl$ValidDate, ' ', tbl$ValidTime)
@@ -97,34 +98,34 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
     # Melt and recast (convert tibbles to dataframes)
     melted <- reshape2::melt(tbl, id.vars=c('datetime','monitorID'), measure.vars=c('Value'))
     dfList[[parameter]] <- reshape2::dcast(melted, datetime ~ monitorID)
-    
+
   }
-  
+
   # NOTE:  Some parameters, especially those with few monitors, may not have measurements for
   # NOTE:  for every single hour. Here we guarantee that the reshaped dataframes we return will
   # NOTE:  have a row for every single hour in a month, even if that row is filled with NAs.
-  
+
   # Guarantee that all times are present by starting with a dataframe containing only a uniform time axis.
   starttime <- parseDatetime(startdate)
   timeAxis <- seq(starttime, starttime + lubridate::dhours(hours-1), by='hours')
   hourlyDF <- data.frame(datetime=timeAxis)
-  
+
   logger.debug("Putting data on a uniform time axis ...")
 
   for ( parameter in parameters ) {
-    
+
     # Join data to uniform time axis
     dfList[[parameter]] <- suppressMessages( dplyr::full_join(hourlyDF, dfList[[parameter]]) )
-    
+
     # NOTE:  Check this URL for some EPA defined levels:
     # NOTE:    https://aqs.epa.gov/aqsweb/documents/codetables/aqi_breakpoints.csv
-    
+
     # Assume this data has been QC'ed and let everything through
     airnow_qualityControl(dfList[[parameter]], limits=c(-Inf,Inf))
-    
+
   }
-  
+
   return(dfList)
-  
+
 }
 
