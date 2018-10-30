@@ -16,6 +16,8 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.1.8
 
  * `%>%` is now exported
+ * added new `monitor_download~()` functions to download local copies of PWFSL
+ monitor data files.
  * added new `monitor_loadLatest()`, `monitor_loadDaily()` and `monitor_loadAnnual()` functions
  * refactored `airnow`, `airsis`, `epa` and `wrcc` `~_load~()` functions to include
  a `dataDir` parameter to allow data loading from a local directory rathern than

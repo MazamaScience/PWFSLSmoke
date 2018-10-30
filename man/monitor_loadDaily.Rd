@@ -5,7 +5,7 @@
 \title{Load recent PM2.5 monitoring data}
 \usage{
 monitor_loadDaily(parameter = "PM2.5",
-  baseUrl = "https://haze.airfire.org/monitoring/latest/RData/",
+  baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
   dataDir = NULL)
 }
 \arguments{

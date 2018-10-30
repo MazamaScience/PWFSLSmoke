@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_loadLatest.R
 \name{monitor_loadLatest}
 \alias{monitor_loadLatest}
-\title{Load Recent PM2.5 Monitoring Data}
+\title{Load most recent PM2.5 monitoring data}
 \usage{
 monitor_loadLatest(parameter = "PM2.5",
   baseUrl = "https://haze.airfire.org/monitoring/latest/RData/",
@@ -36,7 +36,7 @@ maintained by PWFSL.
 The files loaded by this function are updated multiple times an hour and
 contain data for the previous 10 days.
 
-For daily updates covering the most recent 45 days, use \code{monitor_loadLatest()}.
+For daily updates covering the most recent 45 days, use \code{monitor_loadDaily()}.
 
 For data extended more than 45 days into the past, use \code{monitor_load()}.
 
