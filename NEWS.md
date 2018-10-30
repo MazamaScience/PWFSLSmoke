@@ -12,6 +12,7 @@ from the US EPA, AirNow, AIRSIS, WRCC and others.
 ### PWFSLSmoke 1.1.9
 
  * new dependency on *MazamaCoreUtils*
+ * removed code associated with `DUMP` files
 
 ### PWFSLSmoke 1.1.8
 
