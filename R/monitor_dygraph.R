@@ -20,15 +20,15 @@
 #'                                        latitude = Vallejo$meta$latitude,
 #'                                        radius = 50)
 #' monitorDygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
-#' } 
+#' }
 
-monitorDygraph <- function(ws_monitor,
-                           title = 'title',
-                           ylab = 'PM2.5 Concentration', 
-                           tlim = NULL,
-                           rollPeriod = 1,
-                           showLegend = TRUE) {
-  
+monitor_dygraph <- function(ws_monitor,
+                            title = "title",
+                            ylab = "PM2.5 Concentration",
+                            tlim = NULL,
+                            rollPeriod = 1,
+                            showLegend = TRUE) {
+
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")

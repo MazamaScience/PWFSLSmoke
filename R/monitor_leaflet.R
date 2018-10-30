@@ -43,17 +43,18 @@
 #'                maptype = "toner")
 #' }
 
-monitorLeaflet <- function(ws_monitor,
-                           slice = get('max'),
-                           breaks = AQI$breaks_24,
-                           colors = AQI$colors,
-                           labels = AQI$names,
-                           legendTitle = 'Max AQI Level',
-                           radius = 10,
-                           opacity = 0.7,
-                           maptype = "terrain",
-                           popupInfo = c('siteName','monitorID','elevation')) {
-  
+monitor_leaflet <- function(ws_monitor,
+                            slice = get("max"),
+                            breaks = AQI$breaks_24,
+                            colors = AQI$colors,
+                            labels = AQI$names,
+                            legendTitle = "Max AQI Level",
+                            radius = 10,
+                            opacity = 0.7,
+                            maptype = "terrain",
+                            popupInfo = c("siteName", "monitorID", "elevation")) {
+
+
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")

@@ -43,21 +43,21 @@
 #' }
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
-monitorEsriMap <- function(ws_monitor,
-                           slice=get('max'),
-                           breaks=AQI$breaks_24,
-                           colors=AQI$colors,
-                           width=640,
-                           height=640,
-                           centerLon=NULL,
-                           centerLat=NULL,
-                           zoom=NULL,
-                           maptype='worldStreetMap',
-                           grayscale=FALSE,
-                           mapRaster=NULL,
-                           cex=par("cex")*2.0,
-                           pch=16,
-                           ...) {
+monitor_esriMap <- function(ws_monitor,
+                            slice = get("max"),
+                            breaks = AQI$breaks_24,
+                            colors = AQI$colors,
+                            width = 640,
+                            height = 640,
+                            centerLon = NULL,
+                            centerLat = NULL,
+                            zoom = NULL,
+                            maptype = "worldStreetMap",
+                            grayscale = FALSE,
+                            mapRaster = NULL,
+                            cex = par("cex") * 2.0,
+                            pch = 16,
+                            ...) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {

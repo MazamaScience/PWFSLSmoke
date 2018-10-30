@@ -31,18 +31,19 @@
 #' monitorMap(N_M, cex=2)
 #' addAQILegend()
 
-monitorMap <- function(ws_monitor, 
-                       slice=get('max'),
-                       breaks=AQI$breaks_24,
-                       colors=AQI$colors,
-                       cex=par('cex'),  
-                       stateCol="grey60",
-                       stateLwd=2,
-                       countyCol="grey70",
-                       countyLwd=1,
-                       add=FALSE, 
-                       ...) {
-  
+monitor_map <- function(ws_monitor,
+                        slice = get("max"),
+                        breaks = AQI$breaks_24,
+                        colors = AQI$colors,
+                        cex = par("cex"),
+                        stateCol = "grey60",
+                        stateLwd = 2,
+                        countyCol = "grey70",
+                        countyLwd = 1,
+                        add = FALSE,
+                        ...) {
+
+
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")

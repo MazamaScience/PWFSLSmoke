@@ -42,25 +42,30 @@
 #' title('Heidke Skill of monitors predicting another monitor.')
 #' }
 
-monitorMap_performance <- function (predicted,
-                                    observed,
-                                    threshold=AQI$breaks_24[3],
-                                    cex=par('cex'),
-                                    sizeBy=NULL,
-                                    colorBy="heidkeSkill",
-                                    breaks=c(-Inf,.5,.6,.7,.8,Inf),
-                                    paletteFunc=grDevices::colorRampPalette(
-                                      RColorBrewer::brewer.pal( length(breaks) ,"Purples")[-1] ),
-                                    showLegend=TRUE,
-                                    legendPos="topright",
-                                    stateCol="grey60",
-                                    stateLwd=2,
-                                    countyCol="grey70",
-                                    countyLwd=1,
-                                    add=FALSE,
-                                    ...) {
+monitor_performanceMap <- function(predicted,
+                                   observed,
+                                   threshold = AQI$breaks_24[3],
+                                   cex = par("cex"),
+                                   sizeBy = NULL,
+                                   colorBy = "heidikeSkill",
+                                   breaks = c(-Inf, .5, .6, .7, .8, Inf),
+                                   paletteFunc = grDevices::colorRampPalette(
+                                     RColorBrewer::brewer.pal(
+                                       length(breaks), "Purples"
+                                     )[-1]
+                                   ),
+                                   showLegend = TRUE,
+                                   legendPos = "topright",
+                                   stateCol = "grey60",
+                                   stateLwd = 2,
+                                   countyCol = "grey70",
+                                   countyLwd = 1,
+                                   add = FALSE,
+                                   ...) {
 
-  #------------- below copies from monitor_performanceMap-------------------
+
+# below copies from monitor_performanceMap --------------------------------
+
   # Get the performance dataframe
   performanceDF <- monitor_performance(predicted, observed, threshold, threshold)
 
