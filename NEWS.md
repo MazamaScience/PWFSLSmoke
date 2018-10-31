@@ -1,4 +1,13 @@
 
+# PWFSLSmoke 1.1.10
+
+Moving all base plot related code from **PWFSLSmokePlot** to **PWFSLSmoke** so
+that all functionality in the former is **ggplot2** based.
+
+ * added `addPolygon()`, `addWindBarb() and `addWindBarbs()` functions
+ * added `aqiPalette()` function
+ 
+
 # PWFSLSmoke 1.1.9
 
  * `airnow_load()` calls `airnow_loadAnnual()` and will is *pre*-deprecated 
