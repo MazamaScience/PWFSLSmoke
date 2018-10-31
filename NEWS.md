@@ -2,10 +2,11 @@
 # PWFSLSmoke 1.1.10
 
 Moving all base plot related code from **PWFSLSmokePlot** to **PWFSLSmoke** so
-that all functionality in the former is **ggplot2** based.
+that all functionality in the former is pursely **ggplot2** based.
 
- * added `addPolygon()`, `addWindBarb() and `addWindBarbs()` functions
- * added `aqiPalette()` function
+ * added `addPolygon()`, `addWindBarb() and `addWindBarbs()`
+ * added `aqiPalette()`
+ * added `monitor_getDailyMean()`
  
 
 # PWFSLSmoke 1.1.9

@@ -11,6 +11,7 @@
 #'
 #' @return A vector of daily means for
 #'
+#' @importFrom dplyr filter
 #' @export
 #' 
 #' @examples
