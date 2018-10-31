@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add Shaded Background to a Plot — addShadedBackground • PWFSLSmoke</title>
+<title>Load PM2.5 monitoring data — monitor_load • PWFSLSmoke</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,12 @@
 
 
 
-<meta property="og:title" content="Add Shaded Background to a Plot — addShadedBackground" />
+<meta property="og:title" content="Load PM2.5 monitoring data — monitor_load" />
 
-<meta property="og:description" content="Adds vertical lines to an existing plot using any variable that shares the same
-length as the time axis of the current plot. Line widths corresponds to magnitude of values." />
+<meta property="og:description" content="Loads monitoring data for a given time range. Data from AirNow,
+AIRSIS and WRCC are combined into a single ws_monitor object.
+Archival datasets are joined with 'daily' and 'latest' datasets as needed to
+satisfy the requested date range." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -119,57 +121,94 @@ length as the time axis of the current plot. Line widths corresponds to magnitud
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add Shaded Background to a Plot</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/addShadedBackground.R'><code>R/addShadedBackground.R</code></a></small>
-    <div class="hidden name"><code>addShadedBackground.Rd</code></div>
+    <h1>Load PM2.5 monitoring data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_load.R'><code>R/monitor_load.R</code></a></small>
+    <div class="hidden name"><code>monitor_load.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Adds vertical lines to an existing plot using any variable that shares the same
-length as the time axis of the current plot. Line widths corresponds to magnitude of values.</p>
+    <p>Loads monitoring data for a given time range. Data from AirNow,
+AIRSIS and WRCC are combined into a single <em>ws_monitor</em> object.</p>
+<p>Archival datasets are joined with 'daily' and 'latest' datasets as needed to
+satisfy the requested date range.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>addShadedBackground</span>(<span class='no'>param</span>, <span class='no'>timeAxis</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stats/topics/quantile'>quantile</a></span>(<span class='no'>param</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>maxOpacity</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_load</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>monitorIDs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"PM2.5"</span>, <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://haze.airfire.org/monitoring"</span>,
+  <span class='kw'>dataDir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aqsPreference</span> <span class='kw'>=</span> <span class='st'>"airnow"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>param</th>
-      <td><p>vector of data to be represented</p></td>
+      <th>startdate</th>
+      <td><p>Desired start date (integer or character in ymd[hms] format
+or <code>POSIXct</code>).</p></td>
     </tr>
     <tr>
-      <th>timeAxis</th>
-      <td><p>vector of times of the same length as param</p></td>
+      <th>enddate</th>
+      <td><p>Desired end date (integer or character in ymd[hms] format
+or <code>POSIXct</code>).</p></td>
     </tr>
     <tr>
-      <th>breaks</th>
-      <td><p>set of breaks used to assign colors</p></td>
+      <th>monitorIDs</th>
+      <td><p>Optional vector of monitorIDs.</p></td>
     </tr>
     <tr>
-      <th>col</th>
-      <td><p>color for vertical lines</p></td>
+      <th>parameter</th>
+      <td><p>Parameter of interest.</p></td>
     </tr>
     <tr>
-      <th>maxOpacity</th>
-      <td><p>maximum opacity</p></td>
+      <th>baseUrl</th>
+      <td><p>Base URL for data files.</p></td>
     </tr>
     <tr>
-      <th>lwd</th>
-      <td><p>line width</p></td>
+      <th>dataDir</th>
+      <td><p>Local directory containing monitoring data files.</p></td>
+    </tr>
+    <tr>
+      <th>aqsPreference</th>
+      <td><p>Preferred data source for AQS data when annual data
+files are available from both `epa` and `airnow`.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A <em>ws_monitor</em> object with PM2.5 monitoring data.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Joining datasets is a computationally expensive task when many monitors
+are involved. It is highly recommend that <code>monitorIDs</code> be specified when
+loading recent data with this function.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='loadDaily.html'>loadDaily</a></code></p>
+<p><code><a href='loadLatest.html'>loadLatest</a></code></p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_load</span>(<span class='fl'>20170601</span>,<span class='fl'>20171001</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'CA'</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -1,9 +1,13 @@
 
 # PWFSLSmoke 1.1.9
 
+ * `airnow_load()` calls `airnow_loadAnnual()` and will is *pre*-deprecated 
+ * `airsis_load()` calls `airsis_loadAnnual()` and will is *pre*-deprecated 
+ * `wrcc_load()` calls `wrcc_loadAnnual()` and will is *pre*-deprecated 
  * renamed `loadData()` to `monitor_load()`
  * new dependency on *MazamaCoreUtils*
  * removed code associated with `DUMP` files
+ * corrected spelling from `heidike` to `heidke` in all `skill` related functions
 
 # PWFSLSmoke 1.1.8
 

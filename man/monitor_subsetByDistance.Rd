@@ -22,20 +22,20 @@ monitor_subsetByDistance(ws_monitor, longitude = NULL, latitude = NULL,
 A \emph{ws_monitor} object with monitors near a location.
 }
 \description{
-Subsets \code{ws_monitor} to include only those monitors (or grid cells) 
-within a certain radius of a target location. If no monitors (or grid cells) fall 
-within the specified \code{radius}, \code{ws_monitor$data} and \code{ws_monitor$meta} 
+Subsets \code{ws_monitor} to include only those monitors (or grid cells)
+within a certain radius of a target location. If no monitors (or grid cells) fall
+within the specified \code{radius}, \code{ws_monitor$data} and \code{ws_monitor$meta}
 are set to \code{NULL}.
 
 When \code{count} is used, a \emph{ws_monitor} object is created containing \strong{up to}
-\code{count} monitors, ordered by increasing distance from the target location. Thus, note that the number 
-of monitors (or grid cells) returned may be less than the specified \code{count} value if fewer than 
+\code{count} monitors, ordered by increasing distance from the target location. Thus, note that the number
+of monitors (or grid cells) returned may be less than the specified \code{count} value if fewer than
 \code{count} monitors (or grid cells) are found within the specified \code{radius} of the target location.
 }
 \examples{
 \dontrun{
 # Napa Fires -- October, 2017
-ca <- airnow_load(2017) \%>\%
+ca <- airnow_loadAnnual(2017) \%>\%
   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
 Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
 Napa_Fires <- monitor_subsetByDistance(ca,
@@ -43,7 +43,7 @@ Napa_Fires <- monitor_subsetByDistance(ca,
                                        latitude = Vallejo$meta$latitude,
                                        radius = 50)
 monitorLeaflet(Napa_Fires)
-} 
+}
 }
 \seealso{
 monitorDistance

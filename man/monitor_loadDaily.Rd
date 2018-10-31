@@ -56,7 +56,11 @@ monitor_loadDaily() \%>\%
 }
 }
 \seealso{
+\code{\link{monitor_load}}
+
 \code{\link{monitor_loadLatest}}
+
+\code{\link{monitor_loadAnnual}}
 }
 \keyword{AIRSIS}
 \keyword{AirNow}

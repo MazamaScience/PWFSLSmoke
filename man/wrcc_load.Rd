@@ -16,21 +16,7 @@ wrcc_load(year = 2017,
 A \emph{ws_monitor} object with WRCC data.
 }
 \description{
-Loads pre-generated .RData files containing WRCC PM2.5 data.
-
-Avaialble RData and associated log files can be seen at:
-\href{https://haze.airfire.org/monitoring/WRCC/RData/}{https://haze.airfire.org/monitoring/WRCC/RData/}
-}
-\examples{
-\dontrun{
-wrcc <- wrcc_load(2017)
-wrcc_conus <- monitor_subset(wrcc, stateCodes=CONUS)
-monitorLeaflet(wrcc_conus)
-}
-}
-\seealso{
-\code{\link{wrcc_loadDaily}}
-
-\code{\link{wrcc_loadLatest}}
+Please use \code{\link{wrcc_loadAnnual}} instead of this
+function. It will soon be deprecated.
 }
 \keyword{WRCC}

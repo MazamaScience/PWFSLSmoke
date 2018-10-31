@@ -31,7 +31,7 @@ contain data for the previous 10 days.
 
 For daily updates covering the most recent 45 days, use \code{wrcc_loadDaily()}.
 
-For data extended more than 45 days into the past, use \code{wrcc_load()}.
+For data extended more than 45 days into the past, use \code{wrcc_loadAnnual()}.
 
 WRCC parameters include the following:
 \enumerate{
@@ -49,7 +49,7 @@ wrcc_loadLatest() \%>\%
 }
 }
 \seealso{
-\code{\link{wrcc_load}}
+\code{\link{wrcc_loadAnnual}}
 
 \code{\link{wrcc_loadDaily}}
 }

@@ -26,7 +26,7 @@ This function plots ROC curves for a variety of \code{observed} classification t
 \examples{
 \dontrun{
 # Napa Fires -- October, 2017
-ca <- airnow_load(2017) \%>\%
+ca <- airnow_loadAnnual(2017) \%>\%
   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
 Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
 Napa <- monitor_subset(ca, monitorIDs='060550003_01')

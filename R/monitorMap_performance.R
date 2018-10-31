@@ -22,13 +22,13 @@
 #' different measures of predictive performance for every timeseries found
 #' in \code{predicted} with respect to the observed values found in the single timeseries
 #' found in \code{observed}.
-#' 
+#'
 #' Using a single number for the \code{breaks} argument will cause the algorithm to use
 #' quantiles to determine breaks.
 #' @details Setting either \code{sizeBy} or \code{colorBy} to \code{NULL} will cause
 #' the size/colors to remain constant.
 #' @seealso \link{monitor_performance}
-#' @examples 
+#' @examples
 #' \dontrun{
 #' # Napa Fires -- October, 2017
 #' ca <- airnow_load(2017) %>%
@@ -39,17 +39,17 @@
 #'                                        latitude = Vallejo$meta$latitude,
 #'                                        radius = 50)
 #' monitorMap_performance(ca, Vallejo, cex=2)
-#' title('Heidike Skill of monitors predicting another monitor.')
+#' title('Heidke Skill of monitors predicting another monitor.')
 #' }
 
 monitorMap_performance <- function (predicted,
                                     observed,
                                     threshold=AQI$breaks_24[3],
-                                    cex=par('cex'), 
+                                    cex=par('cex'),
                                     sizeBy=NULL,
-                                    colorBy="heidikeSkill",
+                                    colorBy="heidkeSkill",
                                     breaks=c(-Inf,.5,.6,.7,.8,Inf),
-                                    paletteFunc=grDevices::colorRampPalette( 
+                                    paletteFunc=grDevices::colorRampPalette(
                                       RColorBrewer::brewer.pal( length(breaks) ,"Purples")[-1] ),
                                     showLegend=TRUE,
                                     legendPos="topright",
@@ -57,20 +57,20 @@ monitorMap_performance <- function (predicted,
                                     stateLwd=2,
                                     countyCol="grey70",
                                     countyLwd=1,
-                                    add=FALSE, 
+                                    add=FALSE,
                                     ...) {
-  
+
   #------------- below copies from monitor_performanceMap-------------------
   # Get the performance dataframe
   performanceDF <- monitor_performance(predicted, observed, threshold, threshold)
-  
+
   # Create the basemap
   if ( !add ) {
-    
+
     stateCodes <- unique(predicted$meta$stateCode)
-    
+
     if ( is.null(stateCodes) || stateCodes == '' ) {
-      
+
       # No stateCodes found. Use xlim and ylim.
       xlim <- range(predicted$meta$longitude)
       ylim <- range(predicted$meta$latitude)
@@ -82,9 +82,9 @@ monitorMap_performance <- function (predicted,
       # Plot the base map: state first, counties on top
       maps::map("state", xlim=xlim, ylim=ylim, col=stateCol, lwd=stateLwd, ...)
       maps::map('county', xlim=xlim, ylim=ylim, col=countyCol, lwd=countyLwd, add=TRUE, ...)
-      
+
     } else {
-      
+
       # Plot only the states containing the monitors
       # Need to get the maps package state names to be plotted in base map
       # We need to deal with things like "washington:whidbey island"
@@ -96,16 +96,16 @@ monitorMap_performance <- function (predicted,
       # Plot the base map: state first, counties on top
       maps::map("state", stateNames, col=stateCol, lwd=stateLwd, ...)
       maps::map('county', stateNames, col=countyCol, lwd=countyLwd, add=TRUE, ...)
-      
+
     }
-    
+
   }
-  
+
   # Sizing
   if ( !is.null(sizeBy) && sizeBy %in% names(performanceDF) ) {
-    cex <- cex * performanceDF[[sizeBy]] / max(performanceDF[[sizeBy]], na.rm = TRUE) 
+    cex <- cex * performanceDF[[sizeBy]] / max(performanceDF[[sizeBy]], na.rm = TRUE)
   }
-  
+
   # This chunk  of code figures out colors for the map.
   if ( !is.null(colorBy) && colorBy %in% names(performanceDF) ) {
     if ( length(breaks) == 1 ) {
@@ -116,7 +116,7 @@ monitorMap_performance <- function (predicted,
     indices <- .bincode(performanceDF[[colorBy]], breaks=breaks, include.lowest=TRUE)
     colors <- paletteFunc((length(breaks)-1))
     cols <- colors[indices]
-    
+
     # create a legend to be used later
     legend <- character(length(breaks) - 1)
     for(i in 1: (length(breaks) - 1 ) ){
@@ -125,23 +125,23 @@ monitorMap_performance <- function (predicted,
   } else {
     colors <- cols <- "black"
   }
-  
+
   lon <- predicted$meta$longitude
   lat <- predicted$meta$latitude
-  
+
   # Now we add the (potentially projected) monitor points
   argsList <- list(...)
-  
+
   if( is.null(argsList$projection) ) {
     points(lon, lat, pch=16, cex=cex, col=cols, xpd=NA)
   } else {
-    points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters, 
+    points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters,
                                 argsList$orientation), pch=16, cex=cex, col=cols, xpd=NA )
   }
-  
+
   # # if neither colorBy nor sizeBy is specified, there is nothing to show in the legend
   # if ( is.null(colorBy) & is.null(sizeBy) ) {showlegend = FALSE}
-  # 
+  #
   # # if colorBy and/or sizeBy are/is specified, show the color legend
   # # else if only sizeBy is specified, show the size legend
   # if (showLegend) {
@@ -154,5 +154,5 @@ monitorMap_performance <- function (predicted,
   if ( showLegend & !is.null(colorBy) ) {
     legend( legendPos, pch=16, cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") )
   }
-  
+
 }

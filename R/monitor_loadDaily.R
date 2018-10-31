@@ -55,7 +55,9 @@
 #'
 #' Avaialble RData files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/latest/RData/}{https://haze.airfire.org/monitoring/latest/RData/}
+#' @seealso \code{\link{monitor_load}}
 #' @seealso \code{\link{monitor_loadLatest}}
+#' @seealso \code{\link{monitor_loadAnnual}}
 #' @examples
 #' \dontrun{
 #' monitor_loadDaily() %>%

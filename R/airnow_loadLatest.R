@@ -17,7 +17,7 @@
 #'
 #' For daily updates covering the most recent 45 days, use \code{airnow_loadDaily()}.
 #'
-#' For data extended more than 45 days into the past, use \code{airnow_load()}.
+#' For data extended more than 45 days into the past, use \code{airnow_loadAnnual()}.
 #'
 #' AirNow parameters include the following:
 #' \enumerate{
@@ -46,7 +46,7 @@
 #'
 #' Avaialble RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/AirNow/RData/latest}{https://haze.airfire.org/monitoring/AirNow/RData/latest}
-#' @seealso \code{\link{airnow_load}}
+#' @seealso \code{\link{airnow_loadAnnual}}
 #' @seealso \code{\link{airnow_loadDaily}}
 #' @examples
 #' \dontrun{

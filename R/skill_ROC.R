@@ -11,10 +11,10 @@
 #' @references \href{https://en.wikipedia.org/wiki/Receiver_operating_characteristic}{Receiver Operating Characteristic}
 #' @seealso \link{skill_confusionMatrix}
 #' @seealso \link{skill_ROCPlot}
-#' @examples 
+#' @examples
 #' \dontrun{
 #' # Napa Fires -- October, 2017
-#' ca <- airnow_load(2017) %>%
+#' ca <- airnow_loadAnnual(2017) %>%
 #'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
 #' Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
 #' Napa <- monitor_subset(ca, monitorIDs='060550003_01')
@@ -27,7 +27,7 @@
 #' }
 
 skill_ROC <- function(predicted, observed, t1Range=NULL, t2=NULL, n=101) {
-  
+
   # Extract data from ws_monitor objects
   if ( 'ws_monitor' %in% class(predicted) ) {
     if ( ncol(predicted$data) > 2 ) {
@@ -45,16 +45,16 @@ skill_ROC <- function(predicted, observed, t1Range=NULL, t2=NULL, n=101) {
       observed <- observed$data[,2]
     }
   }
-  
+
   # Sanity checks
   if ( length(predicted) != length(observed) ) {
     stop(paste0("predicted and observed vectors are of different lengths"))
   }
-  
+
   if ( is.null(t2) ) {
     stop(paste0("t2 must be specified"))
   }
-  
+
   if ( class(predicted) != "numeric" ) {
     stop(paste0("predicted must be a number vector"))
   }
@@ -62,23 +62,23 @@ skill_ROC <- function(predicted, observed, t1Range=NULL, t2=NULL, n=101) {
   if ( class(observed) != "numeric" ) {
     stop(paste0("observed must be a number vector"))
   }
-  
+
   # Remove any elements where either predicted or observed has NA
   m <- matrix(c(predicted, observed), ncol=2)
   badRows <- apply(m, 1, function(x) { any(is.na(x)) })
   predicted <- m[!badRows,1]
   observed <- m[!badRows, 2]
-  
+
   # If no range is given, derive the range from the data
   if ( is.null(t1Range) ) {
     t1_lo <- max(min(predicted), min(observed))
     t1_hi <- min(max(predicted), max(observed))
     t1Range <- c(t1_lo, t1_hi)
   }
-  
+
   # Create test thresholds
   testThresholds <- seq(t1Range[1], t1Range[2], length.out=n)
-  
+
   # Calculate ROC and cost
   roc <- data.frame(threshold=testThresholds, FPR=NA, TPR=NA, cost=NA)
   for ( i in 1:length(testThresholds) ) {
@@ -96,10 +96,10 @@ skill_ROC <- function(predicted, observed, t1Range=NULL, t2=NULL, n=101) {
   triangles <- 0.5 * tpr_diff * fpr_diff
   long_parts <- fpr_diff * roc$TPR[-length(roc$TPR)]
   auc <- sum(long_parts) + sum(triangles)
-  
+
   # Reorder ROC by threshold
   roc <- roc[with(roc, order(threshold)),]
   return(list(roc=roc, auc=auc))
-  
+
 }
 

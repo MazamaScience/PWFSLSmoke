@@ -31,7 +31,7 @@ after midnight and contain data for the previous 45 days.
 
 For the most recent data, use \code{airnow_loadLatest()}.
 
-For data extended more than 45 days into the past, use \code{airnow_load()}.
+For data extended more than 45 days into the past, use \code{airnow_loadAnnual()}.
 
 AirNow parameters include the following:
 \enumerate{
@@ -49,7 +49,7 @@ airnow_loadDaily() \%>\%
 }
 }
 \seealso{
-\code{\link{airnow_load}}
+\code{\link{airnow_loadAnnual}}
 
 \code{\link{airnow_loadLatest}}
 }

@@ -5,7 +5,7 @@
 \title{Create Map of Monitor Prediction Performance}
 \usage{
 monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
-  cex = par("cex"), sizeBy = NULL, colorBy = "heidikeSkill",
+  cex = par("cex"), sizeBy = NULL, colorBy = "heidkeSkill",
   breaks = c(-Inf, 0.5, 0.6, 0.7, 0.8, Inf),
   paletteFunc = grDevices::colorRampPalette(RColorBrewer::brewer.pal(length(breaks),
   "Purples")[-1]), showLegend = TRUE, legendPos = "topright",
@@ -69,7 +69,7 @@ Napa_Fires <- monitor_subsetByDistance(ca,
                                        latitude = Vallejo$meta$latitude,
                                        radius = 50)
 monitorMap_performance(ca, Vallejo, cex=2)
-title('Heidike Skill of monitors predicting another monitor.')
+title('Heidke Skill of monitors predicting another monitor.')
 }
 }
 \seealso{

@@ -23,7 +23,7 @@
 #' \dontrun{
 #' # If daily avg data were the prediciton and Spokane were
 #' # the observed, which WA State monitors had skill?
-#' wa <- airnow_load(2017) %>% monitor_subset(stateCodes='WA')
+#' wa <- airnow_loadAnnual(2017) %>% monitor_subset(stateCodes='WA')
 #' wa_dailyAvg <- monitor_dailyStatistic(wa, mean)
 #' Spokane_dailyAvg <- monitor_subset(wa_dailyAvg, monitorIDs='530630021_01')
 #' threshold <- AQI$breaks_24[4] # Unhealthy
@@ -31,8 +31,8 @@
 #'                                           Spokane_dailyAvg,
 #'                                           threshold, threshold)
 #' monitorIDs <- rownames(performanceMetrics)
-#' mask <- performanceMetrics$heidikeSkill &
-#'         !is.na(performanceMetrics$heidikeSkill)
+#' mask <- performanceMetrics$heidkeSkill &
+#'         !is.na(performanceMetrics$heidkeSkill)
 #' skillfulIDs <- monitorIDs[mask]
 #' skillful <- monitor_subset(wa_dailyAvg, monitorIDs=skillfulIDs)
 #' monitorLeaflet(skillful)

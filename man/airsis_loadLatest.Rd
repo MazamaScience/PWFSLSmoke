@@ -31,7 +31,7 @@ contain data for the previous 10 days.
 
 For daily updates covering the most recent 45 days, use \code{airsis_loadDaily()}.
 
-For data extended more than 45 days into the past, use \code{airsis_load()}.
+For data extended more than 45 days into the past, use \code{airsis_loadAnnual()}.
 
 AIRSIS parameters include the following:
 \enumerate{
@@ -49,7 +49,7 @@ airsis_loadLatest() \%>\%
 }
 }
 \seealso{
-\code{\link{airsis_load}}
+\code{\link{airsis_loadAnnual}}
 
 \code{\link{airsis_loadDaily}}
 }
