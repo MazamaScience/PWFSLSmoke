@@ -1,32 +1,44 @@
 #' @keywords ws_monitor
 #' @export
 #' @import maps mapproj
+#'
 #' @title Create Map of Monitor Prediction Performance
+#'
 #' @param predicted ws_monitor object with predicted values
 #' @param observed ws_monitor object with observed  values
-#' @param threshold value used to classify \code{predicted} and \code{observed} measurements
+#' @param threshold value used to classify \code{predicted} and \code{observed}
+#'   measurements
 #' @param cex the amount that the points will be magnified on the map
 #' @param sizeBy name of the metric used to create relative sizing
 #' @param colorBy name of the metric used to create relative colors
-#' @param breaks set of breaks used to assign colors or a single integer used to provide quantile based breaks - Must also specify the colorBy paramater
-#' @param paletteFunc a palette generating function as returned by \code{colorRampPalette}
-#' @param showLegend logical specifying whether to add a legend (default: \code{TRUE})
+#' @param breaks set of breaks used to assign colors or a single integer used to
+#'   provide quantile based breaks - Must also specify the colorBy paramater
+#' @param paletteFunc a palette generating function as returned by
+#'   \code{colorRampPalette}
+#' @param showLegend logical specifying whether to add a legend (default:
+#'   \code{TRUE})
 #' @param legendPos legend position passed to \code{legend()}
 #' @param stateCol color for state outlines on the map
 #' @param stateLwd width for state outlines
 #' @param countyCol color for county outline on the map
 #' @param countyLwd width for county outlines
 #' @param add logical specifying whether to add to the current plot
-#' @param ... additional arguments to be passed to the \code{maps::map()} funciton such as graphical parameters (see code{?par})
-#' @description This function uses \emph{confusion matrix} analysis to calculate
-#' different measures of predictive performance for every timeseries found
-#' in \code{predicted} with respect to the observed values found in the single timeseries
-#' found in \code{observed}.
+#' @param ... additional arguments to be passed to the \code{maps::map()}
+#'   funciton such as graphical parameters (see code{?par})
 #'
-#' Using a single number for the \code{breaks} argument will cause the algorithm to use
-#' quantiles to determine breaks.
-#' @details Setting either \code{sizeBy} or \code{colorBy} to \code{NULL} will cause
-#' the size/colors to remain constant.
+#' @description
+#' This function uses \emph{confusion matrix} analysis to calculate different
+#' measures of predictive performance for every timeseries found in
+#' \code{predicted} with respect to the observed values found in the single
+#' timeseries found in \code{observed}.
+#'
+#' Using a single number for the \code{breaks} argument will cause the algorithm
+#' to use quantiles to determine breaks.
+#'
+#' @details
+#' Setting either \code{sizeBy} or \code{colorBy} to \code{NULL} will cause the
+#' size/colors to remain constant.
+#'
 #' @seealso \link{monitor_performance}
 #' @examples
 #' \dontrun{
@@ -74,7 +86,7 @@ monitor_performanceMap <- function(predicted,
 
     stateCodes <- unique(predicted$meta$stateCode)
 
-    if ( is.null(stateCodes) || stateCodes == '' ) {
+    if ( is.null(stateCodes) || stateCodes == "" ) {
 
       # No stateCodes found. Use xlim and ylim.
       xlim <- range(predicted$meta$longitude)
@@ -85,8 +97,18 @@ monitor_performanceMap <- function(predicted,
       ylim[1] <- ylim[1] - 1.0
       ylim[2] <- ylim[2] + 1.0
       # Plot the base map: state first, counties on top
-      maps::map("state", xlim=xlim, ylim=ylim, col=stateCol, lwd=stateLwd, ...)
-      maps::map('county', xlim=xlim, ylim=ylim, col=countyCol, lwd=countyLwd, add=TRUE, ...)
+      maps::map(
+        "state",
+        xlim = xlim, ylim = ylim,
+        col = stateCol, lwd = stateLwd,
+        ...
+      )
+      maps::map(
+        "county",
+        xlim = xlim, ylim = ylim,
+        col = countyCol, lwd = countyLwd,
+        add = TRUE, ...
+      )
 
     } else {
 
@@ -99,8 +121,8 @@ monitor_performanceMap <- function(predicted,
       df <- df %>% dplyr::filter(df$abb %in% stateCodes) %>% dplyr::distinct()
       stateNames <- df$polyname
       # Plot the base map: state first, counties on top
-      maps::map("state", stateNames, col=stateCol, lwd=stateLwd, ...)
-      maps::map('county', stateNames, col=countyCol, lwd=countyLwd, add=TRUE, ...)
+      maps::map("state", stateNames, col = stateCol, lwd = stateLwd, ...)
+      maps::map("county", stateNames, col = countyCol, lwd = countyLwd, add = TRUE, ...)
 
     }
 
@@ -114,18 +136,18 @@ monitor_performanceMap <- function(predicted,
   # This chunk  of code figures out colors for the map.
   if ( !is.null(colorBy) && colorBy %in% names(performanceDF) ) {
     if ( length(breaks) == 1 ) {
-      probs <- seq(0,1,length.out=(breaks+1))
-      breaks <- stats::quantile(performanceDF[[colorBy]], probs=probs, na.rm=TRUE)
+      probs <- seq(0, 1, length.out = (breaks + 1))
+      breaks <- stats::quantile(performanceDF[[colorBy]], probs = probs, na.rm = TRUE)
     }
     # TODO:  Use aqiColors() to do this?
-    indices <- .bincode(performanceDF[[colorBy]], breaks=breaks, include.lowest=TRUE)
-    colors <- paletteFunc((length(breaks)-1))
+    indices <- .bincode(performanceDF[[colorBy]], breaks = breaks, include.lowest = TRUE)
+    colors <- paletteFunc((length(breaks) - 1))
     cols <- colors[indices]
 
     # create a legend to be used later
     legend <- character(length(breaks) - 1)
-    for(i in 1: (length(breaks) - 1 ) ){
-      legend[i] <- paste0( round(breaks[i], 2), "-", round( breaks[i+1], 2) )
+    for (i in 1:(length(breaks) - 1)) {
+      legend[i] <- paste0( round(breaks[i], 2), "-", round(breaks[i + 1], 2))
     }
   } else {
     colors <- cols <- "black"
@@ -137,11 +159,11 @@ monitor_performanceMap <- function(predicted,
   # Now we add the (potentially projected) monitor points
   argsList <- list(...)
 
-  if( is.null(argsList$projection) ) {
-    points(lon, lat, pch=16, cex=cex, col=cols, xpd=NA)
+  if ( is.null(argsList$projection) ) {
+    points(lon, lat, pch = 16, cex = cex, col = cols, xpd = NA)
   } else {
-    points( mapproj::mapproject(lon,lat,argsList$projection, argsList$parameters,
-                                argsList$orientation), pch=16, cex=cex, col=cols, xpd=NA )
+    points(mapproj::mapproject(lon, lat, argsList$projection, argsList$parameters,
+                               argsList$orientation), pch = 16, cex = cex, col = cols, xpd = NA)
   }
 
   # # if neither colorBy nor sizeBy is specified, there is nothing to show in the legend
@@ -157,7 +179,14 @@ monitor_performanceMap <- function(predicted,
   #   }
   # }
   if ( showLegend & !is.null(colorBy) ) {
-    legend( legendPos, pch=16, cex=cex*0.5, col=rev(colors), legend=rev(legend), title=paste0(colorBy, " levels") )
+    legend(
+      legendPos,
+      pch = 16,
+      cex = cex * 0.5,
+      col = rev(colors),
+      legend = rev(legend),
+      title = paste0(colorBy, " levels")
+    )
   }
 
 }
