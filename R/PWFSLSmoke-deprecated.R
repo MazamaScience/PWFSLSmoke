@@ -1,21 +1,41 @@
-####################
-### deprecations ###
-####################
-
-## This file contains all the functions within PWFSLSmoke that are going to be
-#  deprecated, or have had their functionality replaced by another function.
-#
-#  Deprecations fall into the following categories:
-#
-#  * hard:
-#    These functions will throw an error when called, stopping execution.
-#  * soft:
-#    These functions will throw a warning when called, then call the correct
-#    function.
-#  * silent:
-#    These functions immediately call another function without and warning to
-#    the user.
-#
+#' @title Deprecated functions in PWFSLSmoke
+#'
+#' @description
+#' These functions still are in the process of being removed from the PWFSLSmoke
+#' package, and may not appear in future versions. When available, alternative
+#' functions will be listed.
+#'
+#' @details
+#' Deprecations fall into the following categories:
+#'
+#' \itemize{
+#'   \item Silent: These functions immediately call another function without and
+#'   warning to the user.
+#'   \item Soft: These functions throw a warning when called, then call the
+#'   correct function, if available.
+#'   \item Hard: These functions will throw an error when called, stopping
+#'   execution. If an alternative function exists, it will be listed.
+#' }
+#'
+#' @section Silent Deprecations:
+#'
+#' \itemize{
+#'  \item \code{\link{monitorDygraph}}: Use \code{\link{monitor_dygraph}}
+#'  \item \code{\link{monitorEsriMap}}: Use \code{\link{monitor_esriMap}}
+#'  \item \code{\link{monitorLeaflet}}: Use \code{\link{monitor_leaflet}}
+#'  \item \code{\link{monitorMap}}: Use \code{\link{monitor_map}}
+#'  \item \code{\link{monitorMap_performance}}: Use \code{\link{monitor_performanceMap}}
+#' }
+#'
+#' @section Soft Deprecations:
+#'
+#'
+#' @section Hard Deprecations:
+#'
+#'
+#'
+#' @name PWFSLSmoke-deprecated
+NULL
 
 # hard deprecations -------------------------------------------------------
 
@@ -29,6 +49,8 @@
 
 # silent deprecations -----------------------------------------------------
 
+#' @export
+#' @rdname PWFSLSmoke-deprecated
 monitorDygraph <- function(ws_monitor,
                            title = "title",
                            ylab = "PM2.5 Concentration",
@@ -39,7 +61,8 @@ monitorDygraph <- function(ws_monitor,
   monitor_dygraph(ws_monitor, title, ylab, tlim, rollPeriod, showLegend)
 }
 
-
+#' @export
+#' @rdname PWFSLSmoke-deprecated
 monitorEsriMap <- function(ws_monitor,
                            slice = get("max"),
                            breaks = AQI$breaks_24,
@@ -63,7 +86,8 @@ monitorEsriMap <- function(ws_monitor,
   )
 }
 
-
+#' @export
+#' @rdname PWFSLSmoke-deprecated
 monitorLeaflet <- function(ws_monitor,
                            slice = get("max"),
                            breaks = AQI$breaks_24,
@@ -81,7 +105,8 @@ monitorLeaflet <- function(ws_monitor,
   )
 }
 
-
+#' @export
+#' @rdname PWFSLSmoke-deprecated
 monitorMap <- function(ws_monitor,
                        slice = get("max"),
                        breaks = AQI$breaks_24,
@@ -101,6 +126,8 @@ monitorMap <- function(ws_monitor,
   )
 }
 
+#' @export
+#' @rdname PWFSLSmoke-deprecated
 monitorMap_performance <- function(predicted,
                                    observed,
                                    threshold = AQI$breaks_24[3],
