@@ -1,7 +1,7 @@
 #' @title Deprecated functions in PWFSLSmoke
 #'
 #' @description
-#' These functions still are in the process of being removed from the PWFSLSmoke
+#' These functions are in the process of being removed from the PWFSLSmoke
 #' package, and may not appear in future versions. When available, alternative
 #' functions will be listed.
 #'
@@ -19,21 +19,19 @@
 #'
 #' @section Silent Deprecations:
 #'
-#' \itemize{
-#'  \item \code{\link{monitorDygraph}}: Use \code{\link{monitor_dygraph}}
-#'  \item \code{\link{monitorEsriMap}}: Use \code{\link{monitor_esriMap}}
-#'  \item \code{\link{monitorLeaflet}}: Use \code{\link{monitor_leaflet}}
-#'  \item \code{\link{monitorMap}}: Use \code{\link{monitor_map}}
-#'  \item \code{\link{monitorMap_performance}}: Use \code{\link{monitor_performanceMap}}
+#' \tabular{rl}{
+#'  \code{\link{monitorDygraph}} \tab Use \code{\link{monitor_dygraph}}\cr
+#'  \code{\link{monitorEsriMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+#'  \code{\link{monitorLeaflet}} \tab Use \code{\link{monitor_leaflet}}\cr
+#'  \code{\link{monitorMap}} \tab Use \code{\link{monitor_map}}\cr
+#'  \code{\link{monitorMap_performance}} \tab Use \code{\link{monitor_performanceMap}}\cr
 #' }
 #'
 #' @section Soft Deprecations:
-#'
-#'
 #' @section Hard Deprecations:
 #'
-#'
-#'
+#' @aliases monitorDygraph monitorEsriMap monitorLeaflet monitorMap
+#'   monitorMap_performance
 #' @name PWFSLSmoke-deprecated
 NULL
 
@@ -51,6 +49,7 @@ NULL
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
+#'
 monitorDygraph <- function(ws_monitor,
                            title = "title",
                            ylab = "PM2.5 Concentration",
@@ -63,6 +62,7 @@ monitorDygraph <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
+#'
 monitorEsriMap <- function(ws_monitor,
                            slice = get("max"),
                            breaks = AQI$breaks_24,
@@ -88,6 +88,7 @@ monitorEsriMap <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
+#'
 monitorLeaflet <- function(ws_monitor,
                            slice = get("max"),
                            breaks = AQI$breaks_24,
@@ -107,6 +108,7 @@ monitorLeaflet <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
+#'
 monitorMap <- function(ws_monitor,
                        slice = get("max"),
                        breaks = AQI$breaks_24,
@@ -128,6 +130,7 @@ monitorMap <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
+#'
 monitorMap_performance <- function(predicted,
                                    observed,
                                    threshold = AQI$breaks_24[3],
