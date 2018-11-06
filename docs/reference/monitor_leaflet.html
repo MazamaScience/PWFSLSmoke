@@ -73,7 +73,7 @@ functions must accept na.rm as an argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -231,7 +231,7 @@ underlying map tile if available. See
   <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>20171001</span>,<span class='fl'>20171101</span>), <span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'CA'</span>)
 <span class='no'>v_low</span> <span class='kw'>&lt;-</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>[<span class='fl'>5</span>]
 <span class='no'>CA_very_unhealthy_monitors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>ca</span>, <span class='kw'>vlim</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='no'>v_low</span>, <span class='fl'>Inf</span>))
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorLeaflet</a></span>(<span class='no'>CA_very_unhealthy_monitors</span>,
+<span class='fu'>monitor_leaflet</span>(<span class='no'>CA_very_unhealthy_monitors</span>,
                <span class='kw'>legendTitle</span> <span class='kw'>=</span> <span class='st'>"October, 2017"</span>,
                <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"toner"</span>)
 <span class='co'># }</span></pre>

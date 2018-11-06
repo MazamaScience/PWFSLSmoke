@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get time related information — timeInfo • PWFSLSmoke</title>
+<title>Get time related information for a monitor — monitor_timeInfo • PWFSLSmoke</title>
 
 <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
@@ -32,13 +32,10 @@
 
 
 
-<meta property="og:title" content="Get time related information — timeInfo" />
+<meta property="og:title" content="Get time related information for a monitor — monitor_timeInfo" />
 
-<meta property="og:description" content="Calculate the local time at the target location, as well as
+<meta property="og:description" content="Calculate the local time for the monitor, as well as
 sunrise, sunset and solar noon times, and create several temporal masks.
-If the timezone is provided it will be used. Otherwise, the
-MazamaSpatialUtils package will be used to determine the timezone from
-longitude and latitude.
 The returned dataframe will have as many rows as the length of the incoming
 UTC time vector and will contain the following columns:
 
@@ -139,18 +136,15 @@ night -- logical mask = opposite of day
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get time related information</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/timeInfo.R'><code>R/timeInfo.R</code></a></small>
-    <div class="hidden name"><code>timeInfo.Rd</code></div>
+    <h1>Get time related information for a monitor</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_timeInfo.R'><code>R/monitor_timeInfo.R</code></a></small>
+    <div class="hidden name"><code>monitor_timeInfo.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Calculate the local time at the target location, as well as
+    <p>Calculate the local time for the monitor, as well as
 sunrise, sunset and solar noon times, and create several temporal masks.</p>
-<p>If the <code>timezone</code> is provided it will be used. Otherwise, the
-<span class="pkg">MazamaSpatialUtils</span> package will be used to determine the timezone from
-<code>longitude</code> and <code>latitude</code>.</p>
 <p>The returned dataframe will have as many rows as the length of the incoming
 UTC <code>time</code> vector and will contain the following columns:</p>
 <ul>
@@ -168,26 +162,19 @@ UTC <code>time</code> vector and will contain the following columns:</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>timeInfo</span>(<span class='no'>time</span>, <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_timeInfo</span>(<span class='kw'>ws_monitor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>time</th>
-      <td><p>POSIXct vector with specified timezone,</p></td>
+      <th>ws_monitor</th>
+      <td><p><em>ws_monitor</em> object.</p></td>
     </tr>
     <tr>
-      <th>longitude</th>
-      <td><p>Longitude of the location of interest.</p></td>
-    </tr>
-    <tr>
-      <th>latitude</th>
-      <td><p>Latitude of the location of interest.</p></td>
-    </tr>
-    <tr>
-      <th>timezone</th>
-      <td><p>Olson timezone at the location of interest.</p></td>
+      <th>monitorID</th>
+      <td><p>Monitor ID for a specific monitor in <code>ws_monitor</code> --
+optional if <code>ws_monitor</code> only has one monitor.</p></td>
     </tr>
     </table>
     
@@ -209,10 +196,7 @@ an important tool for creating LST daily averages and LST axis labeling.</p>
     <pre class="examples"><div class='input'><span class='no'>carmel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20160801</span>,<span class='fl'>20160810</span>))
 
 <span class='co'># Create timeInfo object for this monitor</span>
-<span class='no'>ti</span> <span class='kw'>&lt;-</span> <span class='fu'>timeInfo</span>(<span class='no'>carmel</span>$<span class='no'>data</span>$<span class='no'>datetime</span>,
-               <span class='no'>carmel</span>$<span class='no'>meta</span>$<span class='no'>longitude</span>,
-               <span class='no'>carmel</span>$<span class='no'>meta</span>$<span class='no'>latitude</span>,
-               <span class='no'>carmel</span>$<span class='no'>meta</span>$<span class='no'>timezone</span>)
+<span class='no'>ti</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_timeInfo</span>(<span class='no'>carmel</span>)
 
 <span class='co'># Subset the data based on day/night masks</span>
 <span class='no'>data_day</span> <span class='kw'>&lt;-</span> <span class='no'>carmel</span>$<span class='no'>data</span>[<span class='no'>ti</span>$<span class='no'>day</span>,]
@@ -223,7 +207,7 @@ an important tool for creating LST daily averages and LST axis labeling.</p>
 <span class='no'>carmel_night</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>meta</span> <span class='kw'>=</span> <span class='no'>carmel</span>$<span class='no'>meta</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data_night</span>)
 
 <span class='co'># Plot them</span>
-<span class='fu'><a href='monitorPlot_timeseries.html'>monitorPlot_timeseries</a></span>(<span class='no'>carmel_day</span>, <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>'goldenrod'</span>)</div><div class='input'><span class='fu'><a href='monitorPlot_timeseries.html'>monitorPlot_timeseries</a></span>(<span class='no'>carmel_night</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>'darkblue'</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='timeInfo-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='monitorPlot_timeseries.html'>monitorPlot_timeseries</a></span>(<span class='no'>carmel_day</span>, <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>'goldenrod'</span>)</div><div class='input'><span class='fu'><a href='monitorPlot_timeseries.html'>monitorPlot_timeseries</a></span>(<span class='no'>carmel_night</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>'darkblue'</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='monitor_timeInfo-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

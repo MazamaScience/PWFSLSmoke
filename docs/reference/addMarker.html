@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -170,10 +170,10 @@ category colors, specified 'AQI[number]' eg. 'AQI1'</p></td>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='loadLatest.html'>loadLatest</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'CA'</span>)
 <span class='co'># Google map</span>
-<span class='no'>map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorEsriMap</a></span>(<span class='no'>ca</span>)
+<span class='no'>map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_esriMap.html'>monitor_esriMap</a></span>(<span class='no'>ca</span>)
 <span class='fu'>addMarker</span>(<span class='no'>ca</span>$<span class='no'>meta</span>$<span class='no'>longitude</span>, <span class='no'>ca</span>$<span class='no'>meta</span>$<span class='no'>latitude</span>, <span class='kw'>map</span><span class='kw'>=</span><span class='no'>map</span>)
 <span class='co'># line map</span>
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorMap</a></span>(<span class='no'>ca</span>)
+<span class='fu'><a href='monitor_map.html'>monitor_map</a></span>(<span class='no'>ca</span>)
 <span class='fu'>addMarker</span>(<span class='no'>ca</span>$<span class='no'>meta</span>$<span class='no'>longitude</span>, <span class='no'>ca</span>$<span class='no'>meta</span>$<span class='no'>latitude</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>expansion</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='co'># }</span></pre>
   </div>

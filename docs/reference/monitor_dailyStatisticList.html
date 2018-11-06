@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -167,7 +167,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Splits the <code>ws_monitor</code> object by <code>timezone</code> and applies the
-<code><a href='monitor_dailyStatistic.html'>monitor_dailyStatistic()</a></code> function separately for each timezone. 
+<code><a href='monitor_dailyStatistic.html'>monitor_dailyStatistic()</a></code> function separately for each timezone.
 See <a href='monitor_dailyStatistic.html'>monitor_dailyStatistic</a> for more details.</p>
 <p>The results are returned as a list of <em>ws_monitor</em> objects with each element of the
 list named with the associated timezone. Note that each <code>ws_monitor$data$datetime</code>
@@ -184,9 +184,9 @@ will be in local time. This is desirable as it ensures proper date formatting in
 <span class='no'>airnow</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='airnow_loadLatest.html'>airnow_loadLatest</a></span>()
 <span class='no'>nw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>airnow</span>, <span class='kw'>stateCodes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'WA'</span>,<span class='st'>'OR'</span>,<span class='st'>'ID'</span>,<span class='st'>'MT'</span>))
 <span class='no'>dailyList</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_dailyStatisticList</span>(<span class='no'>nw</span>)
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorLeaflet</a></span>(<span class='no'>dailyList</span><span class='kw'>[[</span><span class='st'>"America/Los_Angeles"</span>]])
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorLeaflet</a></span>(<span class='no'>dailyList</span><span class='kw'>[[</span><span class='st'>"America/Boise"</span>]])
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorLeaflet</a></span>(<span class='no'>dailyList</span><span class='kw'>[[</span><span class='st'>"America/Denver"</span>]])
+<span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>dailyList</span><span class='kw'>[[</span><span class='st'>"America/Los_Angeles"</span>]])
+<span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>dailyList</span><span class='kw'>[[</span><span class='st'>"America/Boise"</span>]])
+<span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>dailyList</span><span class='kw'>[[</span><span class='st'>"America/Denver"</span>]])
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

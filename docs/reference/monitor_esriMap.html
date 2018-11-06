@@ -77,7 +77,7 @@ ws_monitor$meta dataframe." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -246,10 +246,10 @@ black &amp; white image</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='no'>Northwest_Megafires</span>
-<span class='co'># monitorLeaflet(N_M) # to identify Spokane monitorIDs</span>
+<span class='co'># monitor_leaflet(N_M) # to identify Spokane monitorIDs</span>
 <span class='no'>Spokane</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subsetBy.html'>monitor_subsetBy</a></span>(<span class='no'>N_M</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stringr/topics/str_detect'>str_detect</a></span>(<span class='no'>N_M</span>$<span class='no'>meta</span>$<span class='no'>monitorID</span>,<span class='st'>'^53063'</span>))
 <span class='no'>Spokane</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Spokane</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>20150815</span>, <span class='fl'>20150831</span>))
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorEsriMap</a></span>(<span class='no'>Spokane</span>)
+<span class='fu'>monitor_esriMap</span>(<span class='no'>Spokane</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

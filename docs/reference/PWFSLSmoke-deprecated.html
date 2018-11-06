@@ -66,7 +66,7 @@ functions will be listed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -136,7 +136,12 @@ functions will be listed.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>monitorDygraph</span>(<span class='no'>ws_monitor</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"title"</span>,
+    <pre class="usage"><span class='fu'>monitorGoogleMap</span>(<span class='no'>ws_monitor</span>, <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'>get</span>(<span class='st'>"max"</span>),
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>,
+  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"roadmap"</span>, <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='fu'>monitorDygraph</span>(<span class='no'>ws_monitor</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"title"</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"PM2.5 Concentration"</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>showLegend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
@@ -169,7 +174,7 @@ functions will be listed.</p>
 
     <p>Deprecations fall into the following categories:</p>
 <ul>
-<li><p>Silent: These functions immediately call another function without and
+<li><p>Silent: These functions immediately call another function without any
   warning to the user.</p></li>
 <li><p>Soft: These functions throw a warning when called, then call the
   correct function, if available.</p></li>
@@ -196,6 +201,10 @@ functions will be listed.</p>
     <h2 class="hasAnchor" id="hard-deprecations"><a class="anchor" href="#hard-deprecations"></a>Hard Deprecations</h2>
 
     
+    <table class='table'>
+<tr><td><code>monitorGoogleMap</code></td><td>Use <code><a href='monitor_esriMap.html'>monitor_esriMap</a></code></td></tr>
+<tr><td></td><td><code>monitorGoogleMap</code></td></tr>
+</table>
     
 
   </div>

@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor — monitor_collapse • PWFSLSmoke</title>
+<title>Collapse a ws_monitor Object into a ws_monitor Object with a Single
+Monitor — monitor_collapse • PWFSLSmoke</title>
 
 <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
@@ -32,12 +33,16 @@
 
 
 
-<meta property="og:title" content="Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor — monitor_collapse" />
+<meta property="og:title" content="Collapse a ws_monitor Object into a ws_monitor Object with a Single
+Monitor — monitor_collapse" />
 
-<meta property="og:description" content="Collapses data from all the monitors in ws_monitor into a single-monitor 
-ws_monitor object using the function provided in the FUN argument. The single-monitor
-result will be located at the mean longitude and latitude unless longitude and latitude
-parameters are specified." />
+<meta property="og:description" content="Collapses data from all the monitors in ws_monitor into a
+single-monitor ws_monitor object using the function provided in the
+FUN argument. The single-monitor result will be located at the mean
+longitude and latitude unless longitude and latitude
+parameters are specified.
+Any columns of meta that are common to all monitors will be retained in
+the returned ws_monitor meta." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -67,7 +72,7 @@ parameters are specified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -124,17 +129,21 @@ parameters are specified." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collapse a ws_monitor Object into a ws_monitor Object with a Single Monitor</h1>
+    <h1>Collapse a ws_monitor Object into a ws_monitor Object with a Single
+Monitor</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_collapse.R'><code>R/monitor_collapse.R</code></a></small>
     <div class="hidden name"><code>monitor_collapse.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Collapses data from all the monitors in <code>ws_monitor</code> into a single-monitor 
-<em>ws_monitor</em> object using the function provided in the <code>FUN</code> argument. The single-monitor
-result will be located at the mean longitude and latitude unless <code>longitude</code> and <code>latitude</code>
+    <p>Collapses data from all the monitors in <code>ws_monitor</code> into a
+single-monitor <em>ws_monitor</em> object using the function provided in the
+<code>FUN</code> argument. The single-monitor result will be located at the mean
+longitude and latitude unless <code>longitude</code> and <code>latitude</code>
 parameters are specified.</p>
+<p>Any columns of meta that are common to all monitors will be retained in
+the returned <em>ws_monitor</em> meta.</p>
     
     </div>
 
@@ -146,48 +155,51 @@ parameters are specified.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ws_monitor</th>
-      <td><p><em>ws_monitor</em> object</p></td>
+      <td><p><em>ws_monitor</em> object.</p></td>
     </tr>
     <tr>
       <th>longitude</th>
-      <td><p>longitude of the collapsed monitoring station. (Default = mean of the longitudes)</p></td>
+      <td><p>Longitude of the collapsed monitoring station.</p></td>
     </tr>
     <tr>
       <th>latitude</th>
-      <td><p>latitude of the collapsed monitoring station. (Default = mean of the latitudes)</p></td>
+      <td><p>Latitude of the collapsed monitoring station.</p></td>
     </tr>
     <tr>
       <th>monitorID</th>
-      <td><p>monitor ID of the collapsed monitoring station.</p></td>
+      <td><p>Monitor ID assigned to the collapsed monitoring station.</p></td>
     </tr>
     <tr>
       <th>FUN</th>
-      <td><p>function to be applied to all the monitors at a single time index.</p></td>
+      <td><p>Function to be applied to all the monitors at a single time index.</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
-      <td><p>logical value indicating whether NA values should be ignored when FUN is applied</p></td>
+      <td><p>Logical specifying whether NA values should be ignored when FUN
+is applied.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments to be passed on to the <code>apply()</code> function</p></td>
+      <td><p>additional arguments to be passed on to the <code>apply()</code> function.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <em>ws_monitor</em> object with meta and data that corresponds to the collapsed single monitor</p>
+    <p>A <em>ws_monitor</em> object with meta and data that for the the
+collapsed single monitor</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>After <code>FUN</code> is applied, values of <code>+Inf</code> and <code>-Inf</code> are converted to <code>NA</code>.
-This is a convenience for the common case where <code>FUN=min</code> or <code>FUN=max</code> and some of the
-timesteps have all missing values. See the R documentation for <code>min</code> for an explanation.</p>
+    <p>After <code>FUN</code> is applied, values of <code>+Inf</code> and <code>-Inf</code> are
+converted to <code>NA</code>. This is a convenience for the common case where
+<code>FUN=min</code> or <code>FUN=max</code> and some of the timesteps have all missing
+values. See the R documentation for <code>min</code> for an explanation.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='no'>Northwest_Megafires</span>
-<span class='co'># monitorLeaflet(N_M) # to identify Spokane monitorIDs</span>
+<span class='co'># monitor_leaflet(N_M) # to identify Spokane monitorIDs</span>
 <span class='no'>Spokane</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subsetBy.html'>monitor_subsetBy</a></span>(<span class='no'>N_M</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stringr/topics/str_detect'>str_detect</a></span>(<span class='no'>N_M</span>$<span class='no'>meta</span>$<span class='no'>monitorID</span>,<span class='st'>'^53063'</span>))
 <span class='no'>Spokane_min</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_collapse</span>(<span class='no'>Spokane</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='st'>'Spokane_min'</span>, <span class='kw'>FUN</span><span class='kw'>=</span><span class='no'>min</span>)
 <span class='no'>Spokane_max</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_collapse</span>(<span class='no'>Spokane</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='st'>'Spokane_max'</span>, <span class='kw'>FUN</span><span class='kw'>=</span><span class='no'>max</span>)

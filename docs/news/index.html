@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -122,6 +122,55 @@
       <small>Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="pwfslsmoke-1-1-12" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-1-12" class="anchor"></a>PWFSLSmoke 1.1.12<small> Unreleased </small>
+</h1>
+<p>This release refactors functions so that all functions accepting a <code>ws_monitor</code> object as their first parameter include the “<code>monitor_</code>*" prefix in their name.</p>
+<p>The affected functions are:</p>
+<table>
+<thead><tr class="header">
+<th>Old Name</th>
+<th>New Name</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitorDygraph()</a></code></td>
+<td><code><a href="../reference/monitor_dygraph.html">monitor_dygraph()</a></code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitorEsriMap()</a></code></td>
+<td><code><a href="../reference/monitor_esriMap.html">monitor_esriMap()</a></code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitorLeaflet()</a></code></td>
+<td><code><a href="../reference/monitor_leaflet.html">monitor_leaflet()</a></code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitorMap()</a></code></td>
+<td><code><a href="../reference/monitor_map.html">monitor_map()</a></code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitorMap_performance()</a></code></td>
+<td><code><a href="../reference/monitor_performanceMap.html">monitor_performanceMap()</a></code></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>In addition, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorGoogleMap()</a></code> has been deprecated in favor of <code><a href="../reference/monitor_esriMap.html">monitor_esriMap()</a></code>.</p>
+</div>
+    <div id="pwfslsmoke-1-1-11" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-1-11" class="anchor"></a>PWFSLSmoke 1.1.11<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code>montor_collapse()</code> now returns a <code>ws_monitor</code> object with a full ‘meta’ dataframe that retains any metadata that is shared</li>
+<li>added <code><a href="../reference/monitor_timeInfo.html">monitor_timeInfo()</a></code> convenience wrapper</li>
+<li>added <code>localStandardTime_UTC</code> and <code>daylightSavings</code> columns to the dataframe returned by <code><a href="../reference/timeInfo.html">timeInfo()</a></code>
+</li>
+</ul>
+</div>
     <div id="pwfslsmoke-1-1-10" class="section level1">
 <h1 class="page-header">
 <a href="#pwfslsmoke-1-1-10" class="anchor"></a>PWFSLSmoke 1.1.10<small> Unreleased </small>
@@ -180,7 +229,7 @@
 <a href="#pwfslsmoke-1-1-6" class="anchor"></a>PWFSLSmoke 1.1.6<small> Unreleased </small>
 </h1>
 <ul>
-<li>actual parsing done by <code><a href="http://www.rdocumentation.org/packages/lubridate/topics/parse_date_time">lubridate::parse_date_time</a></code>
+<li>actual parsing done by <code><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">lubridate::parse_date_time</a></code>
 </li>
 <li>vectorized for inputs</li>
 <li>handle any format of <strong>Ymd[<em>HMS</em>]</strong> (including mutlitple formats within same input)</li>
@@ -891,9 +940,9 @@
 <li>
 <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorMap()</a></code> no longer creates legends</li>
 <li>
-<code><a href="../reference/monitorGoogleMap.html">monitorGoogleMap()</a></code> no longer creates legends</li>
+<code><a href="../reference/PWFSLSmoke-deprecated.html">monitorGoogleMap()</a></code> no longer creates legends</li>
 <li>
-<code><a href="../reference/monitorGoogleMap.html">monitorGoogleMap()</a></code> accepts <code>centerLon</code> and <code>centerLat</code> arguments</li>
+<code><a href="../reference/PWFSLSmoke-deprecated.html">monitorGoogleMap()</a></code> accepts <code>centerLon</code> and <code>centerLat</code> arguments</li>
 <li>
 <code><a href="../reference/monitorPlot_dailyBarplot.html">monitorPlot_dailyBarplot()</a></code> accepts <code>labels_x_nudge</code> and <code>labels_y_nudge</code> arguments</li>
 <li>
@@ -1041,6 +1090,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#pwfslsmoke-1-1-12">1.1.12</a></li>
+        <li><a href="#pwfslsmoke-1-1-11">1.1.11</a></li>
         <li><a href="#pwfslsmoke-1-1-10">1.1.10</a></li>
         <li><a href="#pwfslsmoke-1-1-9">1.1.9</a></li>
         <li><a href="#pwfslsmoke-1-1-8">1.1.8</a></li>

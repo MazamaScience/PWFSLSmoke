@@ -65,7 +65,7 @@ If any input parameter is not specified, that parameter will not be used to subs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -190,8 +190,8 @@ If any input parameter is not specified, that parameter will not be used to subs
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>By default, this function will return a <em>ws_monitor</em> object whose <code>data</code> dataframe has the
-same number of columns as the incoming dataframe, unless any of the columns consist of all <code>NA</code>s, 
-in which case such columns will be removed (<em>e.g.</em> if there are no valid data for a specific monitor 
+same number of columns as the incoming dataframe, unless any of the columns consist of all <code>NA</code>s,
+in which case such columns will be removed (<em>e.g.</em> if there are no valid data for a specific monitor
 after subsetting by <code>tlim</code> or <code>vlim</code>).
 If <code>dropMonitors=FALSE</code>, columns that consist of all <code>NA</code>s will be retained.</p>
     
@@ -201,7 +201,7 @@ If <code>dropMonitors=FALSE</code>, columns that consist of all <code>NA</code>s
 <span class='no'>xlim</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(-<span class='fl'>124.73</span>, -<span class='fl'>122.80</span>)
 <span class='no'>ylim</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>47.20</span>, <span class='fl'>48.40</span>)
 <span class='no'>Olympic_Peninsula</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_subset</span>(<span class='no'>N_M</span>, <span class='no'>xlim</span>, <span class='no'>ylim</span>)
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorMap</a></span>(<span class='no'>Olympic_Peninsula</span>, <span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>2</span>)</div><div class='input'><span class='fu'>rect</span>(<span class='no'>xlim</span>[<span class='fl'>1</span>], <span class='no'>ylim</span>[<span class='fl'>1</span>], <span class='no'>xlim</span>[<span class='fl'>2</span>], <span class='no'>ylim</span>[<span class='fl'>2</span>], <span class='kw'>col</span><span class='kw'>=</span><span class='fu'>adjustcolor</span>(<span class='st'>'black'</span>,<span class='fl'>0.1</span>))</div><div class='img'><img src='monitor_subset-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='monitor_map.html'>monitor_map</a></span>(<span class='no'>Olympic_Peninsula</span>, <span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>2</span>)</div><div class='input'><span class='fu'>rect</span>(<span class='no'>xlim</span>[<span class='fl'>1</span>], <span class='no'>ylim</span>[<span class='fl'>1</span>], <span class='no'>xlim</span>[<span class='fl'>2</span>], <span class='no'>ylim</span>[<span class='fl'>2</span>], <span class='kw'>col</span><span class='kw'>=</span><span class='fu'>adjustcolor</span>(<span class='st'>'black'</span>,<span class='fl'>0.1</span>))</div><div class='img'><img src='monitor_subset-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

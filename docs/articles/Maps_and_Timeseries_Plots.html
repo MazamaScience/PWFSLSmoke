@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <h1>Maps and Timeseries Plots</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">2018-11-02</h4>
+            <h4 class="date">2018-11-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/PWFSLSmoke/blob/master/vignettes/Maps_and_Timeseries_Plots.Rmd"><code>vignettes/Maps_and_Timeseries_Plots.Rmd</code></a></small>
       <div class="hidden name"><code>Maps_and_Timeseries_Plots.Rmd</code></div>
@@ -107,15 +107,15 @@
 <a class="sourceLine" id="cb1-3" data-line-number="3">PacNW &lt;-<span class="st"> </span>Northwest_Megafires</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">PacNW_<span class="dv">24</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_rollingMean.html">monitor_rollingMean</a></span>(PacNW, <span class="dt">width=</span><span class="dv">24</span>)</a></code></pre></div>
 <p>Now we can create a map where each monitor is color coded by the maximum value of this 24-hr rolling mean. By default, AQI colors and labels are used but arguments to <code><a href="../reference/addAQILegend.html">addAQILegend()</a></code> allow users to specify their own.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/PWFSLSmoke-deprecated.html">monitorMap</a></span>(PacNW_<span class="dv">24</span>, <span class="dt">slice=</span>max)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/monitor_map.html">monitor_map</a></span>(PacNW_<span class="dv">24</span>, <span class="dt">slice=</span>max)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="../reference/addAQILegend.html">addAQILegend</a></span>(<span class="dt">title=</span><span class="st">"Max AQI"</span>, <span class="dt">cex=</span><span class="fl">0.7</span>)</a></code></pre></div>
 <p><img src="Maps_and_Timeseries_Plots_files/figure-html/map-1.png" width="672"></p>
 <p>The map shows that many areas of the Pacific NW had days with unhealthy air but a cluster of sites in Idaho had particularly bad air quality.</p>
 <p>(<em><strong>Note</strong> that this is not the regulatory midnight-to-midnight AQI but a continuous 24-hr rolling mean.</em>)</p>
 <p>We can us an interactive “leaflet” map to zoom in and get more information:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Commented out for the vignette</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#monitorLeaflet(PacNW_24, slice=max)</span></a></code></pre></div>
-<p>The <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorMap()</a></code> and <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorLeaflet()</a></code> plots show us pretty much the same information, except that the leaflet plot allows you to get monitor-specific metadata by clicking on a monitor. In this manner, we can assemble a list of monitorIDs in and around the Nez Perce Reservation in northern Idaho and generate a timeseries plot showing the terrible smoke in late August.</p>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#monitor_leaflet(PacNW_24, slice=max)</span></a></code></pre></div>
+<p>The <code><a href="../reference/monitor_map.html">monitor_map()</a></code> and <code><a href="../reference/monitor_leaflet.html">monitor_leaflet()</a></code> plots show us pretty much the same information, except that the leaflet plot allows you to get monitor-specific metadata by clicking on a monitor. In this manner, we can assemble a list of monitorIDs in and around the Nez Perce Reservation in northern Idaho and generate a timeseries plot showing the terrible smoke in late August.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">NezPerceIDs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"160571012_01"</span>,<span class="st">"160690012_01"</span>,<span class="st">"160690013_01"</span>,</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">                 <span class="st">"160690014_01"</span>,<span class="st">"160490003_01"</span>,<span class="st">"160491012_01"</span>)</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">NezPerce &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">monitorIDs=</span>NezPerceIDs)</a>
@@ -174,7 +174,7 @@
 <p>A little googling and we can obtain a set of coordinates for these fires to use in a new “ESRI” map of the August daily average maxima with fire icons at fire locations:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">fireLons &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="fl">118.461</span>,<span class="op">-</span><span class="fl">117.679</span>,<span class="op">-</span><span class="fl">120.039</span>,<span class="op">-</span><span class="fl">119.002</span>,<span class="op">-</span><span class="fl">119.662</span>)</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">fireLats &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">48.756</span>,<span class="fl">46.11</span>,<span class="fl">47.814</span>,<span class="fl">48.338</span>,<span class="fl">48.519</span>)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw"><a href="../reference/PWFSLSmoke-deprecated.html">monitorEsriMap</a></span>(PacNW_dailyAvg, <span class="dt">zoom=</span><span class="dv">7</span>, <span class="dt">centerLon=</span><span class="op">-</span><span class="dv">118</span>, <span class="dt">centerLat=</span><span class="dv">47</span>, <span class="dt">slice=</span>max)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw"><a href="../reference/monitor_esriMap.html">monitor_esriMap</a></span>(PacNW_dailyAvg, <span class="dt">zoom=</span><span class="dv">7</span>, <span class="dt">centerLon=</span><span class="op">-</span><span class="dv">118</span>, <span class="dt">centerLat=</span><span class="dv">47</span>, <span class="dt">slice=</span>max)</a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw"><a href="../reference/addIcon.html">addIcon</a></span>(<span class="st">'redFlame'</span>, fireLons, fireLats, <span class="dt">expansion=</span>.<span class="dv">002</span>)</a>
 <a class="sourceLine" id="cb18-5" data-line-number="5"><span class="kw"><a href="../reference/addAQILegend.html">addAQILegend</a></span>(<span class="dt">cex=</span><span class="fl">0.8</span>)</a>
 <a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw">title</span>(<span class="st">"August, 2015"</span>, <span class="dt">line=</span><span class="op">-</span><span class="fl">1.5</span>, <span class="dt">cex.main=</span><span class="dv">2</span>)</a></code></pre></div>

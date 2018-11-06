@@ -34,9 +34,9 @@
 
 <meta property="og:title" content="Combine List of ws_monitor Objects into Single ws_monitor Object — monitor_combine" />
 
-<meta property="og:description" content="Combines a list of one or more ws_monitor objects into a single ws_monitor object 
+<meta property="og:description" content="Combines a list of one or more ws_monitor objects into a single ws_monitor object
 by merging the meta and data dataframes from each object in monitorList.
-When monitorList contains only two ws_monitor objects the monitor_combine() 
+When monitorList contains only two ws_monitor objects the monitor_combine()
 function can be used to extend time ranges for monitorIDs that are found in both ws_monitor
 objects. This can be used to 'grow' a ws_monitor object by appending subsequent months
 or years. (Note, however, that this can be CPU intensive process.)" />
@@ -69,7 +69,7 @@ or years. (Note, however, that this can be CPU intensive process.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -133,9 +133,9 @@ or years. (Note, however, that this can be CPU intensive process.)" />
 
     <div class="ref-description">
     
-    <p>Combines a list of one or more <em>ws_monitor</em> objects into a single <em>ws_monitor</em> object 
+    <p>Combines a list of one or more <em>ws_monitor</em> objects into a single <em>ws_monitor</em> object
 by merging the <code>meta</code> and <code>data</code> dataframes from each object in <code>monitorList</code>.</p>
-<p>When <code>monitorList</code> contains only two <em>ws_monitor</em> objects the <code>monitor_combine()</code> 
+<p>When <code>monitorList</code> contains only two <em>ws_monitor</em> objects the <code>monitor_combine()</code>
 function can be used to extend time ranges for monitorIDs that are found in both <em>ws_monitor</em>
 objects. This can be used to 'grow' a <em>ws_monitor</em> object by appending subsequent months
 or years. (Note, however, that this can be CPU intensive process.)</p>
@@ -166,7 +166,7 @@ or years. (Note, however, that this can be CPU intensive process.)</p>
 <span class='no'>monitorList</span><span class='kw'>[[</span><span class='fl'>3</span>]] <span class='kw'>&lt;-</span> <span class='fu'><a href='airsis_createMonitorObject.html'>airsis_createMonitorObject</a></span>(<span class='fl'>20160701</span>, <span class='fl'>20161231</span>, <span class='st'>'USFS'</span>, <span class='st'>'1033'</span>)
 <span class='no'>monitorList</span><span class='kw'>[[</span><span class='fl'>4</span>]] <span class='kw'>&lt;-</span> <span class='fu'><a href='airsis_createMonitorObject.html'>airsis_createMonitorObject</a></span>(<span class='fl'>20160701</span>, <span class='fl'>20161231</span>, <span class='st'>'USFS'</span>, <span class='st'>'1034'</span>)
 <span class='no'>ws_monitor</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_combine</span>(<span class='no'>monitorList</span>)
-<span class='fu'><a href='PWFSLSmoke-deprecated.html'>monitorLeaflet</a></span>(<span class='no'>ws_monitor</span>)
+<span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>ws_monitor</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

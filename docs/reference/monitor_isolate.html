@@ -70,7 +70,7 @@ mobile monitors that are deployed to different locations in different years." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -191,7 +191,7 @@ mobile monitors that are deployed to different locations in different years.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='no'>Northwest_Megafires</span>
-<span class='co'># monitorLeaflet(N_M) # to identify Spokane monitorIDs</span>
+<span class='co'># monitor_leaflet(N_M) # to identify Spokane monitorIDs</span>
 <span class='no'>Spokane</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subsetBy.html'>monitor_subsetBy</a></span>(<span class='no'>N_M</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stringr/topics/str_detect'>str_detect</a></span>(<span class='no'>N_M</span>$<span class='no'>meta</span>$<span class='no'>monitorID</span>,<span class='st'>'^53063'</span>))
 <span class='no'>Spokane</span>$<span class='no'>meta</span>$<span class='no'>monitorID</span></div><div class='output co'>#&gt; [1] "530630047_01" "530630021_01" "530639999_01" "530639997_01" "530639996_01"</div><div class='input'><span class='no'>monitorList</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_isolate</span>(<span class='no'>Spokane</span>)
 <span class='fu'>names</span>(<span class='no'>monitorList</span>)</div><div class='output co'>#&gt; [1] "530630047_01" "530630021_01" "530639999_01" "530639997_01" "530639996_01"</div></pre>

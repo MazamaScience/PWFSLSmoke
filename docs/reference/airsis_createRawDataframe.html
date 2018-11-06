@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Obain AIRSIS Data and Create a Raw Tibble — airsis_createRawDataframe • PWFSLSmoke</title>
+<title>Obain AIRSIS data and parse into a raw tibble — airsis_createRawDataframe • PWFSLSmoke</title>
 
 <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
@@ -32,7 +32,7 @@
 
 
 
-<meta property="og:title" content="Obain AIRSIS Data and Create a Raw Tibble — airsis_createRawDataframe" />
+<meta property="og:title" content="Obain AIRSIS data and parse into a raw tibble — airsis_createRawDataframe" />
 
 <meta property="og:description" content="Obtains monitor data from an AIRSIS webservice and converts
 it into a quality controlled, metadata enhanced &quot;raw&quot; tibble
@@ -74,7 +74,7 @@ enhance metadata to include: elevation, timezone, state, country, site name
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.12</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@ enhance metadata to include: elevation, timezone, state, country, site name
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Obain AIRSIS Data and Create a Raw Tibble</h1>
+    <h1>Obain AIRSIS data and parse into a raw tibble</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airsis_createRawDataframe.R'><code>R/airsis_createRawDataframe.R</code></a></small>
     <div class="hidden name"><code>airsis_createRawDataframe.Rd</code></div>
     </div>
@@ -152,8 +152,8 @@ ready for use with all <code>raw_~</code> functions.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>airsis_createRawDataframe</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'>strftime</span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
-  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'>strftime</span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
+    <pre class="usage"><span class='fu'>airsis_createRawDataframe</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'>strftime</span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
+  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'>strftime</span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
   <span class='st'>"%Y%m%d23"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>provider</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>clusterDiameter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
   <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://xxxx.airsis.com/vision/common/CSVExport.aspx?"</span>,
@@ -164,45 +164,46 @@ ready for use with all <code>raw_~</code> functions.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>startdate</th>
-      <td><p>desired start date (integer or character representing YYYYMMDD[HH])</p></td>
+      <td><p>Desired start date (integer or character representing YYYYMMDD[HH]).</p></td>
     </tr>
     <tr>
       <th>enddate</th>
-      <td><p>desired end date (integer or character representing YYYYMMDD[HH])</p></td>
+      <td><p>Desired end date (integer or character representing YYYYMMDD[HH]).</p></td>
     </tr>
     <tr>
       <th>provider</th>
-      <td><p>identifier used to modify baseURL <code>['APCD'|'USFS']</code></p></td>
+      <td><p>Identifier used to modify baseURL <code>['APCD'|'USFS']</code>.</p></td>
     </tr>
     <tr>
       <th>unitID</th>
-      <td><p>character or numeric AIRSIS unit identifier</p></td>
+      <td><p>Character or numeric AIRSIS unit identifier.</p></td>
     </tr>
     <tr>
       <th>clusterDiameter</th>
-      <td><p>diameter in meters used to determine the number of clusters (see <code>addClustering</code>)</p></td>
+      <td><p>Diameter in meters used to determine the number of clusters (see <code>addClustering</code>).</p></td>
     </tr>
     <tr>
       <th>baseUrl</th>
-      <td><p>base URL for data queries</p></td>
+      <td><p>Base URL for data queries.</p></td>
     </tr>
     <tr>
       <th>saveFile</th>
-      <td><p>optional filename where raw CSV will be written</p></td>
+      <td><p>Optional filename where raw CSV will be written.</p></td>
     </tr>
     <tr>
       <th>flagAndKeep</th>
-      <td><p>flag, rather then remove, bad data during the QC process</p></td>
+      <td><p>Flag, rather then remove, bad data during the QC process.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Raw tibblee of AIRSIS data.</p>
+    <p>Raw tibble of AIRSIS data.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>The downloaded CSV may be saved to a local file by providing an argument to the <code>saveFile</code> parameter.</p>
+    <p>The downloaded CSV may be saved to a local file by providing an argument
+to the <code>saveFile</code> parameter.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
