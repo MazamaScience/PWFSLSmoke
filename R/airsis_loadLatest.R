@@ -52,7 +52,7 @@
 #' \dontrun{
 #' airsis_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 airsis_loadLatest <- function(parameter = 'PM2.5',

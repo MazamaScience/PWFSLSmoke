@@ -52,7 +52,7 @@ Avaialble RData files can be seen at:
 \dontrun{
 monitor_loadLatest() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
-  monitorMap()
+  monitor_map()
 }
 }
 \seealso{

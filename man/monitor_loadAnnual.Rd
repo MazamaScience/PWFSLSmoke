@@ -51,7 +51,7 @@ Avaialble RData files can be seen at:
 \dontrun{
 monitor_loadAnnual(2014) \%>\%
   monitor_subset(stateCodes='MT', tlim=c(20140801,20140901)) \%>\%
-  monitorMap()
+  monitor_map()
 }
 }
 \seealso{

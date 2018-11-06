@@ -62,7 +62,7 @@
 #' \dontrun{
 #' monitor_loadDaily() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 monitor_loadDaily <- function(parameter='PM2.5',

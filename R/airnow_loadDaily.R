@@ -52,7 +52,7 @@
 #' \dontrun{
 #' airnow_loadDaily() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 airnow_loadDaily <- function(parameter = 'PM2.5',

@@ -45,7 +45,7 @@ Avaialble RData and associated log files can be seen at:
 \dontrun{
 wrcc_loadLatest() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
-  monitorMap()
+  monitor_map()
 }
 }
 \seealso{

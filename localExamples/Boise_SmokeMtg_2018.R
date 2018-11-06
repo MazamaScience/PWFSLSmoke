@@ -68,7 +68,7 @@ par(oldPar)
 
 png('daily_max_map.png', width=800, height=600)
 
-monitorMap(dailyMean, max, mar=c(1,1,9.1,1), cex=1.8)
+monitor_map(dailyMean, max, mar=c(1,1,9.1,1), cex=1.8)
 addAQILegend("topright", cex=1.2, pt.cex=1.5)
 mtext('Highest Daily Mean PM2.5 during Jul-Aug-Sep', side=3, line=2, adj=0, cex=2.0, font=1)
 

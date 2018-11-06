@@ -63,7 +63,7 @@ Finally, plot all of it together.
 par(pty = 's')
 esriMap_plotOnStaticMap(map)
 maps::map('state', add = TRUE)
-monitorMap(monitors, add = TRUE)
+monitor_map(monitors, add = TRUE)
 addIcon('redFlame', fires_lon, fires_lat, expansion = 0.005)
 ```
 

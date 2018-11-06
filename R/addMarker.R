@@ -18,7 +18,7 @@
 #' map <- monitor_esriMap(ca)
 #' addMarker(ca$meta$longitude, ca$meta$latitude, map=map)
 #' # line map
-#' monitorMap(ca)
+#' monitor_map(ca)
 #' addMarker(ca$meta$longitude, ca$meta$latitude, color = "blue", expansion = 1)
 #' }
 

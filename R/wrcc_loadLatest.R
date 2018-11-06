@@ -52,7 +52,7 @@
 #' \dontrun{
 #' wrcc_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 wrcc_loadLatest <- function(parameter = 'PM2.5',

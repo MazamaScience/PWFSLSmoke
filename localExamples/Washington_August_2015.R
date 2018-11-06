@@ -29,7 +29,7 @@ airnow_wa_unhealthy <- monitor_subset(airnow_wa_unhealthy_data, monitorIDs=monit
 
 # Plot a static map
 map('state','WA')
-monitorMap(airnow_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
+monitor_map(airnow_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
 addAQILegend("topright")
 title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites)', line=2)
 
@@ -45,7 +45,7 @@ title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites
 #
 # # Plot a static map
 # map('state','WA')
-# monitorMap(wrcc_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
+# monitor_map(wrcc_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
 # addLegend("topright")
 # title('WRCC:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites)', line=3)
 

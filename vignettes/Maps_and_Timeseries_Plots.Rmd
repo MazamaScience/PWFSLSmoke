@@ -29,7 +29,7 @@ PacNW_24 <- monitor_rollingMean(PacNW, width=24)
 Now we can create a map where each monitor is color coded by the maximum value of this 24-hr rolling mean. By default, AQI colors and labels are used but arguments to `addAQILegend()` allow users to specify their own.
 
 ```{r map}
-monitorMap(PacNW_24, slice=max)
+monitor_map(PacNW_24, slice=max)
 addAQILegend(title="Max AQI", cex=0.7)
 ```
 
@@ -45,7 +45,7 @@ We can us an interactive "leaflet" map to zoom in and get more information:
 #monitor_leaflet(PacNW_24, slice=max)
 ```
 
-The `monitorMap()` and `monitor_leaflet()` plots show us pretty much the same information, except that the leaflet plot allows you to get monitor-specific metadata by clicking on a monitor.
+The `monitor_map()` and `monitor_leaflet()` plots show us pretty much the same information, except that the leaflet plot allows you to get monitor-specific metadata by clicking on a monitor.
 In this manner, we can assemble a list of monitorIDs in and around the Nez Perce Reservation in northern Idaho and generate a timeseries plot showing the terrible smoke in late August.
 
 ```{r dygraph}

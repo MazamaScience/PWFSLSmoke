@@ -56,7 +56,7 @@ colors.
 }
 \examples{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150821,20150828))
-monitorMap(N_M, cex=2)
+monitor_map(N_M, cex=2)
 addAQILegend()
 }
 \keyword{ws_monitor}
