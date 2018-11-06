@@ -139,7 +139,7 @@ legend("topleft", c("max", "min", "median", "mean"),
 title("Aggregated values from PM2.5 monitors, 2015")
 ```
   
-Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitor_esriMap()` and `monitorGoogleMap()` will result in very similar images. Each will plot points for each monitor with AQI colors indicating the maximum PM2.5 value over a map image, sourced either from ESRI or GoogleMaps. `monitor_esriMap()` uses R's base plotting capabilities so it is easier to add points or polygons on top. For either one, there is an option to plot the points on a map object which already exists in memory, retrieved with either `esriMap_getMap()` or `RgoogleMaps::getMap()`. Retrieving the map image from the server will probably take the longest time in plotting the map, so use this option when plotting many maps with the same extent. 
+Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitor_esriMap()` will plot points for each monitor with AQI colors indicating the maximum PM2.5 value over a map image, sourced from ESRI. `monitor_esriMap()` uses R's base plotting capabilities so it is easy to add points or polygons on top. There is an option to plot the points on a map object which already exists in memory, retrieved with `esriMap_getMap()`. Retrieving the map image from the server will probably take the longest time in plotting the map, so use this option when plotting many maps with the same extent. 
 
 The other option for plotting monitor locations is `monitor_map()` which plots the points over polygons instead of an image. 
   

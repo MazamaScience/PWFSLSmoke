@@ -88,19 +88,19 @@ offRez <- monitor_combine(list(Clarkston,
                                Grangeville))
 
 oldPar <- par()
-# PLOT -- Google Map of Nezperce area -----
+# PLOT -- Esri Map of Nezperce area -----
 png('nezperce_zoom7.png', width=1000, height=750)
 par(cex=1.5)
-monitorGoogleMap(Nezperce_area, zoom=7)
+monitor_esriMap(Nezperce_area, zoom=7)
 addAQILegend(pt.cex=2)
 par(cex=1)
 dev.off()
 # -----------------------------------------------------------------------------
 
-# PLOT -- Google Map of Nezperce area -----
+# PLOT -- Esri Map of Nezperce area -----
 png('nezperce_zoom9.png', width=1000, height=750)
 par(cex=1.5)
-monitorGoogleMap(Nezperce_area, zoom=9, cex=3)
+monitor_esriMap(Nezperce_area, zoom=9, cex=3)
 addAQILegend(pt.cex=2)
 par(cex=1)
 dev.off()
