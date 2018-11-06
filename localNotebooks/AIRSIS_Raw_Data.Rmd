@@ -166,8 +166,8 @@ knitr::opts_chunk$set(fig.width=5, fig.height=5)
 
 ```{r}
 plain <- airsis_createMonitorObject(20160914, 20160914, provider='USFS', unitID=1033)
-monitorEsriMap(plain, zoom=8)
-monitorEsriMap(plain, zoom=12, maptype='worldTopoMap')
+monitor_esriMap(plain, zoom=8)
+monitor_esriMap(plain, zoom=12, maptype='worldTopoMap')
 ```
 
 ```{r, echo=FALSE}

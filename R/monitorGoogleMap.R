@@ -43,7 +43,7 @@ monitorGoogleMap <- function(ws_monitor,
                              map=NULL,
                              ...) {
 
-  stop("'monitorGoogleMap' is no longer supported. Use 'monitorEsriMap' instead")
+  stop("'monitorGoogleMap' is no longer supported. Use 'monitor_esriMap' instead")
 
   # # Sanity check
   # if ( monitor_isEmpty(ws_monitor) ) {

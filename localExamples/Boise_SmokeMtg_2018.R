@@ -139,7 +139,7 @@ Nezperce_area_daily <- monitor_dailyStatistic(Nezperce_area)
 
 png('nezperce_map_zoom_out.png', width=800, height=600)
 
-monitorEsriMap(Nezperce_area_daily, zoom=7, width=640, height=640, cex=3)
+monitor_esriMap(Nezperce_area_daily, zoom=7, width=640, height=640, cex=3)
 addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
 
 dev.off()
@@ -150,7 +150,7 @@ par(oldPar)
 
 png('nezperce_map_zoom_in.png', width=800, height=600)
 
-monitorEsriMap(Nezperce_area_daily, zoom=9, width=640, height=640, cex=5)
+monitor_esriMap(Nezperce_area_daily, zoom=9, width=640, height=640, cex=5)
 addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
 
 dev.off()

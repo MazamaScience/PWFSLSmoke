@@ -15,7 +15,7 @@
 #' \dontrun{
 #' ca <- loadLatest() %>% monitor_subset(stateCodes='CA')
 #' # Google map
-#' map <- monitorEsriMap(ca)
+#' map <- monitor_esriMap(ca)
 #' addMarker(ca$meta$longitude, ca$meta$latitude, map=map)
 #' # line map
 #' monitorMap(ca)
