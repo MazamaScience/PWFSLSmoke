@@ -50,7 +50,7 @@
 #'                                        longitude = Vallejo$meta$longitude,
 #'                                        latitude = Vallejo$meta$latitude,
 #'                                        radius = 50)
-#' monitorMap_performance(ca, Vallejo, cex=2)
+#' monitor_performanceMap(ca, Vallejo, cex=2)
 #' title('Heidke Skill of monitors predicting another monitor.')
 #' }
 

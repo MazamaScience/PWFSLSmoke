@@ -54,7 +54,7 @@ monitor_leaflet(skillful)
 }
 }
 \seealso{
-\link{monitorMap_performance}
+\link{monitor_performanceMap}
 
 \link{skill_confusionMatrix}
 }

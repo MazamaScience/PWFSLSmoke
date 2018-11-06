@@ -17,7 +17,7 @@
 #' The requested metric is returned in a dataframe organized with one row per monitor,
 #  the same as the \code{ws_monitor$meta} dataframe. If \code{metric=NULL},
 #' all available metrics are returned.
-#' @seealso \link{monitorMap_performance}
+#' @seealso \link{monitor_performanceMap}
 #' @seealso \link{skill_confusionMatrix}
 #' @examples
 #' \dontrun{
