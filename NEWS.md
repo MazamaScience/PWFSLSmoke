@@ -2,7 +2,7 @@
 # PWFSLSmoke 1.1.12
 
 This release refactors functions so that all functions accepting a `ws_monitor`
-object as their first parameter include the "`monitor_*`" prefix in their name.
+object as their first parameter include the "`monitor_`*" prefix in their name.
 
 The affected functions are:
 
@@ -13,6 +13,8 @@ The affected functions are:
 | `monitorLeaflet()`         | `monitor_leaflet()`        |
 | `monitorMap()`             | `monitor_map()`            |
 | `monitorMap_performance()` | `monitor_performanceMap()` |
+
+<br/>
 
 In addition, `monitorGoogleMap()` has been deprecated in favor of 
 `monitor_esriMap()`.
