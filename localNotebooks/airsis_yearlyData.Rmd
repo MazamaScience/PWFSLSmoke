@@ -31,12 +31,12 @@ load("~/Data/airsis/airsis_2017.RData")
 
 # Orientation
 
-Create some maps and plots to get an idea about what the data looks like. MonitorLeaflet creates an interactive map with monitors plotted as points and colored to correspond to the AQI level of the maximum PM2.5 value in the data. 
+Create some maps and plots to get an idea about what the data looks like. `monitor_leaflet` creates an interactive map with monitors plotted as points and colored to correspond to the AQI level of the maximum PM2.5 value in the data. 
 
 ```{r mapping}
-monitorLeaflet(airsis_2015)
-monitorLeaflet(airsis_2016)
-monitorLeaflet(airsis_2017)
+monitor_leaflet(airsis_2015)
+monitor_leaflet(airsis_2016)
+monitor_leaflet(airsis_2017)
 ```
 
 We can get some other summary statistics by querying the data attribute of the ws_monitor object. 
@@ -279,7 +279,7 @@ Let's see how PM2.5 levels change throughout the day for one monitor. The timeOf
 yreka <- monitor_subset(sisk2017, monitorID = "lon_.122.634_lat_41.727_apcd.1014")
 
 # Plot the monitor location
-monitorLeaflet(yreka)
+monitor_leaflet(yreka)
 
 # Create spaghetti plot of hourly values over the week
 monitorPlot_timeOfDaySpaghetti(monitor_subset(yreka, tlim = c(20170708, 20170720)), title = "Yreka Jul 8 - Jul 20 2017")

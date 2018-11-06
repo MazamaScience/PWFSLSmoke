@@ -50,7 +50,7 @@ mask <- performanceMetrics$heidkeSkill &
         !is.na(performanceMetrics$heidkeSkill)
 skillfulIDs <- monitorIDs[mask]
 skillful <- monitor_subset(wa_dailyAvg, monitorIDs=skillfulIDs)
-monitorLeaflet(skillful)
+monitor_leaflet(skillful)
 }
 }
 \seealso{

@@ -42,10 +42,10 @@ We can us an interactive "leaflet" map to zoom in and get more information:
 
 ```{r leaflet}
 # Commented out for the vignette
-#monitorLeaflet(PacNW_24, slice=max)
+#monitor_leaflet(PacNW_24, slice=max)
 ```
 
-The `monitorMap()` and `monitorLeaflet()` plots show us pretty much the same information, except that the leaflet plot allows you to get monitor-specific metadata by clicking on a monitor.
+The `monitorMap()` and `monitor_leaflet()` plots show us pretty much the same information, except that the leaflet plot allows you to get monitor-specific metadata by clicking on a monitor.
 In this manner, we can assemble a list of monitorIDs in and around the Nez Perce Reservation in northern Idaho and generate a timeseries plot showing the terrible smoke in late August.
 
 ```{r dygraph}

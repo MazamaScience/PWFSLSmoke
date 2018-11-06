@@ -32,7 +32,7 @@ wrcc_2015 <- wrcc_load()
 Create some maps and plots to get an idea about what the data looks like. 
 
 ```{r mapping}
-monitorLeaflet(wrcc_2015)
+monitor_leaflet(wrcc_2015)
 ```
 
 ```{r, eval=FALSE}

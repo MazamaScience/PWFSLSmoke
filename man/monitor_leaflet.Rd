@@ -68,7 +68,7 @@ ca <- airnow_load(2017) \%>\%
   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
 v_low <- AQI$breaks_24[5]
 CA_very_unhealthy_monitors <- monitor_subset(ca, vlim=c(v_low, Inf))
-monitorLeaflet(CA_very_unhealthy_monitors,
+monitor_leaflet(CA_very_unhealthy_monitors,
                legendTitle = "October, 2017",
                maptype = "toner")
 }

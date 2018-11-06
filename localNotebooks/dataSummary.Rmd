@@ -22,7 +22,7 @@ ws_monitor <- params$ws_monitor
 # Monitor Leaflet map
 
 ```{r mapping}
-monitorLeaflet(ws_monitor)
+monitor_leaflet(ws_monitor)
 ```
 
 # Monthly Maps

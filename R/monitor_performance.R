@@ -35,7 +35,7 @@
 #'         !is.na(performanceMetrics$heidkeSkill)
 #' skillfulIDs <- monitorIDs[mask]
 #' skillful <- monitor_subset(wa_dailyAvg, monitorIDs=skillfulIDs)
-#' monitorLeaflet(skillful)
+#' monitor_leaflet(skillful)
 #' }
 
 monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost=1, FNCost=1) {

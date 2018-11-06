@@ -15,7 +15,7 @@ epa_88502 <- epa_load(2015, "88502") %>%
 airnow_wa <- monitor_combine(list(epa_88101, epa_88502))
 
 # Interactive plot of maximum values with monitor_leaflet(),
-monitorLeaflet(airnow_wa, maptype="Stamen.Terrain")
+monitor_leaflet(airnow_wa, maptype="Stamen.Terrain")
 
 # Subset to include only values >= AQI "very unhealthy"
 # * create value limits ('vlim') extending from 'unhealthy' levels to Infinity
@@ -65,7 +65,7 @@ title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites
 merged_unhealthy <- airnow_wa_unhealthy
 
 # Interactive plot of maximum values over terrain
-monitorLeaflet(merged_unhealthy, maptype="Stamen.Terrain")
+monitor_leaflet(merged_unhealthy, maptype="Stamen.Terrain")
 
 # Find the five monitors with the highest measured smoke levles
 monitor_max <- apply(merged_unhealthy$data[,-1], 2, max, na.rm=TRUE)
@@ -73,7 +73,7 @@ top_five_IDs = names( sort(monitor_max, decreasing=TRUE)[1:5] )
 merged_worst <- monitor_subset(merged_unhealthy, monitorIDs=top_five_IDs)
 
 # Plot with monitor_map
-monitorLeaflet(merged_worst, maptype="Stamen.Terrain")
+monitor_leaflet(merged_worst, maptype="Stamen.Terrain")
 
 # Interactive timeseries plot
 monitor_dygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
