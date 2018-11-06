@@ -47,17 +47,17 @@ NULL
 #' @rdname PWFSLSmoke-deprecated
 #'
 monitorGoogleMap <- function(ws_monitor,
-                             slice=get('max'),
-                             breaks=AQI$breaks_24,
-                             colors=AQI$colors,
-                             width=640,
-                             height=640,
-                             centerLon=NULL,
-                             centerLat=NULL,
-                             zoom=NULL,
-                             maptype='roadmap',
-                             grayscale=FALSE,
-                             map=NULL,
+                             slice = get("max"),
+                             breaks = AQI$breaks_24,
+                             colors = AQI$colors,
+                             width = 640,
+                             height = 640,
+                             centerLon = NULL,
+                             centerLat = NULL,
+                             zoom = NULL,
+                             maptype = "roadmap",
+                             grayscale = FALSE,
+                             map = NULL,
                              ...) {
 
   .Defunct("monitor_esriMap", package = "PWFSLSmoke")
