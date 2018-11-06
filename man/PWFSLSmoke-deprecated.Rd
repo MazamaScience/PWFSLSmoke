@@ -7,8 +7,14 @@
 \alias{monitorLeaflet}
 \alias{monitorMap}
 \alias{monitorMap_performance}
+\alias{monitorGoogleMap}
 \title{Deprecated functions in PWFSLSmoke}
 \usage{
+monitorGoogleMap(ws_monitor, slice = get("max"),
+  breaks = AQI$breaks_24, colors = AQI$colors, width = 640,
+  height = 640, centerLon = NULL, centerLat = NULL, zoom = NULL,
+  maptype = "roadmap", grayscale = FALSE, map = NULL, ...)
+
 monitorDygraph(ws_monitor, title = "title",
   ylab = "PM2.5 Concentration", tlim = NULL, rollPeriod = 1,
   showLegend = TRUE)
@@ -73,5 +79,10 @@ Deprecations fall into the following categories:
 
 \section{Hard Deprecations}{
 
+
+\tabular{rl}{
+ \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+}
 }
 
+\keyword{internal}

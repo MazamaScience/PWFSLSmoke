@@ -28,16 +28,41 @@
 #' }
 #'
 #' @section Soft Deprecations:
+#'
 #' @section Hard Deprecations:
 #'
+#' \tabular{rl}{
+#'  \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+#' }
+#'
 #' @aliases monitorDygraph monitorEsriMap monitorLeaflet monitorMap
-#'   monitorMap_performance
+#'   monitorMap_performance monitorGoogleMap
 #' @name PWFSLSmoke-deprecated
+#' @keywords internal
 NULL
 
 # hard deprecations -------------------------------------------------------
 
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+#'
+monitorGoogleMap <- function(ws_monitor,
+                             slice=get('max'),
+                             breaks=AQI$breaks_24,
+                             colors=AQI$colors,
+                             width=640,
+                             height=640,
+                             centerLon=NULL,
+                             centerLat=NULL,
+                             zoom=NULL,
+                             maptype='roadmap',
+                             grayscale=FALSE,
+                             map=NULL,
+                             ...) {
 
+  .Defunct("monitor_esriMap", package = "PWFSLSmoke")
+
+}
 
 
 # soft deprecations -------------------------------------------------------
