@@ -1,4 +1,9 @@
 
+# PWFSLSmoke 1.1.11
+
+ * added `localStandardTime_UTC` and `daylightSavings` columns to the dataframe
+ returned by `timeInfo()`
+
 # PWFSLSmoke 1.1.10
 
 Moving all base plot related code from **PWFSLSmokePlot** to **PWFSLSmoke** so

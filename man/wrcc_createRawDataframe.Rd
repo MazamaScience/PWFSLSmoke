@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_createRawDataframe.R
 \name{wrcc_createRawDataframe}
 \alias{wrcc_createRawDataframe}
-\title{Obtain WRCC Data and Parse into Tibbler}
+\title{Obtain WRCC data and parse into a tibble}
 \usage{
 wrcc_createRawDataframe(startdate = strftime(lubridate::now(),
   "\%Y010100", tz = "UTC"), enddate = strftime(lubridate::now(),
@@ -11,19 +11,19 @@ wrcc_createRawDataframe(startdate = strftime(lubridate::now(),
   saveFile = NULL, flagAndKeep = FALSE)
 }
 \arguments{
-\item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
+\item{startdate}{Desired start date (integer or character representing YYYYMMDD[HH]).}
 
-\item{enddate}{desired end date (integer or character representing YYYYMMDD[HH])}
+\item{enddate}{Desired end date (integer or character representing YYYYMMDD[HH]).}
 
-\item{unitID}{station identifier (will be upcased)}
+\item{unitID}{Station identifier (will be upcased).}
 
-\item{clusterDiameter}{diameter in meters used to determine the number of clusters (see \code{addClustering})}
+\item{clusterDiameter}{Diameter in meters used to determine the number of clusters (see \code{addClustering}).}
 
-\item{baseUrl}{base URL for data queries}
+\item{baseUrl}{Base URL for data queries.}
 
-\item{saveFile}{optional filename where raw CSV will be written}
+\item{saveFile}{Optional filename where raw CSV will be written.}
 
-\item{flagAndKeep}{flag, rather then remove, bad data during the QC process}
+\item{flagAndKeep}{Flag, rather then remove, bad data during the QC process.}
 }
 \value{
 Raw tibble of WRCC data.
