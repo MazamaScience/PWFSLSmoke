@@ -35,8 +35,8 @@
 #'  \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_esriMap}}\cr
 #' }
 #'
-#' @aliases monitorDygraph monitorEsriMap monitorLeaflet monitorMap
-#'   monitorMap_performance monitorGoogleMap
+#' @aliases PWFSLSmoke-defunct monitorDygraph monitorEsriMap monitorLeaflet
+#'   monitorMap monitorMap_performance monitorGoogleMap
 #' @name PWFSLSmoke-deprecated
 #' @keywords internal
 NULL

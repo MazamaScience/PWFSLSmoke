@@ -2,6 +2,7 @@
 % Please edit documentation in R/PWFSLSmoke-deprecated.R
 \name{PWFSLSmoke-deprecated}
 \alias{PWFSLSmoke-deprecated}
+\alias{PWFSLSmoke-defunct}
 \alias{monitorDygraph}
 \alias{monitorEsriMap}
 \alias{monitorLeaflet}
