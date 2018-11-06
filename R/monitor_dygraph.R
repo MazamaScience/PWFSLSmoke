@@ -21,7 +21,7 @@
 #'                                        longitude = Vallejo$meta$longitude,
 #'                                        latitude = Vallejo$meta$latitude,
 #'                                        radius = 50)
-#' monitorDygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
+#' monitor_dygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
 #' }
 
 monitor_dygraph <- function(ws_monitor,

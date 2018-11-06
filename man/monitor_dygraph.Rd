@@ -39,7 +39,7 @@ Napa_Fires <- monitor_subsetByDistance(ca,
                                        longitude = Vallejo$meta$longitude,
                                        latitude = Vallejo$meta$latitude,
                                        radius = 50)
-monitorDygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
+monitor_dygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
 }
 }
 \keyword{ws_monitor}

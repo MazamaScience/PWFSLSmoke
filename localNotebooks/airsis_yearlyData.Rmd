@@ -260,16 +260,16 @@ Let's look a little closer at the smokiest part of the summer for the three year
 
 ```{r dygraphs}
 # Create dygraphs for the summer of each year
-monitorDygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
-monitorDygraph(sisk2016, tlim = c(20160701, 20161001), title = "2016")
-monitorDygraph(sisk2017, tlim = c(20170701, 20171001), title = "2017")
+monitor_dygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
+monitor_dygraph(sisk2016, tlim = c(20160701, 20161001), title = "2016")
+monitor_dygraph(sisk2017, tlim = c(20170701, 20171001), title = "2017")
 ```
 
 Zooming in closer, a periodic pattern emerges between the dramatic smoke events. 
 
 ```{r Yreka_Dygraph}
 # Plot zoomed-in dygraph
-monitorDygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
+monitor_dygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
 ```
 
 Let's see how PM2.5 levels change throughout the day for one monitor. The timeOfDaySpaghetti plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 

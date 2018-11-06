@@ -47,7 +47,7 @@ functions will be listed.
 Deprecations fall into the following categories:
 
 \itemize{
-  \item Silent: These functions immediately call another function without and
+  \item Silent: These functions immediately call another function without any
   warning to the user.
   \item Soft: These functions throw a warning when called, then call the
   correct function, if available.

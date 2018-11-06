@@ -42,7 +42,7 @@ title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites
 # wrcc_wa_unhealthy_data <- monitor_subset(wrcc_wa_3hr, vlim = bad_limits)
 # monitorIDs = wrcc_wa_unhealthy_data$meta$monitorID
 # wrcc_wa_unhealthy <- monitor_subset(wrcc_wa_unhealthy_data, monitorIDs=monitorIDs)
-# 
+#
 # # Plot a static map
 # map('state','WA')
 # monitorMap(wrcc_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
@@ -76,7 +76,7 @@ merged_worst <- monitor_subset(merged_unhealthy, monitorIDs=top_five_IDs)
 monitorLeaflet(merged_worst, maptype="Stamen.Terrain")
 
 # Interactive timeseries plot
-monitorDygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
+monitor_dygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
 
 # Plot with monitor_timeseriesPlot
 monitorPlot_timeseries(merged_worst, style='aqidots')
@@ -87,7 +87,7 @@ title('Terrible Smoke in late August')
 merged_worst_24hr <- monitor_rollingMean(merged_worst, width=24, align="right")
 
 # Plot map and timeseries
-monitorDygraph(merged_worst_24hr, title='24 Hour Average PM2.5')
+monitord_dygraph(merged_worst_24hr, title='24 Hour Average PM2.5')
 
 # In the second half of August, how many hours per day was the air unhealthy?
 late_august <- monitor_subset(merged_worst, tlim=c(20150816,20150831))

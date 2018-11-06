@@ -122,13 +122,13 @@ monitorPlot_timeseries(sisk2016, tlim = c(20160920, 20161010), type = "l")
 Let's look a little closer at the smokiest part of the summer for the three years: July to October.
 
 ```{r dygraphs, eval = FALSE}
-monitorDygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
+monitor_dygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
 ```
 
 Zooming in closer, a periodic pattern emerges between the dramatic smoke events. 
 
 ```{r Yreka_Dygraph, eval=FALSE}
-monitorDygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
+monitor_dygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
 ```
 
 Let's see how PM2.5 levels change throughout the day for one monitor. This plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
