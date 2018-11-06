@@ -1,11 +1,7 @@
 #' @keywords WRCC
-#' @export
+#'
 #' @title Load annual WRCC monitoring data
-#' @param year Desired year (integer or character representing YYYY).
-#' @param parameter Parameter of interest.
-#' @param baseUrl Base URL for 'annual' WRCC data files.
-#' @param dataDir Local directory containing 'annual' data files.
-#' @return A \emph{ws_monitor} object with WRCC data.
+#'
 #' @description Loads pre-generated .RData files containing annual
 #' WRCC data.
 #'
@@ -50,6 +46,16 @@
 #' \href{https://haze.airfire.org/monitoring/WRCC/RData}{https://haze.airfire.org/monitoring/WRCC/RData}
 #' @seealso \code{\link{wrcc_loadDaily}}
 #' @seealso \code{\link{wrcc_loadLatest}}
+#'
+#' @param year Desired year (integer or character representing YYYY).
+#' @param parameter Parameter of interest.
+#' @param baseUrl Base URL for 'annual' WRCC data files.
+#' @param dataDir Local directory containing 'annual' data files.
+#'
+#' @return A \emph{ws_monitor} object with WRCC data.
+#'
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' wrcc_loadAnnual(2017) %>%
@@ -78,7 +84,8 @@ wrcc_loadAnnual <- function(year = NULL,
     paramsString <- paste(validParams, collapse=", ")
     stop(paste0("'", parameter,
                 "' is not a supported parameter. Use 'parameter = ",
-                paramsString, "'"), call.=FALSE)
+                paramsString, "'"),
+         call.=FALSE)
   }
 
   if ( year < 2010 ) {
@@ -87,12 +94,13 @@ wrcc_loadAnnual <- function(year = NULL,
 
   # Load the data --------------------------------------------------------------
 
-
   # Create URL and filename according to the PWFSLSmoke naming scheme
   baseUrl <- paste0(baseUrl, '/WRCC/RData/', year)
   filename <- paste0("wrcc_", parameter, "_", year, ".RData")
 
   ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+
+  # Return ---------------------------------------------------------------------
 
   return(ws_monitor)
 
