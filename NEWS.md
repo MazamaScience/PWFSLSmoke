@@ -1,6 +1,9 @@
 
 # PWFSLSmoke 1.1.11
 
+ * `montor_collapse()` now returns a `ws_monitor` object with a full 'meta'
+ dataframe that retains any metadata that is shared
+ * added `monitor_timeInfo()` convenience wrapper
  * added `localStandardTime_UTC` and `daylightSavings` columns to the dataframe
  returned by `timeInfo()`
 
