@@ -32,7 +32,7 @@ wrcc_2015 <- wrcc_load()
 Create some maps and plots to get an idea about what the data looks like. 
 
 ```{r mapping}
-monitorLeaflet(wrcc_2015)
+monitor_leaflet(wrcc_2015)
 ```
 
 ```{r, eval=FALSE}
@@ -56,7 +56,7 @@ ggplot(counts2015, aes(time, count))+
 ```
   
 
-Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. monitorEsriMap() will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and is very similar to monitorGoogleMap except that it uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is monitorMap() which plots the points over polygons instead of a map image. 
+Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitor_esriMap()` will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is `monitor_map()` which plots the points over polygons instead of a map image. 
   
 ```{r monthly_maps, fig.width = 8, fig.height=24.5}
 # Get the bbox for the map
@@ -82,7 +82,7 @@ for ( month in 1:12) {
   plot(0,0,col="transparent", axes = F)
   text(0,0,month_str, srt = 90, cex = 1.5)
   
-  monitorEsriMap(ws_monitor2015, mapRaster = basemap)
+  monitor_esriMap(ws_monitor2015, mapRaster = basemap)
   box("figure", col = 'gray50')
   plot.new()
   plot.new()
@@ -99,7 +99,7 @@ sisk2015 <- wrcc_2015
 
 ```{r plot monitors, fig.width=7, fig.height=3}
 loadSpatialData("USCensusCounties")
-monitorMap(sisk2015, cex = 2)
+monitor_map(sisk2015, cex = 2)
 title("2015", cex.main = 3)
 ```
 
@@ -122,13 +122,13 @@ monitorPlot_timeseries(sisk2016, tlim = c(20160920, 20161010), type = "l")
 Let's look a little closer at the smokiest part of the summer for the three years: July to October.
 
 ```{r dygraphs, eval = FALSE}
-monitorDygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
+monitor_dygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
 ```
 
 Zooming in closer, a periodic pattern emerges between the dramatic smoke events. 
 
 ```{r Yreka_Dygraph, eval=FALSE}
-monitorDygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
+monitor_dygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
 ```
 
 Let's see how PM2.5 levels change throughout the day for one monitor. This plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
@@ -149,7 +149,7 @@ fireStartDate <- strptime(c("20170815", "20170813", "20170725"), format = "%Y%m%
 fireEndDate <- strptime(c("20171010", "20171020", "20171012"), format = "%Y%m%d")
 fireDF <- data.frame(name = fireNames, longitude =fireLongitudes, latitude = fireLatitudes, 
                      startDate = fireStartDate, endDate = fireEndDate)
-monitorMap(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
+monitor_map(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
 addMarker(sisk2017$meta$longitude, sisk2017$meta$latitude, color = "blue")
 addIcon('orangeFlame', fireDF$longitude, fireDF$latitude, expansion = .001)
 text(fireLongitudes, fireLatitudes, fireNames, pos = 1)

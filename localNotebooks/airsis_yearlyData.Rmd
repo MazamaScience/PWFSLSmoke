@@ -31,12 +31,12 @@ load("~/Data/airsis/airsis_2017.RData")
 
 # Orientation
 
-Create some maps and plots to get an idea about what the data looks like. MonitorLeaflet creates an interactive map with monitors plotted as points and colored to correspond to the AQI level of the maximum PM2.5 value in the data. 
+Create some maps and plots to get an idea about what the data looks like. `monitor_leaflet` creates an interactive map with monitors plotted as points and colored to correspond to the AQI level of the maximum PM2.5 value in the data. 
 
 ```{r mapping}
-monitorLeaflet(airsis_2015)
-monitorLeaflet(airsis_2016)
-monitorLeaflet(airsis_2017)
+monitor_leaflet(airsis_2015)
+monitor_leaflet(airsis_2016)
+monitor_leaflet(airsis_2017)
 ```
 
 We can get some other summary statistics by querying the data attribute of the ws_monitor object. 
@@ -139,9 +139,9 @@ legend("topleft", c("max", "min", "median", "mean"),
 title("Aggregated values from PM2.5 monitors, 2015")
 ```
   
-Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitorEsriMap()` and `monitorGoogleMap()` will result in very similar images. Each will plot points for each monitor with AQI colors indicating the maximum PM2.5 value over a map image, sourced either from ESRI or GoogleMaps. `monitorEsriMap` uses R's base plotting capabilities so it is easier to add points or polygons on top. For either one, there is an option to plot the points on a map object which already exists in memory, retrieved with either `esriMap_getMap()` or `RgoogleMaps::getMap()`. Retrieving the map image from the server will probably take the longest time in plotting the map, so use this option when plotting many maps with the same extent. 
+Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitor_esriMap()` will plot points for each monitor with AQI colors indicating the maximum PM2.5 value over a map image, sourced from ESRI. `monitor_esriMap()` uses R's base plotting capabilities so it is easy to add points or polygons on top. There is an option to plot the points on a map object which already exists in memory, retrieved with `esriMap_getMap()`. Retrieving the map image from the server will probably take the longest time in plotting the map, so use this option when plotting many maps with the same extent. 
 
-The other option for plotting monitor locations is `monitorMap()` which plots the points over polygons instead of an image. 
+The other option for plotting monitor locations is `monitor_map()` which plots the points over polygons instead of an image. 
   
 ```{r monthly_maps, fig.width = 10, fig.height=37.5, cache = TRUE}
 # Load a basemap from ESRI
@@ -183,7 +183,7 @@ for ( year in c(2015, 2016, 2017) ){
     # Try to plot the map
     # If there is an error, plot a map with no points
     result <- try (
-      monitorEsriMap(monitor, mapRaster = basemap, cex = 2.5)
+      monitor_esriMap(monitor, mapRaster = basemap, cex = 2.5)
     )
     if ("try-error" %in% class(result)) {
       esriMap_plotOnStaticMap(basemap)
@@ -208,13 +208,13 @@ layout(matrix(c(1,2,3,4), 1, byrow = TRUE), widths=c(1,1))
 par(mar = c(0,0,4,0))
 
 # Add maps of monitors for each year
-monitorMap(sisk2015, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
+monitor_map(sisk2015, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
 box('plot')
 title("2015", cex.main = 3)
-monitorMap(sisk2016, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
+monitor_map(sisk2016, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
 box('plot')
 title("2016", cex.main = 3)
-monitorMap(sisk2017, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
+monitor_map(sisk2017, ylim = c(39.9, 42.1239), xlim = c(-124.95, -120.21), cex = 2)
 box('plot')
 title("2017", cex.main = 3)
 
@@ -260,16 +260,16 @@ Let's look a little closer at the smokiest part of the summer for the three year
 
 ```{r dygraphs}
 # Create dygraphs for the summer of each year
-monitorDygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
-monitorDygraph(sisk2016, tlim = c(20160701, 20161001), title = "2016")
-monitorDygraph(sisk2017, tlim = c(20170701, 20171001), title = "2017")
+monitor_dygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
+monitor_dygraph(sisk2016, tlim = c(20160701, 20161001), title = "2016")
+monitor_dygraph(sisk2017, tlim = c(20170701, 20171001), title = "2017")
 ```
 
 Zooming in closer, a periodic pattern emerges between the dramatic smoke events. 
 
 ```{r Yreka_Dygraph}
 # Plot zoomed-in dygraph
-monitorDygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
+monitor_dygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
 ```
 
 Let's see how PM2.5 levels change throughout the day for one monitor. The timeOfDaySpaghetti plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
@@ -279,7 +279,7 @@ Let's see how PM2.5 levels change throughout the day for one monitor. The timeOf
 yreka <- monitor_subset(sisk2017, monitorID = "lon_.122.634_lat_41.727_apcd.1014")
 
 # Plot the monitor location
-monitorLeaflet(yreka)
+monitor_leaflet(yreka)
 
 # Create spaghetti plot of hourly values over the week
 monitorPlot_timeOfDaySpaghetti(monitor_subset(yreka, tlim = c(20170708, 20170720)), title = "Yreka Jul 8 - Jul 20 2017")
@@ -356,7 +356,7 @@ fireDF <- data.frame(name = fireNames, longitude =fireLongitudes, latitude = fir
                      startDate = fireStartDate, endDate = fireEndDate)
 
 # Map fires and monitors
-monitorMap(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
+monitor_map(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
 addMarker(sisk2017$meta$longitude, sisk2017$meta$latitude, color = "blue")
 addIcon('orangeFlame', fireDF$longitude, fireDF$latitude, expansion = .001)
 text(fireLongitudes, fireLatitudes, fireNames, pos = 1)
@@ -369,7 +369,7 @@ Let's see if the timing of the fires lines up with spikes in PM2.5 concentration
 collapsed2017 <- monitor_collapse(sisk2017, monitorID = "siskiyou_2017")
 
 # Map monitors and collapsed monitor object
-monitorMap(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
+monitor_map(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
 addMarker(sisk2017$meta$longitude, sisk2017$meta$latitude, expansion = .5, color = "blue")
 addMarker(collapsed2017$meta$longitude, collapsed2017$meta$latitude, expansion = 1)
 text(collapsed2017$meta$longitude, collapsed2017$meta$latitude, "collapsed \n monitor", pos=1, cex = .8)

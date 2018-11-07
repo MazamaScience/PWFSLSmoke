@@ -12,6 +12,6 @@ monitorPlot_timeseries(pnw, style='gnats')
 
 latest <- airnow_loadLatest()
 ok <- monitor_subset(latest, stateCodes='OK')
-monitorMap(ok)
+monitor_map(ok)
 
 

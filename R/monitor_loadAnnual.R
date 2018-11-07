@@ -58,7 +58,7 @@
 #' \dontrun{
 #' monitor_loadAnnual(2014) %>%
 #'   monitor_subset(stateCodes='MT', tlim=c(20140801,20140901)) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 monitor_loadAnnual <- function(year = NULL,

@@ -15,7 +15,7 @@ epa_88502 <- epa_load(2015, "88502") %>%
 airnow_wa <- monitor_combine(list(epa_88101, epa_88502))
 
 # Interactive plot of maximum values with monitor_leaflet(),
-monitorLeaflet(airnow_wa, maptype="Stamen.Terrain")
+monitor_leaflet(airnow_wa, maptype="Stamen.Terrain")
 
 # Subset to include only values >= AQI "very unhealthy"
 # * create value limits ('vlim') extending from 'unhealthy' levels to Infinity
@@ -29,7 +29,7 @@ airnow_wa_unhealthy <- monitor_subset(airnow_wa_unhealthy_data, monitorIDs=monit
 
 # Plot a static map
 map('state','WA')
-monitorMap(airnow_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
+monitor_map(airnow_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
 addAQILegend("topright")
 title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites)', line=2)
 
@@ -42,10 +42,10 @@ title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites
 # wrcc_wa_unhealthy_data <- monitor_subset(wrcc_wa_3hr, vlim = bad_limits)
 # monitorIDs = wrcc_wa_unhealthy_data$meta$monitorID
 # wrcc_wa_unhealthy <- monitor_subset(wrcc_wa_unhealthy_data, monitorIDs=monitorIDs)
-# 
+#
 # # Plot a static map
 # map('state','WA')
-# monitorMap(wrcc_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
+# monitor_map(wrcc_wa_unhealthy, mean, cex=2, add=TRUE, showLegend=FALSE)
 # addLegend("topright")
 # title('WRCC:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites)', line=3)
 
@@ -65,7 +65,7 @@ title('AirNow:  Monthly Mean of 3-Hourly PM 2.5 in August, 2015 (unhealthy sites
 merged_unhealthy <- airnow_wa_unhealthy
 
 # Interactive plot of maximum values over terrain
-monitorLeaflet(merged_unhealthy, maptype="Stamen.Terrain")
+monitor_leaflet(merged_unhealthy, maptype="Stamen.Terrain")
 
 # Find the five monitors with the highest measured smoke levles
 monitor_max <- apply(merged_unhealthy$data[,-1], 2, max, na.rm=TRUE)
@@ -73,10 +73,10 @@ top_five_IDs = names( sort(monitor_max, decreasing=TRUE)[1:5] )
 merged_worst <- monitor_subset(merged_unhealthy, monitorIDs=top_five_IDs)
 
 # Plot with monitor_map
-monitorLeaflet(merged_worst, maptype="Stamen.Terrain")
+monitor_leaflet(merged_worst, maptype="Stamen.Terrain")
 
 # Interactive timeseries plot
-monitorDygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
+monitor_dygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
 
 # Plot with monitor_timeseriesPlot
 monitorPlot_timeseries(merged_worst, style='aqidots')
@@ -87,7 +87,7 @@ title('Terrible Smoke in late August')
 merged_worst_24hr <- monitor_rollingMean(merged_worst, width=24, align="right")
 
 # Plot map and timeseries
-monitorDygraph(merged_worst_24hr, title='24 Hour Average PM2.5')
+monitord_dygraph(merged_worst_24hr, title='24 Hour Average PM2.5')
 
 # In the second half of August, how many hours per day was the air unhealthy?
 late_august <- monitor_subset(merged_worst, tlim=c(20150816,20150831))

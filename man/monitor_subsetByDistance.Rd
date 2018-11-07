@@ -42,7 +42,7 @@ Napa_Fires <- monitor_subsetByDistance(ca,
                                        longitude = Vallejo$meta$longitude,
                                        latitude = Vallejo$meta$latitude,
                                        radius = 50)
-monitorLeaflet(Napa_Fires)
+monitor_leaflet(Napa_Fires)
 }
 }
 \seealso{

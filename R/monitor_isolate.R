@@ -11,17 +11,17 @@
 #' @return A list of isolated ws_monitor objects.
 #' @description Filters \code{ws_monitor} according to the parameters
 #' passed in.  If any parameter is not specified, that parameter will not be used in the filtering.
-#' 
+#'
 #' After filtering, each monitorID found in \code{ws_monitor} is extracted
 #' and its \code{data} dataframe is restricted to the times from when that monitor first
 #' datapoint until its last datapoint.
-#' 
+#'
 #' This function is useful when \emph{ws_monitor} objects are created for
 #' mobile monitors that are deployed to different locations in different years.
 #' @seealso \link{monitor_subset}
 #' @examples
 #' N_M <- Northwest_Megafires
-#' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
+#' # monitor_leaflet(N_M) # to identify Spokane monitorIDs
 #' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 #' Spokane$meta$monitorID
 #' monitorList <- monitor_isolate(Spokane)
@@ -34,10 +34,10 @@ monitor_isolate <- function(ws_monitor,
                             monitorIDs=NULL,
                             stateCodes=NULL,
                             timezone="UTC") {
-  
+
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
-  
+
   # Isolate individual monitors
   monList <- list()
   for (monitorID in names(ws_monitor$data)[-1]) {
@@ -45,6 +45,6 @@ monitor_isolate <- function(ws_monitor,
                           monitorIDs=monitorID, dropMonitors=TRUE, timezone=timezone)
     monList[[monitorID]] <- monitor_trim(mon)
   }
-  
+
   return(monList)
 }

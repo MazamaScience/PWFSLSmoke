@@ -23,10 +23,10 @@
 #' \dontrun{
 #' ca <- loadLatest() %>% monitor_subset(stateCodes='CA')
 #' # Google map
-#' map <- monitorEsriMap(ca)
+#' map <- monitor_esriMap(ca)
 #' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)
 #' # line map
-#' monitorMap(ca)
+#' monitor_map(ca)
 #' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.002)
 #' }
 

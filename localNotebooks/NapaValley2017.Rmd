@@ -70,13 +70,13 @@ Now that we've got the data loaded into the environment, let's delve into PWFSLS
 
 ## Mapping 
 
-A good place to start is by mapping monitor and fire locations. There are several different functions for mapping monitors. `monitorLeaflet()` will generate an interactive leaflet map that will be displayed in RStudio's 'Viewer' tab. There are three functions for creating static maps: `monitorMap()` will plot monitors over the outlines of states and counties, `monitorEsriMap()` will plot monitors over a map image from ESRI, and `monitorGoogleMap()` will plot monitor locations over a map image, sourced, unsurprisingly, from GoogleMaps. 
+A good place to start is by mapping monitor and fire locations. There are several different functions for mapping monitors. `monitor_leaflet()` will generate an interactive leaflet map that will be displayed in RStudio's 'Viewer' tab. There are two functions for creating static maps: `monitor_map()` will plot monitors over the outlines of states and counties, and `monitor_esriMap()` will plot monitors over a map image from ESRI. 
 
 Particulate concentrations can be classified by the [Air Quality Index](https://airnow.gov/index.cfm?action=aqibasics.aqi) (AQI) that they fall into. AQI levels are defined by the EPA for regulating and warning people about air quality issues. The AQI cutoffs and the official colors associated with them are built into the package and used in several different plotting functions. All of the various monitor mapping functions color the monitor locations based on the AQI level of the maximum hourly PM2.5 value by default. There are some other built-in shapes which can be used in mapping, and added with the `addIcon()` function. For example, you could add the location of a real-life fire to a monitor map with a little picture of a fire as in the map below.
 
 
 ```{r map_fires_and_monitors}
-monitorEsriMap(CAFires, width = 480, height = 480, cex = 2)
+monitor_esriMap(CAFires, width = 480, height = 480, cex = 2)
 addIcon('redFlame', fireDF$longitude, fireDF$latitude, expansion = .0008)
 text(fireDF$longitude, fireDF$latitude, fireDF$name, pos = 3, cex = .8, col = "firebrick4")
 addAQILegend(title = "Max AQI Level", pt.cex = 1.5)
@@ -148,7 +148,7 @@ for (monitorID in c("060550003_01", "060950004_01", "060750005_01")){
   
   # Draw the inset map with a marker for the monitor and flame for the fire
   par(fig = c(.7, 1 ,.3, .9), mar = c(0,0,0,0))
-  monitorMap(monitor, ylim = c(37.3, 38.9), xlim = c(-123.36, -121), cex = 0)
+  monitor_map(monitor, ylim = c(37.3, 38.9), xlim = c(-123.36, -121), cex = 0)
   addIcon("redFlame", fireDF$longitude[2], fireDF$latitude[2], expansion = .002, pos = 3)
   addMarker(monitor$meta$longitude, monitor$meta$latitude, expansion = .7, col = 'blue')
   box('plot')

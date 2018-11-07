@@ -22,7 +22,7 @@ ws_monitor <- params$ws_monitor
 # Monitor Leaflet map
 
 ```{r mapping}
-monitorLeaflet(ws_monitor)
+monitor_leaflet(ws_monitor)
 ```
 
 # Monthly Maps
@@ -63,7 +63,7 @@ for ( year in sort(unique(lubridate::year(ws_monitor$data$datetime))) ){
     monitor <- monitor_subset(ws_monitor, tlim = tlim)
     
     result <- try (
-      monitorEsriMap(monitor, mapRaster = basemap)
+      monitor_esriMap(monitor, mapRaster = basemap)
     )
     if ("try-error" %in% class(result)) {
       esriMap_plotOnStaticMap(basemap)

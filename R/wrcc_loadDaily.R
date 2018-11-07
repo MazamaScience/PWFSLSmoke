@@ -52,7 +52,7 @@
 #' \dontrun{
 #' wrcc_loadDaily() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 wrcc_loadDaily <- function(parameter = 'PM2.5',

@@ -26,7 +26,7 @@ Calculates daily statistics for each monitor in \code{ws_monitor}.
 }
 \details{
 Splits the \code{ws_monitor} object by \code{timezone} and applies the
-\code{monitor_dailyStatistic()} function separately for each timezone. 
+\code{monitor_dailyStatistic()} function separately for each timezone.
 See \link{monitor_dailyStatistic} for more details.
 
 The results are returned as a list of \emph{ws_monitor} objects with each element of the
@@ -40,9 +40,9 @@ You should not attempt to reassemble a single \emph{ws_monitor} object from the 
 airnow <- airnow_loadLatest()
 nw <- monitor_subset(airnow, stateCodes = c('WA','OR','ID','MT'))
 dailyList <- monitor_dailyStatisticList(nw)
-monitorLeaflet(dailyList[["America/Los_Angeles"]])
-monitorLeaflet(dailyList[["America/Boise"]])
-monitorLeaflet(dailyList[["America/Denver"]])
+monitor_leaflet(dailyList[["America/Los_Angeles"]])
+monitor_leaflet(dailyList[["America/Boise"]])
+monitor_leaflet(dailyList[["America/Denver"]])
 }
 }
 \references{

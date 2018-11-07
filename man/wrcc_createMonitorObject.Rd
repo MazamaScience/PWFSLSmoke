@@ -77,7 +77,7 @@ The downloaded CSV may be saved to a local file by providing an argument to the 
 \dontrun{
 initializeMazamaSpatialUtils()
 sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID='sm13')
-monitorLeaflet(sm13)
+monitor_leaflet(sm13)
 }
 }
 \seealso{

@@ -2,20 +2,25 @@
 #' @export
 #' @title Create an ESRI Map of ws_monitor Object
 #' @param ws_monitor \emph{ws_monitor} object
-#' @param slice either a time index or a function used to collapse the time axis -- defautls to \code{get('max')}
+#' @param slice either a time index or a function used to collapse the time
+#'   axis -- defautls to \code{get('max')}
 #' @param breaks set of breaks used to assign colors
-#' @param colors a set of colors for different levels of air quality data determined by \code{breaks}
+#' @param colors a set of colors for different levels of air quality data
+#'   determined by \code{breaks}
 #' @param width width of image, in pixels
 #' @param height height of image, in pixels
 #' @param centerLon map center longitude
 #' @param centerLat map center latitude
 #' @param zoom map zoom level
 #' @param maptype map type
-#' @param grayscale logical, if TRUE the colored map tile is rendered into a black & white image
-#' @param mapRaster optional RGB Raster* object returned from \code{esriMap_getMap})
+#' @param grayscale logical, if TRUE the colored map tile is rendered into a
+#'   black & white image
+#' @param mapRaster optional RGB Raster* object returned from
+#'   \code{esriMap_getMap})
 #' @param cex character expansion for points
 #' @param pch plotting character for points
-#' @param ... arguments passed on to \code{esriMap_plotOnStaticMap} (\emph{e.g.} destfile, cex, pch, etc.)
+#' @param ... arguments passed on to \code{esriMap_plotOnStaticMap}
+#'   (\emph{e.g.} destfile, cex, pch, etc.)
 #' @return Plots a map loaded from arcGIS REST with points for each monitor
 #' @description Creates an ESRI map of a \emph{ws_monitor} object.
 #'
@@ -31,33 +36,34 @@
 #' Additional base maps are found at:
 #' \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
 #'
-#' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified, appropriate values
-#' will be calcualted using data from the \code{ws_monitor$meta} dataframe.
+#' If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified,
+#' appropriate values will be calcualted using data from the
+#' \code{ws_monitor$meta} dataframe.
 #' @examples
 #' \dontrun{
 #' N_M <- Northwest_Megafires
-#' # monitorLeaflet(N_M) # to identify Spokane monitorIDs
+#' # monitor_leaflet(N_M) # to identify Spokane monitorIDs
 #' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 #' Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
-#' monitorEsriMap(Spokane)
+#' monitor_esriMap(Spokane)
 #' }
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
-monitorEsriMap <- function(ws_monitor,
-                           slice=get('max'),
-                           breaks=AQI$breaks_24,
-                           colors=AQI$colors,
-                           width=640,
-                           height=640,
-                           centerLon=NULL,
-                           centerLat=NULL,
-                           zoom=NULL,
-                           maptype='worldStreetMap',
-                           grayscale=FALSE,
-                           mapRaster=NULL,
-                           cex=par("cex")*2.0,
-                           pch=16,
-                           ...) {
+monitor_esriMap <- function(ws_monitor,
+                            slice = get("max"),
+                            breaks = AQI$breaks_24,
+                            colors = AQI$colors,
+                            width = 640,
+                            height = 640,
+                            centerLon = NULL,
+                            centerLat = NULL,
+                            zoom = NULL,
+                            maptype = "worldStreetMap",
+                            grayscale = FALSE,
+                            mapRaster = NULL,
+                            cex = par("cex") * 2.0,
+                            pch = 16,
+                            ...) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
@@ -77,11 +83,11 @@ monitorEsriMap <- function(ws_monitor,
   # Create the 'slice'
   if ( class(slice) == "function" ) {
     # NOTE:  Need as.matrix in case we only have a single monitor
-    allMissingMask <- apply(as.matrix(ws_monitor$data[,-1]), 2, function(x) { all(is.na(x)) } )
-    data <- as.matrix(ws_monitor$data[,-1])
-    pm25 <- apply(as.matrix(data[,!allMissingMask]), 2, slice, na.rm=TRUE)
+    allMissingMask <- apply(as.matrix(ws_monitor$data[, -1]), 2, function(x) { all(is.na(x)) } )
+    data <- as.matrix(ws_monitor$data[, -1])
+    pm25 <- apply(as.matrix(data[, !allMissingMask]), 2, slice, na.rm = TRUE)
   } else if ( class(slice) == "integer" || class(slice) == "numeric" ) {
-    pm25 <- ws_monitor$data[as.integer(slice),][-1]
+    pm25 <- ws_monitor$data[as.integer(slice), ][-1]
   } else {
     stop("Improper use of slice parameter")
   }
@@ -94,11 +100,14 @@ monitorEsriMap <- function(ws_monitor,
   }
 
   # Colors for each point
-  cols <- aqiColors(pm25, palette=colors, bins=breaks)
+  cols <- aqiColors(pm25, palette = colors, bins = breaks)
 
   # Guess at zoom level if not specified
   if ( is.null(zoom) ) {
-    maxRange <- max( diff(range(ws_monitor$meta$longitude, na.rm=TRUE)), diff(range(ws_monitor$meta$latitude, na.rm=TRUE)) )
+    maxRange <- max(
+      diff(range(ws_monitor$meta$longitude, na.rm = TRUE)),
+      diff(range(ws_monitor$meta$latitude, na.rm = TRUE))
+    )
     if ( maxRange > 50 ) {
       zoom <- 3
     } else if ( maxRange > 20 ) {
@@ -125,7 +134,7 @@ monitorEsriMap <- function(ws_monitor,
 
   if ( is.null(mapRaster) ) {
     mapRaster <- esriMap_getMap(centerLon, centerLat, width = width, height = height,
-                               zoom=zoom, maptype=maptype, crs = sp::CRS("+init=epsg:4326"))
+                               zoom = zoom, maptype = maptype, crs = sp::CRS("+init=epsg:4326"))
   }
 
   # Overlay function default arguments ----------------------------------------
@@ -140,7 +149,7 @@ monitorEsriMap <- function(ws_monitor,
 
   lat <- ws_monitor$meta$latitude
   lon <- ws_monitor$meta$longitude
-  if ( ! 'col' %in% names(argsList) ) {
+  if ( ! "col" %in% names(argsList) ) {
     col <- cols
   } else {
     col <- argsList$col

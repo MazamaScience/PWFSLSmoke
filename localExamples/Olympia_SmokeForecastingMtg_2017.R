@@ -1,4 +1,4 @@
-# 
+#
 
 library(PWFSLSmoke)
 
@@ -45,7 +45,7 @@ dev.off()
 # PLOT -- Map of Maxima in Aug-Sep -----
 png('nw_maxima_map.png', width=1000, height=750)
 par(cex=1.5)
-monitorMap(nw_daily_mean, max, cex=1.5)
+monitor_map(nw_daily_mean, max, cex=1.5)
 addAQILegend("topright", pt.cex=1.5)
 title('Maximum of Daily Average at Each Site')
 par(cex=1)
@@ -88,19 +88,19 @@ offRez <- monitor_combine(list(Clarkston,
                                Grangeville))
 
 oldPar <- par()
-# PLOT -- Google Map of Nezperce area -----
+# PLOT -- Esri Map of Nezperce area -----
 png('nezperce_zoom7.png', width=1000, height=750)
 par(cex=1.5)
-monitorGoogleMap(Nezperce_area, zoom=7)
+monitor_esriMap(Nezperce_area, zoom=7)
 addAQILegend(pt.cex=2)
 par(cex=1)
 dev.off()
 # -----------------------------------------------------------------------------
 
-# PLOT -- Google Map of Nezperce area -----
+# PLOT -- Esri Map of Nezperce area -----
 png('nezperce_zoom9.png', width=1000, height=750)
 par(cex=1.5)
-monitorGoogleMap(Nezperce_area, zoom=9, cex=3)
+monitor_esriMap(Nezperce_area, zoom=9, cex=3)
 addAQILegend(pt.cex=2)
 par(cex=1)
 dev.off()
@@ -213,54 +213,54 @@ dev.off()
 
 # One time only, read in all data and write back out as a single object
 if ( FALSE ) {
-  
+
   # ----- AirNow -----
-  
+
   airnow_05 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201705-201706.RData'))
   airnow_06 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201706.RData'))
   airnow_07 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201707.RData'))
   airnow_08 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201708.RData'))
   airnow_09 <- get(load('~/Data/monitoring/RData/AIRNOW_PM25_201709.RData'))
-  
+
   # NOTE:  All ws_monitor objects have the same set of monitors. Test with:
   # NOTE:    setdiff(airnow_05$monitorID, airnow_09$monitorID)
-  
+
   meta <- airnow_05$meta
-  
+
   dataList <- list(airnow_05$data,
                    airnow_06$data,
                    airnow_07$data,
                    airnow_08$data,
                    airnow_09$data)
-  
+
   joinedData <- suppressMessages(dplyr::bind_rows(dataList))
   joinedData <- joinedData[!duplicated(joinedData$datetime),]
   joinedData <- as.data.frame(joinedData)
-  
+
   ws_monitor <- list(meta=meta, data=joinedData)
   airnow_2017 <- structure(ws_monitor, class = c("ws_monitor", "list"))
-  
+
   save(airnow_2017, file='~/Data/monitoring/RData/airnow_pm25_2017.RData')
-  
+
   # ----- AIRSIS -----
-  
+
   apcd <- get(load('~/Data/monitoring/RData/AIRSIS_APCD_2017.RData'))
   arb2 <- get(load('~/Data/monitoring/RData/AIRSIS_ARB2_2017.RData'))
   mariposa <- get(load('~/Data/monitoring/RData/AIRSIS_MARIPOSA_2017.RData'))
   usfs <- get(load('~/Data/monitoring/RData/AIRSIS_USFS_2017.RData'))
 
   airsis_2017 <- monitor_combine(list(apcd,arb2,mariposa,usfs))
-  
+
   save(airsis_2017, file='~/Data/monitoring/RData/airsis_pm25_2017.RData')
-  
+
   # ----- WRCC -----
-  
+
   cache <- get(load('~/Data/monitoring/RData/WRCC_Cache_2017.RData'))
   misc <- get(load('~/Data/monitoring/RData/WRCC_MISC_2017.RData'))
   usfs <- get(load('~/Data/monitoring/RData/WRCC_USFSRegions_2017.RData'))
 
   wrcc_2017 <- monitor_combine(list(cache,misc,usfs))
-  
+
   save(wrcc_2017, file='~/Data/monitoring/RData/wrcc_pm25_2017.RData')
-  
+
 }
