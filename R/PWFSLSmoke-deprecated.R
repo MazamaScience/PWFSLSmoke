@@ -27,8 +27,6 @@
 #'  \code{\link{monitorMap_performance}} \tab Use \code{\link{monitor_performanceMap}}\cr
 #' }
 #'
-#' @section Soft Deprecations:
-#'
 #' @section Hard Deprecations:
 #'
 #' \tabular{rl}{

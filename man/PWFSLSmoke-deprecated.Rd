@@ -74,10 +74,6 @@ Deprecations fall into the following categories:
 }
 }
 
-\section{Soft Deprecations}{
-
-}
-
 \section{Hard Deprecations}{
 
 
