@@ -12,10 +12,11 @@ monitor_getCurrentStatus <- function(ws_monitor,
   if (monitor_isEmpty(ws_monitor)) stop("`ws_monitor` object contains zero monitors.")
 
   # parseDateTime will fail if it produces NA
-  endTime <- parseDatetime(endTime) %>%
-    lubridate::floor_date(unit = "hour")
+  endTimeInclusive <- endTime %>%
+    parseDatetime() %>%
+    lubridate::floor_date(unit = "hour") %>%
+    magrittr::subtract(lubridate::dhours(1))
 
-  endTimeInclusive <- endTime - lubridate::dhours(1)
   startTime <- min(ws_monitor[["data"]][["datetime"]])
 
   ws_monitor <- ws_monitor %>%
@@ -35,12 +36,31 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   latencyTbl <- ws_monitor %>%
     monitor_toTidy() %>%
-    group_by(.data$monitorID) %>%
     filter(!is.na(.data$pm25)) %>%
+    group_by(.data$monitorID) %>%
     summarize(lastUpdate = max(.data$datetime)) %>%
     ungroup(.data$monitorID) %>%
     mutate(latency = endTimeInclusive - .data$lastUpdate) %>%
     filter(.data$latency <= lubridate::dhours(maxLatency))
+
+
+# Prepare data ------------------------------------------------------------
+
+  nowcastData <- ws_monitor %>%
+    monitor_nowcast(includeShortTerm = TRUE) %>%
+    monitor_toTidy() %>%
+    mutate(AQILevel = cut(
+      .data$pm25,
+      AQI$breaks_24,
+      include.lowest = TRUE,
+      labels = 1:length(AQI$names)))
+
+  dailyData <- ws_monitor %>%
+    monitor_dailyStatistic() %>%
+    monitor_toTidy()
+
+
+
 
 
 # Add events --------------------------------------------------------------
