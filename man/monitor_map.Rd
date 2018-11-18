@@ -5,9 +5,9 @@
 \title{Create Map of Monitoring Stations}
 \usage{
 monitor_map(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, cex = par("cex"), stateCol = "grey60",
-  stateLwd = 2, countyCol = "grey70", countyLwd = 1, add = FALSE,
-  ...)
+  colors = AQI$colors, pch = par("pch"), cex = par("cex"),
+  stateCol = "grey60", stateLwd = 2, countyCol = "grey70",
+  countyLwd = 1, add = FALSE, ...)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
@@ -17,6 +17,8 @@ monitor_map(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
 \item{breaks}{set of breaks used to assign colors}
 
 \item{colors}{set of colors must be one less than the number of breaks}
+
+\item{pch}{Plot symbols used to draw points on the map.}
 
 \item{cex}{the amount that the points will be magnified on the map}
 

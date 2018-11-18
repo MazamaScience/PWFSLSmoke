@@ -1,4 +1,8 @@
 
+# PWFSLSmoke 1.1.13
+
+ * added for `pch` argument to `monitor_map()`
+
 # PWFSLSmoke 1.1.12
 
 This release refactors functions so that all functions accepting a `ws_monitor`

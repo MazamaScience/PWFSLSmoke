@@ -8,6 +8,7 @@
 #' @param slice either a time index or a function used to collapse the time axis
 #' @param breaks set of breaks used to assign colors
 #' @param colors set of colors must be one less than the number of breaks
+#' @param pch Plot symbols used to draw points on the map.
 #' @param cex the amount that the points will be magnified on the map
 #' @param stateCol color for state outlines on the map
 #' @param stateLwd width for state outlines
@@ -47,6 +48,7 @@ monitor_map <- function(ws_monitor,
                         slice = get("max"),
                         breaks = AQI$breaks_24,
                         colors = AQI$colors,
+                        pch = par("pch"),
                         cex = par("cex"),
                         stateCol = "grey60",
                         stateLwd = 2,
@@ -135,11 +137,11 @@ monitor_map <- function(ws_monitor,
   argsList <- list(...)
 
   if ( is.null(argsList$projection) ) {
-    points(lon, lat, pch = 16, cex = cex, col = cols, xpd = NA)
+    points(lon, lat, pch = pch, cex = cex, col = cols, xpd = NA)
   } else {
     points(
       mapproj::mapproject(lon, lat, argsList$projection, argsList$parameters, argsList$orientation),
-      pch = 16, cex = cex, col = cols, xpd = NA
+      pch = pch, cex = cex, col = cols, xpd = NA
     )
   }
 
