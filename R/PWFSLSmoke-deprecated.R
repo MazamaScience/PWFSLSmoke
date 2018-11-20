@@ -136,6 +136,7 @@ monitorMap <- function(ws_monitor,
                        slice = get("max"),
                        breaks = AQI$breaks_24,
                        colors = AQI$colors,
+                       pch = par("pch"),
                        cex = par("cex"),
                        stateCol = "grey60",
                        stateLwd = 2,
@@ -145,7 +146,7 @@ monitorMap <- function(ws_monitor,
                        ...) {
 
   monitor_map(
-    ws_monitor, slice, breaks, colors, cex,
+    ws_monitor, slice, breaks, colors, pch, cex,
     stateCol, stateLwd, countyCol, countyLwd, add,
     ...
   )

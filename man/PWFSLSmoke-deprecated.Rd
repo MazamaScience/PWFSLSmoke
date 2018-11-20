@@ -33,9 +33,9 @@ monitorLeaflet(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
   "elevation"))
 
 monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, cex = par("cex"), stateCol = "grey60",
-  stateLwd = 2, countyCol = "grey70", countyLwd = 1, add = FALSE,
-  ...)
+  colors = AQI$colors, pch = par("pch"), cex = par("cex"),
+  stateCol = "grey60", stateLwd = 2, countyCol = "grey70",
+  countyLwd = 1, add = FALSE, ...)
 
 monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
   cex = par("cex"), sizeBy = NULL, colorBy = "heidikeSkill",
