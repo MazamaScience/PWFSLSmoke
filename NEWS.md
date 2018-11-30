@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.1.14
+
+Add convenience functions `monitor_extractData()` and `monitor_extractMeta()`, 
+which return the dataframes inside a `ws_monitor` object.
 
 # PWFSLSmoke 1.1.13
 
