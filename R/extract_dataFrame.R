@@ -8,7 +8,7 @@
 #'
 #' Below is a table showing equivalent operations for each function.
 #'
-#' \tabluar{rr}{
+#' \tabular{ll}{
 #'   \strong{Function} \tab \strong{Equivalent Operation}\cr
 #'   \code{extract_data(ws_monitor)} \tab \code{ws_monitor[["data"]]}\cr
 #'   \code{extract_meta(ws_monitor)} \tab \code{ws_monitor[["meta"]]}
