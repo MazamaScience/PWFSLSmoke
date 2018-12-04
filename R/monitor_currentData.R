@@ -78,25 +78,30 @@
 
 monitor_currentData <- function(ws_monitor,
                                 datetime = lubridate::now("UTC"),
-                                monitoringUrlBase = 'http://tools.airfire.org/monitoring/v4/#!/?monitors=') {
-
-
+                                monitoringUrlBase = "http://tools.airfire.org/monitoring/v4/#!/?monitors=") {
 
   # Sanity check
-  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
-
+  if (monitor_isEmpty(ws_monitor)) stop("ws_monitor object contains zero monitors")
 
   datetime <- parseDatetime(datetime)
   if (is.na(datetime)) stop("failed to parse datetime")
 
   if (datetime < min(ws_monitor$data$datetime)) stop(paste0("no data from before ", datetime))
 
-  # Subset data to include only data from before datetime (not including data from the same time as datetime)
-  ws_monitor <- monitor_subset(ws_monitor,
-                               tlim = c(min(ws_monitor$data$datetime), datetime - lubridate::dhours(1)))
+  # Subset data to include only data from before datetime
+  # (not including data from the same time as datetime)
+  ws_monitor <- monitor_subset(
+    ws_monitor,
+    tlim = c(min(ws_monitor$data$datetime), datetime - lubridate::dhours(1))
+  )
 
 
-  if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors with data from before ", datetime)
+  if (monitor_isEmpty(ws_monitor)) {
+    stop(
+      "ws_monitor object contains zero monitors with data from before ",
+      datetime
+    )
+  }
 
   # Pull out data
   data <- ws_monitor$data
@@ -105,41 +110,60 @@ monitor_currentData <- function(ws_monitor,
   # Convert meta to tbl without rownames
   currentData <- as_tibble(meta, rownames = NULL)
 
-  if ( nrow(currentData) == 0 ) {
-    stop('No sites found with PM2.5 data')
+  if (nrow(currentData) == 0) {
+    stop("No sites found with PM2.5 data")
   }
 
   # Add processingTime
-  processingTime <- lubridate::now('UTC')
+  processingTime <- lubridate::now("UTC")
   currentData$processingTime <- processingTime
-  currentData$datetime <- lubridate::with_tz(datetime, 'UTC')
+  currentData$datetime <- lubridate::with_tz(datetime, "UTC")
 
 
   # Add lastValidTime
-  lastIndex <- apply(as.matrix(data), 2, function(x) { max(which(!is.na(x))) }) # this is a named vector
+
+  # this is a named vector
+  lastIndex <- apply(as.matrix(data), 2, function(x) max(which(!is.na(x))))
   lastUTCTime <- data$datetime[lastIndex]
   currentData$lastValidTime <- lastUTCTime[-1] # remove 'datetime'
 
   # Add lastValidLocalTimestamp
   currentData$lastValidLocalTimestamp <- ""
-  for ( i in 1:nrow(currentData) ) { # loop because strftime is not vectorized over tz
+
+  # loop because strftime is not vectorized over tz
+  for (i in 1:nrow(currentData)) {
+
     result <- try({
-      currentData$lastValidLocalTimestamp[i] <- strftime(currentData$lastValidTime[i], format="%Y-%m-%d %H:%M:%S %Z", tz=meta$timezone[i])
-    }, silent=TRUE)
-    if ( "try-error" %in% class(result) ) {
-      currentData$lastValidLocalTimestamp[i] <- strftime(meta$lastValidTime[i], format="%Y-%m-%d %H:%M:%S %Z", tz='UTC')
+      currentData$lastValidLocalTimestamp[i] <-
+        strftime(
+          currentData$lastValidTime[i],
+          format = "%Y-%m-%d %H:%M:%S %Z",
+          tz = meta$timezone[i]
+        )
+    }, silent = TRUE)
+
+    if ("try-error" %in% class(result)) {
+      currentData$lastValidLocalTimestamp[i] <-
+        strftime(
+          meta$lastValidTime[i],
+          format = "%Y-%m-%d %H:%M:%S %Z",
+          tz = "UTC"
+        )
     }
   }
 
   # Calculate the latency in hours
   # NOTE:  According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
-  # NOTE:  a datum assigned to 2pm represents the average of data between 2pm and 3pm.
-  # NOTE:  So, if we check at 3:15 and see that we have a value for 2pm but not 3pmm
-  # NOTE:  then the data are completely up-to-date with zero latency. That's why we
-  # NOTE:  subtract an hour from 'datetime' in the line below.
+  # NOTE:  a datum assigned to 2pm represents the average of data between 2pm
+  # NOTE:  and 3pm. So, if we check at 3:15 and see that we have a value for 2pm
+  # NOTE:  but not 3pmm then the data are completely up-to-date with zero
+  # NOTE:  latency. That's why we subtract an hour from 'datetime' in the line
+  # NOTE:  below.
 
-  zeroLatencyTime <- lubridate::floor_date(datetime, unit="hour") - lubridate::dhours(1)
-  currentData$latency <- as.numeric( difftime(zeroLatencyTime, currentData$lastValidTime, units="hour") )
+  zeroLatencyTime <-
+    lubridate::floor_date(datetime, unit = "hour") - lubridate::dhours(1)
+  currentData$latency <-
+    as.numeric(difftime(zeroLatencyTime, currentData$lastValidTime, units = "hour"))
 
   # ----- Add data values to currentData tbl -----------------------------------
 
@@ -153,8 +177,9 @@ monitor_currentData <- function(ws_monitor,
   currentData$lastValid_PM2.5_3hr <- as.numeric(NA)
   currentData$yesterday_PM2.5_24hr <- as.numeric(NA)
 
+
   # Values that must be calculated per-monitoring-site
-  for ( monitorID in currentData$monitorID ) {
+  for (monitorID in currentData$monitorID) {
 
     # Monitoring Site Url
     currentData[currentData$monitorID == monitorID, 'monitoringSiteUrl'] <- paste0(monitoringUrlBase,monitorID)
@@ -163,35 +188,45 @@ monitor_currentData <- function(ws_monitor,
     result <- try({
 
       lastRow <- lastIndex[monitorID] # lastIndex is a named vector
-      last3Rows <- (lastRow-2):lastRow
+      last3Rows <- (lastRow - 2):lastRow
 
       # lastValid nowcast value
-      currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_nowcast'] <- round(data_nowcast[lastRow,monitorID], digits=1)
+      currentData[currentData$monitorID == monitorID, "lastValid_PM2.5_nowcast"] <-
+        round(data_nowcast[lastRow, monitorID], digits = 1)
 
       # lastValid hourly data
-      currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_1hr'] <- round(data[lastRow,monitorID], digits=1)
+      currentData[currentData$monitorID == monitorID, "lastValid_PM2.5_1hr"] <-
+        round(data[lastRow, monitorID], digits = 1)
 
       # lastValid 3-hour mean
-      # NOTE:  Test that lastRow is >=3. Otherwise we would generate invalid indices for last3Rows.
-      if ( lastRow >= 3 ) {
-        threeHourMean <- round(mean(data[last3Rows,monitorID], na.rm=TRUE), digits=1)
-        if ( !is.nan(threeHourMean) ) { # you get NaN when all input data are NA
-          currentData[currentData$monitorID == monitorID,'lastValid_PM2.5_3hr'] <- threeHourMean
+      # NOTE:  Test that lastRow is >=3.
+      # NOTE   Otherwise we would generate invalid indices for last3Rows.
+      if (lastRow >= 3) {
+
+        threeHourMean <-
+          round(mean(data[last3Rows, monitorID], na.rm = TRUE), digits = 1)
+
+        # you get NaN when all input data are NA
+        if (!is.nan(threeHourMean)) {
+          currentData[currentData$monitorID == monitorID, "lastValid_PM2.5_3hr"] <- threeHourMean
         }
       }
 
       # Determine monitor-local-time 'yesterdayMask' relative to 'datetime'
-      localNow <- lubridate::with_tz(datetime, meta[monitorID,'timezone']) # get 'datetime' in local-time
-      localDatetime <- lubridate::with_tz(data$datetime, meta[monitorID,'timezone'])
-      yesterdayEnd <- lubridate::floor_date(localNow,'day')
+
+      # get 'datetime' in local-time
+      localNow <- lubridate::with_tz(datetime, meta[monitorID, "timezone"])
+      localDatetime <- lubridate::with_tz(data$datetime, meta[monitorID, "timezone"])
+      yesterdayEnd <- lubridate::floor_date(localNow, "day")
       yesterdayStart <- yesterdayEnd - lubridate::ddays(1)
       yesterdayMask <- localDatetime >= yesterdayStart & localDatetime < yesterdayEnd
 
       # 24-hour mean for yesterday
       yesterdayValues <- data[yesterdayMask, monitorID]
       # Use data.thresh=75 just as in openair::rollingMean() (missing 6 or fewer/24 hours)
-      if ( length(yesterdayValues) >= 18 && sum(is.na(yesterdayValues)) <= 6 ) {
-        currentData[currentData$monitorID == monitorID,'yesterday_PM2.5_24hr'] <- round(mean(yesterdayValues, na.rm=TRUE), digits=1)
+      if (length(yesterdayValues) >= 18 && sum(is.na(yesterdayValues)) <= 6) {
+        currentData[currentData$monitorID == monitorID, "yesterday_PM2.5_24hr"] <-
+          round(mean(yesterdayValues, na.rm = TRUE), digits = 1)
       }
 
     }, silent = TRUE)
@@ -201,4 +236,3 @@ monitor_currentData <- function(ws_monitor,
   return(currentData)
 
 }
-
