@@ -10,50 +10,73 @@ monitor_currentData(ws_monitor, datetime = lubridate::now("UTC"),
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{datetime}{Time to which data will be 'current' (integer or character representing YYYYMMDDHH or \code{POSIXct}.
-If not \code{POSIXct}, interpreted as UTC time).
-So if \code{datetime} is 3 hours ago, a dataframe with the most current data from 3 hours ago will be returned.}
+\item{datetime}{Time to which data will be 'current' (integer or character
+representing YYYYMMDDHH or \code{POSIXct}. If not \code{POSIXct},
+interpreted as UTC time). So if \code{datetime} is 3 hours ago, a dataframe
+with the most current data from 3 hours ago will be returned.}
 
-\item{monitoringUrlBase}{base URL for constructing a link to the PWFSL Smoke Monitoring site}
+\item{monitoringUrlBase}{base URL for constructing a link to the PWFSL Smoke
+Monitoring site}
 }
 \value{
 A tibble of "lastValid" data and associated timing information.
 }
 \description{
-Extracts current status data from a ws_monitor object. In addition to monitor metadata, the returned data include the following:
-\itemize{
-\item{\code{monitorID} - the PWFSL monitor ID}
-\item{\code{lastValidTime} - UTC POSIXct time corresponding to the last valid pm25 datum}
-\item{\code{lastValidLocalTimestamp} - ASCII version of \code{lastValidTime} in monitor-local timezone}
-\item{\code{processingTime} - UTC POSIXct when the function is run (\emph{i.e.} 'now')}
-\item{\code{datetime} - UTC POSIXct of the datetime that the data represents. See \code{datetime} parameter. In most instances, the same as \code{processingTime}}
-\item{\code{latency} - (difference between processingTime -1 hr) and lastValidTime, floored to the hour}
-\item{\code{lastValid_PM2.5_nowcast} - NowCast value at lastValidTime}
-\item{\code{lastValid_PM2.5_1hr} - PM2.5 value at lastValidTime (should never be null)}
-\item{\code{lastValid_PM2.5_3hr} - mean of the three hours preceeding lastValidTime}
-\item{\code{yesterday_PM2.5_24hr} - local time midnight-to-midnight 24-hour mean for the day prior to processingTime}
-\item{\code{monitoringSiteUrl} - URL to PWFSL Monitoring v4 site, initialized with a specific monitor}
-}
-The three-hour average will remove missing values and may represent an average of 1-3 hours.
+Extracts current status data from a ws_monitor object. In addition to monitor
+metadata, the returned data include the following:
 
-The yesterday average will remove up to six missing values, returning \code{NA} if more than six hours of yesterday's data are missing.
+\itemize{
+  \item{\code{monitorID} - the PWFSL monitor ID}
+  \item{\code{lastValidTime} - UTC POSIXct time corresponding to the last
+    valid pm25 datum}
+  \item{\code{lastValidLocalTimestamp} - ASCII version of
+    \code{lastValidTime} in monitor-local timezone}
+  \item{\code{processingTime} - UTC POSIXct when the function is run
+    (\emph{i.e.} 'now')}
+  \item{\code{datetime} - UTC POSIXct of
+    the datetime that the data represents. See \code{datetime} parameter. In
+    most instances, the same as \code{processingTime}}
+  \item{\code{latency} - (difference between processingTime -1 hr) and
+    lastValidTime, floored to the hour}
+  \item{\code{lastValid_PM2.5_nowcast} - NowCast value at lastValidTime}
+  \item{\code{lastValid_PM2.5_1hr} - PM2.5 value at lastValidTime (should
+    never be null)}
+  \item{\code{lastValid_PM2.5_3hr} - mean of the three hours preceeding
+    lastValidTime}
+  \item{\code{yesterday_PM2.5_24hr} - local time midnight-to-midnight 24-hour
+    mean for the day prior to processingTime}
+  \item{\code{monitoringSiteUrl} - URL to PWFSL Monitoring v4 site,
+    initialized with a specific monitor}
+}
+
+The three-hour average will remove missing values and may represent an
+average of 1-3 hours.
+
+The yesterday average will remove up to six missing values, returning
+\code{NA} if more than six hours of yesterday's data are missing.
 
 Any monitors with no data from before the desired datetime will be excluded.
 
-\strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to \code{datetime} -- \emph{i.e.} actually yesterday.
-The various 'lastValid' values describe the most recent valid values -- before \code{datetime}, whenever they occurred.
+\strong{NOTE:} \code{yesterday_PM2.5_24hr} represents yesterday relative to
+\code{datetime} -- \emph{i.e.} actually yesterday. The various 'lastValid'
+values describe the most recent valid values -- before \code{datetime},
+whenever they occurred.
 }
 \details{
-Data are assigned to the beginning of the hour they represent. So a PM2.5 value assigned to 2pm
-will represent data averaged over the period 14:00 - 14:59. This is in keeping with a day representing
-00:00 - 23:59 and a month representing the beginning of the month until the end of the month.
+Data are assigned to the beginning of the hour they represent. So a
+PM2.5 value assigned to 2pm will represent data averaged over the period
+14:00 - 14:59. This is in keeping with a day representing 00:00 - 23:59 and a
+month representing the beginning of the month until the end of the month.
 
-Because of this, data for 2pm should never be available until just after 3pm. If it is currently 3:15pm
-then we need to subtract 1 hour from the current \code{processingTime} before subtracting the \code{lastValidTime}
-to generate the \code{latency}.
+Because of this, data for 2pm should never be available until just after 3pm.
+If it is currently 3:15pm then we need to subtract 1 hour from the current
+\code{processingTime} before subtracting the \code{lastValidTime} to generate
+the \code{latency}.
 
-The parameter \code{datetime} is meant to simulate current data at a time different from the current time. Therefore, when \code{datetime}
-is specified, the returned dataframe will represent data up to an hour before \code{datetime}.
+The parameter \code{datetime} is meant to simulate current data at a time
+different from the current time. Therefore, when \code{datetime} is
+specified, the returned dataframe will represent data up to an hour before
+\code{datetime}.
 }
 \examples{
 \dontrun{
