@@ -252,7 +252,7 @@ AQI_en <- list(
   )
 )
 
-#' AQI breaks and associated names and colors (spanish language)
+#' AQI breaks and associated names and colors (Spanish language)
 #'
 #' @export
 #' @docType data

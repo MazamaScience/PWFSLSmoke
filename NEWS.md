@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.1.15
+
+ * spell check
+
 # PWFSLSmoke 1.1.14
 
 Add convenience functions `monitor_extractData()` and `monitor_extractMeta()`, 

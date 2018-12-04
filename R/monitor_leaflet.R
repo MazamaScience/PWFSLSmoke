@@ -21,7 +21,7 @@
 #' \emph{ws_monitor} timeseries into a single value. If \code{slice} is an
 #' integer, that row index will be selected from the \code{ws_monitor$data}
 #' dataframe. If \code{slice} is a function (unquoted), that function will be
-#' applied to the timeseires with the argument \code{na.rm=TRUE} (e.g.
+#' applied to the timeseries with the argument \code{na.rm=TRUE} (e.g.
 #' \code{max(..., na.rm=TRUE)}).
 #'
 #' If \code{slice} is a user defined function it will be used with argument
@@ -39,7 +39,7 @@
 #' \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of
 #' "provider tiles" to use as the background map.
 #'
-#' @return Initiates the interactive leaflet plot in Rstudio's 'Viewer' tab.
+#' @return Initiates the interactive leaflet plot in RStudio's 'Viewer' tab.
 #'
 #' @examples
 #' \dontrun{
