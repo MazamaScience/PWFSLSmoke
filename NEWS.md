@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.1.15
+
+ * added additional logging to `EsriMap_getMap()`
+
 # PWFSLSmoke 1.1.14
 
 Add convenience functions `monitor_extractData()` and `monitor_extractMeta()`, 
