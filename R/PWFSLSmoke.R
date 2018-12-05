@@ -203,6 +203,7 @@ AQI <- list(
              grDevices::rgb(255/255,0,0),
              grDevices::rgb(143/255,63/255,151/255),
              grDevices::rgb(126/255,0,35/255)),
+  mv4Colors = c("#2ecc71", "#f1c40f", "#e67e22", "#e74c3c", "#9b59b6", "#8c3a3a"),
   names = c('Good','Moderate','USG','Unhealthy','Very Unhealthy','Hazardous'),
   actions = c(
     'None.',
