@@ -1,9 +1,8 @@
 
-
-
 monitor_getCurrentStatus <- function(ws_monitor,
                                      endTime = lubridate::now("UTC"),
-                                     maxLatency = 6) {
+                                     maxLatency = 6,
+                                     monitorURLBase = NULL) {
 
 
 # Sanity checks -----------------------------------------------------------
@@ -27,40 +26,55 @@ monitor_getCurrentStatus <- function(ws_monitor,
   }
 
 
+# Prepare parameters ------------------------------------------------------
+
+if (is.null(monitorURLBase)) {
+  monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
+}
+
+
+# Seperate data and meta --------------------------------------------------
+
+  ws_data <- ws_monitor %>% monitor_extractData() %>% as_tibble()
+  ws_meta <- ws_monitor %>% monitor_extractMeta() %>% as_tibble(rownames = NULL)
+
+
 # Calculate data latency --------------------------------------------------
 
-  ## TODO: how are different timezones handled when compared against endTime
+  ## TODO:
+  #  how are different timezones handled when compared against endTime
   #  and processTime?
 
   processTime <- lubridate::now("UTC")
 
-  latencyTbl <- ws_monitor %>%
-    monitor_toTidy() %>%
-    filter(!is.na(.data$pm25)) %>%
-    group_by(.data$monitorID) %>%
-    summarize(lastUpdate = max(.data$datetime)) %>%
-    ungroup(.data$monitorID) %>%
-    mutate(latency = endTimeInclusive - .data$lastUpdate) %>%
-    filter(.data$latency <= lubridate::dhours(maxLatency))
+  lastValidTimeIndex <- ws_data %>%
+    arrange(.data$datetime) %>%
+    select(-.data$datetime) %>%
+    purrr::map_int(~max(which(!is.na(.x))))
+
+  lastValidTime <- ws_data[["datetime"]][lastValidTimeIndex]
 
 
 # Prepare data ------------------------------------------------------------
 
-  nowcastData <- ws_monitor %>%
-    monitor_nowcast(includeShortTerm = TRUE) %>%
-    monitor_toTidy() %>%
-    mutate(AQILevel = cut(
-      .data$pm25,
-      AQI$breaks_24,
-      include.lowest = TRUE,
-      labels = 1:length(AQI$names)))
+  ## NOTE about calculating latency in hours:
+  #  According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
+  #  a datum assigned to 2pm represents the average of data between 2pm and 3pm.
+  #  So, if we check at 3:15 and see that we have a value for 2pm but not 3pmm
+  #  then the data are completely up-to-date with zero latency. That's why we
+  #  subtract an hour from 'datetime' in the line below.
 
-  dailyData <- ws_monitor %>%
-    monitor_dailyStatistic() %>%
-    monitor_toTidy()
-
-
-
+  currentStatus <-
+    tibble(
+      `monitorID` = names(lastValidTimeIndex),
+      `processTime` = processTime,
+      `lastValidTime` = lastValidTime,
+      `latency` = lubridate::make_difftime(
+        endTimeInclusive - lastValidTime,
+        units = "hour"
+      )
+    ) %>%
+    filter(.data$latency <= lubridate::hours(maxLatency))
 
 
 # Add events --------------------------------------------------------------
