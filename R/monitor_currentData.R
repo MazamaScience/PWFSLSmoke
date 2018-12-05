@@ -124,11 +124,13 @@ monitor_currentData <- function(ws_monitor,
   currentData$lastValid_PM2.5_3hr <- as.numeric(NA)
   currentData$yesterday_PM2.5_24hr <- as.numeric(NA)
 
-  # Monitoring Site Url
-  currentData$monitoringSiteUrl <- paste0(monitoringUrlBase,monitorID)
+
 
   # Values that must be calculated per-monitoring-site
   for ( monitorID in currentData$monitorID ) {
+
+    # Monitoring Site Url
+    currentData[currentData$monitorID == monitorID,'monitoringSiteUrl'] <- paste0(monitoringUrlBase,monitorID)
 
     # Put everything data related inside a try block so one monitor won't cause everything to stop
     result <- try({
