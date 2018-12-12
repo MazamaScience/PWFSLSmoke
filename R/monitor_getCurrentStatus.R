@@ -68,10 +68,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
       `monitorID` = names(lastValidTimeIndex),
       `processTime` = processTime,
       `lastValidTime` = lastValidTime,
-      `latency` = lubridate::make_difftime(
-        endTimeInclusive - lastValidTime,
-        units = "hour"
-      )
+      `latency` = difftime(endTimeInclusive, lastValidTime, units = "hour")
     ) %>%
     filter(.data$latency <= lubridate::hours(maxLatency))
 
