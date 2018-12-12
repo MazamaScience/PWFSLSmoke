@@ -28,9 +28,9 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Prepare parameters ------------------------------------------------------
 
-if (is.null(monitorURLBase)) {
-  monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
-}
+  if (is.null(monitorURLBase)) {
+    monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
+  }
 
 
 # Seperate data and meta --------------------------------------------------
@@ -60,9 +60,8 @@ if (is.null(monitorURLBase)) {
   ## NOTE about calculating latency in hours:
   #  According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
   #  a datum assigned to 2pm represents the average of data between 2pm and 3pm.
-  #  So, if we check at 3:15 and see that we have a value for 2pm but not 3pmm
-  #  then the data are completely up-to-date with zero latency. That's why we
-  #  subtract an hour from 'datetime' in the line below.
+  #  So, if we check at 3:15 and see that we have a value for 2pm but not 3pm
+  #  then the data are completely up-to-date with zero latency.
 
   currentStatus <-
     tibble(
