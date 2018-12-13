@@ -33,13 +33,13 @@ monitor_getCurrentStatus <- function(ws_monitor,
   }
 
 
-# Seperate data and meta --------------------------------------------------
+# Prepare data ------------------------------------------------------------
 
   ws_data <- ws_monitor %>% monitor_extractData() %>% as_tibble()
   ws_meta <- ws_monitor %>% monitor_extractMeta() %>% as_tibble(rownames = NULL)
 
 
-# Calculate data latency --------------------------------------------------
+# Calculate monitor latency -----------------------------------------------
 
   ## TODO:
   #  how are different timezones handled when compared against endTime
@@ -55,7 +55,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
   lastValidTime <- ws_data[["datetime"]][lastValidTimeIndex]
 
 
-# Prepare data ------------------------------------------------------------
+# Initialize output -------------------------------------------------------
 
   ## NOTE about calculating latency in hours:
   #  According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
@@ -66,6 +66,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
   currentStatus <-
     tibble(
       `monitorID` = names(lastValidTimeIndex),
+      `monitorURL` = paste0(monitorURLBase, .data$monitorID),
       `processTime` = processTime,
       `lastValidTime` = lastValidTime,
       `latency` = difftime(endTimeInclusive, lastValidTime, units = "hour")
@@ -86,6 +87,14 @@ monitor_getCurrentStatus <- function(ws_monitor,
   #  * NR6  -- Monitor not reporting for more than 6 hours
   #  * MAL6 -- Monitor malfunctioning the last 6 hours
   #  * NEW6 -- New monitor reporting in the last 6 hours
+
+
+
+# Return output -----------------------------------------------------------
+
+  # Note: option to not append meta info?
+
+  return(currentStatus)
 
 }
 
