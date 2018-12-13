@@ -178,6 +178,7 @@ monitor_currentData <- function(ws_monitor,
   currentData$yesterday_PM2.5_24hr <- as.numeric(NA)
 
 
+
   # Values that must be calculated per-monitoring-site
   for (monitorID in currentData$monitorID) {
 
