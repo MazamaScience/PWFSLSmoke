@@ -183,7 +183,7 @@ if (FALSE) {
 
   get_previousDayStart <- function(endTimeUTC, timezone) {
 
-    previousDayStart <- endTime %>%
+    previousDayStart <- endTimeUTC %>%
       lubridate::with_tz(timezone) %>%
       lubridate::floor_date(unit = "day") %>%
       magrittr::subtract(lubridate::ddays(1))
