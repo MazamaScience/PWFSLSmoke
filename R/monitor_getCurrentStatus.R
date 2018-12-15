@@ -121,7 +121,11 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   # Note: option to not append meta info?
 
-  return(currentStatus)
+  outputData <- ws_meta %>%
+    left_join(currentStatus, by = "monitorID") %>%
+    left_join(summaryData, by = "monitorID")
+
+  return(outputData)
 
 }
 
