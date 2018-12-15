@@ -38,6 +38,11 @@ monitor_getCurrentStatus <- function(ws_monitor,
   ws_data <- ws_monitor %>% monitor_extractData() %>% as_tibble()
   ws_meta <- ws_monitor %>% monitor_extractMeta() %>% as_tibble(rownames = NULL)
 
+  nowcast_data <- ws_monitor %>%
+    monitor_nowcast() %>%
+    monitor_extractData() %>%
+    as_tibble()
+
 
 # Calculate monitor latency -----------------------------------------------
 
@@ -74,6 +79,28 @@ monitor_getCurrentStatus <- function(ws_monitor,
     filter(.data$latency <= lubridate::hours(maxLatency))
 
 
+# Add summary data --------------------------------------------------------
+
+  ## Summary data:
+  #
+  #  * lastValid_nowcast_1hr --
+  #  * lastValid_PM2.5_1hr --
+  #  * lastValid_PM2.5_3hr --
+  #  * yesterday_PM2.5_24hr --
+
+  lastValid_nowcast_1hr <- .lastValid_n_hr_avg(nowcast_data, lastValidTimeIndex, 1)
+  lastValid_PM2.5_1hr <- .lastValid_n_hr_avg(ws_data, lastValidTimeIndex, 1)
+  lastValid_PM2.5_3hr <- .lastValid_n_hr_avg(ws_data, lastValidTimeIndex, 3)
+  yesterday_PM2.5_24hr <- .yesterday_AQI_24hr(ws_monitor, endTime)
+
+
+  summaryData <- yesterday_PM2.5_24hr %>%
+    left_join(lastValid_nowcast_1hr, by = "monitorID") %>%
+    left_join(lastValid_PM2.5_1hr, by = "monitorID") %>%
+    left_join(lastValid_PM2.5_3hr, by = "monitorID")
+
+
+
 # Add events --------------------------------------------------------------
 
   ## Events:
@@ -106,5 +133,79 @@ if (FALSE) {
     monitor_subset(stateCodes = "WA")
   endTime <-  lubridate::now("UTC")
   maxLatency <-  6
+
+}
+
+
+# Helper functions --------------------------------------------------------
+
+.lastValid_n_hr_avg <- function(data, lastValidTimeIndex, n) {
+
+  get_nHrAvg <- function(monitorData, latestIndex, n) {
+
+    if (latestIndex < n) return(NA)
+
+    avg <- monitorData %>%
+      magrittr::extract((latestIndex - n + 1):latestIndex) %>%
+      mean(na.rm = TRUE) %>%
+      round(digits = 1)
+
+    if (is.nan(avg)) return(NA)
+    else return(avg)
+
+  }
+
+  avgData <-
+    purrr::map2_dfc(
+      select(data, -.data$datetime), lastValidTimeIndex,
+      ~get_nHrAvg(.x, .y, n)
+    ) %>%
+    tidyr::gather("monitorID", "avg_pm25")
+
+  return(avgData)
+
+}
+
+
+.yesterday_AQI_24hr <- function(ws_monitor, endTimeUTC) {
+
+  get_previousDayStart <- function(endTimeUTC, timezone) {
+
+    previousDayStart <- endTime %>%
+      lubridate::with_tz(timezone) %>%
+      lubridate::floor_date(unit = "day") %>%
+      magrittr::subtract(lubridate::ddays(1))
+
+    return(previousDayStart)
+
+  }
+
+  get_previousDayAQI <- function(ws_data, previousDayStart) {
+
+    aqiData <- ws_data %>%
+      filter(.data$datetime == !!enquo(previousDayStart)) %>%
+      select(-.data$datetime)
+
+    return(aqiData)
+
+  }
+
+  aqiDataList <- ws_monitor %>%
+    monitor_dailyStatisticList() %>%
+    purrr::transpose() %>%
+    magrittr::use_series("data")
+
+  previousDayStarts <- names(aqiDataList) %>%
+    purrr::map(~get_previousDayStart(endTimeUTC, .x))
+
+  previousDayAQI <-
+    purrr::map2_dfc(
+      aqiDataList, previousDayStarts,
+      ~get_previousDayAQI(.x, .y)
+    ) %>%
+    tidyr::gather("monitorID", "AQI") %>%
+    mutate(`AQI` = round(.data$AQI, 1))
+
+  return(previousDayAQI)
 
 }
