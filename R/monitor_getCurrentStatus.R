@@ -1,7 +1,6 @@
 
 monitor_getCurrentStatus <- function(ws_monitor,
                                      endTime = lubridate::now("UTC"),
-                                     maxLatency = 6,
                                      monitorURLBase = NULL) {
 
 
@@ -75,8 +74,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
       `processTime` = processTime,
       `lastValidTime` = lastValidTime,
       `latency` = difftime(endTimeInclusive, lastValidTime, units = "hour")
-    ) %>%
-    filter(.data$latency <= lubridate::hours(maxLatency))
+    )
 
 
 # Add summary data --------------------------------------------------------
@@ -136,7 +134,6 @@ if (FALSE) {
   ws_monitor <- monitor_loadLatest() %>%
     monitor_subset(stateCodes = "WA")
   endTime <-  lubridate::now("UTC")
-  maxLatency <-  6
 
 }
 
