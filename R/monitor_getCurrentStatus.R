@@ -7,7 +7,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Sanity checks -----------------------------------------------------------
 
-  if (monitor_isMonitor(ws_monitor)) stop("Not a valid `ws_monitor` object.")
+  if (!monitor_isMonitor(ws_monitor)) stop("Not a valid `ws_monitor` object.")
   if (monitor_isEmpty(ws_monitor)) stop("`ws_monitor` object contains zero monitors.")
 
   # parseDateTime will fail if it produces NA
