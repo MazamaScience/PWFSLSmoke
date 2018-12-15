@@ -84,15 +84,26 @@ monitor_getCurrentStatus <- function(ws_monitor,
   #  * lastValid_nowcast_1hr --
   #  * lastValid_PM2.5_1hr --
   #  * lastValid_PM2.5_3hr --
-  #  * yesterday_PM2.5_24hr --
+  #  * yesterday_AQI --
 
-  lastValid_nowcast_1hr <- .lastValid_n_hr_avg(nowcast_data, lastValidTimeIndex, 1)
-  lastValid_PM2.5_1hr <- .lastValid_n_hr_avg(ws_data, lastValidTimeIndex, 1)
-  lastValid_PM2.5_3hr <- .lastValid_n_hr_avg(ws_data, lastValidTimeIndex, 3)
-  yesterday_PM2.5_24hr <- .yesterday_AQI_24hr(ws_monitor, endTime)
+  lastValid_nowcast_1hr <- nowcast_data %>%
+    .lastValid_n_hr_avg(lastValidTimeIndex, 1) %>%
+    magrittr::set_colnames(c("monitorID", "lastValid_nowcast_1hr"))
+
+  lastValid_PM2.5_1hr <- ws_data %>%
+    .lastValid_n_hr_avg(lastValidTimeIndex, 1) %>%
+    magrittr::set_colnames(c("monitorID", "lastValid_pm25_1hr"))
+
+  lastValid_PM2.5_3hr <- ws_data %>%
+    .lastValid_n_hr_avg(lastValidTimeIndex, 3) %>%
+    magrittr::set_colnames(c("monitorID", "lastValid_pm25_3hr"))
+
+  yesterday_AQI <- ws_monitor %>%
+    .yesterday_AQI(endTime) %>%
+    magrittr::set_colnames(c("monitorID", "yesterday_AQI"))
 
 
-  summaryData <- yesterday_PM2.5_24hr %>%
+  summaryData <- yesterday_AQI %>%
     left_join(lastValid_nowcast_1hr, by = "monitorID") %>%
     left_join(lastValid_PM2.5_1hr, by = "monitorID") %>%
     left_join(lastValid_PM2.5_3hr, by = "monitorID")
@@ -168,7 +179,7 @@ if (FALSE) {
 }
 
 
-.yesterday_AQI_24hr <- function(ws_monitor, endTimeUTC) {
+.yesterday_AQI <- function(ws_monitor, endTimeUTC) {
 
   get_previousDayStart <- function(endTimeUTC, timezone) {
 
