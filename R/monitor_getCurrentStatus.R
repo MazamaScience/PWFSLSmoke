@@ -95,15 +95,15 @@ monitor_getCurrentStatus <- function(ws_monitor,
   #  * yesterday_AQI --
 
   lastValid_nowcast_1hr <- nowcast_data %>%
-    .lastValid_n_hr_avg(lastValidTimeIndex, 1) %>%
+    .averagePrior(lastValidTimeIndex, 1) %>%
     magrittr::set_colnames(c("monitorID", "lastValid_nowcast_1hr"))
 
   lastValid_PM2.5_1hr <- ws_data %>%
-    .lastValid_n_hr_avg(lastValidTimeIndex, 1) %>%
+    .averagePrior(lastValidTimeIndex, 1) %>%
     magrittr::set_colnames(c("monitorID", "lastValid_pm25_1hr"))
 
   lastValid_PM2.5_3hr <- ws_data %>%
-    .lastValid_n_hr_avg(lastValidTimeIndex, 3) %>%
+    .averagePrior(lastValidTimeIndex, 3) %>%
     magrittr::set_colnames(c("monitorID", "lastValid_pm25_3hr"))
 
   yesterday_AQI <- ws_monitor %>%
@@ -159,14 +159,14 @@ if (FALSE) {
 
 # Helper functions --------------------------------------------------------
 
-.lastValid_n_hr_avg <- function(data, lastValidTimeIndex, n) {
+.averagePrior <- function(data, timeIndices, n) {
 
-  get_nHrAvg <- function(monitorData, latestIndex, n) {
+  get_nAvg <- function(monitorDataColumn, timeIndex, n) {
 
-    if (latestIndex < n) return(NA)
+    if (timeIndex < n) return(NA)
 
-    avg <- monitorData %>%
-      magrittr::extract((latestIndex - n + 1):latestIndex) %>%
+    avg <- monitorDataColumn %>%
+      magrittr::extract((timeIndex - n + 1):timeIndex) %>%
       mean(na.rm = TRUE) %>%
       round(digits = 1)
 
@@ -177,8 +177,8 @@ if (FALSE) {
 
   avgData <-
     purrr::map2_dfc(
-      select(data, -.data$datetime), lastValidTimeIndex,
-      ~get_nHrAvg(.x, .y, n)
+      select(data, -.data$datetime), timeIndices,
+      ~get_nAvg(.x, .y, n)
     ) %>%
     tidyr::gather("monitorID", "avg_pm25")
 
