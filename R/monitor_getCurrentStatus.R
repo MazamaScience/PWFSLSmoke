@@ -93,29 +93,19 @@ monitor_getCurrentStatus <- function(ws_monitor,
   #  * lastValid_PM2.5_1hr --
   #  * lastValid_PM2.5_3hr --
   #  * yesterday_AQI --
+  #  * last_nowcastLevel --
+  #  * previous_nowcastLevel --
 
-  lastValid_nowcast_1hr <- nowcast_data %>%
-    .averagePrior(lastValidTimeIndex, 1) %>%
-    magrittr::set_colnames(c("monitorID", "lastValid_nowcast_1hr"))
-
-  lastValid_PM2.5_1hr <- ws_data %>%
-    .averagePrior(lastValidTimeIndex, 1) %>%
-    magrittr::set_colnames(c("monitorID", "lastValid_pm25_1hr"))
-
-  lastValid_PM2.5_3hr <- ws_data %>%
-    .averagePrior(lastValidTimeIndex, 3) %>%
-    magrittr::set_colnames(c("monitorID", "lastValid_pm25_3hr"))
-
-  yesterday_AQI <- ws_monitor %>%
-    .yesterday_AQI(endTime) %>%
-    magrittr::set_colnames(c("monitorID", "yesterday_AQI"))
-
-
-  summaryData <- yesterday_AQI %>%
-    left_join(lastValid_nowcast_1hr, by = "monitorID") %>%
-    left_join(lastValid_PM2.5_1hr, by = "monitorID") %>%
-    left_join(lastValid_PM2.5_3hr, by = "monitorID")
-
+  summaryData <-
+    list(
+      .yesterday_AQI(ws_monitor, endTime, "yesterday_AQI"),
+      .averagePrior(nowcast_data, lastValidTimeIndex, 1, "lastValid_nowcast_1hr"),
+      .averagePrior(ws_data, lastValidTimeIndex, 1, "lastValid_pm25_1hr"),
+      .averagePrior(ws_data, lastValidTimeIndex, 3, "lastValid_pm25_3hr"),
+      .aqiLevel(nowcast_data, lastValidTimeIndex, "last_nowcastLevel"),
+      .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel")
+    ) %>%
+    purrr::reduce(left_join, by = "monitorID")
 
 
 # Add events --------------------------------------------------------------
@@ -147,7 +137,8 @@ monitor_getCurrentStatus <- function(ws_monitor,
 }
 
 
-# DEBUGGING
+# Debugging ---------------------------------------------------------------
+
 if (FALSE) {
 
   ws_monitor <- monitor_loadLatest() %>%
@@ -159,7 +150,9 @@ if (FALSE) {
 
 # Helper functions --------------------------------------------------------
 
-.averagePrior <- function(data, timeIndices, n) {
+.averagePrior <- function(data, timeIndices, n, colTitle) {
+
+  qColTitle <- quo_name(enquo(colTitle))
 
   get_nAvg <- function(monitorDataColumn, timeIndex, n) {
 
@@ -180,14 +173,16 @@ if (FALSE) {
       select(data, -.data$datetime), timeIndices,
       ~get_nAvg(.x, .y, n)
     ) %>%
-    tidyr::gather("monitorID", "avg_pm25")
+    tidyr::gather("monitorID", !!qColTitle)
 
   return(avgData)
 
 }
 
 
-.yesterday_AQI <- function(ws_monitor, endTimeUTC) {
+.yesterday_AQI <- function(ws_monitor, endTimeUTC, colTitle) {
+
+  qColTitle <- quo_name(enquo(colTitle))
 
   get_previousDayStart <- function(endTimeUTC, timezone) {
 
@@ -206,7 +201,7 @@ if (FALSE) {
       filter(.data$datetime == !!enquo(previousDayStart)) %>%
       select(-.data$datetime)
 
-    return(aqiData)
+    return(round(aqiData, 1))
 
   }
 
@@ -223,9 +218,20 @@ if (FALSE) {
       aqiDataList, previousDayStarts,
       ~get_previousDayAQI(.x, .y)
     ) %>%
-    tidyr::gather("monitorID", "AQI") %>%
-    mutate(`AQI` = round(.data$AQI, 1))
+    tidyr::gather("monitorID", !!qColTitle)
 
   return(previousDayAQI)
+
+}
+
+.aqiLevel <- function(data, timeIndices, colTitle) {
+
+  qColTitle <- quo_name(enquo(colTitle))
+
+  levels <- as.matrix(df[, -1]) %>%
+    magrittr::extract(cbind(unname(timeIndices), seq_along(timeIndices))) %>%
+    .bincode(AQI$breaks_24, include.lowest = TRUE)
+
+  return(tibble(`monitorID` = names(timeIndices), !!qColTitle := levels))
 
 }
