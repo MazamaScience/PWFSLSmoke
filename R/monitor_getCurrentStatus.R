@@ -51,12 +51,17 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   processTime <- lubridate::now("UTC")
 
-  lastValidTimeIndex <- ws_data %>%
+  validTimeIndices <- ws_data %>%
     arrange(.data$datetime) %>%
     select(-.data$datetime) %>%
-    purrr::map_int(~max(which(!is.na(.x))))
+    purrr::map(~rev(which(!is.na(.x)))[1:2]) %>%
+    purrr::transpose()
+
+  lastValidTimeIndex <- unlist(validTimeIndices[[1]])
+  previousValidTimeIndex <- unlist(validTimeIndices[[2]])
 
   lastValidTime <- ws_data[["datetime"]][lastValidTimeIndex]
+  previousValidTime <- ws_data[["datetime"]][previousValidTimeIndex]
 
 
 # Initialize output -------------------------------------------------------
@@ -72,8 +77,11 @@ monitor_getCurrentStatus <- function(ws_monitor,
       `monitorID` = names(lastValidTimeIndex),
       `monitorURL` = paste0(monitorURLBase, .data$monitorID),
       `processTime` = processTime,
-      `lastValidTime` = lastValidTime,
-      `latency` = difftime(endTimeInclusive, lastValidTime, units = "hour")
+      `endTime` = endTime,
+      `last_validTime` = lastValidTime,
+      `last_latency` = difftime(endTimeInclusive, lastValidTime, units = "hour"),
+      `previous_validTime` = previousValidTime,
+      `previous_latency` = difftime(.data$last_validTime, .data$previous_validTime,  units = "hour")
     )
 
 
