@@ -38,7 +38,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
   ws_meta <- ws_monitor %>% monitor_extractMeta() %>% as_tibble(rownames = NULL)
 
   nowcast_data <- ws_monitor %>%
-    monitor_nowcast() %>%
+    monitor_nowcast(includeShortTerm = TRUE) %>%
     monitor_extractData() %>%
     as_tibble()
 
