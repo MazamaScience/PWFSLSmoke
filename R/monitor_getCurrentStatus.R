@@ -155,9 +155,12 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 if (FALSE) {
 
+  devtools::load_all()
+
   ws_monitor <- monitor_loadLatest() %>%
     monitor_subset(stateCodes = "WA")
   endTime <-  lubridate::now("UTC")
+  monitorURLBase <- NULL
 
 }
 
@@ -242,7 +245,7 @@ if (FALSE) {
 
   qColTitle <- quo_name(enquo(colTitle))
 
-  levels <- as.matrix(df[, -1]) %>%
+  levels <- as.matrix(data[, -1]) %>%
     magrittr::extract(cbind(unname(timeIndices), seq_along(timeIndices))) %>%
     .bincode(AQI$breaks_24, include.lowest = TRUE)
 
