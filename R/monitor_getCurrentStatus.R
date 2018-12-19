@@ -169,8 +169,6 @@ if (FALSE) {
 
 .averagePrior <- function(data, timeIndices, n, colTitle) {
 
-  qColTitle <- quo_name(enquo(colTitle))
-
   get_nAvg <- function(monitorDataColumn, timeIndex, n) {
 
     if (timeIndex < n) return(NA)
@@ -190,7 +188,7 @@ if (FALSE) {
       select(data, -.data$datetime), timeIndices,
       ~get_nAvg(.x, .y, n)
     ) %>%
-    tidyr::gather("monitorID", !!qColTitle)
+    tidyr::gather("monitorID", !!colTitle)
 
   return(avgData)
 
@@ -198,8 +196,6 @@ if (FALSE) {
 
 
 .yesterday_AQI <- function(ws_monitor, endTimeUTC, colTitle) {
-
-  qColTitle <- quo_name(enquo(colTitle))
 
   get_previousDayStart <- function(endTimeUTC, timezone) {
 
@@ -235,7 +231,7 @@ if (FALSE) {
       aqiDataList, previousDayStarts,
       ~get_previousDayAQI(.x, .y)
     ) %>%
-    tidyr::gather("monitorID", !!qColTitle)
+    tidyr::gather("monitorID", !!colTitle)
 
   return(previousDayAQI)
 
@@ -243,13 +239,11 @@ if (FALSE) {
 
 .aqiLevel <- function(data, timeIndices, colTitle) {
 
-  qColTitle <- quo_name(enquo(colTitle))
-
   levels <- as.matrix(data[, -1]) %>%
     magrittr::extract(cbind(unname(timeIndices), seq_along(timeIndices))) %>%
     .bincode(AQI$breaks_24, include.lowest = TRUE)
 
-  return(tibble(`monitorID` = names(timeIndices), !!qColTitle := levels))
+  return(tibble(`monitorID` = names(timeIndices), !!colTitle := levels))
 
 }
 
@@ -273,8 +267,6 @@ if (FALSE) {
 
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
-  qColTitle <- quo_name(enquo(colTitle))
-
   startTimeInclusive <- endTimeUTC %>%
     magrittr::subtract(lubridate::dhours(n - 1))
 
@@ -282,14 +274,12 @@ if (FALSE) {
     filter(.data$datetime >= startTimeInclusive) %>%
     select(-.data$datetime) %>%
     summarise_all(~all(is.na(.))) %>%
-    tidyr::gather("monitorID", !!qColTitle)
+    tidyr::gather("monitorID", !!colTitle)
 
   return(result)
 }
 
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
-
-  qColTitle <- quo_name(enquo(colTitle))
 
   bufferEndTime <- endTimeUTC - lubridate::dhours(n)
 
