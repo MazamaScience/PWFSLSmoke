@@ -230,6 +230,15 @@ if (FALSE) {
 
 # Helper functions --------------------------------------------------------
 
+#' Title
+#'
+#' @param data
+#' @param timeIndices
+#' @param n
+#' @param colTitle
+#'
+#' @return
+#' @noRd
 .averagePrior <- function(data, timeIndices, n, colTitle) {
 
   get_nAvg <- function(monitorDataColumn, timeIndex, n) {
@@ -258,6 +267,14 @@ if (FALSE) {
 }
 
 
+#' Title
+#'
+#' @param ws_monitor
+#' @param endTimeUTC
+#' @param colTitle
+#'
+#' @return
+#' @noRd
 .yesterday_AQI <- function(ws_monitor, endTimeUTC, colTitle) {
 
   get_previousDayStart <- function(endTimeUTC, timezone) {
@@ -300,6 +317,14 @@ if (FALSE) {
 
 }
 
+#' Title
+#'
+#' @param data
+#' @param timeIndices
+#' @param colTitle
+#'
+#' @return
+#' @noRd
 .aqiLevel <- function(data, timeIndices, colTitle) {
 
   levels <- as.matrix(data[, -1]) %>%
@@ -310,6 +335,15 @@ if (FALSE) {
 
 }
 
+#' Title
+#'
+#' @param data
+#' @param level
+#' @param n
+#' @param direction
+#'
+#' @return
+#' @noRd
 .levelChnage <- function(data, level, n, direction) {
 
   if (direction == "increase") {
@@ -328,6 +362,15 @@ if (FALSE) {
 
 }
 
+#' Title
+#'
+#' @param data
+#' @param n
+#' @param endTimeUTC
+#' @param colTitle
+#'
+#' @return
+#' @noRd
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
   startTimeInclusive <- endTimeUTC %>%
@@ -342,6 +385,16 @@ if (FALSE) {
   return(result)
 }
 
+#' Title
+#'
+#' @param data
+#' @param n
+#' @param buffer
+#' @param endTimeUTC
+#' @param colTitle
+#'
+#' @return
+#' @noRd
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
 
   bufferEndTime <- endTimeUTC - lubridate::dhours(n)
