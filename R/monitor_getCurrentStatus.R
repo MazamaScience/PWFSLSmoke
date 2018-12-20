@@ -1,4 +1,92 @@
-
+#' @title Get current status of monitors
+#'
+#' @description
+#' This function augments the metadata from a \emph{ws_monitor}
+#' object with summarized and agregate data from the \emph{ws_monitor} object.
+#'
+#' @param ws_monitor \emph{ws_monitor} object.
+#' @param endTime Time to which the status of the monitors will be current. By
+#'   default, it is the time the function was called.
+#' @param monitorURLBase A URL prefix pointing to where more information about
+#'   a monitor can be found. By default, it points to the AirFire monitoring
+#'   site.
+#'
+#' @section "Last" and "Previous":
+#' The goal of this function is to provide useful information about what
+#' happened recently with each monitor in the provided \emph{ws_monitor} object.
+#' Monitors sometimes don't consistently report data, however, and it's not
+#' useful to have \code{NA}'s reported when there is still valid data at other
+#' times. To address this, \code{monitor_getCurrentStatus} uses \emph{last} and
+#' \emph{previous} valid times. These are the time when a monitor most recently
+#' reported data, and the most recent time of valid data before that,
+#' respectively. By reporting on these times, the function ensures that valid
+#' data is returned and provides information on how outdated this information
+#' is.
+#'
+#' @section Calculating latency:
+#' According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
+#' a datum assigned to 2pm represents the average of data between 2pm and 3pm.
+#' So, if we check at 3:15 and see that we have a value for 2pm but not 3pm
+#' then the data are completely up-to-date with zero latency.
+#'
+#' \code{monitor_getCurrentStatus()} defines latency as the difference in time
+#' between the given time index and the next most recent time index. If there is
+#' no more recent time index, then the difference is measured to the given
+#' \code{endTime} parameter. These differences are recorded in hours.
+#'
+#' For example, if the recorded values for a monitor are
+#' \code{[16.2, 15.8, 16.4, NA, 14.0, 12.5, NA, NA, 13.3, NA]}, then the last
+#' valid time index is 9, and the previous valid time index is 6. The last
+#' latency is then 1 (hour), and the previous latency is 3 (hours).
+#'
+#' @section Summary data:
+#' The table created by \code{monitor_getCurrentStatus()} includes summary
+#' information for the data part of the given \emph{ws_monitor} object. The
+#' summaries included are listed below with a description:
+#'
+#' \tabular{ll}{
+#'   yesterday_AQI         \tab Daily AQI value for the day prior to
+#'                              \code{endTime}\cr
+#'   lastValid_nowcast_1hr \tab Last valid NowCast measurement\cr
+#'   lastValid_PM2.5_1hr   \tab Last valid raw PM2.5 measurement\cr
+#'   lastValid_PM2.5_3hr   \tab Mean of the last valid raw PM2.5 measurment
+#'                              with the preceding two measurements\cr
+#'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
+#'   previous_nowcastLevel \tab NowCast level at the previous valid time
+#' }
+#'
+#' It should be noted that all averages are "right-aligned", meaning that the
+#' three hour mean of data at time \code{n} will comprise of the data at times
+#' \code{[n, n-1, n-2]}. Data for \code{n-1} and \code{n-2} is not garunteed to
+#' exist, so a three hour average may include 1 to 3 data points.
+#'
+#' @section Event flags:
+#' The table created by \code{monitor_getCurrentStatus()} also includes binary
+#' flags representing events that may have occured for a monitor within the
+#' bounds of the specified end time and data in the \emph{ws_monitor} object.
+#' Each flag is listed below with its corresponding meaning:
+#'
+#' \tabular{ll}{
+#'   USG6 \tab NowCast level increased to Unhealthy for Sensitive Groups in the
+#'             last 6 hours\cr
+#'   U6   \tab NowCast level increased to Unhealthy in the last 6 hours\cr
+#'   VU6  \tab NowCast level increased to Very Unhealthy in the last 6 hours\cr
+#'   HAZ6 \tab NowCast level increased to Hazardous in the last 6 hours\cr
+#'   MOD6 \tab NowCast level decreased to Moderate or Good in the last 6 hours\cr
+#'   NR6  \tab Monitor not reporting for more than 6 hours\cr
+#'   NEW6 \tab New monitor reporting in the last 6 hours\cr
+#'   MAL6 \tab Monitor malfunctioning the last 6 hours (not currently implemented)
+#' }
+#'
+#' @return A table containing the current status information for all the
+#'   monitors in \emph{ws_monitor}.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' ws_monitor <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
+#' statusTbl <- monitor_getCurrentStatus(ws_monitor)
+#' }
 monitor_getCurrentStatus <- function(ws_monitor,
                                      endTime = lubridate::now("UTC"),
                                      monitorURLBase = NULL) {
@@ -66,12 +154,6 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Initialize output -------------------------------------------------------
 
-  ## NOTE about calculating latency in hours:
-  #  According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
-  #  a datum assigned to 2pm represents the average of data between 2pm and 3pm.
-  #  So, if we check at 3:15 and see that we have a value for 2pm but not 3pm
-  #  then the data are completely up-to-date with zero latency.
-
   currentStatus <-
     tibble(
       `monitorID` = names(lastValidTimeIndex),
@@ -87,14 +169,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Add summary data --------------------------------------------------------
 
-  ## Summary data:
-  #
-  #  * lastValid_nowcast_1hr --
-  #  * lastValid_PM2.5_1hr --
-  #  * lastValid_PM2.5_3hr --
-  #  * yesterday_AQI --
-  #  * last_nowcastLevel --
-  #  * previous_nowcastLevel --
+  ## Note: see documentation for summary descriptions
 
   summaryData <-
     list(
@@ -110,17 +185,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Add events --------------------------------------------------------------
 
-  ## Events:
-  #
-  #  * USG6 -- NowCast level increased to Unhealthy for Sensitive Groups in the
-  #            last 6 hours
-  #  * U6   -- NowCast level increased to Unhealthy in the last 6 hours
-  #  * VU6  -- NowCast level increased to Very Unhealthy in the last 6 hours
-  #  * HAZ6 -- NowCast level increased to Hazardous in the last 6 hours
-  #  * MOD6 -- NowCast level decreased to Moderate or Good in the last 6 hours
-  #  * NR6  -- Monitor not reporting for more than 6 hours
-  #  * MAL6 -- Monitor malfunctioning the last 6 hours
-  #  * NEW6 -- New monitor reporting in the last 6 hours
+  ## Note: See documentaion for event descriptions
 
   eventData <- currentStatus %>%
     left_join(summaryData, by = "monitorID") %>%
@@ -141,11 +206,9 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Return output -----------------------------------------------------------
 
-  # Note: option to not append meta info?
+  ## TODO: Add option to not append meta info?
 
-  outputData <- ws_meta %>%
-    left_join(eventData, by = "monitorID")
-
+  outputData <- left_join(ws_meta, eventData, by = "monitorID")
   return(outputData)
 
 }
