@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This function augments the metadata from a \emph{ws_monitor}
-#' object with summarized and agregate data from the \emph{ws_monitor} object.
+#' object with summarized and aggregate data from the \emph{ws_monitor} object.
 #'
 #' @param ws_monitor \emph{ws_monitor} object.
 #' @param endTime Time to which the status of the monitors will be current. By
@@ -26,7 +26,7 @@
 #' @section Calculating latency:
 #' According to https://docs.airnowapi.org/docs/HourlyDataFactSheet.pdf
 #' a datum assigned to 2pm represents the average of data between 2pm and 3pm.
-#' So, if we check at 3:15 and see that we have a value for 2pm but not 3pm
+#' So, if we check at 3:15pm and see that we have a value for 2pm but not 3pm
 #' then the data are completely up-to-date with zero latency.
 #'
 #' \code{monitor_getCurrentStatus()} defines latency as the difference in time
@@ -49,7 +49,7 @@
 #'                              \code{endTime}\cr
 #'   lastValid_nowcast_1hr \tab Last valid NowCast measurement\cr
 #'   lastValid_PM2.5_1hr   \tab Last valid raw PM2.5 measurement\cr
-#'   lastValid_PM2.5_3hr   \tab Mean of the last valid raw PM2.5 measurment
+#'   lastValid_PM2.5_3hr   \tab Mean of the last valid raw PM2.5 measurement
 #'                              with the preceding two measurements\cr
 #'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
 #'   previous_nowcastLevel \tab NowCast level at the previous valid time
@@ -57,12 +57,12 @@
 #'
 #' It should be noted that all averages are "right-aligned", meaning that the
 #' three hour mean of data at time \code{n} will comprise of the data at times
-#' \code{[n, n-1, n-2]}. Data for \code{n-1} and \code{n-2} is not garunteed to
+#' \code{[n, n-1, n-2]}. Data for \code{n-1} and \code{n-2} is not guaranteed to
 #' exist, so a three hour average may include 1 to 3 data points.
 #'
 #' @section Event flags:
 #' The table created by \code{monitor_getCurrentStatus()} also includes binary
-#' flags representing events that may have occured for a monitor within the
+#' flags representing events that may have occurred for a monitor within the
 #' bounds of the specified end time and data in the \emph{ws_monitor} object.
 #' Each flag is listed below with its corresponding meaning:
 #'
@@ -190,11 +190,11 @@ monitor_getCurrentStatus <- function(ws_monitor,
   eventData <- currentStatus %>%
     left_join(summaryData, by = "monitorID") %>%
     mutate(
-      `USG6` = .levelChnage(.data, 3, 6, "increase"),
-      `U6` = .levelChnage(.data, 4, 6, "increase"),
-      `VU6` = .levelChnage(.data, 5, 6, "increase"),
-      `HAZ6` = .levelChnage(.data, 6, 6, "increase"),
-      `MOD6` = .levelChnage(.data, 2, 6, "decrease") | .levelChnage(.data, 1, 6, "decrease")
+      `USG6` = .levelChange(.data, 3, 6, "increase"),
+      `U6` = .levelChange(.data, 4, 6, "increase"),
+      `VU6` = .levelChange(.data, 5, 6, "increase"),
+      `HAZ6` = .levelChange(.data, 6, 6, "increase"),
+      `MOD6` = .levelChange(.data, 2, 6, "decrease") | .levelChange(.data, 1, 6, "decrease")
     ) %>%
     list(
       .isNotReporting(ws_data, 6, endTimeInclusive, "NR6"),
@@ -344,7 +344,7 @@ if (FALSE) {
 #'
 #' @return
 #' @noRd
-.levelChnage <- function(data, level, n, direction) {
+.levelChange <- function(data, level, n, direction) {
 
   if (direction == "increase") {
     result <-
