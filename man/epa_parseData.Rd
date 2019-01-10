@@ -25,7 +25,7 @@ Available parameters include:
 \item{PM2.5}
 \item{PM10}
 \item{Wind}
-\item{Temperatue}
+\item{Temperature}
 \item{Barometric_Pressure}
 \item{RH_and_Dewpoint}
 \item{HAPs}

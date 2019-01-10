@@ -1,3 +1,9 @@
+# PWFSLSmoke 1.1.16
+
+  * added additional logging to `EsriMap_getMap()`
+  * added PWFSL monitoring site "mv4" AQI colors
+  * `monitor_currentData()` bug fix
+
 # PWFSLSmoke 1.1.15
 
  * spell check

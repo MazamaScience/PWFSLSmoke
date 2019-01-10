@@ -110,16 +110,30 @@ esriMap_getMap <- function(centerLon = NULL,
   # Get ESRI JSON map metadata
   try({logger.trace("ESRI json URL: %s", jsonUrl)}, silent = TRUE)
   response <- httr::GET(jsonUrl)
+  status_code <- httr::status_code(response)
+  try({logger.trace("ESRI JSON response status code: %s", status_code)}, silent = TRUE)
+  try({logger.trace( utils::capture.output(utils::str(httr::headers(response))) )}, silent = TRUE)
   if ( httr::http_error(response) ) {
-    stop(paste0("ESRI JSON request failed with: ",httr::content(response)))
+    if (status_code == 502) {
+      stop("ESRI JSON request failed with: 502 Proxy Error")
+    } else {
+      stop(paste0("ESRI JSON request failed with: ",httr::content(response)))
+    }
   }
   mapInfo <- jsonlite::fromJSON(httr::content(response))
 
   # Get ESRI map png
   try({logger.trace("ESRI png URL: %s", pngUrl)}, silent = TRUE)
   response <- httr::GET(pngUrl)
+  status_code <- httr::status_code(response)
+  try({logger.trace("ESRI PNG status code: %s", status_code)}, silent = TRUE)
+  try({logger.trace( utils::capture.output(utils::str(httr::headers(response))) )}, silent = TRUE)
   if ( httr::http_error(response) ) {
-    stop(paste0("ESRI PNG request failed with: ",httr::content(response)))
+    if (status_code == 502) {
+      stop("ESRI PNG request failed with: 502 Proxy Error")
+    } else {
+      stop(paste0("ESRI PNG request failed with: ",httr::content(response)))
+    }
   }
   imageArray <- httr::content(response, type="image/png")
   try({logger.trace("successfully downloaded ESRI map")}, silent = TRUE)
@@ -127,8 +141,8 @@ esriMap_getMap <- function(centerLon = NULL,
 
   # Convert PNG into a Raster object
   mapRaster <- raster::brick(ncol=mapInfo$width,
-                       nrow=mapInfo$height,
-                       nl = 3)
+                             nrow=mapInfo$height,
+                             nl = 3)
   mapRaster <- raster::setValues(mapRaster, imageArray*255)
   if (width == height) {mapRaster <- raster::t(mapRaster)} # rows and columns are confused when width = height
 

@@ -20,8 +20,8 @@ epa_createMetaDataframe(tbl, pwfslDataIngestSource = "EPA",
 A \code{meta} dataframe for use in a \emph{ws_monitor} object.
 }
 \description{
-After addtional columns(i.e. \code{datetime}, and \code{monitorID}) 
-have been applied to an EPA dataframe, we are ready to 
+After additional columns(i.e. \code{datetime}, and \code{monitorID})
+have been applied to an EPA dataframe, we are ready to
 pull out site information associated with unique monitorID.
 
 These will be rearranged into a dataframe organized as deployment-by-property
@@ -33,12 +33,12 @@ columns in the returned \code{meta} dataframe is:
 
 \preformatted{
 > names(p$meta)
- [1] "monitorID"             "longitude"             "latitude"             
- [4] "elevation"             "timezone"              "countryCode"          
- [7] "stateCode"             "siteName"              "agencyName"           
-[10] "countyName"            "msaName"               "monitorType"          
-[13] "monitorInstrument"     "aqsID"                 "pwfslID"              
-[16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"      
+ [1] "monitorID"             "longitude"             "latitude"
+ [4] "elevation"             "timezone"              "countryCode"
+ [7] "stateCode"             "siteName"              "agencyName"
+[10] "countyName"            "msaName"               "monitorType"
+[13] "monitorInstrument"     "aqsID"                 "pwfslID"
+[16] "pwfslDataIngestSource" "telemetryAggregator"   "telemetryUnitID"
 }
 }
 \references{

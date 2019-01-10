@@ -12,9 +12,9 @@ addAQIStackedBar <- function(width = .01,
                              pos = "left") {
 
   # TODO:  remove 'labels' and 'title' arguments?
-  
+
   usr <- par("usr")
-  
+
   if (pos == "right") {
     l <- usr[2]-width*(usr[2]-usr[1])
     r <- usr[2]
@@ -22,9 +22,9 @@ addAQIStackedBar <- function(width = .01,
     l <- usr[1]
     r <- usr[1]+width*(usr[2]-usr[1])
   }
-  
+
   for (i in 1:6) {
-    rect(l, 
+    rect(l,
          min(max(0,AQI$breaks_24[i]), height*usr[4]),
          r,
          min(AQI$breaks_24[i+1], height*usr[4]),
@@ -33,5 +33,5 @@ addAQIStackedBar <- function(width = .01,
          border = NA
     )
   }
-  
+
 }

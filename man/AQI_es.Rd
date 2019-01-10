@@ -12,7 +12,7 @@ AQI_es
 Official AQI levels, names and colors are provided in a list for easy coloring and labeling.
 }
 \details{
-AQI breaks and associated names and colors (spanish language)
+AQI breaks and associated names and colors (Spanish language)
 
 
 The \code{AQI_es} object contains spanish language text.
