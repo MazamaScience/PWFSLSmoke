@@ -3,7 +3,7 @@
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
 [![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
 
-# PWFSLSmoke R Package
+# <img src="logo.png" align="left" style="padding-right:20px;"/>  PWFSLSmoke R Package 
 
 ```
 Utilities for Working with PM2.5 Air Quality Monitoring Data

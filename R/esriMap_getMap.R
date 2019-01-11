@@ -108,7 +108,7 @@ esriMap_getMap <- function(centerLon = NULL,
   jsonUrl <- paste0(url, "&f=json")
 
   # Get ESRI JSON map metadata
-  try({logger.trace("ESRI json URL: %s", jsonUrl)}, silent = TRUE)
+  try(logger.info("ESRI json URL: %s", jsonUrl), silent = TRUE)
   response <- httr::GET(jsonUrl)
   status_code <- httr::status_code(response)
   try({logger.trace("ESRI JSON response status code: %s", status_code)}, silent = TRUE)
@@ -123,7 +123,9 @@ esriMap_getMap <- function(centerLon = NULL,
   mapInfo <- jsonlite::fromJSON(httr::content(response))
 
   # Get ESRI map png
-  try({logger.trace("ESRI png URL: %s", pngUrl)}, silent = TRUE)
+
+
+  try(logger.info("ESRI png URL: %s", pngUrl), silent = TRUE)
   response <- httr::GET(pngUrl)
   status_code <- httr::status_code(response)
   try({logger.trace("ESRI PNG status code: %s", status_code)}, silent = TRUE)
@@ -135,9 +137,10 @@ esriMap_getMap <- function(centerLon = NULL,
       stop(paste0("ESRI PNG request failed with: ",httr::content(response)))
     }
   }
+
   imageArray <- httr::content(response, type="image/png")
-  try({logger.trace("successfully downloaded ESRI map")}, silent = TRUE)
-  try({logger.trace("ESRI Map Info: %s", utils::str(mapInfo))}, silent = TRUE)
+  try(logger.trace("successfully downloaded ESRI map"), silent = TRUE)
+  try(logger.trace("ESRI Map Info: %s", utils::str(mapInfo)), silent = TRUE)
 
   # Convert PNG into a Raster object
   mapRaster <- raster::brick(ncol=mapInfo$width,
