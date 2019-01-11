@@ -35,7 +35,7 @@ determined by \code{breaks}}
 a popup window}
 }
 \value{
-Initiates the interactive leaflet plot in Rstudio's 'Viewer' tab.
+Initiates the interactive leaflet plot in RStudio's 'Viewer' tab.
 }
 \description{
 This function creates interactive maps that will be displayed in RStudio's
@@ -43,7 +43,7 @@ This function creates interactive maps that will be displayed in RStudio's
 \emph{ws_monitor} timeseries into a single value. If \code{slice} is an
 integer, that row index will be selected from the \code{ws_monitor$data}
 dataframe. If \code{slice} is a function (unquoted), that function will be
-applied to the timeseires with the argument \code{na.rm=TRUE} (e.g.
+applied to the timeseries with the argument \code{na.rm=TRUE} (e.g.
 \code{max(..., na.rm=TRUE)}).
 
 If \code{slice} is a user defined function it will be used with argument

@@ -13,7 +13,7 @@ epa_createDataDataframe(tbl)
 A \code{data} dataframe for use in a \emph{ws_monitor} object.
 }
 \description{
-After addtional columns(i.e. \code{datetime}, and \code{monitorID}) 
+After additional columns(i.e. \code{datetime}, and \code{monitorID})
 have been applied to an EPA dataframe, we are ready to
 extract the PM2.5 values and store them in a \code{data} dataframe
 organized as time-by-monitor.

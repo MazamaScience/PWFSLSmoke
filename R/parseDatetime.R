@@ -16,7 +16,7 @@
 #'   * S - decimal number seconds (0-61 or 00-61)
 #'
 #' This allows for mixed inputs. For example, 20181012130900,
-#' "2018-10-12-13-09-00", and "2018 Oct. 12th 13:09:00" will all be converted to
+#' "2018-10-12-13-09-00", and "2018 Oct. 12 13:09:00" will all be converted to
 #' the same \code{POSIXct} datetime. The incoming datetime vector does not need
 #' to have a homogeneous format either -- "20181012" and "2018-10-12 13:09" can
 #' exist in the same vector without issue. All incoming datetimes will be

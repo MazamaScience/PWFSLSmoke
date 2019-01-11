@@ -111,8 +111,8 @@ esriMap_getMap <- function(centerLon = NULL,
   try(logger.info("ESRI json URL: %s", jsonUrl), silent = TRUE)
   response <- httr::GET(jsonUrl)
   status_code <- httr::status_code(response)
-  try(logger.trace("ESRI JSON response status code: %s", status_code), silent = TRUE)
-  try(logger.trace( utils::capture.output(utils::str(httr::headers(response))) ), silent = TRUE)
+  try({logger.trace("ESRI JSON response status code: %s", status_code)}, silent = TRUE)
+  try({logger.trace( utils::capture.output(utils::str(httr::headers(response))) )}, silent = TRUE)
   if ( httr::http_error(response) ) {
     if (status_code == 502) {
       stop("ESRI JSON request failed with: 502 Proxy Error")
@@ -128,9 +128,8 @@ esriMap_getMap <- function(centerLon = NULL,
   try(logger.info("ESRI png URL: %s", pngUrl), silent = TRUE)
   response <- httr::GET(pngUrl)
   status_code <- httr::status_code(response)
-  try(logger.trace("ESRI PNG status code: %s", status_code), silent = TRUE)
-  try(logger.trace( utils::capture.output(utils::str(httr::headers(response))) ), silent = TRUE)
-
+  try({logger.trace("ESRI PNG status code: %s", status_code)}, silent = TRUE)
+  try({logger.trace( utils::capture.output(utils::str(httr::headers(response))) )}, silent = TRUE)
   if ( httr::http_error(response) ) {
     if (status_code == 502) {
       stop("ESRI PNG request failed with: 502 Proxy Error")
