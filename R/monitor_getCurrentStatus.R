@@ -185,7 +185,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Add events --------------------------------------------------------------
 
-  ## Note: See documentaion for event descriptions
+  ## Note: See documentation for event descriptions
 
   eventData <- currentStatus %>%
     left_join(summaryData, by = "monitorID") %>%
@@ -230,14 +230,28 @@ if (FALSE) {
 
 # Helper functions --------------------------------------------------------
 
-#' Title
+## - Summary functions
+## - Event functions
+
+
+# Summary functions  -------------------------------------------------------
+
+#' @title Get the 'n' prior hour average for monitors
 #'
-#' @param data
-#' @param timeIndices
-#' @param n
-#' @param colTitle
+#' @description
+#' From the given \code{timeIndices}, get the n-hour, right-aligned, air quality
+#' average for monitors from the given data, presented as a dataframe.
 #'
-#' @return
+#' @param data The 'data' part of a \emph{ws_monitor} object.
+#' @param timeIndices Named vector of valid time indices for each monitor in
+#'   \code{data}.
+#' @param n Number of time units to include in average.
+#' @param colTitle Title of the column of averaged values in the returned
+#'   dataframe.
+#'
+#' @return A dataframe consisting of monitor IDs and the average air quality
+#'   values over the last n time units.
+#'
 #' @noRd
 .averagePrior <- function(data, timeIndices, n, colTitle) {
 
@@ -255,6 +269,18 @@ if (FALSE) {
 
   }
 
+  ## NOTE on tidy evaluation:
+  #  `dplyr` and other tidyverse packages often use non-standard evaluation to
+  #  make writing code for exploratory analysis easier. This, however, can make
+  #  programming with these packages difficult, as they don't behave as you
+  #  would expect. To get around this, 'tidyeval' is used. Functions like
+  #  `enquo()`, `!!`, and `:=` all serve to make complex programming with these
+  #  packages possible.
+  #
+  #  For more details and examples, see
+  #  `vignette("programming", package = "dplyr")`, or
+  #  dplyr.tidyverse.org/articles/programming
+
   avgData <-
     purrr::map2_dfc(
       select(data, -.data$datetime), timeIndices,
@@ -267,13 +293,20 @@ if (FALSE) {
 }
 
 
-#' Title
+#' @title Get yesterday's AQI value for monitors
 #'
-#' @param ws_monitor
-#' @param endTimeUTC
-#' @param colTitle
+#' @description
+#' From the given \emph{ws_monitor} object, get the AQI values for the the date
+#' one day prior to the given UTC time (in the timezone of the monitor) for
+#' every monitor, presented as a dataframe.
 #'
-#' @return
+#' @param ws_monitor \emph{ws_monitor} object.
+#' @param endTimeUTC UTC time. AQI values are calculated for the previous date.
+#' @param colTitle Title of the column of AQI values in the returned dataframe.
+#'
+#' @return A dataframe consisting of monitor IDs and the AQI value for the date
+#'   before \code{endTimeUTC}.
+#'
 #' @noRd
 .yesterday_AQI <- function(ws_monitor, endTimeUTC, colTitle) {
 
@@ -290,6 +323,8 @@ if (FALSE) {
 
   get_previousDayAQI <- function(ws_data, previousDayStart) {
 
+    # See NOTE on tidy evaluation for explanation of `!!` and `enquo()`
+
     aqiData <- ws_data %>%
       filter(.data$datetime == !!enquo(previousDayStart)) %>%
       select(-.data$datetime)
@@ -302,6 +337,21 @@ if (FALSE) {
     monitor_dailyStatisticList() %>%
     purrr::transpose() %>%
     magrittr::use_series("data")
+
+  ## NOTE on formulas (~):
+  #  In R, formulas allow you to capture unevaluated expressions and the
+  #  context (environment) in which the expression was created. While often used
+  #  to create modeling expressions (see `?lm`), formulas are also used within
+  #  the tidyverse package `purrr` to succinctly generate anonymous functions.
+  #
+  #  For example, the function `get_previousDayStart()` accepts parameters
+  #  `endTimeUTC` and `timezone`, but if `endTimeUTC` is known to be constant,
+  #  we can write the formula `~get_previousDayStart(endTimeUTC, .x)`, which
+  #  essentially is a new function with a single argument `.x`, which calls
+  #  `get_previousDayStart()`, with the constant value `endTimeUTC`, and the
+  #  variable value `.x` (which corresponds to `timezone`).
+  #
+  #  For more details, see `?purrr::map` or purrr.tidyverse.org/reference/map
 
   previousDayStarts <- names(aqiDataList) %>%
     purrr::map(~get_previousDayStart(endTimeUTC, .x))
@@ -317,13 +367,25 @@ if (FALSE) {
 
 }
 
-#' Title
+
+# Event functions ---------------------------------------------------------
+
+#' @title Get AQI Level for data values at specific times
 #'
-#' @param data
-#' @param timeIndices
-#' @param colTitle
+#' @description
+#' Given \emph{ws_monitor} data and a vector of times corresponding to each
+#' monitor in the data, this function returns the AQI level of each monitor at
+#' its given time, presented as a dataframe.
 #'
-#' @return
+#' @param data The 'data' part of a \emph{ws_monitor} object (either raw pm2.5
+#'   or NowCast).
+#' @param timeIndices Named vector of valid time indices for each monitor in
+#'   \code{data}.
+#' @param colTitle Title of the column of AQI levels in the returned dataframe.
+#'
+#' @return A dataframe consisting of monitor IDs and the AQI level for the data
+#'   at the given \code{timeIndices}.
+#'
 #' @noRd
 .aqiLevel <- function(data, timeIndices, colTitle) {
 
@@ -331,18 +393,36 @@ if (FALSE) {
     magrittr::extract(cbind(unname(timeIndices), seq_along(timeIndices))) %>%
     .bincode(AQI$breaks_24, include.lowest = TRUE)
 
+  # See NOTE on tidy evaluation for explanation of `!!` and `:=`
+
   return(tibble(`monitorID` = names(timeIndices), !!colTitle := levels))
 
 }
 
-#' Title
+#' @title Check for a change in AQI level between two times
 #'
-#' @param data
-#' @param level
-#' @param n
-#' @param direction
+#' @description
+#' This function returns a boolean vector with values for each monitorID in
+#' \code{data}, indicating of the AQI level has increased/decreased to or past
+#' the given \code{level} between the previous and last recorded levels.
 #'
-#' @return
+#' If the difference in time betwen the previous and last recored levels is
+#' greater than \code{n} hours, FALSE is returned.
+#'
+#' @param data A dataframe containing columns for the last and previous
+#'   NowCast AQI levels, as well as the latencies for both of those times.
+#' @param level Check if the AQI level has changed to or past the given level
+#'   between the last and previous AQI levels.
+#' @param n Maximum number of hours between last and previous time values for
+#'   data to be considered relevent. FALSE is recorded for any time differences
+#'   greater than n.
+#' @param direction Check if the AQI level change results in an increase or
+#'   decrease in AQI level, moving forward in time (valid options:
+#'   'increase' | 'decrease').
+#'
+#' @return A vector of Boolean values indicating if the specified AQI level
+#'   change occurred.
+#'
 #' @noRd
 .levelChange <- function(data, level, n, direction) {
 
@@ -362,19 +442,33 @@ if (FALSE) {
 
 }
 
-#' Title
+#' @title Check if a monitor has stopped reporting data
 #'
-#' @param data
-#' @param n
-#' @param endTimeUTC
-#' @param colTitle
+#' @description
+#' This function returns a dataframe with boolean values for each monitorID in
+#' \code{data}, indicating if the monitor has stopped reporting data.
 #'
-#' @return
+#' A monitor is considered to not be reporting data if it does not have data for
+#' the \code{n} hours leading up to \code{entTimeUTC}.
+#'
+#' @param data The 'data' part of a \emph{ws_monitor} object.
+#' @param n The number of hours prior to \code{endTimeUTC} in which a monitor
+#'   should not have data.
+#' @param endTimeUTC Time considered to be most recent in \code{data}.
+#' @param colTitle Title of the column of boolean values in the returned
+#'   dataframe.
+#'
+#' @return A dataframe consiting of monitor IDs and boolean values indicating if
+#'   that monitor has stopped reporting data.
+#'
 #' @noRd
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
   startTimeInclusive <- endTimeUTC %>%
     magrittr::subtract(lubridate::dhours(n - 1))
+
+
+  # See NOTE on tidy evaluation for explanation of `!!`
 
   result <- data %>%
     filter(.data$datetime >= startTimeInclusive) %>%
@@ -385,15 +479,31 @@ if (FALSE) {
   return(result)
 }
 
-#' Title
+#' @title Check if a new monitor is reporting in the data
 #'
-#' @param data
-#' @param n
-#' @param buffer
-#' @param endTimeUTC
-#' @param colTitle
+#' @description
+#' This function returns a dataframe with boolean values for each monitorID in
+#' \code{data}, indicating if the monitor is newly reporting data.
 #'
-#' @return
+#' A monitor is considered to be newly reporting if data for that monitor
+#' doesn't exist a \code{buffer} number of hours before \code{endTimeUTC},
+#' except for data existing in the \code{n} hours before \code{endTimeUTC}.
+#'
+#' For example, if \code{buffer = 48}, and \code{n = 6}, then a true value
+#' would indicate that a monitor which has not been reporting for the past two
+#' days has started reporting in the last six hours.
+#'
+#' @param data The 'data' part of a \emph{ws_monitor} object.
+#' @param n The number of hours prior to \code{endTimeUTC} in which a monitor
+#'   should have data.
+#' @param buffer The number of hours minus \code{n}, before \code{n}, in which
+#'   a monitor should not have data
+#' @param endTimeUTC Time considered to be most recent in \code{data}.
+#' @param colTitle Title of the column of boolean values in the returned
+#'   dataframe.
+#'
+#' @return A dataframe consiting of monitor IDs and boolean values indicating if
+#'   that monitor is newly reporting data.
 #' @noRd
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
 
@@ -401,6 +511,8 @@ if (FALSE) {
 
   recentReport <- .isNotReporting(data, n, endTimeUTC, "recent")
   bufferReport <- .isNotReporting(data, buffer, bufferEndTime, "buffer")
+
+  # See NOTE on tidy evaluation for explanation of `!!` and `:=`
 
   result <-
     left_join(recentReport, bufferReport, by = "monitorID") %>%
