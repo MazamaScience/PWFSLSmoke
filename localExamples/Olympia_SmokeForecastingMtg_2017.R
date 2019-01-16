@@ -196,9 +196,9 @@ bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170904, 20
 # PLOT -- hourlyBarplot for Cottonwood
 png('cottonwood_nowcast.png', width=1000, height=750)
 par(cex=1.5)
-monitorPlot_hourlyBarplot(bad_Cottonwood, dayCol='transparent', hourLwd=0,
-                          ylab='', main='Cottonwood Hourly Nowcast',
-                          labels_x_nudge=3, border=adjustcolor('white',0.2))
+monitor_hourlyBarplot(bad_Cottonwood, dayCol='transparent', hourLwd=0,
+                      ylab='', main='Cottonwood Hourly Nowcast',
+                      labels_x_nudge=3, border=adjustcolor('white',0.2))
 par(cex=1)
 dev.off()
 # -----------------------------------------------------------------------------

@@ -205,3 +205,34 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
     ...
   )
 }
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_hourlyBarplot <- function(ws_monitor,
+                                      monitorID = NULL,
+                                      tlim = NULL,
+                                      localTime = TRUE,
+                                      style = 'AQI',
+                                      shadedNight = TRUE,
+                                      gridPos = '',
+                                      gridCol = 'black',
+                                      gridLwd = 0.5,
+                                      gridLty = 'solid',
+                                      labels_x_nudge = 0,
+                                      labels_y_nudge = 0,
+                                      dayCol = 'black',
+                                      dayLwd = 2,
+                                      dayLty = 'solid',
+                                      hourCol = 'black',
+                                      hourLwd = 1,
+                                      hourLty = 'solid',
+                                      hourInterval = 6,
+                                      ...) {
+
+  monitor_hourlyBarplot(
+    ws_monitor, monitorID, tlim, localTime, style, shadedNight,
+    gridPos, gridCol, gridLwd, gridLty, labels_x_nudge, labels_y_nudge,
+    dayCol, dayLwd, dayLty, hourCol, hourLwd, hourLty, hourInterval,
+    ...
+  )
+}
