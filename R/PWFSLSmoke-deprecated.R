@@ -243,3 +243,26 @@ monitorPlot_noData <- function(ws_monitor, monitorID=NULL, cex=2.5) {
 
   monitor_noDataPlot(ws_monitor, monitorID, cex)
 }
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_rollingMean <- function(ws_monitor,
+                                    monitorID=NULL,
+                                    width=3,
+                                    align="center",
+                                    data.thresh=75,
+                                    tlim=NULL,
+                                    ylim=NULL,
+                                    localTime=TRUE,
+                                    shadedNight=FALSE,
+                                    aqiLines=TRUE,
+                                    gridHorizontal=FALSE,
+                                    grid24hr=FALSE,
+                                    grid3hr=FALSE,
+                                    showLegend=TRUE) {
+
+  monitor_rollingMeanPlot(
+    ws_monitor, monitorID, width, align, data.thresh, tlim, ylim, localTime,
+    shadedNight, aqiLines, gridHorizontal, grid24hr, grid3hr, showLegend
+  )
+}

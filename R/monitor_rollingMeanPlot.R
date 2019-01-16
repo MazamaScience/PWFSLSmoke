@@ -34,22 +34,22 @@
 #' N_M <- Northwest_Megafires
 #' Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
 #'                            monitorIDs=c('410190002_01'))
-#' monitorPlot_rollingMean(Roseburg, shadedNight=TRUE)
+#' monitor_rollingMeanPlot(Roseburg, shadedNight=TRUE)
 
-monitorPlot_rollingMean <- function(ws_monitor,
-                                    monitorID=NULL,
-                                    width=3,
-                                    align="center",
-                                    data.thresh=75,
-                                    tlim=NULL,
-                                    ylim=NULL,
-                                    localTime=TRUE,
-                                    shadedNight=FALSE,
-                                    aqiLines=TRUE,
-                                    gridHorizontal=FALSE,
-                                    grid24hr=FALSE,
-                                    grid3hr=FALSE,
-                                    showLegend=TRUE) {
+monitor_rollingMeanPlot <- function(ws_monitor,
+                                    monitorID = NULL,
+                                    width = 3,
+                                    align = "center",
+                                    data.thresh = 75,
+                                    tlim = NULL,
+                                    ylim = NULL,
+                                    localTime = TRUE,
+                                    shadedNight = FALSE,
+                                    aqiLines = TRUE,
+                                    gridHorizontal = FALSE,
+                                    grid24hr = FALSE,
+                                    grid3hr = FALSE,
+                                    showLegend = TRUE) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {

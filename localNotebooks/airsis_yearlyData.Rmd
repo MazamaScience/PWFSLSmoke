@@ -293,7 +293,7 @@ Later in the season, smoke really starts picking up in August. Let's take a clos
 ```{r daily_barplot}
 # Pull out the interesting week
 yrekaWeek <- monitor_subset(yreka, tlim = c(20170821, 20170830))
-monitorPlot_rollingMean(yrekaWeek)
+monitor_rollingMeanPlot(yrekaWeek)
 addAQILegend()
 ```
 
@@ -308,7 +308,7 @@ Notice that the NowCast was calculated from the monitor object including all day
 yrekaNowcast <- monitor_nowcast(yreka)
 
 # Plot NowCast over rolling mean plot
-monitorPlot_rollingMean(yrekaWeek, showLegend = FALSE)
+monitor_rollingMeanPlot(yrekaWeek, showLegend = FALSE)
 monitorPlot_timeseries(yrekaNowcast, type = "l", add = TRUE, col = adjustcolor('royalblue', alpha.f = .7), 
                        tlim = c(20170121, 20170830), lwd = 2)
 legend('topleft', legend = c("hourly PM2.5", "nowcast", "3-hour rolling mean"), pch = c(16, NA, NA), 
