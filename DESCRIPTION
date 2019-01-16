@@ -43,6 +43,7 @@ Imports:
     methods,
     openair,
     png,
+    purrr,
     raster,
     RColorBrewer,
     rgdal,

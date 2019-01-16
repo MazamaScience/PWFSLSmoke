@@ -80,6 +80,8 @@
 #'
 #' @return A table containing the current status information for all the
 #'   monitors in \emph{ws_monitor}.
+#'
+#' @importFrom rlang :=
 #' @export
 #'
 #' @examples
