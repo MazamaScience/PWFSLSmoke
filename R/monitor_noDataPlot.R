@@ -7,16 +7,16 @@
 #' @param cex text size of "No data for"; monitor ID is one size smaller
 #' @description Creates a blank plot that indicates there is no data for the monitor of interest
 
-monitorPlot_noData <- function(ws_monitor, monitorID=NULL, cex=2.5) {
+monitor_noDataPlot <- function(ws_monitor, monitorID=NULL, cex=2.5) {
 
   # Allow single monitor objects to be used without specifying monitorID
   if ( is.null(monitorID) && nrow(ws_monitor$meta) == 1 ) {
     monitorID <- ws_monitor$meta$monitorID[1]
   }
-  
+
   # Change margins
-  par(mar=c(1,1,1,1)) 
-  
+  par(mar=c(1,1,1,1))
+
   # Blank plot
   plot(0.5,0.5,xlim=c(0,1),ylim=c(0,1),axes=FALSE,xlab='',ylab='',col='transparent')
   box()
@@ -28,5 +28,5 @@ monitorPlot_noData <- function(ws_monitor, monitorID=NULL, cex=2.5) {
 
   # reset default margins
   par(mar=c(5,4,4,2)+.1)
-  
+
 }

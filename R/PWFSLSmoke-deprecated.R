@@ -236,3 +236,10 @@ monitorPlot_hourlyBarplot <- function(ws_monitor,
     ...
   )
 }
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_noData <- function(ws_monitor, monitorID=NULL, cex=2.5) {
+
+  monitor_noDataPlot(ws_monitor, monitorID, cex)
+}
