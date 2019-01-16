@@ -27,14 +27,14 @@
 #' MethowValley <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs=c(WinthropID,TwispID))
 #' MethowValley_dailyMean <- monitor_dailyStatistic(MethowValley, FUN=get('mean'), dayStart='midnight')
 #' # Get the full Y scale
-#' monitorPlot_timeseries(MethowValley, style='gnats', col='transparent')
-#' monitorPlot_timeseries(MethowValley, style='gnats', monitorID=TwispID,
+#' monitor_timeseriesPlot(MethowValley, style='gnats', col='transparent')
+#' monitor_timeseriesPlot(MethowValley, style='gnats', monitorID=TwispID,
 #'                        col='forestgreen', add=TRUE)
-#' monitorPlot_timeseries(MethowValley, style='gnats', monitorID=WinthropID,
+#' monitor_timeseriesPlot(MethowValley, style='gnats', monitorID=WinthropID,
 #'                        col='purple', add=TRUE)
-#' monitorPlot_timeseries(MethowValley_dailyMean, type='s', lwd=2, monitorID=TwispID,
+#' monitor_timeseriesPlot(MethowValley_dailyMean, type='s', lwd=2, monitorID=TwispID,
 #'                        col='forestgreen', add=TRUE)
-#' monitorPlot_timeseries(MethowValley_dailyMean, type='s', lwd=2, monitorID=WinthropID,
+#' monitor_timeseriesPlot(MethowValley_dailyMean, type='s', lwd=2, monitorID=WinthropID,
 #'                        col='purple', add=TRUE)
 #' addAQILines()
 #' addAQILegend("topleft", lwd=1, pch=NULL)

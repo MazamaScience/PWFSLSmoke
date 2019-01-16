@@ -126,10 +126,10 @@ superMin <- monitor_collapse(airsis_2015, FUN = get("min"))
 dailyMedian <- monitor_dailyStatistic(airsis_2015, FUN = get("median"), na.rm = TRUE)
 superMedian <- monitor_collapse(airsis_2015, FUN = get("median"))
 
-monitorPlot_timeseries(superMax, type = "l", lwd = 1, col = adjustcolor('royalblue', alpha.f = .5))
-monitorPlot_timeseries(superMin, type = "l", lwd = 1, col = adjustcolor('purple4', alpha.f = .5), add = TRUE)
-monitorPlot_timeseries(superMean, type = "l", lwd = 1, col = adjustcolor('seagreen', alpha.f = .5), add = TRUE)
-monitorPlot_timeseries(superMedian, type = "l", lwd = 1, col = adjustcolor('orangered4', alpha.f = .5), add = TRUE)
+monitor_timeseriesPlot(superMax, type = "l", lwd = 1, col = adjustcolor('royalblue', alpha.f = .5))
+monitor_timeseriesPlot(superMin, type = "l", lwd = 1, col = adjustcolor('purple4', alpha.f = .5), add = TRUE)
+monitor_timeseriesPlot(superMean, type = "l", lwd = 1, col = adjustcolor('seagreen', alpha.f = .5), add = TRUE)
+monitor_timeseriesPlot(superMedian, type = "l", lwd = 1, col = adjustcolor('orangered4', alpha.f = .5), add = TRUE)
 legend("topleft", c("max", "min", "median", "mean"), 
        col = c(adjustcolor('royalblue', alpha.f = .5), 
                adjustcolor('purple4', alpha.f = .5),
@@ -231,19 +231,19 @@ layout(matrix(c(1,2,3), 3, 1), heights = c(1,1,1))
 par(xaxt = "n", mar = c(0,4.1,4,3), xpd = NA)
 
 # Add timeseries plots for each year
-monitorPlot_timeseries(sisk2015, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
+monitor_timeseriesPlot(sisk2015, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2015", 4, padj = 1)
 par(xaxt = 's')
 axis.POSIXct(1, sisk2015$data$datetime, labels = FALSE)
 par(xaxt = 'n')
 title("All pm2.5 readings from monitors in Siskiyou County")
 par(mar=c(2,4.1,2,3))
-monitorPlot_timeseries(sisk2016, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
+monitor_timeseriesPlot(sisk2016, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2016", 4, padj = 1)
 par(xaxt = 's')
 axis.POSIXct(1, sisk2016$data$datetime, labels = FALSE)
 par(mar=c(4,4.1,0,3))
-monitorPlot_timeseries(sisk2017, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
+monitor_timeseriesPlot(sisk2017, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2017", 4, padj = 1)
 ```
 
@@ -253,7 +253,7 @@ We can see that 2015 and 2017 had more smoke, and for a longer time, than 2016. 
 
 ```{r missingData}
 # Create a timeseries plot with a time limit surrounding missing values
-monitorPlot_timeseries(sisk2016, tlim = c(20160920, 20161010), type = "l")
+monitor_timeseriesPlot(sisk2016, tlim = c(20160920, 20161010), type = "l")
 ```
 
 Let's look a little closer at the smokiest part of the summer for the three years: July to October.
@@ -309,7 +309,7 @@ yrekaNowcast <- monitor_nowcast(yreka)
 
 # Plot NowCast over rolling mean plot
 monitor_rollingMeanPlot(yrekaWeek, showLegend = FALSE)
-monitorPlot_timeseries(yrekaNowcast, type = "l", add = TRUE, col = adjustcolor('royalblue', alpha.f = .7), 
+monitor_timeseriesPlot(yrekaNowcast, type = "l", add = TRUE, col = adjustcolor('royalblue', alpha.f = .7), 
                        tlim = c(20170121, 20170830), lwd = 2)
 legend('topleft', legend = c("hourly PM2.5", "nowcast", "3-hour rolling mean"), pch = c(16, NA, NA), 
        lty = c(NA, 1, 1), col = c('gray80', adjustcolor('royalblue', alpha.f = .7), 'black'), lwd = c(NA, 2, 1))
@@ -376,7 +376,7 @@ text(collapsed2017$meta$longitude, collapsed2017$meta$latitude, "collapsed \n mo
 
 # Plot timeseries of average values
 par(mar = c(2, 4.5, 4, 2) + .1)
-monitorPlot_timeseries(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40", xlab = "")
+monitor_timeseriesPlot(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40", xlab = "")
 title("Siskiyou County, CA 2017 fires and smoke")
 abline(0,0,col = 'gray80')
 

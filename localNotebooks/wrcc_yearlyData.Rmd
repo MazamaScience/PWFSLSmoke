@@ -106,7 +106,7 @@ title("2015", cex.main = 3)
 Now, let's take a look at the pm2.5 data from each year. 
 
 ```{r gnatplots, fig.height = 9}
-monitorPlot_timeseries(sisk2015, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
+monitor_timeseriesPlot(sisk2015, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2015", 4, padj = 1)
 title("All pm2.5 readings from monitors in Okanogan County")
 ```
@@ -116,7 +116,7 @@ Just from looking at these plots, we can say some things about the fire season i
 We can see that 2015 and 2017 had more smoke, and for a longer time, than 2016. Using this as a proxy for fire intensity and duration, we can say that 2015 and 2017 had longer fire seasons than 2016. It appears that there were two distinct smoke events in 2016, the first much more intense than the second. Upon closer examination, however, we see that there is no data from 2016 between September 23 and October 5. 
 
 ```{r missingData, eval=FALSE}
-monitorPlot_timeseries(sisk2016, tlim = c(20160920, 20161010), type = "l")
+monitor_timeseriesPlot(sisk2016, tlim = c(20160920, 20161010), type = "l")
 ```
 
 Let's look a little closer at the smokiest part of the summer for the three years: July to October.
@@ -160,7 +160,7 @@ Let's see if the timing of the fires lines up with spikes in PM2.5 concentration
 ```{r, eval=FALSE}
 # Join the monitors into one monitor object with average PM2.5 values
 collapsed2017 <- monitor_collapse(sisk2017, monitorID = "Okanogan_2017")
-monitorPlot_timeseries(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40")
+monitor_timeseriesPlot(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40")
 title("Okanogan County, CA 2017 fires and smoke")
 abline(0,0,col = 'gray80')
 

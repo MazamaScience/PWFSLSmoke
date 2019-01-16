@@ -33,30 +33,30 @@
 #' N_M <- Northwest_Megafires
 #' # monitor_leaflet(N_M) # to identify Spokane monitorIDs
 #' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
-#' monitorPlot_timeseries(Spokane, style='gnats')
+#' monitor_timeseriesPlot(Spokane, style='gnats')
 #' title('Spokane PM2.5 values, 2015')
-#' monitorPlot_timeseries(Spokane, tlim=c(20150801,20150831), style='aqidots', pch=16)
+#' monitor_timeseriesPlot(Spokane, tlim=c(20150801,20150831), style='aqidots', pch=16)
 #' addAQILegend()
 #' title('Spokane PM2.5 values, August 2015')
-#' monitorPlot_timeseries(Spokane, tlim=c(20150821,20150828), shadedNight=TRUE, style='gnats')
+#' monitor_timeseriesPlot(Spokane, tlim=c(20150821,20150828), shadedNight=TRUE, style='gnats')
 #' abline(h=AQI$breaks_24, col=AQI$colors, lwd=2)
 #' addAQILegend()
 #' title('Spokane PM2.5 values, August 2015')
 
-monitorPlot_timeseries <- function(ws_monitor,
-                                   monitorID=NULL,
-                                   tlim=NULL,
-                                   localTime=TRUE,
-                                   style=NULL,
-                                   shadedNight=FALSE,
-                                   add=FALSE,
-                                   gridPos='',
-                                   gridCol='black',
-                                   gridLwd=1,
-                                   gridLty='solid',
-                                   dayLwd=0,
-                                   hourLwd=0,
-                                   hourInterval=6,
+monitor_timeseriesPlot <- function(ws_monitor,
+                                   monitorID = NULL,
+                                   tlim = NULL,
+                                   localTime = TRUE,
+                                   style = NULL,
+                                   shadedNight = FALSE,
+                                   add = FALSE,
+                                   gridPos = '',
+                                   gridCol = 'black',
+                                   gridLwd = 1,
+                                   gridLty = 'solid',
+                                   dayLwd = 0,
+                                   hourLwd = 0,
+                                   hourInterval = 6,
                                    ...) {
 
   # For testing

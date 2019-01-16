@@ -266,3 +266,27 @@ monitorPlot_rollingMean <- function(ws_monitor,
     shadedNight, aqiLines, gridHorizontal, grid24hr, grid3hr, showLegend
   )
 }
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_timeseries <- function(ws_monitor,
+                                   monitorID=NULL,
+                                   tlim=NULL,
+                                   localTime=TRUE,
+                                   style=NULL,
+                                   shadedNight=FALSE,
+                                   add=FALSE,
+                                   gridPos='',
+                                   gridCol='black',
+                                   gridLwd=1,
+                                   gridLty='solid',
+                                   dayLwd=0,
+                                   hourLwd=0,
+                                   hourInterval=6,
+                                   ...) {
+
+  monitor_timeseriesPlot(
+    ws_monitor, monitorID, tlim, localTime, style, shadedNight, add,
+    gridPos, gridCol, gridLwd, gridLty, dayLwd, hourLwd, hourInterval, ...
+  )
+}

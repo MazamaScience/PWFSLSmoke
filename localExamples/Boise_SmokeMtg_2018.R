@@ -10,8 +10,8 @@ oridwa <- monitor_combine(list(airsis, airnow, wrcc)) %>%
   monitor_subset(stateCodes=c('OR','ID','WA'))
 
 # # Timeseries 'gnats' plot (takes forever to plot!)
-# monitorPlot_timeseries(oridwa, style='gnats')
-# monitorPlot_timeseries(oridwa, style='gnats', ylim=c(0,500), xpd=NA)
+# monitor_timeseriesPlot(oridwa, style='gnats')
+# monitor_timeseriesPlot(oridwa, style='gnats', ylim=c(0,500), xpd=NA)
 
 jas <- monitor_subset(oridwa, tlim=c(20170701,20171001))
 
@@ -27,7 +27,7 @@ dataCountString <- prettyNum(dataCount, big.mark=",")
 png('oridwa_hourly.png', width=800, height=600)
 
 par(mar=c(5.1,4.1,9.1,8.1))
-monitorPlot_timeseries(jas, style='gnats', xlab='2017', ylim=c(0,400), xpd=NA)
+monitor_timeseriesPlot(jas, style='gnats', xlab='2017', ylim=c(0,400), xpd=NA)
 addAQIStackedBar(pos='left', width=0.01)
 addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:6], AQI$names[2:6], pos=4, xpd=NA)
@@ -50,7 +50,7 @@ dataCountString <- prettyNum(dataCount, big.mark=",")
 png('oridwa_daily.png', width=800, height=600)
 
 par(mar=c(5.1,4.1,9.1,8.1))
-monitorPlot_timeseries(dailyMean, style='gnats', xlab='2017', ylim=c(0,200), xpd=NA)
+monitor_timeseriesPlot(dailyMean, style='gnats', xlab='2017', ylim=c(0,200), xpd=NA)
 addAQIStackedBar(pos='left', width=0.01)
 addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:5], AQI$names[2:5], pos=4, xpd=NA)
@@ -169,12 +169,12 @@ png('nezperce_area_unhealthy.png', width=800, height=600)
 par(cex=1.5)
 
 unhealthyHours$data[unhealthyHours$data == 0] <- 0.1 # so we don't get blank bars
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12,
+monitor_timeseriesPlot(unhealthyHours, type='h', lend='butt', lwd=12,
                        col='black',
                        xlab='2017', ylab="Hours Above Unhealthy")
 usr <- par('usr')
 rect(usr[1],18,usr[2],24, col=adjustcolor('red',.2), border=NA)
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12, add=TRUE)
+monitor_timeseriesPlot(unhealthyHours, type='h', lend='butt', lwd=12, add=TRUE)
 title("Nez Perce Area 10 Monitor Average")
 text(usr[1], 21, "18-24 Hours per day >= 'Unhealthy'", pos=4, font=2, col='red')
 
@@ -295,8 +295,8 @@ bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170901, 20
 # PLOT -- hourly/nowcast comparison
 png('cottonwood_nowcast_comparison.png', width=1000, height=750)
 par(cex=1.5)
-monitorPlot_timeseries(bad_Cottonwood, type='p', pch=16, col='red', shadedNight=TRUE)
-monitorPlot_timeseries(bad_nowcast_Cottonwood, type='l', col='black', lwd=2, add=TRUE)
+monitor_timeseriesPlot(bad_Cottonwood, type='p', pch=16, col='red', shadedNight=TRUE)
+monitor_timeseriesPlot(bad_nowcast_Cottonwood, type='l', col='black', lwd=2, add=TRUE)
 legend("topright", legend=c('Hourly','Nowcast'), col=c('red','black'), lwd=c(NA,2), pch=c(16,NA))
 title('Cottonwood Hourly and Nowcast')
 par(cex=1)

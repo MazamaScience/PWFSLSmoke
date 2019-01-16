@@ -52,7 +52,7 @@ In this manner, we can assemble a list of monitorIDs in and around the Nez Perce
 NezPerceIDs <- c("160571012_01","160690012_01","160690013_01",
                  "160690014_01","160490003_01","160491012_01")
 NezPerce <- monitor_subset(PacNW, monitorIDs=NezPerceIDs)
-monitorPlot_timeseries(NezPerce, style='gnats')
+monitor_timeseriesPlot(NezPerce, style='gnats')
 addAQILines()
 addAQILegend(cex=0.7)
 ```
