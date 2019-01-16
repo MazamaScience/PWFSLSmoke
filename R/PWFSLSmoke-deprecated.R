@@ -183,3 +183,25 @@ monitorMap_performance <- function(predicted,
     ...
   )
 }
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_dailyBarplot <- function(ws_monitor,
+                                     monitorID=NULL,
+                                     tlim=NULL,
+                                     minHours=18,
+                                     gridPos='',
+                                     gridCol='black',
+                                     gridLwd=0.5,
+                                     gridLty='solid',
+                                     labels_x_nudge=0,
+                                     labels_y_nudge=0,
+                                     ...) {
+
+  monitor_dailyBarplot(
+    ws_monitor, monitorID, tlim, minHours,
+    gridPos, gridCol, gridLwd, gridLty,
+    labels_x_nudge, labels_y_nudge,
+    ...
+  )
+}

@@ -68,14 +68,14 @@ NezPerce <- monitor_subset(NezPerce, tlim=c(20150801,20150831),
                            timezone="America/Los_Angeles")
 ```
 
-We can use the `monitorPlot_dailyBarplot()` function to look at official, midnight-to-midnight AQI levels for each monitor during the month of August:
+We can use the `monitor_dailyBarplot()` function to look at official, midnight-to-midnight AQI levels for each monitor during the month of August:
 
 ```{r dailyBarplot}
 layout(matrix(seq(6)))
 par(mar=c(1,1,1,1))
 for (monitorID in NezPerceIDs) {
   siteName <- NezPerce$meta[monitorID,'siteName']
-  monitorPlot_dailyBarplot(NezPerce, monitorID=monitorID, main=siteName, axes=FALSE) 
+  monitor_dailyBarplot(NezPerce, monitorID=monitorID, main=siteName, axes=FALSE) 
 }
 par(mar=c(5,4,4,2)+.1)
 layout(1)
@@ -145,9 +145,9 @@ We will now take a closer look at two tribal monitors:
 Omak <- monitor_subset(PacNW, monitorIDs="530470013_01")
 Kamiah <- monitor_subset(PacNW, monitorIDs="160490003_01")
 layout(matrix(seq(2)))
-monitorPlot_dailyBarplot(Omak, main="August 2015 Daiy AQI -- Omak, WA",
+monitor_dailyBarplot(Omak, main="August 2015 Daiy AQI -- Omak, WA",
                          labels_x_nudge=0.8, labels_y_nudge=250)
-monitorPlot_dailyBarplot(Kamiah, main="August Daily AQI -- Kamiah, ID",
+monitor_dailyBarplot(Kamiah, main="August Daily AQI -- Kamiah, ID",
                          labels_x_nudge=0.8, labels_y_nudge=250)
 layout(1)
 ```

@@ -16,42 +16,41 @@
 #' @param ... additional arguments to be passed to \code{barplot()}
 #' @description Creates a bar plot showing daily average PM 2.5 values for a specific monitor
 #' in a \emph{ws_monitor} object. Each bar is colored according to its AQI category.
-#' 
-#' This function is a wrapper around \code{base::barplot} and any arguments to that 
+#'
+#' This function is a wrapper around \code{base::barplot} and any arguments to that
 #' function may be used.
-#' 
+#'
 #' Each 'day' is the midnight-to-midnight period in the monitor local timezone.
 #' When \code{tlim} is used, it is converted to the monitor local timezone.
-#' @details The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to 
+#' @details The \code{labels_x_nudge} and \code{labels_y_nudge} can be used to
 #' tweak the date labeling. Units used are the same as those in the plot.
 #' @examples
 #' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150715,20150930))
 #' main <- "Daily Average PM2.5 for Omak, WA"
-#' monitorPlot_dailyBarplot(N_M, monitorID="530470013_01", main=main,
+#' monitor_dailyBarplot(N_M, monitorID="530470013_01", main=main,
 #'                          labels_x_nudge=1)
 #' addAQILegend(fill=rev(AQI$colors), pch=NULL)
 #' }
-
-monitorPlot_dailyBarplot <- function(ws_monitor,
-                                     monitorID=NULL,
-                                     tlim=NULL,
-                                     minHours=18,
-                                     gridPos='',
-                                     gridCol='black',
-                                     gridLwd=0.5,
-                                     gridLty='solid',
-                                     labels_x_nudge=0,
-                                     labels_y_nudge=0,
-                                     ...) {
+monitor_dailyBarplot <- function(ws_monitor,
+                                 monitorID = NULL,
+                                 tlim = NULL,
+                                 minHours = 18,
+                                 gridPos = '',
+                                 gridCol = 'black',
+                                 gridLwd = 0.5,
+                                 gridLty = 'solid',
+                                 labels_x_nudge = 0,
+                                 labels_y_nudge = 0,
+                                 ...) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")
   }
-    
+
   # Data Preparation ----------------------------------------------------------
-  
+
   # Allow single monitor objects to be used without specifying monitorID
   if ( is.null(monitorID) ) {
     if ( nrow(ws_monitor$meta) == 1 ) {
@@ -61,7 +60,7 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
                   paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
     }
   }
-  
+
   # When tlim is specified in whole days we should add hours to get the requsted full days
   if ( !is.null(tlim) ) {
     if ( 'POSIXct' %in% class(tlim) ) {
@@ -78,31 +77,31 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
     # Recreate tlim
     tlim <- tlimStrings
   }
-  
+
   # Subset to a single monitor
   timezone <- as.character(ws_monitor$meta[monitorID,'timezone'])
   mon <- monitor_subset(ws_monitor, monitorIDs=monitorID, tlim=tlim, timezone=timezone)
-  
+
   # Calculate the daily mean
   mon_dailyMean <- monitor_dailyStatistic(mon, FUN=get('mean'), dayStart='midnight',
                                           na.rm=TRUE, minHours=minHours)
-  
+
   localTime <- mon_dailyMean$data$datetime
   pm25 <- as.numeric(mon_dailyMean$data[,monitorID])
-  
+
   # Plot command default arguments ---------------------------------------------
-  
+
   argsList <- list(...)
-  
+
   argsList$height <- pm25
-  
+
   # Default colors come from pm25Daily means
   if ( !('col' %in% names(argsList)) ) {
     argsList$col <- aqiColors(pm25)
   }
-  
+
   # X axis labeling is handled after the plot
-  
+
   # NOTE:  For mathematical notation in R see:
   # NOTE:    http://vis.supstat.com/2013/04/mathematical-annotation-in-r/
 
@@ -110,10 +109,10 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   if ( !('ylab' %in% names(argsList)) ) {
     argsList$ylab <- expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")"))
   }
-  
+
   # Additional small tweaks
   argsList$las <- ifelse('las' %in% names(argsList), argsList$las, 1)
-  
+
   # Title
   if ( !('main' %in% names(argsList)) ) {
     argsList$main <- expression(paste("Daily Average PM"[2.5]))
@@ -122,15 +121,15 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
   argsList$axes <- ifelse('axes' %in% names(argsList), argsList$axes, TRUE)
   argsList$space <- ifelse('space' %in% names(argsList), argsList$space, 0.2)
   argsList$cex.names <- ifelse('cex.names' %in% names(argsList), argsList$cex.names, par("cex.axis"))
-  
+
   # Plotting ------------------------------------------------------------------
 
   if ( gridPos == 'under' ) {
     do.call(barplot, argsList)
     abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
-    argsList$add <- TRUE    
+    argsList$add <- TRUE
   }
-  
+
   do.call(barplot, argsList)
 
   # Add default X axis
@@ -154,10 +153,10 @@ monitorPlot_dailyBarplot <- function(ws_monitor,
     # Now add tick marks
     axis(1, at=labels_x, labels=FALSE, lwd=0, lwd.ticks=1)
   }
-  
+
   # Add horizontal bars
   if ( gridPos == 'over' ) {
     abline(h=axTicks(2)[-1], col=gridCol, lwd=gridLwd, lty=gridLty)
   }
-  
+
 }

@@ -320,7 +320,7 @@ While hourly timeseries plots provide detail about PM2.5 levels throughout the d
 
 ```{r}
 # Create a daily barplot
-monitorPlot_dailyBarplot(yrekaWeek, labels_y_nudge = 12, labels_x_nudge = .2)
+monitor_dailyBarplot(yrekaWeek, labels_y_nudge = 12, labels_x_nudge = .2)
 addAQILegend()
 ```
 
