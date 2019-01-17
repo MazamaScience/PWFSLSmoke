@@ -1,41 +1,64 @@
-#' @keywords ws_monitor
-#' @export
-#' @import graphics
 #' @title Create Rolling Mean Plot
+#'
+#' @description
+#' Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for
+#' a specific monitor.
+#'
 #' @param ws_monitor \emph{ws_monitor} object
-#' @param monitorID monitor ID for a specific monitor in the ws_monitor object (optional if only one monitor
-#' in the ws_monitor object)
-#' @param width number of periods to average (e.g. for hourly data, \code{width = 24} plots 24-hour rolling means)
-#' @param align alignment of averaging window relative to point being calculated; one of \code{"left|center|right"}
-#' @param data.thresh minimum number of valid observations required as a percent of \code{width};
-#' NA is returned if insufficicnet valid data to calculate mean
-#' @param ylim y limits for the plot
-#' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH])
-#' @param localTime logical specifying whether \code{tlim} is in local time or UTC
-#' @param shadedNight add nighttime shading
-#' @param aqiLines horizontal lines indicating AQI levels
-#' @param gridHorizontal add dashed horizontal grid lines
-#' @param grid24hr add dashed grid lines at day boundaries
-#' @param grid3hr add dashed grid lines every 3 hours
-#' @param showLegend include legend in top left
-#' @description Creates a plot of individual (e.g. hourly) and rolling mean PM2.5 values for a specific monitor.
-#' @details \itemize{
-#' \item{\code{align = 'left'}: Forward roll, using hour of interest and the (\code{width}-1) subsequent hours
-#' (e.g. 3-hr left-aligned roll for Hr 5 will consist of average of Hrs 5, 6 and 7)}
-#' \item{\code{align = 'right'}: Backwards roll, using hour of interest and the (\code{width}-1) prior hours
-#' (e.g. 3-hr right-aligned roll for Hr 5 will consist of average of Hrs 3, 4 and 5)}
-#' \item{\code{align = 'center'} for odd \code{width}: Average of hour of interest and (\code{width}-1)/2 on either side
-#' (e.g. 3-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5 and 6)}
-#' \item{\code{align = 'center'} for even \code{width}: Average of hour of interest and (\code{width}/2)-1 hours prior and
-#' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
+#' @param monitorID Monitor ID for a specific monitor in the ws_monitor object
+#'   (optional if only one monitor in the ws_monitor object).
+#' @param width Number of periods to average (e.g. for hourly data, \code{width
+#'   = 24} plots 24-hour rolling means).
+#' @param align Alignment of averaging window relative to point being
+#'   calculated; one of \code{"left|center|right"}.
+#' @param data.thresh Minimum number of valid observations required as a percent
+#'   of \code{width}; NA is returned if insufficicnet valid data to calculate.
+#'   mean
+#' @param ylim y limits for the plot.
+#' @param tlim Optional vector with start and end times (integer or character
+#'   representing YYYYMMDD[HH]).
+#' @param localTime Logical specifying whether \code{tlim} is in local time or
+#'   UTC.
+#' @param shadedNight Add nighttime shading.
+#' @param aqiLines Horizontal lines indicating AQI levels.
+#' @param gridHorizontal Add dashed horizontal grid lines.
+#' @param grid24hr Add dashed grid lines at day boundaries.
+#' @param grid3hr Add dashed grid lines every 3 hours.
+#' @param showLegend Include legend in top left.
+#'
+#' @details
+#' \itemize{
+#'   \item{\code{align = "left"}: Forward roll, using hour of interest and the
+#'     (\code{width}-1) subsequent hours (e.g. 3-hr left-aligned roll for Hr 5
+#'     will consist of average of Hrs 5, 6 and 7)
+#'   }
+#'   \item{\code{align = "right"}: Backwards roll, using hour of interest and
+#'     the (\code{width}-1) prior hours (e.g. 3-hr right-aligned roll for Hr 5
+#'     will consist of average of Hrs 3, 4 and 5)
+#'   }
+#'   \item{\code{align = "center"} for odd \code{width}: Average of hour of
+#'     interest and (\code{width}-1)/2 on either side (e.g. 3-hr center-aligned
+#'     roll for Hr 5 will consist of average of Hrs 4, 5 and 6)
+#'   }
+#'   \item{\code{align = "center"} for even \code{width}: Average of hour of
+#'     interest and (\code{width}/2)-1 hours prior and \code{width}/2 hours
+#'     after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of
+#'     Hrs 4, 5, 6 and 7)
+#'   }
 #' }
-#' @note This function attempts to provide a 'publication ready' rolling mean plot.
+#'
+#' @note
+#' This function attempts to provide a 'publication ready' rolling mean plot.
+#'
+#' @import graphics
+#' @export
+#' @keywords ws_monitor
+#'
 #' @examples
 #' N_M <- Northwest_Megafires
-#' Roseburg <- monitor_subset(N_M, tlim=c(20150821, 20150831),
-#'                            monitorIDs=c('410190002_01'))
-#' monitor_rollingMeanPlot(Roseburg, shadedNight=TRUE)
-
+#' Roseburg <- monitor_subset(N_M, tlim = c(20150821, 20150831),
+#'                            monitorIDs = c("410190002_01"))
+#' monitor_rollingMeanPlot(Roseburg, shadedNight = TRUE)
 monitor_rollingMeanPlot <- function(ws_monitor,
                                     monitorID = NULL,
                                     width = 3,
@@ -59,18 +82,18 @@ monitor_rollingMeanPlot <- function(ws_monitor,
   # ----- Style ---------------------------------------------------------------
 
   # points
-  col_points <- adjustcolor('black',0.2)
+  col_points <- adjustcolor("black", 0.2)
   pch_points <- 16
   cex_points <- .8
 
   # rolling mean
-  col_mean <- 'black'
+  col_mean <- "black"
   lwd_mean <- 1
-  lty_mean <- 'solid'
+  lty_mean <- "solid"
 
   # Grid lines
-  lty_grid <- 'dotted'
-  col_grid <- 'gray80'
+  lty_grid <- "dotted"
+  col_grid <- "gray80"
   lwd_grid <- 1.6
   lwd_gridLight <- 0.8 # for 3 hour intervals
 
@@ -81,12 +104,12 @@ monitor_rollingMeanPlot <- function(ws_monitor,
   # ----- Data Preparaion ------------------------
 
   # Roll direction for legend
-  if ( align=='left' ) {
-    direction <- 'Forward-'
-  } else if ( align=='right' ) {
-    direction <- 'Backward-'
+  if ( align == "left" ) {
+    direction <- "Forward-"
+  } else if ( align == "right" ) {
+    direction <- "Backward-"
   } else {
-    direction <- 'Centered '
+    direction <- "Centered "
   }
 
   # Allow single monitor objects to be used without specifying monitorID
@@ -94,48 +117,62 @@ monitor_rollingMeanPlot <- function(ws_monitor,
     if ( nrow(ws_monitor$meta) == 1 ) {
       monitorID <- ws_monitor$meta$monitorID[1]
     } else {
-      stop(paste0("ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",
-                  paste(ws_monitor$meta$monitorID,collapse="', '"),"'"))
+      stop(
+        paste0(
+          "ws_monitor object contains data for >1 monitor. Please specify a monitorID from: '",
+          paste(ws_monitor$meta$monitorID, collapse = "', '"),
+          "'"
+        )
+      )
     }
   }
 
   # Subset ws_monitor object to monitor of interest and pull out meta & data
-  ws_monitor <- PWFSLSmoke::monitor_subset(ws_monitor,monitorIDs = monitorID)
+  ws_monitor <- PWFSLSmoke::monitor_subset(ws_monitor, monitorIDs = monitorID)
   meta <- ws_monitor$meta
   data <- ws_monitor$data
 
   # Pull out hour averages and create rolling means for dataframe prior to subsetting by tlim
   hourAvgs <- data[[monitorID]]
-  rollingMeans <- PWFSLSmoke::monitor_rollingMean(ws_monitor, width=width, data.thresh=data.thresh, align=align)$data[[monitorID]]
+  rollingMeans <-
+    PWFSLSmoke::monitor_rollingMean(
+      ws_monitor,
+      width = width,
+      data.thresh = data.thresh,
+      align = align
+    )$data[[monitorID]]
 
   # Assign timeStamp based on localTime setting
   if ( localTime ) {
-    timeStamp <- lubridate::with_tz(data$datetime,meta$timezone)
-    tzLabel <- '(local)'
+    timeStamp <- lubridate::with_tz(data$datetime, meta$timezone)
+    tzLabel <- "(local)"
   } else {
     timeStamp <- data$datetime
-    tzLabel <- '(UTC)'
+    tzLabel <- "(UTC)"
   }
 
   # put the pieces of the new dataframe together
-  df <- data.frame(timeStamp,hourAvgs,rollingMeans)
+  df <- data.frame(timeStamp, hourAvgs, rollingMeans)
 
   # Time limit application
   if ( !is.null(tlim) ) {
     # TODO: Warn if no data for any dates within tlim?
     # TODO: add logic to check for tlim format
-    timeMask <- timeStamp >= lubridate::ymd(tlim[1]) & timeStamp < lubridate::ymd(tlim[2])+lubridate::days(1)
-    if ( sum(timeMask)==0 ) {
+    timeMask <-
+      timeStamp >= lubridate::ymd(tlim[1]) &
+      timeStamp < lubridate::ymd(tlim[2]) + lubridate::days(1)
+
+    if ( sum(timeMask) == 0 ) {
       monitor_noDataPlot(ws_monitor)
       stop("No data contained within specified time limits, please try again.")
     }
-    df <- df[timeMask,]
+    df <- df[timeMask, ]
   }
 
   # Set y Limits
   if ( is.null(ylim) ) {
-    #ylim <- c(min(0,min(df$hourAvgs,na.rm=TRUE)),max(df$hourAvgs,na.rm=TRUE))
-    ylim <- c(0,max(c(df$hourAvgs,275),na.rm=TRUE))
+    # ylim <- c(min(0, min(df$hourAvgs, na.rm = TRUE)), max(df$hourAvgs, na.rm = TRUE))
+    ylim <- c(0, max(c(df$hourAvgs, 275), na.rm = TRUE))
   }
 
   # Date ranges for grid line locatioins and chart title
@@ -143,47 +180,47 @@ monitor_rollingMeanPlot <- function(ws_monitor,
   maxTime <- utils::tail(df$timeStamp, 1)
 
   # Find first full day for grid lines and time axis labels
-  min24Hour <- timeStamp[which(lubridate::hour(timeStamp)==0)[1]]
+  min24Hour <- timeStamp[which(lubridate::hour(timeStamp) == 0)[1]]
 
   # Find start of first 3-hour period (e.g. Hr 0, 3, 6...)
-  threeHrRemainder <- lubridate::hour(minTime)/3-floor(lubridate::hour(minTime)/3)
+  threeHrRemainder <- lubridate::hour(minTime) / 3 - floor(lubridate::hour(minTime) / 3)
   if ( threeHrRemainder == 0 ) { # first time stamp is right on a 3-hr marker
     min3Hour <- df$timeStamp[1]
   } else if ( threeHrRemainder < .5 ) { # first time stamp is one hour after a 3-hr marker
-    min3Hour <- df$timeStamp[1]-lubridate::hours(1)
+    min3Hour <- df$timeStamp[1] - lubridate::hours(1)
   } else {
-    min3Hour <- df$timeStamp[1]-lubridate::hours(2)
+    min3Hour <- df$timeStamp[1] - lubridate::hours(2)
   }
 
   # Define grid line locations
-  xGrid24Hour <- seq(min24Hour,maxTime+lubridate::hours(1),"day")
-  xGrid3Hour <- seq(min3Hour,maxTime+lubridate::hours(1),"3 hour")
-  if ( grid24hr==TRUE) {
+  xGrid24Hour <- seq(min24Hour, maxTime + lubridate::hours(1), "day")
+  xGrid3Hour <- seq(min3Hour, maxTime + lubridate::hours(1), "3 hour")
+  if ( grid24hr == TRUE) {
     xGrid3Hour <- xGrid3Hour[!(xGrid3Hour %in% xGrid24Hour)]
   }
 
   # Assign time axis label
-  if ( nrow(df) <=24 ) {
-    xlab <- 'Hour'
+  if ( nrow(df) <= 24 ) {
+    xlab <- "Hour"
   } else {
-    xlab <- 'Date'
+    xlab <- "Date"
   }
-  xlab <- paste(xlab,tzLabel)
+  xlab <- paste(xlab, tzLabel)
 
   # ----- Plotting --------------------------------
 
   # Create blank plot
   plot(df$timeStamp, df$hourAvgs,
-       type = 'n',
-       axes=FALSE,
+       type = "n",
+       axes = FALSE,
        xlab = xlab,
-       ylab = '',
+       ylab = "",
        ylim = ylim
   )
 
   # Shaded Night; breaks if >1 time zone
   if ( shadedNight ) {
-    if ( length(unique(meta$timezone)) >1) {
+    if ( length(unique(meta$timezone)) > 1) {
       stop("Can't do shaded night for more than one time zone!!")
     } else {
       lon <- meta$longitude
@@ -201,62 +238,77 @@ monitor_rollingMeanPlot <- function(ws_monitor,
 
   # AQI Lines
   if ( aqiLines ) {
-    abline(h=AQI$breaks_24[2:6], col=col_aqi, lwd=lwd_aqi)
+    abline(h = AQI$breaks_24[2:6], col = col_aqi, lwd = lwd_aqi)
   }
 
   # Add grid lines
   if ( gridHorizontal ) {  # Horizontal
-    grid(nx=NA,ny=NULL, col=col_grid, lwd=lwd_grid, lty=lty_grid) #horizontal lines
+    #horizontal lines
+    grid(nx = NA, ny = NULL, col = col_grid, lwd = lwd_grid, lty = lty_grid)
   }
   if ( grid3hr ) {  # 3-hour interval
-    abline(v=xGrid3Hour, col=col_grid, lwd=lwd_gridLight, lty=lty_grid) # Vertical lines - 3 Hr intervals
+    # Vertical lines - 3 Hr intervals
+    abline(v = xGrid3Hour, col = col_grid, lwd = lwd_gridLight, lty = lty_grid)
   }
   if ( grid24hr ) {   # 24-hour interval
-    abline(v=xGrid24Hour, col=col_grid, lwd=lwd_grid, lty=lty_grid)
+    abline(v = xGrid24Hour, col = col_grid, lwd = lwd_grid, lty = lty_grid)
   }
 
   # Box the plot area
   box()
 
   # Plot light grey circles for actual PM2.5 data
-  points(df$timeStamp, df$hourAvgs,
-         col=col_points,
-         pch=pch_points,
-         cex=cex_points)
+  points(
+    df$timeStamp,
+    df$hourAvgs,
+    col = col_points,
+    pch = pch_points,
+    cex = cex_points
+  )
 
   # Add rolling means
-  lines(df$timeStamp, df$rollingMeans, col='black', lwd=lwd_mean, lty=lty_mean)
+  lines(df$timeStamp, df$rollingMeans, col = "black", lwd = lwd_mean, lty = lty_mean)
 
   # ----- Annotations ---------------------
 
-  # Horizontal axis (see "Assign timeStamp based on localTime setting" above for horizontal axis label)
-  if ( nrow(df) <=24 ) {
-    axis.POSIXct(1, at=seq(minTime, maxTime+lubridate::hours(1), by="3 hour"), format="%H")
+  ## Horizontal axis (see "Assign timeStamp based on localTime setting" above
+  #  for horizontal axis label)
+  if (nrow(df) <= 24) {
+    axis.POSIXct(
+      1,
+      at = seq(minTime, maxTime + lubridate::hours(1), by = "3 hour"),
+      format = "%H"
+    )
   } else {
-    axis.POSIXct(1, at=seq(min24Hour, maxTime+lubridate::hours(1), by="1 day"), format="%b %d")
+    axis.POSIXct(
+      1,
+      at = seq(min24Hour, maxTime + lubridate::hours(1), by = "1 day"),
+      format = "%b %d"
+    )
   }
 
   # Vertical axis
-  axis(2,las=1)
-  mtext(expression(paste("PM"[2.5]*" (",mu,"g/m"^3*")")),2,line=2.5)
+  axis(2, las = 1)
+  mtext(expression(paste("PM"[2.5] * " (", mu, "g/m"^3 * ")")), 2, line = 2.5)
 
   # Title
-  mtext(expression(paste("Hourly and Rolling Mean PM"[2.5])),line=2,cex = 1.5)
-  if ( lubridate::date(minTime)==lubridate::date(maxTime) ) {
-    mtext(format(minTime, '%b. %d %Y'),line=.7,cex=1.5)
+  mtext(expression(paste("Hourly and Rolling Mean PM"[2.5])), line = 2, cex = 1.5)
+  if ( lubridate::date(minTime) == lubridate::date(maxTime) ) {
+    mtext(format(minTime, "%b. %d %Y"), line = .7, cex = 1.5)
   } else {
-    mtext(paste(format(minTime, '%b. %d - '),format(maxTime, '%b. %d %Y')),line=.7,cex=1.5)
+    mtext(paste(format(minTime, "%b. %d - "), format(maxTime, "%b. %d %Y")), line = .7, cex = 1.5)
   }
 
   # Legend
   if ( showLegend ) {
-    legend("topleft",
-           legend=c('Hourly Averages',paste0(width, "-hour ",direction,"Rolling Mean")),
-           cex=par('cex.lab'),
-           col=c(col_points,col_mean),
-           lwd=c(NA,lwd_mean),
-           lty=c(NA,lty_mean),
-           pch=c(pch_points,NA))
+    legend(
+      "topleft",
+      legend = c("Hourly Averages", paste0(width,  "-hour ", direction, "Rolling Mean")),
+      cex = par("cex.lab"),
+      col = c(col_points, col_mean),
+      lwd = c(NA, lwd_mean),
+      lty = c(NA, lty_mean),
+      pch = c(pch_points, NA))
   }
 
 }
