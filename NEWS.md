@@ -1,3 +1,9 @@
+# PWFSLSmoke 1.1.17
+
+Added new function `monitor_getCurrentStatus()`, which returns a data frame
+containing meta information as well as current status information given a
+*ws_monitor_* object.
+
 # PWFSLSmoke 1.1.16
 
   * added additional logging to `EsriMap_getMap()`
