@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.1.17
+
+  * added `tidy_toMonitor()` 
+
 # PWFSLSmoke 1.1.16
 
   * added additional logging to `EsriMap_getMap()`
