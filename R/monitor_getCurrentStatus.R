@@ -47,9 +47,9 @@
 #' \tabular{ll}{
 #'   yesterday_AQI         \tab Daily AQI value for the day prior to
 #'                              \code{endTime}\cr
-#'   lastValid_nowcast_1hr \tab Last valid NowCast measurement\cr
-#'   lastValid_PM2.5_1hr   \tab Last valid raw PM2.5 measurement\cr
-#'   lastValid_PM2.5_3hr   \tab Mean of the last valid raw PM2.5 measurement
+#'   last_nowcast_1hr      \tab Last valid NowCast measurement\cr
+#'   last_PM2.5_1hr        \tab Last valid raw PM2.5 measurement\cr
+#'   last_PM2.5_3hr        \tab Mean of the last valid raw PM2.5 measurement
 #'                              with the preceding two measurements\cr
 #'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
 #'   previous_nowcastLevel \tab NowCast level at the previous valid time
@@ -57,7 +57,7 @@
 #'
 #' It should be noted that all averages are "right-aligned", meaning that the
 #' three hour mean of data at time \code{n} will comprise of the data at times
-#' \code{[n, n-1, n-2]}. Data for \code{n-1} and \code{n-2} is not guaranteed to
+#' \code{[n-2, n-1, n]}. Data for \code{n-2} and \code{n-1} is not guaranteed to
 #' exist, so a three hour average may include 1 to 3 data points.
 #'
 #' @section Event flags:
@@ -137,9 +137,9 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   ## TODO:
   #  how are different timezones handled when compared against endTime
-  #  and processTime?
+  #  and processingTime?
 
-  processTime <- lubridate::now("UTC")
+  processingTime <- lubridate::now("UTC")
 
   validTimeIndices <- ws_data %>%
     arrange(.data$datetime) %>%
@@ -160,13 +160,13 @@ monitor_getCurrentStatus <- function(ws_monitor,
     tibble(
       `monitorID` = names(lastValidTimeIndex),
       `monitorURL` = paste0(monitorURLBase, .data$monitorID),
-      `processTime` = processTime,
+      `processingTime` = processingTime,
       `endTime` = endTime,
       `last_validTime` = lastValidTime,
       `last_latency` = difftime(endTimeInclusive, lastValidTime, units = "hour"),
       `previous_validTime` = previousValidTime,
       `previous_latency` = difftime(.data$last_validTime, .data$previous_validTime,  units = "hour")
-    )
+  )
 
 
 # Add summary data --------------------------------------------------------
@@ -176,9 +176,9 @@ monitor_getCurrentStatus <- function(ws_monitor,
   summaryData <-
     list(
       .yesterday_AQI(ws_monitor, endTime, "yesterday_AQI"),
-      .averagePrior(nowcast_data, lastValidTimeIndex, 1, "lastValid_nowcast_1hr"),
-      .averagePrior(ws_data, lastValidTimeIndex, 1, "lastValid_pm25_1hr"),
-      .averagePrior(ws_data, lastValidTimeIndex, 3, "lastValid_pm25_3hr"),
+      .averagePrior(nowcast_data, lastValidTimeIndex, 1, "last_nowcast_1hr"),
+      .averagePrior(ws_data, lastValidTimeIndex, 1, "last_pm25_1hr"),
+      .averagePrior(ws_data, lastValidTimeIndex, 3, "last_pm25_3hr"),
       .aqiLevel(nowcast_data, lastValidTimeIndex, "last_nowcastLevel"),
       .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel")
     ) %>%

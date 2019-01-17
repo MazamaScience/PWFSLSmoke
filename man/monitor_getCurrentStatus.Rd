@@ -66,9 +66,9 @@ summaries included are listed below with a description:
 \tabular{ll}{
   yesterday_AQI         \tab Daily AQI value for the day prior to
                              \code{endTime}\cr
-  lastValid_nowcast_1hr \tab Last valid NowCast measurement\cr
-  lastValid_PM2.5_1hr   \tab Last valid raw PM2.5 measurement\cr
-  lastValid_PM2.5_3hr   \tab Mean of the last valid raw PM2.5 measurement
+  last_nowcast_1hr      \tab Last valid NowCast measurement\cr
+  last_PM2.5_1hr        \tab Last valid raw PM2.5 measurement\cr
+  last_PM2.5_3hr        \tab Mean of the last valid raw PM2.5 measurement
                              with the preceding two measurements\cr
   last_nowcastLevel     \tab NowCast level at the last valid time\cr
   previous_nowcastLevel \tab NowCast level at the previous valid time
@@ -76,7 +76,7 @@ summaries included are listed below with a description:
 
 It should be noted that all averages are "right-aligned", meaning that the
 three hour mean of data at time \code{n} will comprise of the data at times
-\code{[n, n-1, n-2]}. Data for \code{n-1} and \code{n-2} is not guaranteed to
+\code{[n-2, n-1, n]}. Data for \code{n-2} and \code{n-1} is not guaranteed to
 exist, so a three hour average may include 1 to 3 data points.
 }
 
