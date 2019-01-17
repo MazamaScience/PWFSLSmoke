@@ -134,7 +134,7 @@ monitor_dygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 201
 Let's see how PM2.5 levels change throughout the day for one monitor. This plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
 
 ```{r monitor_spaghetti, eval=FALSE}
-monitorPlot_timeOfDaySpaghetti(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170708, 20170720), title = "Yreka Jul 8 - Jul 20 2017")
+# monitorPlot_timeOfDaySpaghetti() is now defunct, see `?monitorPlot_timeOfDaySpaghetti()`
 ```
 
 Air quality in this location tends to peak around 9am, and disappate throughout the day. Smoke will settle in valleys when there is little wind, then disappate when winds pick back up again, so patterns like this are due to the typical weather patterns in the area.

@@ -62,6 +62,21 @@ monitorGoogleMap <- function(ws_monitor,
 
 }
 
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
+                                           monitorID=NULL,
+                                           tlim=NULL,
+                                           ylim=NULL,
+                                           aqiLines=TRUE,
+                                           shadedNight=TRUE,
+                                           title=NULL,
+                                           ...) {
+
+  .Defunct(NULL, package = "PWFSLSmoke")
+
+}
+
 
 # soft deprecations -------------------------------------------------------
 

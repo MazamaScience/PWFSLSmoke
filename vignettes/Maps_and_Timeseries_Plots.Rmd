@@ -155,16 +155,7 @@ layout(1)
 We can also examine the diurnal cycle during the very worst days:
 
 ```{r tribalMonitors_diurnal}
-layout(matrix(seq(2)))
-par(mar=c(3,4,4,2))
-monitorPlot_timeOfDaySpaghetti(Omak, title="Aug 23-26 Diurnal Smoke -- Omak, WA",
-                               xlab='', ylab='',
-                               tlim=c(20150823,20150826))
-monitorPlot_timeOfDaySpaghetti(Kamiah, title="Aug 23-26 Diurnal Smoke -- Kamiah, ID",
-                               xlab='', ylab='',
-                               tlim=c(20150823,20150826))
-par(mar=c(5,4,4,2)+.1)
-layout(1)
+# monitorPlot_timeOfDaySpaghetti() is now defunct, see `?monitorPlot_timeOfDaySpaghetti()`
 ```
 
 While both sites had horrible air all day, in Omak it was somewhat less horrible in the evenings. This is in contrast to

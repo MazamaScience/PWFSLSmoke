@@ -282,8 +282,7 @@ yreka <- monitor_subset(sisk2017, monitorID = "lon_.122.634_lat_41.727_apcd.1014
 monitor_leaflet(yreka)
 
 # Create spaghetti plot of hourly values over the week
-monitorPlot_timeOfDaySpaghetti(monitor_subset(yreka, tlim = c(20170708, 20170720)), title = "Yreka Jul 8 - Jul 20 2017")
-addAQILegend()
+# monitorPlot_timeOfDaySpaghetti() is now defunct, see `?monitorPlot_timeOfDaySpaghetti()`
 ```
 
 Air quality in Yreka tends to peak around 9am, and disappate throughout the day. It is common to see similar patterns from day-to-day at one location. This might be due to weather patterns, smoke settling in a valley overnight, or human activites. In this case, Yreka is close to a major highway so one possibility could be that the spike around 9am corresponds to heavy traffic, and the PM2.5 levels lower as traffic slows down and wind picks up.
