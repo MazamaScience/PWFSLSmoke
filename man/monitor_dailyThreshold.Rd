@@ -25,8 +25,8 @@ A \emph{ws_monitor} object with a daily count of hours at or above \code{thresho
 Calculates the number of hours per day each monitor in \code{ws_monitor} was at or above a given threshold
 }
 \details{
-\strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values. 
-For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy, 
+\strong{NOTE:} The returned counts include values at OR ABOVE the given threshold; this applies to both categories and values.
+For example, passing a \code{threshold} argument = "unhealthy" will return a daily count of values that are unhealthy,
 very unhealthy, or extreme (i.e. >= 55.5), as will passing a \code{threshold} argument = 55.5.
 
 AQI levels for \code{threshold} argument = one of \code{"good|moderate|usg|unhealthy|very unhealthy|extreme"}
@@ -42,7 +42,7 @@ The returned \emph{ws_monitor} object has a daily time axis where each time is s
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
 Twisp <- monitor_subset(N_M, monitorIDs='530470009_01')
 Twisp_daily <- monitor_dailyThreshold(Twisp, "unhealthy", dayStart='midnight', minHours=1)
-monitorPlot_timeseries(Twisp_daily, type='h', lwd=6, ylab="Hours")
+monitor_timeseriesPlot(Twisp_daily, type='h', lwd=6, ylab="Hours")
 title("Twisp, Washington Hours per day Above 'Unhealthy', 2015")
 }
 }

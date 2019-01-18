@@ -6,7 +6,7 @@ library(PWFSLSmoke)
 pnw <- airnow_load(20150731, 20150901, stateCodes=c('or','wa'))
 
 # Timeseries overview
-monitorPlot_timeseries(pnw, style='gnats')
+monitor_timeseriesPlot(pnw, style='gnats')
 
 # Oklahoma recent -------------------------------------------------------------
 

@@ -9,12 +9,22 @@
 \alias{monitorMap}
 \alias{monitorMap_performance}
 \alias{monitorGoogleMap}
+\alias{monitorPlot_timeOfDaySpaghetti}
+\alias{monitorPlot_dailyBarplot}
+\alias{monitorPlot_hourlyBarplot}
+\alias{monitorPlot_noData}
+\alias{monitorPlot_rollingMean}
+\alias{monitorPlot_timeseries}
 \title{Deprecated functions in PWFSLSmoke}
 \usage{
 monitorGoogleMap(ws_monitor, slice = get("max"),
   breaks = AQI$breaks_24, colors = AQI$colors, width = 640,
   height = 640, centerLon = NULL, centerLat = NULL, zoom = NULL,
   maptype = "roadmap", grayscale = FALSE, map = NULL, ...)
+
+monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL,
+  tlim = NULL, ylim = NULL, aqiLines = TRUE, shadedNight = TRUE,
+  title = NULL, ...)
 
 monitorDygraph(ws_monitor, title = "title",
   ylab = "PM2.5 Concentration", tlim = NULL, rollPeriod = 1,
@@ -44,6 +54,31 @@ monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
   "Purples")[-1]), showLegend = TRUE, legendPos = "topright",
   stateCol = "grey60", stateLwd = 2, countyCol = "grey70",
   countyLwd = 1, add = FALSE, ...)
+
+monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
+  minHours = 18, gridPos = "", gridCol = "black", gridLwd = 0.5,
+  gridLty = "solid", labels_x_nudge = 0, labels_y_nudge = 0, ...)
+
+monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
+  localTime = TRUE, style = "AQI", shadedNight = TRUE,
+  gridPos = "", gridCol = "black", gridLwd = 0.5,
+  gridLty = "solid", labels_x_nudge = 0, labels_y_nudge = 0,
+  dayCol = "black", dayLwd = 2, dayLty = "solid",
+  hourCol = "black", hourLwd = 1, hourLty = "solid",
+  hourInterval = 6, ...)
+
+monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
+
+monitorPlot_rollingMean(ws_monitor, monitorID = NULL, width = 3,
+  align = "center", data.thresh = 75, tlim = NULL, ylim = NULL,
+  localTime = TRUE, shadedNight = FALSE, aqiLines = TRUE,
+  gridHorizontal = FALSE, grid24hr = FALSE, grid3hr = FALSE,
+  showLegend = TRUE)
+
+monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
+  localTime = TRUE, style = NULL, shadedNight = FALSE, add = FALSE,
+  gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
+  dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
 }
 \description{
 These functions are in the process of being removed from the PWFSLSmoke
@@ -71,6 +106,11 @@ Deprecations fall into the following categories:
  \code{\link{monitorLeaflet}} \tab Use \code{\link{monitor_leaflet}}\cr
  \code{\link{monitorMap}} \tab Use \code{\link{monitor_map}}\cr
  \code{\link{monitorMap_performance}} \tab Use \code{\link{monitor_performanceMap}}\cr
+ \code{\link{monitorPlot_dailyBarplot}} \tab Use \code{\link{monitor_dailyBarplot}}\cr
+ \code{\link{monitorPlot_hourlyBarplot}} \tab Use \code{\link{monitor_hourlyBarplot}}\cr
+ \code{\link{monitorPlot_noData}} \tab Use \code{\link{monitor_noDataPlot}}\cr
+ \code{\link{monitorPlot_rollingMean}} \tab Use \code{\link{monitor_rollingMeanPlot}}\cr
+ \code{\link{monitorPlot_timeseries}} \tab Use \code{\link{monitor_timeseriesPlot}}\cr
 }
 }
 
@@ -79,6 +119,7 @@ Deprecations fall into the following categories:
 
 \tabular{rl}{
  \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+ \code{\link{monitorPlot_timeOfDaySpaghetti}} \tab No alternative\cr
 }
 }
 

@@ -59,6 +59,6 @@ carmel_day <- list(meta = carmel$meta, data = data_day)
 carmel_night <- list(meta = carmel$meta, data = data_night)
 
 # Plot them
-monitorPlot_timeseries(carmel_day, shadedNight = TRUE, pch = 8, col = 'goldenrod')
-monitorPlot_timeseries(carmel_night, pch = 16, col = 'darkblue', add = TRUE)
+monitor_timeseriesPlot(carmel_day, shadedNight = TRUE, pch = 8, col = 'goldenrod')
+monitor_timeseriesPlot(carmel_night, pch = 16, col = 'darkblue', add = TRUE)
 }

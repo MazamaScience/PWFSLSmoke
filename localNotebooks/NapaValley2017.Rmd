@@ -86,12 +86,12 @@ This map tells us that smoke reached hazardous levels in those communities close
 
 ## Timeseries plots
 
-`monitorPlot_timeseries()` is designed to plot timeseries data or visualizing data over time. It has a 'style' argument, with a couple of built-in plotting styles for telling different kinds of stories. The plot below uses the 'gnats' style. Red bars under the plot represent the duration of different fires.
+`monitor_timeseriesPlot()` is designed to plot timeseries data or visualizing data over time. It has a 'style' argument, with a couple of built-in plotting styles for telling different kinds of stories. The plot below uses the 'gnats' style. Red bars under the plot represent the duration of different fires.
 
 ```{r}
 # Plot PM2.5 hourly values
 par(mar = c(6, 4, 2, 4), xaxt = "n")
-monitorPlot_timeseries(CAFires, style = 'gnats', xpd = NA, xlab = "")
+monitor_timeseriesPlot(CAFires, style = 'gnats', xpd = NA, xlab = "")
 par(xaxt = "s")
 axis.POSIXct(1, CAFires$data$datetime, line = 3.5)
 title("PM2.5 levels at monitors near Napa Valley fires")
@@ -112,18 +112,18 @@ This plot shows that PM2.5 levels were relatively constant around a baseline unt
 
 This gives us an idea of what air quality was like in the general region surrounding the fires. However, a curious observer of wildfire smoke might like to know how smoke affected a particular community. The city of Napa was directly hit by the Atlas fire, so let's take a look at smoke levels in Napa to see if it gives us any insight into the effects of the fires there.
 
-During this period, violent winds and flames meant that smoke levels could be jump wildly from hour to hour. One way to smooth out those changes a bit is by using [NowCast](https://en.wikipedia.org/wiki/NowCast_(air_quality_index)) values. NowCast is used for smoothing data and can be used to estimate values for missing data. The `monitor_nowcast()` function will calculate hourly NowCast values for a `ws_monitor` object. Using `monitorPlot_timeseries()` to plot hourly values, and `monitor_nowcast()` to calculate and plot NowCast values on top of them, we can get a pretty good idea about what happened in Napa while the wildfires raged nearby.
+During this period, violent winds and flames meant that smoke levels could be jump wildly from hour to hour. One way to smooth out those changes a bit is by using [NowCast](https://en.wikipedia.org/wiki/NowCast_(air_quality_index)) values. NowCast is used for smoothing data and can be used to estimate values for missing data. The `monitor_nowcast()` function will calculate hourly NowCast values for a `ws_monitor` object. Using `monitor_timeseriesPlot()` to plot hourly values, and `monitor_nowcast()` to calculate and plot NowCast values on top of them, we can get a pretty good idea about what happened in Napa while the wildfires raged nearby.
 
 ```{r napa}
 # Plot hourly PM2.5 values
 monitor_subset(CAFires, monitorID = "060550003_01") %>%
-  monitorPlot_timeseries(tlim = c(20171008, 20171020), col = adjustcolor(1, alpha.f = .2), 
+  monitor_timeseriesPlot(tlim = c(20171008, 20171020), col = adjustcolor(1, alpha.f = .2), 
                          pch = 16, xlab = "", dayLwd = .2)
 
 # Add a line for NowCast
 monitor_subset(CAFires, monitorID = "060550003_01") %>%  
   monitor_nowcast() %>%
-  monitorPlot_timeseries(type = 'l', add = TRUE)
+  monitor_timeseriesPlot(type = 'l', add = TRUE)
 
 # Add legends and AQI lines
 legend(x=parseDatetime(2017101412), y=450, c('Hourly PM2.5 value', 'NowCast'), 
@@ -139,7 +139,7 @@ According to the data, PM2.5 levels were healthy up until close to midnight the 
 
 ## Plotting aggregated data
 
-This gives us a pretty good idea about how smoke affected a community very close to a fire on a pretty detailed level. While examining a specific subset of the data like this might give us some important insights, viewing aggregated data can betray different stories. Let's say we want to get an idea about how far smoke from these fires traveled and how communities farther from the fires experienced it. One option is to look at how smoke levels differed in locations at varying distances from the fires. The plot below does this, using `monitorPlot_dailyBarplot()` to plot the mean PM2.5 value for each day at Napa, Vallejo, and San Fransisco, with the distance from the Atlas Fire calculated using `monitor_distance()`. 
+This gives us a pretty good idea about how smoke affected a community very close to a fire on a pretty detailed level. While examining a specific subset of the data like this might give us some important insights, viewing aggregated data can betray different stories. Let's say we want to get an idea about how far smoke from these fires traveled and how communities farther from the fires experienced it. One option is to look at how smoke levels differed in locations at varying distances from the fires. The plot below does this, using `monitor_dailyBarplot()` to plot the mean PM2.5 value for each day at Napa, Vallejo, and San Fransisco, with the distance from the Atlas Fire calculated using `monitor_distance()`. 
 
 ```{r daily barplots, fig.height = 3, fig.width=7}
 for (monitorID in c("060550003_01", "060950004_01", "060750005_01")){
@@ -155,7 +155,7 @@ for (monitorID in c("060550003_01", "060950004_01", "060750005_01")){
   
   # Add the boxplot
   par(new = TRUE, fig = c(0,1,0,1), mar = c(3, 4.5, 2.5, 1))
-  monitorPlot_dailyBarplot(monitor, tlim = c(20171005, 20171025), ylim = c(0,200),  
+  monitor_dailyBarplot(monitor, tlim = c(20171005, 20171025), ylim = c(0,200),  
                            labels_y_nudge = 15, labels_x_nudge = .2, main = "", minHours = 10)
   mtext(text = paste0(monitor$meta$siteName, ": ", 
                       round(monitor_distance(monitor, fireDF$longitude[2], fireDF$latitude[2]), 1), 

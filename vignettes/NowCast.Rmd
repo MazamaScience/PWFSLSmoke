@@ -242,8 +242,8 @@ Omak_nowcast <- monitor_nowcast(Omak)
 ```
 
 ```{r echo=FALSE}
-monitorPlot_timeseries(Omak, type='l', lwd=2)
-monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
+monitor_timeseriesPlot(Omak, type='l', lwd=2)
+monitor_timeseriesPlot(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
 addAQILines()
 addAQILegend(lwd=1, pch=NULL, 'topleft')
 legend("topright", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))

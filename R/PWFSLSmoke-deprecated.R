@@ -25,12 +25,18 @@
 #'  \code{\link{monitorLeaflet}} \tab Use \code{\link{monitor_leaflet}}\cr
 #'  \code{\link{monitorMap}} \tab Use \code{\link{monitor_map}}\cr
 #'  \code{\link{monitorMap_performance}} \tab Use \code{\link{monitor_performanceMap}}\cr
+#'  \code{\link{monitorPlot_dailyBarplot}} \tab Use \code{\link{monitor_dailyBarplot}}\cr
+#'  \code{\link{monitorPlot_hourlyBarplot}} \tab Use \code{\link{monitor_hourlyBarplot}}\cr
+#'  \code{\link{monitorPlot_noData}} \tab Use \code{\link{monitor_noDataPlot}}\cr
+#'  \code{\link{monitorPlot_rollingMean}} \tab Use \code{\link{monitor_rollingMeanPlot}}\cr
+#'  \code{\link{monitorPlot_timeseries}} \tab Use \code{\link{monitor_timeseriesPlot}}\cr
 #' }
 #'
 #' @section Hard Deprecations:
 #'
 #' \tabular{rl}{
 #'  \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+#'  \code{\link{monitorPlot_timeOfDaySpaghetti}} \tab No alternative\cr
 #' }
 #'
 #' @aliases PWFSLSmoke-defunct monitorDygraph monitorEsriMap monitorLeaflet
@@ -43,7 +49,6 @@ NULL
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
-#'
 monitorGoogleMap <- function(ws_monitor,
                              slice = get("max"),
                              breaks = AQI$breaks_24,
@@ -62,6 +67,21 @@ monitorGoogleMap <- function(ws_monitor,
 
 }
 
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_timeOfDaySpaghetti <- function(ws_monitor,
+                                           monitorID=NULL,
+                                           tlim=NULL,
+                                           ylim=NULL,
+                                           aqiLines=TRUE,
+                                           shadedNight=TRUE,
+                                           title=NULL,
+                                           ...) {
+
+  .Defunct(NULL, package = "PWFSLSmoke")
+
+}
+
 
 # soft deprecations -------------------------------------------------------
 
@@ -72,7 +92,6 @@ monitorGoogleMap <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
-#'
 monitorDygraph <- function(ws_monitor,
                            title = "title",
                            ylab = "PM2.5 Concentration",
@@ -85,7 +104,6 @@ monitorDygraph <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
-#'
 monitorEsriMap <- function(ws_monitor,
                            slice = get("max"),
                            breaks = AQI$breaks_24,
@@ -111,7 +129,6 @@ monitorEsriMap <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
-#'
 monitorLeaflet <- function(ws_monitor,
                            slice = get("max"),
                            breaks = AQI$breaks_24,
@@ -131,7 +148,6 @@ monitorLeaflet <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
-#'
 monitorMap <- function(ws_monitor,
                        slice = get("max"),
                        breaks = AQI$breaks_24,
@@ -154,7 +170,6 @@ monitorMap <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
-#'
 monitorMap_performance <- function(predicted,
                                    observed,
                                    threshold = AQI$breaks_24[3],
@@ -181,5 +196,112 @@ monitorMap_performance <- function(predicted,
     paletteFunc, showLegend, legendPos, stateCol, stateLwd,
     countyCol, countyLwd, add,
     ...
+  )
+}
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_dailyBarplot <- function(ws_monitor,
+                                     monitorID=NULL,
+                                     tlim=NULL,
+                                     minHours=18,
+                                     gridPos='',
+                                     gridCol='black',
+                                     gridLwd=0.5,
+                                     gridLty='solid',
+                                     labels_x_nudge=0,
+                                     labels_y_nudge=0,
+                                     ...) {
+
+  monitor_dailyBarplot(
+    ws_monitor, monitorID, tlim, minHours,
+    gridPos, gridCol, gridLwd, gridLty,
+    labels_x_nudge, labels_y_nudge,
+    ...
+  )
+}
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_hourlyBarplot <- function(ws_monitor,
+                                      monitorID = NULL,
+                                      tlim = NULL,
+                                      localTime = TRUE,
+                                      style = 'AQI',
+                                      shadedNight = TRUE,
+                                      gridPos = '',
+                                      gridCol = 'black',
+                                      gridLwd = 0.5,
+                                      gridLty = 'solid',
+                                      labels_x_nudge = 0,
+                                      labels_y_nudge = 0,
+                                      dayCol = 'black',
+                                      dayLwd = 2,
+                                      dayLty = 'solid',
+                                      hourCol = 'black',
+                                      hourLwd = 1,
+                                      hourLty = 'solid',
+                                      hourInterval = 6,
+                                      ...) {
+
+  monitor_hourlyBarplot(
+    ws_monitor, monitorID, tlim, localTime, style, shadedNight,
+    gridPos, gridCol, gridLwd, gridLty, labels_x_nudge, labels_y_nudge,
+    dayCol, dayLwd, dayLty, hourCol, hourLwd, hourLty, hourInterval,
+    ...
+  )
+}
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_noData <- function(ws_monitor, monitorID=NULL, cex=2.5) {
+
+  monitor_noDataPlot(ws_monitor, monitorID, cex)
+}
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_rollingMean <- function(ws_monitor,
+                                    monitorID=NULL,
+                                    width=3,
+                                    align="center",
+                                    data.thresh=75,
+                                    tlim=NULL,
+                                    ylim=NULL,
+                                    localTime=TRUE,
+                                    shadedNight=FALSE,
+                                    aqiLines=TRUE,
+                                    gridHorizontal=FALSE,
+                                    grid24hr=FALSE,
+                                    grid3hr=FALSE,
+                                    showLegend=TRUE) {
+
+  monitor_rollingMeanPlot(
+    ws_monitor, monitorID, width, align, data.thresh, tlim, ylim, localTime,
+    shadedNight, aqiLines, gridHorizontal, grid24hr, grid3hr, showLegend
+  )
+}
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorPlot_timeseries <- function(ws_monitor,
+                                   monitorID=NULL,
+                                   tlim=NULL,
+                                   localTime=TRUE,
+                                   style=NULL,
+                                   shadedNight=FALSE,
+                                   add=FALSE,
+                                   gridPos='',
+                                   gridCol='black',
+                                   gridLwd=1,
+                                   gridLty='solid',
+                                   dayLwd=0,
+                                   hourLwd=0,
+                                   hourInterval=6,
+                                   ...) {
+
+  monitor_timeseriesPlot(
+    ws_monitor, monitorID, tlim, localTime, style, shadedNight, add,
+    gridPos, gridCol, gridLwd, gridLty, dayLwd, hourLwd, hourInterval, ...
   )
 }

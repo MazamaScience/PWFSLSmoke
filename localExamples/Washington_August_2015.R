@@ -79,7 +79,7 @@ monitor_leaflet(merged_worst, maptype="Stamen.Terrain")
 monitor_dygraph(merged_worst, title='Smokiest Washginton Monitors in August, 2015')
 
 # Plot with monitor_timeseriesPlot
-monitorPlot_timeseries(merged_worst, style='aqidots')
+monitor_timeseriesPlot(merged_worst, style='aqidots')
 addAQILegend(pch=1)
 title('Terrible Smoke in late August')
 

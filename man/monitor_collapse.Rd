@@ -50,10 +50,10 @@ N_M <- Northwest_Megafires
 Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 Spokane_min <- monitor_collapse(Spokane, monitorID='Spokane_min', FUN=min)
 Spokane_max <- monitor_collapse(Spokane, monitorID='Spokane_max', FUN=max)
-monitorPlot_timeseries(Spokane, tlim=c(20150619,20150626),
+monitor_timeseriesPlot(Spokane, tlim=c(20150619,20150626),
                        style='gnats', shadedNight=TRUE)
-monitorPlot_timeseries(Spokane_max, col='red', type='s', add=TRUE)
-monitorPlot_timeseries(Spokane_min, col='blue', type='s', add=TRUE)
+monitor_timeseriesPlot(Spokane_max, col='red', type='s', add=TRUE)
+monitor_timeseriesPlot(Spokane_min, col='blue', type='s', add=TRUE)
 title('Spokane Range of PM2.5 Values, June 2015')
 }
 \keyword{ws_monitor}

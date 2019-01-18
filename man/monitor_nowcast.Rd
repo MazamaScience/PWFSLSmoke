@@ -17,8 +17,8 @@ monitor_nowcast(ws_monitor, version = "pm", includeShortTerm = FALSE)
 A \emph{ws_monitor} object with data that have been processed by the Nowcast algorithm.
 }
 \description{
-A Nowcast algorithm is applied to the data in in the ws_monitor object. The 
-\code{version} argument specifies the minimum weight factor and number of hours to be 
+A Nowcast algorithm is applied to the data in in the ws_monitor object. The
+\code{version} argument specifies the minimum weight factor and number of hours to be
 considered in the calculation.
 
 Available versions include:
@@ -48,15 +48,15 @@ Calculated Nowcast values are truncated to the nearest .1 ug/m3 for 'pm' and nea
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 Omak <- monitor_subset(N_M, monitorIDs='530470013_01')
 Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)
-monitorPlot_timeseries(Omak, type='l', lwd=2)
-monitorPlot_timeseries(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
+monitor_timeseriesPlot(Omak, type='l', lwd=2)
+monitor_timeseriesPlot(Omak_nowcast, add=TRUE, type='l', col='purple', lwd=2)
 addAQILines()
 addAQILegend(lwd=1, pch=NULL)
 legend("topleft", lwd=2, col=c('black','purple'), legend=c('hourly','nowcast'))
 title("Omak, Washington Hourly and Nowcast PM2.5 Values in August, 2015")
 # Zooming in to check on handling of missing values
-monitorPlot_timeseries(Omak, tlim=c(20150823,20150825))
-monitorPlot_timeseries(Omak_nowcast, tlim=c(20150823,20150825), pch=16,col='red',type='b', add=TRUE)
+monitor_timeseriesPlot(Omak, tlim=c(20150823,20150825))
+monitor_timeseriesPlot(Omak_nowcast, tlim=c(20150823,20150825), pch=16,col='red',type='b', add=TRUE)
 abline(v=Omak$data[is.na(Omak$data[,2]),1])
 title("Missing values")
 }

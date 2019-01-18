@@ -61,7 +61,7 @@
 #' wrcc_loadAnnual(2017) %>%
 #'   monitor_subset(stateCodes='MT', tlim=c(20170701,20170930)) %>%
 #'   monitor_dailyStatistic() %>%
-#'   monitorPlot_timeseries(style = 'gnats', ylim=c(0,300), xpd=NA)
+#'   monitor_timeseriesPlot(style = 'gnats', ylim=c(0,300), xpd=NA)
 #'   addAQIStackedBar()
 #'   addAQILines()
 #'   title("Montana 2017 -- WRCC Daily Average PM2.5")
