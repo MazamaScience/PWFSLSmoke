@@ -35,10 +35,13 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
+# Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
+rsconnect/
+.Rproj.user
+
 ################################################################################
 # Additional Mazama Science items
 
 # OS X stuff
 .DS_Store
 
-.Rproj.user
