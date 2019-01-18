@@ -12,3 +12,4 @@
 ^NEWS\.md$
 ^\.lintr$
 ^\.travis\.yml$
+^pkgdown/
