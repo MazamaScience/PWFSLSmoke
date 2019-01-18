@@ -87,7 +87,7 @@ title('Terrible Smoke in late August')
 merged_worst_24hr <- monitor_rollingMean(merged_worst, width=24, align="right")
 
 # Plot map and timeseries
-monitord_dygraph(merged_worst_24hr, title='24 Hour Average PM2.5')
+monitor_dygraph(merged_worst_24hr, title='24 Hour Average PM2.5')
 
 # In the second half of August, how many hours per day was the air unhealthy?
 late_august <- monitor_subset(merged_worst, tlim=c(20150816,20150831))
