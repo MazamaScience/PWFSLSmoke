@@ -1,3 +1,22 @@
+# PWFSLSmoke 1.1.18
+
+This release refactors functions prefixed with `monitorPlot_*` to instead start
+with `monitor_*`, keeping in line with other functions accepting a *ws_monitor*
+object as their first argument.
+
+The affected functions are:
+
+| Old Name                      | New Name                    |
+|-------------------------------|-----------------------------|
+| `monitorPlot_dailyBarplot()`  | `monitor_dailyBarplot()`    |
+| `monitorPlot_hourlyBarplot()` | `monitor_hourlyBarplot()`   |
+| `monitorPlot_noData()`        | `monitor_noDataPlot()`      |
+| `monitorPlot_rollingMean()`   | `monitor_rollingMeanPlot()` |
+| `monitorPlot_timeseries()`    | `monitor_timeseriesPlot()`  |
+
+In addition, `monitorPlot_timeOfDaySpaghetti()` has been marked as defunct,
+with no replacement.
+
 # PWFSLSmoke 1.1.17
 
   * added `tidy_toMonitor()` 
