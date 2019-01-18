@@ -14,7 +14,7 @@ tidy_toMonitor(data = NULL)
 }
 \description{
 Changes read-optomized 'tidy' formatted monitor data into a write-optomized
-`ws_monitor` format. If the given data is already a `ws_monitor` object, 
+`ws_monitor` format. If the given data is already a `ws_monitor` object,
 it is returned as is. This function is the inverse of \code{\link{monitor_toTidy}}.
 }
 \examples{
