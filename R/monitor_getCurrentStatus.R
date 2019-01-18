@@ -45,7 +45,7 @@
 #' summaries included are listed below with a description:
 #'
 #' \tabular{ll}{
-#'   yesterday_AQI         \tab Daily AQI value for the day prior to
+#'   yesterday_pm25_24hr   \tab Daily AQI value for the day prior to
 #'                              \code{endTime}\cr
 #'   last_nowcast_1hr      \tab Last valid NowCast measurement\cr
 #'   last_PM2.5_1hr        \tab Last valid raw PM2.5 measurement\cr
@@ -175,7 +175,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   summaryData <-
     list(
-      .yesterday_AQI(ws_monitor, endTime, "yesterday_AQI"),
+      .yesterday_avg(ws_monitor, endTime, "yesterday_pm25_24hr"),
       .averagePrior(nowcast_data, lastValidTimeIndex, 1, "last_nowcast_1hr"),
       .averagePrior(ws_data, lastValidTimeIndex, 1, "last_pm25_1hr"),
       .averagePrior(ws_data, lastValidTimeIndex, 3, "last_pm25_3hr"),
@@ -310,7 +310,7 @@ if (FALSE) {
 #'   before \code{endTimeUTC}.
 #'
 #' @noRd
-.yesterday_AQI <- function(ws_monitor, endTimeUTC, colTitle) {
+.yesterday_avg <- function(ws_monitor, endTimeUTC, colTitle) {
 
   get_previousDayStart <- function(endTimeUTC, timezone) {
 
@@ -323,7 +323,7 @@ if (FALSE) {
 
   }
 
-  get_previousDayAQI <- function(ws_data, previousDayStart) {
+  get_previousDayAvg <- function(ws_data, previousDayStart) {
 
     # See NOTE on tidy evaluation for explanation of `!!` and `enquo()`
 
@@ -361,7 +361,7 @@ if (FALSE) {
   previousDayAQI <-
     purrr::map2_dfc(
       aqiDataList, previousDayStarts,
-      ~get_previousDayAQI(.x, .y)
+      ~get_previousDayAvg(.x, .y)
     ) %>%
     tidyr::gather("monitorID", !!colTitle)
 
