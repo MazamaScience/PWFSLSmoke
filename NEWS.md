@@ -1,5 +1,7 @@
 # PWFSLSmoke 1.1.17
 
+  * added `tidy_toMonitor()` 
+  
 Added new function `monitor_getCurrentStatus()`, which returns a data frame
 containing meta information as well as current status information given a
 *ws_monitor_* object.
