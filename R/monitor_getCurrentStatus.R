@@ -176,9 +176,9 @@ monitor_getCurrentStatus <- function(ws_monitor,
     validTimeIndices %>%
     mutate(
       `last_validTime` = ws_data[["datetime"]][.data$`1`],
-      `last_latency` = difftime(endTimeInclusive, .data$last_validTime, units = "hour"),
+      `last_latency` = as.numeric(difftime(endTimeInclusive, .data$last_validTime, units = "hour")),
       `previous_validTime` = ws_data[["datetime"]][.data$`2`],
-      `previous_latency` = difftime(.data$last_validTime, .data$previous_validTime,  units = "hour")
+      `previous_latency` = as.numeric(difftime(.data$last_validTime, .data$previous_validTime,  units = "hour"))
     ) %>%
     select(-.data$`1`, -.data$`2`)
 
