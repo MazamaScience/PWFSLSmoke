@@ -128,6 +128,8 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Prepare data ------------------------------------------------------------
 
+  processingTime <- lubridate::now("UTC")
+
   ws_data <- ws_monitor %>% monitor_extractData() %>% as_tibble()
   ws_meta <- ws_monitor %>% monitor_extractMeta() %>% as_tibble(rownames = NULL)
 
@@ -143,34 +145,62 @@ monitor_getCurrentStatus <- function(ws_monitor,
   #  how are different timezones handled when compared against endTime
   #  and processingTime?
 
-  processingTime <- lubridate::now("UTC")
+  ## NOTE:
+  #  The number of levels of valid time indices is set by `indexLevels`, with
+  #  lower numbers corresponding to more recent times.
+
+  indexLevels <- 1:2
 
   validTimeIndices <- ws_data %>%
     arrange(.data$datetime) %>%
     select(-.data$datetime) %>%
-    purrr::map(~rev(which(!is.na(.x)))[1:2]) %>%
-    purrr::transpose()
+    purrr::map(~rev(which(!is.na(.x)))[indexLevels]) %>%
+    tibble::enframe("monitorID", "index") %>%
+    tidyr::unnest(.data$index) %>%
+    group_by(.data$monitorID) %>%
+    mutate(key = row_number()) %>%
+    tidyr::spread(.data$key, .data$index)
 
-  lastValidTimeIndex <- unlist(validTimeIndices[[1]])
-  previousValidTimeIndex <- unlist(validTimeIndices[[2]])
+  ## NOTE:
+  #  The last and previous valid time indices are created as named vectors for
+  #  easy portability to helper functions later on.
 
-  lastValidTime <- ws_data[["datetime"]][lastValidTimeIndex]
-  previousValidTime <- ws_data[["datetime"]][previousValidTimeIndex]
+  lastValidTimeIndex <- validTimeIndices %>%
+    select(.data$monitorID, .data$`1`) %>%
+    tibble::deframe()
+  previousValidTimeIndex <- validTimeIndices %>%
+    select(.data$monitorID, .data$`2`) %>%
+    tibble::deframe()
+
+  latencyStatus <-
+    validTimeIndices %>%
+    mutate(
+      `last_validTime` = ws_data[["datetime"]][.data$`1`],
+      `last_latency` = difftime(endTimeInclusive, .data$last_validTime, units = "hour"),
+      `previous_validTime` = ws_data[["datetime"]][.data$`2`],
+      `previous_latency` = difftime(.data$last_validTime, .data$previous_validTime,  units = "hour")
+    ) %>%
+    select(-.data$`1`, -.data$`2`)
 
 
 # Initialize output -------------------------------------------------------
 
   currentStatus <-
-    tibble(
-      `monitorID` = names(lastValidTimeIndex),
+    ws_meta %>%
+    mutate(
       `monitorURL` = paste0(monitorURLBase, .data$monitorID),
       `processingTime` = processingTime,
-      `endTime` = endTime,
-      `last_validTime` = lastValidTime,
-      `last_latency` = difftime(endTimeInclusive, lastValidTime, units = "hour"),
-      `previous_validTime` = previousValidTime,
-      `previous_latency` = difftime(.data$last_validTime, .data$previous_validTime,  units = "hour")
-  )
+      `endTime` = endTime
+    ) %>%
+    left_join(latencyStatus, by = "monitorID") %>%
+    mutate(
+      `last_validLocalTimestamp` =
+        lubridate::with_tz(.data$last_validTime, tzone = .data$timezone) %>%
+        strftime(format = "%Y-%m-%d %H:%M:%S %Z"),
+      `previous_validLocalTimestamp` =
+        lubridate::with_tz(.data$previous_validTime, tzone = .data$timezone) %>%
+        strftime(format = "%Y-%m-%d %H:%M:%S %Z")
+    )
 
 
 # Add summary data --------------------------------------------------------
@@ -215,10 +245,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
 # Return output -----------------------------------------------------------
 
-  ## TODO: Add option to not append meta info?
-
-  outputData <- left_join(ws_meta, eventData, by = "monitorID")
-  return(outputData)
+  return(eventData)
 
 }
 
