@@ -64,11 +64,15 @@ information for the data part of the given \emph{ws_monitor} object. The
 summaries included are listed below with a description:
 
 \tabular{ll}{
-  yesterday_AQI         \tab Daily AQI value for the day prior to
+  yesterday_pm25_24hr   \tab Daily AQI value for the day prior to
                              \code{endTime}\cr
   last_nowcast_1hr      \tab Last valid NowCast measurement\cr
   last_PM2.5_1hr        \tab Last valid raw PM2.5 measurement\cr
   last_PM2.5_3hr        \tab Mean of the last valid raw PM2.5 measurement
+                             with the preceding two measurements\cr
+  previous_nowcast_1hr  \tab Previous valid NowCast measurement\cr
+  previous_PM2.5_1hr    \tab Previous valid raw PM2.5 measurement\cr
+  previous_PM2.5_3hr    \tab Mean of the previous valid raw PM2.5 measurement
                              with the preceding two measurements\cr
   last_nowcastLevel     \tab NowCast level at the last valid time\cr
   previous_nowcastLevel \tab NowCast level at the previous valid time

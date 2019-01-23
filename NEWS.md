@@ -1,3 +1,13 @@
+# PWFSLSmoke 1.1.19
+
+This release enhances `monitor_getCurrentStatus()`.
+
+ * Added 'summary' columns for previous times to match last times
+ * Renamed `yesterdayAQI` column to `yesterday_pm25_24hr` for better fit with
+   the column naming scheme
+ * Added `last_validLocalTimestamp` and `previous_validLocalTimestamp` columns,
+   which are strings showing the local time at a monitor
+
 # PWFSLSmoke 1.1.18
 
 This release refactors functions prefixed with `monitorPlot_*` to instead start
