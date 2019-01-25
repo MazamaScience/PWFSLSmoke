@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Writes a geoJSON file containing current monitor data. For details on what is
-#' included, see \code{\link{monitor_currentData}}.
+#' included, see \code{\link{monitor_getCurrentStatus}}.
 #'
 #' @param ws_monitor \emph{ws_monitor} object.
 #' @param filename Filename where geojson file will be saved.
@@ -13,7 +13,7 @@
 #' @param properties Optional character vector of properties to include for each
 #'   monitor in geoJSON. If NULL all are included. May include any ws_monitor
 #'   metadata and additional columns generated in
-#'   \code{\link{monitor_currentData}}.
+#'   \code{\link{monitor_getCurrentStatus}}.
 #' @param propertyNames Optional character vector supplying custom names for
 #'   properties in geoJSON. If NULL or different length than \code{properties}
 #'   defaults will be used.
@@ -52,7 +52,7 @@ monitor_writeCurrentGeoJSON <- function(ws_monitor,
 # Load and format data ----------------------------------------------------
 
   result <- try({
-    currentTbl <- monitor_currentData(ws_monitor, datetime)
+    currentTbl <- monitor_getCurrentStatus(ws_monitor, datetime)
   }, silent = TRUE)
   if ("try-error" %in% class(result)) {
     err_msg <- geterrmessage()
@@ -63,8 +63,8 @@ monitor_writeCurrentGeoJSON <- function(ws_monitor,
   #  For highest values to be plotted last on Leaflet Maps we want monitors with
   #  NA's to come first and then everything in increasing order.
 
-  if (!is.null(currentTbl$yesterday_PM2.5_24hr)) {
-    myOrder <- rev(order(currentTbl$yesterday_PM2.5_24hr, decreasing = TRUE))
+  if (!is.null(currentTbl$yesterday_pm25_24hr)) {
+    myOrder <- rev(order(currentTbl$yesterday_pm25_24hr, decreasing = TRUE))
     currentTbl <- currentTbl[myOrder, ]
   }
 
@@ -79,6 +79,7 @@ monitor_writeCurrentGeoJSON <- function(ws_monitor,
 # Get coords from meta and create SPDF ------------------------------------
 
   # NOTE: To save space we always round to 5 decimal places (~1 meter)
+  # NOTE: Get coords before subsetting meta, in case lon and lat aren't included
   coords <- cbind(round(currentTbl$longitude, 5), round(currentTbl$latitude, 5))
 
   # Subset meta to desired properties
