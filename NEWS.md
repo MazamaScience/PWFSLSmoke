@@ -1,3 +1,16 @@
+# PWFSLSmoke 1.1.20
+
+## Breaking Change
+
+ * `monitor_writeCurrentGeoJSON()` has been removed
+ * `monitor_currentData()` has been removed
+
+## New Functions
+
+ * `monitor_writeCurrentStatusGeoJSON()`
+   - This function is equivalent to `monitor_writeCurrentGeoJSON()`, but
+     internally uses `monitor_getCurrentStatus()`
+
 # PWFSLSmoke 1.1.19
 
 This release enhances `monitor_getCurrentStatus()`.
