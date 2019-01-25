@@ -31,10 +31,10 @@
 #' \dontrun{
 #' wa <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
 #' wa_current_geojson <- monitor_writeCurrentGeoJSON(wa, "wa_monitors.geojson")
-#' wa_current_list <- jsonlite::fromJSON(wa_current)
+#' wa_current_list <- jsonlite::fromJSON(wa_current_geojson)
 #' wa_spdf <- rgdal::readOGR(dsn = "wa_monitors.geojson", layer = "OGRGeoJSON")
-#' plot(wa_spdf)
-#' map("state", "washington", add = TRUE)
+#' map("state", "washington")
+#' points(wa_spdf)
 #' }
 monitor_writeCurrentGeoJSON <- function(ws_monitor,
                                         filename,
