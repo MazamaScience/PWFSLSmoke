@@ -30,18 +30,18 @@
 #' @examples
 #' \dontrun{
 #' wa <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
-#' wa_current_geojson <- monitor_writeCurrentGeoJSON(wa, "wa_monitors.geojson")
+#' wa_current_geojson <- monitor_writeCurrentStatusGeoJSON(wa, "wa_monitors.geojson")
 #' wa_current_list <- jsonlite::fromJSON(wa_current_geojson)
 #' wa_spdf <- rgdal::readOGR(dsn = "wa_monitors.geojson", layer = "OGRGeoJSON")
 #' map("state", "washington")
 #' points(wa_spdf)
 #' }
-monitor_writeCurrentGeoJSON <- function(ws_monitor,
-                                        filename,
-                                        datetime = lubridate::now("UTC"),
-                                        properties = NULL,
-                                        propertyNames = NULL,
-                                        metadataList = list()) {
+monitor_writeCurrentStatusGeoJSON <- function(ws_monitor,
+                                              filename,
+                                              datetime = lubridate::now("UTC"),
+                                              properties = NULL,
+                                              propertyNames = NULL,
+                                              metadataList = list()) {
 
 
 # Sanity checks -----------------------------------------------------------
