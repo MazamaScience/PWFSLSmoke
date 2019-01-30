@@ -70,7 +70,7 @@ which return the dataframes inside a `ws_monitor` object.
 # PWFSLSmoke 1.1.12
 
 This release refactors functions so that all functions accepting a `ws_monitor`
-object as their first parameter include the "`monitor_`*" prefix in their name.
+object as their first parameter include the `monitor_` prefix in their name.
 
 The affected functions are:
 
@@ -103,7 +103,7 @@ that all functionality in the former is pursely **ggplot2** based.
  * added `addPolygon()`, `addWindBarb() and `addWindBarbs()`
  * added `aqiPalette()`
  * added `monitor_getDailyMean()`
- 
+  
 
 # PWFSLSmoke 1.1.9
 
