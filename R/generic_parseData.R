@@ -3,8 +3,7 @@ generic_parseData <- function(fileString = NULL,
 
 # Validate input ----------------------------------------------------------
 
-  # Note: Make sure fileString is a string (one element character vector)
-
+  # Make sure fileString is a string (one element character vector)
   if (
     is.null(fileString) ||
     (!is.character(fileString) && length(fileString) > 1)
@@ -13,10 +12,8 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-  ## NOTE:
-  #  If `configurationList` is a string, make sure it's valid JSON, then
-  #  convert to a list.
-
+  # If `configurationList` is a string, make sure it's valid JSON, then
+  # convert to a list.
   if (is.character(configurationList)) {
     if (jsonlite::validate(configurationList)) {
       configurationList <- as.list(jsonlite::fromJSON(
@@ -32,9 +29,7 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-  ## Note:
-  #  Make sure the configuration list contains all the required information.
-
+  # Make sure the configuration list contains all the required information.
   requiredParams <- c(
     "column_names", "column_types", "monitor_type", "header_rows"
   )
@@ -51,6 +46,22 @@ generic_parseData <- function(fileString = NULL,
 
 # Parse data --------------------------------------------------------------
 
+  # Read string as individual lines, skipping the header rows
+  dataLines <- readr::read_csv(
+    fileString,
+    skip = as.integer(configurationList$header_rows)
+  )
 
+  ## TODO: additional formatting based on monitor/source type?
+
+
+# Check for parsing problems ----------------------------------------------
+
+  readr::stop_for_problems(tbl)
+
+
+# Return parsed data ------------------------------------------------------
+
+  return(tbl)
 
 }
