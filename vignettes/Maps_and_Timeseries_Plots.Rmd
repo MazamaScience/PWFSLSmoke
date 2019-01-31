@@ -88,7 +88,7 @@ We could also take a more automated approach and directly calculate the location
 data <- PacNW$data[,-1] # omit 'datetime' column
 maxPM25 <- apply(data, 2, max, na.rm=TRUE) # maximum value at each site
 worstAcute <- names(sort(maxPM25, decreasing=TRUE))[1:6] # monitorIDs for the six worst sites in PacNW
-intersect(worstAcute, NezPerceIDs)
+dplyr::intersect(worstAcute, NezPerceIDs)
 PacNW$meta[worstAcute[1],c('siteName','countyName','stateCode')]
 ```
 
@@ -102,7 +102,7 @@ PacNW_dailyAvg <- monitor_dailyStatistic(PacNW, FUN=mean, minHours=20)
 data <- PacNW_dailyAvg$data[,-1]
 unhealthyDays <- apply(data, 2, function(x) { sum(x >= AQI$breaks_24[4], na.rm=TRUE) })
 worstChronic <- names(sort(unhealthyDays, decreasing=TRUE))[1:6]
-intersect(worstChronic, NezPerceIDs)
+dplyr::intersect(worstChronic, NezPerceIDs)
 PacNW$meta[worstChronic[1],c('siteName','countyName','stateCode')]
 ```
 
@@ -151,15 +151,6 @@ monitor_dailyBarplot(Kamiah, main="August Daily AQI -- Kamiah, ID",
                          labels_x_nudge=0.8, labels_y_nudge=250)
 layout(1)
 ```
-
-We can also examine the diurnal cycle during the very worst days:
-
-```{r tribalMonitors_diurnal}
-# monitorPlot_timeOfDaySpaghetti() is now defunct, see `?monitorPlot_timeOfDaySpaghetti()`
-```
-
-While both sites had horrible air all day, in Omak it was somewhat less horrible in the evenings. This is in contrast to
-Kamiah where the least horrible conditions were encountered in the mornings.
 
 This ends the spatio-temporal exploration of smoke from Pacific NW mega-fire in 2015.
 We hope this inspires you to harness the mapping plotting functionality available in the **PWFSLSmoke** package.

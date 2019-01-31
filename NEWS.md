@@ -1,3 +1,9 @@
+# PWFSLSmoke 1.1.21
+
+ * lowered logging level inside `esriMap_getMap()` from `INFO` to `TRACE`
+ * eliminated section from "Maps and Timeseries Plots" vignette that used
+ now defunct `monitor_currentData()`
+
 # PWFSLSmoke 1.1.20
 
 ## Breaking Change

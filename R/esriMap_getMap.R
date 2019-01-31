@@ -108,7 +108,7 @@ esriMap_getMap <- function(centerLon = NULL,
   jsonUrl <- paste0(url, "&f=json")
 
   # Get ESRI JSON map metadata
-  try(logger.info("ESRI json URL: %s", jsonUrl), silent = TRUE)
+  try(logger.trace("ESRI json URL: %s", jsonUrl), silent = TRUE)
   response <- httr::GET(jsonUrl)
   status_code <- httr::status_code(response)
   try({logger.trace("ESRI JSON response status code: %s", status_code)}, silent = TRUE)
@@ -125,7 +125,7 @@ esriMap_getMap <- function(centerLon = NULL,
   # Get ESRI map png
 
 
-  try(logger.info("ESRI png URL: %s", pngUrl), silent = TRUE)
+  try(logger.trace("ESRI png URL: %s", pngUrl), silent = TRUE)
   response <- httr::GET(pngUrl)
   status_code <- httr::status_code(response)
   try({logger.trace("ESRI PNG status code: %s", status_code)}, silent = TRUE)
