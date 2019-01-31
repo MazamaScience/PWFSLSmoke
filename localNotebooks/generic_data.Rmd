@@ -1,0 +1,88 @@
+---
+title: "Working with Generic Data"
+author: "Spencer Pease"
+date: "1/31/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+options(knitr.table.format = "html")
+
+library(PWFSLSmoke)
+```
+
+# Introduction
+
+In this vignette, we take a look at how the `PWFSLSmoke` package works with
+generic air quality data, given a data source and some basic configuration
+details telling `PWFSLSmoke` how to interpret the data.
+
+
+# Downloading Data
+
+
+## Determining an Acceptable Data Format
+
+First, we need to acquire some example data. AIRSIS provides access to raw data
+in a `*.csv` format, one example of which can be downloaded [here][airsis-dl].
+These AIRSIS files aren't yet in a format `generic_parseData()` accepts, so we
+do some basic data cleaning to ensure each row corresponds to one observation.
+
+```{r clean data, eval=FALSE}
+
+## Note:
+#  This section should only be run if a pre-cleaned version of the AIRSIS
+#  example data does not already exist.
+
+rawData <- readr::read_csv("localData/airsis_ebam_example-raw.csv")
+
+fillCols <- list("Latitude", "Longitude", "Sys. Volts")
+
+## NOTE: '!!!' is tidy unquoting for lists
+
+cleanData <- rawData %>%
+  tidyr::fill(!!!fillCols) %>%
+  tidyr::fill(!!!fillCols, .direction = "up") %>%
+  filter(!is.na(Type))
+
+readr::write_csv(cleanData, "localData/airsis_ebam_example-clean.csv")
+
+```
+
+In general, `PWFSLSmoke` expects generic data to adhere to a few specific rules:
+
+ * Each row corresponds to an observation at a single point in time
+ * All of the required columns from the configuration list exist
+ * Header rows only exist at the top of the file
+
+
+## Get the Data
+
+`generic_downloadData()` accepts a file path an argument. This path can be
+either a local file path or a remote connection (such as `http://`, `https://`,
+`ftp://`, or `ftps://). For this example, we will use a local file.
+
+```{r download data}
+
+filePath <- file.path("..", "localData", "airsis_ebam_example-clean.csv")
+#fileString <- generic_downloadData(filePath)
+
+```
+
+The output of this function is the file, stored as a single string ready to be
+parsed by `generic_parseData()`.
+
+
+# Defining a Configuration List
+
+
+
+# Parsing Data
+
+
+
+
+
+[airsis-dl]: http://usfs.airsis.com/vision/common/CSVExport.aspx?uid=1026&StartDate=2019-01-01&EndDate=2019-01-31
