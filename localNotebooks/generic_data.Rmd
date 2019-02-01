@@ -77,6 +77,25 @@ parsed by `generic_parseData()`.
 
 # Defining a Configuration List
 
+```{r create configuration}
+
+configurationList <- list(
+  headerRows = 1,
+  timezone = "UTC",
+  columnTypes = "dcddc-dddddddddddc--dcc",
+  requiredColumnNames = list(
+    pm25 = "",
+    datetime = ""
+  ),
+  extraColumnNames = list(
+    monitorID = "",
+    latitude = "",
+    longitude = "",
+    siteName = ""
+  )
+)
+
+```
 
 
 # Parsing Data
