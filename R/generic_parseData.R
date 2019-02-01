@@ -28,13 +28,35 @@ generic_parseData <- function(fileString = NULL,
     }
   }
 
+  if (is.null(names(configurationList))) {
+    stop("The configuration list must be convertable to a named list. No names detected.")
+  } else {
+    names(configurationList) <- tolower(names(configurationList))
+  }
 
-  # Make sure the configuration list contains all the required information.
+
+# Parse configuration list ------------------------------------------------
+
+  # Make sure the configuration list contains all the required information
   requiredParams <- c(
-    "column_names", "column_types", "monitor_type", "header_rows"
+    "headerRows", "columnTypes", "requiredColumnNames"
   )
 
-  names(configurationList) <- tolower(names(configurationList))
+  metaParams <- c(
+    "monitorID", "latitude", "longitude", "timezone"
+  )
+
+  # Find the set of meta parameters that don't exist at the top level of
+  # `configurationlist`, and make sure they exist in
+  # `configurationlist$extraColumnNames`.
+
+
+
+
+  # convert to appropriate data types
+  configurationList["headerRows"] <- as.integer(configurationList[["headerRows"]])
+
+
 
   if (!all(requiredParams %in% names(configurationList))) {
     stop(paste0(
