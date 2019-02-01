@@ -1,7 +1,7 @@
 generic_parseData <- function(fileString = NULL,
                               configurationList = NULL) {
 
-# Validate input ----------------------------------------------------------
+# Validate input ---------------------------------------------------------------
 
   # Make sure fileString is a string (one element character vector)
   if (
@@ -35,7 +35,7 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-# Parse configuration list ------------------------------------------------
+# Parse configuration list -----------------------------------------------------
 
   # Make sure the configuration list contains all the required information
   requiredParams <- c(
@@ -66,7 +66,20 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-# Parse data --------------------------------------------------------------
+# Parse data -------------------------------------------------------------------
+
+  # SPENCER:  include support for locale information is in this example from airsis_downloadHourlyData.R
+  #
+  # # NOTE:  Even after the move to Amazon web services, they still have some enoding issues
+  # # NOTE:  e.g. 12/26/16|00:00|000051501|Z<82>phirin|-5|OZONE|PPB|39|Meteorological Service of Canada
+  # locale <- readr::locale(encoding="CP437")
+  #
+  # # Read in text as a dataframe
+  # df <- readr::read_delim(url, delim='|', col_names=col_names, col_types=col_types, locale=locale)
+
+  # SPENCER:  Also include support for delimiters other than ','. For instance,
+  # SPENCER:  most Europeans use ',' for the decimal point and have spreadsheet
+  # SPENCER:  columns delimited by ';'.
 
   # Read string as individual lines, skipping the header rows
   dataLines <- readr::read_csv(
@@ -77,12 +90,12 @@ generic_parseData <- function(fileString = NULL,
   ## TODO: additional formatting based on monitor/source type?
 
 
-# Check for parsing problems ----------------------------------------------
+# Check for parsing problems ---------------------------------------------------
 
   readr::stop_for_problems(tbl)
 
 
-# Return parsed data ------------------------------------------------------
+# Return parsed data -----------------------------------------------------------
 
   return(tbl)
 

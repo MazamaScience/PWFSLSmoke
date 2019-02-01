@@ -40,12 +40,20 @@ rawData <- readr::read_csv("localData/airsis_ebam_example-raw.csv")
 
 fillCols <- list("Latitude", "Longitude", "Sys. Volts")
 
-## NOTE: '!!!' is tidy unquoting for lists
+# The raw data consists of data records with no location information interspersed
+# with 'GPS' records that have only location and voltate. This next step does
+# the following:
+#  1) replicate data associated with fillCols so that location information exists
+#     in every row
+#  2) remove any rows that are missing the "Type" field found in every data record
 
+# NOTE:  '!!!' is tidy unquoting for lists
 cleanData <- rawData %>%
-  tidyr::fill(!!!fillCols) %>%
+  tidyr::fill(!!!fillCols, .direction = "down") %>%
   tidyr::fill(!!!fillCols, .direction = "up") %>%
   filter(!is.na(Type))
+
+# Wow! Using tidyverse packages makes for very expressive code!
 
 readr::write_csv(cleanData, "localData/airsis_ebam_example-clean.csv")
 
@@ -84,8 +92,8 @@ configurationList <- list(
   timezone = "UTC",
   columnTypes = "dcddc-dddddddddddc--dcc",
   requiredColumnNames = list(
-    pm25 = "",
-    datetime = ""
+    datetime = "",
+    pm25 = ""
   ),
   extraColumnNames = list(
     monitorID = "",
