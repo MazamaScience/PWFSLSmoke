@@ -103,7 +103,15 @@ generic_parseData <- function(fileString = NULL,
 
 # Add defaults ------------------------------------------------------------
 
+  defaultParams <- list(
+    timezone = "UTC",
+    decimalMark = ".",
+    groupingMark = ",",
+    deliminator = ",",
+    encoding = "UTF-8"
+  )
 
+  cfgList <- purrr::list_modify(defaultParams, !!!cfgList)
 
 
 # Regularize data types ---------------------------------------------------
