@@ -41,7 +41,7 @@ rawData <- readr::read_csv("localData/airsis_ebam_example-raw.csv")
 fillCols <- list("Latitude", "Longitude", "Sys. Volts")
 
 # The raw data consists of data records with no location information interspersed
-# with 'GPS' records that have only location and voltate. This next step does
+# with 'GPS' records that have only location and voltage. This next step does
 # the following:
 #  1) replicate data associated with fillCols so that location information exists
 #     in every row
@@ -70,7 +70,7 @@ In general, `PWFSLSmoke` expects generic data to adhere to a few specific rules:
 
 `generic_downloadData()` accepts a file path an argument. This path can be
 either a local file path or a remote connection (such as `http://`, `https://`,
-`ftp://`, or `ftps://). For this example, we will use a local file.
+`ftp://`, or `ftps://`). For this example, we will use a local file.
 
 ```{r download data}
 
@@ -103,7 +103,7 @@ configurationList <- list(
   timezone = "UTC",
   decimalMark = ".",
   groupingMark = ",",
-  deliminator = "|",
+  delimiter = "|",
   encoding = "UTF-8"
 )
 

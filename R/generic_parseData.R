@@ -1,7 +1,7 @@
 generic_parseData <- function(fileString = NULL,
-                              cfgList = NULL) {
+                              configList = NULL) {
 
-# Validate input ----------------------------------------------------------
+  # Validate input ----------------------------------------------------------
 
   # Make sure fileString is a string (one element character vector)
   if (
@@ -11,30 +11,30 @@ generic_parseData <- function(fileString = NULL,
     stop("`fileString` must be a character vector of length one.")
   }
 
-  # If `cfgList` is a string, make sure it's valid JSON, then
+  # If `configList` is a string, make sure it's valid JSON, then
   # convert to a list.
-  if (is.character(cfgList)) {
-    if (jsonlite::validate(cfgList)) {
-      cfgList <- as.list(jsonlite::fromJSON(
-        cfgList,
+  if (is.character(configList)) {
+    if (jsonlite::validate(configList)) {
+      configList <- as.list(jsonlite::fromJSON(
+        configList,
         simplifyVector = TRUE,
         simplifyDataFrame = FALSE,
         simplifyMatrix = FALSE,
         flatten = FALSE
       ))
-    } else if (!is.list(cfgList)) {
-      stop("`cfgList` must be either a valid JSON string, or an R list.")
+    } else if (!is.list(configList)) {
+      stop("`configList` must be either a valid JSON string, or an R list.")
     }
   }
 
-  if (is.null(names(cfgList))) {
+  if (is.null(names(configList))) {
     stop("The configuration list must be convertable to a named list. No names detected.")
   } else {
-    names(cfgList) <- tolower(names(cfgList))
+    names(configList) <- tolower(names(configList))
   }
 
 
-# Parse configuration list ------------------------------------------------
+  # Parse configuration list ------------------------------------------------
 
   ## Steps:
   #  - check required parameters
@@ -44,48 +44,48 @@ generic_parseData <- function(fileString = NULL,
   #  - regularize data types
 
 
-# Check if all required parameters are present ----------------------------
+  # Check if all required parameters are present ----------------------------
 
   reqParams <- c(
     "headerRows", "columnTypes", "requiredColumnNames"
   )
 
-  if (!all(reqParams %in% names(cfgList))) {
+  if (!all(reqParams %in% names(configList))) {
     stop(paste0(
-      "`cfgList` must contain entries for all of the following:\n",
+      "`configList` must contain entries for all of the following:\n",
       paste(reqParams, collapse = ", ")
     ))
   }
 
 
-# Check if required column names are present ------------------------------
+  # Check if required column names are present ------------------------------
 
   reqColNames <- c("datetime", "pm25")
 
-  if (!all(reqColNames %in% names(cfgList[["requiredColumnNames"]]))) {
+  if (!all(reqColNames %in% names(configList[["requiredColumnNames"]]))) {
     stop(paste0(
-      "`cfgList$requiredColumnNames` must contain entries for all of",
+      "`configList$requiredColumnNames` must contain entries for all of",
       "the following:\n",
       paste(reqColNames, collapse = ", ")
     ))
   }
 
 
-# Check if meta parameters are present ------------------------------------
+  # Check if meta parameters are present ------------------------------------
 
   # Find the set of required meta parameters that don't exist at the top level
-  # of `cfgList`, and make sure they exist in
-  # `cfgList$extraColumnNames`
+  # of `configList`, and make sure they exist in
+  # `configList$extraColumnNames`
 
   reqMetaParams <- c(
     "monitorID", "latitude", "longitude", "timezone"
   )
 
-  metaInGlobal <- reqMetaParams %in% names(cfgList)
+  metaInGlobal <- reqMetaParams %in% names(configList)
   metaGlobal <- reqMetaParams[metaInGlobal]
   metaExtra <- reqMetaParams[!metaInGlobal]
 
-  if (!all(metaExtra %in% names(cfgList[["extraColumnNames"]]))) {
+  if (!all(metaExtra %in% names(configList[["extraColumnNames"]]))) {
     stop(paste0(
       "The following parameters must either be specified at the top",
       "level of the configuration list, or in a 'extraColumnNames' sublist:\n",
@@ -93,33 +93,33 @@ generic_parseData <- function(fileString = NULL,
     ))
   }
 
-  # remove meta parameters in `cfgList$extraColumnNames` that also
-  # exist at the top level of `cfgList`
+  # remove meta parameters in `configList$extraColumnNames` that also
+  # exist at the top level of `configList`
 
-  toKeep <- !(names(cfgList[["extraColumnNames"]]) %in% metaGlobal)
-  cfgList[["extraColumnNames"]] <-
-    cfgList[["extraColumnNames"]][toKeep]
+  toKeep <- !(names(configList[["extraColumnNames"]]) %in% metaGlobal)
+  configList[["extraColumnNames"]] <-
+    configList[["extraColumnNames"]][toKeep]
 
 
-# Add defaults ------------------------------------------------------------
+  # Add defaults ------------------------------------------------------------
 
   defaultParams <- list(
     timezone = "UTC",
     decimalMark = ".",
     groupingMark = ",",
-    deliminator = ",",
+    delimiter = ",",
     encoding = "UTF-8"
   )
 
-  cfgList <- purrr::list_modify(defaultParams, !!!cfgList)
+  configList <- purrr::list_modify(defaultParams, !!!configList)
 
 
-# Regularize data types ---------------------------------------------------
+  # Regularize data types ---------------------------------------------------
 
-  cfgList["headerRows"] <- as.integer(cfgList[["headerRows"]])
+  configList["headerRows"] <- as.integer(configList[["headerRows"]])
 
 
-# Parse data --------------------------------------------------------------
+  # Parse data --------------------------------------------------------------
 
   ## SPENCER:
   #  include support for locale information is in this example from
@@ -142,18 +142,18 @@ generic_parseData <- function(fileString = NULL,
   # Read string as individual lines, skipping the header rows
   dataLines <- readr::read_csv(
     fileString,
-    skip = as.integer(cfgList$header_rows)
+    skip = as.integer(configList$header_rows)
   )
 
   ## TODO: additional formatting based on monitor/source type?
 
 
-# Check for parsing problems ----------------------------------------------
+  # Check for parsing problems ----------------------------------------------
 
   readr::stop_for_problems(tbl)
 
 
-# Return parsed data ------------------------------------------------------
+  # Return parsed data ------------------------------------------------------
 
   return(tbl)
 
