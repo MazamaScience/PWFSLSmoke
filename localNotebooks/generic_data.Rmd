@@ -89,7 +89,6 @@ parsed by `generic_parseData()`.
 
 configurationList <- list(
   headerRows = 1,
-  timezone = "UTC",
   columnTypes = "dcddc-dddddddddddc--dcc",
   requiredColumnNames = list(
     datetime = "",
@@ -100,7 +99,12 @@ configurationList <- list(
     latitude = "",
     longitude = "",
     siteName = ""
-  )
+  ),
+  timezone = "UTC",
+  decimalMark = ".",
+  groupingMark = ",",
+  deliminator = "|",
+  encoding = "UTF-8"
 )
 
 ```
