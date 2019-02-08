@@ -1,5 +1,5 @@
 generic_parseData <- function(fileString = NULL,
-                              configurationList = NULL) {
+                              cfgList = NULL) {
 
 # Validate input ----------------------------------------------------------
 
@@ -11,26 +11,26 @@ generic_parseData <- function(fileString = NULL,
     stop("`fileString` must be a character vector of length one.")
   }
 
-  # If `configurationList` is a string, make sure it's valid JSON, then
+  # If `cfgList` is a string, make sure it's valid JSON, then
   # convert to a list.
-  if (is.character(configurationList)) {
-    if (jsonlite::validate(configurationList)) {
-      configurationList <- as.list(jsonlite::fromJSON(
-        configurationList,
+  if (is.character(cfgList)) {
+    if (jsonlite::validate(cfgList)) {
+      cfgList <- as.list(jsonlite::fromJSON(
+        cfgList,
         simplifyVector = TRUE,
         simplifyDataFrame = FALSE,
         simplifyMatrix = FALSE,
         flatten = FALSE
       ))
-    } else if (!is.list(configurationList)) {
-      stop("`configurationList` must be either a valid JSON string, or an R list.")
+    } else if (!is.list(cfgList)) {
+      stop("`cfgList` must be either a valid JSON string, or an R list.")
     }
   }
 
-  if (is.null(names(configurationList))) {
+  if (is.null(names(cfgList))) {
     stop("The configuration list must be convertable to a named list. No names detected.")
   } else {
-    names(configurationList) <- tolower(names(configurationList))
+    names(cfgList) <- tolower(names(cfgList))
   }
 
 
@@ -50,9 +50,9 @@ generic_parseData <- function(fileString = NULL,
     "headerRows", "columnTypes", "requiredColumnNames"
   )
 
-  if (!all(reqParams %in% names(configurationList))) {
+  if (!all(reqParams %in% names(cfgList))) {
     stop(paste0(
-      "`configurationList` must contain entries for all of the following:\n",
+      "`cfgList` must contain entries for all of the following:\n",
       paste(reqParams, collapse = ", ")
     ))
   }
@@ -62,9 +62,9 @@ generic_parseData <- function(fileString = NULL,
 
   reqColNames <- c("datetime", "pm25")
 
-  if (!all(reqColNames %in% names(configurationList[["requiredColumnNames"]]))) {
+  if (!all(reqColNames %in% names(cfgList[["requiredColumnNames"]]))) {
     stop(paste0(
-      "`configurationList$requiredColumnNames` must contain entries for all of",
+      "`cfgList$requiredColumnNames` must contain entries for all of",
       "the following:\n",
       paste(reqColNames, collapse = ", ")
     ))
@@ -74,18 +74,18 @@ generic_parseData <- function(fileString = NULL,
 # Check if meta parameters are present ------------------------------------
 
   # Find the set of required meta parameters that don't exist at the top level
-  # of `configurationlist`, and make sure they exist in
-  # `configurationlist$extraColumnNames`
+  # of `cfgList`, and make sure they exist in
+  # `cfgList$extraColumnNames`
 
   reqMetaParams <- c(
     "monitorID", "latitude", "longitude", "timezone"
   )
 
-  metaInGlobal <- reqMetaParams %in% names(configurationList)
+  metaInGlobal <- reqMetaParams %in% names(cfgList)
   metaGlobal <- reqMetaParams[metaInGlobal]
   metaExtra <- reqMetaParams[!metaInGlobal]
 
-  if (!all(metaExtra %in% names(configurationList[["extraColumnNames"]]))) {
+  if (!all(metaExtra %in% names(cfgList[["extraColumnNames"]]))) {
     stop(paste0(
       "The following parameters must either be specified at the top",
       "level of the configuration list, or in a 'extraColumnNames' sublist:\n",
@@ -93,12 +93,12 @@ generic_parseData <- function(fileString = NULL,
     ))
   }
 
-  # remove meta parameters in `configurationlist$extraColumnNames` that also
-  # exist at the top level of `configurationList`
+  # remove meta parameters in `cfgList$extraColumnNames` that also
+  # exist at the top level of `cfgList`
 
-  toKeep <- !(names(configurationList[["extraColumnNames"]]) %in% metaGlobal)
-  configurationList[["extraColumnNames"]] <-
-    configurationList[["extraColumnNames"]][toKeep]
+  toKeep <- !(names(cfgList[["extraColumnNames"]]) %in% metaGlobal)
+  cfgList[["extraColumnNames"]] <-
+    cfgList[["extraColumnNames"]][toKeep]
 
 
 # Add defaults ------------------------------------------------------------
@@ -108,7 +108,7 @@ generic_parseData <- function(fileString = NULL,
 
 # Regularize data types ---------------------------------------------------
 
-  configurationList["headerRows"] <- as.integer(configurationList[["headerRows"]])
+  cfgList["headerRows"] <- as.integer(cfgList[["headerRows"]])
 
 
 # Parse data --------------------------------------------------------------
@@ -134,7 +134,7 @@ generic_parseData <- function(fileString = NULL,
   # Read string as individual lines, skipping the header rows
   dataLines <- readr::read_csv(
     fileString,
-    skip = as.integer(configurationList$header_rows)
+    skip = as.integer(cfgList$header_rows)
   )
 
   ## TODO: additional formatting based on monitor/source type?
