@@ -1,7 +1,7 @@
 generic_parseData <- function(fileString = NULL,
                               configurationList = NULL) {
 
-# Validate input ---------------------------------------------------------------
+# Validate input ----------------------------------------------------------
 
   # Make sure fileString is a string (one element character vector)
   if (
@@ -10,7 +10,6 @@ generic_parseData <- function(fileString = NULL,
   ) {
     stop("`fileString` must be a character vector of length one.")
   }
-
 
   # If `configurationList` is a string, make sure it's valid JSON, then
   # convert to a list.
@@ -35,51 +34,102 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-# Parse configuration list -----------------------------------------------------
+# Parse configuration list ------------------------------------------------
 
-  # Make sure the configuration list contains all the required information
-  requiredParams <- c(
+  ## Steps:
+  #  - check required parameters
+  #  - check required column names
+  #  - check required meta parameters
+  #  - add missing defaults
+  #  - regularize data types
+
+
+# Check if all required parameters are present ----------------------------
+
+  reqParams <- c(
     "headerRows", "columnTypes", "requiredColumnNames"
   )
 
-  metaParams <- c(
-    "monitorID", "latitude", "longitude", "timezone"
-  )
-
-  # Find the set of meta parameters that don't exist at the top level of
-  # `configurationlist`, and make sure they exist in
-  # `configurationlist$extraColumnNames`.
-
-
-
-
-  # convert to appropriate data types
-  configurationList["headerRows"] <- as.integer(configurationList[["headerRows"]])
-
-
-
-  if (!all(requiredParams %in% names(configurationList))) {
+  if (!all(reqParams %in% names(configurationList))) {
     stop(paste0(
       "`configurationList` must contain entries for all of the following:\n",
-      paste(requiredParams, collapse = ", ")
+      paste(reqParams, collapse = ", ")
     ))
   }
 
 
-# Parse data -------------------------------------------------------------------
+# Check if required column names are present ------------------------------
 
-  # SPENCER:  include support for locale information is in this example from airsis_downloadHourlyData.R
-  #
-  # # NOTE:  Even after the move to Amazon web services, they still have some enoding issues
-  # # NOTE:  e.g. 12/26/16|00:00|000051501|Z<82>phirin|-5|OZONE|PPB|39|Meteorological Service of Canada
-  # locale <- readr::locale(encoding="CP437")
-  #
-  # # Read in text as a dataframe
-  # df <- readr::read_delim(url, delim='|', col_names=col_names, col_types=col_types, locale=locale)
+  reqColNames <- c("datetime", "pm25")
 
-  # SPENCER:  Also include support for delimiters other than ','. For instance,
-  # SPENCER:  most Europeans use ',' for the decimal point and have spreadsheet
-  # SPENCER:  columns delimited by ';'.
+  if (!all(reqColNames %in% names(configurationList[["requiredColumnNames"]]))) {
+    stop(paste0(
+      "`configurationList$requiredColumnNames` must contain entries for all of",
+      "the following:\n",
+      paste(reqColNames, collapse = ", ")
+    ))
+  }
+
+
+# Check if meta parameters are present ------------------------------------
+
+  # Find the set of required meta parameters that don't exist at the top level
+  # of `configurationlist`, and make sure they exist in
+  # `configurationlist$extraColumnNames`
+
+  reqMetaParams <- c(
+    "monitorID", "latitude", "longitude", "timezone"
+  )
+
+  metaInGlobal <- reqMetaParams %in% names(configurationList)
+  metaGlobal <- reqMetaParams[metaInGlobal]
+  metaExtra <- reqMetaParams[!metaInGlobal]
+
+  if (!all(metaExtra %in% names(configurationList[["extraColumnNames"]]))) {
+    stop(paste0(
+      "The following parameters must either be specified at the top",
+      "level of the configuration list, or in a 'extraColumnNames' sublist:\n",
+      paste(reqMetaParams, collapse = ", ")
+    ))
+  }
+
+  # remove meta parameters in `configurationlist$extraColumnNames` that also
+  # exist at the top level of `configurationList`
+
+  toKeep <- !(names(configurationList[["extraColumnNames"]]) %in% metaGlobal)
+  configurationList[["extraColumnNames"]] <-
+    configurationList[["extraColumnNames"]][toKeep]
+
+
+# Add defaults ------------------------------------------------------------
+
+
+
+
+# Regularize data types ---------------------------------------------------
+
+  configurationList["headerRows"] <- as.integer(configurationList[["headerRows"]])
+
+
+# Parse data --------------------------------------------------------------
+
+  ## SPENCER:
+  #  include support for locale information is in this example from
+  #  airnow_downloadHourlyData.R:
+  #
+  #  Even after the move to Amazon web services, they still have some enoding
+  #  issues e.g.
+  #  12/26/16|00:00|000051501|Z<82>phirin|-5|OZONE|PPB|39|Meteorological Service of Canada
+  #
+  #  locale <- readr::locale(encoding="CP437")
+  #
+  #  # Read in text as a dataframe
+  #  df <- readr::read_delim(url, delim='|', col_names=col_names, col_types=col_types, locale=locale)
+
+  ## SPENCER:
+  #  Also include support for delimiters other than ','. For instance, most
+  #  Europeans use ',' for the decimal point and have spreadsheet columns
+  #  delimited by ';'.
 
   # Read string as individual lines, skipping the header rows
   dataLines <- readr::read_csv(
@@ -90,12 +140,12 @@ generic_parseData <- function(fileString = NULL,
   ## TODO: additional formatting based on monitor/source type?
 
 
-# Check for parsing problems ---------------------------------------------------
+# Check for parsing problems ----------------------------------------------
 
   readr::stop_for_problems(tbl)
 
 
-# Return parsed data -----------------------------------------------------------
+# Return parsed data ------------------------------------------------------
 
   return(tbl)
 
