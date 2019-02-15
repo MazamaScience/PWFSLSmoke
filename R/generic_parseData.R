@@ -42,6 +42,8 @@ generic_parseData <- function(fileString = NULL,
     }
   }
 
+  # TODO: should we still convert to lowercase?
+
   if (is.null(names(configList))) {
     stop("The configuration list must be convertable to a named list. No names detected.")
   } else {
