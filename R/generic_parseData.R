@@ -141,6 +141,14 @@ generic_parseData <- function(fileString = NULL,
 
 # Format column names -----------------------------------------------------
 
+  # TODO: How to capture global (top level) metadata that isn't required?
+
+  # Standardize column names and append data given at the top level of
+  # `configList`
+  dataTbl <- dataTbl %>%
+    rename(!!!configList[["requiredColumnNames"]]) %>%
+    rename(!!!configList[["extraColumnNames"]]) %>%
+    mutate(!!!configList[metaGlobal])
 
 
 # Return parsed data ------------------------------------------------------
