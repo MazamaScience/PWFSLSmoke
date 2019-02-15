@@ -1,18 +1,3 @@
-#' @title Parse generic files
-#'
-#' @description
-#'
-#' @param fileString
-#' @param configList
-#'
-#' @return
-#'
-#' @details
-#'
-#' @importFrom magrittr %<>%
-#' @export
-#'
-#' @examples
 generic_parseData <- function(fileString = NULL,
                               configList = NULL) {
 
@@ -52,17 +37,17 @@ generic_parseData <- function(fileString = NULL,
 # Parse configuration list ------------------------------------------------
 
   ## Steps:
-  #  - Check required parameters
-  #  - Check column names
-  #  - Check station metadata
-  #  - Check parsing info
+  #  - check required parameters
+  #  - check required column names
+  #  - check required meta parameters
+  #  - add missing defaults
   #  - regularize data types
 
 
-# * Check required parameters ---------------------------------------------
+# * Check if all required parameters are present --------------------------
 
   reqParams <- c(
-    "columnnames", "stationmeta", "parsinginfo"
+    "headerRows", "columnTypes", "requiredColumnNames"
   )
 
   if (!all(reqParams %in% names(configList))) {
@@ -73,70 +58,65 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-# * Check column names ----------------------------------------------------
+# * Check if required column names are present ----------------------------
 
   reqColNames <- c("datetime", "pm25")
 
-  if (!all(reqColNames %in% names(configList[["columnnames"]]))) {
+  if (!all(reqColNames %in% names(configList[["requiredColumnNames"]]))) {
     stop(paste0(
-      "`configList$columnnames` must contain entries for all of",
+      "`configList$requiredColumnNames` must contain entries for all of",
       "the following:\n",
       paste(reqColNames, collapse = ", ")
     ))
   }
 
 
-# * Check station metadata ------------------------------------------------
+# * Check if meta parameters are present ----------------------------------
 
-  reqMeta <- c(
-    "latitude", "longitude"
+  # Find the set of required meta parameters that don't exist at the top level
+  # of `configList`, and make sure they exist in
+  # `configList$extraColumnNames`
+
+  reqMetaParams <- c(
+    "monitorID", "latitude", "longitude", "timezone"
   )
 
-  if (!all(reqMeta %in% names(configList[["stationmeta"]]))) {
+  metaInGlobal <- reqMetaParams %in% names(configList)
+  metaGlobal <- reqMetaParams[metaInGlobal]
+  metaExtra <- reqMetaParams[!metaInGlobal]
+
+  if (!all(metaExtra %in% names(configList[["extraColumnNames"]]))) {
     stop(paste0(
-      "configList$stationmeta must contain entries for all of the following:\n",
-      paste(reqMeta, collapse = ", ")
+      "The following parameters must either be specified at the top",
+      "level of the configuration list, or in a 'extraColumnNames' sublist:\n",
+      paste(reqMetaParams, collapse = ", ")
     ))
   }
 
-  extraMeta <- c(
-    "sitename"
-  )
+  # Remove meta parameters in `configList$extraColumnNames` that also
+  # exist at the top level of `configList` (ie the top level has priority)
 
-  includedExtraMeta <-
-    extraMeta[extraMeta %in% names(configList[["stationmeta"]])]
+  toKeep <- !(names(configList[["extraColumnNames"]]) %in% metaGlobal)
+  configList[["extraColumnNames"]] <-
+    configList[["extraColumnNames"]][toKeep]
 
 
-# * Check parsing info ----------------------------------------------------
-
-  reqParsing <- c(
-    "headerRows", "columnTypes"
-  )
-
-  if (!all(reqParsing %in% names(configList[["parsinginfo"]]))) {
-    stop(paste0(
-      "configList$parsinginfo must contain entries for all of the following:\n",
-      paste(reqMeta, collapse = ", ")
-    ))
-  }
+# * Add defaults ----------------------------------------------------------
 
   defaultParams <- list(
-    tz = "UTC",
+    timezone = "UTC",
     decimalMark = ".",
     groupingMark = ",",
     delimiter = ",",
     encoding = "UTF-8"
   )
 
-  configList[["parsinginfo"]] <-
-    purrr::list_modify(defaultParams, !!!configList[["parsinginfo"]])
+  configList <- purrr::list_modify(defaultParams, !!!configList)
 
 
 # * Regularize data types -------------------------------------------------
 
-  configList[["parsinginfo"]][["headerRows"]] %<>% as.integer()
-  configList[["stationmeta"]][["longitude"]] %<>% as.numeric()
-  configList[["stationmeta"]][["latitude"]] %<>% as.numeric()
+  configList["headerRows"] <- as.integer(configList[["headerRows"]])
 
 
 # Parse data --------------------------------------------------------------
@@ -144,7 +124,7 @@ generic_parseData <- function(fileString = NULL,
   genericLocale <- readr::locale(
     decimal_mark = configList[["decimalMark"]],
     grouping_mark = configList[["groupingMark"]],
-    tz = configList[["tz"]],
+    tz = configList[["timezone"]],
     encoding = configList[["encoding"]]
   )
 
@@ -161,13 +141,14 @@ generic_parseData <- function(fileString = NULL,
 
 # Format column names -----------------------------------------------------
 
-  selectedCols <- c(reqColNames, includedExtraMeta)
+  # TODO: How to capture global (top level) metadata that isn't required?
 
-  # Standardize column names and append station metadata
+  # Standardize column names and append data given at the top level of
+  # `configList`
   dataTbl <- dataTbl %>%
-    rename(!!!configList[["columnnames"]]) %>%
-    mutate(!!!configList[["stationmeta"]]) %>%
-    select(selectedCols)
+    rename(!!!configList[["requiredColumnNames"]]) %>%
+    rename(!!!configList[["extraColumnNames"]]) %>%
+    mutate(!!!configList[metaGlobal])
 
 
 # Return parsed data ------------------------------------------------------
