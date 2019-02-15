@@ -47,7 +47,7 @@ generic_parseData <- function(fileString = NULL,
   if (is.null(names(configList))) {
     stop("The configuration list must be convertable to a named list. No names detected.")
   } else {
-    names(configList) <- tolower(names(configList))
+    names(configList) %<>% tolower()
   }
 
 
@@ -150,7 +150,7 @@ generic_parseData <- function(fileString = NULL,
     encoding = configList[["encoding"]]
   )
 
-  dataTbl <- readr::delim(
+  dataTbl <- readr::read_delim(
     fileString,
     configList[["delimiter"]],
     col_types = configList[["columnTypes"]],
