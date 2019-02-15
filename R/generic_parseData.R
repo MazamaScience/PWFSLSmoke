@@ -93,7 +93,7 @@ generic_parseData <- function(fileString = NULL,
     ))
   }
 
-  # remove meta parameters in `configList$extraColumnNames` that also
+  # Remove meta parameters in `configList$extraColumnNames` that also
   # exist at the top level of `configList` (ie the top level has priority)
 
   toKeep <- !(names(configList[["extraColumnNames"]]) %in% metaGlobal)
@@ -119,42 +119,32 @@ generic_parseData <- function(fileString = NULL,
   configList["headerRows"] <- as.integer(configList[["headerRows"]])
 
 
-  # Parse data --------------------------------------------------------------
+# Parse data --------------------------------------------------------------
 
-  ## SPENCER:
-  #  include support for locale information is in this example from
-  #  airnow_downloadHourlyData.R:
-  #
-  #  Even after the move to Amazon web services, they still have some enoding
-  #  issues e.g.
-  #  12/26/16|00:00|000051501|Z<82>phirin|-5|OZONE|PPB|39|Meteorological Service of Canada
-  #
-  #  locale <- readr::locale(encoding="CP437")
-  #
-  #  # Read in text as a dataframe
-  #  df <- readr::read_delim(url, delim='|', col_names=col_names, col_types=col_types, locale=locale)
-
-  ## SPENCER:
-  #  Also include support for delimiters other than ','. For instance, most
-  #  Europeans use ',' for the decimal point and have spreadsheet columns
-  #  delimited by ';'.
-
-  # Read string as individual lines, skipping the header rows
-  dataLines <- readr::read_csv(
-    fileString,
-    skip = as.integer(configList$header_rows)
+  genericLocale <- readr::locale(
+    decimal_mark = configList[["decimalMark"]],
+    grouping_mark = configList[["groupingMark"]],
+    tz = configList[["timezone"]],
+    encoding = configList[["encoding"]]
   )
 
-  ## TODO: additional formatting based on monitor/source type?
+  dataTbl <- readr::delim(
+    fileString,
+    configList[["delimiter"]],
+    col_types = configList[["columnTypes"]],
+    locale = genericLocale,
+    skip = configList[["headerRows"]]
+  )
+
+  readr::stop_for_problems(dataTbl)
 
 
-  # Check for parsing problems ----------------------------------------------
+# Format column names -----------------------------------------------------
 
-  readr::stop_for_problems(tbl)
 
 
 # Return parsed data ------------------------------------------------------
 
-  return(tbl)
+  return(dataTbl)
 
 }
