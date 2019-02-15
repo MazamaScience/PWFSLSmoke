@@ -85,29 +85,28 @@ parsed by `generic_parseData()`.
 
 # Defining a Configuration List
 
-```{r create configuration}
-
-configurationList <- list(
-  headerRows = 1,
-  columnTypes = "dcddc-dddddddddddc--dcc",
-  requiredColumnNames = list(
-    datetime = "",
-    pm25 = ""
-  ),
-  extraColumnNames = list(
-    monitorID = "",
-    latitude = "",
-    longitude = "",
-    siteName = ""
-  ),
-  timezone = "UTC",
-  decimalMark = ".",
-  groupingMark = ",",
-  delimiter = "|",
-  encoding = "UTF-8"
-)
-
 ```
+configList
+  columnNames
+    datetime = "",
+    pm25 = "",
+    ...
+  stationMeta
+    latitude = 32.6,
+    longitude = -96.3,
+    siteName = "I'm a station site",
+    ...
+  parsingInfo
+    headerRows = 1
+    columnTypes = "dcddT-dddddddddddc--dcc",
+    tz = "UTC",
+    decimalMark = ".",
+    groupingMark = ",",
+    delimiter = ",",
+    encoding = "UTF-8"
+```
+
+Extra keys in `columnNames` and `stationMeta` are currently ignored.
 
 
 # Parsing Data
