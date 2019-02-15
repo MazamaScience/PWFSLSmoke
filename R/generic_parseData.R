@@ -1,7 +1,7 @@
 generic_parseData <- function(fileString = NULL,
                               configList = NULL) {
 
-  # Validate input ----------------------------------------------------------
+# Validate input ----------------------------------------------------------
 
   # Make sure fileString is a string (one element character vector)
   if (
@@ -34,7 +34,7 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-  # Parse configuration list ------------------------------------------------
+# Parse configuration list ------------------------------------------------
 
   ## Steps:
   #  - check required parameters
@@ -44,7 +44,7 @@ generic_parseData <- function(fileString = NULL,
   #  - regularize data types
 
 
-  # Check if all required parameters are present ----------------------------
+# * Check if all required parameters are present --------------------------
 
   reqParams <- c(
     "headerRows", "columnTypes", "requiredColumnNames"
@@ -58,7 +58,7 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-  # Check if required column names are present ------------------------------
+# * Check if required column names are present ----------------------------
 
   reqColNames <- c("datetime", "pm25")
 
@@ -71,7 +71,7 @@ generic_parseData <- function(fileString = NULL,
   }
 
 
-  # Check if meta parameters are present ------------------------------------
+# * Check if meta parameters are present ----------------------------------
 
   # Find the set of required meta parameters that don't exist at the top level
   # of `configList`, and make sure they exist in
@@ -94,14 +94,14 @@ generic_parseData <- function(fileString = NULL,
   }
 
   # remove meta parameters in `configList$extraColumnNames` that also
-  # exist at the top level of `configList`
+  # exist at the top level of `configList` (ie the top level has priority)
 
   toKeep <- !(names(configList[["extraColumnNames"]]) %in% metaGlobal)
   configList[["extraColumnNames"]] <-
     configList[["extraColumnNames"]][toKeep]
 
 
-  # Add defaults ------------------------------------------------------------
+# * Add defaults ----------------------------------------------------------
 
   defaultParams <- list(
     timezone = "UTC",
@@ -114,7 +114,7 @@ generic_parseData <- function(fileString = NULL,
   configList <- purrr::list_modify(defaultParams, !!!configList)
 
 
-  # Regularize data types ---------------------------------------------------
+# * Regularize data types -------------------------------------------------
 
   configList["headerRows"] <- as.integer(configList[["headerRows"]])
 
@@ -153,7 +153,7 @@ generic_parseData <- function(fileString = NULL,
   readr::stop_for_problems(tbl)
 
 
-  # Return parsed data ------------------------------------------------------
+# Return parsed data ------------------------------------------------------
 
   return(tbl)
 
