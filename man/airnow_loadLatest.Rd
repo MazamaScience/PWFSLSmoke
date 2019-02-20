@@ -31,7 +31,7 @@ contain data for the previous 10 days.
 
 For daily updates covering the most recent 45 days, use \code{airnow_loadDaily()}.
 
-For data extended more than 45 days into the past, use \code{airnow_load()}.
+For data extended more than 45 days into the past, use \code{airnow_loadAnnual()}.
 
 AirNow parameters include the following:
 \enumerate{
@@ -45,11 +45,11 @@ Avaialble RData and associated log files can be seen at:
 \dontrun{
 airnow_loadLatest() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
-  monitorMap()
+  monitor_map()
 }
 }
 \seealso{
-\code{\link{airnow_load}}
+\code{\link{airnow_loadAnnual}}
 
 \code{\link{airnow_loadDaily}}
 }

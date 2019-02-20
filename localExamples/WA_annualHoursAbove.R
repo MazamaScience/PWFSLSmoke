@@ -13,7 +13,7 @@ annual <- wa
 annual$data <- wa$data[1,]
 annual$data[1,-1] <- annualHours
 
-monitorMap(annual, slice = 1)
+monitor_map(annual, slice = 1)
 
 # Fourth of July plot ----------------------------------------------------------
 
@@ -30,7 +30,7 @@ for ( year in 2000:2018 ) {
   monitor_loadAnnual(year) %>%
     monitor_subset(stateCodes = 'WA', tlim = c(july4,july6)) %>%
     monitor_dailyStatistic(FUN = max, dayStart = "sunrise") %>%
-    monitorMap(slice = 1, cex=2)
+    monitor_map(slice = 1, cex=2)
 
   title(paste0('Fourth of July in ', year))
 

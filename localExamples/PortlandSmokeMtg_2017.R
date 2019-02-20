@@ -3,15 +3,16 @@ library(PWFSLSmoke)
 
 # Washington, Oregon August 22, 2015 ------------------------------------------
 
-pnw <- airnow_load(20150731, 20150901, stateCodes=c('or','wa'))
+pnw <- monitor_loadAnnual(2015) %>%
+  monitor_subset(stateCodes=c('or','wa'), tlim=c(20150731,20150901))
 
 # Timeseries overview
-monitorPlot_timeseries(pnw, style='gnats')
+monitor_timeseriesPlot(pnw, style='gnats')
 
 # Oklahoma recent -------------------------------------------------------------
 
-latest <- airnow_loadLatest()
-ok <- monitor_subset(latest, stateCodes='OK')
-monitorMap(ok)
+monitor_loadLatest() %>%
+  monitor_subset(stateCodes='OK') %>%
+  monitor_map()
 
 

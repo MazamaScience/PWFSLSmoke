@@ -13,7 +13,7 @@ monitor_loadAnnual(year = NULL, parameter = "PM2.5",
 
 \item{parameter}{Parameter of interest.}
 
-\item{baseUrl}{Base URL for 'daily' AirNow data files.}
+\item{baseUrl}{Base URL for data files.}
 
 \item{dataDir}{Local directory containing 'daily' data files.}
 
@@ -51,7 +51,7 @@ Avaialble RData files can be seen at:
 \dontrun{
 monitor_loadAnnual(2014) \%>\%
   monitor_subset(stateCodes='MT', tlim=c(20140801,20140901)) \%>\%
-  monitorMap()
+  monitor_map()
 }
 }
 \seealso{

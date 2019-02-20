@@ -10,7 +10,7 @@ loadLatest()
 A \emph{ws_monitor} object with PM2.5 monitoring data.
 }
 \description{
-Wrapper function to load and combine the most recent 
+Wrapper function to load and combine the most recent
 data from AirNow, AIRSIS and WRCC:
 
 \preformatted{

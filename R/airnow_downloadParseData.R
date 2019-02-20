@@ -1,14 +1,14 @@
 #' @keywords AirNow
 #' @export
-#' @importFrom magrittr '%>%'
+#' @import MazamaCoreUtils
 #' @title Download and Aggregate Multiple Hourly Data Files from AirNow
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
 #' @description This function makes repeated calls to \link{airnow_downloadHourlyData}
-#' to obtain data from AirNow. All data obtained are then 
+#' to obtain data from AirNow. All data obtained are then
 #' combined into a single tibble and returned.
-#' 
+#'
 #' Parameters included in AirNow data include at least the following list:
 #' \enumerate{
 #' \item{BARPR}
@@ -33,10 +33,10 @@
 #' \item{WD}
 #' \item{WS}
 #' }
-#' 
-#' Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
+#'
+#' Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting
 #' tibble to be filtered to contain only records for those parameters.
-#' 
+#'
 #' @note As of 2016-12-27, it appears that hourly data are available only for 2016 and
 #' not for earlier years.
 #' @return Tibble of aggregated AirNow data.
@@ -50,23 +50,23 @@
 airnow_downloadParseData <- function(parameters=NULL,
                                      startdate=strftime(lubridate::now(),"%Y%m%d00",tz="UTC"),
                                      hours=24) {
-  
+
   # Format the startdate integer using lubridate
   starttime <- parseDatetime(startdate)
-  
+
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   tblList <- vector(mode="list", length=hours)
-  
+
   logger.debug("Downloading %d hourly data files from AirNow ...",hours)
-  
+
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {
-    
+
     datetime <- starttime + lubridate::dhours(i-1)
     datestamp <- strftime(datetime, "%Y%m%d%H", tz="UTC")
-    
+
     logger.trace("Downloading AirNow data for %s", datestamp)
-    
+
     # Obtain an hour of AirNow data
     result <- try( tbl <- airnow_downloadHourlyData(datestamp),
                    silent=TRUE)
@@ -75,15 +75,15 @@ airnow_downloadParseData <- function(parameters=NULL,
       logger.warn("Unable to download data: %s",err_msg)
       next
     }
-    
+
     if ( is.null(parameters) ) {
-      
+
       tblList[[i]] <- tbl
-      
+
     } else {
-      
+
       # NOTE:  Filter inside the loop to avoid generating very large tibbles in memory
-      
+
       logger.trace("Filtering to retain only data for: %s", paste(parameters, collapse=", "))
       # Generate a mask of records to retain
       parametersMask <- rep(FALSE, nrow(tbl))
@@ -96,21 +96,21 @@ airnow_downloadParseData <- function(parameters=NULL,
       }
       # Mask is complete, now apply it
       tblList[[i]] <- tbl[parametersMask,]
-      
+
     }
-    
+
   }
-  
+
   # Combine all tibbles, rmoving duplicates
   tbl <- dplyr::bind_rows(tblList) %>%
     dplyr::distinct()
-  
+
   if ( is.null(parameters) ) {
     logger.debug("Downloaded and parsed %d rows of AirNow data", nrow(tbl))
   } else {
     logger.debug("Downloaded and parsed %d rows of AirNow data for: %s", nrow(tbl), paste(parameters, collapse=", "))
   }
-  
+
   return(tbl)
-  
+
 }

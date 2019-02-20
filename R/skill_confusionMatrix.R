@@ -34,7 +34,7 @@
 #'   \item{probForecastOccurance}{ = prevalence = (TP + FP) / total}
 #'   \item{balancedAccuracy}{ = (TPRate + TNRate) / 2}
 #'   \item{expectedAccuracy}{ = (((TP + FP) * (TP + FN) / total) + ((FP + TN) * sum(FN + TN) / total )) / total}
-#'   \item{heidikeSkill}{ = kappa = (accuracy - expectedAccuracy) / (1 - expectedAccuracy)}
+#'   \item{heidkeSkill}{ = kappa = (accuracy - expectedAccuracy) / (1 - expectedAccuracy)}
 #'   \item{bias}{ = (TP + FP) / (TP + FN)}
 #'   \item{hitRate}{ = TP / (TP + FN)}
 #'   \item{falseAlarmRate}{ = FP / (FP + TN)}
@@ -151,7 +151,7 @@ skill_confusionMatrix <- function(predicted, observed,
     falseAlarmRate <- FP / (FP + TN)
     falseAlarmRatio <- PPV
     proportionCorrect <- accuracy
-    heidikeSkill <- kappa
+    heidkeSkill <- kappa
     pierceSkill <- ((TP * TN) - (FP * FN)) / ((FP + TN) * (TP + FN))
     criticalSuccess <- TP / (TP + FP + FN)
     oddsRatioSkill <- yulesQ <- ((TP * TN) - (FP * FN)) / ((TP * TN) + (FP * FN))
@@ -164,7 +164,7 @@ skill_confusionMatrix <- function(predicted, observed,
                     detectionRate, detectionPrevalence, balancedAccuracy,
                     expectedAccuracy, kappa, cost,
                     hitRate, falseAlarmRate, falseAlarmRatio, proportionCorrect,
-                    oddsRatioSkill, heidikeSkill, pierceSkill, criticalSuccess, yulesQ)
+                    oddsRatioSkill, heidkeSkill, pierceSkill, criticalSuccess, yulesQ)
     names(returnList) <- c('table', 'TPRate', 'FPRate', 'TNRate', 'FNRate',
                         'PPV', 'FDR', 'NPV', 'FOR',
                         'accuracy', 'errorRate', 'sensitivity', 'recall', 'specificity',
@@ -172,7 +172,7 @@ skill_confusionMatrix <- function(predicted, observed,
                         'detectionRate', 'detectionPrevalence', 'balancedAccuracy',
                         'expectedAccuracy', 'kappa', 'cost',
                         'hitRate', 'falseAlarmRate', 'falseAlarmRatio', 'proportionCorrect',
-                        'oddsRatioSkill', 'heidikeSkill', 'pierceSkill', 'criticalSuccess', 'yulesQ')
+                        'oddsRatioSkill', 'heidkeSkill', 'pierceSkill', 'criticalSuccess', 'yulesQ')
 
   }
 

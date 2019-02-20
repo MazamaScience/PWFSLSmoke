@@ -50,7 +50,7 @@ a wide range of common statistics including:
   \item{probForecastOccurance}{ = prevalence = (TP + FP) / total}
   \item{balancedAccuracy}{ = (TPRate + TNRate) / 2}
   \item{expectedAccuracy}{ = (((TP + FP) * (TP + FN) / total) + ((FP + TN) * sum(FN + TN) / total )) / total}
-  \item{heidikeSkill}{ = kappa = (accuracy - expectedAccuracy) / (1 - expectedAccuracy)}
+  \item{heidkeSkill}{ = kappa = (accuracy - expectedAccuracy) / (1 - expectedAccuracy)}
   \item{bias}{ = (TP + FP) / (TP + FN)}
   \item{hitRate}{ = TP / (TP + FN)}
   \item{falseAlarmRate}{ = FP / (FP + TN)}

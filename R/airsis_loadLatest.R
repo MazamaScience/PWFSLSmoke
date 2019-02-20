@@ -17,7 +17,7 @@
 #'
 #' For daily updates covering the most recent 45 days, use \code{airsis_loadDaily()}.
 #'
-#' For data extended more than 45 days into the past, use \code{airsis_load()}.
+#' For data extended more than 45 days into the past, use \code{airsis_loadAnnual()}.
 #'
 #' AIRSIS parameters include the following:
 #' \enumerate{
@@ -46,13 +46,13 @@
 #'
 #' Avaialble RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}
-#' @seealso \code{\link{airsis_load}}
+#' @seealso \code{\link{airsis_loadAnnual}}
 #' @seealso \code{\link{airsis_loadDaily}}
 #' @examples
 #' \dontrun{
 #' airsis_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 airsis_loadLatest <- function(parameter = 'PM2.5',

@@ -32,7 +32,7 @@ wrcc_2015 <- wrcc_load()
 Create some maps and plots to get an idea about what the data looks like. 
 
 ```{r mapping}
-monitorLeaflet(wrcc_2015)
+monitor_leaflet(wrcc_2015)
 ```
 
 ```{r, eval=FALSE}
@@ -56,7 +56,7 @@ ggplot(counts2015, aes(time, count))+
 ```
   
 
-Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. monitorEsriMap() will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and is very similar to monitorGoogleMap except that it uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is monitorMap() which plots the points over polygons instead of a map image. 
+Now that we've seen when the data was, let's look at where it is. There are several different options for plotting monitors from a ws_monitor object. `monitor_esriMap()` will plot points for each monitor with AQI colors indicating the maximum PM2.5 value using a map from ESRI, and uses R's base plotting capabilities so it is easier to add points or polygons on top. The other option is `monitor_map()` which plots the points over polygons instead of a map image. 
   
 ```{r monthly_maps, fig.width = 8, fig.height=24.5}
 # Get the bbox for the map
@@ -82,7 +82,7 @@ for ( month in 1:12) {
   plot(0,0,col="transparent", axes = F)
   text(0,0,month_str, srt = 90, cex = 1.5)
   
-  monitorEsriMap(ws_monitor2015, mapRaster = basemap)
+  monitor_esriMap(ws_monitor2015, mapRaster = basemap)
   box("figure", col = 'gray50')
   plot.new()
   plot.new()
@@ -99,14 +99,14 @@ sisk2015 <- wrcc_2015
 
 ```{r plot monitors, fig.width=7, fig.height=3}
 loadSpatialData("USCensusCounties")
-monitorMap(sisk2015, cex = 2)
+monitor_map(sisk2015, cex = 2)
 title("2015", cex.main = 3)
 ```
 
 Now, let's take a look at the pm2.5 data from each year. 
 
 ```{r gnatplots, fig.height = 9}
-monitorPlot_timeseries(sisk2015, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
+monitor_timeseriesPlot(sisk2015, style='gnats', xlab = "", localTime = FALSE, ylim = c(0,800))
 mtext("2015", 4, padj = 1)
 title("All pm2.5 readings from monitors in Okanogan County")
 ```
@@ -116,25 +116,25 @@ Just from looking at these plots, we can say some things about the fire season i
 We can see that 2015 and 2017 had more smoke, and for a longer time, than 2016. Using this as a proxy for fire intensity and duration, we can say that 2015 and 2017 had longer fire seasons than 2016. It appears that there were two distinct smoke events in 2016, the first much more intense than the second. Upon closer examination, however, we see that there is no data from 2016 between September 23 and October 5. 
 
 ```{r missingData, eval=FALSE}
-monitorPlot_timeseries(sisk2016, tlim = c(20160920, 20161010), type = "l")
+monitor_timeseriesPlot(sisk2016, tlim = c(20160920, 20161010), type = "l")
 ```
 
 Let's look a little closer at the smokiest part of the summer for the three years: July to October.
 
 ```{r dygraphs, eval = FALSE}
-monitorDygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
+monitor_dygraph(sisk2015, tlim = c(20150701, 20151001), title = "2015")
 ```
 
 Zooming in closer, a periodic pattern emerges between the dramatic smoke events. 
 
 ```{r Yreka_Dygraph, eval=FALSE}
-monitorDygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
+monitor_dygraph(title = "2017", monitor_subset(sisk2017), tlim = c(20170708, 20170720))
 ```
 
 Let's see how PM2.5 levels change throughout the day for one monitor. This plot shows the hourly PM2.5 values from every day between July 8 - July 20 overlaid on top of each other with the mean in a darker color. 
 
 ```{r monitor_spaghetti, eval=FALSE}
-monitorPlot_timeOfDaySpaghetti(monitor_subset(sisk2017, monitorID="lon_.122.634_lat_41.727_apcd.1014"), tlim = c(20170708, 20170720), title = "Yreka Jul 8 - Jul 20 2017")
+# monitorPlot_timeOfDaySpaghetti() is now defunct, see `?monitorPlot_timeOfDaySpaghetti()`
 ```
 
 Air quality in this location tends to peak around 9am, and disappate throughout the day. Smoke will settle in valleys when there is little wind, then disappate when winds pick back up again, so patterns like this are due to the typical weather patterns in the area.
@@ -149,7 +149,7 @@ fireStartDate <- strptime(c("20170815", "20170813", "20170725"), format = "%Y%m%
 fireEndDate <- strptime(c("20171010", "20171020", "20171012"), format = "%Y%m%d")
 fireDF <- data.frame(name = fireNames, longitude =fireLongitudes, latitude = fireLatitudes, 
                      startDate = fireStartDate, endDate = fireEndDate)
-monitorMap(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
+monitor_map(sisk2017, ylim = c(40.8, 42.15), xlim = c(-124.4, -121), cex = 0)
 addMarker(sisk2017$meta$longitude, sisk2017$meta$latitude, color = "blue")
 addIcon('orangeFlame', fireDF$longitude, fireDF$latitude, expansion = .001)
 text(fireLongitudes, fireLatitudes, fireNames, pos = 1)
@@ -160,7 +160,7 @@ Let's see if the timing of the fires lines up with spikes in PM2.5 concentration
 ```{r, eval=FALSE}
 # Join the monitors into one monitor object with average PM2.5 values
 collapsed2017 <- monitor_collapse(sisk2017, monitorID = "Okanogan_2017")
-monitorPlot_timeseries(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40")
+monitor_timeseriesPlot(collapsed2017, tlim = c(20170701, 20171101), type = "l", ylim = c(-78, 400), col = "gray40")
 title("Okanogan County, CA 2017 fires and smoke")
 abline(0,0,col = 'gray80')
 

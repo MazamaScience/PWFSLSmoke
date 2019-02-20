@@ -17,7 +17,7 @@
 #'
 #' For the most recent data, use \code{airnow_loadLatest()}.
 #'
-#' For data extended more than 45 days into the past, use \code{airnow_load()}.
+#' For data extended more than 45 days into the past, use \code{airnow_loadAnnual()}.
 #'
 #' AirNow parameters include the following:
 #' \enumerate{
@@ -46,13 +46,13 @@
 #'
 #' Available AirNow RData and associated log files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/AirNow/RData/latest}{https://haze.airfire.org/monitoring/AirNow/RData/latest}
-#' @seealso \code{\link{airnow_load}}
+#' @seealso \code{\link{airnow_loadAnnual}}
 #' @seealso \code{\link{airnow_loadLatest}}
 #' @examples
 #' \dontrun{
 #' airnow_loadDaily() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 airnow_loadDaily <- function(parameter = 'PM2.5',

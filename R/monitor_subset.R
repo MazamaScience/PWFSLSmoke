@@ -15,8 +15,8 @@
 #' @description Creates a subset \emph{ws_monitor} based on one or more optional input parameters.
 #' If any input parameter is not specified, that parameter will not be used to subset \code{ws_monitor}.
 #' @details By default, this function will return a \emph{ws_monitor} object whose \code{data} dataframe has the
-#' same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s, 
-#' in which case such columns will be removed (\emph{e.g.} if there are no valid data for a specific monitor 
+#' same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s,
+#' in which case such columns will be removed (\emph{e.g.} if there are no valid data for a specific monitor
 #' after subsetting by \code{tlim} or \code{vlim}).
 #'If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
 #' @examples
@@ -24,7 +24,7 @@
 #' xlim <- c(-124.73, -122.80)
 #' ylim <- c(47.20, 48.40)
 #' Olympic_Peninsula <- monitor_subset(N_M, xlim, ylim)
-#' monitorMap(Olympic_Peninsula, cex=2)
+#' monitor_map(Olympic_Peninsula, cex=2)
 #' rect(xlim[1], ylim[1], xlim[2], ylim[2], col=adjustcolor('black',0.1))
 
 # TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting
@@ -39,14 +39,14 @@ monitor_subset <- function(ws_monitor,
                            countryCodes=NULL,
                            dropMonitors=TRUE,
                            timezone="UTC") {
-  
+
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
-  
+
   # subset metadata
-  meta <- monitor_subsetMeta(ws_monitor$meta, xlim=xlim, ylim=ylim, 
+  meta <- monitor_subsetMeta(ws_monitor$meta, xlim=xlim, ylim=ylim,
                              stateCodes=stateCodes, countryCodes=countryCodes,monitorIDs=monitorIDs)
-  
+
   # sanity check
   if ( nrow(meta) == 0 ) {
     warning("No matching monitors found")
@@ -56,17 +56,17 @@ monitor_subset <- function(ws_monitor,
     ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
     return (ws_monitor)
   }
-  
+
   # Determine potentially reduced subset of monitorIDs
   # NOTE:  We can only work with monitors that have metadata and data
   # NOTE:  so only inclde those in the list of valid monitors.
   dataMonIDs <- colnames(ws_monitor$data)[-1]
   validMonIDs <- dplyr::intersect(meta$monitorID, dataMonIDs)
-  
+
   # Subset data based on time, values and monitorIDs
   data <- monitor_subsetData(ws_monitor$data, tlim=tlim, vlim=vlim,
                              monitorIDs=validMonIDs, dropMonitors=dropMonitors, timezone=timezone)
-  
+
   # sanity check
   if ( ncol(data) == 1 ) {
     warning("No matching monitors found")
@@ -75,15 +75,15 @@ monitor_subset <- function(ws_monitor,
     ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
     return (ws_monitor)
   }
-  
+
   # Determine potentially reduced subset of monitorIDs due to tlim, vlim constraints
   validMonIDs <- names(data)[-1]
-  
+
   # Subset metadata one more time
   meta <- monitor_subsetMeta(ws_monitor$meta, monitorIDs=validMonIDs)
-  
+
   ws_monitor <- list(meta=meta, data=data)
 
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )
-  
+
 }

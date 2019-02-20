@@ -31,7 +31,7 @@ after midnight and contain data for the previous 45 days.
 
 For the most recent data, use \code{wrcc_loadLatest()}.
 
-For data extended more than 45 days into the past, use \code{wrcc_load()}.
+For data extended more than 45 days into the past, use \code{wrcc_loadAnnual()}.
 
 WRCC parameters include the following:
 \enumerate{
@@ -45,11 +45,11 @@ Avaialble WRCC RData and associated log files can be seen at:
 \dontrun{
 wrcc_loadDaily() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
-  monitorMap()
+  monitor_map()
 }
 }
 \seealso{
-\code{\link{wrcc_load}}
+\code{\link{wrcc_loadAnnual}}
 
 \code{\link{wrcc_loadLatest}}
 }

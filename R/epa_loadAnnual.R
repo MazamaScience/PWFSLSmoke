@@ -35,7 +35,7 @@
 #' \dontrun{
 #' epa_loadAnnual(2000, "88502") %>%
 #'   monitor_subset(stateCodes = 'WA', tlim=c(20000701,20000801)) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 epa_loadAnnual <- function(year = NULL,

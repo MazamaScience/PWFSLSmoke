@@ -1,5 +1,6 @@
 #' @keywords internal
 #' @export
+#' @import MazamaCoreUtils
 #' @importFrom utils installed.packages
 #' @title Add Elevation Data to a Dataframe
 #' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})

@@ -13,10 +13,10 @@ monitor_combine(monitorList)
 A \emph{ws_monitor} object combining all monitoring data from \code{monitorList}.
 }
 \description{
-Combines a list of one or more \emph{ws_monitor} objects into a single \emph{ws_monitor} object 
+Combines a list of one or more \emph{ws_monitor} objects into a single \emph{ws_monitor} object
 by merging the \code{meta} and \code{data} dataframes from each object in \code{monitorList}.
 
-When \code{monitorList} contains only two \emph{ws_monitor} objects the \code{monitor_combine()} 
+When \code{monitorList} contains only two \emph{ws_monitor} objects the \code{monitor_combine()}
 function can be used to extend time ranges for monitorIDs that are found in both \emph{ws_monitor}
 objects. This can be used to 'grow' a \emph{ws_monitor} object by appending subsequent months
 or years. (Note, however, that this can be CPU intensive process.)
@@ -29,7 +29,7 @@ monitorList[[2]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1032
 monitorList[[3]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1033')
 monitorList[[4]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1034')
 ws_monitor <- monitor_combine(monitorList)
-monitorLeaflet(ws_monitor)
+monitor_leaflet(ws_monitor)
 }
 }
 \keyword{ws_monitor}

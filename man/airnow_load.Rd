@@ -20,29 +20,7 @@ airnow_load(year = 2017, month = NULL, parameter = "PM2.5",
 A \emph{ws_monitor} object with AirNow data.
 }
 \description{
-Loads pre-generated .RData files containing AirNow data. This function
-loads annual or monthly fiels from the data archive.
-
-For the most recent data, use \code{airnow_loadLatest()}.
-
-AirNow parameters include the following:
-\enumerate{
-\item{PM2.5}
-}
-
-Avaialble RData and associated log files can be seen at:
-\href{https://haze.airfire.org/monitoring/AirNow/RData/}{https://haze.airfire.org/monitoring/AirNow/RData/}
-}
-\examples{
-\dontrun{
-airnow <- airnow_load(2017, 09)
-airnow_conus <- monitor_subset(airnow, stateCodes=CONUS)
-monitorLeaflet(airnow_conus)
-}
-}
-\seealso{
-\code{\link{airnow_loadDaily}}
-
-\code{\link{airnow_loadLatest}}
+Please use \code{\link{airnow_loadAnnual}} instead of this
+function. It will soon be deprecated.
 }
 \keyword{AirNow}

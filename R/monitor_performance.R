@@ -17,13 +17,13 @@
 #' The requested metric is returned in a dataframe organized with one row per monitor,
 #  the same as the \code{ws_monitor$meta} dataframe. If \code{metric=NULL},
 #' all available metrics are returned.
-#' @seealso \link{monitorMap_performance}
+#' @seealso \link{monitor_performanceMap}
 #' @seealso \link{skill_confusionMatrix}
 #' @examples
 #' \dontrun{
 #' # If daily avg data were the prediciton and Spokane were
 #' # the observed, which WA State monitors had skill?
-#' wa <- airnow_load(2017) %>% monitor_subset(stateCodes='WA')
+#' wa <- airnow_loadAnnual(2017) %>% monitor_subset(stateCodes='WA')
 #' wa_dailyAvg <- monitor_dailyStatistic(wa, mean)
 #' Spokane_dailyAvg <- monitor_subset(wa_dailyAvg, monitorIDs='530630021_01')
 #' threshold <- AQI$breaks_24[4] # Unhealthy
@@ -31,11 +31,11 @@
 #'                                           Spokane_dailyAvg,
 #'                                           threshold, threshold)
 #' monitorIDs <- rownames(performanceMetrics)
-#' mask <- performanceMetrics$heidikeSkill &
-#'         !is.na(performanceMetrics$heidikeSkill)
+#' mask <- performanceMetrics$heidkeSkill &
+#'         !is.na(performanceMetrics$heidkeSkill)
 #' skillfulIDs <- monitorIDs[mask]
 #' skillful <- monitor_subset(wa_dailyAvg, monitorIDs=skillfulIDs)
-#' monitorLeaflet(skillful)
+#' monitor_leaflet(skillful)
 #' }
 
 monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost=1, FNCost=1) {

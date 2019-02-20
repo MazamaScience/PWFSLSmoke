@@ -38,8 +38,8 @@ If any input parameter is not specified, that parameter will not be used to subs
 }
 \details{
 By default, this function will return a \emph{ws_monitor} object whose \code{data} dataframe has the
-same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s, 
-in which case such columns will be removed (\emph{e.g.} if there are no valid data for a specific monitor 
+same number of columns as the incoming dataframe, unless any of the columns consist of all \code{NA}s,
+in which case such columns will be removed (\emph{e.g.} if there are no valid data for a specific monitor
 after subsetting by \code{tlim} or \code{vlim}).
 If \code{dropMonitors=FALSE}, columns that consist of all \code{NA}s will be retained.
 }
@@ -48,7 +48,7 @@ N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150701,20150731))
 xlim <- c(-124.73, -122.80)
 ylim <- c(47.20, 48.40)
 Olympic_Peninsula <- monitor_subset(N_M, xlim, ylim)
-monitorMap(Olympic_Peninsula, cex=2)
+monitor_map(Olympic_Peninsula, cex=2)
 rect(xlim[1], ylim[1], xlim[2], ylim[2], col=adjustcolor('black',0.1))
 }
 \keyword{ws_monitor}

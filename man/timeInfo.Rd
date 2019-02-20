@@ -2,32 +2,36 @@
 % Please edit documentation in R/timeInfo.R
 \name{timeInfo}
 \alias{timeInfo}
-\title{Get Time Related Information}
+\title{Get time related information}
 \usage{
 timeInfo(time, longitude = NULL, latitude = NULL, timezone = NULL)
 }
 \arguments{
-\item{time}{POSIXct vector with specified timezone}
+\item{time}{POSIXct vector with specified timezone,}
 
-\item{longitude}{longitude of the location of interest}
+\item{longitude}{Longitude of the location of interest.}
 
-\item{latitude}{latitude of the location of interest}
+\item{latitude}{Latitude of the location of interest.}
 
-\item{timezone}{Olson timezone at the location of interest}
+\item{timezone}{Olson timezone at the location of interest.}
 }
 \value{
 A dataframe with times and masks.
 }
 \description{
-Calculate the local time at the target location, sunrise, sunset and solar 
-noon times, and create several temporal masks.
+Calculate the local time at the target location, as well as
+sunrise, sunset and solar noon times, and create several temporal masks.
 
-If the \code{timezone} is provided it will be used. Otherwise, the \pkg{MazamaSpatialUtils}
-package will be used to determine the timezone from \code{longitude} and \code{latitude}.
+If the \code{timezone} is provided it will be used. Otherwise, the
+\pkg{MazamaSpatialUtils} package will be used to determine the timezone from
+\code{longitude} and \code{latitude}.
 
-The returned dataframe will have as many rows as the length of the incoming UTC \code{time} vector
-and will contain the following columns:
+The returned dataframe will have as many rows as the length of the incoming
+UTC \code{time} vector and will contain the following columns:
+
 \itemize{
+\item{\code{localStdTime_UTC} -- UTC representation of local \strong{standard} time}
+\item{\code{daylightSavings} -- logical mask = TRUE if daylight savings is in effect}
 \item{\code{localTime} -- local clock time}
 \item{\code{sunrise} -- time of sunrise on each localTime day}
 \item{\code{sunset} -- time of sunset on each localTime day}
@@ -38,8 +42,17 @@ and will contain the following columns:
 \item{\code{night} -- logical mask = opposite of day}
 }
 }
+\details{
+While the \pkg{lubridate} package makes it easy to work in local timezones,
+there is no easy way in R to work in "Local Standard Time" (LST) as is often
+required when working with air qualitiy data. EPA regulations mandate that
+daily averages be calculated based on LST.
+
+The \code{localStdTime_UTC} is primarily for use internally and provides
+an important tool for creating LST daily averages and LST axis labeling.
+}
 \examples{
-carmel <- monitor_subset(Carmel_Valley, tlim=c(20160801,20160810))
+carmel <- monitor_subset(Carmel_Valley, tlim = c(20160801,20160810))
 
 # Create timeInfo object for this monitor
 ti <- timeInfo(carmel$data$datetime,
@@ -52,10 +65,10 @@ data_day <- carmel$data[ti$day,]
 data_night <- carmel$data[ti$night,]
 
 # Build two monitor objects
-carmel_day <- list(meta=carmel$meta, data=data_day)
-carmel_night <- list(meta=carmel$meta, data=data_night)
+carmel_day <- list(meta = carmel$meta, data = data_day)
+carmel_night <- list(meta = carmel$meta, data = data_night)
 
 # Plot them
-monitorPlot_timeseries(carmel_day, shadedNight=TRUE, pch=8, col='goldenrod')
-monitorPlot_timeseries(carmel_night, pch=16, col='darkblue', add=TRUE)
+monitor_timeseriesPlot(carmel_day, shadedNight = TRUE, pch = 8, col = 'goldenrod')
+monitor_timeseriesPlot(carmel_night, pch = 16, col = 'darkblue', add = TRUE)
 }

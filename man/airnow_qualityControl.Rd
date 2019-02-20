@@ -15,7 +15,7 @@ airnow_qualityControl(df, limits = c(-Inf, Inf))
 Cleaned up dataframe of AIRSIS monitor data.
 }
 \description{
-Perform range validation on AirNow data. This function also replaces values 
+Perform range validation on AirNow data. This function also replaces values
 of \code{-999} with \code{NA}.
 }
 \seealso{

@@ -1,9 +1,13 @@
-<!-- [![Build Status](https://travis-ci.org/mazamascience/PWFSLSmoke.svg)](https://travis-ci.org/mazamascience/PWFSLSmoke)
-[![Coverage Status](https://coveralls.io/repos/mazamascience/PWFSLSmoke/badge.svg?branch=master&service=github)](https://coveralls.io/github/mazamascience/PWFSLSmoke?branch=master) -->
+---
+title: "PWFSLSmoke"
+pagetitle: PWFSLSmoke"
+---
+
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
 [![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
+[![Build Status](https://travis-ci.org/MazamaScience/PWFSLSmoke.svg?branch=master)](https://travis-ci.org/MazamaScience/PWFSLSmoke)
 
-# PWFSLSmoke R Package
+# <img src="logo.png" align="left" style="padding-right:20px;"/>  PWFSLSmoke R Package 
 
 ```
 Utilities for Working with PM2.5 Air Quality Monitoring Data
@@ -46,7 +50,7 @@ The following packages should be installed by typing the following at the RStudi
 install.packages('knitr')
 install.packages('rmarkdown')
 install.packages('MazamaSpatialUtils')
-devtools::install_github('mazamascience/PWFSLSmoke', build_vignettes=TRUE)
+devtools::install_github('MazamaScience/PWFSLSmoke', build_vignettes=TRUE)
 ```
 
 Any work with spatial data, *e.g.* assigning countries, states and timezones, will require installation of required

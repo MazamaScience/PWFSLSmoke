@@ -52,7 +52,7 @@
 #' \dontrun{
 #' monitor_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 monitor_downloadLatest <- function(parameter='PM2.5',

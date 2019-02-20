@@ -23,7 +23,7 @@ airnow_createMonitorObjects(parameters = NULL,
 List where each element contains a \emph{ws_monitor} object for a unique parameter (e.g: "PM2.5", "NOX").
 }
 \description{
-This function uses the \link{airnow_downloadParseData} function 
+This function uses the \link{airnow_downloadParseData} function
 to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
 with the PWFSLSmoke package \emph{ws_monitor} data model.
 

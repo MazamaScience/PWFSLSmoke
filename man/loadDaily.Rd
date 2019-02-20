@@ -10,7 +10,7 @@ loadDaily()
 A \emph{ws_monitor} object with PM2.5 monitoring data.
 }
 \description{
-Wrapper function to load and combine recent 
+Wrapper function to load and combine recent
 data from AirNow, AIRSIS and WRCC:
 
 \preformatted{
@@ -21,7 +21,7 @@ ws_monitor <- monitor_combine(list(airnow, airsis, wrcc))
 }
 
 The daily files are generated once a day, shortly after midnight and contain data for the
-previous 45 days. 
+previous 45 days.
 
 For the most recent data, use \code{loadLatest()}.
 

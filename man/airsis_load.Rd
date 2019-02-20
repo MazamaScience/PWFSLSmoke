@@ -16,21 +16,7 @@ airsis_load(year = 2017,
 A \emph{ws_monitor} object with AIRSIS data.
 }
 \description{
-Loads pre-generated .RData files containing AIRSIS PM2.5 data.
-
-Avaialble RData and associated log files can be seen at:
-\href{https://haze.airfire.org/monitoring/AIRSIS/RData/}{https://haze.airfire.org/monitoring/AIRSIS/RData/}
-}
-\examples{
-\dontrun{
-airsis <- airsis_load(2017)
-airsis_conus <- monitor_subset(airsis, stateCodes=CONUS)
-monitorLeaflet(airsis_conus)
-}
-}
-\seealso{
-\code{\link{airsis_loadDaily}}
-
-\code{\link{airsis_loadLatest}}
+Please use \code{\link{airsis_loadAnnual}} instead of this
+function. It will soon be deprecated.
 }
 \keyword{AIRSIS}

@@ -10,8 +10,8 @@ oridwa <- monitor_combine(list(airsis, airnow, wrcc)) %>%
   monitor_subset(stateCodes=c('OR','ID','WA'))
 
 # # Timeseries 'gnats' plot (takes forever to plot!)
-# monitorPlot_timeseries(oridwa, style='gnats')
-# monitorPlot_timeseries(oridwa, style='gnats', ylim=c(0,500), xpd=NA)
+# monitor_timeseriesPlot(oridwa, style='gnats')
+# monitor_timeseriesPlot(oridwa, style='gnats', ylim=c(0,500), xpd=NA)
 
 jas <- monitor_subset(oridwa, tlim=c(20170701,20171001))
 
@@ -27,7 +27,7 @@ dataCountString <- prettyNum(dataCount, big.mark=",")
 png('oridwa_hourly.png', width=800, height=600)
 
 par(mar=c(5.1,4.1,9.1,8.1))
-monitorPlot_timeseries(jas, style='gnats', xlab='2017', ylim=c(0,400), xpd=NA)
+monitor_timeseriesPlot(jas, style='gnats', xlab='2017', ylim=c(0,400), xpd=NA)
 addAQIStackedBar(pos='left', width=0.01)
 addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:6], AQI$names[2:6], pos=4, xpd=NA)
@@ -50,7 +50,7 @@ dataCountString <- prettyNum(dataCount, big.mark=",")
 png('oridwa_daily.png', width=800, height=600)
 
 par(mar=c(5.1,4.1,9.1,8.1))
-monitorPlot_timeseries(dailyMean, style='gnats', xlab='2017', ylim=c(0,200), xpd=NA)
+monitor_timeseriesPlot(dailyMean, style='gnats', xlab='2017', ylim=c(0,200), xpd=NA)
 addAQIStackedBar(pos='left', width=0.01)
 addAQILines(lwd=2)
 text(par('usr')[2], AQI$breaks_24[2:5], AQI$names[2:5], pos=4, xpd=NA)
@@ -68,7 +68,7 @@ par(oldPar)
 
 png('daily_max_map.png', width=800, height=600)
 
-monitorMap(dailyMean, max, mar=c(1,1,9.1,1), cex=1.8)
+monitor_map(dailyMean, max, mar=c(1,1,9.1,1), cex=1.8)
 addAQILegend("topright", cex=1.2, pt.cex=1.5)
 mtext('Highest Daily Mean PM2.5 during Jul-Aug-Sep', side=3, line=2, adj=0, cex=2.0, font=1)
 
@@ -139,7 +139,7 @@ Nezperce_area_daily <- monitor_dailyStatistic(Nezperce_area)
 
 png('nezperce_map_zoom_out.png', width=800, height=600)
 
-monitorEsriMap(Nezperce_area_daily, zoom=7, width=640, height=640, cex=3)
+monitor_esriMap(Nezperce_area_daily, zoom=7, width=640, height=640, cex=3)
 addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
 
 dev.off()
@@ -150,7 +150,7 @@ par(oldPar)
 
 png('nezperce_map_zoom_in.png', width=800, height=600)
 
-monitorEsriMap(Nezperce_area_daily, zoom=9, width=640, height=640, cex=5)
+monitor_esriMap(Nezperce_area_daily, zoom=9, width=640, height=640, cex=5)
 addAQILegend(cex=1.5, pt.cex=2, title='Max Daily Mean')
 
 dev.off()
@@ -169,12 +169,12 @@ png('nezperce_area_unhealthy.png', width=800, height=600)
 par(cex=1.5)
 
 unhealthyHours$data[unhealthyHours$data == 0] <- 0.1 # so we don't get blank bars
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12,
+monitor_timeseriesPlot(unhealthyHours, type='h', lend='butt', lwd=12,
                        col='black',
                        xlab='2017', ylab="Hours Above Unhealthy")
 usr <- par('usr')
 rect(usr[1],18,usr[2],24, col=adjustcolor('red',.2), border=NA)
-monitorPlot_timeseries(unhealthyHours, type='h', lend='butt', lwd=12, add=TRUE)
+monitor_timeseriesPlot(unhealthyHours, type='h', lend='butt', lwd=12, add=TRUE)
 title("Nez Perce Area 10 Monitor Average")
 text(usr[1], 21, "18-24 Hours per day >= 'Unhealthy'", pos=4, font=2, col='red')
 
@@ -191,15 +191,15 @@ png('daily_barplot_onrez.png', width=800, height=600)
 layout(matrix(seq(5)))
 par(cex=1.0)
 par(mar=c(3,4,1,2)+.1)
-monitorPlot_dailyBarplot(Orofino, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Orofino, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Orofino', line=-1)
-monitorPlot_dailyBarplot(Lapwai, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Lapwai, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Lapwai', line=-1)
-monitorPlot_dailyBarplot(Reubens, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Reubens, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Reubens', line=-1)
-monitorPlot_dailyBarplot(Nezperce, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Nezperce, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Nezperce', line=-1)
-monitorPlot_dailyBarplot(Kamiah, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Kamiah, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Kamiah', line=-1)
 par(mar=c(5,4,4,2)+.1)
 par(cex=1)
@@ -214,15 +214,15 @@ png('daily_barplot_offrez.png', width=800, height=600)
 layout(matrix(seq(5)))
 par(cex=1.0)
 par(mar=c(3,4,1,2)+.1)
-monitorPlot_dailyBarplot(Clarkston, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Clarkston, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Clarkston', line=-1)
-monitorPlot_dailyBarplot(Lewiston, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Lewiston, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Lewiston', line=-1)
-monitorPlot_dailyBarplot(Juliaetta, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Juliaetta, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Juliaetta', line=-1)
-monitorPlot_dailyBarplot(Cottonwood, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Cottonwood, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Cottonwood', line=-1)
-monitorPlot_dailyBarplot(Grangeville, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
+monitor_dailyBarplot(Grangeville, ylim=c(0,300), ylab='', main='', labels_x_nudge=1.0, labels_y_nudge=70)
 title('Grangeville', line=-1)
 layout(1)
 par(mar=c(5,4,4,2)+.1)
@@ -295,8 +295,8 @@ bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170901, 20
 # PLOT -- hourly/nowcast comparison
 png('cottonwood_nowcast_comparison.png', width=1000, height=750)
 par(cex=1.5)
-monitorPlot_timeseries(bad_Cottonwood, type='p', pch=16, col='red', shadedNight=TRUE)
-monitorPlot_timeseries(bad_nowcast_Cottonwood, type='l', col='black', lwd=2, add=TRUE)
+monitor_timeseriesPlot(bad_Cottonwood, type='p', pch=16, col='red', shadedNight=TRUE)
+monitor_timeseriesPlot(bad_nowcast_Cottonwood, type='l', col='black', lwd=2, add=TRUE)
 legend("topright", legend=c('Hourly','Nowcast'), col=c('red','black'), lwd=c(NA,2), pch=c(16,NA))
 title('Cottonwood Hourly and Nowcast')
 par(cex=1)
@@ -309,7 +309,7 @@ bad_nowcast_Cottonwood <- monitor_subset(nowcast_Cottonwood, tlim=c(20170904, 20
 # PLOT -- hourlyBarplot for Cottonwood
 png('cottonwood_hourly.png', width=800, height=600)
 par(cex=1.5)
-monitorPlot_hourlyBarplot(bad_Cottonwood, dayCol='transparent', hourLwd=0,
+monitor_hourlyBarplot(bad_Cottonwood, dayCol='transparent', hourLwd=0,
                           ylab='', main='Cottonwood Hourly',
                           labels_x_nudge=5, labels_y_nudge=20,
                           border=adjustcolor('white',0.2))

@@ -55,17 +55,19 @@
 #'
 #' Avaialble RData files can be seen at:
 #' \href{https://haze.airfire.org/monitoring/latest/RData/}{https://haze.airfire.org/monitoring/latest/RData/}
+#' @seealso \code{\link{monitor_load}}
+#' @seealso \code{\link{monitor_loadAnnual}}
 #' @seealso \code{\link{monitor_loadDaily}}
 #' @examples
 #' \dontrun{
 #' monitor_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
-#'   monitorMap()
+#'   monitor_map()
 #' }
 
 monitor_loadLatest <- function(parameter='PM2.5',
-                              baseUrl='https://haze.airfire.org/monitoring/latest/RData/',
-                              dataDir = NULL) {
+                               baseUrl='https://haze.airfire.org/monitoring/latest/RData/',
+                               dataDir = NULL) {
 
   airnow <- airnow_loadLatest(parameter, baseUrl, dataDir)
   airsis <- airsis_loadLatest(parameter, baseUrl, dataDir)

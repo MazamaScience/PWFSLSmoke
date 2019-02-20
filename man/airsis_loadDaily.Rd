@@ -31,7 +31,7 @@ after midnight and contain data for the previous 45 days.
 
 For the most recent data, use \code{airsis_loadLatest()}.
 
-For data extended more than 45 days into the past, use \code{airsis_load()}.
+For data extended more than 45 days into the past, use \code{airsis_loadAnnual()}.
 
 AIRSIS parameters include the following:
 \enumerate{
@@ -45,11 +45,11 @@ Avaialble AIRSIS RData and associated log files can be seen at:
 \dontrun{
 airsis_loadDaily() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
-  monitorMap()
+  monitor_map()
 }
 }
 \seealso{
-\code{\link{airsis_load}}
+\code{\link{airsis_loadAnnual}}
 
 \code{\link{airsis_loadLatest}}
 }

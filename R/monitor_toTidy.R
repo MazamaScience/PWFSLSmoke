@@ -8,9 +8,8 @@
 #' @param data Data to potentially convert.
 #' @return 'Tidy' formatted `ws_monitor` data.
 #'
-#' @export
-#' @importFrom magrittr '%>%'
 #' @importFrom rlang .data
+#' @export
 #'
 #' @examples
 #' ws_monitor <- monitor_subset(

@@ -38,7 +38,7 @@ mobile monitors that are deployed to different locations in different years.
 }
 \examples{
 N_M <- Northwest_Megafires
-# monitorLeaflet(N_M) # to identify Spokane monitorIDs
+# monitor_leaflet(N_M) # to identify Spokane monitorIDs
 Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 Spokane$meta$monitorID
 monitorList <- monitor_isolate(Spokane)

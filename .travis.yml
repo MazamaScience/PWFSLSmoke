@@ -1,11 +1,21 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+#
+# .travis.ytml file examples:
+#
+#  * https://github.com/cdeterman/gpuR/blob/develop/.travis.yml
 
-language: R
+# whitelist branches
+branches:
+  only:
+    - master
+
+language: r
 sudo: false
+warnings_are_errors: false
 cache: packages
 
 r:
-  - oldrel
+  # - oldrel
   - release
   - devel
 
@@ -15,3 +25,18 @@ r_github_packages:
 after_success:
   - R CMD INSTALL $PKG_TARBALL
   - Rscript -e 'lintr::lint_package()'
+
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+      - libgdal-dev
+      - libgeos-dev
+      - libjq-dev
+      - libproj-dev
+      - libprotobuf-dev
+      - libssl-dev
+      - libudunits2-dev
+      - libv8-dev
+      - protobuf-compiler
+

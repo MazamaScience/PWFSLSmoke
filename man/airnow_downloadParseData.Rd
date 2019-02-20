@@ -20,7 +20,7 @@ Tibble of aggregated AirNow data.
 }
 \description{
 This function makes repeated calls to \link{airnow_downloadHourlyData}
-to obtain data from AirNow. All data obtained are then 
+to obtain data from AirNow. All data obtained are then
 combined into a single tibble and returned.
 
 Parameters included in AirNow data include at least the following list:
@@ -48,7 +48,7 @@ Parameters included in AirNow data include at least the following list:
 \item{WS}
 }
 
-Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting 
+Passing a vector of one ore more of the above names as the \code{parameters} argument will cause the resulting
 tibble to be filtered to contain only records for those parameters.
 }
 \note{

@@ -32,11 +32,11 @@ from different regions should have daily statistics calculated separately.
 \note{
 Note that the incoming \emph{ws_monitor} object should have UTC (GMT)
 times and that this function calculates daily statistics based on local (clock) time.
-If you choose a date range based on UTC times this may result in an insufficient 
+If you choose a date range based on UTC times this may result in an insufficient
 number of hours in the first and last daily records of the returned \emph{ws_monitor}
 object.
 
-The returned \emph{ws_monitor} object has a daily time axis where each \code{datetime} is set to 
+The returned \emph{ws_monitor} object has a daily time axis where each \code{datetime} is set to
 the beginning of each day, 00:00:00, local time.
 }
 \examples{
@@ -47,14 +47,14 @@ TwispID <- '530470009_01'
 MethowValley <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs=c(WinthropID,TwispID))
 MethowValley_dailyMean <- monitor_dailyStatistic(MethowValley, FUN=get('mean'), dayStart='midnight')
 # Get the full Y scale
-monitorPlot_timeseries(MethowValley, style='gnats', col='transparent')
-monitorPlot_timeseries(MethowValley, style='gnats', monitorID=TwispID,
+monitor_timeseriesPlot(MethowValley, style='gnats', col='transparent')
+monitor_timeseriesPlot(MethowValley, style='gnats', monitorID=TwispID,
                        col='forestgreen', add=TRUE)
-monitorPlot_timeseries(MethowValley, style='gnats', monitorID=WinthropID,
+monitor_timeseriesPlot(MethowValley, style='gnats', monitorID=WinthropID,
                        col='purple', add=TRUE)
-monitorPlot_timeseries(MethowValley_dailyMean, type='s', lwd=2, monitorID=TwispID,
+monitor_timeseriesPlot(MethowValley_dailyMean, type='s', lwd=2, monitorID=TwispID,
                        col='forestgreen', add=TRUE)
-monitorPlot_timeseries(MethowValley_dailyMean, type='s', lwd=2, monitorID=WinthropID,
+monitor_timeseriesPlot(MethowValley_dailyMean, type='s', lwd=2, monitorID=WinthropID,
                        col='purple', add=TRUE)
 addAQILines()
 addAQILegend("topleft", lwd=1, pch=NULL)

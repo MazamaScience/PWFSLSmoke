@@ -5,17 +5,16 @@ A quick refresher on docker commands is available at the [docker cheatsheet](htt
 A docker image with all required prerequisites can be built with the `Makefile` in this directory:
 
 ```
-make operational_build
+make production_build
 ```
 
-This is just shorthand for the following `docker build` line:
+You should then be able to see something like the following:
 
 ```
-$ docker build --no-cache -t mazamascience/pwfslsmoke:1.1.0 -t mazamascience/pwfslsmoke:latest .
 $ docker images
 REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
 mazamascience/pwfslsmoke       latest              f4945f0c24e6        4 minutes ago       1.75GB
-mazamascience/pwfslsmoke       1.1.0               f4945f0c24e6        4 minutes ago       1.75GB
+mazamascience/pwfslsmoke       1.1.20              f4945f0c24e6        4 minutes ago       1.75GB
 ...
 ```
 
@@ -32,8 +31,8 @@ Having built the docker image we can now test it. The following output was obtai
 docker run -ti mazamascience/pwfslsmoke R --vanilla
 ...
 library(PWFSLSmoke)
-airnow <- airnow_loadLatest()
-wa <- monitor_subset(airnow, stateCodes='wa')
+wa <- airnow_loadLatest() %>%
+  monitor_subset(tateCodes='WA')
 maxValues <- sort(apply(wa$data[,-1], 2, max, na.rm=TRUE), decreasing=TRUE)[1:6]
 ids <- names(maxValues)
 df <- wa$meta[ids,c('siteName','countyName')]
@@ -54,7 +53,7 @@ print(df)
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:1.1.0
+docker push mazamascience/pwfslsmoke:1.1.20
 ```
 
 
@@ -63,6 +62,6 @@ docker push mazamascience/pwfslsmoke:1.1.0
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:1.1.0
+docker pull mazamascience/pwfslsmoke:1.1.20
 ```
 
