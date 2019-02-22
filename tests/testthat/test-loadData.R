@@ -31,6 +31,13 @@ test_that("monitor_load() checks year boundaries", {
   expect_error( monitor_load(20171201,20180201) )
 })
 
+test_that("monitor_load() returns the correct year", {
+  # On CRAN -- skip all internet based testing
+  skip_on_cran()
+  ws_monitor <- monitor_load(20180801,20180901)
+  expect_equal( lubridate::year(ws_monitor$data$datetime[1]), 2018 )
+})
+
 test_that("monitor_load() requires monitorIDs", {
   # Joining w/o monitorIDs is disallowed
   now <- lubridate::now("UTC")

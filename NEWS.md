@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.1.22
+
+ * fixed bug in `monitor_load()` where the incorrect year was used in requests
+ for archival data
+
 # PWFSLSmoke 1.1.21
 
  * lowered logging level inside `esriMap_getMap()` from `INFO` to `TRACE`

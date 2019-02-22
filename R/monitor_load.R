@@ -76,7 +76,7 @@ monitor_load <- function(startdate = NULL,
 
   if ( starttime < now_m45 ) {
 
-    year <- lubridate::year(now)
+    year <- lubridate::year(starttime)
     annualData <- monitor_loadAnnual(year,
                                      parameter,
                                      baseUrl,
