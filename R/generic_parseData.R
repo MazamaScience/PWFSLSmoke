@@ -42,8 +42,6 @@ generic_parseData <- function(fileString = NULL,
     }
   }
 
-  # TODO: should we still convert to lowercase?
-
   if (is.null(names(configList))) {
     stop("The configuration list must be convertable to a named list. No names detected.")
   } else {
@@ -64,7 +62,7 @@ generic_parseData <- function(fileString = NULL,
 # * Check required parameters ---------------------------------------------
 
   reqParams <- c(
-    "columnnames", "stationmeta", "parsinginfo"
+    "column_names", "station_meta", "parsing_info"
   )
 
   if (!all(reqParams %in% names(configList))) {
@@ -79,9 +77,9 @@ generic_parseData <- function(fileString = NULL,
 
   reqColNames <- c("datetime", "pm25")
 
-  if (!all(reqColNames %in% names(configList[["columnnames"]]))) {
+  if (!all(reqColNames %in% names(configList[["column_names"]]))) {
     stop(paste0(
-      "`configList$columnnames` must contain entries for all of",
+      "`configList$column_names` must contain entries for all of",
       "the following:\n",
       paste(reqColNames, collapse = ", ")
     ))
@@ -94,58 +92,58 @@ generic_parseData <- function(fileString = NULL,
     "latitude", "longitude"
   )
 
-  if (!all(reqMeta %in% names(configList[["stationmeta"]]))) {
+  if (!all(reqMeta %in% names(configList[["statio_nmeta"]]))) {
     stop(paste0(
-      "configList$stationmeta must contain entries for all of the following:\n",
+      "configList$station_meta must contain entries for all of the following:\n",
       paste(reqMeta, collapse = ", ")
     ))
   }
 
   extraMeta <- c(
-    "sitename"
+    "site_name"
   )
 
   includedExtraMeta <-
-    extraMeta[extraMeta %in% names(configList[["stationmeta"]])]
+    extraMeta[extraMeta %in% names(configList[["station_meta"]])]
 
 
 # * Check parsing info ----------------------------------------------------
 
   reqParsing <- c(
-    "headerRows", "columnTypes"
+    "header_rows", "column_types"
   )
 
-  if (!all(reqParsing %in% names(configList[["parsinginfo"]]))) {
+  if (!all(reqParsing %in% names(configList[["parsing_info"]]))) {
     stop(paste0(
-      "configList$parsinginfo must contain entries for all of the following:\n",
+      "configList$parsing_info must contain entries for all of the following:\n",
       paste(reqMeta, collapse = ", ")
     ))
   }
 
   defaultParams <- list(
     tz = "UTC",
-    decimalMark = ".",
-    groupingMark = ",",
+    decimal_mark = ".",
+    grouping_mark = ",",
     delimiter = ",",
     encoding = "UTF-8"
   )
 
-  configList[["parsinginfo"]] <-
-    purrr::list_modify(defaultParams, !!!configList[["parsinginfo"]])
+  configList[["parsing_info"]] <-
+    purrr::list_modify(defaultParams, !!!configList[["parsing_info"]])
 
 
 # * Regularize data types -------------------------------------------------
 
-  configList[["parsinginfo"]][["headerRows"]] %<>% as.integer()
-  configList[["stationmeta"]][["longitude"]] %<>% as.numeric()
-  configList[["stationmeta"]][["latitude"]] %<>% as.numeric()
+  configList[["parsing_info"]][["header_rows"]] %<>% as.integer()
+  configList[["station_meta"]][["longitude"]] %<>% as.numeric()
+  configList[["station_meta"]][["latitude"]] %<>% as.numeric()
 
 
 # Parse data --------------------------------------------------------------
 
   genericLocale <- readr::locale(
-    decimal_mark = configList[["decimalMark"]],
-    grouping_mark = configList[["groupingMark"]],
+    decimal_mark = configList[["decimal_mark"]],
+    grouping_mark = configList[["grouping_mark"]],
     tz = configList[["tz"]],
     encoding = configList[["encoding"]]
   )
@@ -153,9 +151,9 @@ generic_parseData <- function(fileString = NULL,
   dataTbl <- readr::read_delim(
     fileString,
     configList[["delimiter"]],
-    col_types = configList[["columnTypes"]],
+    col_types = configList[["column_types"]],
     locale = genericLocale,
-    skip = configList[["headerRows"]]
+    skip = configList[["header_rows"]]
   )
 
   readr::stop_for_problems(dataTbl)
@@ -167,8 +165,8 @@ generic_parseData <- function(fileString = NULL,
 
   # Standardize column names and append station metadata
   dataTbl <- dataTbl %>%
-    rename(!!!configList[["columnnames"]]) %>%
-    mutate(!!!configList[["stationmeta"]]) %>%
+    rename(!!!configList[["column_names"]]) %>%
+    mutate(!!!configList[["station_meta"]]) %>%
     select(selectedCols)
 
 
