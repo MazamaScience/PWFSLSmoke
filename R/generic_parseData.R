@@ -161,7 +161,7 @@ generic_parseData <- function(fileString = NULL,
 
 # Format column names -----------------------------------------------------
 
-  selectedCols <- c(reqColNames, includedExtraMeta)
+  selectedCols <- c(reqColNames, reqMeta, includedExtraMeta)
 
   # Standardize column names and append station metadata
   dataTbl <- dataTbl %>%
