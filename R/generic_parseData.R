@@ -163,10 +163,20 @@ generic_parseData <- function(fileString = NULL,
 
   selectedCols <- c(reqColNames, reqMeta, includedExtraMeta)
 
+  # Create mapping for potential extra station metadata key names from
+  # snake_case to camelCase
+  camelCaseMeta <- includedExtraMeta %>%
+    stringr::str_split("_") %>%
+    purrr::map(stringr::str_to_title) %>%
+    purrr::map(stringr::str_flatten) %>%
+    purrr::map(~stringr::str_replace(.x, "^[A-Z]", stringr::str_to_lower)) %>%
+    purrr::set_names(includedExtraMeta, .)
+
   # Standardize column names and append station metadata
   dataTbl <- dataTbl %>%
     rename(!!!configList[["column_names"]]) %>%
     mutate(!!!configList[["station_meta"]]) %>%
+    rename(!!!camelCaseMeta) %>%
     select(selectedCols)
 
 
