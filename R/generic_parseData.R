@@ -1,13 +1,57 @@
-#' @title Parse generic files
+#' @title Parse generic air quality files
 #'
 #' @description
+#' Given a string of delimited file data, this function will parse the file as
+#' a table of data an apply some transformations and augmentations as specified
+#' by a given configuration list.
 #'
-#' @param fileString
-#' @param configList
+#' @param fileString Character string of delimited data to parse.
+#' @param configList A \code{R} \code{list} or JSON file containing key-value
+#'   pairs which affect how the parsing of \code{fileString} is handled. If
+#'   \code{configList} is in JSON format, it can be passed in as a file, string,
+#'   or URL.
 #'
 #' @return
 #'
-#' @details
+#' @section Configuration List Structure:
+#' \code{configList} can be either an \code{R} \code{list} or a JSON file, but
+#' both must follow the same nested key-value format:
+#'
+#' \code{
+#' configList
+#'  |_ column_names
+#'  |   |_ datetime = [string],
+#'  |   |_ pm25 = [string]
+#'  |
+#'  |_ station_meta
+#'  |   |_ latitude = [numeric],
+#'  |   |_ longitude = [numeric],
+#'  |   |_ site_name = [optional | string]
+#'  |
+#'  |_ parsing_info
+#'      |_ header_rows = [integer]
+#'      |_ column_types = [string],
+#'      |_ tz = [optional | string | default: "UTC"],
+#'      |_ decimal_mark = [optional | string | default: "."],
+#'      |_ grouping_mark = [optional | string | default: ","],
+#'      |_ delimiter = [optional | string | default: ","],
+#'      |_ encoding = [optional | string | default: "UTF-8"]
+#' }
+#'
+#' @section Configuration List Details:
+#' Required parameters are the top level keys of the configuration list.
+#' Each parameter alters a specific aspect of parsing:
+#'
+#'  * "column_names" contains entries for mapping column names from the input
+#'    file to `ws_monitor` columns names needed to built a `ws_monitor` object.
+#'
+#'  * "station_meta" contains entries for metadata about the station that
+#'    generated the input file, which allows `PWFSLSmoke` to augment the
+#'    `ws_monitor` object later in the pipeline. Some entries are required,
+#'    others are optional.
+#'
+#'  * "parsing_info"
+#'
 #'
 #' @importFrom magrittr %<>%
 #' @export
