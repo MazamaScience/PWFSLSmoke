@@ -59,6 +59,11 @@ generic_parseData <- function(fileString = NULL,
     }
   }
 
+  ## NOTE on `magrittr::%<>%`:
+  #  This pipe (used like `rhs %<>% lhs`) is equivalent to the more common pipe
+  #  `lhs <- lhs %>% rhs`.
+  #  See "?magrittr::`%<>%`" for more information.
+
   if (is.null(names(configList))) {
     stop("The configuration list must be convertable to a named list. No names detected.")
   } else {
@@ -151,6 +156,11 @@ generic_parseData <- function(fileString = NULL,
 
 # * Regularize data types -------------------------------------------------
 
+  ## NOTE on `magrittr::%<>%`:
+  #  This pipe (used like `rhs %<>% lhs`) is equivalent to the more common pipe
+  #  `lhs <- lhs %>% rhs`.
+  #  See "?magrittr::`%<>%`" for more information.
+
   configList[["parsing_info"]][["header_rows"]] %<>% as.integer()
   configList[["station_meta"]][["longitude"]] %<>% as.numeric()
   configList[["station_meta"]][["latitude"]] %<>% as.numeric()
@@ -188,6 +198,21 @@ generic_parseData <- function(fileString = NULL,
     purrr::map(stringr::str_flatten) %>%
     purrr::map(~stringr::str_replace(.x, "^[A-Z]", stringr::str_to_lower)) %>%
     purrr::set_names(includedExtraMeta, .)
+
+
+  ## NOTE on `!!!`:
+  #  Within the "tidyverse" "tidyeval" framework, `!!!` is way to unquote
+  #  multiple arguments in a list, and splice each argument individually into a
+  #  function.
+  #
+  #  In this case, we have a lists containing containing multiple columns we
+  #  want to rename and add to our output. Prefixing the lists with `!!!` means
+  #  each element of the list will be unquoted, and added as an argument to
+  #  `rename` and `mutate`.
+  #
+  #  For more information, see:
+  #  dplyr.tidyverse.org/articles/programming.html#unquote-splicing
+  #  https://tidyeval.tidyverse.org/multiple.html#quote-multiple-arguments
 
   # Standardize column names and append station metadata
   dataTbl <- dataTbl %>%
