@@ -114,7 +114,7 @@ generic_parseData <- function(fileString = NULL,
     "latitude", "longitude"
   )
 
-  if (!all(reqMeta %in% names(configList[["statio_nmeta"]]))) {
+  if (!all(reqMeta %in% names(configList[["station_meta"]]))) {
     stop(paste0(
       "configList$station_meta must contain entries for all of the following:\n",
       paste(reqMeta, collapse = ", ")
@@ -169,18 +169,18 @@ generic_parseData <- function(fileString = NULL,
 # Parse data --------------------------------------------------------------
 
   genericLocale <- readr::locale(
-    decimal_mark = configList[["decimal_mark"]],
-    grouping_mark = configList[["grouping_mark"]],
-    tz = configList[["tz"]],
-    encoding = configList[["encoding"]]
+    decimal_mark = configList[["parsing_info"]][["decimal_mark"]],
+    grouping_mark = configList[["parsing_info"]][["grouping_mark"]],
+    tz = configList[["parsing_info"]][["tz"]],
+    encoding = configList[["parsing_info"]][["encoding"]]
   )
 
   dataTbl <- readr::read_delim(
     fileString,
-    configList[["delimiter"]],
-    col_types = configList[["column_types"]],
+    configList[["parsing_info"]][["delimiter"]],
+    col_types = configList[["parsing_info"]][["column_types"]],
     locale = genericLocale,
-    skip = configList[["header_rows"]]
+    skip = configList[["parsing_info"]][["header_rows"]]
   )
 
   readr::stop_for_problems(dataTbl)
