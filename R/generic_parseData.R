@@ -188,8 +188,6 @@ generic_parseData <- function(fileString = NULL,
 
 # Format column names -----------------------------------------------------
 
-  selectedCols <- c(reqColNames, reqMeta, includedExtraMeta)
-
   # Create mapping for potential extra station metadata key names from
   # snake_case to camelCase
   camelCaseMeta <- includedExtraMeta %>%
@@ -198,6 +196,8 @@ generic_parseData <- function(fileString = NULL,
     purrr::map(stringr::str_flatten) %>%
     purrr::map(~stringr::str_replace(.x, "^[A-Z]", stringr::str_to_lower)) %>%
     purrr::set_names(includedExtraMeta, .)
+
+  selectedCols <- c(reqColNames, reqMeta, names(camelCaseMeta))
 
 
   ## NOTE on `!!!`:
