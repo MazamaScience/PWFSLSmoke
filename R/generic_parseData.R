@@ -132,7 +132,7 @@ generic_parseData <- function(fileString = NULL,
 # * Check parsing info ----------------------------------------------------
 
   reqParsing <- c(
-    "header_rows", "column_types"
+    "header_rows", "column_types", "datetime_format"
   )
 
   if (!all(reqParsing %in% names(configList[["parsing_info"]]))) {
@@ -168,19 +168,21 @@ generic_parseData <- function(fileString = NULL,
 
 # Parse data --------------------------------------------------------------
 
+  parsingInfo <- configList[["parsing_info"]]
+
   genericLocale <- readr::locale(
-    decimal_mark = configList[["parsing_info"]][["decimal_mark"]],
-    grouping_mark = configList[["parsing_info"]][["grouping_mark"]],
-    tz = configList[["parsing_info"]][["tz"]],
-    encoding = configList[["parsing_info"]][["encoding"]]
+    decimal_mark = parsingInfo[["decimal_mark"]],
+    grouping_mark = parsingInfo[["grouping_mark"]],
+    tz = parsingInfo[["tz"]],
+    encoding = parsingInfo[["encoding"]]
   )
 
   dataTbl <- readr::read_delim(
     fileString,
-    configList[["parsing_info"]][["delimiter"]],
-    col_types = configList[["parsing_info"]][["column_types"]],
+    parsingInfo[["delimiter"]],
+    col_types = parsingInfo[["column_types"]],
     locale = genericLocale,
-    skip = configList[["parsing_info"]][["header_rows"]]
+    skip = parsingInfo[["header_rows"]]
   )
 
   readr::stop_for_problems(dataTbl)
@@ -214,11 +216,20 @@ generic_parseData <- function(fileString = NULL,
   #  dplyr.tidyverse.org/articles/programming.html#unquote-splicing
   #  https://tidyeval.tidyverse.org/multiple.html#quote-multiple-arguments
 
-  # Standardize column names and append station metadata
+  ## Steps:
+  #  * Standardize column names
+  #  * Append station metadata
+  #  * Convert datetime to POSIXct
+  #  * Select relevant columns
+
   dataTbl <- dataTbl %>%
     rename(!!!configList[["column_names"]]) %>%
     mutate(!!!configList[["station_meta"]]) %>%
     rename(!!!camelCaseMeta) %>%
+    mutate(
+      datetime = lubridate::parse_date_time(
+        .data$datetime, parsingInfo[["datetime_format"]], parsingInfo[["tz"]]
+    )) %>%
     select(selectedCols)
 
 
