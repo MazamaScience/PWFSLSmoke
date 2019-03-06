@@ -74,8 +74,8 @@ either a local file path or a remote connection (such as `http://`, `https://`,
 
 ```{r download data}
 
-filePath <- file.path("..", "localData", "airsis_ebam_example-clean.csv")
-#fileString <- generic_downloadData(filePath)
+filePath <- file.path("..", "localData", "generic_data_example.csv")
+fileString <- generic_downloadData(filePath)
 
 ```
 
@@ -83,7 +83,7 @@ The output of this function is the file, stored as a single string ready to be
 parsed by `generic_parseData()`.
 
 
-# Defining a Configuration List
+# Configuration List Details:
 
 `configList` can be either an `R` `list` or a JSON file, but
 both must follow the same nested key-value format:
@@ -102,14 +102,13 @@ both must follow the same nested key-value format:
   |_ parsing_info
       |_ header_rows = [integer]
       |_ column_types = [string],
+      |_ datetime_format = [string],
       |_ tz = [optional | string | default: "UTC"],
       |_ decimal_mark = [optional | string | default: "."],
       |_ grouping_mark = [optional | string | default: ","],
       |_ delimiter = [optional | string | default: ","],
       |_ encoding = [optional | string | default: "UTF-8"]
 ```
-
-## Configuration List Details:
 
 Required parameters are the top level keys of the configuration list.
 Each parameter alters a specific aspect of parsing:
@@ -124,8 +123,49 @@ Each parameter alters a specific aspect of parsing:
 
 * "parsing_info"
 
-
 Extra keys in `columnNames` and `stationMeta` are currently ignored.
+
+
+## Define a Configuration List
+
+The configuration list can be read from a JSON file, or created as a list
+directly.
+
+```{r define configList}
+
+
+# configListPath <- 
+#   file.path("..", "localData", "generic_configList_example.json")
+# configList <- jsonlite::fromJSON(configListPath)
+
+configList <- list(
+  column_names = list(
+    datetime = "Date/Time/GMT",
+    pm25 = "ConcHr"
+  ),
+  station_meta = list(
+    latitude = 35.75506,
+    longitude = -118.4175,
+    site_name = "1026 Kernville EBAM"
+  ),
+  parsing_info = list(
+    header_rows = 5,
+    column_types = "ccdddddddddddcdcc",
+    datetime_format = "mdy T",
+    tz = "UTC",
+    delimiter = ","
+  )
+)
+
+```
+
+
+# Parse Data
+
+```{r parse data}
+parsedData <- generic_parseData(fileString, configList)
+
+```
 
 
 
