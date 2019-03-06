@@ -1,3 +1,14 @@
+# PWFSLSmoke 1.1.23
+
+This realase adds functions for working with generic data. 
+
+## New Functions
+
+ * `generic_downloadData()`
+   - Reads data files as a string of data
+ * `generic_parseData()`
+   - Parses data based on a customizable configuration list
+
 # PWFSLSmoke 1.1.22
 
  * fixed bug in `monitor_load()` where the incorrect year was used in requests
