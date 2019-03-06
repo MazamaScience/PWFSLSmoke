@@ -39,12 +39,17 @@ document "Working with Generic Data" in the \code{localNotebooks} directory.
 }
 
 \examples{
-\dontrun{
-filePath <- file.path(".", "localData", "generic_data_example.csv")
-configPath <- file.path(".", "localData", "generic_configList_example.json")
+filePath <- system.file(
+  "extdata", "generic_data_example.csv",
+  package = "PWFSLSmoke", mustWork = TRUE
+)
+
+configPath <- system.file(
+  "extdata", "generic_configList_example.json",
+  package = "PWFSLSmoke", mustWork = TRUE
+)
 
 configList <- jsonlite::fromJSON(configPath)
 fileString <- generic_downloadData(filePath)
 parsedData <- generic_parseData(fileString, configList)
-}
 }

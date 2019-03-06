@@ -74,7 +74,11 @@ either a local file path or a remote connection (such as `http://`, `https://`,
 
 ```{r download data}
 
-filePath <- file.path("..", "localData", "generic_data_example.csv")
+filePath <- filePath <- system.file(
+  "extdata", "generic_data_example.csv",
+  package = "PWFSLSmoke", mustWork = TRUE
+)
+
 fileString <- generic_downloadData(filePath)
 
 ```
@@ -134,9 +138,11 @@ directly.
 ```{r define configList}
 
 
-# configListPath <- 
-#   file.path("..", "localData", "generic_configList_example.json")
-# configList <- jsonlite::fromJSON(configListPath)
+# configListPath <- system.file(
+#   "extdata", "generic_configList_example.json",
+#   package = "PWFSLSmoke", mustWork = TRUE
+# )
+# configList <- jsonlite::fromJSON(configPath)
 
 configList <- list(
   column_names = list(
