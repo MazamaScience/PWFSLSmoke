@@ -30,6 +30,14 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' filePath <- file.path(".", "localData", "generic_data_example.csv")
+#' configPath <- file.path(".", "localData", "generic_configList_example.json")
+#'
+#' configList <- jsonlite::fromJSON(configPath)
+#' fileString <- generic_downloadData(filePath)
+#' parsedData <- generic_parseData(fileString, configList)
+#' }
 generic_parseData <- function(fileString = NULL,
                               configList = NULL) {
 
@@ -47,13 +55,13 @@ generic_parseData <- function(fileString = NULL,
   # convert to a list.
   if (is.character(configList)) {
     if (jsonlite::validate(configList)) {
-      configList <- as.list(jsonlite::fromJSON(
-        configList,
-        simplifyVector = TRUE,
-        simplifyDataFrame = FALSE,
-        simplifyMatrix = FALSE,
-        flatten = FALSE
-      ))
+      configList <- configList %>%
+        jsonlite::fromJSON(
+          simplifyVector = TRUE,
+          simplifyDataFrame = FALSE,
+          simplifyMatrix = FALSE
+        ) %>%
+        as.list()
     } else if (!is.list(configList)) {
       stop("`configList` must be either a valid JSON string, or an R list.")
     }
