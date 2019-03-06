@@ -204,8 +204,9 @@ generic_parseData <- function(fileString = NULL,
     stringr::str_split("_") %>%
     purrr::map(stringr::str_to_title) %>%
     purrr::map(stringr::str_flatten) %>%
-    purrr::map(~stringr::str_replace(.x, "^[A-Z]", stringr::str_to_lower)) %>%
-    purrr::set_names(includedExtraMeta, .data)
+    purrr::map(~stringr::str_replace(.x, "^[A-Z]", stringr::str_to_lower))
+
+  camelCaseMeta <- purrr::set_names(includedExtraMeta, camelCaseMeta)
 
   selectedCols <- c(reqColNames, reqMeta, names(camelCaseMeta))
 
