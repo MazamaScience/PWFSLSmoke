@@ -42,6 +42,10 @@ rsconnect/
 ################################################################################
 # Additional Mazama Science items
 
+# produced files from local direcctories
+localNotebooks/*.html
+localNotebooks/*.pdf
+
 # OS X stuff
 .DS_Store
 

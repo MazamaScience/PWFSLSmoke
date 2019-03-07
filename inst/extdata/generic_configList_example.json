@@ -1,0 +1,16 @@
+{
+  "column_names":{
+    "datetime":["Date/Time/GMT"], 
+    "pm25":["ConcHr"]
+  }, "station_meta":{
+    "latitude":[35.7551], 
+    "longitude":[-118.4175], 
+    "site_name":["1026 Kernville EBAM"]
+  }, "parsing_info":{
+    "header_rows":[5], 
+    "column_types":["ccdddddddddddcdcc"], 
+    "datetime_format":["mdy T"], 
+    "tz":["UTC"], 
+    "delimiter":[","]
+  }
+}
