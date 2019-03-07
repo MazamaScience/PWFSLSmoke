@@ -32,12 +32,14 @@
 #' @examples
 #' filePath <- system.file(
 #'   "extdata", "generic_data_example.csv",
-#'   package = "PWFSLSmoke", mustWork = TRUE
+#'   package = "PWFSLSmoke",
+#'   mustWork = TRUE
 #' )
 #'
 #' configPath <- system.file(
 #'   "extdata", "generic_configList_example.json",
-#'   package = "PWFSLSmoke", mustWork = TRUE
+#'   package = "PWFSLSmoke",
+#'   mustWork = TRUE
 #' )
 #'
 #' configList <- jsonlite::fromJSON(configPath)
