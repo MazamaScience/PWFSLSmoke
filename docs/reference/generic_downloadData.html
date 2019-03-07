@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Google API Key — getGoogleApiKey • PWFSLSmoke</title>
+<title>Download generic data — generic_downloadData • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,10 @@
 
 
 
-<meta property="og:title" content="Get Google API Key — getGoogleApiKey" />
+<meta property="og:title" content="Download generic data — generic_downloadData" />
 
-<meta property="og:description" content="Returns the current Google API key." />
+<meta property="og:description" content="This function takes a location to a delimited file, gets the file, and
+returns a string containing the file data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,40 +131,59 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Google API Key</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/PWFSLSmoke.R'><code>R/PWFSLSmoke.R</code></a></small>
-    <div class="hidden name"><code>getGoogleApiKey.Rd</code></div>
+    <h1>Download generic data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/generic_downloadData.R'><code>R/generic_downloadData.R</code></a></small>
+    <div class="hidden name"><code>generic_downloadData.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Returns the current Google API key.</p>
+    <p>This function takes a location to a delimited file, gets the file, and
+returns a string containing the file data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getGoogleApiKey</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>generic_downloadData</span>(<span class='no'>filePath</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>filePath</th>
+      <td><p>Either a path to a file, or a connection (<code>http(s)://</code>,
+<code>ftp(s)://</code>).</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>String.</p>
+    <p>A character vector of length 1, containing data from the file located
+  at <code>filePath</code>.</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p>addGoogleAddress</p>
-<p>addGoogleElevation</p>
-<p>googleApiKey</p>
-<p>setGoogleApiKey</p></div>
+    <p>This function is essentailly a wrapper for <code><a href='https://readr.tidyverse.org/reference/read_file.html'>read_file</a></code>.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># make current directory PWFSLSmoke package directory</span>
+<span class='no'>filePath</span> <span class='kw'>&lt;-</span> <span class='st'>"./localData/airsis_ebam_example-clean.csv"</span>
+
+<span class='no'>fileString</span> <span class='kw'>&lt;-</span> <span class='fu'>generic_downloadData</span>(<span class='no'>filePath</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

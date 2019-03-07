@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Google API Key — getGoogleApiKey • PWFSLSmoke</title>
+<title>Parse generic air quality files — generic_parseData • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,11 @@
 
 
 
-<meta property="og:title" content="Get Google API Key — getGoogleApiKey" />
+<meta property="og:title" content="Parse generic air quality files — generic_parseData" />
 
-<meta property="og:description" content="Returns the current Google API key." />
+<meta property="og:description" content="Given a string of delimited file data, this function will parse the file as
+a table of data an apply some transformations and augmentations as specified
+by a given configuration list." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,40 +132,92 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Google API Key</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/PWFSLSmoke.R'><code>R/PWFSLSmoke.R</code></a></small>
-    <div class="hidden name"><code>getGoogleApiKey.Rd</code></div>
+    <h1>Parse generic air quality files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/generic_parseData.R'><code>R/generic_parseData.R</code></a></small>
+    <div class="hidden name"><code>generic_parseData.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Returns the current Google API key.</p>
+    <p>Given a string of delimited file data, this function will parse the file as
+a table of data an apply some transformations and augmentations as specified
+by a given configuration list.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getGoogleApiKey</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>generic_parseData</span>(<span class='kw'>fileString</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>configList</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>fileString</th>
+      <td><p>Character string of delimited data to parse.</p></td>
+    </tr>
+    <tr>
+      <th>configList</th>
+      <td><p>A <code>R</code> <code>list</code> or JSON file containing key-value
+pairs which affect how the parsing of <code>fileString</code> is handled. If
+<code>configList</code> is in JSON format, it can be passed in as a file, string,
+or URL.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>String.</p>
+    <p>A tibble of the data contined in <code>fileString</code> parsed according
+  to parameters in <code>configList</code>. The data is coerced into a format that
+  is more easily convertable into a <code>ws_monitor</code> object at a later
+  point.</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="parsing-data"><a class="anchor" href="#parsing-data"></a>Parsing data</h2>
 
-    <div class='dont-index'><p>addGoogleAddress</p>
-<p>addGoogleElevation</p>
-<p>googleApiKey</p>
-<p>setGoogleApiKey</p></div>
+    
+    <p>Internally, this function uses <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_delim</a></code> to convert
+<code>fileString</code> into a tibble. If any lines of data cannot be properly
+parsed, and error will be thrown anf the problem lines will be printed.</p>
+    
+    <h2 class="hasAnchor" id="creating-a-configlist"><a class="anchor" href="#creating-a-configlist"></a>Creating a configList</h2>
+
+    
+    <p>For more information on how to build a <code>configList</code>, see the Rmarkdown
+document "Working with Generic Data" in the <code>localNotebooks</code> directory.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>filePath</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(
+  <span class='st'>"extdata"</span>, <span class='st'>"generic_data_example.csv"</span>,
+  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PWFSLSmoke"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+
+<span class='no'>configPath</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(
+  <span class='st'>"extdata"</span>, <span class='st'>"generic_configList_example.json"</span>,
+  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"PWFSLSmoke"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+
+<span class='no'>configList</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>jsonlite</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/jsonlite/topics/fromJSON'>fromJSON</a></span>(<span class='no'>configPath</span>)
+<span class='no'>fileString</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='generic_downloadData.html'>generic_downloadData</a></span>(<span class='no'>filePath</span>)</div><div class='output co'>#&gt; INFO [2019-03-07 14:47:37] Reading file from location:
+#&gt; /Users/spencer/Projects/PWFSLSmoke/inst/extdata/generic_data_example.csv
+#&gt; INFO [2019-03-07 14:47:37] Reading file from location:
+#&gt; /Users/spencer/Projects/PWFSLSmoke/inst/extdata/generic_data_example.csv
+#&gt; INFO [2019-03-07 14:47:37] Reading file from location:
+#&gt; /Users/spencer/Projects/PWFSLSmoke/inst/extdata/generic_data_example.csv
+#&gt; INFO [2019-03-07 14:47:37] Reading file from location:
+#&gt; /Users/spencer/Projects/PWFSLSmoke/inst/extdata/generic_data_example.csv</div><div class='input'><span class='no'>parsedData</span> <span class='kw'>&lt;-</span> <span class='fu'>generic_parseData</span>(<span class='no'>fileString</span>, <span class='no'>configList</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      <li><a href="#parsing-data">Parsing data</a></li>
+
+      <li><a href="#creating-a-configlist">Creating a configList</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
