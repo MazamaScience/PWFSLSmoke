@@ -41,7 +41,7 @@ addUSGSElevation <- function(df, lonVar="longitude", latVar="latitude", existing
     # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
     df <- as.data.frame(df, stringsAsFactors=FALSE)
 
-    for (i in 1:nrow(df)) {
+    for ( i in seq_len(nrow(df)) ) {
       monitorID <- df[i,'monitorID']
       if ( monitorID %in% existingMeta$monitorID ) {
         df$elevation[i] <- existingMeta[monitorID,'elevation']
@@ -61,7 +61,7 @@ addUSGSElevation <- function(df, lonVar="longitude", latVar="latitude", existing
     # Create url
     url <- httr::parse_url("https://nationalmap.gov/epqs/pqs.php")
 
-    for ( i in 1:nrow(df) ) {
+    for ( i in seq_len(nrow(df)) ) {
 
       lon <- lons[i]
       lat <- lats[i]

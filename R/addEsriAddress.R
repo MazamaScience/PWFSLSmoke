@@ -18,12 +18,15 @@
 #' addEsriAddress(df)
 #' }
 
-addEsriAddress <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
+addEsriAddress <- function(df,
+                           lonVar = "longitude",
+                           latVar = "latitude",
+                           existingMeta = NULL) {
 
   logger.trace(" ----- addEsriAddress() ----- ")
 
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df, stringsAsFactors=FALSE)
+  df <- as.data.frame(df, stringsAsFactors = FALSE)
 
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
@@ -80,7 +83,7 @@ addEsriAddress <- function(df, lonVar="longitude", latVar="latitude", existingMe
 
   # When siteName is missing, create one similar to AirNow with "locality-route"
 
-  for (i in 1:nrow(df)) {
+  for ( i in seq_len(nrow(df)) ) {
 
     # NOTE:  monitorID for AIRSIS and WRCC contains location information and will always
     # NOTE:  be associated with a unique siteName. Reusing metadata will dramatically
@@ -153,7 +156,7 @@ addEsriAddress <- function(df, lonVar="longitude", latVar="latitude", existingMe
             df$countyName[i] <- stringr::str_replace(returnObj$address$Subregion,' County','')
           }
 
-        }, silent=TRUE)
+        }, silent = TRUE)
         if ( "try-error" %in% class(result) ) {
           logger.trace("\t%s", url)
           logger.warn("Unable to add ESRI address: %s", geterrmessage())

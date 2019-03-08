@@ -12,6 +12,6 @@ addAQILines(...)
 \description{
 This function is a convenience for:
 
-\code{abline(h=AQI$breaks_24, col=AQI$colors)}
+\code{abline(h = AQI$breaks_24, col = AQI$colors)}
 }
 \keyword{plotting}

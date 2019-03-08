@@ -16,9 +16,12 @@
 #' @return Input tibble with additional columns: \code{deploymentID, medoidLon, mediodLat}.
 #' @references \href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
 
-addClustering <- function(tbl, clusterDiameter=1000,
-                          lonVar="longitude", latVar="latitude",
-                          maxClusters=50, flagAndKeep=FALSE) {
+addClustering <- function(tbl,
+                          clusterDiameter = 1000,
+                          lonVar = "longitude",
+                          latVar = "latitude",
+                          maxClusters = 50,
+                          flagAndKeep = FALSE) {
 
   # Sanity check -- row count
   if ( nrow(tbl) == 0 ) {
@@ -40,8 +43,8 @@ addClustering <- function(tbl, clusterDiameter=1000,
   if ( nrow(tbl) == 1 ) {
     tbl$medoidLon <- tbl[[lonVar]][1]
     tbl$medoidLat <- tbl[[latVar]][1]
-    lonString <- format( round(tbl$medoidLon,3), nsmall=3 ) # 3 decimal places
-    latString <- format( round(tbl$medoidLat,3), nsmall=3 ) # 3 decimal places
+    lonString <- format( round(tbl$medoidLon,3), nsmall = 3 ) # 3 decimal places
+    latString <- format( round(tbl$medoidLat,3), nsmall = 3 ) # 3 decimal places
     locationString <- paste0( 'lon_', lonString, '_lat_', latString )
     tbl$deploymentID <- make.names(locationString)
     return(tbl)
@@ -92,7 +95,7 @@ addClustering <- function(tbl, clusterDiameter=1000,
       clusterObj <- cluster::pam(tbl[,c(lonVar,latVar)],clusterCount)
     } else {
       logger.trace("\ttesting %d clusters using cluster::clara", clusterCount)
-      clusterObj <- cluster::clara(tbl[,c(lonVar,latVar)],clusterCount, samples=50)
+      clusterObj <- cluster::clara(tbl[,c(lonVar,latVar)],clusterCount, samples = 50)
     }
     medoidLats <- clusterObj$medoids[,latVar]
     diameters <- 2 * clusterObj$clusinfo[,'max_diss'] # decimal degrees
@@ -110,7 +113,7 @@ addClustering <- function(tbl, clusterDiameter=1000,
   if ( nrow(tbl) < 2000 ) {
     clusterObj <- cluster::pam(tbl[,c(lonVar,latVar)],clusterCount)
   } else {
-    clusterObj <- cluster::clara(tbl[,c(lonVar,latVar)],clusterCount, samples=50)
+    clusterObj <- cluster::clara(tbl[,c(lonVar,latVar)],clusterCount, samples = 50)
   }
 
   # Add medoid lons and lats to the tibble for use by wrcc_createMetaDataframe
@@ -122,8 +125,8 @@ addClustering <- function(tbl, clusterDiameter=1000,
   # NOTE:  This should be enough accuracy for a unique deploymentID as
   # NOTE:  0.001 degrees of longitude = 102.47m at 23N, 43.496m at 67N
 
-  lonString <- format( round(tbl$medoidLon,3), nsmall=3 ) # 3 decimal places
-  latString <- format( round(tbl$medoidLat,3), nsmall=3 ) # 3 decimal places
+  lonString <- format( round(tbl$medoidLon,3), nsmall = 3 ) # 3 decimal places
+  latString <- format( round(tbl$medoidLat,3), nsmall = 3 ) # 3 decimal places
   locationString <- paste0( 'lon_', lonString, '_lat_', latString )
   tbl$deploymentID <- make.names(locationString)
 

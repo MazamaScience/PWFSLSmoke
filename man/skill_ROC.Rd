@@ -28,15 +28,15 @@ thresholds as well as the area under the ROC curve.
 \dontrun{
 # Napa Fires -- October, 2017
 ca <- airnow_loadAnnual(2017) \%>\%
-  monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
-Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
-Napa <- monitor_subset(ca, monitorIDs='060550003_01')
+  monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
+Vallejo <- monitor_subset(ca, monitorIDs = '060950004_01')
+Napa <- monitor_subset(ca, monitorIDs = '060550003_01')
 t2 <- AQI$breaks_24[4] # 'Unhealthy'
-rocList <- skill_ROC(Vallejo, Napa, t1Range=c(0,100), t2=t2)
+rocList <- skill_ROC(Vallejo, Napa, t1Range = c(0,100), t2 = t2)
 roc <- rocList$roc
 auc <- rocList$auc
-plot(roc$TPR ~ roc$FPR, type='S')
-title(paste0('Area Under Curve = ', format(auc,digits=3)))
+plot(roc$TPR ~ roc$FPR, type = 'S')
+title(paste0('Area Under Curve = ', format(auc,digits = 3)))
 }
 }
 \references{

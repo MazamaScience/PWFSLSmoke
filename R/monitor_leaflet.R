@@ -131,7 +131,7 @@ monitor_leaflet <- function(ws_monitor,
   # Create popup text vector
   popupText <- character()
   if ( !is.null(popupInfo) ) {
-    for ( rowIndex in 1:nrow(ws_monitor$meta) ) {
+    for ( rowIndex in seq_len(nrow(ws_monitor$meta)) ) {
       monitorText <- ""
       for ( colName in popupInfo ) {
         if ( colName %in% names(ws_monitor$meta) ) {

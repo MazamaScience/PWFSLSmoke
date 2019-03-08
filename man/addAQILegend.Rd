@@ -24,7 +24,7 @@ addAQILegend(x = "topright", y = NULL, col = rev(AQI$colors),
 \item{...}{additional arguments to be passed to \code{legend()}}
 }
 \description{
-This function is a convenience wrapper around \code{graphics::legend()}. It will show the AQI colors and 
+This function is a convenience wrapper around \code{graphics::legend()}. It will show the AQI colors and
 names by default if \code{col} and \code{legend} are not specified.
 }
 \keyword{plotting}

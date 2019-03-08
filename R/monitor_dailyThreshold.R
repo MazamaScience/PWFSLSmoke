@@ -59,7 +59,7 @@ monitor_dailyThreshold <- function(ws_monitor,
   # Create the day vector
   day <- 0
   dayNum <- 1
-  for ( i in 1:nrow(timeInfo) ) {
+  for ( i in seq_len(nrow(timeInfo)) ) {
 
     if (dayStart == "sunset") {
       hoursAfter <- difftime(timeInfo$localTime[i],timeInfo$sunset[i],units="hours")

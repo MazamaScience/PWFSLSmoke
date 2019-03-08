@@ -78,10 +78,10 @@ addMarker <- function(longitude, latitude, color = "red", map=NULL, expansion=1,
     # Get plot coordinates
 
     newXY <- RgoogleMaps::LatLon2XY.centered(map, c(bottom, top), c(left, right))
-    bottom <- newXY$newY[1:length(latitude)]
-    top <- newXY$newY[-(1:length(latitude))]
-    left <- newXY$newX[1:length(longitude)]
-    right <- newXY$newX[-(1:length(longitude))]
+    bottom <- newXY$newY[seq_along(latitude)]
+    top <- newXY$newY[-(seq_along(latitude))]
+    left <- newXY$newX[seq_along(longitude)]
+    right <- newXY$newX[-(seq_along(longitude))]
 
 
   } else if ( any( c("staticMap", "RasterBrick", "RasterLayer", "RasterStack") %in% class(map) ) ) {

@@ -13,3 +13,4 @@
 ^\.lintr$
 ^\.travis\.yml$
 ^pkgdown/
+^vignettes/articles/esriMap.Rmd$

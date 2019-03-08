@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.1.24
+
+Minor cleanup in preparation for CRAN submission. 
+
 # PWFSLSmoke 1.1.23
 
 This realase adds functions for working with generic data. 

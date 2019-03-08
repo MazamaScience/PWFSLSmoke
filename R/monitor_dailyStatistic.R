@@ -69,7 +69,7 @@ monitor_dailyStatistic <- function(ws_monitor,
   # Create the day vector
   day <- rep(0,nrow(timeInfo))
   dayNum <- 0
-  for ( i in 1:nrow(timeInfo) ) {
+  for ( i in seq_len(nrow(timeInfo)) ) {
 
     if (dayStart == "sunset") {
       hoursAfter <- difftime(timeInfo$localTime[i],timeInfo$sunset[i],units="hours")

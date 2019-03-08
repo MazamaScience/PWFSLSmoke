@@ -13,23 +13,23 @@
 #
 # This function adds shading to an existing plot using any variable that shares the same
 # length as the time axis of the current plot.
-# 
+#
 ########################################################################################
 
 addShadedBackground <- function(param,
                                 timeAxis,
                                 breaks=stats::quantile(param, na.rm = TRUE),
-                                col='blue',
-                                maxOpacity=0.2,
-                                lwd=1) {
+                                col = 'blue',
+                                maxOpacity = 0.2,
+                                lwd = 1) {
 
-  assignedBin <- .bincode(param, breaks, include.lowest=TRUE)
+  assignedBin <- .bincode(param, breaks, include.lowest = TRUE)
   colors <- c()
-  for (i in 1:length(breaks)-1) {
+  for (i in seq_along(breaks)-1) {
     opacity <- maxOpacity*(i-1)/(length(breaks)-1)
     colors[i] <- adjustcolor(col,opacity)
   }
 
-  abline(v=timeAxis, col=colors[assignedBin], lwd=lwd)
+  abline(v = timeAxis, col = colors[assignedBin], lwd = lwd)
 
 }
