@@ -75,7 +75,7 @@ License: GPL-3
 VignetteBuilder: knitr
 Repository: CRAN
 URL: https://github.com/MazamaScience/PWFSLSmoke
-BugReports: https://github.com/MazamaScience/MazamaPWFSLSmoke/issues
+BugReports: https://github.com/MazamaScience/PWFSLSmoke/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
