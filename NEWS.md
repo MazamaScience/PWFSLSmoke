@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.1.25
+
+Improved documentation and harmonization of `monitor_writeCSV()` and
+`monitor_print()`.
+
 # PWFSLSmoke 1.1.24
 
 Minor cleanup in preparation for CRAN submission. 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write Monitor Data as CSV File — monitor_writeCSV • PWFSLSmoke</title>
+<title>Write monitor data as CSV — monitor_writeCSV • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,14 +37,18 @@
 
 
 
-<meta property="og:title" content="Write Monitor Data as CSV File — monitor_writeCSV" />
+<meta property="og:title" content="Write monitor data as CSV — monitor_writeCSV" />
 
-<meta property="og:description" content="Writes the contents of the ws_monitor object as CSV file.
-By default, the output is a &quot;human readable&quot; CSV that includes both meta and data.
-This format is useful for point-and-click spreadsheet users who want to have 
-everything on a single sheet.
-To obtain machine parseable CSV files you can use metaOnly or dataOnly which are mutually
-exclusive but which generate CSV files that can be automatically ingested." />
+<meta property="og:description" content="Prints out the contents of the ws_monitor object as CSV.
+By default, the output is a text string with &quot;human readable&quot; CSV that
+includes both meta and data. When saved as a file, this format
+is useful for point-and-click spreadsheet users who want to have everything
+on a single sheet.
+To obtain machine parseable CSV strings you can use metaOnly or
+dataOnly which are mutually exclusive but which return CSV strings
+that can be automatically ingested.
+By default, the CSV formatted text is returned invisibly but not saved to a
+file unless saveFile is specified." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +79,7 @@ exclusive but which generate CSV files that can be automatically ingested." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.24</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.25</span>
       </span>
     </div>
 
@@ -135,24 +139,28 @@ exclusive but which generate CSV files that can be automatically ingested." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write Monitor Data as CSV File</h1>
+    <h1>Write monitor data as CSV</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_writeCSV.R'><code>R/monitor_writeCSV.R</code></a></small>
     <div class="hidden name"><code>monitor_writeCSV.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Writes the contents of the <code>ws_monitor</code> object as CSV file.
-By default, the output is a "human readable" CSV that includes both <code>meta</code> and <code>data</code>.
-This format is useful for point-and-click spreadsheet users who want to have 
-everything on a single sheet.</p>
-<p>To obtain machine parseable CSV files you can use <code>metaOnly</code> or <code>dataOnly</code> which are mutually
-exclusive but which generate CSV files that can be automatically ingested.</p>
+    <p>Prints out the contents of the <code>ws_monitor</code> object as CSV.
+By default, the output is a text string with "human readable" CSV that
+includes both <code>meta</code> and <code>data</code>. When saved as a file, this format
+is useful for point-and-click spreadsheet users who want to have everything
+on a single sheet.</p>
+<p>To obtain machine parseable CSV strings you can use <code>metaOnly</code> or
+<code>dataOnly</code> which are mutually exclusive but which return CSV strings
+that can be automatically ingested.</p>
+<p>By default, the CSV formatted text is returned invisibly but not saved to a
+file unless <code>saveFile</code> is specified.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_writeCSV</span>(<span class='no'>ws_monitor</span>, <span class='kw'>saveFile</span> <span class='kw'>=</span> <span class='st'>"ws_monitor.csv"</span>,
-  <span class='kw'>metaOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dataOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_writeCSV</span>(<span class='no'>ws_monitor</span>, <span class='kw'>saveFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>metaOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>dataOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,33 +171,117 @@ exclusive but which generate CSV files that can be automatically ingested.</p>
     </tr>
     <tr>
       <th>saveFile</th>
-      <td><p>filename where CSV will be written</p></td>
+      <td><p>optional filename where CSV will be written</p></td>
     </tr>
     <tr>
       <th>metaOnly</th>
-      <td><p>flag specifying whether to use <code>ws_monitor$meta</code> for a machine parseable CSV</p></td>
+      <td><p>flag specifying whether to return <code>ws_monitor$meta</code> only
+as a machine parseable CSV</p></td>
     </tr>
     <tr>
       <th>dataOnly</th>
-      <td><p>flag specifying whether to use <code>ws_monitor$data</code> for a machine parseable CSV</p></td>
+      <td><p>flag specifying whether to return <code>ws_monitor$data</code> only
+as a machine parseable CSV</p></td>
+    </tr>
+    <tr>
+      <th>quietly</th>
+      <td><p>do not print to console, just return the string representation
+of the CSV</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>This function wraps the <a href='monitor_print.html'>monitor_print</a> function but defaults
+to <code>quietly = FALSE</code>.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"Carmel_Valley"</span>)
-<span class='no'>Carmel_Valley</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20160802</span>,<span class='fl'>20160803</span>))
-<span class='fu'>monitor_writeCSV</span>(<span class='no'>Carmel_Valley</span>, <span class='st'>'CarmelValley.csv'</span>)
-<span class='fu'>monitor_writeCSV</span>(<span class='no'>Carmel_Valley</span>, <span class='st'>'CarmelValley_meta.csv'</span>, <span class='kw'>metaOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>monitor_writeCSV</span>(<span class='no'>Carmel_Valley</span>, <span class='st'>'CarmelValley_data.csv'</span>, <span class='kw'>dataOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"Carmel_Valley"</span>)
+<span class='no'>Carmel_Valley</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20160802</span>,<span class='fl'>20160803</span>))
+<span class='fu'><a href='monitor_print.html'>monitor_print</a></span>(<span class='no'>Carmel_Valley</span>)</div><div class='output co'>#&gt; ##### Site metadata begins below here,,
+#&gt; parameter,blank,060530002_01
+#&gt; monitorID,,060530002_01
+#&gt; longitude,,-121.7319
+#&gt; latitude,,36.4833
+#&gt; elevation,,200.1
+#&gt; timezone,,America/Los_Angeles
+#&gt; countryCode,,US
+#&gt; stateCode,,CA
+#&gt; siteName,,Carmel Valley AMS
+#&gt; agencyName,,Monterey Bay Unified APCD
+#&gt; countyName,,MONTEREY
+#&gt; msaName,,"Salinas, CA"
+#&gt; monitorType,,NA
+#&gt; siteID,,060530002
+#&gt; instrumentID,,01
+#&gt; aqsID,,060530002
+#&gt; pwfslID,,NA
+#&gt; pwfslDataIngestSource,,NA
+#&gt; telemetryAggregator,,NA
+#&gt; telemetryUnitID,,NA
+#&gt; ,,
+#&gt; ##### Hourly data begins below here,,
+#&gt; UTC Time,Local Time,060530002_01
+#&gt; 2016-08-02 00:00:00 UTC,2016-08-01 17:00:00 PDT,3
+#&gt; 2016-08-02 01:00:00 UTC,2016-08-01 18:00:00 PDT,6
+#&gt; 2016-08-02 02:00:00 UTC,2016-08-01 19:00:00 PDT,19
+#&gt; 2016-08-02 03:00:00 UTC,2016-08-01 20:00:00 PDT,29
+#&gt; 2016-08-02 04:00:00 UTC,2016-08-01 21:00:00 PDT,27
+#&gt; 2016-08-02 05:00:00 UTC,2016-08-01 22:00:00 PDT,38
+#&gt; 2016-08-02 06:00:00 UTC,2016-08-01 23:00:00 PDT,28
+#&gt; 2016-08-02 07:00:00 UTC,2016-08-02 00:00:00 PDT,26
+#&gt; 2016-08-02 08:00:00 UTC,2016-08-02 01:00:00 PDT,31
+#&gt; 2016-08-02 09:00:00 UTC,2016-08-02 02:00:00 PDT,38
+#&gt; 2016-08-02 10:00:00 UTC,2016-08-02 03:00:00 PDT,47
+#&gt; 2016-08-02 11:00:00 UTC,2016-08-02 04:00:00 PDT,76
+#&gt; 2016-08-02 12:00:00 UTC,2016-08-02 05:00:00 PDT,99
+#&gt; 2016-08-02 13:00:00 UTC,2016-08-02 06:00:00 PDT,126
+#&gt; 2016-08-02 14:00:00 UTC,2016-08-02 07:00:00 PDT,142
+#&gt; 2016-08-02 15:00:00 UTC,2016-08-02 08:00:00 PDT,156
+#&gt; 2016-08-02 16:00:00 UTC,2016-08-02 09:00:00 PDT,129
+#&gt; 2016-08-02 17:00:00 UTC,2016-08-02 10:00:00 PDT,NA
+#&gt; 2016-08-02 18:00:00 UTC,2016-08-02 11:00:00 PDT,100
+#&gt; 2016-08-02 19:00:00 UTC,2016-08-02 12:00:00 PDT,90
+#&gt; 2016-08-02 20:00:00 UTC,2016-08-02 13:00:00 PDT,33
+#&gt; 2016-08-02 21:00:00 UTC,2016-08-02 14:00:00 PDT,16
+#&gt; 2016-08-02 22:00:00 UTC,2016-08-02 15:00:00 PDT,8
+#&gt; 2016-08-02 23:00:00 UTC,2016-08-02 16:00:00 PDT,9
+#&gt; 2016-08-03 00:00:00 UTC,2016-08-02 17:00:00 PDT,9</div><div class='input'><span class='fu'><a href='monitor_print.html'>monitor_print</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>metaOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; monitorID,longitude,latitude,elevation,timezone,countryCode,stateCode,siteName,agencyName,countyName,msaName,monitorType,siteID,instrumentID,aqsID,pwfslID,pwfslDataIngestSource,telemetryAggregator,telemetryUnitID
+#&gt; 060530002_01,-121.731903,36.483299,200.1,America/Los_Angeles,US,CA,Carmel Valley AMS,Monterey Bay Unified APCD,MONTEREY,"Salinas, CA",NA,060530002,01,060530002,NA,NA,NA,NA</div><div class='input'><span class='fu'><a href='monitor_print.html'>monitor_print</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>dataOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; UTC Time,Local Time,060530002_01
+#&gt; 2016-08-02 00:00:00 UTC,2016-08-01 17:00:00 PDT,3
+#&gt; 2016-08-02 01:00:00 UTC,2016-08-01 18:00:00 PDT,6
+#&gt; 2016-08-02 02:00:00 UTC,2016-08-01 19:00:00 PDT,19
+#&gt; 2016-08-02 03:00:00 UTC,2016-08-01 20:00:00 PDT,29
+#&gt; 2016-08-02 04:00:00 UTC,2016-08-01 21:00:00 PDT,27
+#&gt; 2016-08-02 05:00:00 UTC,2016-08-01 22:00:00 PDT,38
+#&gt; 2016-08-02 06:00:00 UTC,2016-08-01 23:00:00 PDT,28
+#&gt; 2016-08-02 07:00:00 UTC,2016-08-02 00:00:00 PDT,26
+#&gt; 2016-08-02 08:00:00 UTC,2016-08-02 01:00:00 PDT,31
+#&gt; 2016-08-02 09:00:00 UTC,2016-08-02 02:00:00 PDT,38
+#&gt; 2016-08-02 10:00:00 UTC,2016-08-02 03:00:00 PDT,47
+#&gt; 2016-08-02 11:00:00 UTC,2016-08-02 04:00:00 PDT,76
+#&gt; 2016-08-02 12:00:00 UTC,2016-08-02 05:00:00 PDT,99
+#&gt; 2016-08-02 13:00:00 UTC,2016-08-02 06:00:00 PDT,126
+#&gt; 2016-08-02 14:00:00 UTC,2016-08-02 07:00:00 PDT,142
+#&gt; 2016-08-02 15:00:00 UTC,2016-08-02 08:00:00 PDT,156
+#&gt; 2016-08-02 16:00:00 UTC,2016-08-02 09:00:00 PDT,129
+#&gt; 2016-08-02 17:00:00 UTC,2016-08-02 10:00:00 PDT,NA
+#&gt; 2016-08-02 18:00:00 UTC,2016-08-02 11:00:00 PDT,100
+#&gt; 2016-08-02 19:00:00 UTC,2016-08-02 12:00:00 PDT,90
+#&gt; 2016-08-02 20:00:00 UTC,2016-08-02 13:00:00 PDT,33
+#&gt; 2016-08-02 21:00:00 UTC,2016-08-02 14:00:00 PDT,16
+#&gt; 2016-08-02 22:00:00 UTC,2016-08-02 15:00:00 PDT,8
+#&gt; 2016-08-02 23:00:00 UTC,2016-08-02 16:00:00 PDT,9
+#&gt; 2016-08-03 00:00:00 UTC,2016-08-02 17:00:00 PDT,9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#note">Note</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

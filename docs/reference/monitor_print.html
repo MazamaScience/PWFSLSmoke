@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Print Monitor Data as CSV — monitor_print • PWFSLSmoke</title>
+<title>Print monitor data as CSV — monitor_print • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,15 +37,19 @@
 
 
 
-<meta property="og:title" content="Print Monitor Data as CSV — monitor_print" />
+<meta property="og:title" content="Print monitor data as CSV — monitor_print" />
 
 <meta property="og:description" content="Prints out the contents of the ws_monitor object as CSV.
-By default, the output is a text string with &quot;human readable&quot; CSV that includes both meta and data.
-When saved as a file, this format is useful for point-and-click spreadsheet users who want to have 
-everything on a single sheet.
-To obtain machine parseable CSV strings you can use metaOnly or dataOnly which are mutually
-exclusive but which return CSV strings that can be automatically ingested.
-By default, the CSV formatted text is printed to the console as well as returned invisibly." />
+By default, the output is a text string with &quot;human readable&quot; CSV that
+includes both meta and data. When saved as a file, this format
+is useful for point-and-click spreadsheet users who want to have everything
+on a single sheet.
+To obtain machine parseable CSV strings you can use metaOnly or
+dataOnly which are mutually exclusive but which return CSV strings
+that can be automatically ingested.
+By default, the CSV formatted text is printed to the console as well as
+returned invisibly but not saved to a file unless saveFile is
+specified." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -76,7 +80,7 @@ By default, the CSV formatted text is printed to the console as well as returned
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.24</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.25</span>
       </span>
     </div>
 
@@ -136,7 +140,7 @@ By default, the CSV formatted text is printed to the console as well as returned
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Print Monitor Data as CSV</h1>
+    <h1>Print monitor data as CSV</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_print.R'><code>R/monitor_print.R</code></a></small>
     <div class="hidden name"><code>monitor_print.Rd</code></div>
     </div>
@@ -144,12 +148,16 @@ By default, the CSV formatted text is printed to the console as well as returned
     <div class="ref-description">
     
     <p>Prints out the contents of the <code>ws_monitor</code> object as CSV.
-By default, the output is a text string with "human readable" CSV that includes both <code>meta</code> and <code>data</code>.
-When saved as a file, this format is useful for point-and-click spreadsheet users who want to have 
-everything on a single sheet.</p>
-<p>To obtain machine parseable CSV strings you can use <code>metaOnly</code> or <code>dataOnly</code> which are mutually
-exclusive but which return CSV strings that can be automatically ingested.</p>
-<p>By default, the CSV formatted text is printed to the console as well as returned invisibly.</p>
+By default, the output is a text string with "human readable" CSV that
+includes both <code>meta</code> and <code>data</code>. When saved as a file, this format
+is useful for point-and-click spreadsheet users who want to have everything
+on a single sheet.</p>
+<p>To obtain machine parseable CSV strings you can use <code>metaOnly</code> or
+<code>dataOnly</code> which are mutually exclusive but which return CSV strings
+that can be automatically ingested.</p>
+<p>By default, the CSV formatted text is printed to the console as well as
+returned invisibly but not saved to a file unless <code>saveFile</code> is
+specified.</p>
     
     </div>
 
@@ -169,22 +177,30 @@ exclusive but which return CSV strings that can be automatically ingested.</p>
     </tr>
     <tr>
       <th>metaOnly</th>
-      <td><p>flag specifying whether to return <code>ws_monitor$meta</code> only as a machine parseable CSV</p></td>
+      <td><p>flag specifying whether to return <code>ws_monitor$meta</code> only
+as a machine parseable CSV</p></td>
     </tr>
     <tr>
       <th>dataOnly</th>
-      <td><p>flag specifying whether to return <code>ws_monitor$data</code> only as a machine parseable CSV</p></td>
+      <td><p>flag specifying whether to return <code>ws_monitor$data</code> only
+as a machine parseable CSV</p></td>
     </tr>
     <tr>
       <th>quietly</th>
-      <td><p>do not print to console, just return the string representation of the CSV</p></td>
+      <td><p>do not print to console, just return the string representation
+of the CSV</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>The <a href='monitor_writeCSV.html'>monitor_writeCSV</a> function is an alias for this function but
+defaults to <code>quietly = TRUE</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"Carmel_Valley"</span>)
-<span class='no'>Carmel_Valley</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20160802</span>,<span class='fl'>20160803</span>))
+<span class='no'>Carmel_Valley</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20160802</span>,<span class='fl'>20160803</span>))
 <span class='fu'>monitor_print</span>(<span class='no'>Carmel_Valley</span>)</div><div class='output co'>#&gt; ##### Site metadata begins below here,,
 #&gt; parameter,blank,060530002_01
 #&gt; monitorID,,060530002_01
@@ -265,7 +281,9 @@ exclusive but which return CSV strings that can be automatically ingested.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#note">Note</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
