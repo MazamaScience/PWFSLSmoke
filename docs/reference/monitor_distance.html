@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate Distances From ws_monitor Monitors to Location of Interest — monitor_distance • PWFSLSmoke</title>
+<title>Calculate distances from monitors to a location of interest — monitor_distance • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,11 @@
 
 
 
-<meta property="og:title" content="Calculate Distances From ws_monitor Monitors to Location of Interest — monitor_distance" />
+<meta property="og:title" content="Calculate distances from monitors to a location of interest — monitor_distance" />
 
-<meta property="og:description" content="This function returns the distances (km) between monitoring sites and
-a location of interest. These distances can be used to create a mask identifying
-monitors within a certain radius of the location of interest." />
+<meta property="og:description" content="This function returns the distances (km) between monitoring
+sites and a location of interest. These distances can be used to create a
+mask identifying monitors within a certain radius of the location of interest." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -72,7 +72,7 @@ monitors within a certain radius of the location of interest." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.25</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.26</span>
       </span>
     </div>
 
@@ -132,16 +132,16 @@ monitors within a certain radius of the location of interest." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate Distances From ws_monitor Monitors to Location of Interest</h1>
+    <h1>Calculate distances from monitors to a location of interest</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_distance.R'><code>R/monitor_distance.R</code></a></small>
     <div class="hidden name"><code>monitor_distance.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function returns the distances (km) between monitoring sites and
-a location of interest. These distances can be used to create a mask identifying
-monitors within a certain radius of the location of interest.</p>
+    <p>This function returns the distances (km) between monitoring
+sites and a location of interest. These distances can be used to create a
+mask identifying monitors within a certain radius of the location of interest.</p>
     
     </div>
 
@@ -166,7 +166,7 @@ monitors within a certain radius of the location of interest.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>vector of of distances (km)</p>
+    <p>Vector of of distances (km).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -181,7 +181,7 @@ monitors within a certain radius of the location of interest.</p>
 <span class='no'>distance</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_distance</span>(<span class='no'>N_M</span>, <span class='no'>WW_lon</span>, <span class='no'>WW_lat</span>)
 <span class='no'>closestIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/which'>which</a></span>(<span class='no'>distance</span> <span class='kw'>==</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>(<span class='no'>distance</span>))
 <span class='no'>distance</span>[<span class='no'>closestIndex</span>]</div><div class='output co'>#&gt; 530710005_01 
-#&gt;     1.769512 </div><div class='input'><span class='no'>N_M</span>$<span class='no'>meta</span>[<span class='no'>closestIndex</span>,]</div><div class='output co'>#&gt;                 monitorID longitude latitude elevation            timezone
+#&gt;     1.771494 </div><div class='input'><span class='no'>N_M</span>$<span class='no'>meta</span>[<span class='no'>closestIndex</span>,]</div><div class='output co'>#&gt;                 monitorID longitude latitude elevation            timezone
 #&gt; 530710005_01 530710005_01 -118.3514  46.0588     266.9 America/Los_Angeles
 #&gt;              countryCode stateCode            siteName
 #&gt; 530710005_01          US        WA Walla Walla-12th St
@@ -209,7 +209,7 @@ monitors within a certain radius of the location of interest.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Rohan Aras, Zach Dingels, Jon Hagg, Jimin Kim, Helen Miller, Spencer Pease, Rex Thompson, Alice Yang.</p>
+  <p>Developed by Jonathan Callahan, Rohan Aras, Zach Dingels, Jon Hagg, Jimin Kim, Hans Martin, Helen Miller, Spencer Pease, Rex Thompson, Alice Yang.</p>
 </div>
 
 <div class="pkgdown">

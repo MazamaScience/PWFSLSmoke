@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_distance.R
 \name{monitor_distance}
 \alias{monitor_distance}
-\title{Calculate Distances From ws_monitor Monitors to Location of Interest}
+\title{Calculate distances from monitors to a location of interest}
 \usage{
 monitor_distance(ws_monitor, longitude, latitude)
 }
@@ -14,12 +14,12 @@ monitor_distance(ws_monitor, longitude, latitude)
 \item{latitude}{latitude of the location of interest}
 }
 \value{
-vector of of distances (km)
+Vector of of distances (km).
 }
 \description{
-This function returns the distances (km) between monitoring sites and
-a location of interest. These distances can be used to create a mask identifying
-monitors within a certain radius of the location of interest.
+This function returns the distances (km) between monitoring
+sites and a location of interest. These distances can be used to create a
+mask identifying monitors within a certain radius of the location of interest.
 }
 \examples{
 N_M <- Northwest_Megafires

@@ -1,3 +1,9 @@
+# PWFSLSmoke 1.1.26
+
+ * Now using the *geosphere* package to greatly improve the speed of distance 
+ calculations in `distance()`.
+ * Fixed bug when calling `timeInfo(..., timezone = "UTC")`.
+
 # PWFSLSmoke 1.1.25
 
 Improved documentation and harmonization of `monitor_writeCSV()` and

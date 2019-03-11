@@ -137,9 +137,13 @@ timeInfo <- function(time,
   tz <- timezone
 
   # Calculate the Local Standard Time offset
-  lst_offset <- MazamaSpatialUtils::SimpleTimezones@data %>%
-    filter(.data$timezone == tz) %>%
-    dplyr::pull(.data$UTC_offset)
+  if ( tz == "UTC" || tz == "GMT" ) {
+    lst_offset <- 0
+  } else {
+    lst_offset <- MazamaSpatialUtils::SimpleTimezones@data %>%
+      filter(.data$timezone == tz) %>%
+      dplyr::pull(.data$UTC_offset)
+  }
 
   # 'datetime' should be UTC but set it just in case
   localStandardTime_UTC <- lubridate::with_tz(localTime, "UTC") +

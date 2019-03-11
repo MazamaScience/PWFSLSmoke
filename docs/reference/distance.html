@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate the Distance Between Points — distance • PWFSLSmoke</title>
+<title>Calculate distances between points — distance • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Calculate the Distance Between Points — distance" />
+<meta property="og:title" content="Calculate distances between points — distance" />
 
-<meta property="og:description" content="This funciton uses the Haversine forumula for calculating great
+<meta property="og:description" content="This function uses the Haversine forumula for calculating great
 circle distances between points. This formula is purpoted to work better
 than the spherical law of cosines for very short distances." />
 <meta name="twitter:card" content="summary" />
@@ -72,7 +72,7 @@ than the spherical law of cosines for very short distances." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.25</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.26</span>
       </span>
     </div>
 
@@ -132,14 +132,14 @@ than the spherical law of cosines for very short distances." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate the Distance Between Points</h1>
+    <h1>Calculate distances between points</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/distance.R'><code>R/distance.R</code></a></small>
     <div class="hidden name"><code>distance.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This funciton uses the Haversine forumula for calculating great
+    <p>This function uses the Haversine forumula for calculating great
 circle distances between points. This formula is purpoted to work better
 than the spherical law of cosines for very short distances.</p>
     
@@ -152,11 +152,13 @@ than the spherical law of cosines for very short distances.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>targetLon</th>
-      <td><p>longitude (decimal degrees) of the point from which distances are calculated</p></td>
+      <td><p>longitude (decimal degrees) of the point from which
+distances are calculated</p></td>
     </tr>
     <tr>
       <th>targetLat</th>
-      <td><p>latitude (decimal degrees) of the point from which distances are calculated</p></td>
+      <td><p>latitude (decimal degrees) of the point from which
+distances are calculated</p></td>
     </tr>
     <tr>
       <th>longitude</th>
@@ -183,7 +185,7 @@ than the spherical law of cosines for very short distances.</p>
 <span class='no'>SEA_lat</span> <span class='kw'>&lt;-</span> <span class='fl'>47.4502</span>
 <span class='no'>PDX_lon</span> <span class='kw'>&lt;-</span> -<span class='fl'>122.5951</span>
 <span class='no'>PDX_lat</span> <span class='kw'>&lt;-</span> <span class='fl'>45.5898</span>
-<span class='fu'>distance</span>(<span class='no'>SEA_lon</span>, <span class='no'>SEA_lat</span>, <span class='no'>PDX_lon</span>, <span class='no'>PDX_lat</span>)</div><div class='output co'>#&gt; [1] 208.0232</div></pre>
+<span class='fu'>distance</span>(<span class='no'>SEA_lon</span>, <span class='no'>SEA_lat</span>, <span class='no'>PDX_lon</span>, <span class='no'>PDX_lat</span>)</div><div class='output co'>#&gt; [1] 208.2562</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -202,7 +204,7 @@ than the spherical law of cosines for very short distances.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Rohan Aras, Zach Dingels, Jon Hagg, Jimin Kim, Helen Miller, Spencer Pease, Rex Thompson, Alice Yang.</p>
+  <p>Developed by Jonathan Callahan, Rohan Aras, Zach Dingels, Jon Hagg, Jimin Kim, Hans Martin, Helen Miller, Spencer Pease, Rex Thompson, Alice Yang.</p>
 </div>
 
 <div class="pkgdown">
