@@ -98,10 +98,13 @@ monitor_getCurrentStatus <- function(ws_monitor,
                                      monitorURLBase = NULL) {
 
 
-# Sanity checks -----------------------------------------------------------
+  # Sanity checks --------------------------------------------------------------
 
-  if (!monitor_isMonitor(ws_monitor)) stop("Not a valid `ws_monitor` object.")
-  if (monitor_isEmpty(ws_monitor)) stop("`ws_monitor` object contains zero monitors.")
+  if (!monitor_isMonitor(ws_monitor))
+    stop("Not a valid `ws_monitor` object.")
+
+  if (monitor_isEmpty(ws_monitor))
+    stop("`ws_monitor` object contains zero monitors.")
 
   # parseDateTime will fail if it produces NA
   endTimeInclusive <- endTime %>%
@@ -119,14 +122,14 @@ monitor_getCurrentStatus <- function(ws_monitor,
   }
 
 
-# Prepare parameters ------------------------------------------------------
+  # Prepare parameters ------------------------------------------------------
 
   if (is.null(monitorURLBase)) {
     monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
   }
 
 
-# Prepare data ------------------------------------------------------------
+  # Prepare data ------------------------------------------------------------
 
   processingTime <- lubridate::now("UTC")
 
@@ -139,7 +142,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
     as_tibble()
 
 
-# Calculate monitor latency -----------------------------------------------
+  # Calculate monitor latency --------------------------------------------------
 
   ## TODO:
   #  how are different timezones handled when compared against endTime
@@ -183,7 +186,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
     select(-.data$`1`, -.data$`2`)
 
 
-# Initialize output -------------------------------------------------------
+  # Initialize output ----------------------------------------------------------
 
   currentStatus <-
     ws_meta %>%
@@ -203,7 +206,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
     )
 
 
-# Add summary data --------------------------------------------------------
+  # Add summary data -----------------------------------------------------------
 
   ## Note: see documentation for summary descriptions
 
@@ -222,7 +225,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
     purrr::reduce(left_join, by = "monitorID")
 
 
-# Add events --------------------------------------------------------------
+  # Add events -----------------------------------------------------------------
 
   ## Note: See documentation for event descriptions
 
@@ -243,14 +246,14 @@ monitor_getCurrentStatus <- function(ws_monitor,
     mutate(`MAL6` = NA)
 
 
-# Return output -----------------------------------------------------------
+  # Return output --------------------------------------------------------------
 
   return(eventData)
 
 }
 
 
-# Debugging ---------------------------------------------------------------
+# Debugging --------------------------------------------------------------------
 
 if (FALSE) {
 
@@ -264,13 +267,13 @@ if (FALSE) {
 }
 
 
-# Helper functions --------------------------------------------------------
+# Helper functions -------------------------------------------------------------
 
 ## - Summary functions
 ## - Event functions
 
 
-# Summary functions  -------------------------------------------------------
+# Summary functions  -----------------------------------------------------------
 
 #' @title Get the 'n' prior hour average for monitors
 #'
@@ -404,7 +407,7 @@ if (FALSE) {
 }
 
 
-# Event functions ---------------------------------------------------------
+# Event functions --------------------------------------------------------------
 
 #' @title Get AQI Level for data values at specific times
 #'

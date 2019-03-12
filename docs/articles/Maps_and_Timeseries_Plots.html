@@ -98,7 +98,7 @@
       <h1>Maps and Timeseries Plots</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-03-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/PWFSLSmoke/blob/master/vignettes/Maps_and_Timeseries_Plots.Rmd"><code>vignettes/Maps_and_Timeseries_Plots.Rmd</code></a></small>
       <div class="hidden name"><code>Maps_and_Timeseries_Plots.Rmd</code></div>
@@ -161,7 +161,7 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <p>Let’s do a similar analysis for chronic smoke. In this case we will calculate the number of days at or above the AQI “unhealthy” level:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PacNW_dailyAvg &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_dailyStatistic.html">monitor_dailyStatistic</a></span>(PacNW, <span class="dt">FUN=</span>mean, <span class="dt">minHours=</span><span class="dv">20</span>)</code></pre></div>
 <pre><code>## Warning in monitor_dailyStatistic(PacNW, FUN = mean, minHours = 20): Found
-## 2 timezones. Only the first will be used</code></pre>
+## 2 timezones. Only 'America/Los_Angeles' will be used</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span>PacNW_dailyAvg<span class="op">$</span>data[,<span class="op">-</span><span class="dv">1</span>]
 unhealthyDays &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/apply">apply</a></span>(data, <span class="dv">2</span>, <span class="cf">function</span>(x) { <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(x <span class="op">&gt;=</span><span class="st"> </span>AQI<span class="op">$</span>breaks_<span class="dv">24</span>[<span class="dv">4</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) })
 worstChronic &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sort">sort</a></span>(unhealthyDays, <span class="dt">decreasing=</span><span class="ot">TRUE</span>))[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]

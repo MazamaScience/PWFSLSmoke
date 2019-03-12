@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_dailyStatistic.R
 \name{monitor_dailyStatistic}
 \alias{monitor_dailyStatistic}
-\title{Calculate Daily Statistics}
+\title{Calculate daily statistics}
 \usage{
 monitor_dailyStatistic(ws_monitor, FUN = get("mean"),
   dayStart = "midnight", na.rm = TRUE, minHours = 18)
@@ -10,13 +10,15 @@ monitor_dailyStatistic(ws_monitor, FUN = get("mean"),
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{FUN}{function used to collapse a day's worth of data into a single number for each monitor in the ws_monitor object}
+\item{FUN}{function used to collapse a day's worth of data into a single
+number for each monitor in the ws_monitor object}
 
 \item{dayStart}{one of \code{sunset|midnight|sunrise}}
 
 \item{na.rm}{logical value indicating whether NA values should be ignored}
 
-\item{minHours}{minimum number of valid data hours required to calculate each daily statistic}
+\item{minHours}{minimum number of valid data hours required to calculate each
+daily statistic}
 }
 \value{
 A \emph{ws_monitor} object with daily statistics for the local timezone.
@@ -36,26 +38,30 @@ If you choose a date range based on UTC times this may result in an insufficient
 number of hours in the first and last daily records of the returned \emph{ws_monitor}
 object.
 
-The returned \emph{ws_monitor} object has a daily time axis where each \code{datetime} is set to
-the beginning of each day, 00:00:00, local time.
+The returned \emph{ws_monitor} object has a daily time axis where each
+\code{datetime} is set to the beginning of each day, 00:00:00, local time.
 }
 \examples{
 \dontrun{
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150801,20150831))
 WinthropID <- '530470010_01'
 TwispID <- '530470009_01'
-MethowValley <- monitor_subset(N_M, tlim=c(20150801,20150831), monitorIDs=c(WinthropID,TwispID))
-MethowValley_dailyMean <- monitor_dailyStatistic(MethowValley, FUN=get('mean'), dayStart='midnight')
+MethowValley <- monitor_subset(N_M,
+                               tlim=c(20150801,20150831),
+                               monitorIDs=c(WinthropID,TwispID))
+MethowValley_dailyMean <- monitor_dailyStatistic(MethowValley,
+                                                 FUN=get('mean'),
+                                                 dayStart='midnight')
 # Get the full Y scale
 monitor_timeseriesPlot(MethowValley, style='gnats', col='transparent')
-monitor_timeseriesPlot(MethowValley, style='gnats', monitorID=TwispID,
-                       col='forestgreen', add=TRUE)
-monitor_timeseriesPlot(MethowValley, style='gnats', monitorID=WinthropID,
-                       col='purple', add=TRUE)
-monitor_timeseriesPlot(MethowValley_dailyMean, type='s', lwd=2, monitorID=TwispID,
-                       col='forestgreen', add=TRUE)
-monitor_timeseriesPlot(MethowValley_dailyMean, type='s', lwd=2, monitorID=WinthropID,
-                       col='purple', add=TRUE)
+monitor_timeseriesPlot(MethowValley, monitorID=TwispID,
+                       style='gnats', col='forestgreen', add=TRUE)
+monitor_timeseriesPlot(MethowValley, monitorID=WinthropID,
+                       style='gnats', col='purple', add=TRUE)
+monitor_timeseriesPlot(MethowValley_dailyMean, monitorID=TwispID,
+                       type='s', lwd=2, col='forestgreen', add=TRUE)
+monitor_timeseriesPlot(MethowValley_dailyMean, monitorID=WinthropID,
+                       type='s', lwd=2, col='purple', add=TRUE)
 addAQILines()
 addAQILegend("topleft", lwd=1, pch=NULL)
 title("Winthrop & Twisp, Washington Daily Mean PM2.5, 2015")

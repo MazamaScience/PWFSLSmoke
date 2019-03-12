@@ -3,6 +3,10 @@
  * Now using the *geosphere* package to greatly improve the speed of distance 
  calculations in `distance()`.
  * Fixed bug when calling `timeInfo(..., timezone = "UTC")`.
+ * `monitor_dailyStatistic()` now uses the most common timezone when multiple
+ timezones are encountered. (It previously just picked the first one.)
+ * `monitor_getDailyMean()` now works with multiple-monitor _ws_monitor_ 
+ objects and returns a dataframe of daily means
 
 # PWFSLSmoke 1.1.25
 

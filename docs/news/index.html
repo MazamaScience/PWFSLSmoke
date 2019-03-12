@@ -138,6 +138,10 @@
 <ul>
 <li>Now using the <em>geosphere</em> package to greatly improve the speed of distance calculations in <code><a href="../reference/distance.html">distance()</a></code>.</li>
 <li>Fixed bug when calling <code><a href="../reference/timeInfo.html">timeInfo(..., timezone = "UTC")</a></code>.</li>
+<li>
+<code><a href="../reference/monitor_dailyStatistic.html">monitor_dailyStatistic()</a></code> now uses the most common timezone when multiple timezones are encountered. (It previously just picked the first one.)</li>
+<li>
+<code><a href="../reference/monitor_getDailyMean.html">monitor_getDailyMean()</a></code> now works with multiple-monitor <em>ws_monitor</em> objects and returns a dataframe of daily means</li>
 </ul>
 </div>
     <div id="pwfslsmoke-1-1-25" class="section level1">

@@ -2,28 +2,32 @@
 % Please edit documentation in R/monitor_getDailyMean.R
 \name{monitor_getDailyMean}
 \alias{monitor_getDailyMean}
-\title{Calculate Daily Means for a Monitor Object}
+\title{Calculate daily means for a ws_monitor object}
 \usage{
 monitor_getDailyMean(ws_monitor, monitorID = NULL, startdate = NULL,
   enddate = NULL)
 }
 \arguments{
-\item{ws_monitor}{\emph{ws_monitor} object.}
+\item{ws_monitor}{\emph{ws_monitor} object}
 
-\item{monitorID}{Monitor ID of interest.}
+\item{monitorID}{monitor ID of interest}
 
-\item{startdate}{Desired start date (integer or character in Ymd format
-or \code{POSIXct}).}
+\item{startdate}{desired start date (integer or character in Ymd format
+or \code{POSIXct})}
 
-\item{enddate}{Desired end date (integer or character in Ymd format
-or \code{POSIXct}).}
+\item{enddate}{desired end date (integer or character in Ymd format
+or \code{POSIXct})}
 }
 \value{
-A vector of daily means for
+A dataframe of daily means.
 }
 \description{
-Calculates and returns daily means for a monitor.
+Calculates and returns daily means for a monitor. If either
+\code{startdate} or \code{enddate} is \code{NULL}, a single value is
+returned for that date.
 }
 \examples{
-monitor_getDailyMean(PWFSLSmoke::Carmel_Valley, startdate = "2016-08-08")
+monitor_getDailyMean(PWFSLSmoke::Carmel_Valley,
+                     startdate = "2016-08-01",
+                     enddate = "2016-08-08")
 }
