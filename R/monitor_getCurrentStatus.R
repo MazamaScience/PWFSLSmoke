@@ -6,12 +6,11 @@
 #'
 #' @param ws_monitor \emph{ws_monitor} object.
 #' @param endTime Time to which the status of the monitors will be current. By
-#'   default, it is the time the function was called. This time can be given as
-#'   a POSIXct time, or a string/numeric value in ymd format (eg. 20190301).
-#'   This time is must be in UTC.
-#' @param monitorURLBase A URL prefix pointing to where more information about
-#'   a monitor can be found. By default, it points to the AirFire monitoring
-#'   site.
+#'   default, it is the most recent time in \code{ws_monitor}. This time can be
+#'   given as a POSIXct time, or a string/numeric value in ymd format (eg.
+#'   20190301). This time converted to UTC.
+#' @param monitorURLBase A URL prefix pointing to where more information about a
+#'   monitor can be found. By default, it points to the AirFire monitoring site.
 #'
 #' @section "Last" and "Previous":
 #' The goal of this function is to provide useful information about what
@@ -96,7 +95,7 @@
 #' statusTbl <- monitor_getCurrentStatus(ws_monitor)
 #' }
 monitor_getCurrentStatus <- function(ws_monitor,
-                                     endTime = lubridate::now("UTC"),
+                                     endTime = NULL,
                                      monitorURLBase = NULL) {
 
 
@@ -107,6 +106,17 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   if (monitor_isEmpty(ws_monitor))
     stop("`ws_monitor` object contains zero monitors.")
+
+
+  # Prepare parameters ------------------------------------------------------
+
+  if (is.null(monitorURLBase)) {
+    monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
+  }
+
+  if (is.null(endTime)) {
+    endTime <- max(ws_monitor[["data"]][["datetime"]])
+  }
 
   # parseDateTime will fail if it produces NA
   endTime <- parseDatetime(endTime)
@@ -119,15 +129,9 @@ monitor_getCurrentStatus <- function(ws_monitor,
   ws_monitor <- ws_monitor %>%
     monitor_subset(tlim = c(startTime, endTimeInclusive))
 
+  # Check again to make sure subset includes data
   if (monitor_isEmpty(ws_monitor)) {
     stop("ws_monitor object contains zero monitors with data from before ", endTime)
-  }
-
-
-  # Prepare parameters ------------------------------------------------------
-
-  if (is.null(monitorURLBase)) {
-    monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
   }
 
 
