@@ -6,7 +6,9 @@
 #'
 #' @param ws_monitor \emph{ws_monitor} object.
 #' @param endTime Time to which the status of the monitors will be current. By
-#'   default, it is the time the function was called.
+#'   default, it is the time the function was called. This time can be given as
+#'   a POSIXct time, or a string/numeric value in ymd format (eg. 20190301).
+#'   This time is must be in UTC.
 #' @param monitorURLBase A URL prefix pointing to where more information about
 #'   a monitor can be found. By default, it points to the AirFire monitoring
 #'   site.
@@ -107,8 +109,8 @@ monitor_getCurrentStatus <- function(ws_monitor,
     stop("`ws_monitor` object contains zero monitors.")
 
   # parseDateTime will fail if it produces NA
+  endTime <- parseDatetime(endTime)
   endTimeInclusive <- endTime %>%
-    parseDatetime() %>%
     lubridate::floor_date(unit = "hour") %>%
     magrittr::subtract(lubridate::dhours(1))
 
@@ -273,7 +275,7 @@ if (FALSE) {
 ## - Event functions
 
 
-# Summary functions  -----------------------------------------------------------
+# * Summary functions  ---------------------------------------------------------
 
 #' @title Get the 'n' prior hour average for monitors
 #'
@@ -407,7 +409,7 @@ if (FALSE) {
 }
 
 
-# Event functions --------------------------------------------------------------
+# * Event functions ------------------------------------------------------------
 
 #' @title Get AQI Level for data values at specific times
 #'
