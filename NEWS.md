@@ -1,3 +1,12 @@
+# PWFSLSmoke 1.1.27
+
+ * Fixed bug in `monitor_leaflet()` which didn't properly assign colors when
+ some monitors had all missing data.
+ * `monitor_leaflet()` now displays monitors with all missing values as light
+ gray.
+ * `monitor_leaflet()` now invisbly returns a _leaflet_ object which can be
+ further customized by the user.
+
 # PWFSLSmoke 1.1.26
 
  * Now using the *geosphere* package to greatly improve the speed of distance 

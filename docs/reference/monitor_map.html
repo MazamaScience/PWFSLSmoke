@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Map of Monitoring Stations — monitor_map • PWFSLSmoke</title>
+<title>Static map of monitoring stations — monitor_map • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Create Map of Monitoring Stations — monitor_map" />
+<meta property="og:title" content="Static map of monitoring stations — monitor_map" />
 
 <meta property="og:description" content="Creates a map of monitoring stations in a given ws_monitor object. Individual
 monitor timeseries are reduced to a single value by applying the function
@@ -81,7 +81,7 @@ parameter." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.26</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.27</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@ parameter." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Map of Monitoring Stations</h1>
+    <h1>Static map of monitoring stations</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_map.R'><code>R/monitor_map.R</code></a></small>
     <div class="hidden name"><code>monitor_map.Rd</code></div>
     </div>
@@ -230,8 +230,8 @@ colors.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Northwest_Megafires</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20150821</span>,<span class='fl'>20150828</span>))
-<span class='fu'>monitor_map</span>(<span class='no'>N_M</span>, <span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>2</span>)</div><div class='input'><span class='fu'><a href='addAQILegend.html'>addAQILegend</a></span>()</div><div class='img'><img src='monitor_map-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Northwest_Megafires</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20150821</span>,<span class='fl'>20150828</span>))
+<span class='fu'>monitor_map</span>(<span class='no'>N_M</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='input'><span class='fu'><a href='addAQILegend.html'>addAQILegend</a></span>()</div><div class='img'><img src='monitor_map-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
