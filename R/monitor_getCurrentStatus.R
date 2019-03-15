@@ -185,9 +185,13 @@ monitor_getCurrentStatus <- function(ws_monitor,
     validTimeIndices %>%
     mutate(
       `last_validTime` = ws_data[["datetime"]][.data$`1`],
-      `last_latency` = as.numeric(difftime(endTimeInclusive, .data$last_validTime, units = "hour")),
+      `last_latency` = as.numeric(difftime(
+        endTimeInclusive, .data$last_validTime, units = "hour"
+      )),
       `previous_validTime` = ws_data[["datetime"]][.data$`2`],
-      `previous_latency` = as.numeric(difftime(.data$last_validTime, .data$previous_validTime,  units = "hour"))
+      `previous_latency` = as.numeric(difftime(
+        .data$last_validTime, .data$previous_validTime,  units = "hour"
+      ))
     ) %>%
     select(-.data$`1`, -.data$`2`)
 
@@ -219,13 +223,15 @@ monitor_getCurrentStatus <- function(ws_monitor,
   summaryData <-
     list(
       .yesterday_avg(ws_monitor, endTime, "yesterday_pm25_24hr"),
-      .averagePrior(nowcast_data, lastValidTimeIndex, 1, "last_nowcast_1hr"),
-      .averagePrior(ws_data, lastValidTimeIndex, 1, "last_pm25_1hr"),
-      .averagePrior(ws_data, lastValidTimeIndex, 3, "last_pm25_3hr"),
+
+      .averagePrior(nowcast_data, lastValidTimeIndex,     1, "last_nowcast_1hr"),
+      .averagePrior(ws_data,      lastValidTimeIndex,     1, "last_pm25_1hr"),
+      .averagePrior(ws_data,      lastValidTimeIndex,     3, "last_pm25_3hr"),
       .averagePrior(nowcast_data, previousValidTimeIndex, 1, "previous_nowcast_1hr"),
-      .averagePrior(ws_data, previousValidTimeIndex, 1, "previous_pm25_1hr"),
-      .averagePrior(ws_data, previousValidTimeIndex, 3, "previous_pm25_3hr"),
-      .aqiLevel(nowcast_data, lastValidTimeIndex, "last_nowcastLevel"),
+      .averagePrior(ws_data,      previousValidTimeIndex, 1, "previous_pm25_1hr"),
+      .averagePrior(ws_data,      previousValidTimeIndex, 3, "previous_pm25_3hr"),
+
+      .aqiLevel(nowcast_data, lastValidTimeIndex,     "last_nowcastLevel"),
       .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel")
     ) %>%
     purrr::reduce(left_join, by = "monitorID")
@@ -239,8 +245,8 @@ monitor_getCurrentStatus <- function(ws_monitor,
     left_join(summaryData, by = "monitorID") %>%
     mutate(
       `USG6` = .levelChange(.data, 3, 6, "increase"),
-      `U6` = .levelChange(.data, 4, 6, "increase"),
-      `VU6` = .levelChange(.data, 5, 6, "increase"),
+      `U6`   = .levelChange(.data, 4, 6, "increase"),
+      `VU6`  = .levelChange(.data, 5, 6, "increase"),
       `HAZ6` = .levelChange(.data, 6, 6, "increase"),
       `MOD6` = .levelChange(.data, 2, 6, "decrease") | .levelChange(.data, 1, 6, "decrease")
     ) %>%
