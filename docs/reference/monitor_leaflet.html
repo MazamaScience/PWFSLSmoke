@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Leaflet Interactive Map of Monitoring Stations — monitor_leaflet • PWFSLSmoke</title>
+<title>Leaflet interactive map of monitoring stations — monitor_leaflet • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Leaflet Interactive Map of Monitoring Stations — monitor_leaflet" />
+<meta property="og:title" content="Leaflet interactive map of monitoring stations — monitor_leaflet" />
 
 <meta property="og:description" content="This function creates interactive maps that will be displayed in RStudio's
 'Viewer' tab. The slice argument is used to collapse a
@@ -79,7 +79,7 @@ functions must accept na.rm as an argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.26</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.27</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@ functions must accept na.rm as an argument." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Leaflet Interactive Map of Monitoring Stations</h1>
+    <h1>Leaflet interactive map of monitoring stations</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_leaflet.R'><code>R/monitor_leaflet.R</code></a></small>
     <div class="hidden name"><code>monitor_leaflet.Rd</code></div>
     </div>
@@ -215,7 +215,7 @@ a popup window</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Initiates the interactive leaflet plot in RStudio's 'Viewer' tab.</p>
+    <p>Invisbly returns a leaflet map of class "leaflet".</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -237,9 +237,9 @@ underlying map tile if available. See
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># Napa Fires -- October, 2017</span>
 <span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='airnow_load.html'>airnow_load</a></span>(<span class='fl'>2017</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20171001</span>,<span class='fl'>20171101</span>), <span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'CA'</span>)
+  <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20171001</span>,<span class='fl'>20171101</span>), <span class='kw'>stateCodes</span> <span class='kw'>=</span> <span class='st'>'CA'</span>)
 <span class='no'>v_low</span> <span class='kw'>&lt;-</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>[<span class='fl'>5</span>]
-<span class='no'>CA_very_unhealthy_monitors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>ca</span>, <span class='kw'>vlim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>v_low</span>, <span class='fl'>Inf</span>))
+<span class='no'>CA_very_unhealthy_monitors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>ca</span>, <span class='kw'>vlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>v_low</span>, <span class='fl'>Inf</span>))
 <span class='fu'>monitor_leaflet</span>(<span class='no'>CA_very_unhealthy_monitors</span>,
                <span class='kw'>legendTitle</span> <span class='kw'>=</span> <span class='st'>"October, 2017"</span>,
                <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"toner"</span>)

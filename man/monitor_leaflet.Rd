@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_leaflet.R
 \name{monitor_leaflet}
 \alias{monitor_leaflet}
-\title{Leaflet Interactive Map of Monitoring Stations}
+\title{Leaflet interactive map of monitoring stations}
 \usage{
 monitor_leaflet(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
   colors = AQI$colors, labels = AQI$names,
@@ -35,7 +35,7 @@ determined by \code{breaks}}
 a popup window}
 }
 \value{
-Initiates the interactive leaflet plot in RStudio's 'Viewer' tab.
+Invisbly returns a leaflet map of class "leaflet".
 }
 \description{
 This function creates interactive maps that will be displayed in RStudio's
@@ -65,9 +65,9 @@ underlying map tile if available. See
 \dontrun{
 # Napa Fires -- October, 2017
 ca <- airnow_load(2017) \%>\%
-  monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+  monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
 v_low <- AQI$breaks_24[5]
-CA_very_unhealthy_monitors <- monitor_subset(ca, vlim=c(v_low, Inf))
+CA_very_unhealthy_monitors <- monitor_subset(ca, vlim = c(v_low, Inf))
 monitor_leaflet(CA_very_unhealthy_monitors,
                legendTitle = "October, 2017",
                maptype = "toner")

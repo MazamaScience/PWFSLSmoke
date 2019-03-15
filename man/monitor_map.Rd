@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_map.R
 \name{monitor_map}
 \alias{monitor_map}
-\title{Create Map of Monitoring Stations}
+\title{Static map of monitoring stations}
 \usage{
 monitor_map(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
   colors = AQI$colors, pch = par("pch"), cex = par("cex"),
@@ -57,8 +57,8 @@ of quantiles to determine a set of breaks appropriate for the number of
 colors.
 }
 \examples{
-N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150821,20150828))
-monitor_map(N_M, cex=2)
+N_M <- monitor_subset(Northwest_Megafires, tlim = c(20150821,20150828))
+monitor_map(N_M, cex = 2)
 addAQILegend()
 }
 \keyword{ws_monitor}

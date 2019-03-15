@@ -2,7 +2,7 @@
 #' @export
 #' @import maps mapproj
 #'
-#' @title Create Map of Monitoring Stations
+#' @title Static map of monitoring stations
 #'
 #' @param ws_monitor \emph{ws_monitor} object
 #' @param slice either a time index or a function used to collapse the time axis
@@ -40,23 +40,24 @@
 #' colors.
 #'
 #' @examples
-#' N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150821,20150828))
-#' monitor_map(N_M, cex=2)
+#' N_M <- monitor_subset(Northwest_Megafires, tlim = c(20150821,20150828))
+#' monitor_map(N_M, cex = 2)
 #' addAQILegend()
 
-monitor_map <- function(ws_monitor,
-                        slice = get("max"),
-                        breaks = AQI$breaks_24,
-                        colors = AQI$colors,
-                        pch = par("pch"),
-                        cex = par("cex"),
-                        stateCol = "grey60",
-                        stateLwd = 2,
-                        countyCol = "grey70",
-                        countyLwd = 1,
-                        add = FALSE,
-                        ...) {
-
+monitor_map <- function(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  pch = par("pch"),
+  cex = par("cex"),
+  stateCol = "grey60",
+  stateLwd = 2,
+  countyCol = "grey70",
+  countyLwd = 1,
+  add = FALSE,
+  ...
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
@@ -82,7 +83,7 @@ monitor_map <- function(ws_monitor,
   cols <- aqiColors(pm25, palette = colors, bins = breaks)
 
 
-# GRAPHICS ----------------------------------------------------------------
+  # ----- GRAPHICS -------------------------------------------------------------
 
   # Create the basemap
   if ( !add ) {
@@ -139,9 +140,11 @@ monitor_map <- function(ws_monitor,
   if ( is.null(argsList$projection) ) {
     points(lon, lat, pch = pch, cex = cex, col = cols, xpd = NA)
   } else {
-    points(
-      mapproj::mapproject(lon, lat, argsList$projection, argsList$parameters, argsList$orientation),
-      pch = pch, cex = cex, col = cols, xpd = NA
+    points(mapproj::mapproject(lon, lat,
+                               argsList$projection,
+                               argsList$parameters,
+                               argsList$orientation),
+           pch = pch, cex = cex, col = cols, xpd = NA
     )
   }
 

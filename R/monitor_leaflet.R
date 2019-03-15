@@ -1,6 +1,6 @@
 #' @keywords ws_monitor
 #' @export
-#' @title Leaflet Interactive Map of Monitoring Stations
+#' @title Leaflet interactive map of monitoring stations
 #' @param ws_monitor ws_monitor object
 #' @param slice either a time index or a function used to collapse the time axis
 #'   -- defautls to \code{get('max')}
@@ -39,62 +39,78 @@
 #' \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of
 #' "provider tiles" to use as the background map.
 #'
-#' @return Initiates the interactive leaflet plot in RStudio's 'Viewer' tab.
+#' @return Invisbly returns a leaflet map of class "leaflet".
 #'
 #' @examples
 #' \dontrun{
 #' # Napa Fires -- October, 2017
 #' ca <- airnow_load(2017) %>%
-#'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+#'   monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
 #' v_low <- AQI$breaks_24[5]
-#' CA_very_unhealthy_monitors <- monitor_subset(ca, vlim=c(v_low, Inf))
+#' CA_very_unhealthy_monitors <- monitor_subset(ca, vlim = c(v_low, Inf))
 #' monitor_leaflet(CA_very_unhealthy_monitors,
 #'                legendTitle = "October, 2017",
 #'                maptype = "toner")
 #' }
 
-monitor_leaflet <- function(ws_monitor,
-                            slice = get("max"),
-                            breaks = AQI$breaks_24,
-                            colors = AQI$colors,
-                            labels = AQI$names,
-                            legendTitle = "Max AQI Level",
-                            radius = 10,
-                            opacity = 0.7,
-                            maptype = "terrain",
-                            popupInfo = c("siteName", "monitorID", "elevation")) {
-
+monitor_leaflet <- function(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  labels = AQI$names,
+  legendTitle = "Max AQI Level",
+  radius = 10,
+  opacity = 0.7,
+  maptype = "terrain",
+  popupInfo = c("siteName", "monitorID", "elevation")
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")
   }
 
-  # BEGIN verbatim from monitor_map.R -----------------------------------------
+  # ----- Create the 'slice' ---------------------------------------------------
 
-  # Create the 'slice'
   if ( class(slice) == "function" ) {
-    # NOTE:  Need as.matrix in case we only have a single monitor
-    allMissingMask <- apply(as.matrix(ws_monitor$data[, -1]), 2, function(x) { all(is.na(x)) } )
-    data <- as.matrix(ws_monitor$data[, -1])
-    pm25 <- apply(as.matrix(data[, !allMissingMask]), 2, slice, na.rm = TRUE)
+
+    # NOTE:  min/max will return Inf/-Inf when all data are missing while mean
+    # NOTE:  returns NaN so we need to replace all those with NA.
+    tempTbl <- dplyr::summarise_all(ws_monitor$data, slice, na.rm = TRUE)
+    missingMask <- ! as.numeric(dplyr::summarise_all(tempTbl, is.finite))
+    tempTbl[missingMask] <- NA
+    pm25 <- as.numeric(tempTbl[-1])
+
   } else if ( class(slice) == "integer" || class(slice) == "numeric" ) {
-    pm25 <- ws_monitor$data[as.integer(slice), ][-1]
+
+    pm25 <- as.numeric(dplyr::slice(ws_monitor$data, slice)[-1])
+
   } else {
+
     stop("Improper use of slice parameter")
+
   }
 
-  # If the user only specifies breaks and not the colors or vice versa then complain
-  if (xor(missing(breaks), missing(colors))) {
-    stop(paste0("The breaks paramater ", ifelse(missing(breaks), "wasn't", "was"),
-                " specified but the colors ", ifelse(missing(colors), "wasn't", "was"),
-                " specified. You must specify both paramaters or neither."))
-  }
-
-  # ----- Figure out names for a legend and colors for each point ----
+  # ----- Create colors and legend labels --------------------------------------
 
   # If the user didn't use custom breaks then use AQI names and colors
-  if ( ! missing(breaks) ) {
+  if ( all.equal(breaks, AQI$breaks_24) && all.equal(colors, AQI$colors) ) {
+
+    # Ignore warnings from RColorBrewer as leaflet::colorBin does the right thing
+    suppressWarnings({
+      colorFunc <- leaflet::colorBin(PWFSLSmoke::AQI$colors,
+                                     bins = PWFSLSmoke::AQI$breaks_24,
+                                     na.color = "#bbbbbb")
+      cols <- colorFunc(pm25)
+      colors <- PWFSLSmoke::AQI$colors
+      labels <- PWFSLSmoke::AQI$names
+      legendTitle <- 'AQI Level'
+      value <- round(pm25, 1)
+      unit <- '\U00B5g/m3'
+    })
+
+  } else {
 
     if ( length(breaks) <= 2) {
       stop("Please specify the correct vector of breaks")
@@ -105,23 +121,23 @@ monitor_leaflet <- function(ws_monitor,
     }
 
     if ( missing(labels) ){
-      labels <- paste(sprintf("%.1f", breaks[-length(breaks)]), "--", sprintf("%.1f", breaks[-1]))
+      labels <- paste(sprintf("%.1f", breaks[-length(breaks)]),
+                      "--",
+                      sprintf("%.1f", breaks[-1]))
     } else if ( length(labels) != length(colors) ) {
       stop("The number of labels should be equal to the number of colors")
     }
 
+    # Create levels and use them to create a color mask
+    levels <- .bincode(pm25, breaks, include.lowest = TRUE)
+    if ( !all(!is.na(levels)) ) {
+      print("NOTE that there are data points outside of your specified breaks, non-requested color(s) might be displayed on your map.")
+    }
+    cols <- colors[levels]
+
   }
 
-  # Create levels and use them to create a color mask
-  levels <- .bincode(pm25, breaks, include.lowest = TRUE)
-  if ( !all(!is.na(levels)) ) {
-    print("NOTE that there are data points outside of your specified breaks, non-requested color(s) might be displayed on your map.")
-  }
-  cols <- colors[levels]
-
-  # END verbatim from monitor_map.R -------------------------------------------
-
-  # Create popup
+  # ----- Create popup ---------------------------------------------------------
 
   # If there are no column names in the popupInfo, then don't make descriptions
   if ( !any(popupInfo %in% names(ws_monitor$meta)) ) {
@@ -137,23 +153,28 @@ monitor_leaflet <- function(ws_monitor,
         if ( colName %in% names(ws_monitor$meta) ) {
           value <- ws_monitor$meta[rowIndex, colName]
           if ( is.numeric(value) ) {
-            monitorText <- paste0(monitorText, colName, ": ", signif(value, 6), "<br/>")
+            monitorText <- paste0(monitorText, colName, ": ", signif(value, 6), "<br>")
           } else {
-            monitorText <- paste0(monitorText, colName, ": ", value, "<br/>")
+            monitorText <- paste0(monitorText, colName, ": ", value, "<br>")
           }
         }
       }
+      monitorText <- paste0(monitorText, "pm25: ",
+                            round(pm25[rowIndex], 1),
+                            "<br>")
       popupText[rowIndex] <- monitorText
     }
   }
   ws_monitor$meta$popupText <- popupText
 
 
-  # Extract view information
+  # ----- Create map -----------------------------------------------------------
+
+  # Determine appropriate zoom level
   lonRange <- range(ws_monitor$meta$longitude, na.rm = TRUE)
   latRange <- range(ws_monitor$meta$latitude, na.rm = TRUE)
   maxRange <- max(diff(lonRange), diff(latRange), na.rm = TRUE)
-  # Determine appropriate zoom level
+
   if (maxRange > 20) {
     zoom <- 4
   } else if (maxRange > 10) {
@@ -195,7 +216,7 @@ monitor_leaflet <- function(ws_monitor,
   }
 
   # Create leaflet map
-  leaflet::leaflet(SPDF) %>%
+  leafletMap <- leaflet::leaflet(SPDF) %>%
     leaflet::setView(lng = mean(lonRange), lat = mean(latRange), zoom = zoom) %>%
     leaflet::addProviderTiles(providerTiles) %>%
     leaflet::addCircleMarkers(
@@ -211,5 +232,9 @@ monitor_leaflet <- function(ws_monitor,
       opacity = 1,
       title = legendTitle
     )
+
+  print(leafletMap)
+
+  return(invisible(leafletMap))
 
 }
