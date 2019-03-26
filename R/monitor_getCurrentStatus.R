@@ -12,6 +12,9 @@
 #' @param monitorURLBase A URL prefix pointing to where more information about a
 #'   monitor can be found. By default, it points to the AirFire monitoring site.
 #'
+#' @return A table containing the current status information for all the
+#'   monitors in \emph{ws_monitor}.
+#'
 #' @section "Last" and "Previous":
 #' The goal of this function is to provide useful information about what
 #' happened recently with each monitor in the provided \emph{ws_monitor} object.
@@ -83,9 +86,6 @@
 #'   MAL6 \tab Monitor malfunctioning the last 6 hours (not currently implemented)
 #' }
 #'
-#' @return A table containing the current status information for all the
-#'   monitors in \emph{ws_monitor}.
-#'
 #' @importFrom rlang :=
 #' @export
 #'
@@ -150,13 +150,21 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   # Calculate monitor latency --------------------------------------------------
 
-  ## TODO:
-  #  how are different timezones handled when compared against endTime
-  #  and processingTime?
-
   ## NOTE:
   #  The number of levels of valid time indices is set by `indexLevels`, with
   #  lower numbers corresponding to more recent times.
+
+  ## NOTE on anonymous functions ("~") in purrr:
+  #  The "~" in R is generally used to create formulas, but in the `purrr`
+  #  package it has the specialized purpose of defining succinct anonympus
+  #  functions.
+  #
+  #  Prefixing a function with "~" within `purrr` allows you to alter the
+  #  arguments the function accepts, by wrapping arguments in other functions,
+  #  or setting an argument to a constant value. `.x` and `.y` are two variables
+  #  `purrr` will treat as the mapping variables in `map`, `map2`, etc.
+  #
+  #  For more details, see `?purrr::map` or purrr.tidyverse.org/reference/map
 
   indexLevels <- 1:2
 
@@ -332,6 +340,8 @@ if (FALSE) {
   #  `vignette("programming", package = "dplyr")`, or
   #  dplyr.tidyverse.org/articles/programming
 
+  # See NOTE on anonymous functions ("~") in purrr
+
   avgData <-
     purrr::map2_dfc(
       select(data, -.data$datetime), timeIndices,
@@ -361,26 +371,21 @@ if (FALSE) {
 #' @noRd
 .yesterday_avg <- function(ws_monitor, endTimeUTC, colTitle) {
 
-  get_previousDayStart <- function(endTimeUTC, timezone) {
+  get_previousDayAvg <- function(ws_data, timezone, endTimeUTC) {
 
+    # Get previous day in timezone of monitors
     previousDayStart <- endTimeUTC %>%
       lubridate::with_tz(timezone) %>%
       lubridate::floor_date(unit = "day") %>%
       magrittr::subtract(lubridate::ddays(1))
 
-    return(previousDayStart)
-
-  }
-
-  get_previousDayAvg <- function(ws_data, previousDayStart) {
-
-    # See NOTE on tidy evaluation for explanation of `!!` and `enquo()`
-
+    # Pull out daily averages from chosen date for each monitor
     aqiData <- ws_data %>%
-      filter(.data$datetime == !!enquo(previousDayStart)) %>%
-      select(-.data$datetime)
+      filter(.data$datetime == previousDayStart) %>%
+      select(-.data$datetime) %>%
+      round(digits = 1)
 
-    return(round(aqiData, 1))
+    return(aqiData)
 
   }
 
@@ -389,29 +394,11 @@ if (FALSE) {
     purrr::transpose() %>%
     magrittr::use_series("data")
 
-  ## NOTE on formulas (~):
-  #  In R, formulas allow you to capture unevaluated expressions and the
-  #  context (environment) in which the expression was created. While often used
-  #  to create modeling expressions (see `?lm`), formulas are also used within
-  #  the tidyverse package `purrr` to succinctly generate anonymous functions.
-  #
-  #  For example, the function `get_previousDayStart()` accepts parameters
-  #  `endTimeUTC` and `timezone`, but if `endTimeUTC` is known to be constant,
-  #  we can write the formula `~get_previousDayStart(endTimeUTC, .x)`, which
-  #  essentially is a new function with a single argument `.x`, which calls
-  #  `get_previousDayStart()`, with the constant value `endTimeUTC`, and the
-  #  variable value `.x` (which corresponds to `timezone`).
-  #
-  #  For more details, see `?purrr::map` or purrr.tidyverse.org/reference/map
+  # See NOTE on tidy evaluation for explanation of `!!`
+  # See NOTE on anonymous functions ("~") in purrr
 
-  previousDayStarts <- names(aqiDataList) %>%
-    purrr::map(~get_previousDayStart(endTimeUTC, .x))
-
-  previousDayAQI <-
-    purrr::map2_dfc(
-      aqiDataList, previousDayStarts,
-      ~get_previousDayAvg(.x, .y)
-    ) %>%
+  previousDayAQI <- aqiDataList %>%
+    purrr::imap_dfc(~get_previousDayAvg(.x, .y, endTimeUTC)) %>%
     tidyr::gather("monitorID", !!colTitle)
 
   return(previousDayAQI)
@@ -520,6 +507,7 @@ if (FALSE) {
 
 
   # See NOTE on tidy evaluation for explanation of `!!`
+  # See NOTE on anonymous functions ("~") in purrr
 
   result <- data %>%
     filter(.data$datetime >= startTimeInclusive) %>%
