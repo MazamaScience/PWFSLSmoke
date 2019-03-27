@@ -242,7 +242,10 @@ monitor_getCurrentStatus <- function(ws_monitor,
       .aqiLevel(nowcast_data, lastValidTimeIndex,     "last_nowcastLevel"),
       .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel")
     ) %>%
-    purrr::reduce(left_join, by = "monitorID")
+    purrr::reduce(
+      left_join, by = "monitorID",
+      .init = ws_meta["monitorID"]
+    )
 
 
   # Add events -----------------------------------------------------------------
