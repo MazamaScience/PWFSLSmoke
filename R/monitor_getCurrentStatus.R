@@ -148,7 +148,18 @@ monitor_getCurrentStatus <- function(ws_monitor,
     as_tibble()
 
 
-  # Calculate monitor latency --------------------------------------------------
+  # Initialize output ----------------------------------------------------------
+
+  currentStatus <-
+    ws_meta %>%
+    mutate(
+      `monitorURL` = paste0(monitorURLBase, .data$monitorID),
+      `processingTime` = processingTime,
+      `endTime` = endTime
+    )
+
+
+  # Generate latency data ------------------------------------------------------
 
   ## NOTE:
   #  The number of levels of valid time indices is set by `indexLevels`, with
@@ -176,7 +187,8 @@ monitor_getCurrentStatus <- function(ws_monitor,
     tidyr::unnest(.data$index) %>%
     group_by(.data$monitorID) %>%
     mutate(key = row_number()) %>%
-    tidyr::spread(.data$key, .data$index)
+    tidyr::spread(.data$key, .data$index) %>%
+    ungroup()
 
   ## NOTE:
   #  The last and previous valid time indices are created as named vectors for
@@ -191,7 +203,9 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   latencyStatus <-
     validTimeIndices %>%
-    mutate(
+    left_join(ws_meta[c("monitorID", "timezone")], by = "monitorID") %>%
+    transmute(
+      `monitorID` = .data$monitorID,
       `last_validTime` = ws_data[["datetime"]][.data$`1`],
       `last_latency` = as.numeric(difftime(
         endTimeInclusive, .data$last_validTime, units = "hour"
@@ -199,22 +213,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
       `previous_validTime` = ws_data[["datetime"]][.data$`2`],
       `previous_latency` = as.numeric(difftime(
         .data$last_validTime, .data$previous_validTime,  units = "hour"
-      ))
-    ) %>%
-    select(-.data$`1`, -.data$`2`)
-
-
-  # Initialize output ----------------------------------------------------------
-
-  currentStatus <-
-    ws_meta %>%
-    mutate(
-      `monitorURL` = paste0(monitorURLBase, .data$monitorID),
-      `processingTime` = processingTime,
-      `endTime` = endTime
-    ) %>%
-    left_join(latencyStatus, by = "monitorID") %>%
-    mutate(
+      )),
       `last_validLocalTimestamp` =
         lubridate::with_tz(.data$last_validTime, tzone = .data$timezone) %>%
         strftime(format = "%Y-%m-%d %H:%M:%S %Z"),
@@ -224,7 +223,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
     )
 
 
-  # Add summary data -----------------------------------------------------------
+  # Generate summary data ------------------------------------------------------
 
   ## Note: see documentation for summary descriptions
 
@@ -237,10 +236,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
       .averagePrior(ws_data,      lastValidTimeIndex,     3, "last_pm25_3hr"),
       .averagePrior(nowcast_data, previousValidTimeIndex, 1, "previous_nowcast_1hr"),
       .averagePrior(ws_data,      previousValidTimeIndex, 1, "previous_pm25_1hr"),
-      .averagePrior(ws_data,      previousValidTimeIndex, 3, "previous_pm25_3hr"),
-
-      .aqiLevel(nowcast_data, lastValidTimeIndex,     "last_nowcastLevel"),
-      .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel")
+      .averagePrior(ws_data,      previousValidTimeIndex, 3, "previous_pm25_3hr")
     ) %>%
     purrr::reduce(
       left_join, by = "monitorID",
@@ -248,30 +244,46 @@ monitor_getCurrentStatus <- function(ws_monitor,
     )
 
 
-  # Add events -----------------------------------------------------------------
+  # Generate event data --------------------------------------------------------
 
   ## Note: See documentation for event descriptions
 
-  eventData <- currentStatus %>%
-    left_join(summaryData, by = "monitorID") %>%
+  eventData <-
+    list(
+      latencyStatus[c("monitorID", "last_latency", "previous_latency")],
+
+      .aqiLevel(nowcast_data, lastValidTimeIndex,     "last_nowcastLevel"),
+      .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel"),
+
+      .isNotReporting(ws_data, 6,     endTimeInclusive, "NR6"),
+      .isNewReporting(ws_data, 6, 48, endTimeInclusive, "NEW6")
+    ) %>%
+    purrr::reduce(
+      left_join, by = "monitorID",
+      .init = ws_meta["monitorID"]
+    ) %>%
     mutate(
       `USG6` = .levelChange(.data, 3, 6, "increase"),
       `U6`   = .levelChange(.data, 4, 6, "increase"),
       `VU6`  = .levelChange(.data, 5, 6, "increase"),
       `HAZ6` = .levelChange(.data, 6, 6, "increase"),
-      `MOD6` = .levelChange(.data, 2, 6, "decrease") | .levelChange(.data, 1, 6, "decrease")
+      `MOD6` = .levelChange(.data, 2, 6, "decrease") | .levelChange(.data, 1, 6, "decrease"),
+      `MAL6` = NA
     ) %>%
-    list(
-      .isNotReporting(ws_data, 6, endTimeInclusive, "NR6"),
-      .isNewReporting(ws_data, 6, 48, endTimeInclusive, "NEW6")
-    ) %>%
-    purrr::reduce(left_join, by = "monitorID") %>%
-    mutate(`MAL6` = NA)
+    select(-.data$last_latency, -.data$previous_latency)
 
 
-  # Return output --------------------------------------------------------------
+  # Combine and return data ----------------------------------------------------
 
-  return(eventData)
+  output <- list(
+    currentStatus,
+    latencyStatus,
+    summaryData,
+    eventData
+  ) %>%
+  purrr::reduce(left_join, by = "monitorID")
+
+  return(output)
 
 }
 
@@ -279,8 +291,6 @@ monitor_getCurrentStatus <- function(ws_monitor,
 # Debugging --------------------------------------------------------------------
 
 if (FALSE) {
-
-  devtools::load_all()
 
   ws_monitor <- monitor_loadLatest() %>%
     monitor_subset(stateCodes = "WA")
