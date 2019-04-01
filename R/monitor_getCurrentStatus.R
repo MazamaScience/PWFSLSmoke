@@ -94,10 +94,12 @@
 #' ws_monitor <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
 #' statusTbl <- monitor_getCurrentStatus(ws_monitor)
 #' }
-monitor_getCurrentStatus <- function(ws_monitor,
-                                     endTime = NULL,
-                                     monitorURLBase = NULL) {
 
+monitor_getCurrentStatus <- function(
+  ws_monitor,
+  endTime = NULL,
+  monitorURLBase = "http://tools.airfire.org/monitoring/v4/#!/?monitors="
+) {
 
   # Sanity checks --------------------------------------------------------------
 
@@ -108,11 +110,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
     stop("`ws_monitor` object contains zero monitors.")
 
 
-  # Prepare parameters ------------------------------------------------------
-
-  if (is.null(monitorURLBase)) {
-    monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
-  }
+  # Prepare parameters ---------------------------------------------------------
 
   if (is.null(endTime)) {
     endTime <- max(ws_monitor[["data"]][["datetime"]])
@@ -135,7 +133,7 @@ monitor_getCurrentStatus <- function(ws_monitor,
   }
 
 
-  # Prepare data ------------------------------------------------------------
+  # Prepare data ---------------------------------------------------------------
 
   processingTime <- lubridate::now("UTC")
 
