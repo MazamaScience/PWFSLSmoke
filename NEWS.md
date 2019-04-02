@@ -1,3 +1,18 @@
+# PWFSLSmoke 1.1.29
+
+## Breaking Changes
+
+ * `monitor_getCurrentStatus()`
+   - Argument `EndTime` now defaults to the most recent time in the given
+     `ws_monitor`.
+   - Ordering of columns in the output table have changed
+
+## Internals
+
+ * `monitor_getCurrentStatus()`
+   - Code has been refactored to be more independent of prior steps
+   - Logging statements have been added
+
 # PWFSLSmoke 1.1.28
 
  * Fixed bug in parsing of arb2 monitors in "ebamMulti" format. (unitID 1048)
