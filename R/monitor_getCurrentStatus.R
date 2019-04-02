@@ -101,16 +101,24 @@ monitor_getCurrentStatus <- function(
   monitorURLBase = "http://tools.airfire.org/monitoring/v4/#!/?monitors="
 ) {
 
+  logger.debug("----- monitor_getCurrentStatus() -----")
+
   # Sanity checks --------------------------------------------------------------
+  logger.trace("Performing sanity checks on `ws_monitor` parameter.")
 
   if (!monitor_isMonitor(ws_monitor))
-    stop("Not a valid `ws_monitor` object.")
+    errMsg <- "Not a valid `ws_monitor` object."
+    logger.error(errMsg)
+    stop(errMsg)
 
   if (monitor_isEmpty(ws_monitor))
-    stop("`ws_monitor` object contains zero monitors.")
+    errMsg <- "`ws_monitor` object contains zero monitors."
+    logger.error(errMsg)
+    stop(errMsg)
 
 
   # Prepare parameters ---------------------------------------------------------
+  logger.trace("Preparing time range and subsetting data.")
 
   if (is.null(endTime)) {
     endTime <- max(ws_monitor[["data"]][["datetime"]])
@@ -129,11 +137,16 @@ monitor_getCurrentStatus <- function(
 
   # Check again to make sure subset includes data
   if (monitor_isEmpty(ws_monitor)) {
-    stop("ws_monitor object contains zero monitors with data from before ", endTime)
+    errMsg <- paste0(
+      "ws_monitor object contains zero monitors with data from before ", endTime
+    )
+    logger.error(errMsg)
+    stop(errMsg)
   }
 
 
   # Prepare data ---------------------------------------------------------------
+  logger.trace("Separating 'meta' and 'data' and calculating nowcast.")
 
   processingTime <- lubridate::now("UTC")
 
@@ -147,6 +160,7 @@ monitor_getCurrentStatus <- function(
 
 
   # Initialize output ----------------------------------------------------------
+  logger.trace("Augmenting metadata with initial information.")
 
   currentStatus <-
     ws_meta %>%
@@ -158,6 +172,7 @@ monitor_getCurrentStatus <- function(
 
 
   # Generate latency data ------------------------------------------------------
+  logger.trace("Calculating latency data.")
 
   ## NOTE:
   #  The number of levels of valid time indices is set by `indexLevels`, with
@@ -222,6 +237,7 @@ monitor_getCurrentStatus <- function(
 
 
   # Generate summary data ------------------------------------------------------
+  logger.trace("Calculating summary data.")
 
   ## Note: see documentation for summary descriptions
 
@@ -243,6 +259,7 @@ monitor_getCurrentStatus <- function(
 
 
   # Generate event data --------------------------------------------------------
+  logger.trace("Calculating event data.")
 
   ## Note: See documentation for event descriptions
 
@@ -272,6 +289,7 @@ monitor_getCurrentStatus <- function(
 
 
   # Combine and return data ----------------------------------------------------
+  logger.trace("Combining data and returning results.")
 
   output <- list(
     currentStatus,
@@ -324,6 +342,8 @@ if (FALSE) {
 #'
 #' @noRd
 .averagePrior <- function(data, timeIndices, n, colTitle) {
+
+  logger.trace("Calculating %d hour average for column '%s'.", n, colTitle)
 
   get_nAvg <- function(monitorDataColumn, timeIndex, n) {
 
@@ -382,6 +402,8 @@ if (FALSE) {
 #' @noRd
 .yesterday_avg <- function(ws_monitor, endTimeUTC, colTitle) {
 
+  logger.trace("Calculating yesterday average for column '%s'.", colTitle)
+
   get_previousDayAvg <- function(ws_data, timezone, endTimeUTC) {
 
     # Get previous day in timezone of monitors
@@ -438,6 +460,8 @@ if (FALSE) {
 #' @noRd
 .aqiLevel <- function(data, timeIndices, colTitle) {
 
+  logger.trace("Calculating AQI levels for column '%s'.", colTitle)
+
   levels <- as.matrix(data[, -1]) %>%
     magrittr::extract(cbind(unname(timeIndices), seq_along(timeIndices))) %>%
     .bincode(AQI$breaks_24, include.lowest = TRUE)
@@ -474,6 +498,11 @@ if (FALSE) {
 #'
 #' @noRd
 .levelChange <- function(data, level, n, direction) {
+
+  logger.trace(
+    "Checking if AQI levels had an %s to level %d in the last %d hours.",
+    direction, level, n
+  )
 
   if (direction == "increase") {
     result <-
@@ -513,9 +542,13 @@ if (FALSE) {
 #' @noRd
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
+  logger.trace(
+    "Checking if monitors have not reported in the last %d hours for column '%s'.",
+    n, colTitle
+  )
+
   startTimeInclusive <- endTimeUTC %>%
     magrittr::subtract(lubridate::dhours(n - 1))
-
 
   # See NOTE on tidy evaluation for explanation of `!!`
   # See NOTE on anonymous functions ("~") in purrr
@@ -556,6 +589,11 @@ if (FALSE) {
 #'   that monitor is newly reporting data.
 #' @noRd
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
+
+  logger.trace(
+    "Checking if new monitors are reporting for column '%s'.",
+    colTitle
+  )
 
   bufferEndTime <- endTimeUTC - lubridate::dhours(n)
 
