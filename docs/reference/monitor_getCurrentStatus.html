@@ -71,7 +71,7 @@ object with summarized and aggregate data from the ws_monitor object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.29</span>
       </span>
     </div>
 
@@ -143,8 +143,8 @@ object with summarized and aggregate data from the <em>ws_monitor</em> object.</
     
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_getCurrentStatus</span>(<span class='no'>ws_monitor</span>, <span class='kw'>endTime</span> <span class='kw'>=</span> <span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(<span class='st'>"UTC"</span>),
-  <span class='kw'>monitorURLBase</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_getCurrentStatus</span>(<span class='no'>ws_monitor</span>, <span class='kw'>endTime</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>monitorURLBase</span> <span class='kw'>=</span> <span class='st'>"http://tools.airfire.org/monitoring/v4/#!/?monitors="</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,13 +156,14 @@ object with summarized and aggregate data from the <em>ws_monitor</em> object.</
     <tr>
       <th>endTime</th>
       <td><p>Time to which the status of the monitors will be current. By
-default, it is the time the function was called.</p></td>
+default, it is the most recent time in <code>ws_monitor</code>. This time can be
+given as a POSIXct time, or a string/numeric value in ymd format (eg.
+20190301). This time converted to UTC.</p></td>
     </tr>
     <tr>
       <th>monitorURLBase</th>
-      <td><p>A URL prefix pointing to where more information about
-a monitor can be found. By default, it points to the AirFire monitoring
-site.</p></td>
+      <td><p>A URL prefix pointing to where more information about a
+monitor can be found. By default, it points to the AirFire monitoring site.</p></td>
     </tr>
     </table>
     
@@ -221,9 +222,6 @@ summaries included are listed below with a description:</p>
 <tr><td>previous_PM2.5_1hr</td><td>Previous valid raw PM2.5 measurement</td></tr>
 <tr><td></td><td>previous_PM2.5_3hr</td></tr>
 <tr><td>Mean of the previous valid raw PM2.5 measurement</td><td>with the preceding two measurements</td></tr>
-<tr><td></td><td>last_nowcastLevel</td></tr>
-<tr><td>NowCast level at the last valid time</td><td></td></tr>
-<tr><td>previous_nowcastLevel</td><td>NowCast level at the previous valid time</td></tr>
 </table>
     <p>It should be noted that all averages are "right-aligned", meaning that the
 three hour mean of data at time <code>n</code> will comprise of the data at times
@@ -238,19 +236,22 @@ flags representing events that may have occurred for a monitor within the
 bounds of the specified end time and data in the <em>ws_monitor</em> object.
 Each flag is listed below with its corresponding meaning:</p>
 <table class='table'>
-<tr><td></td><td>USG6</td></tr>
-<tr><td>NowCast level increased to Unhealthy for Sensitive Groups in the</td><td>last 6 hours</td></tr>
-<tr><td></td><td>U6</td></tr>
-<tr><td>NowCast level increased to Unhealthy in the last 6 hours</td><td></td></tr>
-<tr><td>VU6</td><td>NowCast level increased to Very Unhealthy in the last 6 hours</td></tr>
-<tr><td></td><td>HAZ6</td></tr>
-<tr><td>NowCast level increased to Hazardous in the last 6 hours</td><td></td></tr>
-<tr><td>MOD6</td><td>NowCast level decreased to Moderate or Good in the last 6 hours</td></tr>
-<tr><td></td><td>NR6</td></tr>
-<tr><td>Monitor not reporting for more than 6 hours</td><td></td></tr>
-<tr><td>NEW6</td><td>New monitor reporting in the last 6 hours</td></tr>
-<tr><td></td><td>MAL6</td></tr>
-<tr><td>Monitor malfunctioning the last 6 hours (not currently implemented)</td><td></td></tr>
+<tr><td></td><td>last_nowcastLevel</td></tr>
+<tr><td>NowCast level at the last valid time</td><td></td></tr>
+<tr><td>previous_nowcastLevel</td><td>NowCast level at the previous valid time</td></tr>
+<tr><td></td><td></td></tr>
+<tr><td>NR6</td><td>Monitor not reporting for more than 6 hours</td></tr>
+<tr><td></td><td>NEW6</td></tr>
+<tr><td>New monitor reporting in the last 6 hours</td><td></td></tr>
+<tr><td>USG6</td><td>NowCast level increased to Unhealthy for Sensitive Groups in the</td></tr>
+<tr><td>last 6 hours</td><td></td></tr>
+<tr><td>U6</td><td>NowCast level increased to Unhealthy in the last 6 hours</td></tr>
+<tr><td></td><td>VU6</td></tr>
+<tr><td>NowCast level increased to Very Unhealthy in the last 6 hours</td><td></td></tr>
+<tr><td>HAZ6</td><td>NowCast level increased to Hazardous in the last 6 hours</td></tr>
+<tr><td></td><td>MOD6</td></tr>
+<tr><td>NowCast level decreased to Moderate or Good in the last 6 hours</td><td></td></tr>
+<tr><td>MAL6</td><td>Monitor malfunctioning the last 6 hours (not currently implemented)</td></tr>
 </table>
     
 
