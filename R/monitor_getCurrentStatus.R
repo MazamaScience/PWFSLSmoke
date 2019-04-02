@@ -107,15 +107,17 @@ monitor_getCurrentStatus <- function(
   # Sanity checks --------------------------------------------------------------
   logger.trace("Performing sanity checks on `ws_monitor` parameter.")
 
-  if (!monitor_isMonitor(ws_monitor))
+  if (!monitor_isMonitor(ws_monitor)) {
     errMsg <- "Not a valid `ws_monitor` object."
     logger.error(errMsg)
     stop(errMsg)
+  }
 
-  if (monitor_isEmpty(ws_monitor))
+  if (monitor_isEmpty(ws_monitor)) {
     errMsg <- "`ws_monitor` object contains zero monitors."
     logger.error(errMsg)
     stop(errMsg)
+  }
 
 
   # Prepare parameters ---------------------------------------------------------
@@ -344,7 +346,10 @@ if (FALSE) {
 #' @noRd
 .averagePrior <- function(data, timeIndices, n, colTitle) {
 
-  logger.trace("Calculating %d hour average for column '%s'.", n, colTitle)
+  logger.trace(
+    "Calling .averagePrior(`data`, `timeIndices`, n=%d, colTitle='%s')",
+    n, colTitle
+    )
 
   get_nAvg <- function(monitorDataColumn, timeIndex, n) {
 
@@ -403,7 +408,11 @@ if (FALSE) {
 #' @noRd
 .yesterday_avg <- function(ws_monitor, endTimeUTC, colTitle) {
 
-  logger.trace("Calculating yesterday average for column '%s'.", colTitle)
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  logger.trace(
+    "Calling .yesterdayAverage(`ws_monitor`, endTimeUTC='%s', colTitle='%s')",
+    timeString, colTitle
+  )
 
   get_previousDayAvg <- function(ws_data, timezone, endTimeUTC) {
 
@@ -461,7 +470,10 @@ if (FALSE) {
 #' @noRd
 .aqiLevel <- function(data, timeIndices, colTitle) {
 
-  logger.trace("Calculating AQI levels for column '%s'.", colTitle)
+  logger.trace(
+    "Calling .aqiLevel(`data`, `timeIndicies`, colTitle='%s')",
+    colTitle
+  )
 
   levels <- as.matrix(data[, -1]) %>%
     magrittr::extract(cbind(unname(timeIndices), seq_along(timeIndices))) %>%
@@ -501,8 +513,8 @@ if (FALSE) {
 .levelChange <- function(data, level, n, direction) {
 
   logger.trace(
-    "Checking if AQI levels had an %s to level %d in the last %d hours.",
-    direction, level, n
+    "Calling .levelChange(`data`, level=%d, n=%d, direction='%s')",
+    level, n, direction
   )
 
   if (direction == "increase") {
@@ -543,9 +555,10 @@ if (FALSE) {
 #' @noRd
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
   logger.trace(
-    "Checking if monitors have not reported in the last %d hours for column '%s'.",
-    n, colTitle
+    "Calling .isNotReporting(`data`, n=%d, endTimeUTC='%s', colTitle='%s')",
+    n, timeString, colTitle
   )
 
   startTimeInclusive <- endTimeUTC %>%
@@ -591,9 +604,10 @@ if (FALSE) {
 #' @noRd
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
 
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
   logger.trace(
-    "Checking if new monitors are reporting for column '%s'.",
-    colTitle
+    "Calling .isNewReporting(`data`, n=%d, buffer=%d, endTimeUTC='%s', colTitle='%s')",
+    n, buffer, timeString, colTitle
   )
 
   bufferEndTime <- endTimeUTC - lubridate::dhours(n)
