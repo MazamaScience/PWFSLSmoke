@@ -58,9 +58,7 @@
 #'   previous_nowcast_1hr  \tab Previous valid NowCast measurement\cr
 #'   previous_PM2.5_1hr    \tab Previous valid raw PM2.5 measurement\cr
 #'   previous_PM2.5_3hr    \tab Mean of the previous valid raw PM2.5 measurement
-#'                              with the preceding two measurements\cr
-#'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
-#'   previous_nowcastLevel \tab NowCast level at the previous valid time
+#'                              with the preceding two measurements
 #' }
 #'
 #' It should be noted that all averages are "right-aligned", meaning that the
@@ -75,14 +73,17 @@
 #' Each flag is listed below with its corresponding meaning:
 #'
 #' \tabular{ll}{
+#'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
+#'   previous_nowcastLevel \tab NowCast level at the previous valid time\cr
+#'
+#'   NR6  \tab Monitor not reporting for more than 6 hours\cr
+#'   NEW6 \tab New monitor reporting in the last 6 hours\cr
 #'   USG6 \tab NowCast level increased to Unhealthy for Sensitive Groups in the
 #'             last 6 hours\cr
 #'   U6   \tab NowCast level increased to Unhealthy in the last 6 hours\cr
 #'   VU6  \tab NowCast level increased to Very Unhealthy in the last 6 hours\cr
 #'   HAZ6 \tab NowCast level increased to Hazardous in the last 6 hours\cr
 #'   MOD6 \tab NowCast level decreased to Moderate or Good in the last 6 hours\cr
-#'   NR6  \tab Monitor not reporting for more than 6 hours\cr
-#'   NEW6 \tab New monitor reporting in the last 6 hours\cr
 #'   MAL6 \tab Monitor malfunctioning the last 6 hours (not currently implemented)
 #' }
 #'
