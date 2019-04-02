@@ -59,18 +59,20 @@
 #' monitor_leaflet(usfs_1013)
 #' }
 
-airsis_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
-                                       enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
-                                       provider=NULL,
-                                       unitID=NULL,
-                                       clusterDiameter=1000,
-                                       zeroMinimum=TRUE,
-                                       baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-                                       saveFile=NULL,
-                                       existingMeta=NULL,
-                                       addGoogleMeta=FALSE,
-                                       addEsriMeta=FALSE,
-                                       ...) {
+airsis_createMonitorObject <- function(
+  startdate = strftime(lubridate::now(), "%Y010100", tz = "UTC"),
+  enddate = strftime(lubridate::now(), "%Y%m%d23", tz = "UTC"),
+  provider = NULL,
+  unitID = NULL,
+  clusterDiameter = 1000,
+  zeroMinimum = TRUE,
+  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
+  saveFile = NULL,
+  existingMeta = NULL,
+  addGoogleMeta = FALSE,
+  addEsriMeta = FALSE,
+  ...
+) {
 
   # Sanity checks
   if ( is.null(provider) ) {
@@ -100,8 +102,8 @@ airsis_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y01
 
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {
-    result <- try( cat(fileString, file=saveFile),
-                   silent=TRUE )
+    result <- try( cat(fileString, file = saveFile),
+                   silent = TRUE )
     if ( "try-error" %in% class(result) ) {
       err_msg <- geterrmessage()
       logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)

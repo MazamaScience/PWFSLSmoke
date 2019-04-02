@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.1.28
+
+ * Fixed bug in parsing of arb2 monitors in "ebamMulti" format. (unitID 1048)
+
 # PWFSLSmoke 1.1.27
 
  * Fixed bug in `monitor_leaflet()` which didn't properly assign colors when
