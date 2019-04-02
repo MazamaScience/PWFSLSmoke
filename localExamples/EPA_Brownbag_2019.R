@@ -1,5 +1,5 @@
 
-# ----- Sacramento smoke -------------------------------------------------------
+# ----- Sacramento smoke ----------------------------------
 
 library(PWFSLSmoke)
 
@@ -41,7 +41,7 @@ Sacramento_area %>%
   monitor_extractData()
 
 
-# ----- Kennewick School -------------------------------------------------------
+# ----- Kennewick School ----------------------------------
 
 library(PWFSLSmoke)
 library(PWFSLSmokePlots)
