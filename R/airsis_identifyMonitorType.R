@@ -41,7 +41,7 @@ airsis_identifyMonitorType <- function(df) {
   ebamMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,COncRT,ConcHr,Flow,W/S,W/D,AT,RHx,RHi,BV,FT,Alarm,Oceaneering Unit Voltage,Type,TimeStamp,PDate"
   ebamMulti_rawNames <- unlist(stringr::str_split(ebamMulti_header, ','))
   ebamMulti_names <- make.names(ebamMulti_rawNames)
-  ebamMulti_types <- 'cccddddddddddddidccc'
+  ebamMulti_types <- 'ccddddddddddddidccc'
 
   # provider=USFS, unitID=1002, year=2010
   esam_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc(mg/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Start Date/Time (GMT),Serial Number,System Volts,Data 1,Data 2,TimeStamp,PDate"
