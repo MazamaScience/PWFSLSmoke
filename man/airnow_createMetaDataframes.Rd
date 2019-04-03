@@ -2,7 +2,7 @@
 % Please edit documentation in R/airnow_createMetaDataframes.R
 \name{airnow_createMetaDataframes}
 \alias{airnow_createMetaDataframes}
-\title{Create Dataframes of AirNow Site Location Metadata}
+\title{Create dataframes of AirNow site location metadata}
 \usage{
 airnow_createMetaDataframes(parameters = NULL,
   pwfslDataIngestSource = "AIRNOW", addGoogleMeta = TRUE)
@@ -73,7 +73,7 @@ Setting \code{parameters=NULL} will generate a separate dataframe for each of th
 }
 \examples{
 \dontrun{
-metaList <- airnow_createMetaDataframes(parameters="PM2.5")
+metaList <- airnow_createMetaDataframes(parameters = "PM2.5")
 }
 }
 \seealso{

@@ -1,9 +1,11 @@
 #' @keywords AirNow
+#' @export
 #' @import dplyr
 #' @import MazamaCoreUtils
 #' @import MazamaSpatialUtils
-#' @export
-#' @title Create Dataframes of AirNow Site Location Metadata
+#'
+#' @title Create dataframes of AirNow site location metadata
+#'
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'AIRNOW'}
 #' @param addGoogleMeta logicial specifying wheter to use Google elevation and reverse geocoding services
@@ -63,16 +65,20 @@
 #' @seealso \link{airnow_downloadSites}
 #' @examples
 #' \dontrun{
-#' metaList <- airnow_createMetaDataframes(parameters="PM2.5")
+#' metaList <- airnow_createMetaDataframes(parameters = "PM2.5")
 #' }
 
-airnow_createMetaDataframes <- function(parameters=NULL,
-                                        pwfslDataIngestSource='AIRNOW',
-                                        addGoogleMeta=TRUE) {
+airnow_createMetaDataframes <- function(
+  parameters = NULL,
+  pwfslDataIngestSource = 'AIRNOW',
+  addGoogleMeta = TRUE
+) {
+
+  logger.debug(" ----- airnow_createMetaDataframes() ----- ")
 
   # ----- Data Download -------------------------------------------------------
 
-  logger.debug("Downloading AirNow sites metadata ...")
+  logger.trace("Downloading AirNow sites metadata ...")
 
   # Create the tibble that holds a month worth of AirNow data
   result <- try( airnowTbl <- airnow_downloadSites(),
@@ -83,7 +89,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
     stop(paste0("Unable to obtain sites tibble: ",err_msg))
   }
 
-  logger.debug("Downloaded %d rows of AirNow sites metadata", nrow(airnowTbl))
+  logger.trace("Downloaded %d rows of AirNow sites metadata", nrow(airnowTbl))
 
   # > names(airnowTbl)
   #  [1] "AQSID"          "parameterName"  "siteCode"       "siteName"       "status"
@@ -137,7 +143,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   # Remove bad locations
   mask <- airnowTbl$longitude == 0 & airnowTbl$latitude == 0
   badLocationIDs <- paste(airnowTbl$AQSID[mask], collapse=", ")
-  logger.debug("Replacing (0,0) locations with (NA,NA) for AQSIDs: %s", badLocationIDs)
+  logger.trace("Replacing (0,0) locations with (NA,NA) for AQSIDs: %s", badLocationIDs)
   airnowTbl$longitude[mask] <- as.numeric(NA)
   airnowTbl$latitude[mask] <- as.numeric(NA)
 
@@ -176,7 +182,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
   if ( any(airnowTbl$countryCode != old_airnowTbl$countryCode) ) {
     indices <- which(airnowTbl$countryCode != old_airnowTbl$countryCode)
     AQSIDString <- paste0(airnowTbl$AQSID[indices], collapse=", ")
-    logger.debug('addMazamaMetadata() changed the countryCode for AQSIDs: %s', AQSIDString)
+    logger.trace('addMazamaMetadata() changed the countryCode for AQSIDs: %s', AQSIDString)
     # Next line is for debugging
     mzm_airnowTbl <- airnowTbl
     # NOTE:  Neither the simpleCountriesEEZ nor the NaturalEarthAdm1 datasets used in MazamaSpatialUtils
@@ -201,7 +207,7 @@ airnow_createMetaDataframes <- function(parameters=NULL,
 
   # ----- Data Reshaping ------------------------------------------------------
 
-  logger.debug("Reshaping AirNow sites metadata ...")
+  logger.trace("Reshaping AirNow sites metadata ...")
 
   # Create empty list (no pre-allocation needed when lists are referenced by key instead of integer)
   dfList <- list()

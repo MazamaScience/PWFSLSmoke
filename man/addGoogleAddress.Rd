@@ -2,7 +2,7 @@
 % Please edit documentation in R/addGoogleAddress.R
 \name{addGoogleAddress}
 \alias{addGoogleAddress}
-\title{Add Address Information to a Dataframe}
+\title{Add address information to a dataframe}
 \usage{
 addGoogleAddress(df, lonVar = "longitude", latVar = "latitude",
   existingMeta = NULL)

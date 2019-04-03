@@ -1,6 +1,9 @@
 #' @keywords WRCC
 #' @export
-#' @title Create WRCC Site Location Metadata Dataframe
+#' @import MazamaCoreUtils
+#'
+#' @title Create WRCC site location metadata dataframe
+#'
 #' @param tbl single site WRCC tibble after metadata enhancement
 #' @param unitID character or numeric WRCC unit identifier
 #' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'WRCC'}
@@ -32,14 +35,16 @@
 #' @seealso \code{\link{addMazamaMetadata}}
 
 
-wrcc_createMetaDataframe <- function(tbl,
-                                     unitID=as.character(NA),
-                                     pwfslDataIngestSource='WRCC',
-                                     existingMeta=NULL,
-                                     addGoogleMeta=FALSE,
-                                     addEsriMeta=FALSE) {
+wrcc_createMetaDataframe <- function(
+  tbl,
+  unitID = as.character(NA),
+  pwfslDataIngestSource = 'WRCC',
+  existingMeta = NULL,
+  addGoogleMeta = FALSE,
+  addEsriMeta = FALSE
+) {
 
-  logger.trace(" ----- wrcc_createMetaDataframe() ----- ")
+  logger.debug(" ----- wrcc_createMetaDataframe() ----- ")
 
   # Sanity check -- tbl must have a monitorType
   if ( !'monitorType' %in% names(tbl) ) {
@@ -66,7 +71,7 @@ wrcc_createMetaDataframe <- function(tbl,
   # Pull out unique deployments
   tbl <- tbl[!duplicated(tbl$deploymentID),]
 
-  logger.debug("Tibble contains %d unique deployment(s)", nrow(tbl))
+  logger.trace("Tibble contains %d unique deployment(s)", nrow(tbl))
 
   # Our tibble now contains the following columns:
   #
@@ -157,7 +162,7 @@ wrcc_createMetaDataframe <- function(tbl,
   # Assign rownames
   rownames(meta) <- meta$monitorID
 
-  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.trace("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
 
   return(meta)
 

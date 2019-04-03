@@ -41,7 +41,9 @@ included, see \code{\link{monitor_getCurrentStatus}}.
 }
 \examples{
 \dontrun{
-wa <- monitor_loadLatest() \%>\% monitor_subset(stateCodes = "WA")
+wa <-
+  monitor_loadLatest() \%>\%
+  monitor_subset(stateCodes = "WA")
 wa_current_geojson <- monitor_writeCurrentStatusGeoJSON(wa, "wa_monitors.geojson")
 wa_current_list <- jsonlite::fromJSON(wa_current_geojson)
 wa_spdf <- rgdal::readOGR(dsn = "wa_monitors.geojson", layer = "OGRGeoJSON")

@@ -1,7 +1,9 @@
 #' @keywords AirNow
 #' @export
 #' @import MazamaCoreUtils
-#' @title Download and Aggregate Multiple Hourly Data Files from AirNow
+#'
+#' @title Download and aggregate multiple hourly data files from AirNow
+#'
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
@@ -44,12 +46,16 @@
 #' @seealso \link{airnow_downloadHourlyData}
 #' @examples
 #' \dontrun{
-#' tbl <- airnow_downloadParseData("PM2.5", 2016070112, hours=24)
+#' tbl <- airnow_downloadParseData("PM2.5", 2016070112, hours = 24)
 #' }
 
-airnow_downloadParseData <- function(parameters=NULL,
-                                     startdate=strftime(lubridate::now(),"%Y%m%d00",tz="UTC"),
-                                     hours=24) {
+airnow_downloadParseData <- function(
+  parameters = NULL,
+  startdate = strftime(lubridate::now(),"%Y%m%d00",tz = "UTC"),
+  hours = 24
+) {
+
+  logger.debug(" ----- airnow_downloadParseData() ----- ")
 
   # Format the startdate integer using lubridate
   starttime <- parseDatetime(startdate)
@@ -57,7 +63,7 @@ airnow_downloadParseData <- function(parameters=NULL,
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   tblList <- vector(mode="list", length=hours)
 
-  logger.debug("Downloading %d hourly data files from AirNow ...",hours)
+  logger.trace("Downloading %d hourly data files from AirNow ...",hours)
 
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {
@@ -106,9 +112,9 @@ airnow_downloadParseData <- function(parameters=NULL,
     dplyr::distinct()
 
   if ( is.null(parameters) ) {
-    logger.debug("Downloaded and parsed %d rows of AirNow data", nrow(tbl))
+    logger.trace("Downloaded and parsed %d rows of AirNow data", nrow(tbl))
   } else {
-    logger.debug("Downloaded and parsed %d rows of AirNow data for: %s", nrow(tbl), paste(parameters, collapse=", "))
+    logger.trace("Downloaded and parsed %d rows of AirNow data for: %s", nrow(tbl), paste(parameters, collapse=", "))
   }
 
   return(tbl)

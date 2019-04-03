@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_downloadData.R
 \name{wrcc_downloadData}
 \alias{wrcc_downloadData}
-\title{Download Data from WRCC}
+\title{Download WRCC data}
 \usage{
 wrcc_downloadData(startdate = strftime(lubridate::now(), "\%Y010101", tz
   = "UTC"), enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz =
@@ -23,13 +23,13 @@ String containing WRCC output.
 }
 \description{
 Request data from a particular station for the desired time period.
-Data are returned as a single character string containing the WRCC output. 
+Data are returned as a single character string containing the WRCC output.
 
 Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
 }
 \examples{
 \dontrun{
-fileString <- wrcc_downloadData(20150701, 20150930, unitID='SM16')
+fileString <- wrcc_downloadData(20150701, 20150930, unitID = 'SM16')
 df <- wrcc_parseData(fileString)
 }
 }

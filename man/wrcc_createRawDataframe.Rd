@@ -50,7 +50,7 @@ Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
 }
 \examples{
 \dontrun{
-tbl <- wrcc_createRawDataframe(20150701, 20150930, unitID='SM16')
+tbl <- wrcc_createRawDataframe(20150701, 20150930, unitID = 'SM16')
 }
 
 }

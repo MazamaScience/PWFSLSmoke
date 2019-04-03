@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download Data from WRCC — wrcc_downloadData • PWFSLSmoke</title>
+<title>Download WRCC data — wrcc_downloadData • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Download Data from WRCC — wrcc_downloadData" />
+<meta property="og:title" content="Download WRCC data — wrcc_downloadData" />
 
 <meta property="og:description" content="Request data from a particular station for the desired time period.
 Data are returned as a single character string containing the WRCC output.
@@ -72,7 +72,7 @@ Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.29</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -132,7 +132,7 @@ Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download Data from WRCC</h1>
+    <h1>Download WRCC data</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/wrcc_downloadData.R'><code>R/wrcc_downloadData.R</code></a></small>
     <div class="hidden name"><code>wrcc_downloadData.Rd</code></div>
     </div>
@@ -145,8 +145,8 @@ Data are returned as a single character string containing the WRCC output.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>wrcc_downloadData</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(), <span class='st'>"%Y010101"</span>, <span class='kw'>tz</span>
-  <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(), <span class='st'>"%Y%m%d23"</span>, <span class='kw'>tz</span> <span class='kw'>=</span>
+    <pre class="usage"><span class='fu'>wrcc_downloadData</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(), <span class='st'>"%Y010101"</span>, <span class='kw'>tz</span>
+  <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(), <span class='st'>"%Y%m%d23"</span>, <span class='kw'>tz</span> <span class='kw'>=</span>
   <span class='st'>"UTC"</span>), <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://wrcc.dri.edu/cgi-bin/wea_list2.pl"</span>)</pre>
     
@@ -182,7 +182,7 @@ Data are returned as a single character string containing the WRCC output.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>fileString</span> <span class='kw'>&lt;-</span> <span class='fu'>wrcc_downloadData</span>(<span class='fl'>20150701</span>, <span class='fl'>20150930</span>, <span class='kw'>unitID</span><span class='kw'>=</span><span class='st'>'SM16'</span>)
+<span class='no'>fileString</span> <span class='kw'>&lt;-</span> <span class='fu'>wrcc_downloadData</span>(<span class='fl'>20150701</span>, <span class='fl'>20150930</span>, <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='st'>'SM16'</span>)
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='wrcc_parseData.html'>wrcc_parseData</a></span>(<span class='no'>fileString</span>)
 <span class='co'># }</span></pre>
   </div>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/epa_parseData.R
 \name{epa_parseData}
 \alias{epa_parseData}
-\title{Parse Data from EPA}
+\title{Parse EPA data}
 \usage{
 epa_parseData(zipFile = NULL)
 }

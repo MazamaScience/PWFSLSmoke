@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_ESAMQualityControl.R
 \name{airsis_ESAMQualityControl}
 \alias{airsis_ESAMQualityControl}
-\title{Apply Quality Control to Raw AIRSIS E-Sampler Dataframe}
+\title{Apply Quality Control to raw AIRSIS E-Sampler dataframe}
 \usage{
 airsis_ESAMQualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,

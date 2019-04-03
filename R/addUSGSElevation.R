@@ -1,7 +1,9 @@
 #' @keywords internal
 #' @export
 #' @import MazamaCoreUtils
+#'
 #' @importFrom utils installed.packages
+#'
 #' @title Add Elevation Data to a Dataframe
 #' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
@@ -12,7 +14,12 @@
 #' @return Input dataframe with (possibly) additional column: \code{elevation}.
 #' @references \url{https://nationalmap.gov/epqs/}
 
-addUSGSElevation <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL) {
+addUSGSElevation <- function(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL
+) {
 
   logger.debug(" ----- addUSGSElevation() ----- ")
 
@@ -56,7 +63,7 @@ addUSGSElevation <- function(df, lonVar="longitude", latVar="latitude", existing
 
     # https://nationalmap.gov/epqs/pqs.php?x=-123.4&y=47.24&units=Meters&output=json
 
-    logger.debug("Getting USGS elevation data for %s location(s)", nrow(df))
+    logger.trace("Getting USGS elevation data for %s location(s)", nrow(df))
 
     # Create url
     url <- httr::parse_url("https://nationalmap.gov/epqs/pqs.php")

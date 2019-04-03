@@ -1,4 +1,5 @@
 #' @export
+#'
 #' @title Calculate distances between points
 #' @param targetLon longitude (decimal degrees) of the point from which
 #' distances are calculated
@@ -9,7 +10,6 @@
 #' @description This function uses the Haversine forumula for calculating great
 #' circle distances between points. This formula is purpoted to work better
 #' than the spherical law of cosines for very short distances.
-#' @references \url{https://www.r-bloggers.com/great-circle-distance-calculations-in-r/}
 #' @return Vector of distances in km.
 #' @examples
 #' # Seattle to Portland airports

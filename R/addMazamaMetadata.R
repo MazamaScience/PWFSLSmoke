@@ -1,5 +1,6 @@
 #' @keywords internal
 #' @export
+#' @import MazamaCoreUtils
 #' @title Add State, Country and Timezone to a Dataframe
 #' @param df dataframe or tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
@@ -15,11 +16,17 @@
 #' @references \url{https://github.com/MazamaScience/MazamaSpatialUtils}
 #' @seealso \code{\link{initializeMazamaSpatialUtils}}
 
-addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", existingMeta=NULL, countryCodes=c('CA','US','MX')) {
+addMazamaMetadata <- function(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL,
+  countryCodes = c('CA','US','MX')
+) {
 
   # NOTE:  existingMeta is not currently used but is retained as an argument to mimic the signature of addGoogleElevation()
 
-  logger.trace(" ----- addMazamaMetadata() ----- ")
+  logger.debug(" ----- addMazamaMetadata() ----- ")
 
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
@@ -32,7 +39,7 @@ addMazamaMetadata <- function(df, lonVar="longitude", latVar="latitude", existin
 
   if ( exists('NaturalEarthAdm1') ) {
 
-    logger.debug("Getting Mazama spatial data for %s location(s)", nrow(df))
+    logger.trace("Getting Mazama spatial data for %s location(s)", nrow(df))
     df$timezone <- MazamaSpatialUtils::getTimezone(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
     df$countryCode <- MazamaSpatialUtils::getCountryCode(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)
     df$stateCode <- MazamaSpatialUtils::getStateCode(lons, lats, countryCodes=countryCodes, useBuffering=TRUE)

@@ -1,6 +1,9 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Identify AIRSIS Monitor Type
+#' @import MazamaCoreUtils
+#'
+#' @title Identify AIRSIS monitor type
+#'
 #' @param df dataframe or raw character string containing AIRSIS data
 #' @description Examine the column names of the incoming dataframe (or first line
 #' of raw text) to identify different types of monitor data provided by AIRSIS.
@@ -34,6 +37,8 @@
 #' }
 
 airsis_identifyMonitorType <- function(df) {
+
+  logger.debug(" ----- airsis_identifyMonitorType() ----- ")
 
   #     Different header styles     -------------------------------------------
 

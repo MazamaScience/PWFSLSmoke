@@ -1,13 +1,16 @@
 #' @keywords EPA
 #' @export
-#' @title Download Data from EPA
+#' @import MazamaCoreUtils
+#'
+#' @title Download EPA air quality data
+#'
 #' @param year year
 #' @param parameterCode pollutant code
 #' @param downloadDir directoroy where monitoring data .zip file will be saved
 #' @param baseUrl base URL for archived daily data
 #' @description This function downloads air quality data from the EPA and
 #' saves it to a directory.
-#' 
+#'
 #' Available parameter codes include:
 #' \enumerate{
 #' \item{44201}{ -- Ozone}
@@ -36,15 +39,19 @@
 #' tbl <- epa_parseData(zipFile, "PM2.5")
 #' }
 
-epa_downloadData <- function(year=NULL,
-                             parameterCode="88101",
-                             downloadDir=tempdir(),
-                             baseUrl='https://aqs.epa.gov/aqsweb/airdata/') {
-  
+epa_downloadData <- function(
+  year = NULL,
+  parameterCode = "88101",
+  downloadDir = tempdir(),
+  baseUrl = 'https://aqs.epa.gov/aqsweb/airdata/'
+) {
+
+  logger.debug(" ----- epa_downloadData() ----- ")
+
   # Sanity Check -- validate parameter code
   validParameterCodes <- c("44201", "42401", "42101", "42602", "88101", "88502", "81102", "SPEC",
                            "WIND", "TEMP", "PRESS", "RH_DP", "HAPS", "VOCS", "NONOxNOy")
-  
+
   if ( is.null(parameterCode) ) {
     logger.error("Required parameter 'parameterCode' is missing")
     stop("Required parameter 'parameterCode' is missing")
@@ -55,7 +62,7 @@ epa_downloadData <- function(year=NULL,
       stop(paste0("parameterCode '",parameterCode,"' is not in: ", paste0(validParameterCodes, collapse=", ")))
     }
   }
-  
+
   # Sanity check: year is supplied and valid
   if ( is.null(year) ) {
     logger.error("Required parameter 'year' is missing")
@@ -64,24 +71,24 @@ epa_downloadData <- function(year=NULL,
     logger.error("No data available before 1990")
     stop(paste0("No data available before 1990"))
   } else if ( (parameterCode=="88101" && year<2008) ||
-              (parameterCode=="88502" && year<1998) || 
+              (parameterCode=="88502" && year<1998) ||
               (parameterCode=="SPEC" && year<2001) ||
               (parameterCode=="HAPS" && year<1993) ) {
-    logger.error("No data available for parameter code %s in year %i", parameterCode, year)  
+    logger.error("No data available for parameter code %s in year %i", parameterCode, year)
     stop(sprintf("No data available for parameter code %s in year %i", parameterCode, year))
   }
-  
+
   # Set up file names and paths
   fileBase <- paste("hourly",parameterCode,year,sep="_")
   url <- paste0(baseUrl,fileBase,".zip")
   zipFile <- path.expand( paste0(downloadDir,'/',fileBase,".zip") )
-  
+
   # TODO:  Change to use httr and test for success
-  
-  logger.debug(paste0('Downloading ',fileBase,'.zip ...'))
+
+  logger.trace(paste0('Downloading ',fileBase,'.zip ...'))
   utils::download.file(url, zipFile, quiet=TRUE)
-  logger.debug(paste0('Finished downloading.'))
-  
+  logger.trace(paste0('Finished downloading.'))
+
   return(zipFile)
-  
+
 }

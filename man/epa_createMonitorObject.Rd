@@ -2,7 +2,7 @@
 % Please edit documentation in R/epa_createMonitorObject.R
 \name{epa_createMonitorObject}
 \alias{epa_createMonitorObject}
-\title{Download and Convert Hourly EPA Air Quality Data}
+\title{Download and convert hourly EPA air quality data}
 \usage{
 epa_createMonitorObject(zipFile = NULL, zeroMinimum = TRUE,
   addGoogleMeta = TRUE)
@@ -26,8 +26,8 @@ Before running this function you must first enable spatial data capabilities as 
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()
-zipFile <- epa_downloadData(2016, "88101", downloadDir='~/Data/EPA')
-mon <- epa_createMonitorObject(zipFile, addGoogleMeta=FALSE)
+zipFile <- epa_downloadData(2016, "88101", downloadDir = '~/Data/EPA')
+mon <- epa_createMonitorObject(zipFile, addGoogleMeta = FALSE)
 }
 }
 \references{

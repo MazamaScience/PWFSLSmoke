@@ -71,7 +71,7 @@ included, see monitor_getCurrentStatus." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.29</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@ included, see <code><a href='monitor_getCurrentStatus.html'>monitor_getCurrentSt
     </div>
 
     <pre class="usage"><span class='fu'>monitor_writeCurrentStatusGeoJSON</span>(<span class='no'>ws_monitor</span>, <span class='no'>filename</span>,
-  <span class='kw'>datetime</span> <span class='kw'>=</span> <span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(<span class='st'>"UTC"</span>), <span class='kw'>properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>datetime</span> <span class='kw'>=</span> <span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(<span class='st'>"UTC"</span>), <span class='kw'>properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>propertyNames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>metadataList</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -194,7 +194,9 @@ nested lists as long as they can be converted into JSON using
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>wa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_loadLatest.html'>monitor_loadLatest</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>stateCodes</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
+<span class='no'>wa</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='monitor_loadLatest.html'>monitor_loadLatest</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>stateCodes</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
 <span class='no'>wa_current_geojson</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_writeCurrentStatusGeoJSON</span>(<span class='no'>wa</span>, <span class='st'>"wa_monitors.geojson"</span>)
 <span class='no'>wa_current_list</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>jsonlite</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/jsonlite/topics/fromJSON'>fromJSON</a></span>(<span class='no'>wa_current_geojson</span>)
 <span class='no'>wa_spdf</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rgdal</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rgdal/topics/readOGR'>readOGR</a></span>(<span class='kw'>dsn</span> <span class='kw'>=</span> <span class='st'>"wa_monitors.geojson"</span>, <span class='kw'>layer</span> <span class='kw'>=</span> <span class='st'>"OGRGeoJSON"</span>)

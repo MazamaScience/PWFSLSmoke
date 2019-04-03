@@ -1,6 +1,9 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Parse AIRSIS Data String
+#' @import MazamaCoreUtils
+#'
+#' @title Parse AIRSIS data string
+#'
 #' @param fileString character string containing AIRSIS data as a csv
 #' @description Raw character data from AIRSIS are parsed into a tibble.
 #' The incoming \code{fileString}
@@ -29,6 +32,8 @@
 
 airsis_parseData <- function(fileString) {
 
+  logger.debug(" ----- airsis_parseData() ----- ")
+
   # Identify monitor type
   monitorTypeList <- airsis_identifyMonitorType(fileString)
 
@@ -48,19 +53,19 @@ airsis_parseData <- function(fileString) {
 
   if ( monitorType == "BAM1020" ) {
 
-    logger.debug("Parsing BAM1020 data ...")
+    logger.trace("Parsing BAM1020 data ...")
 
   } else if ( monitorType == "EBAM" ) {
 
     if ( monitorSubtype == "MULTI" ) {
-      logger.debug("Parsing EBAM-Multi data ...")
+      logger.trace("Parsing EBAM-Multi data ...")
     } else {
-      logger.debug("Parsing EBAM data ...")
+      logger.trace("Parsing EBAM data ...")
     }
 
   } else if ( monitorType == "ESAM" ) {
 
-    logger.debug("Parsing E-Sampler data ...")
+    logger.trace("Parsing E-Sampler data ...")
 
     # NOTE:  Some E-Sampler files from AIRSIS (USFS 1050) have internal rows messed up with header line information
     # NOTE:  We need to remove these first. It seems they can be identified by searching for '%'.
@@ -69,7 +74,7 @@ airsis_parseData <- function(fileString) {
     internalHeaderMask <- stringr::str_detect(lines,'%')
     internalHeaderMask[1] <- FALSE
     if ( sum(internalHeaderMask) > 0 ) {
-      logger.debug("Removing %d 'internal header line' records from raw data", sum(internalHeaderMask))
+      logger.trace("Removing %d 'internal header line' records from raw data", sum(internalHeaderMask))
       lines <- lines[!internalHeaderMask]
     }
 
@@ -106,10 +111,10 @@ airsis_parseData <- function(fileString) {
   # Print out any problems encountered by readr::read_csv
   problemsDF <- readr::problems(tbl)
   if ( dim(problemsDF)[1] > 0 ) {
-    logger.debug("Records skipped with parsing errors:")
+    logger.trace("Records skipped with parsing errors:")
     problems <- utils::capture.output(format(problemsDF))
     for (i in seq_along(problems)) {
-      logger.debug("%s",problems[i])
+      logger.trace("%s",problems[i])
     }
   }
 
@@ -125,7 +130,7 @@ airsis_parseData <- function(fileString) {
     # arb2 UnitID=1044 in August, 2018 does not return a "Date.Time.GMT" column
     # We add one here by flooring the "TimeStamp" colum.
 
-    logger.debug("Adding Date.Time.GMT column to EBAM-Multi data.")
+    logger.trace("Adding Date.Time.GMT column to EBAM-Multi data.")
     if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
       # Remove rows where TimeStamp is NA
       badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
@@ -154,7 +159,7 @@ airsis_parseData <- function(fileString) {
 
     serialNumberMask <- (tbl$Serial.Number != "") & !is.na(tbl$Serial.Number)
     if ( sum(serialNumberMask) > 0 ) {
-      logger.debug("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
+      logger.trace("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
       tbl <- tbl[!serialNumberMask,]
     }
 
@@ -200,11 +205,11 @@ airsis_parseData <- function(fileString) {
     tidyr::fill(.data$Longitude, .data$Latitude, !!voltColumn) %>%
     tidyr::fill(.data$Longitude, .data$Latitude, !!voltColumn, .direction = "up")
 
-  logger.debug("Removing %d 'GPS' records from raw data", sum(gpsMask))
+  logger.trace("Removing %d 'GPS' records from raw data", sum(gpsMask))
   tbl <- tbl[!gpsMask,]
 
 
-  logger.debug('Retaining %d rows of raw %s measurements', nrow(tbl), monitorType)
+  logger.trace('Retaining %d rows of raw %s measurements', nrow(tbl), monitorType)
 
   return(tbl)
 

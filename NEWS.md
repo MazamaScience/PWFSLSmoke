@@ -1,3 +1,17 @@
+# PWFSLSmoke 1.2.0
+
+This release is the official release for the 2019 fire season.
+
+ * `monitor_leaflet()` now *visibly* returns a _leaflet_ object which can be
+ further customized by the user.
+ * code refactoring and cleanup unrelated to functionality -- 
+ _.e.g._ indentation
+ * logging changes in data processing functions:
+   - internal logging statements use `TRACE` level 
+   (previously, many were `DEBUG`)
+   - entering a function will generate a `DEBUG` level statement with the 
+   function name
+
 # PWFSLSmoke 1.1.29
 
 ## Breaking Changes
@@ -23,7 +37,7 @@
  some monitors had all missing data.
  * `monitor_leaflet()` now displays monitors with all missing values as light
  gray.
- * `monitor_leaflet()` now invisbly returns a _leaflet_ object which can be
+ * `monitor_leaflet()` now invisibly returns a _leaflet_ object which can be
  further customized by the user.
 
 # PWFSLSmoke 1.1.26
@@ -47,7 +61,7 @@ Minor cleanup in preparation for CRAN submission.
 
 # PWFSLSmoke 1.1.23
 
-This realase adds functions for working with generic data. 
+This release adds functions for working with generic data. 
 
 ## New Functions
 
@@ -167,7 +181,7 @@ In addition, `monitorGoogleMap()` has been deprecated in favor of
 # PWFSLSmoke 1.1.10
 
 Moving all base plot related code from **PWFSLSmokePlot** to **PWFSLSmoke** so
-that all functionality in the former is pursely **ggplot2** based.
+that all functionality in the former is purely **ggplot2** based.
 
  * added `addPolygon()`, `addWindBarb() and `addWindBarbs()`
  * added `aqiPalette()`
@@ -191,7 +205,7 @@ that all functionality in the former is pursely **ggplot2** based.
  monitor data files.
  * added new `monitor_loadLatest()`, `monitor_loadDaily()` and `monitor_loadAnnual()` functions
  * refactored `airnow`, `airsis`, `epa` and `wrcc` `~_load~()` functions to include
- a `dataDir` parameter to allow data loading from a local directory rathern than
+ a `dataDir` parameter to allow data loading from a local directory rather than
  always from the internet. the `airsis` and `wrcc` functions now support the
  (unused) `parameter` argument to match the `airnow` function signature
 
@@ -206,7 +220,7 @@ that all functionality in the former is pursely **ggplot2** based.
 
  * actual parsing done by `lubridate::parse_date_time`
  * vectorized for inputs
- * handle any format of **Ymd[_HMS_]** (including mutlitple formats within same input)
+ * handle any format of **Ymd[_HMS_]** (including multiple formats within same input)
  * new parameter `expectAll`, which controls how strict the parsing should be about accepting failures
  * added unit tests
 
@@ -217,7 +231,7 @@ that all functionality in the former is pursely **ggplot2** based.
 # PWFSLSmoke 1.1.4
 
  * tweaks for CRAN submission
- * cleanup recommneded by *goodpractice* package
+ * cleanup recommended by *goodpractice* package
  * removed non-functioning `monitorGooglMap()` and updated examples to use `monitorEsriMap()` instead
  * additional logging in `esriMap_getMap()`
 
@@ -231,7 +245,7 @@ that all functionality in the former is pursely **ggplot2** based.
 
 # PWFSLSmoke 1.1.1
 
- * added linting configuriation and suggest `lintr` package
+ * added linting configuration and suggest `lintr` package
  * added `PWFSLSmoke.Rproj` for consistent development
  * added Travis-CI configuration
 
@@ -321,7 +335,7 @@ that all functionality in the former is pursely **ggplot2** based.
  * changed `monitorDygraph()` to default to UTC when more than one timezone is present
  * added `AQI$actions` -- text with suggested actions to protect health
  * added language specific versions of `AQI`: `AQI_en` and `AQI_es`
- * added `monitor_isMonitor()` to valide the structure of a *ws_monitor* object
+ * added `monitor_isMonitor()` to validate the structure of a *ws_monitor* object
  * updated example code in all functions
  * turning off grid lines with `~Lwd=0` in `monitorPlot_timeseries()` now works on Windows
  * `monitorPlot_dailyBarplot()` accepts `tlim` argument of class `POSIXct` 
@@ -340,7 +354,7 @@ that all functionality in the former is pursely **ggplot2** based.
  
 # PWFSLSmoke 1.0.15
 
- * fixed chronoligical ordering bug in `monitor_combine()`
+ * fixed chronological ordering bug in `monitor_combine()`
  * `wrcc_downloadData()` now uses `parseDatetime()` like other functions
  * `monitorID` argument is no longer required in `monitor_join()`. Defaults to joining all shared monitorIDs.
  
@@ -541,9 +555,9 @@ that all functionality in the former is pursely **ggplot2** based.
 
 # PWFSLSmoke 0.99.14
 
- * improved use of `DEBUG` and `INFO` logging statments during AIRSIS and WRCC data processing
+ * improved use of `DEBUG` and `INFO` logging statements during AIRSIS and WRCC data processing
  * new `deploymentID` for temporary monitors based on `lon_lat` rather than cluster ID
- * reset to zereo any negative pm25 values in that make it through QC (AIRSIS and WRCC only)
+ * reset to zero any negative pm25 values in that make it through QC (AIRSIS and WRCC only)
  * fixed duplicate hour flagging bug during QC
  * added `flagAndKeep` capability to `airsis_createRawDataframe()` and `wrcc_createRawDataframe()`
  * `raw_enhance()` now handles AIRSIS EBAM files
@@ -551,7 +565,7 @@ that all functionality in the former is pursely **ggplot2** based.
 # PWFSLSmoke 0.99.13
 
  * refactored `airsisDump_createMonitorObject()` which was previously applying QC before splitting by monitorID
- * fixed WRCC E-Sampler mutliplication bug in `raw_enhance()`
+ * fixed WRCC E-Sampler multiplication bug in `raw_enhance()`
 
 # PWFSLSmoke 0.99.12
 
@@ -610,13 +624,13 @@ that all functionality in the former is pursely **ggplot2** based.
  * renamed `addShadedNights()` to addShadedNight()`
  * `addBullseye()` accepts more arguments and works with RgoogleMaps map objects
  * `monitorDygraph()` now accepts `tlim` argument instead of `dateWindow`
- * cleaned up varous examples
+ * cleaned up various examples
  * removed localDNR/ and localData/ directories
  * removed unused test code from localExamples/
 
 # PWFSLSmoke 0.9.4
 
- * new `addIcon()` function addis icons to maps and RgoogleMaps map objects
+ * new `addIcon()` function adds icons to maps and RgoogleMaps map objects
 
 # PWFSLSmoke 0.9.3
 

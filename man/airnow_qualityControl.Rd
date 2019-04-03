@@ -2,7 +2,7 @@
 % Please edit documentation in R/airnow_qualityControl.R
 \name{airnow_qualityControl}
 \alias{airnow_qualityControl}
-\title{Apply Quality Control to AirNow Dataframe}
+\title{Apply Quality Control to AirNow dataframe}
 \usage{
 airnow_qualityControl(df, limits = c(-Inf, Inf))
 }

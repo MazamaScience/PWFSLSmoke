@@ -1,15 +1,20 @@
 #' @keywords internal
 #' @export
+#' @import MazamaCoreUtils
+#'
 #' @title Load data from URL or local file
+#'
 #' @param filename Name of the data file to be loaded.
 #' @param baseUrl Base URL for data files.
 #' @param dataDir Local directory containing data files.
 #' @return A \emph{ws_monitor} object.
 #' @description Loads pre-generated .RData files
 
-loadDataFile <- function(filename = NULL,
-                         baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
-                         dataDir = NULL) {
+loadDataFile <- function(
+  filename = NULL,
+  baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
+  dataDir = NULL
+) {
 
   # Validate parameters
 

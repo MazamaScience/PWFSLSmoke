@@ -1,5 +1,6 @@
 #' @keywords internal
 #' @export
+#' @import MazamaCoreUtils
 #' @importFrom utils installed.packages
 #' @title Add Elevation Data to a Dataframe
 #' @param df dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
@@ -13,12 +14,14 @@
 #' @return Input dataframe with (possibly) additional column: \code{elevation}.
 #' @references \url{https://developers.google.com/maps/documentation/elevation/intro}
 
-addGoogleElevation <- function(df,
-                               lonVar = "longitude",
-                               latVar = "latitude",
-                               existingMeta = NULL) {
+addGoogleElevation <- function(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL
+) {
 
-  logger.trace(" ----- addGoogleElevation() ----- ")
+  logger.debug(" ----- addGoogleElevation() ----- ")
 
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df, stringsAsFactors = FALSE)
@@ -54,7 +57,7 @@ addGoogleElevation <- function(df,
 
     # NOTE:  No existingMeta so go ahead and query the google elevation service
 
-    logger.debug("Getting Google elevation data for %s location(s)", nrow(df))
+    logger.trace("Getting Google elevation data for %s location(s)", nrow(df))
 
     # NOTE:  Check and loop to see if we need to use addGoogleMetadata multiple
     # NOTE:  times due to google's per-query limit

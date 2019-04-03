@@ -2,7 +2,7 @@
 % Please edit documentation in R/airnow_downloadParseData.R
 \name{airnow_downloadParseData}
 \alias{airnow_downloadParseData}
-\title{Download and Aggregate Multiple Hourly Data Files from AirNow}
+\title{Download and aggregate multiple hourly data files from AirNow}
 \usage{
 airnow_downloadParseData(parameters = NULL,
   startdate = strftime(lubridate::now(), "\%Y\%m\%d00", tz = "UTC"),
@@ -57,7 +57,7 @@ not for earlier years.
 }
 \examples{
 \dontrun{
-tbl <- airnow_downloadParseData("PM2.5", 2016070112, hours=24)
+tbl <- airnow_downloadParseData("PM2.5", 2016070112, hours = 24)
 }
 }
 \seealso{

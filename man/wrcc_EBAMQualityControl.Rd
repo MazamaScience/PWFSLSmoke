@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_EBAMQualityControl.R
 \name{wrcc_EBAMQualityControl}
 \alias{wrcc_EBAMQualityControl}
-\title{Apply Quality Control to Raw WRCC EBAM Titbble}
+\title{Apply Quality Control to raw WRCC EBAM tibble}
 \usage{
 wrcc_EBAMQualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,

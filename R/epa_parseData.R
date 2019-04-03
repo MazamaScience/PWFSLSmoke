@@ -1,6 +1,9 @@
 #' @keywords EPA
 #' @export
-#' @title Parse Data from EPA
+#' @import MazamaCoreUtils
+#'
+#' @title Parse EPA data
+#'
 #' @param zipFile absolute path to monitoring data .zip file
 #' @description This function uncompress previously downloaded air quality .zip files from the EPA and
 #' reads it into a tibble.
@@ -60,7 +63,9 @@
 #   baseUrl='http://aqs.epa.gov/aqsweb/airdata/'
 # }
 
-epa_parseData <- function(zipFile=NULL) {
+epa_parseData <- function(zipFile = NULL) {
+
+  logger.debug(" ----- epa_parseData() ----- ")
 
   # Sanity checks
   if ( is.null(zipFile) ) {
@@ -71,9 +76,9 @@ epa_parseData <- function(zipFile=NULL) {
   csvFile <- stringr::str_replace(zipFile,"\\.zip","\\.csv")
 
   # Uncompress
-  logger.debug(paste0('Uncompressing ',zipFile,' ...'))
+  logger.trace(paste0('Uncompressing ',zipFile,' ...'))
   utils::unzip(zipFile, exdir=dirname(zipFile))
-  logger.debug(paste0('Finished uncompressing'))
+  logger.trace(paste0('Finished uncompressing'))
 
 
   # Here are the column names from an EPA hourly dataset:
@@ -88,14 +93,14 @@ epa_parseData <- function(zipFile=NULL) {
   col_types <- paste0("ccccc","ddccc","cccdc","ddccc","cccc")
 
   # Read in the data
-  logger.debug(paste0('Reading in ',csvFile,' ...'))
+  logger.trace(paste0('Reading in ',csvFile,' ...'))
   tbl <- readr::read_csv(csvFile, col_types=col_types)
-  logger.debug(paste0('Finished reading in ',csvFile))
+  logger.trace(paste0('Finished reading in ',csvFile))
 
   # Cleanup
   file.remove(csvFile)
 
-  logger.debug('Downloaded and parsed %d rows of EPA data', nrow(tbl))
+  logger.trace('Downloaded and parsed %d rows of EPA data', nrow(tbl))
 
   return(tbl)
 }

@@ -1,11 +1,15 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Download Data from AIRSIS
+#' @import MazamaCoreUtils
+#'
+#' @title Download AIRSIS data
+#'
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
 #' @param unitID unit identifier
 #' @param baseUrl base URL for data queries
+#'
 #' @description Request data from a particular station for the desired time period.
 #' Data are returned as a single character string containing the AIRIS output.
 #' @return String containing AIRSIS output.
@@ -23,6 +27,8 @@ airsis_downloadData <- function(
   unitID = NULL,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"
 ) {
+
+  logger.debug(" ----- airsis_downloadData() ----- ")
 
   # Sanity check
   if ( is.null(unitID) ) {
@@ -45,7 +51,7 @@ airsis_downloadData <- function(
                 '&StartDate=', strftime(starttime, "%Y-%m-%d", tz="UTC"),
                 '&EndDate=', strftime(endtime, "%Y-%m-%d", tz="UTC"))
 
-  logger.debug("Downloading data from: %s", url)
+  logger.trace("Downloading data from: %s", url)
 
   # Read the url output into a string
   fileString <- readr::read_file(url)

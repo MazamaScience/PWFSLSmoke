@@ -1,7 +1,9 @@
 #' @keywords internal
 #' @export
 #' @import MazamaCoreUtils
-#' @title Add Clustering Information to a Dataframe
+#'
+#' @title Add clustering information to a dataframe
+#'
 #' @param tbl tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param clusterDiameter diameter in meters used to determine the number of clusters (see description)
 #' @param lonVar name of longitude variable in the incoming tibble
@@ -16,12 +18,16 @@
 #' @return Input tibble with additional columns: \code{deploymentID, medoidLon, mediodLat}.
 #' @references \href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
 
-addClustering <- function(tbl,
-                          clusterDiameter = 1000,
-                          lonVar = "longitude",
-                          latVar = "latitude",
-                          maxClusters = 50,
-                          flagAndKeep = FALSE) {
+addClustering <- function(
+  tbl,
+  clusterDiameter = 1000,
+  lonVar = "longitude",
+  latVar = "latitude",
+  maxClusters = 50,
+  flagAndKeep = FALSE
+) {
+
+  logger.debug(" ----- addClustering() ----- ")
 
   # Sanity check -- row count
   if ( nrow(tbl) == 0 ) {
@@ -80,7 +86,7 @@ addClustering <- function(tbl,
   # NOTE:  Run the plots a few times and you will see that kmeans clustering sometimes
   # NOTE:  gets it wrong.
 
-  logger.debug("Testing up to %s clusters", maxClusters)
+  logger.trace("Testing up to %s clusters", maxClusters)
 
   # NOTE:  We need to use cluster::clara when we get above ~2K points.
   # NOTE:  For this reason we need to use clusinfo[,'max_diss'] instead
@@ -107,7 +113,7 @@ addClustering <- function(tbl,
     if ( max(meters) < clusterDiameter ) break
   }
 
-  logger.debug("Using %d cluster(s) with a diameter of %d meters", clusterCount, clusterDiameter)
+  logger.trace("Using %d cluster(s) with a diameter of %d meters", clusterCount, clusterDiameter)
 
   # Create the vector of deployment identifiers
   if ( nrow(tbl) < 2000 ) {

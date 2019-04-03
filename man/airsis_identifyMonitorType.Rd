@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_identifyMonitorType.R
 \name{airsis_identifyMonitorType}
 \alias{airsis_identifyMonitorType}
-\title{Identify AIRSIS Monitor Type}
+\title{Identify AIRSIS monitor type}
 \usage{
 airsis_identifyMonitorType(df)
 }

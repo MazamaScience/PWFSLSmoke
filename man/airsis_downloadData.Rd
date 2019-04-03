@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_downloadData.R
 \name{airsis_downloadData}
 \alias{airsis_downloadData}
-\title{Download Data from AIRSIS}
+\title{Download AIRSIS data}
 \usage{
 airsis_downloadData(startdate = strftime(lubridate::now(), "\%Y0101", tz
   = "UTC"), enddate = strftime(lubridate::now(), "\%Y\%m\%d", tz =

@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_createMonitorObject.R
 \name{airsis_createMonitorObject}
 \alias{airsis_createMonitorObject}
-\title{Obain AIRSIS Data and Create ws_monitor Object}
+\title{Obain AIRSIS data and create ws_monitor object}
 \usage{
 airsis_createMonitorObject(startdate = strftime(lubridate::now(),
   "\%Y010100", tz = "UTC"), enddate = strftime(lubridate::now(),

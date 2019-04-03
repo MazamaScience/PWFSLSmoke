@@ -2,7 +2,7 @@
 % Please edit documentation in R/airnow_createMonitorObjects.R
 \name{airnow_createMonitorObjects}
 \alias{airnow_createMonitorObjects}
-\title{Obain AirNow Data and Create ws_monitor Objects}
+\title{Obain AirNow data and create ws_monitor objects}
 \usage{
 airnow_createMonitorObjects(parameters = NULL,
   startdate = strftime(lubridate::now(), "\%Y\%m\%d", tz = "UTC"),

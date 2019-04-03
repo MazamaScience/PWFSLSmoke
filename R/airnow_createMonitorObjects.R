@@ -1,7 +1,9 @@
 #' @keywords AirNow
 #' @export
 #' @import MazamaCoreUtils
-#' @title Obain AirNow Data and Create ws_monitor Objects
+#'
+#' @title Obain AirNow data and create ws_monitor objects
+#'
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
@@ -49,11 +51,15 @@
 #' o3 <- monList$O3
 #' }
 
-airnow_createMonitorObjects <- function(parameters=NULL,
-                                        startdate=strftime(lubridate::now(),"%Y%m%d",tz="UTC"),
-                                        hours=24,
-                                        zeroMinimum=TRUE,
-                                        addGoogleMeta=TRUE) {
+airnow_createMonitorObjects <- function(
+  parameters = NULL,
+  startdate = strftime(lubridate::now(),"%Y%m%d",tz = "UTC"),
+  hours = 24,
+  zeroMinimum = TRUE,
+  addGoogleMeta = TRUE
+) {
+
+  logger.debug(" ----- airnow_createMonitorObjects() ----- ")
 
   metaList <- airnow_createMetaDataframes(parameters, 'AIRNOW', addGoogleMeta=addGoogleMeta)
   dataList <- airnow_createDataDataframes(parameters, startdate, hours)
@@ -72,7 +78,7 @@ airnow_createMonitorObjects <- function(parameters=NULL,
     ws_monitor <- structure(ws_monitor, class = c("ws_monitor", "list"))
     # Reset all negative values that made it through QC to zero
     if ( zeroMinimum ) {
-      logger.debug("Reset negative values to zero ...")
+      logger.trace("Reset negative values to zero ...")
       ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
     }
     # Add to list

@@ -89,6 +89,7 @@
 #'
 #' @importFrom rlang :=
 #' @export
+#' @import MazamaCoreUtils
 #'
 #' @examples
 #' \dontrun{

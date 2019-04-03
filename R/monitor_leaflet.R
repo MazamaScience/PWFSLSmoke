@@ -233,8 +233,6 @@ monitor_leaflet <- function(
       title = legendTitle
     )
 
-  print(leafletMap)
-
-  return(invisible(leafletMap))
+  return(leafletMap)
 
 }

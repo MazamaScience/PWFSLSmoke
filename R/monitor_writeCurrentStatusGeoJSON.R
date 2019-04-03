@@ -26,30 +26,35 @@
 #'
 #' @keywords ws_monitor
 #' @export
+#' @import MazamaCoreUtils
 #'
 #' @examples
 #' \dontrun{
-#' wa <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
+#' wa <-
+#'   monitor_loadLatest() %>%
+#'   monitor_subset(stateCodes = "WA")
 #' wa_current_geojson <- monitor_writeCurrentStatusGeoJSON(wa, "wa_monitors.geojson")
 #' wa_current_list <- jsonlite::fromJSON(wa_current_geojson)
 #' wa_spdf <- rgdal::readOGR(dsn = "wa_monitors.geojson", layer = "OGRGeoJSON")
 #' map("state", "washington")
 #' points(wa_spdf)
 #' }
-monitor_writeCurrentStatusGeoJSON <- function(ws_monitor,
-                                              filename,
-                                              datetime = lubridate::now("UTC"),
-                                              properties = NULL,
-                                              propertyNames = NULL,
-                                              metadataList = list()) {
+monitor_writeCurrentStatusGeoJSON <- function(
+  ws_monitor,
+  filename,
+  datetime = lubridate::now("UTC"),
+  properties = NULL,
+  propertyNames = NULL,
+  metadataList = list()
+) {
 
 
-# Sanity checks -----------------------------------------------------------
+  # Sanity checks -----------------------------------------------------------
 
   if (monitor_isEmpty(ws_monitor)) stop("ws_monitor object contains zero monitors.")
 
 
-# Load and format data ----------------------------------------------------
+  # Load and format data ----------------------------------------------------
 
   result <- try({
     currentTbl <- monitor_getCurrentStatus(ws_monitor, datetime)
@@ -76,7 +81,7 @@ monitor_writeCurrentStatusGeoJSON <- function(ws_monitor,
   )
 
 
-# Get coords from meta and create SPDF ------------------------------------
+  # Get coords from meta and create SPDF ------------------------------------
 
   # NOTE: To save space we always round to 5 decimal places (~1 meter)
   # NOTE: Get coords before subsetting meta, in case lon and lat aren't included
@@ -87,10 +92,10 @@ monitor_writeCurrentStatusGeoJSON <- function(ws_monitor,
     currentTbl <- currentTbl[, properties]
     if (!is.null(propertyNames) & length(propertyNames) == length(properties))
       result <- try(names(currentTbl) <- propertyNames)
-      if ("try-error" %in% class(result)) {
-        err_msg <- geterrmessage()
-        warning(paste0("could not change propertyNames - using defaults: ", err_msg))
-      }
+    if ("try-error" %in% class(result)) {
+      err_msg <- geterrmessage()
+      warning(paste0("could not change propertyNames - using defaults: ", err_msg))
+    }
   }
 
   # Create the SpatialPointsDataFrame
@@ -102,7 +107,7 @@ monitor_writeCurrentStatusGeoJSON <- function(ws_monitor,
   )
 
 
-# Convert to geoJSON ------------------------------------------------------
+  # Convert to geoJSON ------------------------------------------------------
 
   ## NOTE: about rgdal::writeOGR
   #  * creates .geojson files where numeric properties are not quoted.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_createMetaDataframe.R
 \name{airsis_createMetaDataframe}
 \alias{airsis_createMetaDataframe}
-\title{Create AIRSIS Site Location Metadata Dataframe}
+\title{Create AIRSIS site location metadata dataframe}
 \usage{
 airsis_createMetaDataframe(tbl, provider = as.character(NA),
   unitID = as.character(NA), pwfslDataIngestSource = "AIRSIS",

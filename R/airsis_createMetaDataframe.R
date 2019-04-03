@@ -1,6 +1,7 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Create AIRSIS Site Location Metadata Dataframe
+#' @import MazamaCoreUtils
+#' @title Create AIRSIS site location metadata dataframe
 #' @param tbl single site AIRSIS tibble after metadata enhancement
 #' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
 #' @param unitID character or numeric AIRSIS unit identifier
@@ -33,15 +34,17 @@
 #' @seealso \code{\link{addMazamaMetadata}}
 
 
-airsis_createMetaDataframe <- function(tbl,
-                                       provider=as.character(NA),
-                                       unitID=as.character(NA),
-                                       pwfslDataIngestSource='AIRSIS',
-                                       existingMeta=NULL,
-                                       addGoogleMeta=FALSE,
-                                       addEsriMeta=FALSE) {
+airsis_createMetaDataframe <- function(
+  tbl,
+  provider = as.character(NA),
+  unitID = as.character(NA),
+  pwfslDataIngestSource = 'AIRSIS',
+  existingMeta = NULL,
+  addGoogleMeta = FALSE,
+  addEsriMeta = FALSE
+) {
 
-  logger.trace(" ----- airsis_createMetaDataframe() ----- ")
+  logger.debug(" ----- airsis_createMetaDataframe() ----- ")
 
   # Sanity check -- tbl must have a monitorType
   if ( !'monitorType' %in% names(tbl) ) {
@@ -68,7 +71,7 @@ airsis_createMetaDataframe <- function(tbl,
   # Pull out unique deployments
   tbl <- tbl[!duplicated(tbl$deploymentID),]
 
-  logger.debug("Dataframe contains %d unique deployment(s)", nrow(tbl))
+  logger.trace("Dataframe contains %d unique deployment(s)", nrow(tbl))
 
   # Our tibble now contains the following columns:
   #
@@ -155,7 +158,7 @@ airsis_createMetaDataframe <- function(tbl,
   # Assign rownames
   rownames(meta) <- meta$monitorID
 
-  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.trace("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
 
   return(meta)
 

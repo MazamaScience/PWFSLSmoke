@@ -2,7 +2,7 @@
 % Please edit documentation in R/airnow_createDataDataframes.R
 \name{airnow_createDataDataframes}
 \alias{airnow_createDataDataframes}
-\title{Return Reshaped, Dataframes of AirNow Data}
+\title{Return reshaped dataframes of AirNow data}
 \usage{
 airnow_createDataDataframes(parameters = NULL, startdate = "",
   hours = 24)

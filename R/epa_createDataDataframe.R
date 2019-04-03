@@ -1,6 +1,9 @@
 #' @keywords EPA
 #' @export
-#' @title Create EPA Data Dataframe
+#' @import MazamaCoreUtils
+#'
+#' @title Create EPA data dataframe
+#'
 #' @param tbl an EPA raw tibble after metadata enhancement
 #' @description After additional columns(i.e. \code{datetime}, and \code{monitorID})
 #' have been applied to an EPA dataframe, we are ready to
@@ -14,6 +17,8 @@
 #' @return A \code{data} dataframe for use in a \emph{ws_monitor} object.
 
 epa_createDataDataframe <- function(tbl) {
+
+  logger.debug(" ----- epa_createDataDataframe() ----- ")
 
   # Create a column with the datetime
   tbl$datetime <- lubridate::ymd_hms(paste0(tbl$`Date GMT`,' ',tbl$`Time GMT`,':00'))
@@ -43,7 +48,7 @@ epa_createDataDataframe <- function(tbl) {
   # combine the two dataframes together by doing a left join
   data <- dplyr::left_join(hourlyDF, pm25DF, by="datetime")
 
-  logger.debug("'data' dataframe has %d rows and %d columns", nrow(data), ncol(data))
+  logger.trace("'data' dataframe has %d rows and %d columns", nrow(data), ncol(data))
 
   return(data)
 }

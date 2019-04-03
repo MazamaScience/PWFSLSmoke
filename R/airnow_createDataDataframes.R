@@ -1,7 +1,9 @@
 #' @keywords AirNow
 #' @export
 #' @import MazamaCoreUtils
-#' @title Return Reshaped, Dataframes of AirNow Data
+#'
+#' @title Return reshaped dataframes of AirNow data
+#'
 #' @param parameters vector of names of desired pollutants or NULL for all pollutants
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param hours desired number of hours of data to assemble
@@ -45,7 +47,13 @@
 #' airnow_data <- airnow_createDataDataframes("PM2.5", 20160701)
 #' }
 
-airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24) {
+airnow_createDataDataframes <- function(
+  parameters = NULL,
+  startdate = '',
+  hours = 24
+) {
+
+  logger.debug(" ----- airnow_createDataDataframes() ----- ")
 
   # Create the data frame that holds multiple days of AirNow data
   airnowTbl <- airnow_downloadParseData(parameters=parameters, startdate=startdate, hours=hours)
@@ -62,7 +70,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
 
   # ----- Data Reshaping ------------------------------------------------------
 
-  logger.debug("Reshaping %d days of AirNow data ...", hours/24)
+  logger.trace("Reshaping %d days of AirNow data ...", hours/24)
 
   # NOTE:  Add monitorID as AQSID + "_01" to match what is done in the "Data Reshaping"
   # NOTE:  section of airnow_createMetaDataframes().
@@ -87,7 +95,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   # Use dplyr and reshape2 packages to seprate the data by parameter and restructure each data frame
   for ( parameter in parameters ) {
 
-    logger.debug("Reshaping data for %s ...", parameter)
+    logger.trace("Reshaping data for %s ...", parameter)
 
     # Create datetime variable
     tbl <- dplyr::filter(airnowTbl, airnowTbl$ParameterName == parameter)
@@ -110,7 +118,7 @@ airnow_createDataDataframes <- function(parameters=NULL, startdate='', hours=24)
   timeAxis <- seq(starttime, starttime + lubridate::dhours(hours-1), by='hours')
   hourlyDF <- data.frame(datetime=timeAxis)
 
-  logger.debug("Putting data on a uniform time axis ...")
+  logger.trace("Putting data on a uniform time axis ...")
 
   for ( parameter in parameters ) {
 

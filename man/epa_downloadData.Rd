@@ -2,7 +2,7 @@
 % Please edit documentation in R/epa_downloadData.R
 \name{epa_downloadData}
 \alias{epa_downloadData}
-\title{Download Data from EPA}
+\title{Download EPA air quality data}
 \usage{
 epa_downloadData(year = NULL, parameterCode = "88101",
   downloadDir = tempdir(),

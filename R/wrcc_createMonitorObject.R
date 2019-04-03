@@ -1,6 +1,9 @@
 #' @keywords WRCC
 #' @export
-#' @title Obtain WRCC Data and Create ws_monitor Object
+#' @import MazamaCoreUtils
+#'
+#' @title Obtain WRCC data and create ws_monitor object
+#'
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param unitID station identifier (will be upcased)
@@ -54,26 +57,30 @@
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
-#' sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID='sm13')
+#' sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID = 'sm13')
 #' monitor_leaflet(sm13)
 #' }
 
-wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
-                                     enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
-                                     unitID=NULL,
-                                     clusterDiameter=1000,
-                                     zeroMinimum=TRUE,
-                                     baseUrl="https://wrcc.dri.edu/cgi-bin/wea_list2.pl",
-                                     saveFile=NULL,
-                                     existingMeta=NULL,
-                                     addGoogleMeta=FALSE,
-                                     addEsriMeta=FALSE,
-                                     ...) {
+wrcc_createMonitorObject <- function(
+  startdate = strftime(lubridate::now(),"%Y010100",tz = "UTC"),
+  enddate = strftime(lubridate::now(),"%Y%m%d23",tz = "UTC"),
+  unitID = NULL,
+  clusterDiameter = 1000,
+  zeroMinimum = TRUE,
+  baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl",
+  saveFile = NULL,
+  existingMeta = NULL,
+  addGoogleMeta = FALSE,
+  addEsriMeta = FALSE,
+  ...
+) {
+
+  logger.debug(" ----- wrcc_createMonitorObject() ----- ")
 
   # FOR TESTING
   if ( FALSE ) {
-    startdate <- strftime(lubridate::now(),"%Y010101",tz="UTC")
-    enddate <- strftime(lubridate::now(),"%Y%m%d23",tz="UTC")
+    startdate <- strftime(lubridate::now(),"%Y010101",tz = "UTC")
+    enddate <- strftime(lubridate::now(),"%Y%m%d23",tz = "UTC")
     unitID <- 'sm21'
     clusterDiameter <- 1000
     zeroMinimum <- TRUE
@@ -100,13 +107,13 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
   }
 
   # Read in WRCC .csv data
-  logger.debug("Downloading WRCC data ...")
+  logger.trace("Downloading WRCC data ...")
   fileString <- wrcc_downloadData(startdate, enddate, unitID, baseUrl)
 
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {
-    result <- try( cat(fileString, file=saveFile),
-                   silent=TRUE )
+    result <- try( cat(fileString, file = saveFile),
+                   silent = TRUE )
     if ( "try-error" %in% class(result) ) {
       err_msg <- geterrmessage()
       logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
@@ -115,11 +122,11 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
   }
 
   # Read csv raw data into a tibble
-  logger.debug("Parsing data ...")
+  logger.trace("Parsing data ...")
   tbl <- wrcc_parseData(fileString)
 
   # Apply monitor-appropriate QC to the tibble
-  logger.debug("Applying QC logic ...")
+  logger.trace("Applying QC logic ...")
   tbl <- wrcc_qualityControl(tbl, ...)
 
   # See if anything gets through QC
@@ -129,20 +136,20 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
   }
 
   # Add clustering information to identify unique deployments
-  logger.debug("Clustering ...")
+  logger.trace("Clustering ...")
   tbl <- addClustering(tbl, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter)
 
   # Create 'meta' dataframe of site properties organized as monitorID-by-property
   # NOTE:  This step will create a uniformly named set of properties and will
   # NOTE:  add site-specific information like timezone, elevation, address, etc.
-  logger.debug("Creating 'meta' dataframe ...")
+  logger.trace("Creating 'meta' dataframe ...")
   meta <- wrcc_createMetaDataframe(tbl, unitID, 'WRCC',
                                    existingMeta = existingMeta,
                                    addGoogleMeta = addGoogleMeta,
                                    addEsriMeta = addEsriMeta)
 
   # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
-  logger.debug("Creating 'data' dataframe ...")
+  logger.trace("Creating 'data' dataframe ...")
   data <- wrcc_createDataDataframe(tbl, meta)
 
   # Create the 'ws_monitor' object
@@ -151,7 +158,7 @@ wrcc_createMonitorObject <- function(startdate=strftime(lubridate::now(),"%Y0101
 
   # Reset all negative values that made it through QC to zero
   if ( zeroMinimum ) {
-    logger.debug("Reset negative values to zero ...")
+    logger.trace("Reset negative values to zero ...")
     ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
   }
 

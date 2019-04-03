@@ -2,7 +2,9 @@
 #' @export
 #' @import MazamaCoreUtils
 #' @importFrom utils installed.packages
-#' @title Add Address Information to a Dataframe
+#'
+#' @title Add address information to a dataframe
+#'
 #' @param df dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
@@ -15,12 +17,14 @@
 #' @return Input dataframe with additional columns: \code{siteName, countyName}.
 #' @references \url{https://developers.google.com/maps/documentation/geocoding/intro}
 
-addGoogleAddress <- function(df,
-                             lonVar = "longitude",
-                             latVar = "latitude",
-                             existingMeta = NULL) {
+addGoogleAddress <- function(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL
+) {
 
-  ###logger.trace(" ----- addGoogleAddress() ----- ")
+  ###logger.debug(" ----- addGoogleAddress() ----- ")
 
   message("addGoogleAddress() is currently disabled after discontinuation of free querys in July, 2018")
 
@@ -41,9 +45,9 @@ addGoogleAddress <- function(df,
   lons <- df[[lonVar]]
   lats <- df[[latVar]]
 
-  # ----- Add siteName from Google API ---------------------------
+  # ----- Add siteName from Google API -----------------------------------------
 
-  logger.debug("Getting site names for %s location(s)", nrow(df))
+  logger.trace("Getting site names for %s location(s)", nrow(df))
 
   # When siteName is missing, create one similar to AirNow with "locality-route"
 

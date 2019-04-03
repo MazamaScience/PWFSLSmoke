@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 1.1.29
+Version: 1.2.0
 Title: Utilities for Working with Air Quality Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -18,8 +18,8 @@ Author: Jonathan Callahan [aut, cre],
     Rohan Aras [aut],
     Zach Dingels [aut],
     Jon Hagg [aut],
-    Hans Martin [aut],
     Jimin Kim [aut],
+    Hans Martin [aut],
     Helen Miller [aut],
     Spencer Pease [aut],
     Rex Thompson [aut],

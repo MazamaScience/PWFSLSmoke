@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_BAM1020QualityControl.R
 \name{airsis_BAM1020QualityControl}
 \alias{airsis_BAM1020QualityControl}
-\title{Apply Quality Control to Raw AIRSIS BAM1020 Dataframe}
+\title{Apply Quality Control to raw AIRSIS BAM1020 dataframe}
 \usage{
 airsis_BAM1020QualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,

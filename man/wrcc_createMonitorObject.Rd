@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_createMonitorObject.R
 \name{wrcc_createMonitorObject}
 \alias{wrcc_createMonitorObject}
-\title{Obtain WRCC Data and Create ws_monitor Object}
+\title{Obtain WRCC data and create ws_monitor object}
 \usage{
 wrcc_createMonitorObject(startdate = strftime(lubridate::now(),
   "\%Y010100", tz = "UTC"), enddate = strftime(lubridate::now(),
@@ -76,7 +76,7 @@ The downloaded CSV may be saved to a local file by providing an argument to the 
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()
-sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID='sm13')
+sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID = 'sm13')
 monitor_leaflet(sm13)
 }
 }

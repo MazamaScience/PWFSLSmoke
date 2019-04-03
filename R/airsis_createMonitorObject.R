@@ -1,6 +1,9 @@
 #' @keywords AIRSIS
 #' @export
-#' @title Obain AIRSIS Data and Create ws_monitor Object
+#' @import MazamaCoreUtils
+#'
+#' @title Obain AIRSIS data and create ws_monitor object
+#'
 #' @param startdate desired start date (integer or character representing YYYYMMDD[HH])
 #' @param enddate desired end date (integer or character representing YYYYMMDD[HH])
 #' @param provider identifier used to modify baseURL \code{['APCD'|'USFS']}
@@ -74,6 +77,8 @@ airsis_createMonitorObject <- function(
   ...
 ) {
 
+  logger.debug(" ----- airsis_createMonitorObject() ----- ")
+
   # Sanity checks
   if ( is.null(provider) ) {
     logger.error("Required parameter 'provider' is missing")
@@ -112,11 +117,11 @@ airsis_createMonitorObject <- function(
   }
 
   # Read csv raw data into a dataframe
-  logger.debug("Parsing data ...")
+  logger.trace("Parsing data ...")
   tbl <- airsis_parseData(fileString)
 
   # Apply monitor-appropriate QC to the dataframe
-  logger.debug("Applying QC logic ...")
+  logger.trace("Applying QC logic ...")
   tbl <- airsis_qualityControl(tbl, ...)
 
   # See if anything gets through QC
@@ -126,20 +131,20 @@ airsis_createMonitorObject <- function(
   }
 
   # Add clustering information to identify unique deployments
-  logger.debug("Clustering ...")
+  logger.trace("Clustering ...")
   tbl <- addClustering(tbl, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter)
 
   # Create 'meta' dataframe of site properties organized as monitorID-by-property
   # NOTE:  This step will create a uniformly named set of properties and will
   # NOTE:  add site-specific information like timezone, elevation, address, etc.
-  logger.debug("Creating 'meta' dataframe ...")
+  logger.trace("Creating 'meta' dataframe ...")
   meta <- airsis_createMetaDataframe(tbl, provider, unitID, 'AIRSIS',
                                      existingMeta = existingMeta,
                                      addGoogleMeta = addGoogleMeta,
                                      addEsriMeta = addEsriMeta)
 
   # Create 'data' dataframe of PM2.5 values organized as time-by-monitorID
-  logger.debug("Creating 'data' dataframe ...")
+  logger.trace("Creating 'data' dataframe ...")
   data <- airsis_createDataDataframe(tbl, meta)
 
   # Create the 'ws_monitor' object
@@ -148,7 +153,7 @@ airsis_createMonitorObject <- function(
 
   # Reset all negative values that made it through QC to zero
   if ( zeroMinimum ) {
-    logger.debug("Reset negative values to zero ...")
+    logger.trace("Reset negative values to zero ...")
     ws_monitor <- monitor_replaceData(ws_monitor, data < 0, 0)
   }
 

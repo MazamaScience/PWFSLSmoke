@@ -1,3 +1,6 @@
+#' @export
+#' @import MazamaCoreUtils
+#'
 #' @title Download generic data
 #'
 #' @description
@@ -12,8 +15,6 @@
 #'
 #' @details
 #' This function is essentailly a wrapper for \code{\link[readr]{read_file}}.
-#'
-#' @export
 #'
 #' @examples
 #' \dontrun{

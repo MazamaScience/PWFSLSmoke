@@ -1,7 +1,9 @@
 #' @keywords EPA
 #' @export
-#' @importFrom magrittr '%>%'
-#' @title Create Sites Metadata Dataframe
+#' @import MazamaCoreUtils
+#'
+#' @title Create dataframe of EPA site location metadata
+#'
 #' @param tbl an EPA raw tibble after metadata enhancement
 #' @param pwfslDataIngestSource identifier for the source of monitoring data, e.g. \code{'EPA_hourly_88101_2016.zip'}
 #' @param existingMeta existing 'meta' dataframe from which to obtain metadata for known monitor deployments
@@ -30,16 +32,18 @@
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 
-epa_createMetaDataframe <- function(tbl,
-                                    pwfslDataIngestSource='EPA',
-                                    existingMeta=NULL,
-                                    addGoogleMeta=TRUE) {
+epa_createMetaDataframe <- function(
+  tbl,
+  pwfslDataIngestSource = 'EPA',
+  existingMeta = NULL,
+  addGoogleMeta = TRUE
+) {
 
-  logger.debug(paste0('Creating meta dataframe ...'))
+  logger.debug(" ----- epa_createMetaDataframe() ----- ")
 
   # Subset tbl to contain only unique sites
   siteColumns <- c('State Code', 'County Code', 'Site Num','Parameter Code',
-               'POC','Latitude','Longitude','State Name','County Name')
+                   'POC','Latitude','Longitude','State Name','County Name')
   tbl <- dplyr::select(tbl, siteColumns) %>% distinct()
 
   # Our tibble now contains the following columns:
@@ -103,7 +107,7 @@ epa_createMetaDataframe <- function(tbl,
   # Assign rownames
   rownames(meta) <- meta$monitorID
 
-  logger.debug("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
+  logger.trace("Created 'meta' dataframe with %d rows and %d columns", nrow(meta), ncol(meta))
 
   return(meta)
 

@@ -1,5 +1,7 @@
 #' @keywords AIRSIS
 #' @export
+#' @import MazamaCoreUtils
+#'
 #' @title Obain AIRSIS data and parse into a raw tibble
 #'
 #' @param startdate Desired start date (integer or character representing YYYYMMDD[HH]).
@@ -37,20 +39,26 @@
 #'
 #' @examples
 #' \dontrun{
-#' raw <- airsis_createRawDataframe(startdate=20160901, provider='USFS', unitID='1033')
+#' raw <- airsis_createRawDataframe(startdate = 20160901,
+#'                                  provider = 'USFS',
+#'                                  unitID = '1033')
 #' raw <- raw_enhance(raw)
-#' rawPlot_timeseries(raw,tlim=c(20160908,20160917))
+#' rawPlot_timeseries(raw, tlim = c(20160908,20160917))
 #' }
 #'
 
-airsis_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
-                                      enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
-                                      provider=NULL,
-                                      unitID=NULL,
-                                      clusterDiameter=1000,
-                                      baseUrl="http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-                                      saveFile=NULL,
-                                      flagAndKeep=FALSE) {
+airsis_createRawDataframe <- function(
+  startdate = strftime(lubridate::now(),"%Y010100", tz = "UTC"),
+  enddate = strftime(lubridate::now(),"%Y%m%d23", tz = "UTC"),
+  provider = NULL,
+  unitID = NULL,
+  clusterDiameter = 1000,
+  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
+  saveFile = NULL,
+  flagAndKeep = FALSE
+) {
+
+  logger.debug(" ----- airsis_createRawDataframe() ----- ")
 
   # Validate parameters --------------------------------------------------------
 
@@ -65,13 +73,13 @@ airsis_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y010
   }
 
   # Read in AIRSIS .csv data
-  logger.debug("Downloading data ...")
+  logger.trace("Downloading data ...")
   fileString <- airsis_downloadData(startdate, enddate, provider, unitID, baseUrl)
 
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {
-    result <- try( cat(fileString, file=saveFile),
-                   silent=TRUE )
+    result <- try( cat(fileString, file = saveFile),
+                   silent = TRUE )
     if ( "try-error" %in% class(result) ) {
       err_msg <- geterrmessage()
       logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
@@ -80,7 +88,7 @@ airsis_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y010
   }
 
   # Read csv raw data into a tibble
-  logger.debug("Parsing data ...")
+  logger.trace("Parsing data ...")
   tbl <- airsis_parseData(fileString)
 
   # Add source of raw data
@@ -89,11 +97,11 @@ airsis_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y010
   }
 
   # Apply monitor-appropriate QC to the tibble
-  logger.debug("Applying QC logic ...")
-  tbl <- airsis_qualityControl(tbl, flagAndKeep=flagAndKeep)
+  logger.trace("Applying QC logic ...")
+  tbl <- airsis_qualityControl(tbl, flagAndKeep = flagAndKeep)
 
   # Add clustering information to identify unique deployments
-  logger.debug("Clustering ...")
+  logger.trace("Clustering ...")
   tbl <- addClustering(tbl, lonVar='Longitude', latVar='Latitude', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
 
   # Return ---------------------------------------------------------------------

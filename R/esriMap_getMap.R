@@ -1,6 +1,9 @@
 #' @keywords plotting
 #' @export
+#' @import MazamaCoreUtils
+#'
 #' @title Download a Spatial Raster Object from ESRI
+#'
 #' @param centerLon map center longitude
 #' @param centerLat map center latitude
 #' @param maptype map type
@@ -41,17 +44,18 @@
 #' }
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
-esriMap_getMap <- function(centerLon = NULL,
-                           centerLat = NULL,
-                           bboxString = NULL,
-                           bboxSR = "4326",
-                           maptype = "worldStreetMap",
-                           zoom = 12,
-                           width = 640,
-                           height = 640,
-                           crs = sp::CRS("+init=epsg:4326"),
-                           additionalArgs = NULL) {
-
+esriMap_getMap <- function(
+  centerLon = NULL,
+  centerLat = NULL,
+  bboxString = NULL,
+  bboxSR = "4326",
+  maptype = "worldStreetMap",
+  zoom = 12,
+  width = 640,
+  height = 640,
+  crs = sp::CRS("+init=epsg:4326"),
+  additionalArgs = NULL
+) {
 
   # Calculate degrees per pixel from zoom to determine bbox:
   # * google maps tiles are 256x256 pixels

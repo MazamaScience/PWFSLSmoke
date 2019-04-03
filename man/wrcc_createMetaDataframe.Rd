@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_createMetaDataframe.R
 \name{wrcc_createMetaDataframe}
 \alias{wrcc_createMetaDataframe}
-\title{Create WRCC Site Location Metadata Dataframe}
+\title{Create WRCC site location metadata dataframe}
 \usage{
 wrcc_createMetaDataframe(tbl, unitID = as.character(NA),
   pwfslDataIngestSource = "WRCC", existingMeta = NULL,

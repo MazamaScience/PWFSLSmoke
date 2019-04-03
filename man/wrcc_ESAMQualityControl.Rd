@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_ESAMQualityControl.R
 \name{wrcc_ESAMQualityControl}
 \alias{wrcc_ESAMQualityControl}
-\title{Apply Quality Control to Raw WRCC E-Sampler Tibble}
+\title{Apply Quality Control to raw WRCC E-Sampler tibble}
 \usage{
 wrcc_ESAMQualityControl(tbl, valid_Longitude = c(-180, 180),
   valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_qualityControl.R
 \name{wrcc_qualityControl}
 \alias{wrcc_qualityControl}
-\title{Apply Quality Control to Raw WRCC Tibble}
+\title{Apply Quality Control to raw WRCC tibble}
 \usage{
 wrcc_qualityControl(tbl, ...)
 }

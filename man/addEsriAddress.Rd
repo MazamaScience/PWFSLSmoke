@@ -2,7 +2,7 @@
 % Please edit documentation in R/addEsriAddress.R
 \name{addEsriAddress}
 \alias{addEsriAddress}
-\title{Add Address Information to a Dataframe}
+\title{Add address information to a dataframe}
 \usage{
 addEsriAddress(df, lonVar = "longitude", latVar = "latitude",
   existingMeta = NULL)

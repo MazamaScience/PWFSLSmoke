@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_parseData.R
 \name{wrcc_parseData}
 \alias{wrcc_parseData}
-\title{Parse WRCC Data String}
+\title{Parse WRCC data string}
 \usage{
 wrcc_parseData(fileString)
 }
@@ -28,7 +28,7 @@ The character data are then processed, read into a tibble and augmented in the f
 }
 \examples{
 \dontrun{
-fileString <- wrcc_downloadData(20150701, 20150930, unitID='SM16')
+fileString <- wrcc_downloadData(20150701, 20150930, unitID = 'SM16')
 tbl <- wrcc_parseData(fileString)
 }
 }

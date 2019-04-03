@@ -2,7 +2,9 @@
 #' @export
 #' @import MazamaCoreUtils
 #' @importFrom utils installed.packages
-#' @title Add Address Information to a Dataframe
+#'
+#' @title Add address information to a dataframe
+#'
 #' @param df dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
 #' @param latVar name of the latitude variable in the incoming dataframe
@@ -18,12 +20,14 @@
 #' addEsriAddress(df)
 #' }
 
-addEsriAddress <- function(df,
-                           lonVar = "longitude",
-                           latVar = "latitude",
-                           existingMeta = NULL) {
+addEsriAddress <- function(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL
+) {
 
-  logger.trace(" ----- addEsriAddress() ----- ")
+  logger.debug(" ----- addEsriAddress() ----- ")
 
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
   df <- as.data.frame(df, stringsAsFactors = FALSE)

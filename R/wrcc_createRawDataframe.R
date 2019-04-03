@@ -1,5 +1,6 @@
 #' @keywords WRCC
 #' @export
+#' @import MazamaCoreUtils
 #'
 #' @title Obtain WRCC data and parse into a tibble
 #'
@@ -29,7 +30,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' tbl <- wrcc_createRawDataframe(20150701, 20150930, unitID='SM16')
+#' tbl <- wrcc_createRawDataframe(20150701, 20150930, unitID = 'SM16')
 #' }
 #'
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
@@ -42,13 +43,17 @@
 #'
 #' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 
-wrcc_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y010100",tz="UTC"),
-                                    enddate=strftime(lubridate::now(),"%Y%m%d23",tz="UTC"),
-                                    unitID=NULL,
-                                    clusterDiameter=1000,
-                                    baseUrl="http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
-                                    saveFile=NULL,
-                                    flagAndKeep=FALSE) {
+wrcc_createRawDataframe <- function(
+  startdate = strftime(lubridate::now(),"%Y010100",tz = "UTC"),
+  enddate = strftime(lubridate::now(),"%Y%m%d23",tz = "UTC"),
+  unitID = NULL,
+  clusterDiameter = 1000,
+  baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
+  saveFile = NULL,
+  flagAndKeep = FALSE
+) {
+
+  logger.debug(" ----- wrcc_createRawDatafram() ----- ")
 
   # Validate parameters --------------------------------------------------------
 
@@ -63,13 +68,13 @@ wrcc_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y01010
   }
 
   # Read in WRCC .csv data
-  logger.debug("Downloading WRCC data ...")
+  logger.trace("Downloading WRCC data ...")
   fileString <- wrcc_downloadData(startdate, enddate, unitID, baseUrl)
 
   # Optionally save as a raw .csv file
   if ( !is.null(saveFile) ) {
-    result <- try( cat(fileString, file=saveFile),
-                   silent=TRUE )
+    result <- try( cat(fileString, file = saveFile),
+                   silent = TRUE )
     if ( "try-error" %in% class(result) ) {
       err_msg <- geterrmessage()
       logger.warn("Unable to save data to local file %s: %s", saveFile, err_msg)
@@ -78,19 +83,19 @@ wrcc_createRawDataframe <- function(startdate=strftime(lubridate::now(),"%Y01010
   }
 
   # Read csv raw data into a tibble
-  logger.debug("Parsing data ...")
+  logger.trace("Parsing data ...")
   tbl <- wrcc_parseData(fileString)
 
   # Add source of raw data
   tbl$rawSource <- "WRCC"
 
   # Apply monitor-appropriate QC to the tibble
-  logger.debug("Applying QC logic ...")
-  tbl <- wrcc_qualityControl(tbl, flagAndKeep=flagAndKeep)
+  logger.trace("Applying QC logic ...")
+  tbl <- wrcc_qualityControl(tbl, flagAndKeep = flagAndKeep)
 
   # Add clustering information to identify unique deployments
-  logger.debug("Clustering ...")
-  tbl <- addClustering(tbl, lonVar='GPSLon', latVar='GPSLat', clusterDiameter=clusterDiameter, flagAndKeep=flagAndKeep)
+  logger.trace("Clustering ...")
+  tbl <- addClustering(tbl, lonVar = 'GPSLon', latVar = 'GPSLat', clusterDiameter = clusterDiameter, flagAndKeep = flagAndKeep)
 
   # Return ---------------------------------------------------------------------
 

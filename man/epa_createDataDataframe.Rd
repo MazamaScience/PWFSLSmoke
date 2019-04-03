@@ -2,7 +2,7 @@
 % Please edit documentation in R/epa_createDataDataframe.R
 \name{epa_createDataDataframe}
 \alias{epa_createDataDataframe}
-\title{Create EPA Data Dataframe}
+\title{Create EPA data dataframe}
 \usage{
 epa_createDataDataframe(tbl)
 }

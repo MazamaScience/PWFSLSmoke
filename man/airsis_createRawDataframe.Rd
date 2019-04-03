@@ -52,9 +52,11 @@ to the \code{saveFile} parameter.
 }
 \examples{
 \dontrun{
-raw <- airsis_createRawDataframe(startdate=20160901, provider='USFS', unitID='1033')
+raw <- airsis_createRawDataframe(startdate = 20160901,
+                                 provider = 'USFS',
+                                 unitID = '1033')
 raw <- raw_enhance(raw)
-rawPlot_timeseries(raw,tlim=c(20160908,20160917))
+rawPlot_timeseries(raw, tlim = c(20160908,20160917))
 }
 
 }

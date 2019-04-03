@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Obtain WRCC Data and Create ws_monitor Object — wrcc_createMonitorObject • PWFSLSmoke</title>
+<title>Obtain WRCC data and create ws_monitor object — wrcc_createMonitorObject • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Obtain WRCC Data and Create ws_monitor Object — wrcc_createMonitorObject" />
+<meta property="og:title" content="Obtain WRCC data and create ws_monitor object — wrcc_createMonitorObject" />
 
 <meta property="og:description" content="Obtains monitor data from an WRCC webservice and converts
 it into a quality controlled, metadata enhanced ws_monitor object
@@ -96,7 +96,7 @@ valid_Conc = c(-Inf,5000)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.29</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -156,7 +156,7 @@ valid_Conc = c(-Inf,5000)
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Obtain WRCC Data and Create ws_monitor Object</h1>
+    <h1>Obtain WRCC data and create ws_monitor object</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/wrcc_createMonitorObject.R'><code>R/wrcc_createMonitorObject.R</code></a></small>
     <div class="hidden name"><code>wrcc_createMonitorObject.Rd</code></div>
     </div>
@@ -193,8 +193,8 @@ valid data ranges as taken from <code><a href='wrcc_EBAMQualityControl.html'>wrc
     
     </div>
 
-    <pre class="usage"><span class='fu'>wrcc_createMonitorObject</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
-  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
+    <pre class="usage"><span class='fu'>wrcc_createMonitorObject</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
+  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
   <span class='st'>"%Y%m%d23"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>clusterDiameter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
   <span class='kw'>zeroMinimum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://wrcc.dri.edu/cgi-bin/wea_list2.pl"</span>,
@@ -271,7 +271,7 @@ valid data ranges as taken from <code><a href='wrcc_EBAMQualityControl.html'>wrc
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
-<span class='no'>sm13</span> <span class='kw'>&lt;-</span> <span class='fu'>wrcc_createMonitorObject</span>(<span class='fl'>20150301</span>, <span class='fl'>20150831</span>, <span class='kw'>unitID</span><span class='kw'>=</span><span class='st'>'sm13'</span>)
+<span class='no'>sm13</span> <span class='kw'>&lt;-</span> <span class='fu'>wrcc_createMonitorObject</span>(<span class='fl'>20150301</span>, <span class='fl'>20150831</span>, <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='st'>'sm13'</span>)
 <span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>sm13</span>)
 <span class='co'># }</span></pre>
   </div>

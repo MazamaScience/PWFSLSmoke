@@ -2,7 +2,7 @@
 % Please edit documentation in R/airsis_qualityControl.R
 \name{airsis_qualityControl}
 \alias{airsis_qualityControl}
-\title{Apply Quality Control to Raw AIRSIS Dataframe}
+\title{Apply Quality Control to raw AIRSIS dataframe}
 \usage{
 airsis_qualityControl(tbl, ...)
 }

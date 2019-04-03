@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrcc_identifyMonitorType.R
 \name{wrcc_identifyMonitorType}
 \alias{wrcc_identifyMonitorType}
-\title{Identify WRCC Monitor Type}
+\title{Identify WRCC monitor type}
 \usage{
 wrcc_identifyMonitorType(fileString)
 }

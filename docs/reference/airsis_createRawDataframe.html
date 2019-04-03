@@ -80,7 +80,7 @@ enhance metadata to include: elevation, timezone, state, country, site name
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.29</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -161,8 +161,8 @@ ready for use with all <code>raw_~</code> functions.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>airsis_createRawDataframe</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
-  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
+    <pre class="usage"><span class='fu'>airsis_createRawDataframe</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
+  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
   <span class='st'>"%Y%m%d23"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>provider</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>clusterDiameter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
   <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://xxxx.airsis.com/vision/common/CSVExport.aspx?"</span>,
@@ -224,9 +224,11 @@ to the <code>saveFile</code> parameter.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>raw</span> <span class='kw'>&lt;-</span> <span class='fu'>airsis_createRawDataframe</span>(<span class='kw'>startdate</span><span class='kw'>=</span><span class='fl'>20160901</span>, <span class='kw'>provider</span><span class='kw'>=</span><span class='st'>'USFS'</span>, <span class='kw'>unitID</span><span class='kw'>=</span><span class='st'>'1033'</span>)
+<span class='no'>raw</span> <span class='kw'>&lt;-</span> <span class='fu'>airsis_createRawDataframe</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20160901</span>,
+                                 <span class='kw'>provider</span> <span class='kw'>=</span> <span class='st'>'USFS'</span>,
+                                 <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='st'>'1033'</span>)
 <span class='no'>raw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='raw_enhance.html'>raw_enhance</a></span>(<span class='no'>raw</span>)
-<span class='fu'><a href='rawPlot_timeseries.html'>rawPlot_timeseries</a></span>(<span class='no'>raw</span>,<span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20160908</span>,<span class='fl'>20160917</span>))
+<span class='fu'><a href='rawPlot_timeseries.html'>rawPlot_timeseries</a></span>(<span class='no'>raw</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20160908</span>,<span class='fl'>20160917</span>))
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/epa_createMetaDataframe.R
 \name{epa_createMetaDataframe}
 \alias{epa_createMetaDataframe}
-\title{Create Sites Metadata Dataframe}
+\title{Create dataframe of EPA site location metadata}
 \usage{
 epa_createMetaDataframe(tbl, pwfslDataIngestSource = "EPA",
   existingMeta = NULL, addGoogleMeta = TRUE)

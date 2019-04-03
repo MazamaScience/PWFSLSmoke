@@ -2,7 +2,7 @@
 % Please edit documentation in R/addClustering.R
 \name{addClustering}
 \alias{addClustering}
-\title{Add Clustering Information to a Dataframe}
+\title{Add clustering information to a dataframe}
 \usage{
 addClustering(tbl, clusterDiameter = 1000, lonVar = "longitude",
   latVar = "latitude", maxClusters = 50, flagAndKeep = FALSE)
