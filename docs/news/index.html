@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.29</span>
       </span>
     </div>
 
@@ -131,6 +131,37 @@
       <small>Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="pwfslsmoke-1-1-29" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-1-29" class="anchor"></a>PWFSLSmoke 1.1.29<small> Unreleased </small>
+</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking Changes</h2>
+<ul>
+<li>
+<code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>
+<ul>
+<li>Argument <code>EndTime</code> now defaults to the most recent time in the given <code>ws_monitor</code>.</li>
+<li>Ordering of columns in the output table have changed.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="internals" class="section level2">
+<h2 class="hasAnchor">
+<a href="#internals" class="anchor"></a>Internals</h2>
+<ul>
+<li>
+<code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>
+<ul>
+<li>Code has been refactored to be more independent of prior steps.</li>
+<li>Logging statements have been added.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
     <div id="pwfslsmoke-1-1-28" class="section level1">
 <h1 class="page-header">
 <a href="#pwfslsmoke-1-1-28" class="anchor"></a>PWFSLSmoke 1.1.28<small> Unreleased </small>
@@ -185,10 +216,18 @@
 <h2 class="hasAnchor">
 <a href="#new-functions" class="anchor"></a>New Functions</h2>
 <ul>
-<li><code><a href="../reference/generic_downloadData.html">generic_downloadData()</a></code></li>
+<li>
+<code><a href="../reference/generic_downloadData.html">generic_downloadData()</a></code>
+<ul>
 <li>Reads data files as a string of data</li>
-<li><code><a href="../reference/generic_parseData.html">generic_parseData()</a></code></li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/generic_parseData.html">generic_parseData()</a></code>
+<ul>
 <li>Parses data based on a customizable configuration list</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -229,8 +268,12 @@
 <h2 class="hasAnchor">
 <a href="#new-functions-1" class="anchor"></a>New Functions</h2>
 <ul>
-<li><code><a href="../reference/monitor_writeCurrentStatusGeoJSON.html">monitor_writeCurrentStatusGeoJSON()</a></code></li>
+<li>
+<code><a href="../reference/monitor_writeCurrentStatusGeoJSON.html">monitor_writeCurrentStatusGeoJSON()</a></code>
+<ul>
 <li>This function is equivalent to <code>monitor_writeCurrentGeoJSON()</code>, but internally uses <code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>
+</li>
+</ul>
 </li>
 </ul>
 </div>
@@ -434,7 +477,7 @@
 <a href="#pwfslsmoke-1-1-6" class="anchor"></a>PWFSLSmoke 1.1.6<small> Unreleased </small>
 </h1>
 <ul>
-<li>actual parsing done by <code><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">lubridate::parse_date_time</a></code>
+<li>actual parsing done by <code><a href="https://www.rdocumentation.org/packages/lubridate/topics/parse_date_time">lubridate::parse_date_time</a></code>
 </li>
 <li>vectorized for inputs</li>
 <li>handle any format of <strong>Ymd[<em>HMS</em>]</strong> (including mutlitple formats within same input)</li>
@@ -1295,6 +1338,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#pwfslsmoke-1-1-29">1.1.29</a></li>
         <li><a href="#pwfslsmoke-1-1-28">1.1.28</a></li>
         <li><a href="#pwfslsmoke-1-1-27">1.1.27</a></li>
         <li><a href="#pwfslsmoke-1-1-26">1.1.26</a></li>

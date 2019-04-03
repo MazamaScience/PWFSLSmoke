@@ -96,7 +96,7 @@ valid_Conc = c(-Inf,5000)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.29</span>
       </span>
     </div>
 
@@ -193,8 +193,8 @@ valid data ranges as taken from <code><a href='wrcc_EBAMQualityControl.html'>wrc
     
     </div>
 
-    <pre class="usage"><span class='fu'>wrcc_createMonitorObject</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
-  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
+    <pre class="usage"><span class='fu'>wrcc_createMonitorObject</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
+  <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/lubridate/topics/now'>now</a></span>(),
   <span class='st'>"%Y%m%d23"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>clusterDiameter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
   <span class='kw'>zeroMinimum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://wrcc.dri.edu/cgi-bin/wea_list2.pl"</span>,

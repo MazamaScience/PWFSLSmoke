@@ -6,10 +6,14 @@
 #'
 #' @param ws_monitor \emph{ws_monitor} object.
 #' @param endTime Time to which the status of the monitors will be current. By
-#'   default, it is the time the function was called.
-#' @param monitorURLBase A URL prefix pointing to where more information about
-#'   a monitor can be found. By default, it points to the AirFire monitoring
-#'   site.
+#'   default, it is the most recent time in \code{ws_monitor}. This time can be
+#'   given as a POSIXct time, or a string/numeric value in ymd format (eg.
+#'   20190301). This time converted to UTC.
+#' @param monitorURLBase A URL prefix pointing to where more information about a
+#'   monitor can be found. By default, it points to the AirFire monitoring site.
+#'
+#' @return A table containing the current status information for all the
+#'   monitors in \emph{ws_monitor}.
 #'
 #' @section "Last" and "Previous":
 #' The goal of this function is to provide useful information about what
@@ -54,9 +58,7 @@
 #'   previous_nowcast_1hr  \tab Previous valid NowCast measurement\cr
 #'   previous_PM2.5_1hr    \tab Previous valid raw PM2.5 measurement\cr
 #'   previous_PM2.5_3hr    \tab Mean of the previous valid raw PM2.5 measurement
-#'                              with the preceding two measurements\cr
-#'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
-#'   previous_nowcastLevel \tab NowCast level at the previous valid time
+#'                              with the preceding two measurements
 #' }
 #'
 #' It should be noted that all averages are "right-aligned", meaning that the
@@ -71,19 +73,19 @@
 #' Each flag is listed below with its corresponding meaning:
 #'
 #' \tabular{ll}{
+#'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
+#'   previous_nowcastLevel \tab NowCast level at the previous valid time\cr
+#'
+#'   NR6  \tab Monitor not reporting for more than 6 hours\cr
+#'   NEW6 \tab New monitor reporting in the last 6 hours\cr
 #'   USG6 \tab NowCast level increased to Unhealthy for Sensitive Groups in the
 #'             last 6 hours\cr
 #'   U6   \tab NowCast level increased to Unhealthy in the last 6 hours\cr
 #'   VU6  \tab NowCast level increased to Very Unhealthy in the last 6 hours\cr
 #'   HAZ6 \tab NowCast level increased to Hazardous in the last 6 hours\cr
 #'   MOD6 \tab NowCast level decreased to Moderate or Good in the last 6 hours\cr
-#'   NR6  \tab Monitor not reporting for more than 6 hours\cr
-#'   NEW6 \tab New monitor reporting in the last 6 hours\cr
 #'   MAL6 \tab Monitor malfunctioning the last 6 hours (not currently implemented)
 #' }
-#'
-#' @return A table containing the current status information for all the
-#'   monitors in \emph{ws_monitor}.
 #'
 #' @importFrom rlang :=
 #' @export
@@ -93,22 +95,41 @@
 #' ws_monitor <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
 #' statusTbl <- monitor_getCurrentStatus(ws_monitor)
 #' }
-monitor_getCurrentStatus <- function(ws_monitor,
-                                     endTime = lubridate::now("UTC"),
-                                     monitorURLBase = NULL) {
 
+monitor_getCurrentStatus <- function(
+  ws_monitor,
+  endTime = NULL,
+  monitorURLBase = "http://tools.airfire.org/monitoring/v4/#!/?monitors="
+) {
+
+  logger.debug("----- monitor_getCurrentStatus() -----")
 
   # Sanity checks --------------------------------------------------------------
+  logger.trace("Performing sanity checks on `ws_monitor` parameter.")
 
-  if (!monitor_isMonitor(ws_monitor))
-    stop("Not a valid `ws_monitor` object.")
+  if (!monitor_isMonitor(ws_monitor)) {
+    errMsg <- "Not a valid `ws_monitor` object."
+    logger.error(errMsg)
+    stop(errMsg)
+  }
 
-  if (monitor_isEmpty(ws_monitor))
-    stop("`ws_monitor` object contains zero monitors.")
+  if (monitor_isEmpty(ws_monitor)) {
+    errMsg <- "`ws_monitor` object contains zero monitors."
+    logger.error(errMsg)
+    stop(errMsg)
+  }
+
+
+  # Prepare parameters ---------------------------------------------------------
+  logger.trace("Preparing time range and subsetting data.")
+
+  if (is.null(endTime)) {
+    endTime <- max(ws_monitor[["data"]][["datetime"]])
+  }
 
   # parseDateTime will fail if it produces NA
+  endTime <- parseDatetime(endTime)
   endTimeInclusive <- endTime %>%
-    parseDatetime() %>%
     lubridate::floor_date(unit = "hour") %>%
     magrittr::subtract(lubridate::dhours(1))
 
@@ -117,19 +138,18 @@ monitor_getCurrentStatus <- function(ws_monitor,
   ws_monitor <- ws_monitor %>%
     monitor_subset(tlim = c(startTime, endTimeInclusive))
 
+  # Check again to make sure subset includes data
   if (monitor_isEmpty(ws_monitor)) {
-    stop("ws_monitor object contains zero monitors with data from before ", endTime)
+    errMsg <- paste0(
+      "ws_monitor object contains zero monitors with data from before ", endTime
+    )
+    logger.error(errMsg)
+    stop(errMsg)
   }
 
 
-  # Prepare parameters ------------------------------------------------------
-
-  if (is.null(monitorURLBase)) {
-    monitorURLBase <- "http://tools.airfire.org/monitoring/v4/#!/?monitors="
-  }
-
-
-  # Prepare data ------------------------------------------------------------
+  # Prepare data ---------------------------------------------------------------
+  logger.trace("Separating 'meta' and 'data' and calculating nowcast.")
 
   processingTime <- lubridate::now("UTC")
 
@@ -142,15 +162,36 @@ monitor_getCurrentStatus <- function(ws_monitor,
     as_tibble()
 
 
-  # Calculate monitor latency --------------------------------------------------
+  # Initialize output ----------------------------------------------------------
+  logger.trace("Augmenting metadata with initial information.")
 
-  ## TODO:
-  #  how are different timezones handled when compared against endTime
-  #  and processingTime?
+  currentStatus <-
+    ws_meta %>%
+    mutate(
+      `monitorURL` = paste0(monitorURLBase, .data$monitorID),
+      `processingTime` = processingTime,
+      `endTime` = endTime
+    )
+
+
+  # Generate latency data ------------------------------------------------------
+  logger.trace("Calculating latency data.")
 
   ## NOTE:
   #  The number of levels of valid time indices is set by `indexLevels`, with
   #  lower numbers corresponding to more recent times.
+
+  ## NOTE on anonymous functions ("~") in purrr:
+  #  The "~" in R is generally used to create formulas, but in the `purrr`
+  #  package it has the specialized purpose of defining succinct anonympus
+  #  functions.
+  #
+  #  Prefixing a function with "~" within `purrr` allows you to alter the
+  #  arguments the function accepts, by wrapping arguments in other functions,
+  #  or setting an argument to a constant value. `.x` and `.y` are two variables
+  #  `purrr` will treat as the mapping variables in `map`, `map2`, etc.
+  #
+  #  For more details, see `?purrr::map` or purrr.tidyverse.org/reference/map
 
   indexLevels <- 1:2
 
@@ -162,7 +203,8 @@ monitor_getCurrentStatus <- function(ws_monitor,
     tidyr::unnest(.data$index) %>%
     group_by(.data$monitorID) %>%
     mutate(key = row_number()) %>%
-    tidyr::spread(.data$key, .data$index)
+    tidyr::spread(.data$key, .data$index) %>%
+    ungroup()
 
   ## NOTE:
   #  The last and previous valid time indices are created as named vectors for
@@ -177,26 +219,17 @@ monitor_getCurrentStatus <- function(ws_monitor,
 
   latencyStatus <-
     validTimeIndices %>%
-    mutate(
+    left_join(ws_meta[c("monitorID", "timezone")], by = "monitorID") %>%
+    transmute(
+      `monitorID` = .data$monitorID,
       `last_validTime` = ws_data[["datetime"]][.data$`1`],
-      `last_latency` = as.numeric(difftime(endTimeInclusive, .data$last_validTime, units = "hour")),
+      `last_latency` = as.numeric(difftime(
+        endTimeInclusive, .data$last_validTime, units = "hour"
+      )),
       `previous_validTime` = ws_data[["datetime"]][.data$`2`],
-      `previous_latency` = as.numeric(difftime(.data$last_validTime, .data$previous_validTime,  units = "hour"))
-    ) %>%
-    select(-.data$`1`, -.data$`2`)
-
-
-  # Initialize output ----------------------------------------------------------
-
-  currentStatus <-
-    ws_meta %>%
-    mutate(
-      `monitorURL` = paste0(monitorURLBase, .data$monitorID),
-      `processingTime` = processingTime,
-      `endTime` = endTime
-    ) %>%
-    left_join(latencyStatus, by = "monitorID") %>%
-    mutate(
+      `previous_latency` = as.numeric(difftime(
+        .data$last_validTime, .data$previous_validTime,  units = "hour"
+      )),
       `last_validLocalTimestamp` =
         lubridate::with_tz(.data$last_validTime, tzone = .data$timezone) %>%
         strftime(format = "%Y-%m-%d %H:%M:%S %Z"),
@@ -206,49 +239,70 @@ monitor_getCurrentStatus <- function(ws_monitor,
     )
 
 
-  # Add summary data -----------------------------------------------------------
+  # Generate summary data ------------------------------------------------------
+  logger.trace("Calculating summary data.")
 
   ## Note: see documentation for summary descriptions
 
   summaryData <-
     list(
       .yesterday_avg(ws_monitor, endTime, "yesterday_pm25_24hr"),
-      .averagePrior(nowcast_data, lastValidTimeIndex, 1, "last_nowcast_1hr"),
-      .averagePrior(ws_data, lastValidTimeIndex, 1, "last_pm25_1hr"),
-      .averagePrior(ws_data, lastValidTimeIndex, 3, "last_pm25_3hr"),
+
+      .averagePrior(nowcast_data, lastValidTimeIndex,     1, "last_nowcast_1hr"),
+      .averagePrior(ws_data,      lastValidTimeIndex,     1, "last_pm25_1hr"),
+      .averagePrior(ws_data,      lastValidTimeIndex,     3, "last_pm25_3hr"),
       .averagePrior(nowcast_data, previousValidTimeIndex, 1, "previous_nowcast_1hr"),
-      .averagePrior(ws_data, previousValidTimeIndex, 1, "previous_pm25_1hr"),
-      .averagePrior(ws_data, previousValidTimeIndex, 3, "previous_pm25_3hr"),
-      .aqiLevel(nowcast_data, lastValidTimeIndex, "last_nowcastLevel"),
-      .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel")
+      .averagePrior(ws_data,      previousValidTimeIndex, 1, "previous_pm25_1hr"),
+      .averagePrior(ws_data,      previousValidTimeIndex, 3, "previous_pm25_3hr")
     ) %>%
-    purrr::reduce(left_join, by = "monitorID")
+    purrr::reduce(
+      left_join, by = "monitorID",
+      .init = ws_meta["monitorID"]
+    )
 
 
-  # Add events -----------------------------------------------------------------
+  # Generate event data --------------------------------------------------------
+  logger.trace("Calculating event data.")
 
   ## Note: See documentation for event descriptions
 
-  eventData <- currentStatus %>%
-    left_join(summaryData, by = "monitorID") %>%
-    mutate(
-      `USG6` = .levelChange(.data, 3, 6, "increase"),
-      `U6` = .levelChange(.data, 4, 6, "increase"),
-      `VU6` = .levelChange(.data, 5, 6, "increase"),
-      `HAZ6` = .levelChange(.data, 6, 6, "increase"),
-      `MOD6` = .levelChange(.data, 2, 6, "decrease") | .levelChange(.data, 1, 6, "decrease")
-    ) %>%
+  eventData <-
     list(
-      .isNotReporting(ws_data, 6, endTimeInclusive, "NR6"),
+      latencyStatus[c("monitorID", "last_latency", "previous_latency")],
+
+      .aqiLevel(nowcast_data, lastValidTimeIndex,     "last_nowcastLevel"),
+      .aqiLevel(nowcast_data, previousValidTimeIndex, "previous_nowcastLevel"),
+
+      .isNotReporting(ws_data, 6,     endTimeInclusive, "NR6"),
       .isNewReporting(ws_data, 6, 48, endTimeInclusive, "NEW6")
     ) %>%
-    purrr::reduce(left_join, by = "monitorID") %>%
-    mutate(`MAL6` = NA)
+    purrr::reduce(
+      left_join, by = "monitorID",
+      .init = ws_meta["monitorID"]
+    ) %>%
+    mutate(
+      `USG6` = .levelChange(.data, 3, 6, "increase"),
+      `U6`   = .levelChange(.data, 4, 6, "increase"),
+      `VU6`  = .levelChange(.data, 5, 6, "increase"),
+      `HAZ6` = .levelChange(.data, 6, 6, "increase"),
+      `MOD6` = .levelChange(.data, 2, 6, "decrease") | .levelChange(.data, 1, 6, "decrease"),
+      `MAL6` = NA
+    ) %>%
+    select(-.data$last_latency, -.data$previous_latency)
 
 
-  # Return output --------------------------------------------------------------
+  # Combine and return data ----------------------------------------------------
+  logger.trace("Combining data and returning results.")
 
-  return(eventData)
+  output <- list(
+    currentStatus,
+    latencyStatus,
+    summaryData,
+    eventData
+  ) %>%
+  purrr::reduce(left_join, by = "monitorID")
+
+  return(output)
 
 }
 
@@ -256,8 +310,6 @@ monitor_getCurrentStatus <- function(ws_monitor,
 # Debugging --------------------------------------------------------------------
 
 if (FALSE) {
-
-  devtools::load_all()
 
   ws_monitor <- monitor_loadLatest() %>%
     monitor_subset(stateCodes = "WA")
@@ -273,7 +325,7 @@ if (FALSE) {
 ## - Event functions
 
 
-# Summary functions  -----------------------------------------------------------
+# * Summary functions  ---------------------------------------------------------
 
 #' @title Get the 'n' prior hour average for monitors
 #'
@@ -293,6 +345,11 @@ if (FALSE) {
 #'
 #' @noRd
 .averagePrior <- function(data, timeIndices, n, colTitle) {
+
+  logger.trace(
+    "Calling .averagePrior(`data`, `timeIndices`, n=%d, colTitle='%s')",
+    n, colTitle
+    )
 
   get_nAvg <- function(monitorDataColumn, timeIndex, n) {
 
@@ -319,6 +376,8 @@ if (FALSE) {
   #  For more details and examples, see
   #  `vignette("programming", package = "dplyr")`, or
   #  dplyr.tidyverse.org/articles/programming
+
+  # See NOTE on anonymous functions ("~") in purrr
 
   avgData <-
     purrr::map2_dfc(
@@ -349,26 +408,27 @@ if (FALSE) {
 #' @noRd
 .yesterday_avg <- function(ws_monitor, endTimeUTC, colTitle) {
 
-  get_previousDayStart <- function(endTimeUTC, timezone) {
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  logger.trace(
+    "Calling .yesterdayAverage(`ws_monitor`, endTimeUTC='%s', colTitle='%s')",
+    timeString, colTitle
+  )
 
+  get_previousDayAvg <- function(ws_data, timezone, endTimeUTC) {
+
+    # Get previous day in timezone of monitors
     previousDayStart <- endTimeUTC %>%
       lubridate::with_tz(timezone) %>%
       lubridate::floor_date(unit = "day") %>%
       magrittr::subtract(lubridate::ddays(1))
 
-    return(previousDayStart)
-
-  }
-
-  get_previousDayAvg <- function(ws_data, previousDayStart) {
-
-    # See NOTE on tidy evaluation for explanation of `!!` and `enquo()`
-
+    # Pull out daily averages from chosen date for each monitor
     aqiData <- ws_data %>%
-      filter(.data$datetime == !!enquo(previousDayStart)) %>%
-      select(-.data$datetime)
+      filter(.data$datetime == previousDayStart) %>%
+      select(-.data$datetime) %>%
+      round(digits = 1)
 
-    return(round(aqiData, 1))
+    return(aqiData)
 
   }
 
@@ -377,29 +437,11 @@ if (FALSE) {
     purrr::transpose() %>%
     magrittr::use_series("data")
 
-  ## NOTE on formulas (~):
-  #  In R, formulas allow you to capture unevaluated expressions and the
-  #  context (environment) in which the expression was created. While often used
-  #  to create modeling expressions (see `?lm`), formulas are also used within
-  #  the tidyverse package `purrr` to succinctly generate anonymous functions.
-  #
-  #  For example, the function `get_previousDayStart()` accepts parameters
-  #  `endTimeUTC` and `timezone`, but if `endTimeUTC` is known to be constant,
-  #  we can write the formula `~get_previousDayStart(endTimeUTC, .x)`, which
-  #  essentially is a new function with a single argument `.x`, which calls
-  #  `get_previousDayStart()`, with the constant value `endTimeUTC`, and the
-  #  variable value `.x` (which corresponds to `timezone`).
-  #
-  #  For more details, see `?purrr::map` or purrr.tidyverse.org/reference/map
+  # See NOTE on tidy evaluation for explanation of `!!`
+  # See NOTE on anonymous functions ("~") in purrr
 
-  previousDayStarts <- names(aqiDataList) %>%
-    purrr::map(~get_previousDayStart(endTimeUTC, .x))
-
-  previousDayAQI <-
-    purrr::map2_dfc(
-      aqiDataList, previousDayStarts,
-      ~get_previousDayAvg(.x, .y)
-    ) %>%
+  previousDayAQI <- aqiDataList %>%
+    purrr::imap_dfc(~get_previousDayAvg(.x, .y, endTimeUTC)) %>%
     tidyr::gather("monitorID", !!colTitle)
 
   return(previousDayAQI)
@@ -407,7 +449,7 @@ if (FALSE) {
 }
 
 
-# Event functions --------------------------------------------------------------
+# * Event functions ------------------------------------------------------------
 
 #' @title Get AQI Level for data values at specific times
 #'
@@ -427,6 +469,11 @@ if (FALSE) {
 #'
 #' @noRd
 .aqiLevel <- function(data, timeIndices, colTitle) {
+
+  logger.trace(
+    "Calling .aqiLevel(`data`, `timeIndicies`, colTitle='%s')",
+    colTitle
+  )
 
   levels <- as.matrix(data[, -1]) %>%
     magrittr::extract(cbind(unname(timeIndices), seq_along(timeIndices))) %>%
@@ -464,6 +511,11 @@ if (FALSE) {
 #'
 #' @noRd
 .levelChange <- function(data, level, n, direction) {
+
+  logger.trace(
+    "Calling .levelChange(`data`, level=%d, n=%d, direction='%s')",
+    level, n, direction
+  )
 
   if (direction == "increase") {
     result <-
@@ -503,11 +555,17 @@ if (FALSE) {
 #' @noRd
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  logger.trace(
+    "Calling .isNotReporting(`data`, n=%d, endTimeUTC='%s', colTitle='%s')",
+    n, timeString, colTitle
+  )
+
   startTimeInclusive <- endTimeUTC %>%
     magrittr::subtract(lubridate::dhours(n - 1))
 
-
   # See NOTE on tidy evaluation for explanation of `!!`
+  # See NOTE on anonymous functions ("~") in purrr
 
   result <- data %>%
     filter(.data$datetime >= startTimeInclusive) %>%
@@ -545,6 +603,12 @@ if (FALSE) {
 #'   that monitor is newly reporting data.
 #' @noRd
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
+
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  logger.trace(
+    "Calling .isNewReporting(`data`, n=%d, buffer=%d, endTimeUTC='%s', colTitle='%s')",
+    n, buffer, timeString, colTitle
+  )
 
   bufferEndTime <- endTimeUTC - lubridate::dhours(n)
 
