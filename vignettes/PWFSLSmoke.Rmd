@@ -56,7 +56,6 @@ The following packages should be installed by typing the following at the
 RStudio console:
 
 ```
-# Note that vignettes require knitr and rmarkdown
 install.packages('MazamaSpatialUtils')
 install.packages('PWFSLSmoke')
 ```
