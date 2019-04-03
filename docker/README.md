@@ -12,39 +12,41 @@ You should then be able to see something like the following:
 
 ```
 $ docker images
-REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke       latest              f4945f0c24e6        4 minutes ago       1.75GB
-mazamascience/pwfslsmoke       1.1.28              f4945f0c24e6        4 minutes ago       1.75GB
+REPOSITORY                          TAG                     IMAGE ID            CREATED             SIZE
+mazamascience/pwfslsmoke            1.2.0                   1824e396e3f3        34 seconds ago      2.61GB
+mazamascience/pwfslsmoke            latest                  1824e396e3f3        34 seconds ago      2.61GB
 ...
 ```
 
 > It is best practice to create versioned images and tag the most recent one with "latest".
 
-Spatial data required by the **MazamaSpatialUtils** package already exists in the docker image in `/home/mazama/data/Spatial`.
+Spatial data required by the **MazamaSpatialUtils** package already exists in 
+the docker image in `/home/mazama/data/Spatial`.
 
 
 ## Test the Docker Image ##
 
-Having built the docker image we can now test it. The following output was obtained on May 08, 2018:
+Having built the docker image we can now test it. The following output was 
+obtained on April 03, 2019:
 
 ```
 docker run -ti mazamascience/pwfslsmoke R --vanilla
 ...
 library(PWFSLSmoke)
 wa <- airnow_loadLatest() %>%
-  monitor_subset(tateCodes='WA')
+  monitor_subset(stateCodes='WA')
 maxValues <- sort(apply(wa$data[,-1], 2, max, na.rm=TRUE), decreasing=TRUE)[1:6]
 ids <- names(maxValues)
 df <- wa$meta[ids,c('siteName','countyName')]
 df$max_pm25 <- maxValues
 print(df)
-                                  siteName countyName max_pm25
-530650002_01       Wellpinit-Spokane Tribe    Stevens    125.0
-530330030_01         Seattle-10th & Weller       King     28.0
-530639999_01 Airway Heights-West 12th (US)    Spokane     26.0
-530470010_01           Winthrop-Chewuch Rd   Okanogan     25.8
-530331011_01            Seattle-South Park       King     25.5
-530330057_01              Seattle-Duwamish       King     25.1
+                               siteName countyName max_pm25
+840530390006_01     Mobile-White Salmon  Klickitat     63.2
+TT1010003_01                  Inchelium       <NA>     51.8
+530650002_01    Wellpinit-Spokane Tribe    Stevens     51.3
+840530739992_01   Maple Falls-Azure Way    Whatcom     49.7
+530070011_01         Wenatchee-Fifth St     Chelan     49.4
+530610020_01          Darrington-Fir St  Snohomish     49.0
 ```
 
 
@@ -53,7 +55,7 @@ print(df)
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:1.1.28
+docker push mazamascience/pwfslsmoke:1.2.0
 ```
 
 
@@ -62,6 +64,6 @@ docker push mazamascience/pwfslsmoke:1.1.28
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:1.1.28
+docker pull mazamascience/pwfslsmoke:1.2.0
 ```
 
