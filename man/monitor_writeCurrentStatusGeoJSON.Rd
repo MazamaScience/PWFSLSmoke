@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_writeCurrentStatusGeoJSON.R
 \name{monitor_writeCurrentStatusGeoJSON}
 \alias{monitor_writeCurrentStatusGeoJSON}
-\title{Write Current Monitor Data to GeoJSON}
+\title{Write current monitor data to geojson file}
 \usage{
 monitor_writeCurrentStatusGeoJSON(ws_monitor, filename,
   datetime = lubridate::now("UTC"), properties = NULL,

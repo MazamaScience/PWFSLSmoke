@@ -1,4 +1,4 @@
-#' @title Write Current Monitor Data to GeoJSON
+#' @title Write current monitor data to geojson file
 #'
 #' @description
 #' Writes a geoJSON file containing current monitor data. For details on what is
@@ -48,13 +48,15 @@ monitor_writeCurrentStatusGeoJSON <- function(
   metadataList = list()
 ) {
 
+  logger.debug(" ----- monitor_writeCurrentStatusGeoJSON() ----- ")
 
-  # Sanity checks -----------------------------------------------------------
+  # Sanity checks --------------------------------------------------------------
 
-  if (monitor_isEmpty(ws_monitor)) stop("ws_monitor object contains zero monitors.")
+  if (monitor_isEmpty(ws_monitor))
+    stop("ws_monitor object contains zero monitors.")
 
 
-  # Load and format data ----------------------------------------------------
+  # Load and format data -------------------------------------------------------
 
   result <- try({
     currentTbl <- monitor_getCurrentStatus(ws_monitor, datetime)
@@ -81,7 +83,7 @@ monitor_writeCurrentStatusGeoJSON <- function(
   )
 
 
-  # Get coords from meta and create SPDF ------------------------------------
+  # Get coords from meta and create SPDF ---------------------------------------
 
   # NOTE: To save space we always round to 5 decimal places (~1 meter)
   # NOTE: Get coords before subsetting meta, in case lon and lat aren't included
@@ -107,7 +109,7 @@ monitor_writeCurrentStatusGeoJSON <- function(
   )
 
 
-  # Convert to geoJSON ------------------------------------------------------
+  # Convert to geoJSON ---------------------------------------------------------
 
   ## NOTE: about rgdal::writeOGR
   #  * creates .geojson files where numeric properties are not quoted.

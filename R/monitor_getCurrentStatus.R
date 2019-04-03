@@ -108,23 +108,22 @@ monitor_getCurrentStatus <- function(
   # Sanity checks --------------------------------------------------------------
   logger.trace("Performing sanity checks on `ws_monitor` parameter.")
 
-  if (!monitor_isMonitor(ws_monitor)) {
+  if ( !monitor_isMonitor(ws_monitor) ) {
     errMsg <- "Not a valid `ws_monitor` object."
     logger.error(errMsg)
     stop(errMsg)
   }
 
-  if (monitor_isEmpty(ws_monitor)) {
+  if ( monitor_isEmpty(ws_monitor) ) {
     errMsg <- "`ws_monitor` object contains zero monitors."
     logger.error(errMsg)
     stop(errMsg)
   }
 
-
   # Prepare parameters ---------------------------------------------------------
   logger.trace("Preparing time range and subsetting data.")
 
-  if (is.null(endTime)) {
+  if ( is.null(endTime) ) {
     endTime <- max(ws_monitor[["data"]][["datetime"]])
   }
 
@@ -132,7 +131,7 @@ monitor_getCurrentStatus <- function(
   endTime <- parseDatetime(endTime)
   endTimeInclusive <- endTime %>%
     lubridate::floor_date(unit = "hour") %>%
-    magrittr::subtract(lubridate::dhours(1))
+    magrittr::subtract(lubridate::dhours(1)) # TODO:  Why is this needed?
 
   startTime <- min(ws_monitor[["data"]][["datetime"]])
 
@@ -140,7 +139,7 @@ monitor_getCurrentStatus <- function(
     monitor_subset(tlim = c(startTime, endTimeInclusive))
 
   # Check again to make sure subset includes data
-  if (monitor_isEmpty(ws_monitor)) {
+  if ( monitor_isEmpty(ws_monitor) ) {
     errMsg <- paste0(
       "ws_monitor object contains zero monitors with data from before ", endTime
     )
@@ -148,6 +147,16 @@ monitor_getCurrentStatus <- function(
     stop(errMsg)
   }
 
+  ## NOTE:
+  #  The creation of validTimeIndices below has rows ordered alphabetically by
+  #  monitorID. It is important that the ordering of of ws_data and nowcast_data
+  #  be the same so that calls to purrr::map2_dfc() match things up properly.
+  #  The easiest way to do this is to order the ws_monitor object alphabetically
+  #  by monitorID right now.
+
+  ws_monitor <- monitor_reorder(ws_monitor,
+                                monitorIDs = sort(ws_monitor$meta$monitorID),
+                                dropMonitors = FALSE)
 
   # Prepare data ---------------------------------------------------------------
   logger.trace("Separating 'meta' and 'data' and calculating nowcast.")

@@ -1,6 +1,10 @@
 # PWFSLSmoke 1.2.0
 
-This release is the official release for the 2019 fire season.
+ * addedd an introductory vignette
+ 
+# PWFSLSmoke 1.2.0
+
+Version 1.2.x marks the official release for the 2019 fire season.
 
  * `monitor_leaflet()` now *visibly* returns a _leaflet_ object which can be
  further customized by the user.
@@ -11,6 +15,7 @@ This release is the official release for the 2019 fire season.
    (previously, many were `DEBUG`)
    - entering a function will generate a `DEBUG` level statement with the 
    function name
+ * bug fix for `monitor_getCurrentStatus()`
 
 # PWFSLSmoke 1.1.29
 

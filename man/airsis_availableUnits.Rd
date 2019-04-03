@@ -2,11 +2,12 @@
 % Please edit documentation in R/airsis_availableUnits.R
 \name{airsis_availableUnits}
 \alias{airsis_availableUnits}
-\title{Get Available Unit Identifiers from AIRSIS}
+\title{Get AIRSIS available unit identifiers}
 \usage{
-airsis_availableUnits(startdate = strftime(lubridate::now(), "\%Y010100",
-  tz = "UTC"), enddate = strftime(lubridate::now(), "\%Y\%m\%d23", tz =
-  "UTC"), provider = "USFS", unitTypes = c("BAM1020", "EBAM", "ESAM"),
+airsis_availableUnits(startdate = strftime(lubridate::now("UTC"),
+  "\%Y010100", tz = "UTC"), enddate = strftime(lubridate::now("UTC"),
+  "\%Y\%m\%d23", tz = "UTC"), provider = "USFS",
+  unitTypes = c("BAM1020", "EBAM", "ESAM"),
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
 }
 \arguments{
@@ -29,8 +30,8 @@ Returns a list of unitIDs with data during a particular time period.
 \examples{
 \dontrun{
 unitIDs <- airsis_availableUnits(20150701, 20151231,
-                                 provider='USFS', 
-                                 unitTypes=c('EBAM','ESAM'))
+                                 provider = 'USFS',
+                                 unitTypes = c('EBAM','ESAM'))
 }
 }
 \references{
