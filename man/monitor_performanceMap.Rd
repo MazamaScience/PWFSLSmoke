@@ -2,7 +2,7 @@
 % Please edit documentation in R/monitor_performanceMap.R
 \name{monitor_performanceMap}
 \alias{monitor_performanceMap}
-\title{Create Map of Monitor Prediction Performance}
+\title{Create map of monitor prediction performance}
 \usage{
 monitor_performanceMap(predicted, observed, threshold = AQI$breaks_24[3],
   cex = par("cex"), sizeBy = NULL, colorBy = "heidikeSkill",

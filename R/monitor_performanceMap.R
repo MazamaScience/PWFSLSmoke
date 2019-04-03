@@ -2,7 +2,7 @@
 #' @export
 #' @import maps mapproj
 #'
-#' @title Create Map of Monitor Prediction Performance
+#' @title Create map of monitor prediction performance
 #'
 #' @param predicted ws_monitor object with predicted values
 #' @param observed ws_monitor object with observed  values
@@ -54,29 +54,31 @@
 #' title('Heidke Skill of monitors predicting another monitor.')
 #' }
 
-monitor_performanceMap <- function(predicted,
-                                   observed,
-                                   threshold = AQI$breaks_24[3],
-                                   cex = par("cex"),
-                                   sizeBy = NULL,
-                                   colorBy = "heidikeSkill",
-                                   breaks = c(-Inf, .5, .6, .7, .8, Inf),
-                                   paletteFunc = grDevices::colorRampPalette(
-                                     RColorBrewer::brewer.pal(
-                                       length(breaks), "Purples"
-                                     )[-1]
-                                   ),
-                                   showLegend = TRUE,
-                                   legendPos = "topright",
-                                   stateCol = "grey60",
-                                   stateLwd = 2,
-                                   countyCol = "grey70",
-                                   countyLwd = 1,
-                                   add = FALSE,
-                                   ...) {
+monitor_performanceMap <- function(
+  predicted,
+  observed,
+  threshold = AQI$breaks_24[3],
+  cex = par("cex"),
+  sizeBy = NULL,
+  colorBy = "heidikeSkill",
+  breaks = c(-Inf, .5, .6, .7, .8, Inf),
+  paletteFunc = grDevices::colorRampPalette(
+    RColorBrewer::brewer.pal(
+      length(breaks), "Purples"
+    )[-1]
+  ),
+  showLegend = TRUE,
+  legendPos = "topright",
+  stateCol = "grey60",
+  stateLwd = 2,
+  countyCol = "grey70",
+  countyLwd = 1,
+  add = FALSE,
+  ...
+) {
 
 
-# below copies from monitor_performanceMap --------------------------------
+  # below copies from monitor_performanceMap -----------------------------------
 
   # Get the performance dataframe
   performanceDF <- monitor_performance(predicted, observed, threshold, threshold)
@@ -86,7 +88,7 @@ monitor_performanceMap <- function(predicted,
 
     stateCodes <- unique(predicted$meta$stateCode)
 
-    if ( is.null(stateCodes) || stateCodes == "" ) {
+    if ( is.null(stateCodes) || all(stateCodes == "") ) {
 
       # No stateCodes found. Use xlim and ylim.
       xlim <- range(predicted$meta$longitude)

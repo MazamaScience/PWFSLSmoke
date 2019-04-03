@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.2
+
+ * CRAN submission fix
+ 
 # PWFSLSmoke 1.2.1
 
  * addedd an introductory vignette

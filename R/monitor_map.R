@@ -90,7 +90,7 @@ monitor_map <- function(
 
     stateCodes <- unique(ws_monitor$meta$stateCode)
 
-    if ( is.null(stateCodes) || stateCodes == "" ) {
+    if ( is.null(stateCodes) || all(stateCodes == "") ) {
 
       # No stateCodes found. Use xlim and ylim.
       xlim <- range(ws_monitor$meta$longitude)
