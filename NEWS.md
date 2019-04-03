@@ -1,4 +1,4 @@
-# PWFSLSmoke 1.2.0
+# PWFSLSmoke 1.2.1
 
  * addedd an introductory vignette
  
