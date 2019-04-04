@@ -74,7 +74,7 @@ install.packages('MazamaSpatialUtils')
 devtools::install_github('MazamaScience/PWFSLSmoke', build_vignettes=TRUE)
 ```
 
-### Installing spatial dataa
+### Installing spatial data
 
 Any work with spatial data, *e.g.* assigning countries, states and timezones 
 while ingesting raw data, will require installation of required spatial 
