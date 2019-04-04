@@ -1,6 +1,6 @@
 # PWFSLSmoke 1.2.2
 
- * CRAN submission fix
+ * CRAN submission fixes
  
 # PWFSLSmoke 1.2.1
 

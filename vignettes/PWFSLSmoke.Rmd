@@ -4,7 +4,7 @@ author: "Mazama Science"
 date: "4/3/2019"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Model}
+  %\VignetteIndexEntry{Introduction to PWFSLSmoke}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
