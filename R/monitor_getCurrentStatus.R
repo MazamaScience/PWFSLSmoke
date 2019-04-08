@@ -363,14 +363,21 @@ if (FALSE) {
 
   get_nAvg <- function(monitorDataColumn, timeIndex, n) {
 
-    if (timeIndex < n) return(NA)
+    if ( is.na(timeIndex) ) return(NA)
 
-    avg <- monitorDataColumn %>%
-      magrittr::extract((timeIndex - n + 1):timeIndex) %>%
-      mean(na.rm = TRUE) %>%
-      round(digits = 1)
+    if ( timeIndex < n ) return(NA)
 
-    if (is.nan(avg)) return(NA)
+    result <- try({
+      avg <- monitorDataColumn %>%
+        magrittr::extract((timeIndex - n + 1):timeIndex) %>%
+        mean(na.rm = TRUE) %>%
+        round(digits = 1)
+    }, silent = TRUE)
+
+    if ( "try-error" %in% class(result) ) return(NA)
+
+    if ( is.nan(avg) ) return(NA)
+
     else return(avg)
 
   }
