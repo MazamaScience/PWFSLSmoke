@@ -1,3 +1,9 @@
+# PWFSLSmoke 1.2.3
+
+ * fixes for `monitor_getCurrentStatus()`:
+   - properly handling transitions between daylight savings and standard time
+   - properly handling days with insufficient data to calculate an average
+ 
 # PWFSLSmoke 1.2.2
 
  * CRAN submission fixes
@@ -32,7 +38,7 @@ Version 1.2.x marks the official release for the 2019 fire season.
 
 ## Internals
 
- * `monitor_getCurrentStatus()`
+ * `monitor_getCurrentStatus()`:
    - Code has been refactored to be more independent of prior steps.
    - Logging statements have been added.
 
