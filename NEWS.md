@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.2.3
+
+ * added `createEmptyMonitor()`
+ * removed `monitor_map()` examples because ESRI map downloads are disabled
+ 
 # PWFSLSmoke 1.2.2
 
  * CRAN submission fixes
