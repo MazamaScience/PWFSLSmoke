@@ -8,35 +8,35 @@
 #' @param centerLat map center latitude
 #' @param maptype map type
 #' @param zoom map zoom level; corresponds to googleMaps zoom level
-#' @param bboxString comma separated string with bounding box (xmin, ymin, xmax, ymax). If not null, centerLon, centerLat, and zoom are ignored.
+#' @param bboxString comma separated string with bounding box (xmin, ymin, xmax, ymax).
+#' If not null, centerLon, centerLat, and zoom are ignored.
 #' @param bboxSR spatial reference of the bounding box
 #' @param width width of image, in pixels
 #' @param height height of image, in pixels
-#' @param crs object of class CRS. The Coordinate Reference System (CRS) for the returned map. If the CRS of the downloaded
-#' map does not match, it will be projected to the specified CRS using \code{raster::projectRaster}.
-#' @param additionalArgs character string with additional arguments to be pasted into the image URL eg. \code{"&rotation=90"}
-#' @description Downloads a PNG from ESRI and creates a \code{raster::rasterBrick} object with layers for red, green, and blue.
-#' This can then passed as the \code{mapRaster} object to the \code{esriMap_plotOnStaticMap()} function for plotting.
+#' @param crs object of class CRS. The Coordinate Reference System (CRS) for the
+#' returned map. If the CRS of the downloadedmap does not match, it will be
+#' projected to the specified CRS using \code{raster::projectRaster}.
+#' @param additionalArgs character string with additional arguments to be pasted
+#' into the image URL eg. \code{"&rotation=90"}
 #'
-#' Available \code{maptypes} include:
-#' \itemize{
-#' \item{natGeo}
-#' \item{worldStreetMap}
-#' \item{worldTopoMap}
-#' \item{satellite}
-#' \item{deLorme}
-#' }
+#' @description Downloads a PNG from a map tile server and creates a
+#' \code{raster::rasterBrick} object with layers for red, green, and blue. This
+#' can then passed as the \code{mapRaster} object to the
+#' \code{esriMap_plotOnStaticMap()} function for plotting.
 #'
-#' Additional base maps are found at:
-#' \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
+#' @note The spatial reference of the image when it is downloaded is 3857. If
+#' the crs argument is different, projecting may cause the size and extent of
+#' the image to differ very slightly from the input, on a scale of 1-2 pixels or
+#' 10^-3 degrees.
 #'
-#' @note The spatial reference of the image when it is downloaded is 3857. If the crs argument is different, projecting may cause
-#' the size and extent of the image to differ very slightly from the input, on a scale of 1-2 pixels or 10^-3 degrees.
+#' If bboxString is specified and the bbox aspect ratio does not match the
+#' width/height aspect ratio the extent is resized to prevent the map image from
+#' appearing stretched, so the map extent may not match the bbox argument exactly.
 #'
-#' If bboxString is specified and the bbox aspect ratio does not match the width/height aspect ratio the extent is resized to prevent
-#' the map image from appearing stretched, so the map extent may not match the bbox argument exactly.
-#' @return A rasterBrick object which can be plotted with \code{esriMap_plotOnStaticMap()} or \code{raster::plotRGB()} and serve as a base plot.
-#' @references \url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/}
+#' @return A rasterBrick object which can be plotted with
+#' \code{esriMap_plotOnStaticMap()} or \code{raster::plotRGB()} and serve as a
+#' base plot.
+#'
 #' @examples
 #' \dontrun{
 #' map <- esriMap_getMap(-122.3318, 47.668)

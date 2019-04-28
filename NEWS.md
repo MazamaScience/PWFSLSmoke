@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.4
+
+* changed `esriMap_getMap()` to get maps using `ggmap::get_stamenMap()`
+
 # PWFSLSmoke 1.2.3
 
  * added `createEmptyMonitor()`

@@ -133,8 +133,13 @@ monitor_esriMap <- function(ws_monitor,
   # ----- Generate RGB Raster --------------------------------------------------------
 
   if ( is.null(mapRaster) ) {
-    mapRaster <- esriMap_getMap(centerLon, centerLat, width = width, height = height,
-                               zoom = zoom, maptype = maptype, crs = sp::CRS("+init=epsg:4326"))
+    mapRaster <- esriMap_getMap(centerLon,
+                                centerLat,
+                                width = width,
+                                height = height,
+                                zoom = zoom,
+                                maptype = maptype,
+                                crs = sp::CRS("+init=epsg:4326"))
   }
 
   # Overlay function default arguments ----------------------------------------
