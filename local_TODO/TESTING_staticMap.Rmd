@@ -48,7 +48,7 @@ dim <- attr(ggmap_obj, "dim")
 bb <- attr(ggmap_obj, "bb")
 rgb_vec <- grDevices::col2rgb(ggmap_obj)
 dim(rgb_vec)
-red <- matrix(rgb_vec[1,], nrow = dim[1])
+red <- matrix(rgb_vec[1,], nrow = dim[2])
 dim(red)
 image(red)
 ```
@@ -58,10 +58,10 @@ It all worked and the image is upside down (as expected?)
 Let's do the full png-to-mapRaster conversion seen in `esriMap_getMap()`
 
 ```{r ggmap_obj_to_mapRaster}
-red <- matrix(rgb_vec[1,], nrow = dim[1])
-green <- matrix(rgb_vec[2,], nrow = dim[1])
-blue <- matrix(rgb_vec[3,], nrow = dim[1])
-ggmap_rgbArray <- array(dim = c(dim[1], dim[2], 3))
+red <- matrix(rgb_vec[1,], nrow = dim[2])
+green <- matrix(rgb_vec[2,], nrow = dim[2])
+blue <- matrix(rgb_vec[3,], nrow = dim[2])
+ggmap_rgbArray <- array(dim = c(dim[2], dim[1], 3))
 ggmap_rgbArray[,,1] <- red
 ggmap_rgbArray[,,2] <- green
 ggmap_rgbArray[,,3] <- blue
@@ -97,6 +97,32 @@ raster::extent(mapRaster)
 raster::plotRGB(mapRaster)
 ```
 
-asdf
+Looking good! Let's try a larger area and see if we can put some points on it.
 
-asf
+```{r washington}
+bbox <- c(left = -125, bottom = 45, right = -119, top = 49)
+ggmap_obj <- ggmap::get_stamenmap(bbox, zoom = 8)
+dim <- attr(ggmap_obj, "dim")
+bb <- attr(ggmap_obj, "bb")
+rgb_vec <- grDevices::col2rgb(ggmap_obj)
+red <- matrix(rgb_vec[1,], nrow = dim[2])
+green <- matrix(rgb_vec[2,], nrow = dim[2])
+blue <- matrix(rgb_vec[3,], nrow = dim[2])
+ggmap_rgbArray <- array(dim = c(dim[2], dim[1], 3))
+ggmap_rgbArray[,,1] <- red
+ggmap_rgbArray[,,2] <- green
+ggmap_rgbArray[,,3] <- blue
+mapRaster <- raster::brick(ncol = dim[2],
+                           nrow = dim[1],
+                           nl = 3)
+mapRaster <- raster::setValues(mapRaster, ggmap_rgbArray)
+raster::extent(mapRaster) <- c(bb$ll.lon, bb$ur.lon, bb$ll.lat, bb$ur.lat)
+raster::crs(mapRaster) <- sp::CRS("+init=epsg:3857")
+raster::extent(mapRaster)
+raster::plotRGB(mapRaster)
+
+wa <- loadLatest() %>% monitor_subset(stateCode = "WA")
+points(wa$meta$longitude, wa$meta$latitude, pch=16, col = "red")
+```
+
+Very close!

@@ -49,26 +49,55 @@
 #' }
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
-monitor_esriMap <- function(ws_monitor,
-                            slice = get("max"),
-                            breaks = AQI$breaks_24,
-                            colors = AQI$colors,
-                            width = 640,
-                            height = 640,
-                            centerLon = NULL,
-                            centerLat = NULL,
-                            zoom = NULL,
-                            maptype = "worldStreetMap",
-                            grayscale = FALSE,
-                            mapRaster = NULL,
-                            cex = par("cex") * 2.0,
-                            pch = 16,
-                            ...) {
+monitor_esriMap <- function(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  width = 640,
+  height = 640,
+  centerLon = NULL,
+  centerLat = NULL,
+  zoom = NULL,
+  maptype = "worldStreetMap",
+  grayscale = FALSE,
+  mapRaster = NULL,
+  cex = par("cex") * 2.0,
+  pch = 16,
+  ...
+) {
 
-  # Sanity check
-  if ( monitor_isEmpty(ws_monitor) ) {
-    stop("ws_monitor object contains zero monitors")
+  # ===== DEBUGGING ============================================================
+
+  if ( FALSE ) {
+
+    N_M <- PWFSLSmoke::Northwest_Megafires
+    ws_monitor <-
+      N_M %>%
+      monitor_subsetBy(stringr::str_detect(N_M$meta$monitorID,'^53063')) %>%
+      monitor_subset(tlim=c(20150815, 20150831))
+
+    slice <- get("max")
+    breaks <- AQI$breaks_24
+    colors <- AQI$colors
+    width <- 640
+    height <- 640
+    centerLon <- NULL
+    centerLat <- NULL
+    zoom <- NULL
+    maptype <- "worldStreetMap"
+    grayscale <- FALSE
+    mapRaster <- NULL
+    cex <- par("cex") * 2.0
+    pch <- 16
+    ... <- list()
+
   }
+
+  # ----- Validate Parameters --------------------------------------------------
+
+  if ( monitor_isEmpty(ws_monitor) )
+    stop("ws_monitor object contains zero monitors")
 
   # ----- Data Preparation ----------------------------------------------------
 
@@ -129,17 +158,35 @@ monitor_esriMap <- function(ws_monitor,
     zoom <- round(zoom)
   }
 
+  # Stam maps seem to need an increased zoom level
+  zoom <- zoom + 1
+
+
 
   # ----- Generate RGB Raster --------------------------------------------------------
 
+  # if ( is.null(mapRaster) ) {
+  #   mapRaster <- esriMap_getMap(centerLon,
+  #                               centerLat,
+  #                               width = width,
+  #                               height = height,
+  #                               zoom = zoom,
+  #                               maptype = maptype,
+  #                               crs = sp::CRS("+init=epsg:4326"))
+  # }
+
   if ( is.null(mapRaster) ) {
-    mapRaster <- esriMap_getMap(centerLon,
-                                centerLat,
-                                width = width,
-                                height = height,
-                                zoom = zoom,
-                                maptype = maptype,
-                                crs = sp::CRS("+init=epsg:4326"))
+
+    maptype <- "terrain" # TODO: convert from previous choices
+
+    mapRaster <- ggmap_getMap(centerLon,
+                              centerLat,
+                              width = width,
+                              height = height,
+                              zoom = zoom,
+                              maptype = maptype,
+                              crs = sp::CRS("+init=epsg:4326"))
+
   }
 
   # Overlay function default arguments ----------------------------------------
