@@ -72,10 +72,21 @@ monitor_esriMap <- function(
   if ( FALSE ) {
 
     N_M <- PWFSLSmoke::Northwest_Megafires
-    ws_monitor <-
+
+    Spokane_MonroeSt <- monitor_subset(N_M, monitorIDs = "530630047_01")
+    Seattle_10th <- monitor_subset(N_M, monitorIDs = "530330030_01")
+    Spokane_area <-
       N_M %>%
-      monitor_subsetBy(stringr::str_detect(N_M$meta$monitorID,'^53063')) %>%
-      monitor_subset(tlim=c(20150815, 20150831))
+      monitor_subset(tlim=c(20150815, 20150831)) %>%
+      monitor_subsetBy(stringr::str_detect(N_M$meta$monitorID,'^53063'))
+    Seattle_area <-
+      N_M %>%
+      monitor_subset %>%
+      monitor_subsetByDistance(longitude = Seattle_10th$meta$longitude,
+                               latitude = Seattle_10th$meta$latitude,
+                               radius = 100)
+
+    ws_monitor <- Seattle_area
 
     slice <- get("max")
     breaks <- AQI$breaks_24
@@ -99,15 +110,30 @@ monitor_esriMap <- function(
   if ( monitor_isEmpty(ws_monitor) )
     stop("ws_monitor object contains zero monitors")
 
-  # ----- Data Preparation ----------------------------------------------------
+  if ( is.null(zoom) ) {
+    if ( !is.null(centerLon) || !is.null(centerLat) ) {
+      stop("zoom must be specified for user specified centerLon and centerLat")
+    }
+  }
 
   if ( is.null(centerLon) ) {
-    centerLon <- base::mean(ws_monitor$meta$longitude)
+    lonRange <- range(ws_monitor$meta$longitude, na.rm = TRUE)
+    centerLon <- lonRange[1] + 0.5 * diff(lonRange)
   }
 
   if ( is.null(centerLat) ) {
-    centerLat <- base::mean(ws_monitor$meta$latitude)
+    latRange <- range(ws_monitor$meta$latitude, na.rm = TRUE)
+    centerLat <- latRange[1] + 0.5 * diff(latRange)
   }
+
+  if ( is.null(zoom) ) {
+    zoom <- ggmap::calc_zoom(lonRange, latRange)
+    # Adjustment for stamenmaps?
+    zoom <- zoom + 0
+  }
+
+
+  # ----- Data Preparation ----------------------------------------------------
 
   # Create the 'slice'
   if ( class(slice) == "function" ) {
@@ -131,49 +157,7 @@ monitor_esriMap <- function(
   # Colors for each point
   cols <- aqiColors(pm25, palette = colors, bins = breaks)
 
-  # Guess at zoom level if not specified
-  if ( is.null(zoom) ) {
-    maxRange <- max(
-      diff(range(ws_monitor$meta$longitude, na.rm = TRUE)),
-      diff(range(ws_monitor$meta$latitude, na.rm = TRUE))
-    )
-    if ( maxRange > 50 ) {
-      zoom <- 3
-    } else if ( maxRange > 20 ) {
-      zoom <- 4
-    } else if ( maxRange > 10 ) {
-      zoom <- 5
-    } else if ( maxRange > 5 ) {
-      zoom <- 6
-    } else if ( maxRange > 2 ) {
-      zoom <- 7
-    } else if ( maxRange > 1 ) {
-      zoom <- 8
-    } else if ( maxRange > 0.5 ) {
-      zoom <- 9
-    } else {
-      zoom <- 9
-    }
-  } else {
-    zoom <- round(zoom)
-  }
-
-  # Stam maps seem to need an increased zoom level
-  zoom <- zoom + 1
-
-
-
   # ----- Generate RGB Raster --------------------------------------------------------
-
-  # if ( is.null(mapRaster) ) {
-  #   mapRaster <- esriMap_getMap(centerLon,
-  #                               centerLat,
-  #                               width = width,
-  #                               height = height,
-  #                               zoom = zoom,
-  #                               maptype = maptype,
-  #                               crs = sp::CRS("+init=epsg:4326"))
-  # }
 
   if ( is.null(mapRaster) ) {
 

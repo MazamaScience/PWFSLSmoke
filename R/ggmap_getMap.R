@@ -43,6 +43,7 @@
 #' esriMap_plotOnStaticMap(map)
 #' }
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
+#'
 
 ggmap_getMap <- function(
   centerLon = NULL,
@@ -86,8 +87,8 @@ ggmap_getMap <- function(
 
   # ----- Determine Bounding Box -----------------------------------------------
 
-  # TODO:  We want a square bounding box and will probably need a different
-  # TODO:  calculation for stamen maps
+  # Projection information:
+  # https://en.wikipedia.org/wiki/Web_Mercator_projection
 
   # Calculate degrees per pixel from zoom to determine bbox:
   # * google maps tiles are 256x256 pixels
@@ -119,7 +120,8 @@ ggmap_getMap <- function(
   # ----- Get Map Image --------------------------------------------------------
 
   ggmap_obj <- get_stamenmap(
-    bbox = c(left = lonLo, bottom = latLo, right = lonHi, top = latHi),
+    ###bbox = bbox,
+    bbox = c(lonLo, latLo, lonHi, latHi),
     zoom = zoom,
     maptype = maptype,
     crop = TRUE,
@@ -157,7 +159,8 @@ ggmap_getMap <- function(
   raster::extent(mapRaster) <- c(bb$ll.lon, bb$ur.lon, bb$ll.lat, bb$ur.lat)
 
   # https://spatialreference.org/ref/sr-org/epsg3857-wgs84-web-mercator-auxiliary-sphere/
-  raster::crs(mapRaster) <- sp::CRS("+init=epsg:3857")
+  ###raster::crs(mapRaster) <- sp::CRS("+init=epsg:3857")
+  raster::crs(mapRaster) <- sp::CRS("+init=epsg:4326")
 
   # if ( rgdal::CRSargs(crs) != rgdal::CRSargs(sp::CRS(paste0("+init=epsg:", mapInfo$extent$spatialReference$latestWkid))) ) {
   #   mapRaster <- raster::projectRaster(mapRaster, crs = crs, method = "ngb")
