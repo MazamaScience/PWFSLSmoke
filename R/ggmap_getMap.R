@@ -99,9 +99,12 @@ ggmap_getMap <- function(
   # degrees-NS/pixel = degreesPerPixelNS*cos(latitude)
   # Source: https://gis.stackexchange.com/questions/7430/what-ratio-scales-do-google-maps-zoom-levels-correspond-to
 
+  # tweak to accommodate stamenmap
+  adjustedZoom <- zoom - 0
+
   # Create components of webservice URL
   if ( !is.null(centerLon) && !is.null(centerLat) ) {
-    degreesPerPixelEW <- 360/(256*2^zoom)
+    degreesPerPixelEW <- 360/(256*2^adjustedZoom)
     degreesPerPixelNS <- degreesPerPixelEW*cos(pi/180*centerLat) # R does trigonometry in radians
     lonLo <- centerLon - degreesPerPixelEW*(width/2-.5)
     lonHi <- centerLon + degreesPerPixelEW*(width/2-.5)

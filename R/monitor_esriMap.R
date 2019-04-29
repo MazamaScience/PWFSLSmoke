@@ -129,7 +129,7 @@ monitor_esriMap <- function(
   if ( is.null(zoom) ) {
     zoom <- ggmap::calc_zoom(lonRange, latRange)
     # Adjustment for stamenmaps?
-    zoom <- zoom + 0
+    zoom <- zoom - 1
   }
 
 
