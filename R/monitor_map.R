@@ -40,9 +40,11 @@
 #' colors.
 #'
 #' @examples
+#' \dontrun{
 #' N_M <- monitor_subset(Northwest_Megafires, tlim = c(20150821,20150828))
 #' monitor_map(N_M, cex = 2)
 #' addAQILegend()
+#' }
 
 monitor_map <- function(
   ws_monitor,

@@ -1,0 +1,128 @@
+---
+title: "TESTING_staticMap"
+author: "Mazama Science"
+date: "2019-04-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+suppressPackageStartupMessages({
+  library(PWFSLSmoke)
+  library(ggmap)
+  library(raster)
+})
+```
+
+# Trying out ggmap functions as a replacement for `esriMap_gteMap()`
+
+First, what type of object does get_stamenmap() return?
+
+```{r ggmap_object}
+bbox <- c(left = -97.1268, bottom = 31.536245, right = -97.099334, top = 31.559652)
+ggmap_obj <- ggmap::get_stamenmap(bbox, zoom = 13)
+class(ggmap_obj)
+typeof(ggmap_obj)
+str(attributes(ggmap_obj))
+length(ggmap_obj)
+ggmap_obj[1:5]
+```
+
+It's a chartacter vector of RGB color values with extra attributes.
+
+So what does the `esriMap_getMap()` download of a PNG file return?
+
+```{r png_download}
+response <- httr::GET("http://tile.stamen.com/terrain/13/1885/3338.png")
+imageArray <- httr::content(response, type="image/png")
+class(imageArray)
+dim(imageArray)
+rgbArray <- imageArray * 255
+rgbArray[1:2,1:2,]
+```
+
+Can we convert the ggmap object into an `rgbArray`?
+
+```{r ggmap_obj_to_rgbArray}
+dim <- attr(ggmap_obj, "dim")
+bb <- attr(ggmap_obj, "bb")
+rgb_vec <- grDevices::col2rgb(ggmap_obj)
+dim(rgb_vec)
+red <- matrix(rgb_vec[1,], nrow = dim[2])
+dim(red)
+image(red)
+```
+
+It all worked and the image is upside down (as expected?)
+
+Let's do the full png-to-mapRaster conversion seen in `esriMap_getMap()`
+
+```{r ggmap_obj_to_mapRaster}
+red <- matrix(rgb_vec[1,], nrow = dim[2])
+green <- matrix(rgb_vec[2,], nrow = dim[2])
+blue <- matrix(rgb_vec[3,], nrow = dim[2])
+ggmap_rgbArray <- array(dim = c(dim[2], dim[1], 3))
+ggmap_rgbArray[,,1] <- red
+ggmap_rgbArray[,,2] <- green
+ggmap_rgbArray[,,3] <- blue
+ggmap_rgbArray[1:2,1:2,]
+```
+
+Can we now create a `mapRaster` from this?
+
+Using more code from `esriMap_getMap()`:
+
+```{r ggmap_obj_to_mapRaster}
+# # Convert PNG into a Raster object
+# mapRaster <- raster::brick(ncol=mapInfo$width,
+#                            nrow=mapInfo$height,
+#                            nl = 3)
+# mapRaster <- raster::setValues(mapRaster, imageArray*255)
+#  if (width == height) {mapRaster <- raster::t(mapRaster)} # rows and columns are confused when width = height
+#
+#  names(mapRaster) <- c("red", "green", "blue")
+#
+#  raster::extent(mapRaster) <- c(mapInfo$extent$xmin, mapInfo$extent$xmax, mapInfo$extent$ymin, mapInfo$extent$ymax)
+#  raster::crs(mapRaster) <- sp::CRS(paste0("+init=epsg:",mapInfo$extent$spatialReference$latestWkid))
+
+mapRaster <- raster::brick(ncol = dim[2],
+                           nrow = dim[1],
+                           nl = 3)
+mapRaster <- raster::setValues(mapRaster, ggmap_rgbArray)
+raster::extent(mapRaster) <- c(bb$ll.lon, bb$ur.lon, bb$ll.lat, bb$ur.lat)
+
+# https://spatialreference.org/ref/sr-org/epsg3857-wgs84-web-mercator-auxiliary-sphere/
+raster::crs(mapRaster) <- sp::CRS("+init=epsg:3857")
+raster::extent(mapRaster)
+raster::plotRGB(mapRaster)
+```
+
+Looking good! Let's try a larger area and see if we can put some points on it.
+
+```{r washington}
+bbox <- c(left = -125, bottom = 45, right = -119, top = 49)
+ggmap_obj <- ggmap::get_stamenmap(bbox, zoom = 8)
+dim <- attr(ggmap_obj, "dim")
+bb <- attr(ggmap_obj, "bb")
+rgb_vec <- grDevices::col2rgb(ggmap_obj)
+red <- matrix(rgb_vec[1,], nrow = dim[2])
+green <- matrix(rgb_vec[2,], nrow = dim[2])
+blue <- matrix(rgb_vec[3,], nrow = dim[2])
+ggmap_rgbArray <- array(dim = c(dim[2], dim[1], 3))
+ggmap_rgbArray[,,1] <- red
+ggmap_rgbArray[,,2] <- green
+ggmap_rgbArray[,,3] <- blue
+mapRaster <- raster::brick(ncol = dim[2],
+                           nrow = dim[1],
+                           nl = 3)
+mapRaster <- raster::setValues(mapRaster, ggmap_rgbArray)
+raster::extent(mapRaster) <- c(bb$ll.lon, bb$ur.lon, bb$ll.lat, bb$ur.lat)
+raster::crs(mapRaster) <- sp::CRS("+init=epsg:3857")
+raster::extent(mapRaster)
+raster::plotRGB(mapRaster)
+
+wa <- loadLatest() %>% monitor_subset(stateCode = "WA")
+points(wa$meta$longitude, wa$meta$latitude, pch=16, col = "red")
+```
+
+Very close!

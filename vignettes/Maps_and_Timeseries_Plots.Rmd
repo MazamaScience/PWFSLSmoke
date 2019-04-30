@@ -116,28 +116,30 @@ Latah and Idaho counties were unfortunately downwind of several extraordinarily 
  * Aug 14 -- Chelan Complex
  * Aug 15 -- Okanogan Complex
  
+<!-- 
 A little googling and we can obtain a set of coordinates for these fires to use in a new "ESRI" map of the August daily average maxima with fire icons at fire locations:
  
-```{r, echo=FALSE}
+{r, echo=FALSE}
 knitr::opts_chunk$set(fig.width=5, fig.height=5)
-```
 
-```{r googleMap}
+
+{r googleMap}
 fireLons <- c(-118.461,-117.679,-120.039,-119.002,-119.662)
 fireLats <- c(48.756,46.11,47.814,48.338,48.519)
 monitor_esriMap(PacNW_dailyAvg, zoom=7, centerLon=-118, centerLat=47, slice=max)
 addIcon('redFlame', fireLons, fireLats, expansion=.002)
 addAQILegend(cex=0.8)
 title("August, 2015", line=-1.5, cex.main=2)
-```
 
-```{r, echo=FALSE}
+
+{r, echo=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
-```
+
 
 From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of "hazardous"
 as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these
 large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho. 
+-->
 
 We will now take a closer look at two tribal monitors:
 

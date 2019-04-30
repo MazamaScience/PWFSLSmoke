@@ -70,9 +70,6 @@
     <li>
       <a href="../articles/NowCast.html">NowCast</a>
     </li>
-    <li>
-      <a href="../articles/articles/esriMap.html">EsriMap</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -182,16 +179,30 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <li>Aug 14 – Chelan Complex</li>
 <li>Aug 15 – Okanogan Complex</li>
 </ul>
-<p>A little googling and we can obtain a set of coordinates for these fires to use in a new “ESRI” map of the August daily average maxima with fire icons at fire locations:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fireLons &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="fl">118.461</span>,<span class="op">-</span><span class="fl">117.679</span>,<span class="op">-</span><span class="fl">120.039</span>,<span class="op">-</span><span class="fl">119.002</span>,<span class="op">-</span><span class="fl">119.662</span>)
-fireLats &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">48.756</span>,<span class="fl">46.11</span>,<span class="fl">47.814</span>,<span class="fl">48.338</span>,<span class="fl">48.519</span>)
-<span class="kw"><a href="../reference/monitor_esriMap.html">monitor_esriMap</a></span>(PacNW_dailyAvg, <span class="dt">zoom=</span><span class="dv">7</span>, <span class="dt">centerLon=</span><span class="op">-</span><span class="dv">118</span>, <span class="dt">centerLat=</span><span class="dv">47</span>, <span class="dt">slice=</span>max)
-<span class="kw"><a href="../reference/addIcon.html">addIcon</a></span>(<span class="st">'redFlame'</span>, fireLons, fireLats, <span class="dt">expansion=</span>.<span class="dv">002</span>)
-<span class="kw"><a href="../reference/addAQILegend.html">addAQILegend</a></span>(<span class="dt">cex=</span><span class="fl">0.8</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="st">"August, 2015"</span>, <span class="dt">line=</span><span class="op">-</span><span class="fl">1.5</span>, <span class="dt">cex.main=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Maps_and_Timeseries_Plots_files/figure-html/googleMap-1.png" width="480"></p>
-<p>From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of “hazardous” as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho.</p>
-<p>We will now take a closer look at two tribal monitors:</p>
+<!-- 
+A little googling and we can obtain a set of coordinates for these fires to use in a new "ESRI" map of the August daily average maxima with fire icons at fire locations:
+ 
+{r, echo=FALSE}
+knitr::opts_chunk$set(fig.width=5, fig.height=5)
+
+
+{r googleMap}
+fireLons <- c(-118.461,-117.679,-120.039,-119.002,-119.662)
+fireLats <- c(48.756,46.11,47.814,48.338,48.519)
+monitor_esriMap(PacNW_dailyAvg, zoom=7, centerLon=-118, centerLat=47, slice=max)
+addIcon('redFlame', fireLons, fireLats, expansion=.002)
+addAQILegend(cex=0.8)
+title("August, 2015", line=-1.5, cex.main=2)
+
+
+{r, echo=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+
+
+From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of "hazardous"
+as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these
+large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho. 
+--><p>We will now take a closer look at two tribal monitors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Omak &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">monitorIDs=</span><span class="st">"530470013_01"</span>)
 Kamiah &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">monitorIDs=</span><span class="st">"160490003_01"</span>)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/layout">layout</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">2</span>)))
