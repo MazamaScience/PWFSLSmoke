@@ -62,8 +62,7 @@ staticmap_getStamenmapBrick <- function(
   zoom = 12,
   width = 640,
   height = 640,
-  crs = sp::CRS("+init=epsg:4326"),
-  silent = TRUE
+  crs = sp::CRS("+init=epsg:4326")
 ) {
 
   # ===== DEBUGGING ============================================================

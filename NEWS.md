@@ -1,6 +1,19 @@
 # PWFSLSmoke 1.2.4
 
-* changed `esriMap_getMap()` to get maps using `ggmap::get_stamenMap()`
+This patch release deals with the loss of the free basemap generation service
+utilitized by `esriMap_getMap()`. An authentication token is now provided and
+this patch provides a workaround by using free tiles provided by 
+[Stamen](http://maps.stamen.com) and `ggmap::get_stamenmap()`.
+
+The following new functions are provided:
+
+* `monitor_stamenmap()` -- replacement for `monitor_esriMap()`
+* `staticmap_getStamenmapBrick()`
+* `staticmap_plotRasterBrick()`
+ 
+The use of `monitor_esriMap()` has been purged from all examples and vignettes.
+The goal is to get to the point of having at least minimal capabilities for
+generating static maps and resubmitting the package to CRAN.
 
 # PWFSLSmoke 1.2.3
 
