@@ -17,8 +17,8 @@ generating static maps and resubmitting the package to CRAN.
 
 # PWFSLSmoke 1.2.3
 
- * added `createEmptyMonitor()`
  * removed `monitor_map()` examples because ESRI map downloads are disabled
+ * added `createEmptyMonitor()`
  * fixes for `monitor_getCurrentStatus()`:
    - properly handling transitions between daylight savings and standard time
    - properly handling days with insufficient data to calculate an average
