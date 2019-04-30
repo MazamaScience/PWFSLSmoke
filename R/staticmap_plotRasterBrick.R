@@ -4,11 +4,11 @@
 #' @title Plot an RGB rasterBrick
 #'
 #' @param rasterBrick an RGB rasterBrick object. It is assumed that layer 1
-#' represents red, layer 2 represents green, and layer 3 represents blue.
+#'   represents red, layer 2 represents green, and layer 3 represents blue.
 #' @param grayscale logical specifying conversion to grayscale
 #' @param ... arguments passed on to \code{raster::plot()}
-#' (for \code{grayscale = TRUE}) or \code{raster::plotRGB()}
-#' (for \code{grayscale = FALSE})
+#'   (for \code{grayscale = TRUE}) or \code{raster::plotRGB()}
+#'   (for \code{grayscale = FALSE})
 #'
 #' @description Plots the incoming \code{rasterBrick}.
 #'
@@ -54,9 +54,6 @@ staticmap_plotRasterBrick <- function(
     if ( is.null(argsList$col) ) {
       argsList$col <- grDevices::gray.colors(255, gamma = 1)
     }
-    argsList$axes = FALSE
-    argsList$xlab = ''
-    argsList$ylab = ''
     do.call(raster::plot, argsList)
 
   }

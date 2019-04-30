@@ -8,13 +8,13 @@
 #' @param maptype map type
 #' @param zoom map zoom level; corresponds to \code{ggmap::get_map()} zoom level
 #' @param bbox bounding box vector (lonLo, latLo, lonHi, latHi). If not null,
-#' \code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.
+#'   \code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.
 #' @param bboxSR spatial reference of the bounding box
 #' @param width width of image, in pixels
 #' @param height height of image, in pixels
 #' @param crs object of class CRS. The Coordinate Reference System (CRS) for the
-#' returned map. If the CRS of the downloaded map does not match, it will be
-#' projected to the specified CRS using \code{raster::projectRaster}.
+#'   returned map. If the CRS of the downloaded map does not match, it will be
+#'   projected to the specified CRS using \code{raster::projectRaster}.
 #'
 #' @description Downloads a PNG from the stamenmap tile server and creates a
 #' \code{raster::rasterBrick} object with layers for red, green, and blue. This
