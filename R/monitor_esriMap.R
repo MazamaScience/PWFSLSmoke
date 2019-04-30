@@ -49,91 +49,36 @@
 #' }
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
-monitor_esriMap <- function(
-  ws_monitor,
-  slice = get("max"),
-  breaks = AQI$breaks_24,
-  colors = AQI$colors,
-  width = 640,
-  height = 640,
-  centerLon = NULL,
-  centerLat = NULL,
-  zoom = NULL,
-  maptype = "worldStreetMap",
-  grayscale = FALSE,
-  mapRaster = NULL,
-  cex = par("cex") * 2.0,
-  pch = 16,
-  ...
-) {
+monitor_esriMap <- function(ws_monitor,
+                            slice = get("max"),
+                            breaks = AQI$breaks_24,
+                            colors = AQI$colors,
+                            width = 640,
+                            height = 640,
+                            centerLon = NULL,
+                            centerLat = NULL,
+                            zoom = NULL,
+                            maptype = "worldStreetMap",
+                            grayscale = FALSE,
+                            mapRaster = NULL,
+                            cex = par("cex") * 2.0,
+                            pch = 16,
+                            ...) {
 
-  # ===== DEBUGGING ============================================================
-
-  if ( FALSE ) {
-
-    N_M <- PWFSLSmoke::Northwest_Megafires
-
-    Spokane_MonroeSt <- monitor_subset(N_M, monitorIDs = "530630047_01")
-    Seattle_10th <- monitor_subset(N_M, monitorIDs = "530330030_01")
-    Spokane_area <-
-      N_M %>%
-      monitor_subset(tlim=c(20150815, 20150831)) %>%
-      monitor_subsetBy(stringr::str_detect(N_M$meta$monitorID,'^53063'))
-    Seattle_area <-
-      N_M %>%
-      monitor_subset %>%
-      monitor_subsetByDistance(longitude = Seattle_10th$meta$longitude,
-                               latitude = Seattle_10th$meta$latitude,
-                               radius = 100)
-
-    ws_monitor <- Seattle_area
-
-    slice <- get("max")
-    breaks <- AQI$breaks_24
-    colors <- AQI$colors
-    width <- 640
-    height <- 640
-    centerLon <- NULL
-    centerLat <- NULL
-    zoom <- NULL
-    maptype <- "worldStreetMap"
-    grayscale <- FALSE
-    mapRaster <- NULL
-    cex <- par("cex") * 2.0
-    pch <- 16
-    ... <- list()
-
-  }
-
-  # ----- Validate Parameters --------------------------------------------------
-
-  if ( monitor_isEmpty(ws_monitor) )
+  # Sanity check
+  if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")
-
-  if ( is.null(zoom) ) {
-    if ( !is.null(centerLon) || !is.null(centerLat) ) {
-      stop("zoom must be specified for user specified centerLon and centerLat")
-    }
   }
+
+  # ----- Data Preparation ----------------------------------------------------
 
   if ( is.null(centerLon) ) {
-    lonRange <- range(ws_monitor$meta$longitude, na.rm = TRUE)
-    centerLon <- lonRange[1] + 0.5 * diff(lonRange)
+    centerLon <- base::mean(ws_monitor$meta$longitude)
   }
 
   if ( is.null(centerLat) ) {
-    latRange <- range(ws_monitor$meta$latitude, na.rm = TRUE)
-    centerLat <- latRange[1] + 0.5 * diff(latRange)
+    centerLat <- base::mean(ws_monitor$meta$latitude)
   }
-
-  if ( is.null(zoom) ) {
-    zoom <- ggmap::calc_zoom(lonRange, latRange)
-    # Adjustment for stamenmaps?
-    zoom <- zoom - 1
-  }
-
-
-  # ----- Data Preparation ----------------------------------------------------
 
   # Create the 'slice'
   if ( class(slice) == "function" ) {
@@ -157,20 +102,39 @@ monitor_esriMap <- function(
   # Colors for each point
   cols <- aqiColors(pm25, palette = colors, bins = breaks)
 
+  # Guess at zoom level if not specified
+  if ( is.null(zoom) ) {
+    maxRange <- max(
+      diff(range(ws_monitor$meta$longitude, na.rm = TRUE)),
+      diff(range(ws_monitor$meta$latitude, na.rm = TRUE))
+    )
+    if ( maxRange > 50 ) {
+      zoom <- 3
+    } else if ( maxRange > 20 ) {
+      zoom <- 4
+    } else if ( maxRange > 10 ) {
+      zoom <- 5
+    } else if ( maxRange > 5 ) {
+      zoom <- 6
+    } else if ( maxRange > 2 ) {
+      zoom <- 7
+    } else if ( maxRange > 1 ) {
+      zoom <- 8
+    } else if ( maxRange > 0.5 ) {
+      zoom <- 9
+    } else {
+      zoom <- 9
+    }
+  } else {
+    zoom <- round(zoom)
+  }
+
+
   # ----- Generate RGB Raster --------------------------------------------------------
 
   if ( is.null(mapRaster) ) {
-
-    maptype <- "terrain" # TODO: convert from previous choices
-
-    mapRaster <- ggmap_getMap(centerLon,
-                              centerLat,
-                              width = width,
-                              height = height,
-                              zoom = zoom,
-                              maptype = maptype,
-                              crs = sp::CRS("+init=epsg:4326"))
-
+    mapRaster <- esriMap_getMap(centerLon, centerLat, width = width, height = height,
+                               zoom = zoom, maptype = maptype, crs = sp::CRS("+init=epsg:4326"))
   }
 
   # Overlay function default arguments ----------------------------------------
