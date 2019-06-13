@@ -83,9 +83,9 @@ wrcc_createMonitorObject <- function(
 
   if ( FALSE ) {
 
-    startdate <- 2019052900
+    startdate <- 2019010100
     enddate <- strftime(lubridate::now(),"%Y%m%d23",tz = "UTC")
-    unitID <- 'e882'
+    unitID <- 's153'
     clusterDiameter <- 1000
     zeroMinimum <- TRUE
     baseUrl <- "https://wrcc.dri.edu/cgi-bin/wea_list2.pl"

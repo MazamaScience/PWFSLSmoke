@@ -69,11 +69,33 @@ wrcc_identifyMonitorType <- function(fileString) {
   type3_header[1] <- ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\tug/m3\t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t"
   type3_header[2] <- ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \tConc   \t Ave.  \t Av Air\t  Rel  \t Misc  \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm"
   type3_header[3] <- ":YYMMDDhhmm\t  Lat. \t  Lon. \t       \tNumber \t RT    \tHly Av \tAir Flw\t  Temp \tHumidty\t  #2   \tInt AT \tInt RH \t  Speed\t Direc \tVoltage\t"
-  type3_rawNames <- c('DateTime','GPSLat','GPSLon','Type','SerialNumber','ConcRT','ConcHlyAv',
+  type3_rawNames <- c('DateTime','GPSLat','GPSLon','Type','SerialNumber','ConcRT','Conc_l_m',
                       'AvAirFlw','AvAirTemp','RelHumidity','BaromPress','SensorIntAT','SensorIntRH',
                       'WindSpeed','WindDir','BatteryVoltage','Alarm')
   type3_names <- type3_rawNames
   type3_types <- 'cdddcdddddddddddd'
+
+  # unitID=sm17, year=2019
+  type4_header <- vector('character', 3)
+  type4_header[1] <- ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\t Unk \t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t"
+  type4_header[2] <- ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \t Misc  \t Ave.  \t Av Air\t  Rel  \t Misc  \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm"
+  type4_header[3] <- ":YYMMDDhhmm\t  Lat. \t  Lon. \t       \tNumber \tHly Av \t  #1   \tAir Flw\t  Temp \tHumidty\t  #2   \tInt AT \tInt RH \t  Speed\t Direc \tVoltage\t"
+  type4_rawNames <- c('DateTime','GPSLat','GPSLon','Type','SerialNumber','ConcRT','Conc_l_m',
+                      'AvAirFlw','AvAirTemp','RelHumidity','BaromPress','SensorIntAT','SensorIntRH',
+                      'WindSpeed','WindDir','BatteryVoltage','Alarm')
+  type4_names <- type4_rawNames
+  type4_types <- 'cdddcdddddddddddd'
+
+  # unitID=sm20, year=2019
+  type5_header <- vector('character', 3)
+  type5_header[1] <- ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\t Unk \t l/m \tDeg C\t  %  \tmbar \tdeg C\t  %  \t m/s \t Deg \tvolts\t"
+  type5_header[2] <- ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \t Misc  \t Ave.  \t Av Air\t  Rel  \t Barom \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm"
+  type5_header[3] <- ":YYMMDDhhmm\t  Lat. \t  Lon. \t       \tNumber \tHly Av \t  #1   \tAir Flw\t  Temp \tHumidty\t Press \tInt AT \tInt RH \t  Speed\t Direc \tVoltage\t"
+  type5_rawNames <- c('DateTime','GPSLat','GPSLon','Type','SerialNumber','ConcRT','Conc_l_m',
+                      'AvAirFlw','AvAirTemp','RelHumidity','BaromPress','SensorIntAT','SensorIntRH',
+                      'WindSpeed','WindDir','BatteryVoltage','Alarm')
+  type5_names <- type5_rawNames
+  type5_types <- 'cdddcdddddddddddd'
 
   #      Extract  header lines from the incoming fileString     ---------------
 
@@ -124,6 +146,16 @@ wrcc_identifyMonitorType <- function(fileString) {
     rawNames <- type3_rawNames
     columnNames <- type3_names
     columnTypes <- type3_types
+  } else if ( all(header == type4_header) ) {
+    monitorType <- "WRCC_TYPE4"
+    rawNames <- type4_rawNames
+    columnNames <- type4_names
+    columnTypes <- type4_types
+  } else if ( all(header == type5_header) ) {
+    monitorType <- "WRCC_TYPE5"
+    rawNames <- type5_rawNames
+    columnNames <- type5_names
+    columnTypes <- type5_types
   }
 
   monitorTypeList <- list(monitorType=monitorType,
