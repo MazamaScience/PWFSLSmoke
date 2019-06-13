@@ -33,6 +33,6 @@ tbl <- wrcc_parseData(fileString)
 }
 }
 \references{
-\href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
+\href{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 }
 \keyword{WRCC}

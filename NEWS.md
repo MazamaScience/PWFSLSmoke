@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.6
+
+* Updated `wrcc_createRawDataframe()` to use the proper WRCC url.
+
 # PWFSLSmoke 1.2.5
 
 * Updated the `WRCC` dataset with unitIDs added to the `cache` in 2018 and 2019.

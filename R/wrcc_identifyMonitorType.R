@@ -26,7 +26,7 @@
 #' }
 #'
 #' @return List including \code{monitorType}, \code{rawNames}, \code{columnNames} and \code{columnTypes}.
-#' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{WRCC Fire Cache Smoke Monitor Archive}
+#' @references \href{https://wrcc.dri.edu/cgi-bin/smoke.pl}{WRCC Fire Cache Smoke Monitor Archive}
 #' @examples
 #' \dontrun{
 #' fileString <- wrcc_downloadData(20160701, 20160930, unitID='1307')
@@ -164,4 +164,5 @@ wrcc_identifyMonitorType <- function(fileString) {
                           columnTypes=columnTypes)
 
   return(monitorTypeList)
+
 }

@@ -4,5 +4,5 @@
 
 # PRODUCTION version -----------------------------------------------------------
 production_build:
-	docker build --no-cache -t mazamascience/pwfslsmoke:1.2.5 -t mazamascience/pwfslsmoke:latest .
+	docker build --no-cache -t mazamascience/pwfslsmoke:1.2.6 -t mazamascience/pwfslsmoke:latest .
 
