@@ -23,6 +23,7 @@ one of the categories of monitors available at WRCC:
 WRCC monitor names and unitIDs
 }
 \note{
-This list of monitor types was created on Feb 09, 2017.
+This list of monitor IDs relfects \code{unitIDs} found on the WRCC
+site on June 12, 2019.
 }
 \keyword{datasets}

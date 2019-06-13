@@ -1,6 +1,6 @@
 #' @keywords WRCC
 #' @export
-#' @import MazamaCoreUtils
+#' @importFrom MazamaCoreUtils logger.trace logger.debug logger.warn logger.error
 #'
 #' @title Identify WRCC monitor type
 #'
@@ -42,7 +42,7 @@ wrcc_identifyMonitorType <- function(fileString) {
 
   #     Different header styles     -------------------------------------------
 
-  # stationID=E231, year=2016
+  # unitID=e231, year=2016
   type1_header <- vector('character',3)
   type1_header[1] <- ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\t Unk \t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t"
   type1_header[2] <- ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \t Misc  \t Ave.  \t Av Air\t  Rel  \t Misc  \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm"
@@ -53,7 +53,7 @@ wrcc_identifyMonitorType <- function(fileString) {
   type1_names <- type1_rawNames
   type1_types <- 'cdddcdddddddddddd'
 
-  # stationID=SMF1, year=2016
+  # unitID=smf1, year=2016
   type2_header <- vector('character', 3)
   type2_header[1] <- ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\t Unk \t l/m \tDeg C\t  %  \tmbar \tdeg C\t  %  \t m/s \t Deg \tvolts\t"
   type2_header[2] <- ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \t Misc  \t Ave.  \t Av Air\t  Rel  \t Barom \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm"
@@ -64,14 +64,30 @@ wrcc_identifyMonitorType <- function(fileString) {
   type2_names <- type2_rawNames
   type2_types <- 'cdddcdddddddddddd'
 
+  # unitID=e882, year=2019
+  type3_header <- vector('character', 3)
+  type3_header[1] <- ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\tug/m3\t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t"
+  type3_header[2] <- ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \tConc   \t Ave.  \t Av Air\t  Rel  \t Misc  \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm"
+  type3_header[3] <- ":YYMMDDhhmm\t  Lat. \t  Lon. \t       \tNumber \t RT    \tHly Av \tAir Flw\t  Temp \tHumidty\t  #2   \tInt AT \tInt RH \t  Speed\t Direc \tVoltage\t"
+  type3_rawNames <- c('DateTime','GPSLat','GPSLon','Type','SerialNumber','ConcRT','ConcHlyAv',
+                      'AvAirFlw','AvAirTemp','RelHumidity','BaromPress','SensorIntAT','SensorIntRH',
+                      'WindSpeed','WindDir','BatteryVoltage','Alarm')
+  type3_names <- type3_rawNames
+  type3_types <- 'cdddcdddddddddddd'
+
   #      Extract  header lines from the incoming fileString     ---------------
 
-  # NOTE:  Here is an example header from WRCC ASCII output:
+  # NOTE:  Here are some example headers from WRCC ASCII output:
   # NOTE:
   # NOTE:  [1] " Smoke #11 "
   # NOTE:  [2] ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\t Unk \t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t     "
   # NOTE:  [3] ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \t Misc  \t Ave.  \t Av Air\t  Rel  \t Misc  \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm  "
   # NOTE:  [4] ":YYMMDDhhmm\t  Lat. \t  Lon. \t       \tNumber \t RT    \t  #1   \tAir Flw\t  Temp \tHumidty\t  #2   \tInt AT \tInt RH \t  Speed\t Direc \tVoltage\t       "
+  # NOTE:
+  # NOTE:  [1] " Smoke E-BAM 882 "
+  # NOTE:  [2] ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\tug/m3\t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t     "
+  # NOTE:  [3] ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \tConc   \t Ave.  \t Av Air\t  Rel  \t Misc  \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm  "
+  # NOTE:  [4] ":YYMMDDhhmm\t  Lat. \t  Lon. \t       \tNumber \t RT    \tHly Av \tAir Flw\t  Temp \tHumidty\t  #2   \tInt AT \tInt RH \t  Speed\t Direc \tVoltage\t       "
   # NOTE:
   # NOTE:  Sometimes the "Misc #2" column is replaced with Barom Press"
 
@@ -98,11 +114,16 @@ wrcc_identifyMonitorType <- function(fileString) {
     rawNames <- type1_rawNames
     columnNames <- type1_names
     columnTypes <- type1_types
-  } else if (all(header == type2_header) ) {
+  } else if ( all(header == type2_header) ) {
     monitorType <- "WRCC_TYPE2"
     rawNames <- type2_rawNames
     columnNames <- type2_names
     columnTypes <- type2_types
+  } else if ( all(header == type3_header) ) {
+    monitorType <- "WRCC_TYPE3"
+    rawNames <- type3_rawNames
+    columnNames <- type3_names
+    columnTypes <- type3_types
   }
 
   monitorTypeList <- list(monitorType=monitorType,

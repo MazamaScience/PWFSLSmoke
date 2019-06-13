@@ -1,6 +1,6 @@
 #' @keywords WRCC
 #' @export
-#' @import MazamaCoreUtils
+#' @importFrom MazamaCoreUtils logger.trace logger.debug logger.warn logger.error
 #'
 #' @title Parse WRCC data string
 #'

@@ -138,7 +138,8 @@ setEsriToken <- function(token) {
 #' \item{miscellaneous}
 #' \item{usfs_regional}
 #' }
-#' @note This list of monitor types was created on Feb 09, 2017.
+#' @note This list of monitor IDs relfects \code{unitIDs} found on the WRCC
+#' site on June 12, 2019.
 NULL
 
 # ----- AIRSIS related info ---------------------------------------------------
