@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.2.7
+
+* Improved support for non-Olson timezones in `timeInfo()`.
+* Corrected `timeInfo()` creation of `localSstandardTime_UTC`.
+
 # PWFSLSmoke 1.2.6
 
 * Updated `wrcc_createRawDataframe()` to use the proper WRCC url.

@@ -48,8 +48,9 @@ there is no easy way in R to work in "Local Standard Time" (LST) as is often
 required when working with air qualitiy data. EPA regulations mandate that
 daily averages be calculated based on LST.
 
-The \code{localStdTime_UTC} is primarily for use internally and provides
-an important tool for creating LST daily averages and LST axis labeling.
+The \code{localStdTime_UTC} column in the returned dataframe is primarily for
+internal use and provides an important tool for creating LST daily averages
+and LST axis labeling.
 }
 \examples{
 carmel <- monitor_subset(Carmel_Valley, tlim = c(20160801,20160810))

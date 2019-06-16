@@ -29,8 +29,9 @@
 #' required when working with air qualitiy data. EPA regulations mandate that
 #' daily averages be calculated based on LST.
 #'
-#' The \code{localStdTime_UTC} is primarily for use internally and provides
-#' an important tool for creating LST daily averages and LST axis labeling.
+#' The \code{localStdTime_UTC} column in the returned dataframe is primarily for
+#' internal use and provides an important tool for creating LST daily averages
+#' and LST axis labeling.
 #'
 #' @param time POSIXct vector with specified timezone,
 #' @param longitude Longitude of the location of interest.
@@ -110,6 +111,13 @@ timeInfo <- function(time,
     timezone <- MazamaSpatialUtils::getTimezone(longitude, latitude, useBuffering = TRUE)
   }
 
+  if ( is.null(timezone) || is.na(timezone) ) {
+    stop(paste0(
+      "Timezone is not recognized and land-based timezone cannot be found. ",
+      "Plese supply a timezone found in base::OlsonNames()."
+    ))
+  }
+
   # Solar times ----------------------------------------------------------------
 
   # convert to local time
@@ -133,19 +141,18 @@ timeInfo <- function(time,
 
   # localStandardTime_UTC ------------------------------------------------------
 
-  # Change the name so it doesn't conflict with "timezone" inside @data
-  tz <- timezone
+  # NOTE:  The EPA defines regulatory daily averages as midnight-to-midnight
+  # NOTE:  in local-standard-time-all-year. We add a column of data that
+  # NOTE:  displays the proper clock time for LSTAY. This can then be used to
+  # NOTE:  calculate, plot and label the EPA regulatory midnight-to-midnight
+  # NOTE:  daily averages
 
   # Calculate the Local Standard Time offset
-  if ( tz == "UTC" || tz == "GMT" ) {
-    lst_offset <- 0
-  } else {
-    lst_offset <- MazamaSpatialUtils::SimpleTimezones@data %>%
-      filter(.data$timezone == tz) %>%
-      dplyr::pull(.data$UTC_offset)
-  }
+  Christmas_UTC <- lubridate::ymd_h("2019-12-25 00", tz = "UTC")
+  Christmas_localTime <- lubridate::with_tz(Christmas_UTC, timezone)
+  Christmas_localTime_UTC <- lubridate::force_tz(Christmas_localTime, "UTC")
+  lst_offset <- as.numeric(difftime(Christmas_localTime_UTC, Christmas_UTC, units = "hours"))
 
-  # 'datetime' should be UTC but set it just in case
   localStandardTime_UTC <- lubridate::with_tz(localTime, "UTC") +
     lst_offset * lubridate::dhours(1)
 
