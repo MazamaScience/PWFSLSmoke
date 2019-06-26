@@ -1,4 +1,4 @@
-# ----- Chetco Bar -----------------------------------------------
+li# ----- Chetco Bar -----------------------------------------------
 
 conus <-
   monitor_loadLatest() %>%
@@ -67,7 +67,7 @@ Sacramento_area %>%
 # ----- Kennewick School -------------------------------------------------------
 
 library(PWFSLSmoke)
-library(PWFSLSmokePlots)
+library(AirMonitorPlots)
 
 # Get the appropriate data
 wa_2017 <-
@@ -89,4 +89,28 @@ ggplot_pm25Timeseries(Kennewick) +
   geom_pm25Points(shape = "square", alpha = 1.0) +
   custom_aqiStackedBar(width = 0.01) +
   ggtitle("Kennewick, September 2017")
-l
+
+# Daily/Hourly barplot
+ggplot_pm25Timeseries(Kennewick) +
+  stat_AQCategory(color = NA) +
+  stat_dailyAQCategory(alpha = .5, timezone = "America/Los_Angeles") +
+  facet_grid(rows = vars(monitorID)) +
+  ggtitle("Kennewick, September 2017")
+
+Toppenish <-
+  wa_2017 %>%
+  monitor_subset(monitorIDs = "530770015_01")
+
+Yakima_Basin <-
+  wa_2017 %>%
+  monitor_subsetByDistance(longitude = Toppenish$meta$longitude,
+                           latitude = Toppenish$meta$latitude,
+                           radius=50)
+
+# Daily/Hourly barplot
+ggplot_pm25Timeseries(Yakima_Basin) +
+  stat_AQCategory(color = NA) +
+  stat_dailyAQCategory(alpha = .5, timezone = "America/Los_Angeles") +
+  facet_grid(rows = vars(monitorID)) +
+  ggtitle("Kennewick, September 2017")
+
