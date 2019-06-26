@@ -1,6 +1,6 @@
 #' @keywords WRCC
 #' @export
-#' @import MazamaCoreUtils
+#' @importFrom MazamaCoreUtils logger.trace logger.debug logger.warn logger.error
 #'
 #' @title Obtain WRCC data and parse into a tibble
 #'
@@ -34,28 +34,28 @@
 #' }
 #'
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
-#' @note Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
+#' @note Monitor unitIDs can be found at https://wrcc.dri.edu/cgi-bin/smoke.pl.
 #'
 #' @seealso \code{\link{wrcc_downloadData}}
 #' @seealso \code{\link{wrcc_parseData}}
 #' @seealso \code{\link{wrcc_qualityControl}}
 #' @seealso \code{\link{addClustering}}
 #'
-#' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
+#' @references \href{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 
 wrcc_createRawDataframe <- function(
   startdate = strftime(lubridate::now(),"%Y010100",tz = "UTC"),
   enddate = strftime(lubridate::now(),"%Y%m%d23",tz = "UTC"),
   unitID = NULL,
   clusterDiameter = 1000,
-  baseUrl = "http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl",
+  baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl",
   saveFile = NULL,
   flagAndKeep = FALSE
 ) {
 
   logger.debug(" ----- wrcc_createRawDatafram() ----- ")
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters ---------------------------------------------------
 
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")

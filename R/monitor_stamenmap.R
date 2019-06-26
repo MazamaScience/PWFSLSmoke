@@ -156,7 +156,7 @@ monitor_stamenmap <- function(
     if ( zoom > 9 ) {
       zoom <- zoom - 2
     } else if (zoom > 5) {
-      zoom = zoom - 1
+      zoom <- zoom - 1
     }
   }
 

@@ -1,6 +1,6 @@
 #' @keywords WRCC
 #' @export
-#' @import MazamaCoreUtils
+#' @importFrom MazamaCoreUtils logger.trace logger.debug logger.warn logger.error
 #'
 #' @title Obtain WRCC data and create ws_monitor object
 #'
@@ -48,12 +48,14 @@
 #' Note that appropriate values for QC thresholds will depend on the type of monitor.
 #'
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.
+#'
 #' @seealso \code{\link{wrcc_downloadData}}
 #' @seealso \code{\link{wrcc_parseData}}
 #' @seealso \code{\link{wrcc_qualityControl}}
 #' @seealso \code{\link{addClustering}}
 #' @seealso \code{\link{wrcc_createMetaDataframe}}
 #' @seealso \code{\link{wrcc_createDataDataframe}}
+#'
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
@@ -77,18 +79,25 @@ wrcc_createMonitorObject <- function(
 
   logger.debug(" ----- wrcc_createMonitorObject() ----- ")
 
-  # FOR TESTING
+  # ----- FOR TESTING ----------------------------------------------------------
+
   if ( FALSE ) {
-    startdate <- strftime(lubridate::now(),"%Y010101",tz = "UTC")
+
+    startdate <- 2019010100
     enddate <- strftime(lubridate::now(),"%Y%m%d23",tz = "UTC")
-    unitID <- 'sm21'
+    unitID <- 's153'
     clusterDiameter <- 1000
     zeroMinimum <- TRUE
     baseUrl <- "https://wrcc.dri.edu/cgi-bin/wea_list2.pl"
     saveFile <- NULL
+    existingMeta <- NULL
+    addGoogleMeta <- FALSE
+    addEsriMeta <- FALSE
+
   }
 
-  # Sanity checks
+  # ----- Validate Parameters --------------------------------------------------
+
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")
     stop(paste0("Required parameter 'unitID' is missing"))
@@ -106,7 +115,8 @@ wrcc_createMonitorObject <- function(
     stop(paste0("Cannot parse 'enddate' with ",enddateCount," characters"))
   }
 
-  # Read in WRCC .csv data
+  # ----- Download WRCC data ---------------------------------------------------
+
   logger.trace("Downloading WRCC data ...")
   fileString <- wrcc_downloadData(startdate, enddate, unitID, baseUrl)
 

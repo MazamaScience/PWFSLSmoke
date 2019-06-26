@@ -25,7 +25,7 @@ String containing WRCC output.
 Request data from a particular station for the desired time period.
 Data are returned as a single character string containing the WRCC output.
 
-Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.
+Monitor unitIDs can be found at https://wrcc.dri.edu/cgi-bin/smoke.pl.
 }
 \examples{
 \dontrun{
@@ -34,6 +34,6 @@ df <- wrcc_parseData(fileString)
 }
 }
 \references{
-\href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
+\href{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 }
 \keyword{WRCC}

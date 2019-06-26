@@ -15,7 +15,7 @@ test_that("arguments are validated", {
   expect_error( timeInfo(datetime, longitude) )
   expect_error( timeInfo(datetime, longitude, "dummy") )
 
-  # Should determine timezeon from 'datetime' if no 'timezone' is provided
+  # Should determine timezone from datetime if no timezone is provided
   expect_silent( timeInfo <- timeInfo(datetime, longitude, latitude) )
 })
 
@@ -66,4 +66,24 @@ test_that("daylight savings is treated properly", {
     "2018-11-04 02:00:00 MST"
   )
 
+})
+
+test_that("non-Olsen timezones are handled", {
+  # Set up for "Portland, Oregon"
+  startdate <- lubridate::ymd_hms("2019-06-15 07:00:00")
+  enddate <- lubridate::ymd_hms("2019-06-16 06:00:00")
+  datetime <- seq(startdate, enddate, by="hours")
+
+  # Portland, Oregon
+  expect_error( timeInfo(datetime, -122.6, 45.5, "US/Pacific"), NA ) # no error
+})
+
+test_that("ocean locations require timezones", {
+  # Set up for "Portland, Oregon"
+  startdate <- lubridate::ymd_hms("2019-06-15 07:00:00")
+  enddate <- lubridate::ymd_hms("2019-06-16 06:00:00")
+  datetime <- seq(startdate, enddate, by="hours")
+
+  # Far from land in the Southern Pacific
+  expect_error( timeInfo(datetime, -160, -40), NULL ) # error
 })

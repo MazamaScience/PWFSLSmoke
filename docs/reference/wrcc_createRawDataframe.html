@@ -80,7 +80,7 @@ enhance metadata to include: elevation, timezone, state, country, site name
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.7</span>
       </span>
     </div>
 
@@ -164,7 +164,7 @@ ready for use with all <code>raw_~</code> functions.</p>
     <pre class="usage"><span class='fu'>wrcc_createRawDataframe</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
   <span class='st'>"%Y010100"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(),
   <span class='st'>"%Y%m%d23"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>clusterDiameter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://www.wrcc.dri.edu/cgi-bin/wea_list2.pl"</span>,
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://wrcc.dri.edu/cgi-bin/wea_list2.pl"</span>,
   <span class='kw'>saveFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>flagAndKeep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -207,11 +207,11 @@ ready for use with all <code>raw_~</code> functions.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>The downloaded CSV may be saved to a local file by providing an argument to the <code>saveFile</code> parameter.</p>
-<p>Monitor unitIDs can be found at http://www.wrcc.dri.edu/cgi-bin/smoke.pl.</p>
+<p>Monitor unitIDs can be found at https://wrcc.dri.edu/cgi-bin/smoke.pl.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href='http://www.wrcc.dri.edu/cgi-bin/smoke.pl'>Fire Cache Smoke Monitoring Archive</a></p>
+    <p><a href='https://wrcc.dri.edu/cgi-bin/smoke.pl'>Fire Cache Smoke Monitoring Archive</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

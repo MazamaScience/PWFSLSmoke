@@ -126,7 +126,7 @@ setEsriToken <- function(token) {
 #' @title WRCC Monitor Names and Unit IDs
 #' @format A list of lists
 #' @description
-#' The WRCC \url{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
+#' The WRCC \url{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
 #' provides access to a variety of monitors that can be accessed with the \link{wrcc_createMonitorObject}
 #' function. Use of this funciton requires a valid unitID. The \code{WRCC} object is
 #' a list of lists. The element named \code{unitIDs} is itself a list of three named vectors,
@@ -138,7 +138,8 @@ setEsriToken <- function(token) {
 #' \item{miscellaneous}
 #' \item{usfs_regional}
 #' }
-#' @note This list of monitor types was created on Feb 09, 2017.
+#' @note This list of monitor IDs relfects \code{unitIDs} found on the WRCC
+#' site on June 12, 2019.
 NULL
 
 # ----- AIRSIS related info ---------------------------------------------------

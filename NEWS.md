@@ -1,7 +1,21 @@
+# PWFSLSmoke 1.2.7
+
+* Improved support for non-Olson timezones in `timeInfo()`.
+* Corrected `timeInfo()` creation of `localSstandardTime_UTC`.
+
+# PWFSLSmoke 1.2.6
+
+* Updated `wrcc_createRawDataframe()` to use the proper WRCC url.
+
+# PWFSLSmoke 1.2.5
+
+* Updated the `WRCC` dataset with unitIDs added to the `cache` in 2018 and 2019.
+* Updated WRCC processing functions to handle a slightly modified header format.
+
 # PWFSLSmoke 1.2.4
 
 This patch release deals with the loss of the free basemap generation service
-utilitized by `esriMap_getMap()`. An authentication token is now provided and
+utilitized by `esriMap_getMap()`. An authentication token is now required and
 this patch provides a workaround by using free tiles provided by 
 [Stamen](http://maps.stamen.com) and `ggmap::get_stamenmap()`.
 

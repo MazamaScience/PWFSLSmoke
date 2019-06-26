@@ -1,6 +1,6 @@
 #' @keywords WRCC
 #' @export
-#' @import MazamaCoreUtils
+#' @importFrom MazamaCoreUtils logger.trace logger.debug logger.warn logger.error
 #'
 #' @title Parse WRCC data string
 #'
@@ -18,7 +18,7 @@
 #' \item{All header lines beginning with ':' are removed.}
 #' }
 #' @return Dataframe of WRCC raw monitor data.
-#' @references \href{http://www.wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
+#' @references \href{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 #' @examples
 #' \dontrun{
 #' fileString <- wrcc_downloadData(20150701, 20150930, unitID = 'SM16')
