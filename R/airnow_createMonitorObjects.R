@@ -46,14 +46,14 @@
 #' @seealso \link{airnow_createMetaDataframes}
 #' @examples
 #' \dontrun{
-#' monList <- airnow_createMonitorObjects(c("O3","PM2.5"), 20160701)
+#' monList <- airnow_createMonitorObjects(c("PM2.5"), 20190625)
 #' pm25 <- monList$PM2.5
 #' o3 <- monList$O3
 #' }
 
 airnow_createMonitorObjects <- function(
   parameters = NULL,
-  startdate = strftime(lubridate::now(),"%Y%m%d",tz = "UTC"),
+  startdate = strftime(lubridate::now(), "%Y%m%d", tz = "UTC"),
   hours = 24,
   zeroMinimum = TRUE,
   addGoogleMeta = TRUE

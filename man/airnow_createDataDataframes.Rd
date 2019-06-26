@@ -4,23 +4,28 @@
 \alias{airnow_createDataDataframes}
 \title{Return reshaped dataframes of AirNow data}
 \usage{
-airnow_createDataDataframes(parameters = NULL, startdate = "",
+airnow_createDataDataframes(parameters = NULL,
+  startdate = strftime(lubridate::now(), "\%Y\%m\%d00", tz = "UTC"),
   hours = 24)
 }
 \arguments{
-\item{parameters}{vector of names of desired pollutants or NULL for all pollutants}
+\item{parameters}{Vector of names of desired pollutants or NULL for all
+pollutants.}
 
-\item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}
+\item{startdate}{Desired start date (integer or character representing
+YYYYMMDD[HH]).}
 
-\item{hours}{desired number of hours of data to assemble}
+\item{hours}{Desired number of hours of data to assemble.}
 }
 \value{
-List of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").
+List of dataframes where each dataframe contains all data for a
+unique parameter (e.g: "PM2.5", "NOX").
 }
 \description{
 This function uses the \link{airnow_downloadParseData} function
-to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
-with the PWFSLSmoke package \emph{ws_monitor} data model.
+to download monthly dataframes of AirNow data and restructures that data into
+a format that is compatible with the PWFSLSmoke package \emph{ws_monitor}
+data model.
 
 AirNow data parameters include at least the following list:
 \enumerate{
@@ -47,15 +52,16 @@ AirNow data parameters include at least the following list:
 \item{WS}
 }
 
-Setting \code{parameters=NULL} will generate a separate dataframe for each of the above parameters.
+Setting \code{parameters=NULL} will generate a separate dataframe for each of
+the above parameters.
 }
 \note{
-As of 2016-12-27, it appears that hourly data are available only for 2016 and
-not for earlier years.
+As of 2016-12-27, it appears that hourly data are available only for
+2016 and not for earlier years.
 }
 \examples{
 \dontrun{
-airnow_data <- airnow_createDataDataframes("PM2.5", 20160701)
+airnowList <- airnow_createDataDataframes("PM2.5", 2019062500)
 }
 }
 \seealso{

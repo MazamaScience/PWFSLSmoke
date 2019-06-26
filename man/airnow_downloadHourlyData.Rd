@@ -2,32 +2,37 @@
 % Please edit documentation in R/airnow_downloadHourlyData.R
 \name{airnow_downloadHourlyData}
 \alias{airnow_downloadHourlyData}
-\title{Download Hourly Data from AirNow}
+\title{Download hourly data from AirNow}
 \usage{
 airnow_downloadHourlyData(datestamp = strftime(lubridate::now(),
   "\%Y\%m\%d00", tz = "UTC"),
   baseUrl = "https://files.airnowtech.org/airnow")
 }
 \arguments{
-\item{datestamp}{integer or character representing YYYYMMDDHH}
+\item{datestamp}{Integer or character representing YYYYMMDDHH.}
 
-\item{baseUrl}{base URL for archived hourly data}
+\item{baseUrl}{Base URL for archived hourly data.}
 }
 \value{
 Dataframe of AirNow hourly data.
 }
 \description{
-The \url{https://airnowtech.org} site provides both air pollution
-monitoring data as well as monitoring site location metadata. This
+The \url{https://airnowtech.org} site provides both air
+pollution monitoring data as well as monitoring site location metadata. This
 function retrieves a single, hourly data file and returns it as a dataframe.
 }
 \note{
-As of 2016-12-27, it appears that hourly data are available only for 2016 and
-not for earlier years.
+As of 2016-12-27, it appears that hourly data are available only for
+2016 and not for earlier years.
+
+Data from locations whose timezones have a fractional offset from UTC
+are removed as the PWFSLSmoke data model only supports data reported on hour
+boundaries. As of 2019-06-26, this only applies to US Department of State
+monitors in Myanmar, Sri Lanka, India and Nepal.
 }
 \examples{
 \dontrun{
-df <- airnow_downloadHourlyData(2016070112)
+df <- airnow_downloadHourlyData(2018070112)
 }
 }
 \seealso{
