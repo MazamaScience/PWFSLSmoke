@@ -1,7 +1,9 @@
 # PWFSLSmoke 1.2.9
 
 * Docker image now includes `optparse` package so that exectuable scripts can
-be run inside the `mazamascience/pwfslsmoke` image.
+  be run inside the `mazamascience/pwfslsmoke` image.
+* Fixed error-generating bug in `debug.trace(...)` statement while processing 
+  AirNow data.
 
 # PWFSLSmoke 1.2.8
 

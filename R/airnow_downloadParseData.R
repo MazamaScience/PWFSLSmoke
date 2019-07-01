@@ -63,7 +63,7 @@ airnow_downloadParseData <- function(
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   tblList <- vector(mode="list", length=hours)
 
-  logger.trace("Downloading %d hourly data files from AirNow ...",hours)
+  logger.trace("Downloading %d hourly data files from AirNow ...", floor(hours))
 
   # Loop through the airnow_downloadHourlyData function and store each datafame in the list
   for (i in 1:hours) {

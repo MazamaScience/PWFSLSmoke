@@ -82,7 +82,7 @@ airnow_createDataDataframes <- function(
 
   # ----- Data Reshaping ------------------------------------------------------
 
-  logger.trace("Reshaping %d days of AirNow data ...", hours/24)
+  logger.trace("Reshaping %d hours of AirNow data ...", floor(hours))
 
   # NOTE:  Add monitorID as AQSID + "_01" to match what is done in the
   # NOTE:  "Data Reshaping" section of airnow_createMetaDataframes().
