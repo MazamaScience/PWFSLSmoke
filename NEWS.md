@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.2.9
+
+* Docker image now includes `optparse` package so that exectuable scripts can
+be run inside the `mazamascience/pwfslsmoke` image.
+
 # PWFSLSmoke 1.2.8
 
 This patch release deals with the AirNow's recent inclusion in their data feeds
