@@ -8,7 +8,8 @@ RUN apt-get update \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
   ## Install R packages from CRAN
   && install2.r --error -r "https://cran.rstudio.com" \
-    PWFSLSmoke
+    PWFSLSmoke \
+    optparse
 
 # For the latest updates in PWFSLSmoke
 RUN installGithub.r \
