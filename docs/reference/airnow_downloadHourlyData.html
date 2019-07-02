@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download Hourly Data from AirNow — airnow_downloadHourlyData • PWFSLSmoke</title>
+<title>Download hourly data from AirNow — airnow_downloadHourlyData • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,10 @@
 
 
 
-<meta property="og:title" content="Download Hourly Data from AirNow — airnow_downloadHourlyData" />
+<meta property="og:title" content="Download hourly data from AirNow — airnow_downloadHourlyData" />
 
-<meta property="og:description" content="The https://airnowtech.org site provides both air pollution
-monitoring data as well as monitoring site location metadata. This
+<meta property="og:description" content="The https://airnowtech.org site provides both air
+pollution monitoring data as well as monitoring site location metadata. This
 function retrieves a single, hourly data file and returns it as a dataframe." />
 <meta name="twitter:card" content="summary" />
 
@@ -72,7 +72,7 @@ function retrieves a single, hourly data file and returns it as a dataframe." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.9</span>
       </span>
     </div>
 
@@ -132,15 +132,15 @@ function retrieves a single, hourly data file and returns it as a dataframe." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download Hourly Data from AirNow</h1>
+    <h1>Download hourly data from AirNow</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airnow_downloadHourlyData.R'><code>R/airnow_downloadHourlyData.R</code></a></small>
     <div class="hidden name"><code>airnow_downloadHourlyData.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The <a href='https://airnowtech.org'>https://airnowtech.org</a> site provides both air pollution
-monitoring data as well as monitoring site location metadata. This
+    <p>The <a href='https://airnowtech.org'>https://airnowtech.org</a> site provides both air
+pollution monitoring data as well as monitoring site location metadata. This
 function retrieves a single, hourly data file and returns it as a dataframe.</p>
     
     </div>
@@ -154,11 +154,11 @@ function retrieves a single, hourly data file and returns it as a dataframe.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>datestamp</th>
-      <td><p>integer or character representing YYYYMMDDHH</p></td>
+      <td><p>Integer or character representing YYYYMMDDHH.</p></td>
     </tr>
     <tr>
       <th>baseUrl</th>
-      <td><p>base URL for archived hourly data</p></td>
+      <td><p>Base URL for archived hourly data.</p></td>
     </tr>
     </table>
     
@@ -168,8 +168,12 @@ function retrieves a single, hourly data file and returns it as a dataframe.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>As of 2016-12-27, it appears that hourly data are available only for 2016 and
-not for earlier years.</p>
+    <p>As of 2016-12-27, it appears that hourly data are available only for
+2016 and not for earlier years.</p>
+<p>Data from locations whose timezones have a fractional offset from UTC
+are removed as the PWFSLSmoke data model only supports data reported on hour
+boundaries. As of 2019-06-26, this only applies to US Department of State
+monitors in Myanmar, Sri Lanka, India and Nepal.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -179,7 +183,7 @@ not for earlier years.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>airnow_downloadHourlyData</span>(<span class='fl'>2016070112</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>airnow_downloadHourlyData</span>(<span class='fl'>2018070112</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

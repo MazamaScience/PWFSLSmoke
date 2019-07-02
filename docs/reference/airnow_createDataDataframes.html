@@ -40,8 +40,9 @@
 <meta property="og:title" content="Return reshaped dataframes of AirNow data — airnow_createDataDataframes" />
 
 <meta property="og:description" content="This function uses the airnow_downloadParseData function
-to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
-with the PWFSLSmoke package ws_monitor data model.
+to download monthly dataframes of AirNow data and restructures that data into
+a format that is compatible with the PWFSLSmoke package ws_monitor
+data model.
 AirNow data parameters include at least the following list:
 BARPR
 BC
@@ -66,7 +67,8 @@ WD
 WS
 " />
 
-<meta property="og:description" content="Setting parameters=NULL will generate a separate dataframe for each of the above parameters." />
+<meta property="og:description" content="Setting parameters=NULL will generate a separate dataframe for each of
+the above parameters." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -97,7 +99,7 @@ WS
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.9</span>
       </span>
     </div>
 
@@ -165,8 +167,9 @@ WS
     <div class="ref-description">
     
     <p>This function uses the <a href='airnow_downloadParseData.html'>airnow_downloadParseData</a> function
-to download monthly dataframes of AirNow data and restructures that data into a format that is compatible
-with the PWFSLSmoke package <em>ws_monitor</em> data model.</p>
+to download monthly dataframes of AirNow data and restructures that data into
+a format that is compatible with the PWFSLSmoke package <em>ws_monitor</em>
+data model.</p>
 <p>AirNow data parameters include at least the following list:</p><ol>
 <li><p>BARPR</p></li>
 <li><p>BC</p></li>
@@ -191,11 +194,13 @@ with the PWFSLSmoke package <em>ws_monitor</em> data model.</p>
 <li><p>WS</p></li>
 </ol>
 
-    <p>Setting <code>parameters=NULL</code> will generate a separate dataframe for each of the above parameters.</p>
+    <p>Setting <code>parameters=NULL</code> will generate a separate dataframe for each of
+the above parameters.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>airnow_createDataDataframes</span>(<span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='st'>""</span>,
+    <pre class="usage"><span class='fu'>airnow_createDataDataframes</span>(<span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(), <span class='st'>"%Y%m%d00"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>),
   <span class='kw'>hours</span> <span class='kw'>=</span> <span class='fl'>24</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -203,26 +208,29 @@ with the PWFSLSmoke package <em>ws_monitor</em> data model.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>parameters</th>
-      <td><p>vector of names of desired pollutants or NULL for all pollutants</p></td>
+      <td><p>Vector of names of desired pollutants or NULL for all
+pollutants.</p></td>
     </tr>
     <tr>
       <th>startdate</th>
-      <td><p>desired start date (integer or character representing YYYYMMDD[HH])</p></td>
+      <td><p>Desired start date (integer or character representing
+YYYYMMDD[HH]).</p></td>
     </tr>
     <tr>
       <th>hours</th>
-      <td><p>desired number of hours of data to assemble</p></td>
+      <td><p>Desired number of hours of data to assemble.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List of dataframes where each dataframe contains all data for a unique parameter (e.g: "PM2.5", "NOX").</p>
+    <p>List of dataframes where each dataframe contains all data for a
+unique parameter (e.g: "PM2.5", "NOX").</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>As of 2016-12-27, it appears that hourly data are available only for 2016 and
-not for earlier years.</p>
+    <p>As of 2016-12-27, it appears that hourly data are available only for
+2016 and not for earlier years.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -232,7 +240,7 @@ not for earlier years.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>airnow_data</span> <span class='kw'>&lt;-</span> <span class='fu'>airnow_createDataDataframes</span>(<span class='st'>"PM2.5"</span>, <span class='fl'>20160701</span>)
+<span class='no'>airnowList</span> <span class='kw'>&lt;-</span> <span class='fu'>airnow_createDataDataframes</span>(<span class='st'>"PM2.5"</span>, <span class='fl'>2019062500</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

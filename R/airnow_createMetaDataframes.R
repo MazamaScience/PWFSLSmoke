@@ -121,8 +121,8 @@ airnow_createMetaDataframes <- function(
   # ----- Data cleanup --------------------------------------------------------
 
   # Convert "O3" to "OZONE" as is used in all AirNow data files
-  mask <- airnowTbl$parameterName == "O3"
-  airnowTbl$parameterName[mask] <- "OZONE"
+  airnowTbl$parameterName[airnowTbl$parameterName == "O3"] <- "OZONE"
+  parameters[parameters == "O3"] <- "OZONE"
 
   # Remove ' ' from the end of MSAName
   airnowTbl$MSAName <- stringr::str_trim(airnowTbl$MSAName)
@@ -195,7 +195,8 @@ airnow_createMetaDataframes <- function(
   }
 
   # TODO:  FIX THIS HACK
-  # NOTE:  Best guess is that at this point all monitors currently reporting frin US.MX are actually in US.TX
+  # NOTE:  Best guess is that at this point all monitors currently reporting
+  # NOTE:  from US.MX are actually in US.TX
   # NOTE:  CA.CC monitors are tougher
   # NOTE:  The AirNow sites file has at least half a dozen mismatches between lat-lon and asociated location information
   mask <- airnowTbl$countryCode == 'US' & airnowTbl$stateCode == 'MX'

@@ -60,7 +60,7 @@ not for earlier years.
 }
 \examples{
 \dontrun{
-monList <- airnow_createMonitorObjects(c("O3","PM2.5"), 20160701)
+monList <- airnow_createMonitorObjects(c("PM2.5"), 20190625)
 pm25 <- monList$PM2.5
 o3 <- monList$O3
 }

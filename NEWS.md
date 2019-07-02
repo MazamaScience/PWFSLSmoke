@@ -1,3 +1,18 @@
+# PWFSLSmoke 1.2.9
+
+* Docker image now includes `optparse` package so that exectuable scripts can
+  be run inside the `mazamascience/pwfslsmoke` image.
+* Fixed error-generating bug in `debug.trace(...)` statement while processing 
+  AirNow data.
+
+# PWFSLSmoke 1.2.8
+
+This patch release deals with the AirNow's recent inclusion in their data feeds
+of US Embassy data. Some Embassy sites are in time zones with fractional offset
+from UTC. The PWFSLSmoke data model requires that all monitoring data align on
+hour boundaries. All non-conforming AirNow monitors (mostly in South Asia) are 
+now removed during the early stages of processing.
+
 # PWFSLSmoke 1.2.7
 
 * Improved support for non-Olson timezones in `timeInfo()`.
