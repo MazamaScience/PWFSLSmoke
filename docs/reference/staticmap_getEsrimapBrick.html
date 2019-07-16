@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse Datetime Strings — parseDatetime • PWFSLSmoke</title>
+<title>Create a rasterBrick from an Esri tiled image server — staticmap_getEsrimapBrick • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,25 +37,15 @@
 
 
 
-<meta property="og:title" content="Parse Datetime Strings — parseDatetime" />
+<meta property="og:title" content="Create a rasterBrick from an Esri tiled image server — staticmap_getEsrimapBrick" />
 
-<meta property="og:description" content="Transforms numeric and string representations of Ymd[HMS] datetimes to
-POSIXct format.
-Ymd, YmdH, YmdHM, and YmdHMS formats are understood, where:
-* Y - four digit year
-  * m - decimal number (1-12, 01-12) or english name month (October, oct.)
-  * d - decimal number day of the month (0-31 or 01-31)
-  * H - decimal number hours (0-24 or 00-24)
-  * M - decimal number minutes (0-59 or 00-59)
-  * S - decimal number seconds (0-61 or 00-61)
-This allows for mixed inputs. For example, 20181012130900,
-&quot;2018-10-12-13-09-00&quot;, and &quot;2018 Oct. 12 13:09:00&quot; will all be converted to
-the same POSIXct datetime. The incoming datetime vector does not need
-to have a homogeneous format either -- &quot;20181012&quot; and &quot;2018-10-12 13:09&quot; can
-exist in the same vector without issue. All incoming datetimes will be
-interpreted in the specified timezone.
-If datetime is a POSIXct it will be returned unmodified, and
-formats not recognized will be returned as NA." />
+<meta property="og:description" content="Uses the input coordinates to fetch and composite a raster from the tile server. Returns a
+raster::rasterBrick object. This
+can then passed as the rasterBrick object to the
+staticmap_plotRasterBrick() function for plotting.
+As of July 2019, this list is a handy reference to the freely available tile
+servers which can be previewed at the following URL:
+https://leaflet-extras.github.io/leaflet-providers/preview/" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -146,89 +136,110 @@ formats not recognized will be returned as NA." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parse Datetime Strings</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/parseDatetime.R'><code>R/parseDatetime.R</code></a></small>
-    <div class="hidden name"><code>parseDatetime.Rd</code></div>
+    <h1>Create a rasterBrick from an Esri tiled image server</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/staticmap_getEsrimapBrick.R'><code>R/staticmap_getEsrimapBrick.R</code></a></small>
+    <div class="hidden name"><code>staticmap_getEsrimapBrick.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Transforms numeric and string representations of Ymd[HMS] datetimes to
-<code>POSIXct</code> format.</p>
-<p>Ymd, YmdH, YmdHM, and YmdHMS formats are understood, where:</p>
-<p>* Y - four digit year
-  * m - decimal number (1-12, 01-12) or english name month (October, oct.)
-  * d - decimal number day of the month (0-31 or 01-31)
-  * H - decimal number hours (0-24 or 00-24)
-  * M - decimal number minutes (0-59 or 00-59)
-  * S - decimal number seconds (0-61 or 00-61)</p>
-<p>This allows for mixed inputs. For example, 20181012130900,
-"2018-10-12-13-09-00", and "2018 Oct. 12 13:09:00" will all be converted to
-the same <code>POSIXct</code> datetime. The incoming datetime vector does not need
-to have a homogeneous format either -- "20181012" and "2018-10-12 13:09" can
-exist in the same vector without issue. All incoming datetimes will be
-interpreted in the specified timezone.</p>
-<p>If <code>datetime</code> is a <code>POSIXct</code> it will be returned unmodified, and
-formats not recognized will be returned as <code>NA</code>.</p>
+    <p>Uses the input coordinates to fetch and composite a raster from the tile server. Returns a
+<code>raster::rasterBrick</code> object. This
+can then passed as the <code>rasterBrick</code> object to the
+<code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick()</a></code> function for plotting.</p>
+<p>As of July 2019, this list is a handy reference to the freely available tile
+servers which can be previewed at the following URL:</p>
+<p><a href='https://leaflet-extras.github.io/leaflet-providers/preview/'>https://leaflet-extras.github.io/leaflet-providers/preview/</a></p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>parseDatetime</span>(<span class='no'>datetime</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>, <span class='kw'>expectAll</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>staticmap_getEsrimapBrick</span>(<span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>baseMap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>,
+  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>maxTiles</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>datetime</th>
-      <td><p>vector of character or integer datetimes in Ymd[HMS] format
-(or POSIXct).</p></td>
+      <th>centerLon</th>
+      <td><p>map center longitude</p></td>
     </tr>
     <tr>
-      <th>timezone</th>
-      <td><p>Olson timezone at the location of interest (default "UTC").</p></td>
+      <th>centerLat</th>
+      <td><p>map center latitude</p></td>
     </tr>
     <tr>
-      <th>expectAll</th>
-      <td><p>Logical value determining if the function should fail if
-any elements fail to parse (default <code>FALSE</code>).</p></td>
+      <th>zoom</th>
+      <td><p>map zoom level</p></td>
+    </tr>
+    <tr>
+      <th>bbox</th>
+      <td><p>must be an <code>st_bbox</code> object as specificed in the <code>sf</code> package documentation
+<a href='https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox'>https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox</a>. If not null,
+<code>centerLon</code>, <code>centerLat</code>, and <code>zoom</code> are ignored.</p></td>
+    </tr>
+    <tr>
+      <th>baseMap</th>
+      <td><p>selects the appropriate Esri tile server. Options include:</p><ul>
+<li><p>"world_topo"</p></li>
+<li><p>"world_imagery"</p></li>
+<li><p>"world_terrain"</p></li>
+<li><p>"de_Lorme"</p></li>
+<li><p>"world_grey"</p></li>
+<li><p>"world_streets"</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>width</th>
+      <td><p>width of image, in pixels</p></td>
+    </tr>
+    <tr>
+      <th>height</th>
+      <td><p>height of image, in pixels</p></td>
+    </tr>
+    <tr>
+      <th>maxTiles</th>
+      <td><p>maximum number of tiles to be returned. The greater the number, the slower the performance -- arbitrarily set to 20 by default.</p></td>
+    </tr>
+    <tr>
+      <th>crs</th>
+      <td><p>object of class CRS. The Coordinate Reference System (CRS) for the
+returned map. If the CRS of the downloaded map does not match, it will be
+projected to the specified CRS using <code><a href='https://www.rdocumentation.org/packages/raster/topics/projectRaster'>raster::projectRaster</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>POSIXct datetimes.</p>
+    <p>A rasterBrick object which can be plotted with
+<code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick()</a></code> or <code><a href='https://www.rdocumentation.org/packages/raster/topics/plotRGB'>raster::plotRGB()</a></code> and serve as a
+base plot.</p>
     
-    <h2 class="hasAnchor" id="pwfslsmoke-conventions"><a class="anchor" href="#pwfslsmoke-conventions"></a>PWFSLSmoke Conventions</h2>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    
-    <p>Within the PWFSLSmoke package, datetimes not in <code>POSIXct</code> format are
-represented as decimal values with no separation (ex: 20181012,
-20181012130900), either as numerics or strings.</p>
-    
-    <h2 class="hasAnchor" id="implementation"><a class="anchor" href="#implementation"></a>Implementation</h2>
-
-    
-    <p><code>parseDatetime</code> is essentially a wrapper around
-<code><a href='http://lubridate.tidyverse.org/reference/parse_date_time.html'>parse_date_time</a></code>, handling which formats we want to
-account for.</p>
+    <p>The spatial reference of the image when it is downloaded is 3857. If
+the crs argument is different, projecting may cause the size and extent of
+the image to differ very slightly from the input, on a scale of 1-2 pixels or
+10^-3 degrees.</p>
+<p>If bbox is specified and the bbox aspect ratio does not match the
+width/height aspect ratio the extent is resized to prevent the map image from
+appearing stretched, so the map extent may not match the bbox argument
+exactly.</p>
+<p>Currently Esri tile servers are the only functional ones utilizing this paradigmn.
+Using the <a href='https://github.com/MilesMcBain/slippymath'>slippymath</a> package, only the freely
+available Esri tile servers compile to a properly colored RasterBrick.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='http://lubridate.tidyverse.org/reference/parse_date_time.html'>parse_date_time</a></code> for implementation details.</p></div>
+    <div class='dont-index'><p><code><a href='staticmap_getRasterBrick.html'>staticmap_getRasterBrick</a></code></p>
+<p><code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>starttime</span> <span class='kw'>&lt;-</span> <span class='fu'>parseDatetime</span>(<span class='fl'>2015080718</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>)
-<span class='no'>datetimes</span> <span class='kw'>&lt;-</span> <span class='fu'>parseDatetime</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"20181014 12"</span>, <span class='st'>"20181015 12"</span>, <span class='st'>"20181016 12"</span>))</div><span class='co'># NOT RUN {</span>
-<span class='no'>badInput</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"20181013"</span>, <span class='fl'>NA</span>, <span class='st'>"20181015"</span>, <span class='st'>"181016"</span>, <span class='st'>"10172018"</span>)
-
-<span class='co'># This will return a vector with the date that were able to parse</span>
-<span class='fu'>parseDatetime</span>(<span class='no'>badInput</span>, <span class='kw'>expectAll</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='co'># This will return an error, since some non-NA indices didn't parse</span>
-<span class='fu'>parseDatetime</span>(<span class='no'>badInput</span>, <span class='kw'>expectAll</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>mapRaster</span> <span class='kw'>&lt;-</span> <span class='fu'>staticmap_getEsrimapBrick</span>(-<span class='fl'>122.3318</span>, <span class='fl'>47.668</span>)
+<span class='fu'><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></span>(<span class='no'>mapRaster</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -237,9 +248,7 @@ account for.</p>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#pwfslsmoke-conventions">PWFSLSmoke Conventions</a></li>
-
-      <li><a href="#implementation">Implementation</a></li>
+      <li><a href="#note">Note</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
