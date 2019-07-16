@@ -2,11 +2,3 @@ title: PWFSLSmoke
 template:
   params:
     bootswatch: flatly
-articles:
-- title: All vignettes
-  desc: ~
-  contents:
-  - '`Intro_to_PWFSLSmoke`'
-  - '`Data_Model`'
-  - '`Maps_and_Timeseries_Plots`'
-  - '`NowCast`'
