@@ -50,6 +50,7 @@
 #' mapRaster <- staticmap_getStamenmapBrick(-122.3318, 47.668)
 #' staticmap_plotRasterBrick(mapRaster)
 #' }
+#' @seealso \code{\link{staticmap_getRasterBrick}}
 #' @seealso \code{\link{staticmap_plotRasterBrick}}
 #'
 

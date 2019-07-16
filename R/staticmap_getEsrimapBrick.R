@@ -1,12 +1,20 @@
 #' @keywords plotting
 #' @export
 #'
-#' @title Create a rasterBrick from a tiled image server
+#' @title Create a rasterBrick from an Esri tiled image server
 #'
 #' @param centerLon map center longitude
 #' @param centerLat map center latitude
-#' @param zoom map zoom level; corresponds to \code{ggmap::get_map()} zoom level
-#' @param tileServer tile server to use, if none defaults to Esri Topo
+#' @param zoom map zoom level
+#' @param baseMap selects the appropriate Esri tile server. Options include:
+#' \itemize{
+#'   \item "world_topo"
+#'   \item "world_imagery"
+#'   \item "world_terrain"
+#'   \item "de_Lorme"
+#'   \item "world_grey"
+#'   \item "world_streets"
+#' }
 #' @param bbox must be an \code{st_bbox} object as specificed in the \code{sf} package documentation
 #'   \url{https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox}. If not null,
 #'   \code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.
@@ -17,7 +25,7 @@
 #'   returned map. If the CRS of the downloaded map does not match, it will be
 #'   projected to the specified CRS using \code{raster::projectRaster}.
 #'
-#' @description Uses the input coordinates to fetch and composite a raster from a tile server. Returns a
+#' @description Uses the input coordinates to fetch and composite a raster from the tile server. Returns a
 #' \code{raster::rasterBrick} object. This
 #' can then passed as the \code{rasterBrick} object to the
 #' \code{staticmap_plotRasterBrick()} function for plotting.
@@ -38,23 +46,28 @@
 #' appearing stretched, so the map extent may not match the bbox argument
 #' exactly.
 #'
+#' @note Currently Esri tile servers are the only functional ones utilizing this paradigmn.
+#' Using the \href{https://github.com/MilesMcBain/slippymath}{slippymath} package, only the freely
+#' available Esri tile servers compile to a properly colored RasterBrick.
+#'
 #' @return A rasterBrick object which can be plotted with
 #' \code{staticmap_plotRasterBrick()} or \code{raster::plotRGB()} and serve as a
 #' base plot.
 #'
 #' @examples
 #' \dontrun{
-#' mapRaster <- staticmap_getTiledImagek(-122.3318, 47.668)
+#' mapRaster <- staticmap_getEsrimapBrick(-122.3318, 47.668)
 #' staticmap_plotRasterBrick(mapRaster)
 #' }
+#' @seealso \code{\link{staticmap_getRasterBrick}}
 #' @seealso \code{\link{staticmap_plotRasterBrick}}
 
-staticmap_getTiledImage <- function(
+staticmap_getEsrimapBrick <- function(
   centerLon = NULL,
   centerLat = NULL,
   zoom = 12,
   bbox = NULL,
-  tileServer = NULL,
+  baseMap = NULL,
   width = 640,
   height = 640,
   maxTiles = 20,
@@ -92,53 +105,43 @@ staticmap_getTiledImage <- function(
 
     outlook_bbox <-
       sf::st_bbox(c(xmin=xmin,
-                xmax=xmax,
-                ymin=ymin,
-                ymax=ymax),
-              crs = crs)
-  } else if ( !is.null(bbox) ) {
-    bboxSR <- "4326"
+                    xmax=xmax,
+                    ymin=ymin,
+                    ymax=ymax),
+                  crs = crs)
   } else {
     stop("centerLat + centerLon, or bbox must be specified")
   }
 
-  # Maximum Tiles
-  max_tiles_param <- maxTiles
+  # convert sf bbox to slippymath tile grid
+  tile_grid <- slippymath::bbox_to_tile_grid(outlook_bbox, max_tiles = maxTiles)
 
-  # convert bbox to tile grid
-  tile_grid <- slippymath::bbox_to_tile_grid(outlook_bbox, max_tiles = max_tiles_param)
-
-  # ----- Toggle between Tile Servers -----------------------------------------------
-  # Setting an Available Presets list for a user to enter, with the option to specify a
+  # ----- Toggle between Esri Tile Servers -----------------------------------------------
+  # Currently only an available presets list for a user to enter, is available with no option to specify a
   # entirely unique url for a tile server. Examples can be found here https://leaflet-extras.github.io/leaflet-providers/preview/.
-
-  # NOTE: parameters must be x,y and zoom explicitly! Some tile servers have zoom as 'z', and an additional {s} parameter for
-  # load balancing tile requests. It is imperitive that the user specify a static server ({s}) in their custom tile server URL,
-  # and ensure they switch 'z' parameters to 'zoom'.
-
-  # NOTE: Tile Servers must return a RasterBrick object with slippymath, and not a tg_composite() (Open Street Maps)
+.
+  # NOTE: Tile Servers must return a RasterBrick object from slippymath::compose_tile_grid, and not a tg_composite() (OSM)
 
   # Available Presets
-  AVAILABLE_PRESETS <- c("esri_topo", "esri_imagery", "esri_terrain")
-  esri_topo <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{zoom}/{y}/{x}"
-  esri_imagery <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{zoom}/{y}/{x}"
-  esri_terrain <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{zoom}/{y}/{x}"
+  AVAILABLE_PRESETS <-  c("world_topo", "world_imagery", "world_terrain", "de_Lorme", "world_gray", "world_street")
 
-  # If the tileServer param is set to a preset, set the query string to the preset
-  # If the tileServer param is set to a url, allow the user to define a custom tileserver at their own risk
+  world_topo <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{zoom}/{y}/{x}"
+  world_imagery <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{zoom}/{y}/{x}"
+  world_terrain <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{zoom}/{y}/{x}"
+  de_Lorme <-"https://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{zoom}/{y}/{x}"
+  world_gray <- "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{zoom}/{y}/{x}"
+  world_street <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{zoom}/{y}/{x}"
+
+  # If the baseMap param is set to a preset, set the query string to the preset
   # Otherwise default to the esri topo tile server
-  if ( !is.null(tileServer) ) {
-    if ( tileServer %in% AVAILABLE_PRESETS ) {
-      tileserver_query_string <- eval(parse(text=tileServer))
+  if ( !is.null(baseMap) ) {
+    if ( baseMap %in% AVAILABLE_PRESETS ) {
+      tileserver_query_string <- eval(parse(text=baseMap))
     } else {
-      if ( startsWith(tileServer, "https://") ) {
-        tileserver_query_string <- tileServer
-      } else {
-        stop("For custom tileServer parameters, please enter a valid preset or a proper tile server URL")
-      }
+        stop(paste0("Required parameter baseMap = '", baseMap, "' is not a valid preset."))
     }
   } else {
-    tileserver_query_string <- esri_topo
+    tileserver_query_string <- world_topo
   }
 
   # create tmp_dir
@@ -147,15 +150,15 @@ staticmap_getTiledImage <- function(
   # curl images
   images <-
     purrr::pmap(tile_grid$tiles,
-         function(x, y, zoom){
-           outfile <- glue::glue("tmp_tiles/{x}_{y}.jpg")
-           curl::curl_download(url = glue::glue(tileserver_query_string),
-                         destfile = outfile)
-           outfile
-         },
-         zoom = tile_grid$zoom)
+                function(x, y, zoom){
+                  outfile <- glue::glue("tmp_tiles/{x}_{y}.jpg")
+                  curl::curl_download(url = glue::glue(tileserver_query_string),
+                                      destfile = outfile)
+                  outfile
+                },
+                zoom = tile_grid$zoom)
 
-  # returns a raster brick
+  # returns a RasterBrick
   raster_out <- slippymath::compose_tile_grid(tile_grid, images)
 
   # remove the curled tmp_tiles

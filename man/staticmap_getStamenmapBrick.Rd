@@ -69,6 +69,8 @@ staticmap_plotRasterBrick(mapRaster)
 }
 }
 \seealso{
+\code{\link{staticmap_getRasterBrick}}
+
 \code{\link{staticmap_plotRasterBrick}}
 }
 \keyword{plotting}
