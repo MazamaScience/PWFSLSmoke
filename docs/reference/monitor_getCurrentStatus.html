@@ -71,7 +71,7 @@ object with summarized and aggregate data from the ws_monitor object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.10</span>
       </span>
     </div>
 
@@ -82,9 +82,6 @@ object with summarized and aggregate data from the ws_monitor object." />
     <span class="fa fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/PWFSLSmoke.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -98,6 +95,9 @@ object with summarized and aggregate data from the ws_monitor object." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Data_Model.html">Data Model</a>
+    </li>
+    <li>
+      <a href="../articles/Intro_to_PWFSLSmoke.html">Introduction to PWFSLSmoke</a>
     </li>
     <li>
       <a href="../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
@@ -208,21 +208,15 @@ latency is then 1 (hour), and the previous latency is 3 (hours).</p>
     <p>The table created by <code>monitor_getCurrentStatus()</code> includes summary
 information for the data part of the given <em>ws_monitor</em> object. The
 summaries included are listed below with a description:</p>
-<table class='table'>
-<tr><td></td><td>yesterday_pm25_24hr</td></tr>
-<tr><td>Daily AQI value for the day prior to</td><td></td></tr>
-<tr><td><code>endTime</code></td><td></td></tr>
-<tr><td></td><td>last_nowcast_1hr</td></tr>
-<tr><td>Last valid NowCast measurement</td><td></td></tr>
-<tr><td>last_PM2.5_1hr</td><td>Last valid raw PM2.5 measurement</td></tr>
-<tr><td></td><td>last_PM2.5_3hr</td></tr>
-<tr><td>Mean of the last valid raw PM2.5 measurement</td><td>with the preceding two measurements</td></tr>
-<tr><td></td><td>previous_nowcast_1hr</td></tr>
-<tr><td>Previous valid NowCast measurement</td><td></td></tr>
-<tr><td>previous_PM2.5_1hr</td><td>Previous valid raw PM2.5 measurement</td></tr>
-<tr><td></td><td>previous_PM2.5_3hr</td></tr>
-<tr><td>Mean of the previous valid raw PM2.5 measurement</td><td>with the preceding two measurements</td></tr>
-</table>
+<dl class='dl-horizontal'>
+  <dt>yesterday_pm25_24hr</dt><dd><p>Daily AQI value for the day prior to <code>endTime</code></p></dd>
+  <dt>last_nowcast_1hr</dt><dd><p>Last valid NowCast measurement</p></dd>
+  <dt>last_PM2.5_1hr</dt><dd><p>Last valid raw PM2.5 measurement</p></dd>
+  <dt>last_PM2.5_3hr</dt><dd><p>Mean of the last valid raw PM2.5 measurementwith the preceding two measurements</p></dd>
+  <dt>previous_nowcast_1hr</dt><dd><p>Previous valid NowCast measurement</p></dd>
+  <dt>previous_PM2.5_1hr</dt><dd><p>Previous valid raw PM2.5 measurement</p></dd>
+  <dt>previous_PM2.5_3hr</dt><dd><p>Mean of the previous valid raw PM2.5 measurement with the preceding two measurements</p></dd>
+</dl>
     <p>It should be noted that all averages are "right-aligned", meaning that the
 three hour mean of data at time <code>n</code> will comprise of the data at times
 <code>[n-2, n-1, n]</code>. Data for <code>n-2</code> and <code>n-1</code> is not guaranteed to
@@ -235,24 +229,18 @@ exist, so a three hour average may include 1 to 3 data points.</p>
 flags representing events that may have occurred for a monitor within the
 bounds of the specified end time and data in the <em>ws_monitor</em> object.
 Each flag is listed below with its corresponding meaning:</p>
-<table class='table'>
-<tr><td></td><td>last_nowcastLevel</td></tr>
-<tr><td>NowCast level at the last valid time</td><td></td></tr>
-<tr><td>previous_nowcastLevel</td><td>NowCast level at the previous valid time</td></tr>
-<tr><td></td><td></td></tr>
-<tr><td>NR6</td><td>Monitor not reporting for more than 6 hours</td></tr>
-<tr><td></td><td>NEW6</td></tr>
-<tr><td>New monitor reporting in the last 6 hours</td><td></td></tr>
-<tr><td>USG6</td><td>NowCast level increased to Unhealthy for Sensitive Groups in the</td></tr>
-<tr><td>last 6 hours</td><td></td></tr>
-<tr><td>U6</td><td>NowCast level increased to Unhealthy in the last 6 hours</td></tr>
-<tr><td></td><td>VU6</td></tr>
-<tr><td>NowCast level increased to Very Unhealthy in the last 6 hours</td><td></td></tr>
-<tr><td>HAZ6</td><td>NowCast level increased to Hazardous in the last 6 hours</td></tr>
-<tr><td></td><td>MOD6</td></tr>
-<tr><td>NowCast level decreased to Moderate or Good in the last 6 hours</td><td></td></tr>
-<tr><td>MAL6</td><td>Monitor malfunctioning the last 6 hours (not currently implemented)</td></tr>
-</table>
+<dl class='dl-horizontal'>
+  <dt>last_nowcastLevel</dt><dd><p>NowCast level at the last valid time</p></dd>
+  <dt>previous_nowcastLevel</dt><dd><p>NowCast level at the previous valid time</p></dd>
+  <dt>NR6</dt><dd><p>Monitor not reporting for more than 6 hours</p></dd>
+  <dt>NEW6</dt><dd><p>New monitor reporting in the last 6 hours</p></dd>
+  <dt>USG6</dt><dd><p>NowCast level increased to Unhealthy for Sensitive Groups in the last 6 hours</p></dd>
+  <dt>U6</dt><dd><p>NowCast level increased to Unhealthy in the last 6 hours</p></dd>
+  <dt>VU6</dt><dd><p>NowCast level increased to Very Unhealthy in the last 6 hours</p></dd>
+  <dt>HAZ6</dt><dd><p>NowCast level increased to Hazardous in the last 6 hours</p></dd>
+  <dt>MOD6</dt><dd><p>NowCast level decreased to Moderate or Good in the last 6 hours</p></dd>
+  <dt>MAL6</dt><dd><p>Monitor malfunctioning the last 6 hours (not currently implemented)</p></dd>
+</dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

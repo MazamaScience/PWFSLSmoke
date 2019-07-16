@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.10</span>
       </span>
     </div>
 
@@ -47,9 +47,6 @@
     <span class="fa fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/PWFSLSmoke.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -63,6 +60,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Data_Model.html">Data Model</a>
+    </li>
+    <li>
+      <a href="../articles/Intro_to_PWFSLSmoke.html">Introduction to PWFSLSmoke</a>
     </li>
     <li>
       <a href="../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
@@ -324,12 +324,12 @@ NowCast = \frac
 <h3 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h3>
 <p>For the following examples we will use the Northwest Megafires data from the PWFSLSmoke package. In particular, we will look at PM2.5 data from Omak, WA, which was heavily impacted by smoke from wildfires during the second half of August, 2015:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(PWFSLSmoke))
-
-N_M &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Northwest_Megafires, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),
-                      <span class="dt">timezone=</span><span class="st">"America/Los_Angeles"</span>)
-Omak &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(N_M, <span class="dt">monitorIDs=</span><span class="st">'530470013_01'</span>)
-Omak_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_nowcast.html">monitor_nowcast</a></span>(Omak)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(PWFSLSmoke))</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">N_M &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Northwest_Megafires, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">                      <span class="dt">timezone=</span><span class="st">"America/Los_Angeles"</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">Omak &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(N_M, <span class="dt">monitorIDs=</span><span class="st">'530470013_01'</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">Omak_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_nowcast.html">monitor_nowcast</a></span>(Omak)</a></code></pre></div>
 <p><img src="NowCast_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 </div>
 <div id="example-1-basic-formula-verification" class="section level3">
@@ -337,8 +337,8 @@ Omak_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
 <a href="#example-1-basic-formula-verification" class="anchor"></a>Example 1: Basic Formula Verification</h3>
 <p>In the code above we used the <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> function to calculate PM2.5 NowCast values for the Omak <code>ws_monitor</code> object. Let’s see if we can verify the function’s output for a single hour.</p>
 <p>Below is the Omak PM2.5 data for the first 12 hours of 8/21/15. Let’s see if we can verify the accuracy of the NowCast value for the last hour in this series, 8/21/15 Hour 11.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Omak_2015_08_<span class="dv">21</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082100</span>, <span class="dv">2015082111</span>))
-(example1_df &lt;-<span class="st"> </span>Omak_2015_08_<span class="dv">21</span><span class="op">$</span>data)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">Omak_<span class="dv">2015</span>_<span class="dv">08</span>_<span class="dv">21</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082100</span>, <span class="dv">2015082111</span>))</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">(example1_df &lt;-<span class="st"> </span>Omak_<span class="dv">2015</span>_<span class="dv">08</span>_<span class="dv">21</span><span class="op">$</span>data)</a></code></pre></div>
 <pre><code>              datetime 530470013_01
 1  2015-08-21 00:00:00        123.3
 2  2015-08-21 01:00:00         80.2
@@ -353,13 +353,13 @@ Omak_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
 11 2015-08-21 10:00:00         27.4
 12 2015-08-21 11:00:00         46.3</code></pre>
 <p>First we’ll pull out just the values themselves, and reverse them so the most recent values come first (i.e. so the vector represents <span class="math inline">\(c_1\)</span>, <span class="math inline">\(c_2\)</span>, <span class="math inline">\(...\)</span>, <span class="math inline">\(c_N\)</span>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(example1_values &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(example1_df<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">(example1_values &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(example1_df<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>))</a></code></pre></div>
 <pre><code> [1]  46.3  27.4  59.8 129.2 130.6 215.4 143.2  93.7 101.8  49.3  80.2 123.3</code></pre>
 <p>Per the NowCast algorithm, we define <span class="math inline">\(w*\)</span> as <span class="math inline">\(\frac{c_{min}}{c_{max}}\)</span>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(w_star &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(example1_values)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(example1_values))</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">(w_star &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(example1_values)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(example1_values))</a></code></pre></div>
 <pre><code>[1] 0.1272052</code></pre>
 <p>We now define <span class="math inline">\(w\)</span> based on <span class="math inline">\(w^*\)</span> and the minimum weight factor; recall that <span class="math inline">\(w_{min}=\frac{1}{2}\)</span> for PM2.5:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(w &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, w_star))</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">(w &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, w_star))</a></code></pre></div>
 <pre><code>[1] 0.5</code></pre>
 <p>Thus, the numerator of the NowCast equation for Hour 11</p>
 <p><span class="math display">\[
@@ -368,7 +368,7 @@ w^0c_1 + w^1c_2 + w^2c_3 + w^3c_4 + w^4c_5 + w^5c_6 + w^6c_7 + w^7c_8 + w^8c_9 +
 <p>becomes the following:</p>
 <p><span class="math inline">\(0.5^0 \times 46.3 + 0.5^1 \times 27.4 + 0.5^2 \times 59.8 + 0.5^3 \times 129.2 + 0.5^4 \times 130.6 + 0.5^5 \times 215.4\)</span> +<br><span class="math inline">\(0.5^6 \times 143.2 + 0.5^7 \times 93.7 + 0.5^8 \times 101.8 + 0.5^9 \times 49.3 + 0.5^{10} \times 80.2 + 0.5^{11} \times 123.3\)</span></p>
 <p>which we can calculate in R as follows</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(numer &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">11</span>)<span class="op">*</span>example1_values))</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">(numer &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">11</span>)<span class="op">*</span>example1_values))</a></code></pre></div>
 <pre><code>[1] 109.5958</code></pre>
 <p>Meanwhile, the denominator</p>
 <p><span class="math display">\[
@@ -377,13 +377,13 @@ w^0 + w^1 + w^2 + w^3 + w^4 + w^5 + w^6 + w^7 + w^8 + w^9 + w^{10} + w^{11}
 <p>becomes the following:</p>
 <p><span class="math inline">\(0.5^0 + 0.5^1 + 0.5^2 + 0.5^3 + 0.5^4 + 0.5^5 + 0.5^6 + 0.5^7 + 0.5^8 + 0.5^9 + 0.5^{10} + 0.5^{11}\)</span></p>
 <p>which we can calculate in R as follows</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(denom &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">11</span>)))</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">(denom &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">11</span>)))</a></code></pre></div>
 <pre><code>[1] 1.999512</code></pre>
 <p>Dividing the numerator by the denominator gives a value of</p>
 <pre><code>[1] 54.81126</code></pre>
 <p>which we truncate to one decimal place for a final NowCast value of <strong>54.8</strong> for 8/21/15 Hour 11.</p>
 <p>So how does this compare to our <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> output for the same hour?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2015082111</span>, <span class="dv">2</span>))<span class="op">$</span>data</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2015082111</span>, <span class="dv">2</span>))<span class="op">$</span>data</a></code></pre></div>
 <pre><code>             datetime 530470013_01
 1 2015-08-21 11:00:00         54.8</code></pre>
 <p>Right on!</p>
@@ -392,8 +392,8 @@ w^0 + w^1 + w^2 + w^3 + w^4 + w^5 + w^6 + w^7 + w^8 + w^9 + w^{10} + w^{11}
 <h3 class="hasAnchor">
 <a href="#example-2-short-missing-data-period" class="anchor"></a>Example 2: Short Missing Data Period</h3>
 <p>So we have verified the calculation for a period with 12 valid hours. But how does the function handle missing data periods? Let’s take a look at a short period of missing data to find out.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Omak_2015_08_<span class="dv">24</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082412</span>, <span class="dv">2015082423</span>))
-(example2_df &lt;-<span class="st"> </span>Omak_2015_08_<span class="dv">24</span><span class="op">$</span>data)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">Omak_<span class="dv">2015</span>_<span class="dv">08</span>_<span class="dv">24</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082412</span>, <span class="dv">2015082423</span>))</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">(example2_df &lt;-<span class="st"> </span>Omak_<span class="dv">2015</span>_<span class="dv">08</span>_<span class="dv">24</span><span class="op">$</span>data)</a></code></pre></div>
 <pre><code>              datetime 530470013_01
 1  2015-08-24 12:00:00        461.7
 2  2015-08-24 13:00:00        486.2
@@ -413,21 +413,21 @@ w^0 + w^1 + w^2 + w^3 + w^4 + w^5 + w^6 + w^7 + w^8 + w^9 + w^{10} + w^{11}
 <a href="#formula-verification" class="anchor"></a>Formula Verification</h4>
 <p>Let’s see if we can verify the accuracy of the NowCast value for Hour 23.</p>
 <p>We again begin by pulling out our vector of values <span class="math inline">\(c_1\)</span>, <span class="math inline">\(c_2\)</span>, <span class="math inline">\(...\)</span>, <span class="math inline">\(c_N\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(example2_values &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(example2_df<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>))</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">(example2_values &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(example2_df<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>))</a></code></pre></div>
 <pre><code> [1] 478.5 504.6 589.8 683.3 711.0    NA 745.5 645.7 583.0 510.4 486.2 461.7</code></pre>
 <p>and calculating <span class="math inline">\(w*\)</span> and <span class="math inline">\(w\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">w_star &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(example2_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(example2_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-(w &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, w_star))</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">w_star &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(example2_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(example2_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">(w &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, w_star))</a></code></pre></div>
 <pre><code>[1] 0.6193159</code></pre>
 <p>This time our numerator and denominator should both exclude the 6th term, since <span class="math inline">\(c_6\)</span> is invalid. So we have</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">validIndexes &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(example2_values))
-numer &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>example2_values[validIndexes])
-denom &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="op">-</span><span class="dv">1</span>))
-numer<span class="op">/</span>denom</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">validIndexes &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(example2_values))</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">numer &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="dv">-1</span>)<span class="op">*</span>example2_values[validIndexes])</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">denom &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="dv">-1</span>))</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">numer<span class="op">/</span>denom</a></code></pre></div>
 <pre><code>[1] 543.896</code></pre>
 <p>We truncate the value above to one decimal place for a final NowCast value of <strong>543.8</strong> for 8/24/15 Hour 23.</p>
 <p>So how does this compare to our <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> output for the same hour?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2015082423</span>, <span class="dv">2</span>))<span class="op">$</span>data</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2015082423</span>, <span class="dv">2</span>))<span class="op">$</span>data</a></code></pre></div>
 <pre><code>             datetime 530470013_01
 1 2015-08-24 23:00:00        543.8</code></pre>
 <p>Again, right on!</p>
@@ -436,9 +436,9 @@ numer<span class="op">/</span>denom</code></pre></div>
 <h4 class="hasAnchor">
 <a href="#missing-data-verification" class="anchor"></a>Missing Data Verification</h4>
 <p>A quick look at the monitored data alongside the NowCast data shows that all NowCast hours are valid except for the c<sub>1</sub> moment when the monitoring data is also invalid.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example2_df<span class="op">$</span>nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082412</span>, <span class="dv">2015082423</span>))<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(example2_df) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"datetime"</span>, <span class="st">"monitored"</span>, <span class="st">"nowcast"</span>)
-example2_df</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">example2_df<span class="op">$</span>nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082412</span>, <span class="dv">2015082423</span>))<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(example2_df) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"datetime"</span>, <span class="st">"monitored"</span>, <span class="st">"nowcast"</span>)</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">example2_df</a></code></pre></div>
 <pre><code>              datetime monitored nowcast
 1  2015-08-24 12:00:00     461.7   403.1
 2  2015-08-24 13:00:00     486.2   444.7
@@ -458,8 +458,8 @@ example2_df</code></pre></div>
 <h3 class="hasAnchor">
 <a href="#example-3-long-missing-data-period" class="anchor"></a>Example 3: Long Missing Data Period</h3>
 <p>We now look at a longer period of missing data, from the day prior on 8/23/15.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Omak_2015_08_<span class="dv">23</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082312</span>, <span class="dv">2015082323</span>))
-(example3_df &lt;-<span class="st"> </span>Omak_2015_08_<span class="dv">23</span><span class="op">$</span>data)</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">Omak_<span class="dv">2015</span>_<span class="dv">08</span>_<span class="dv">23</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082312</span>, <span class="dv">2015082323</span>))</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">(example3_df &lt;-<span class="st"> </span>Omak_<span class="dv">2015</span>_<span class="dv">08</span>_<span class="dv">23</span><span class="op">$</span>data)</a></code></pre></div>
 <pre><code>              datetime 530470013_01
 1  2015-08-23 12:00:00        711.8
 2  2015-08-23 13:00:00        734.0
@@ -479,21 +479,21 @@ example2_df</code></pre></div>
 <a href="#formula-verification-1" class="anchor"></a>Formula Verification</h4>
 <p>Let’s see if we can verify the accuracy of the NowCast value for Hour 23.</p>
 <p>We again begin by pulling out our vector of values <span class="math inline">\(c_1\)</span>, <span class="math inline">\(c_2\)</span>, <span class="math inline">\(...\)</span>, <span class="math inline">\(c_N\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(example3_values &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(example3_df<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>))</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">(example3_values &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(example3_df<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>))</a></code></pre></div>
 <pre><code> [1] 149.5 149.9 238.6    NA    NA    NA    NA    NA 763.8 744.6 734.0 711.8</code></pre>
 <p>and calculating <span class="math inline">\(w*\)</span> and <span class="math inline">\(w\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">w_star &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(example3_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(example3_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-(w &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, w_star))</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">w_star &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(example3_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(example3_values, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">(w &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, w_star))</a></code></pre></div>
 <pre><code>[1] 0.5</code></pre>
 <p>This time our numerator and denominator should both exclude the 4th-8th terms, since <span class="math inline">\(c_4\)</span>, <span class="math inline">\(c_5\)</span>, <span class="math inline">\(c_6\)</span>, <span class="math inline">\(c_7\)</span> and <span class="math inline">\(c_8\)</span> are invalid. So we have</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">validIndexes &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(example3_values))
-numer &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>example3_values[validIndexes])
-denom &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="op">-</span><span class="dv">1</span>))
-numer<span class="op">/</span>denom</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">validIndexes &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(example3_values))</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">numer &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="dv">-1</span>)<span class="op">*</span>example3_values[validIndexes])</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">denom &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(w<span class="op">^</span>(validIndexes<span class="dv">-1</span>))</a>
+<a class="sourceLine" id="cb35-4" data-line-number="4">numer<span class="op">/</span>denom</a></code></pre></div>
 <pre><code>[1] 164.7973</code></pre>
 <p>We truncate the value above to one decimal place for a final NowCast value of <strong>164.7</strong> for 8/23/15 Hour 23.</p>
 <p>So how does this compare to our <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> output for the same hour?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2015082323</span>, <span class="dv">2</span>))<span class="op">$</span>data</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">2015082323</span>, <span class="dv">2</span>))<span class="op">$</span>data</a></code></pre></div>
 <pre><code>             datetime 530470013_01
 1 2015-08-23 23:00:00        164.7</code></pre>
 <p>Again, right on!</p>
@@ -502,9 +502,9 @@ numer<span class="op">/</span>denom</code></pre></div>
 <h4 class="hasAnchor">
 <a href="#missing-data-verification-1" class="anchor"></a>Missing Data Verification</h4>
 <p>Now we’ll look at the monitored data alongside the NowCast data to see how the validity of the NowCast data was affected by the missing monitored hours.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example3_df<span class="op">$</span>nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082312</span>, <span class="dv">2015082323</span>))<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(example3_df) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"datetime"</span>, <span class="st">"monitored"</span>, <span class="st">"nowcast"</span>)
-example3_df</code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">example3_df<span class="op">$</span>nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082312</span>, <span class="dv">2015082323</span>))<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(example3_df) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"datetime"</span>, <span class="st">"monitored"</span>, <span class="st">"nowcast"</span>)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">example3_df</a></code></pre></div>
 <pre><code>              datetime monitored nowcast
 1  2015-08-23 12:00:00     711.8   667.8
 2  2015-08-23 13:00:00     734.0   700.9
@@ -548,10 +548,10 @@ Status: <span style="color:limegreen">GOOD</span></p>
 <a href="#example-4-includeshortterm-argument" class="anchor"></a>Example 4: <code>includeShortTerm</code> argument</h3>
 <p>For our final NowCast example we will explore the <code>includeShortTerm</code> argument, including a demonstration of why it defaults to <code>FALSE</code>.</p>
 <p>Suppose we wanted to know the NowCast values for Omak for the first half of 8/25/15, since concentrations were extremely high at the time. A normal course of action might be to create a <code>ws_monitor</code> object for Omak for 8/25/15:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tlim &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082500</span>,<span class="dv">2015082523</span>)
-Omak2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Northwest_Megafires, <span class="dt">tlim=</span>tlim, <span class="dt">monitorIDs =</span> <span class="st">'530470013_01'</span>)
-Omak2_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_nowcast.html">monitor_nowcast</a></span>(Omak2)
-Omak2_nowcast<span class="op">$</span>data</code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">tlim &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2015082500</span>,<span class="dv">2015082523</span>)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">Omak2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Northwest_Megafires, <span class="dt">tlim=</span>tlim, <span class="dt">monitorIDs =</span> <span class="st">'530470013_01'</span>)</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">Omak2_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_nowcast.html">monitor_nowcast</a></span>(Omak2)</a>
+<a class="sourceLine" id="cb41-4" data-line-number="4">Omak2_nowcast<span class="op">$</span>data</a></code></pre></div>
 <pre><code>              datetime 530470013_01
 1  2015-08-25 00:00:00           NA
 2  2015-08-25 01:00:00           NA
@@ -578,8 +578,8 @@ Omak2_nowcast<span class="op">$</span>data</code></pre></div>
 23 2015-08-25 22:00:00           NA
 24 2015-08-25 23:00:00        120.3</code></pre>
 <p>Unfortunately, the first 12 hours are invalid. But you read in the documentation that <code>includeShortTerm=TRUE</code> will return values for the second valid hour onwards. So you try again, this time setting <code>includeShortTerm=TRUE</code>. Let’s check it out.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Omak2_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_nowcast.html">monitor_nowcast</a></span>(Omak2, <span class="dt">includeShortTerm =</span> <span class="ot">TRUE</span>)
-Omak2_nowcast<span class="op">$</span>data</code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">Omak2_nowcast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_nowcast.html">monitor_nowcast</a></span>(Omak2, <span class="dt">includeShortTerm =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">Omak2_nowcast<span class="op">$</span>data</a></code></pre></div>
 <pre><code>              datetime 530470013_01
 1  2015-08-25 00:00:00           NA
 2  2015-08-25 01:00:00        456.3
@@ -608,10 +608,10 @@ Omak2_nowcast<span class="op">$</span>data</code></pre></div>
 <p>Nice. We were able to get NowCast values for all but the first hour!</p>
 <p>But there’s a problem lurking. Setting <code>includeShortTerm=TRUE</code> caused the <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> function to treat hours prior to Hour 0 as invalid. <strong>It has no idea that valid data is available for this period.</strong></p>
 <p>As an experiment, let’s see how the NowCast values would look if we calculated them from a larger dataset that includes the data prior to 8/25/15 Hour 0.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example4_df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span>tlim)<span class="op">$</span>data
-example4_df<span class="op">$</span>shortTerm_T &lt;-<span class="st"> </span>Omak2_nowcast<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(example4_df) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"datetime"</span>, <span class="st">"fullDataset"</span>, <span class="st">"shortTerm"</span>)
-example4_df</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">example4_df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Omak_nowcast, <span class="dt">tlim=</span>tlim)<span class="op">$</span>data</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">example4_df<span class="op">$</span>shortTerm_T &lt;-<span class="st"> </span>Omak2_nowcast<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span></a>
+<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(example4_df) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"datetime"</span>, <span class="st">"fullDataset"</span>, <span class="st">"shortTerm"</span>)</a>
+<a class="sourceLine" id="cb45-4" data-line-number="4">example4_df</a></code></pre></div>
 <pre><code>              datetime fullDataset shortTerm
 1  2015-08-25 00:00:00       512.5        NA
 2  2015-08-25 01:00:00       485.6     456.3
@@ -645,13 +645,13 @@ example4_df</code></pre></div>
 <h3 class="hasAnchor">
 <a href="#example-5-aqi" class="anchor"></a>Example 5: AQI</h3>
 <p>Finally, we’ll perform a brief demonstration of the <code><a href="../reference/monitor_aqi.html">monitor_aqi()</a></code> function using data from a prior example.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">aqi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_aqi.html">monitor_aqi</a></span>(Omak)
-example5_df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"datetime"</span>=Omak<span class="op">$</span>data<span class="op">$</span>datetime,
-                          <span class="st">"monitored"</span>=Omak<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>,
-                          <span class="st">"aqi"</span>=aqi<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>)
-example5_df &lt;-<span class="st"> </span>example5_df[<span class="dv">500</span><span class="op">:</span><span class="dv">650</span>,]
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(example5_df<span class="op">$</span>datetime, example5_df<span class="op">$</span>monitored, <span class="dt">xlab=</span><span class="st">'Date'</span>, <span class="dt">ylab=</span><span class="st">''</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(example5_df<span class="op">$</span>datetime, example5_df<span class="op">$</span>aqi, <span class="dt">col=</span><span class="st">"blue"</span>)</code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">aqi &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_aqi.html">monitor_aqi</a></span>(Omak)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">example5_df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"datetime"</span>=Omak<span class="op">$</span>data<span class="op">$</span>datetime,</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">                          <span class="st">"monitored"</span>=Omak<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">                          <span class="st">"aqi"</span>=aqi<span class="op">$</span>data<span class="op">$</span><span class="st">`</span><span class="dt">530470013_01</span><span class="st">`</span>)</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">example5_df &lt;-<span class="st"> </span>example5_df[<span class="dv">500</span><span class="op">:</span><span class="dv">650</span>,]</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(example5_df<span class="op">$</span>datetime, example5_df<span class="op">$</span>monitored, <span class="dt">xlab=</span><span class="st">'Date'</span>, <span class="dt">ylab=</span><span class="st">''</span>)</a>
+<a class="sourceLine" id="cb47-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(example5_df<span class="op">$</span>datetime, example5_df<span class="op">$</span>aqi, <span class="dt">col=</span><span class="st">"blue"</span>)</a></code></pre></div>
 <p><img src="NowCast_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 <!-- TODO: clean up and beef up this example -->
 <!-- ## Test Dataset -->
