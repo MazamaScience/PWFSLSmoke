@@ -30,6 +30,7 @@
 #'   \item "world_terrain"
 #'   \item "de_Lorme"
 #'   \item "world_grey"
+#'   \item "world_streets"
 #' }
 #' @param bbox If you are using the Esri maps, then the \code{bbox} parameter must be an \code{st_bbox} object as specificed in the \code{sf} package documentation
 #'   \url{https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox}.
@@ -69,6 +70,14 @@
 #' mapRaster <- staticmap_getRasterBrick(-122.3318, 47.668)
 #' staticmap_plotRasterBrick(mapRaster)
 #' }
+#' \dontrun{
+#' mapRaster <- staticmap_getRasterBrick(-122.3318, 47.668, 12, 'world_streets')
+#' staticmap_plotRasterBrick(mapRaster)
+#' }
+#' \dontrun{
+#' mapRaster <- staticmap_getRasterBric(-122.3318, 47.668, 12, 'watercolor')
+#' staticmap_plotRasterBrick(mapRaster)
+#' }
 #' @seealso \code{\link{staticmap_getStamenmapBrick}}
 #' @seealso \code{\link{staticmap_getEsrimapBrick}}
 #' @seealso \code{\link{staticmap_plotRasterBrick}}
@@ -87,7 +96,7 @@ staticmap_getRasterBrick <- function(
 ) {
 
   # ----- Valid Presets --------------------------------------------------
-  ESRI_MAP_TYPES <- c("world_topo", "world_imagery", "world_terrain", "de_Lorme", "world_gray")
+  ESRI_MAP_TYPES <- c("world_topo", "world_imagery", "world_terrain", "de_Lorme", "world_gray", "world_streets")
 
   STAMEN_MAP_TYPES <- c("terrain", "terrain-background",
                     "terrain-labels", "terrain-lines",

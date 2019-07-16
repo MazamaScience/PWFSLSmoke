@@ -122,14 +122,14 @@ staticmap_getEsrimapBrick <- function(
   # NOTE: Tile Servers must return a RasterBrick object from slippymath::compose_tile_grid, and not a tg_composite() (OSM)
 
   # Available Presets
-  AVAILABLE_PRESETS <-  c("world_topo", "world_imagery", "world_terrain", "de_Lorme", "world_gray", "world_street")
+  AVAILABLE_PRESETS <-  c("world_topo", "world_imagery", "world_terrain", "de_Lorme", "world_gray", "world_streets")
 
   world_topo <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{zoom}/{y}/{x}"
   world_imagery <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{zoom}/{y}/{x}"
   world_terrain <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{zoom}/{y}/{x}"
   de_Lorme <-"https://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{zoom}/{y}/{x}"
   world_gray <- "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{zoom}/{y}/{x}"
-  world_street <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{zoom}/{y}/{x}"
+  world_streets <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{zoom}/{y}/{x}"
 
   # If the baseMap param is set to a preset, set the query string to the preset
   # Otherwise default to the esri topo tile server

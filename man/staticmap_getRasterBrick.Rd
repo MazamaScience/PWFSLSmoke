@@ -40,6 +40,7 @@ Available to select between Stamen basemaps or Esri basemaps.\cr
   \item "world_terrain"
   \item "de_Lorme"
   \item "world_grey"
+  \item "world_streets"
 }}
 
 \item{bbox}{If you are using the Esri maps, then the \code{bbox} parameter must be an \code{st_bbox} object as specificed in the \code{sf} package documentation
@@ -86,6 +87,14 @@ exactly.
 \examples{
 \dontrun{
 mapRaster <- staticmap_getRasterBrick(-122.3318, 47.668)
+staticmap_plotRasterBrick(mapRaster)
+}
+\dontrun{
+mapRaster <- staticmap_getRasterBrick(-122.3318, 47.668, 12, 'world_streets')
+staticmap_plotRasterBrick(mapRaster)
+}
+\dontrun{
+mapRaster <- staticmap_getRasterBric(-122.3318, 47.668, 12, 'watercolor')
 staticmap_plotRasterBrick(mapRaster)
 }
 }
