@@ -120,7 +120,7 @@ Latah and Idaho counties were unfortunately downwind of several extraordinarily 
 A little googling and we can obtain a set of coordinates for these fires to use in a new "ESRI" map of the August daily average maxima with fire icons at fire locations:
 -->
 
-```{r googleMap fig.width=5, fig.height=5, eval=FALSE, echo=FALSE}
+```{r googleMap, fig.width=5, fig.height=5, eval=FALSE, echo=FALSE}
 fireLons <- c(-118.461,-117.679,-120.039,-119.002,-119.662)
 fireLats <- c(48.756,46.11,47.814,48.338,48.519)
 monitor_esriMap(PacNW_dailyAvg, zoom=7, centerLon=-118, centerLat=47, slice=max)
