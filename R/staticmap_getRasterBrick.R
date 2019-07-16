@@ -113,7 +113,7 @@ staticmap_getRasterBrick <- function(
       brickOut <- staticmap_getStamenmapBrick(
         centerLon=centerLon,
         centerLat=centerLat,
-        mapType=baseMap,
+        maptype=baseMap,
         zoom=zoom,
         bbox=bbox,
         width=width,

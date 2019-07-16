@@ -118,8 +118,7 @@ staticmap_getEsrimapBrick <- function(
 
   # ----- Toggle between Esri Tile Servers -----------------------------------------------
   # Currently only an available presets list for a user to enter, is available with no option to specify a
-  # entirely unique url for a tile server. Examples can be found here https://leaflet-extras.github.io/leaflet-providers/preview/.
-.
+  # entirely unique url for a tile server. Examples can be found here https://leaflet-extras.github.io/leaflet-providers/preview/
   # NOTE: Tile Servers must return a RasterBrick object from slippymath::compose_tile_grid, and not a tg_composite() (OSM)
 
   # Available Presets
