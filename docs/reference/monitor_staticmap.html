@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a rasterBrick from stamenmap tiles — staticmap_getStamenmapBrick • PWFSLSmoke</title>
+<title>Create a static map of ws_monitor object — monitor_staticmap • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,19 +37,14 @@
 
 
 
-<meta property="og:title" content="Create a rasterBrick from stamenmap tiles — staticmap_getStamenmapBrick" />
+<meta property="og:title" content="Create a static map of ws_monitor object — monitor_staticmap" />
 
-<meta property="og:description" content="Downloads a PNG from the stamenmap tile server and creates a
-raster::rasterBrick object with layers for red, green, and blue. This
-can then passed as the rasterBrick object to the
-staticmap_plotRasterBrick() function for plotting.
-Stamen maps tiles are freely available (April, 2019) and are described at the
-following URL:
-http://maps.stamen.com/#terrain/12/37.7706/-122.3782
-&quot;These tiles are made available as part of the CityTracking project, funded
-by the Knight Foundation, in which Stamen is building web services and open
-source tools to display public data in easy-to-understand, highly visual
-ways.&quot;" />
+<meta property="og:description" content="Plots a map showing ws_monitor locations and values.
+See staticmap_getRasterBrick for a list of available
+maptype options.
+If centerLon, centerMap or zoom are not specified,
+appropriate values will be calcualted using data from the
+ws_monitor$meta dataframe." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,50 +135,48 @@ ways.&quot;" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a rasterBrick from stamenmap tiles</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/staticmap_getStamenmapBrick.R'><code>R/staticmap_getStamenmapBrick.R</code></a></small>
-    <div class="hidden name"><code>staticmap_getStamenmapBrick.Rd</code></div>
+    <h1>Create a static map of ws_monitor object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/monitor_staticmap.R'><code>R/monitor_staticmap.R</code></a></small>
+    <div class="hidden name"><code>monitor_staticmap.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Downloads a PNG from the stamenmap tile server and creates a
-<code>raster::rasterBrick</code> object with layers for red, green, and blue. This
-can then passed as the <code>rasterBrick</code> object to the
-<code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick()</a></code> function for plotting.</p>
-<p>Stamen maps tiles are freely available (April, 2019) and are described at the
-following URL:</p>
-<p><a href='http://maps.stamen.com/#terrain/12/37.7706/-122.3782'>http://maps.stamen.com/#terrain/12/37.7706/-122.3782</a></p>
-<p>"These tiles are made available as part of the CityTracking project, funded
-by the Knight Foundation, in which Stamen is building web services and open
-source tools to display public data in easy-to-understand, highly visual
-ways."</p>
+    <p>Plots a map showing <em>ws_monitor</em> locations and values.</p>
+<p>See <code><a href='staticmap_getRasterBrick.html'>staticmap_getRasterBrick</a></code> for a list of available
+<code>maptype</code> options.</p>
+<p>If <code>centerLon</code>, <code>centerMap</code> or <code>zoom</code> are not specified,
+appropriate values will be calcualted using data from the
+<code>ws_monitor$meta</code> dataframe.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>staticmap_getStamenmapBrick</span>(<span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>),
-  <span class='kw'>tileCacheDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>())</pre>
+    <pre class="usage"><span class='fu'>monitor_staticmap</span>(<span class='no'>ws_monitor</span>, <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='st'>"max"</span>),
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>,
+  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>, <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rasterBrick</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/par'>par</a></span>(<span class='st'>"cex"</span>) * <span class='fl'>2</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>centerLon</th>
-      <td><p>map center longitude</p></td>
+      <th>ws_monitor</th>
+      <td><p><em>ws_monitor</em> object</p></td>
     </tr>
     <tr>
-      <th>centerLat</th>
-      <td><p>map center latitude</p></td>
+      <th>slice</th>
+      <td><p>either a time index or a function used to collapse the time
+axis -- defautls to <code><a href='https://www.rdocumentation.org/packages/base/topics/get'>get('max')</a></code></p></td>
     </tr>
     <tr>
-      <th>maptype</th>
-      <td><p>map type</p></td>
+      <th>breaks</th>
+      <td><p>set of breaks used to assign colors</p></td>
     </tr>
     <tr>
-      <th>zoom</th>
-      <td><p>map zoom level; corresponds to <code><a href='https://www.rdocumentation.org/packages/ggmap/topics/get_map'>ggmap::get_map()</a></code> zoom level</p></td>
+      <th>colors</th>
+      <td><p>a set of colors for different levels of air quality data
+determined by <code>breaks</code></p></td>
     </tr>
     <tr>
       <th>width</th>
@@ -194,50 +187,65 @@ ways."</p>
       <td><p>height of image, in pixels</p></td>
     </tr>
     <tr>
-      <th>bbox</th>
-      <td><p>bounding box vector (lonLo, latLo, lonHi, latHi). If not null,
-<code>centerLon</code>, <code>centerLat</code>, and <code>zoom</code> are ignored.</p></td>
+      <th>centerLon</th>
+      <td><p>map center longitude</p></td>
     </tr>
     <tr>
-      <th>crs</th>
-      <td><p>object of class CRS. The Coordinate Reference System (CRS) for the
-returned map. If the CRS of the downloaded map does not match, it will be
-projected to the specified CRS using <code><a href='https://www.rdocumentation.org/packages/raster/topics/projectRaster'>raster::projectRaster</a></code>.</p></td>
+      <th>centerLat</th>
+      <td><p>map center latitude</p></td>
     </tr>
     <tr>
-      <th>tileCacheDir</th>
-      <td><p>Optional location for cached tiles.</p></td>
+      <th>zoom</th>
+      <td><p>map zoom level</p></td>
+    </tr>
+    <tr>
+      <th>maptype</th>
+      <td><p>map type</p></td>
+    </tr>
+    <tr>
+      <th>grayscale</th>
+      <td><p>logical, if TRUE the colored map tile is rendered into a
+black &amp; white image</p></td>
+    </tr>
+    <tr>
+      <th>rasterBrick</th>
+      <td><p>optional RGB rasterBrick object returned from
+<code>staticmap_get~Brick</code>)</p></td>
+    </tr>
+    <tr>
+      <th>cex</th>
+      <td><p>character expansion for points</p></td>
+    </tr>
+    <tr>
+      <th>pch</th>
+      <td><p>plotting character for points</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>arguments passed on to <code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick()</a></code>
+(<em>e.g.</em> destfile, cex, pch, etc.)</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A rasterBrick object which can be plotted with
-<code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick()</a></code> or <code><a href='https://www.rdocumentation.org/packages/raster/topics/plotRGB'>raster::plotRGB()</a></code> and serve as a
-base plot.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>The spatial reference of the image when it is downloaded is 3857. If
-the crs argument is different, projecting may cause the size and extent of
-the image to differ very slightly from the input, on a scale of 1-2 pixels or
-10^-3 degrees.</p>
-<p>If bbox is specified and the bbox aspect ratio does not match the
-width/height aspect ratio the extent is resized to prevent the map image from
-appearing stretched, so the map extent may not match the bbox argument
-exactly.</p>
+    <p>A plot with a basemap and colored dots for each monitor.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='staticmap_getRasterBrick.html'>staticmap_getRasterBrick</a></code></p>
+    <div class='dont-index'><p><code><a href='staticmap_getStamenmapBrick.html'>staticmap_getStamenmapBrick</a></code></p>
 <p><code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>rasterBrick</span> <span class='kw'>&lt;-</span> <span class='fu'>staticmap_getStamenmapBrick</span>(-<span class='fl'>122.3318</span>, <span class='fl'>47.668</span>)
-<span class='fu'><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></span>(<span class='no'>rasterBrick</span>)
-<span class='co'># }</span></pre>
+<span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='no'>Northwest_Megafires</span>
+<span class='co'># monitor_leaflet(N_M) # to identify Spokane monitorIDs</span>
+<span class='no'>Spokane</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subsetBy.html'>monitor_subsetBy</a></span>(<span class='no'>N_M</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>N_M</span>$<span class='no'>meta</span>$<span class='no'>monitorID</span>,<span class='st'>'^53063'</span>))
+<span class='no'>Spokane</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Spokane</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20150815</span>, <span class='fl'>20150831</span>))
+<span class='fu'>monitor_staticmap</span>(<span class='no'>Spokane</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -245,8 +253,6 @@ exactly.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

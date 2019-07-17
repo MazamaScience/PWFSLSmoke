@@ -5,18 +5,14 @@
 \title{Create a rasterBrick from stamenmap tiles}
 \usage{
 staticmap_getStamenmapBrick(centerLon = NULL, centerLat = NULL,
-  bbox = NULL, bboxSR = "4326", maptype = "terrain", zoom = 12,
-  width = 640, height = 640, crs = sp::CRS("+init=epsg:4326"))
+  maptype = "terrain", zoom = 12, width = 640, height = 640,
+  bbox = NULL, crs = sp::CRS("+init=epsg:4326"),
+  tileCacheDir = tempdir())
 }
 \arguments{
 \item{centerLon}{map center longitude}
 
 \item{centerLat}{map center latitude}
-
-\item{bbox}{bounding box vector (lonLo, latLo, lonHi, latHi). If not null,
-\code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.}
-
-\item{bboxSR}{spatial reference of the bounding box}
 
 \item{maptype}{map type}
 
@@ -26,9 +22,14 @@ staticmap_getStamenmapBrick(centerLon = NULL, centerLat = NULL,
 
 \item{height}{height of image, in pixels}
 
+\item{bbox}{bounding box vector (lonLo, latLo, lonHi, latHi). If not null,
+\code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.}
+
 \item{crs}{object of class CRS. The Coordinate Reference System (CRS) for the
 returned map. If the CRS of the downloaded map does not match, it will be
 projected to the specified CRS using \code{raster::projectRaster}.}
+
+\item{tileCacheDir}{Optional location for cached tiles.}
 }
 \value{
 A rasterBrick object which can be plotted with
@@ -64,11 +65,13 @@ exactly.
 }
 \examples{
 \dontrun{
-mapRaster <- staticmap_getStamenmapBrick(-122.3318, 47.668)
-staticmap_plotRasterBrick(mapRaster)
+rasterBrick <- staticmap_getStamenmapBrick(-122.3318, 47.668)
+staticmap_plotRasterBrick(rasterBrick)
 }
 }
 \seealso{
+\code{\link{staticmap_getRasterBrick}}
+
 \code{\link{staticmap_plotRasterBrick}}
 }
 \keyword{plotting}

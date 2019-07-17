@@ -150,6 +150,11 @@ functions will be listed.</p>
   <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"roadmap"</span>, <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
+<span class='fu'>monitorEsriMap</span>(<span class='no'>ws_monitor</span>, <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='st'>"max"</span>), <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
+  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"roadmap"</span>,
+  <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
 <span class='fu'>monitorPlot_timeOfDaySpaghetti</span>(<span class='no'>ws_monitor</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aqiLines</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
@@ -158,7 +163,7 @@ functions will be listed.</p>
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"PM2.5 Concentration"</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>showLegend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>monitorEsriMap</span>(<span class='no'>ws_monitor</span>, <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='st'>"max"</span>), <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
+<span class='fu'>monitor_esriMap</span>(<span class='no'>ws_monitor</span>, <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/get'>get</a></span>(<span class='st'>"max"</span>), <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
   <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"worldStreetMap"</span>,
   <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mapRaster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/par'>par</a></span>(<span class='st'>"cex"</span>) * <span class='fl'>2</span>,
@@ -228,9 +233,9 @@ functions will be listed.</p>
 <tr><td><code>monitorDygraph</code></td><td></td></tr>
 <tr><td>Use</td><td><code><a href='monitor_dygraph.html'>monitor_dygraph</a></code></td></tr>
 <tr><td></td><td></td></tr>
-<tr><td></td><td><code>monitorEsriMap</code></td></tr>
+<tr><td></td><td><code>monitor_esriMap</code></td></tr>
 <tr><td></td><td>Use</td></tr>
-<tr><td><code><a href='monitor_esriMap.html'>monitor_esriMap</a></code></td><td></td></tr>
+<tr><td><code><a href='monitor_staticmap.html'>monitor_staticmap</a></code></td><td></td></tr>
 <tr><td></td><td></td></tr>
 <tr><td><code>monitorLeaflet</code></td><td></td></tr>
 <tr><td>Use</td><td><code><a href='monitor_leaflet.html'>monitor_leaflet</a></code></td></tr>
@@ -267,8 +272,15 @@ functions will be listed.</p>
     
     <table class='table'>
 <tr><td></td><td></td></tr>
+<tr><td><code>monitor_esriMap</code></td><td></td></tr>
+<tr><td>Use</td><td><code><a href='monitor_staticmap.html'>monitor_staticmap</a></code></td></tr>
+<tr><td></td><td></td></tr>
+<tr><td></td><td><code>monitorEsriMap</code></td></tr>
+<tr><td></td><td>Use</td></tr>
+<tr><td><code><a href='monitor_staticmap.html'>monitor_staticmap</a></code></td><td></td></tr>
+<tr><td></td><td></td></tr>
 <tr><td><code>monitorGoogleMap</code></td><td></td></tr>
-<tr><td>Use</td><td><code><a href='monitor_esriMap.html'>monitor_esriMap</a></code></td></tr>
+<tr><td>Use</td><td><code><a href='monitor_staticmap.html'>monitor_staticmap</a></code></td></tr>
 <tr><td></td><td></td></tr>
 <tr><td></td><td><code>monitorPlot_timeOfDaySpaghetti</code></td></tr>
 <tr><td></td><td>No alternative</td></tr>

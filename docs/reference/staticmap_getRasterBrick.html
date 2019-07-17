@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a rasterBrick from stamenmap tiles — staticmap_getStamenmapBrick • PWFSLSmoke</title>
+<title>Create a rasterBrick from a tiled image server — staticmap_getRasterBrick • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,19 +37,14 @@
 
 
 
-<meta property="og:title" content="Create a rasterBrick from stamenmap tiles — staticmap_getStamenmapBrick" />
+<meta property="og:title" content="Create a rasterBrick from a tiled image server — staticmap_getRasterBrick" />
 
-<meta property="og:description" content="Downloads a PNG from the stamenmap tile server and creates a
-raster::rasterBrick object with layers for red, green, and blue. This
-can then passed as the rasterBrick object to the
-staticmap_plotRasterBrick() function for plotting.
-Stamen maps tiles are freely available (April, 2019) and are described at the
-following URL:
-http://maps.stamen.com/#terrain/12/37.7706/-122.3782
-&quot;These tiles are made available as part of the CityTracking project, funded
-by the Knight Foundation, in which Stamen is building web services and open
-source tools to display public data in easy-to-understand, highly visual
-ways.&quot;" />
+<meta property="og:description" content="Uses the input coordinates to select an appropriate method to
+build a raster::rasterBrick object. It will either use the
+staticmap_getStamenmapBrick() function or the
+staticmap_getEsrimapBrick() function This can then passed as the
+rasterBrick object to the staticmap_plotRasterBrick() function
+for plotting." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,30 +135,25 @@ ways.&quot;" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a rasterBrick from stamenmap tiles</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/staticmap_getStamenmapBrick.R'><code>R/staticmap_getStamenmapBrick.R</code></a></small>
-    <div class="hidden name"><code>staticmap_getStamenmapBrick.Rd</code></div>
+    <h1>Create a rasterBrick from a tiled image server</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/staticmap_getRasterBrick.R'><code>R/staticmap_getRasterBrick.R</code></a></small>
+    <div class="hidden name"><code>staticmap_getRasterBrick.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Downloads a PNG from the stamenmap tile server and creates a
-<code>raster::rasterBrick</code> object with layers for red, green, and blue. This
-can then passed as the <code>rasterBrick</code> object to the
-<code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick()</a></code> function for plotting.</p>
-<p>Stamen maps tiles are freely available (April, 2019) and are described at the
-following URL:</p>
-<p><a href='http://maps.stamen.com/#terrain/12/37.7706/-122.3782'>http://maps.stamen.com/#terrain/12/37.7706/-122.3782</a></p>
-<p>"These tiles are made available as part of the CityTracking project, funded
-by the Knight Foundation, in which Stamen is building web services and open
-source tools to display public data in easy-to-understand, highly visual
-ways."</p>
+    <p>Uses the input coordinates to select an appropriate method to
+build a <code>raster::rasterBrick</code> object. It will either use the
+<code><a href='staticmap_getStamenmapBrick.html'>staticmap_getStamenmapBrick()</a></code> function or the
+<code><a href='staticmap_getEsrimapBrick.html'>staticmap_getEsrimapBrick()</a></code> function This can then passed as the
+<code>rasterBrick</code> object to the <code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick()</a></code> function
+for plotting.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>staticmap_getStamenmapBrick</span>(<span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>),
+    <pre class="usage"><span class='fu'>staticmap_getRasterBrick</span>(<span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"world_topo"</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
+  <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>maxTiles</span> <span class='kw'>=</span> <span class='fl'>40</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sp/topics/CRS-class'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>),
   <span class='kw'>tileCacheDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -171,36 +161,68 @@ ways."</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>centerLon</th>
-      <td><p>map center longitude</p></td>
+      <td><p>Map center longitude.</p></td>
     </tr>
     <tr>
       <th>centerLat</th>
-      <td><p>map center latitude</p></td>
+      <td><p>Map center latitude.</p></td>
     </tr>
     <tr>
       <th>maptype</th>
-      <td><p>map type</p></td>
+      <td><p>Defaults to <a href='http://www.arcgis.com/home/item.html?id=30e5fe3149c34df1ba922e6f5bbf808f'>Esri Topographic</a>
+Available to select between Stamen basemaps or Esri basemaps.<br />
+<strong>Stamen</strong><br /></p><ul>
+<li><p>terrain</p></li>
+<li><p>terrain-background</p></li>
+<li><p>terrain-labels</p></li>
+<li><p>terrain-lines</p></li>
+<li><p>toner</p></li>
+<li><p>toner-background</p></li>
+<li><p>toner-hybrid</p></li>
+<li><p>toner-labels</p></li>
+<li><p>toner-labels</p></li>
+<li><p>toner-lines</p></li>
+<li><p>toner-lite</p></li>
+<li><p>watercolor</p></li>
+</ul><p><strong>Esri</strong><br /></p><ul>
+<li><p>"world_topo"</p></li>
+<li><p>"world_imagery"</p></li>
+<li><p>"world_terrain"</p></li>
+<li><p>"de_Lorme"</p></li>
+<li><p>"world_grey"</p></li>
+<li><p>"world_streets"</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>zoom</th>
-      <td><p>map zoom level; corresponds to <code><a href='https://www.rdocumentation.org/packages/ggmap/topics/get_map'>ggmap::get_map()</a></code> zoom level</p></td>
+      <td><p>Map zoom level.</p></td>
     </tr>
     <tr>
       <th>width</th>
-      <td><p>width of image, in pixels</p></td>
+      <td><p>Width of image, in pixels.</p></td>
     </tr>
     <tr>
       <th>height</th>
-      <td><p>height of image, in pixels</p></td>
+      <td><p>Height of image, in pixels.</p></td>
     </tr>
     <tr>
       <th>bbox</th>
-      <td><p>bounding box vector (lonLo, latLo, lonHi, latHi). If not null,
+      <td><p>If you are using the Esri maps, then the <code>bbox</code> parameter
+must be an <code>st_bbox</code> object as specificed in the <code>sf</code> package documentation
+<a href='https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox'>https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox</a>.
+If using Stamen Maps, use a vector organized as (lonLo, latLo, lonHi, latHi)
+If not null,
 <code>centerLon</code>, <code>centerLat</code>, and <code>zoom</code> are ignored.</p></td>
     </tr>
     <tr>
+      <th>maxTiles</th>
+      <td><p>Only utilized if selecting an esri basemap, specifies the
+maximum number of tiles to be returned. The greater the number,
+the slower the performance -- arbitrarily set to 20 by default.</p></td>
+    </tr>
+    <tr>
       <th>crs</th>
-      <td><p>object of class CRS. The Coordinate Reference System (CRS) for the
+      <td><p>Object of class CRS. The Coordinate Reference System (CRS) for the
 returned map. If the CRS of the downloaded map does not match, it will be
 projected to the specified CRS using <code><a href='https://www.rdocumentation.org/packages/raster/topics/projectRaster'>raster::projectRaster</a></code>.</p></td>
     </tr>
@@ -229,13 +251,20 @@ exactly.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='staticmap_getRasterBrick.html'>staticmap_getRasterBrick</a></code></p>
+    <div class='dont-index'><p><code><a href='staticmap_getStamenmapBrick.html'>staticmap_getStamenmapBrick</a></code></p>
+<p><code><a href='staticmap_getEsrimapBrick.html'>staticmap_getEsrimapBrick</a></code></p>
 <p><code><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>rasterBrick</span> <span class='kw'>&lt;-</span> <span class='fu'>staticmap_getStamenmapBrick</span>(-<span class='fl'>122.3318</span>, <span class='fl'>47.668</span>)
+<span class='no'>rasterBrick</span> <span class='kw'>&lt;-</span> <span class='fu'>staticmap_getRasterBrick</span>(-<span class='fl'>122.3318</span>, <span class='fl'>47.668</span>)
+<span class='fu'><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></span>(<span class='no'>rasterBrick</span>)
+<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='no'>rasterBrick</span> <span class='kw'>&lt;-</span> <span class='fu'>staticmap_getRasterBrick</span>(-<span class='fl'>122.3318</span>, <span class='fl'>47.668</span>, <span class='st'>"world_streets"</span>, <span class='fl'>12</span>)
+<span class='fu'><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></span>(<span class='no'>rasterBrick</span>)
+<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='no'>rasterBrick</span> <span class='kw'>&lt;-</span> <span class='fu'>staticmap_getRasterBrick</span>(-<span class='fl'>122.3318</span>, <span class='fl'>47.668</span>, <span class='st'>"watercolor"</span>, <span class='fl'>12</span>)
 <span class='fu'><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></span>(<span class='no'>rasterBrick</span>)
 <span class='co'># }</span></pre>
   </div>
