@@ -13,5 +13,6 @@ RUN apt-get update \
 
 # For the latest updates in PWFSLSmoke
 RUN installGithub.r \
-    mazamascience/pwfslsmoke
+    mazamascience/MazamaCoreUtils \
+    mazamascience/PWFSLSmoke
 
