@@ -1,3 +1,14 @@
+# PWFSLSmoke 1.2.11
+
+This patch restores some of the ESRI mapping functionality by providing a 
+function to download, stitch and crop images from ESRI tile services. The
+new `staticmap_getRasterBrick()` provides a generalized API for generating
+basemaps from the two tiling services currently being supported: ESRI and Stamen.
+
+* Added `monitor_staticmap()`, `staticmap_getRasterBrick()` and 
+`staticmap_getEsrimapBrick()`.
+* Reordered arguments in `staticmap_getStamenmapBrick()`.
+
 # PWFSLSmoke 1.2.9
 
 * Docker image now includes `optparse` package so that exectuable scripts can

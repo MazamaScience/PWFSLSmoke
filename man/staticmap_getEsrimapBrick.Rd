@@ -5,21 +5,16 @@
 \title{Create a rasterBrick from an Esri tiled image server}
 \usage{
 staticmap_getEsrimapBrick(centerLon = NULL, centerLat = NULL,
-  zoom = 12, bbox = NULL, baseMap = NULL, width = 640,
-  height = 640, maxTiles = 20, crs = sp::CRS("+init=epsg:4326"))
+  maptype = "world_topo", zoom = 12, width = 640, height = 640,
+  bbox = NULL, maxTiles = 20, crs = sp::CRS("+init=epsg:4326"),
+  tileCacheDir = tempdir())
 }
 \arguments{
-\item{centerLon}{map center longitude}
+\item{centerLon}{Map center longitude.}
 
-\item{centerLat}{map center latitude}
+\item{centerLat}{Map center latitude.}
 
-\item{zoom}{map zoom level}
-
-\item{bbox}{must be an \code{st_bbox} object as specificed in the \code{sf} package documentation
-\url{https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox}. If not null,
-\code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.}
-
-\item{baseMap}{selects the appropriate Esri tile server. Options include:
+\item{maptype}{Selects the appropriate Esri tile server. Options include:
 \itemize{
   \item "world_topo"
   \item "world_imagery"
@@ -29,15 +24,23 @@ staticmap_getEsrimapBrick(centerLon = NULL, centerLat = NULL,
   \item "world_streets"
 }}
 
-\item{width}{width of image, in pixels}
+\item{zoom}{map Zoom level.}
 
-\item{height}{height of image, in pixels}
+\item{width}{Width of image, in pixels.}
 
-\item{maxTiles}{maximum number of tiles to be returned. The greater the number, the slower the performance -- arbitrarily set to 20 by default.}
+\item{height}{Height of image, in pixels.}
 
-\item{crs}{object of class CRS. The Coordinate Reference System (CRS) for the
+\item{bbox}{Bounding box vector (lonLo, latLo, lonHi, latHi). If not null,
+\code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.}
+
+\item{maxTiles}{Maximum number of tiles to be returned. The greater the
+number, the slower the performance -- arbitrarily set to 20 by default.}
+
+\item{crs}{Object of class CRS. The Coordinate Reference System (CRS) for the
 returned map. If the CRS of the downloaded map does not match, it will be
 projected to the specified CRS using \code{raster::projectRaster}.}
+
+\item{tileCacheDir}{Optional location for cached tiles.}
 }
 \value{
 A rasterBrick object which can be plotted with
@@ -45,8 +48,8 @@ A rasterBrick object which can be plotted with
 base plot.
 }
 \description{
-Uses the input coordinates to fetch and composite a raster from the tile server. Returns a
-\code{raster::rasterBrick} object. This
+Uses the input coordinates to fetch and composite a raster from
+the tile server. Returns a \code{raster::rasterBrick} object. This
 can then passed as the \code{rasterBrick} object to the
 \code{staticmap_plotRasterBrick()} function for plotting.
 
@@ -66,14 +69,13 @@ width/height aspect ratio the extent is resized to prevent the map image from
 appearing stretched, so the map extent may not match the bbox argument
 exactly.
 
-Currently Esri tile servers are the only functional ones utilizing this paradigmn.
-Using the \href{https://github.com/MilesMcBain/slippymath}{slippymath} package, only the freely
-available Esri tile servers compile to a properly colored RasterBrick.
+If both \code{zoom} and \code{maxTiles} are specified, \code{maxTiles}
+takes precedence. To get a specified zoom level, set \code{maxTiles = NULL}.
 }
 \examples{
 \dontrun{
-mapRaster <- staticmap_getEsrimapBrick(-122.3318, 47.668)
-staticmap_plotRasterBrick(mapRaster)
+rasterBrick <- staticmap_getEsrimapBrick(-122.3318, 47.668)
+staticmap_plotRasterBrick(rasterBrick)
 }
 }
 \seealso{

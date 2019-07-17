@@ -3,10 +3,9 @@
 #'
 #' @title Create a rasterBrick from an Esri tiled image server
 #'
-#' @param centerLon map center longitude
-#' @param centerLat map center latitude
-#' @param zoom map zoom level
-#' @param baseMap selects the appropriate Esri tile server. Options include:
+#' @param centerLon Map center longitude.
+#' @param centerLat Map center latitude.
+#' @param maptype Selects the appropriate Esri tile server. Options include:
 #' \itemize{
 #'   \item "world_topo"
 #'   \item "world_imagery"
@@ -15,18 +14,20 @@
 #'   \item "world_grey"
 #'   \item "world_streets"
 #' }
-#' @param bbox must be an \code{st_bbox} object as specificed in the \code{sf} package documentation
-#'   \url{https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_bbox}. If not null,
+#' @param zoom map Zoom level.
+#' @param width Width of image, in pixels.
+#' @param height Height of image, in pixels.
+#' @param bbox Bounding box vector (lonLo, latLo, lonHi, latHi). If not null,
 #'   \code{centerLon}, \code{centerLat}, and \code{zoom} are ignored.
-#' @param width width of image, in pixels
-#' @param height height of image, in pixels
-#' @param maxTiles maximum number of tiles to be returned. The greater the number, the slower the performance -- arbitrarily set to 20 by default.
-#' @param crs object of class CRS. The Coordinate Reference System (CRS) for the
+#' @param maxTiles Maximum number of tiles to be returned. The greater the
+#'   number, the slower the performance -- arbitrarily set to 20 by default.
+#' @param crs Object of class CRS. The Coordinate Reference System (CRS) for the
 #'   returned map. If the CRS of the downloaded map does not match, it will be
 #'   projected to the specified CRS using \code{raster::projectRaster}.
+#' @param tileCacheDir Optional location for cached tiles.
 #'
-#' @description Uses the input coordinates to fetch and composite a raster from the tile server. Returns a
-#' \code{raster::rasterBrick} object. This
+#' @description Uses the input coordinates to fetch and composite a raster from
+#' the tile server. Returns a \code{raster::rasterBrick} object. This
 #' can then passed as the \code{rasterBrick} object to the
 #' \code{staticmap_plotRasterBrick()} function for plotting.
 #'
@@ -34,7 +35,6 @@
 #' servers which can be previewed at the following URL:
 #'
 #' \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
-#'
 #'
 #' @note The spatial reference of the image when it is downloaded is 3857. If
 #' the crs argument is different, projecting may cause the size and extent of
@@ -46,9 +46,8 @@
 #' appearing stretched, so the map extent may not match the bbox argument
 #' exactly.
 #'
-#' @note Currently Esri tile servers are the only functional ones utilizing this paradigmn.
-#' Using the \href{https://github.com/MilesMcBain/slippymath}{slippymath} package, only the freely
-#' available Esri tile servers compile to a properly colored RasterBrick.
+#' @note If both \code{zoom} and \code{maxTiles} are specified, \code{maxTiles}
+#' takes precedence. To get a specified zoom level, set \code{maxTiles = NULL}.
 #'
 #' @return A rasterBrick object which can be plotted with
 #' \code{staticmap_plotRasterBrick()} or \code{raster::plotRGB()} and serve as a
@@ -56,8 +55,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' mapRaster <- staticmap_getEsrimapBrick(-122.3318, 47.668)
-#' staticmap_plotRasterBrick(mapRaster)
+#' rasterBrick <- staticmap_getEsrimapBrick(-122.3318, 47.668)
+#' staticmap_plotRasterBrick(rasterBrick)
 #' }
 #' @seealso \code{\link{staticmap_getRasterBrick}}
 #' @seealso \code{\link{staticmap_plotRasterBrick}}
@@ -65,14 +64,47 @@
 staticmap_getEsrimapBrick <- function(
   centerLon = NULL,
   centerLat = NULL,
+  maptype = "world_topo",
   zoom = 12,
-  bbox = NULL,
-  baseMap = NULL,
   width = 640,
   height = 640,
+  bbox = NULL,
   maxTiles = 20,
-  crs = sp::CRS("+init=epsg:4326")
+  crs = sp::CRS("+init=epsg:4326"),
+  tileCacheDir = tempdir()
 ) {
+
+  # ===== DEBUGGING ============================================================
+
+  if ( FALSE ) {
+
+    centerLon = -117.2554
+    centerLat = 47.68013
+    maptype <- "world_topo"
+    zoom <- 12
+    width <- 640
+    height <- 640
+    bbox <- NULL
+    maxTiles <- 40
+    crs <- sp::CRS("+init=epsg:4326")
+    tileCacheDir <- tempdir()
+
+  }
+
+  # ----- Validate parameters --------------------------------------------------
+
+  validMapTypes <- c("world_topo", "world_imagery", "world_terrain",
+                     "de_Lorme", "world_gray", "world_streets")
+
+  if ( !maptype %in% validMapTypes )
+    stop(paste0("Required parameter maptype = '", maptype, "' is not recognized."))
+
+  if ( is.null(centerLon) || is.null(centerLat) ) {
+    if ( is.null(bbox) ) {
+      stop("Required arameters centerLat + centerLon, or bbox must be specified")
+    }
+  }
+
   # ----- Determine bounding box -----------------------------------------------
 
   # Projection information:
@@ -91,78 +123,111 @@ staticmap_getEsrimapBrick <- function(
   # degrees-NS/pixel = degreesPerPixelNS*cos(latitude)
   # Source: https://gis.stackexchange.com/questions/7430/what-ratio-scales-do-google-maps-zoom-levels-correspond-to
 
-  # Fudge factor
-  adjustedZoom <- zoom + 0
-
   # Create lon/lat ranges
   if ( !is.null(centerLon) && !is.null(centerLat) ) {
-    degreesPerPixelEW <- 360/(256 * 2^adjustedZoom)
+    degreesPerPixelEW <- 360/(256 * 2^zoom)
     degreesPerPixelNS <- degreesPerPixelEW*cos(centerLat * pi/180) # radians
     xmin <- centerLon - degreesPerPixelEW*(width/2 - 0.5)
     xmax <- centerLon + degreesPerPixelEW*(width/2 - 0.5)
     ymin <- centerLat - degreesPerPixelNS*(height/2 - 0.5)
     ymax <- centerLat + degreesPerPixelNS*(height/2 - 0.5)
 
-    outlook_bbox <-
-      sf::st_bbox(c(xmin=xmin,
-                    xmax=xmax,
-                    ymin=ymin,
-                    ymax=ymax),
+    bbox <-
+      sf::st_bbox(c(xmin = xmin,
+                    xmax = xmax,
+                    ymin = ymin,
+                    ymax = ymax),
+                  crs = crs)
+  } else if ( !is.null(bbox) ) {
+    bbox <-
+      sf::st_bbox(c(xmin = bbox[1],
+                    xmax = bbox[3],
+                    ymin = bbox[2],
+                    ymax = bbox[4]),
                   crs = crs)
   } else {
     stop("centerLat + centerLon, or bbox must be specified")
   }
 
   # convert sf bbox to slippymath tile grid
-  tile_grid <- slippymath::bbox_to_tile_grid(outlook_bbox, max_tiles = maxTiles)
+  tile_grid <- slippymath::bbox_to_tile_grid(bbox,
+                                             zoom = zoom,
+                                             max_tiles = maxTiles)
 
-  # ----- Toggle between Esri Tile Servers -----------------------------------------------
-  # Currently only an available presets list for a user to enter, is available with no option to specify a
-  # entirely unique url for a tile server. Examples can be found here https://leaflet-extras.github.io/leaflet-providers/preview/
-  # NOTE: Tile Servers must return a RasterBrick object from slippymath::compose_tile_grid, and not a tg_composite() (OSM)
+  # Use slippymath zoom level (because we set max_tiles)
+  zoom <- tile_grid$zoom
 
-  # Available Presets
-  AVAILABLE_PRESETS <-  c("world_topo", "world_imagery", "world_terrain", "de_Lorme", "world_gray", "world_streets")
+  # ----- Download tiles -------------------------------------------------------
 
-  world_topo <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{zoom}/{y}/{x}"
-  world_imagery <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{zoom}/{y}/{x}"
-  world_terrain <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{zoom}/{y}/{x}"
-  de_Lorme <-"https://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{zoom}/{y}/{x}"
-  world_gray <- "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{zoom}/{y}/{x}"
-  world_streets <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{zoom}/{y}/{x}"
+  # Examples of additional, non-Esri tile servers can be found here:
+  #   https://leaflet-extras.github.io/leaflet-providers/preview/
 
-  # If the baseMap param is set to a preset, set the query string to the preset
-  # Otherwise default to the esri topo tile server
-  if ( !is.null(baseMap) ) {
-    if ( baseMap %in% AVAILABLE_PRESETS ) {
-      tileserver_query_string <- eval(parse(text=baseMap))
-    } else {
-        stop(paste0("Required parameter baseMap = '", baseMap, "' is not a valid preset."))
-    }
-  } else {
-    tileserver_query_string <- world_topo
-  }
+  esriBaseUrl <- "https://server.arcgisonline.com/ArcGIS/rest/services/"
+  slippyMapApi <- "/MapServer/tile/{zoom}/{y}/{x}"
 
-  # create tmp_dir
-  dir.create('tmp_tiles/')
+  world_topo <-    paste0(esriBaseUrl, "World_Topo_Map", slippyMapApi)
+  world_imagery <- paste0(esriBaseUrl, "World_Imagery", slippyMapApi)
+  world_terrain <- paste0(esriBaseUrl, "World_Terrain_Base", slippyMapApi)
+  de_Lorme <-      paste0(esriBaseUrl, "Specialty/DeLorme_World_Base_Map", slippyMapApi)
+  world_gray <-    paste0(esriBaseUrl, "Canvas/World_Light_Gray_Base", slippyMapApi)
+  world_streets <- paste0(esriBaseUrl, "World_Street_Map", slippyMapApi)
+
+  tileserverQueryString <- eval(parse(text=maptype))
 
   # curl images
   images <-
     purrr::pmap(tile_grid$tiles,
-                function(x, y, zoom){
-                  outfile <- glue::glue("tmp_tiles/{x}_{y}.jpg")
-                  curl::curl_download(url = glue::glue(tileserver_query_string),
-                                      destfile = outfile)
-                  outfile
+                function(x, y, zoom) {
+                  filename <- glue::glue("{maptype}_{zoom}_{x}_{y}.jpg")
+                  filepath <- file.path(tileCacheDir, filename)
+                  if ( !file.exists(filepath) ) {
+                    curl::curl_download(url = glue::glue(tileserverQueryString),
+                                        destfile = filepath)
+                  }
+                  return(filepath)
                 },
                 zoom = tile_grid$zoom)
 
-  # returns a RasterBrick
-  raster_out <- slippymath::compose_tile_grid(tile_grid, images)
+  # ----- Assemble image -------------------------------------------------------
 
-  # remove the curled tmp_tiles
-  unlink('tmp_tiles', recursive=TRUE)
+  # Uncropped image
+  rasterBrick <- slippymath::compose_tile_grid(tile_grid, images)
 
-  return(raster_out)
+  # Determine the actual extent of tiles we received
+  e <- raster::extent(rasterBrick)
+  mercatorMatrix <- matrix(c(e@xmin, e@xmax, e@ymin, e@ymax), nrow = 2)
+  lonLatMatrix <- slippymath::merc_to_lonlat(mercatorMatrix)
+
+  # Assign a geographic coordinate system
+  raster::extent(rasterBrick) <- c(
+    lonLatMatrix[1,1],
+    lonLatMatrix[2,1],
+    lonLatMatrix[1,2],
+    lonLatMatrix[2,2]
+  )
+  raster::crs(rasterBrick) <- sp::CRS("+init=epsg:4326")
+
+  # ----- Crop image -----------------------------------------------------------
+
+  # NOTE:  Rows are latitude and columns are longitude
+  x_count <- nrow(rasterBrick)
+  if ( x_count > height ) {
+    x_mid <- floor(x_count/2)
+    x_lo <- x_mid - floor(height/2)
+    x_hi <- x_mid + floor(height/2)
+  }
+  y_count <- ncol(rasterBrick)
+  if ( y_count > width ) {
+    y_mid <- floor(y_count/2)
+    y_lo <- y_mid - floor(width/2)
+    y_hi <- y_mid + floor(width/2)
+  }
+
+  extent <- raster::extent(rasterBrick, x_lo, x_hi, y_lo, y_hi)
+  rasterBrick <- raster::crop(rasterBrick, extent)
+
+  # ----- Return ---------------------------------------------------------------
+
+  return(rasterBrick)
 
 }

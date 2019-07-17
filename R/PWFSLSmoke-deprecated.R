@@ -21,7 +21,7 @@
 #'
 #' \tabular{rl}{
 #'  \code{\link{monitorDygraph}} \tab Use \code{\link{monitor_dygraph}}\cr
-#'  \code{\link{monitorEsriMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+#'  \code{\link{monitor_esriMap}} \tab Use \code{\link{monitor_staticmap}}\cr
 #'  \code{\link{monitorLeaflet}} \tab Use \code{\link{monitor_leaflet}}\cr
 #'  \code{\link{monitorMap}} \tab Use \code{\link{monitor_map}}\cr
 #'  \code{\link{monitorMap_performance}} \tab Use \code{\link{monitor_performanceMap}}\cr
@@ -35,7 +35,9 @@
 #' @section Hard Deprecations:
 #'
 #' \tabular{rl}{
-#'  \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+#'  \code{\link{monitor_esriMap}} \tab Use \code{\link{monitor_staticmap}}\cr
+#'  \code{\link{monitorEsriMap}} \tab Use \code{\link{monitor_staticmap}}\cr
+#'  \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_staticmap}}\cr
 #'  \code{\link{monitorPlot_timeOfDaySpaghetti}} \tab No alternative\cr
 #' }
 #'
@@ -64,6 +66,26 @@ monitorGoogleMap <- function(ws_monitor,
                              ...) {
 
   .Defunct("monitor_esriMap", package = "PWFSLSmoke")
+
+}
+
+#' @export
+#' @rdname PWFSLSmoke-deprecated
+monitorEsriMap <- function(ws_monitor,
+                           slice = get("max"),
+                           breaks = AQI$breaks_24,
+                           colors = AQI$colors,
+                           width = 640,
+                           height = 640,
+                           centerLon = NULL,
+                           centerLat = NULL,
+                           zoom = NULL,
+                           maptype = "roadmap",
+                           grayscale = FALSE,
+                           map = NULL,
+                           ...) {
+
+  .Defunct("monitor_staticmap", package = "PWFSLSmoke")
 
 }
 
@@ -104,25 +126,25 @@ monitorDygraph <- function(ws_monitor,
 
 #' @export
 #' @rdname PWFSLSmoke-deprecated
-monitorEsriMap <- function(ws_monitor,
-                           slice = get("max"),
-                           breaks = AQI$breaks_24,
-                           colors = AQI$colors,
-                           width = 640,
-                           height = 640,
-                           centerLon = NULL,
-                           centerLat = NULL,
-                           zoom = NULL,
-                           maptype = "worldStreetMap",
-                           grayscale = FALSE,
-                           mapRaster = NULL,
-                           cex = par("cex") * 2.0,
-                           pch = 16,
-                           ...) {
+monitor_esriMap <- function(ws_monitor,
+                            slice = get("max"),
+                            breaks = AQI$breaks_24,
+                            colors = AQI$colors,
+                            width = 640,
+                            height = 640,
+                            centerLon = NULL,
+                            centerLat = NULL,
+                            zoom = NULL,
+                            maptype = "worldStreetMap",
+                            grayscale = FALSE,
+                            mapRaster = NULL,
+                            cex = par("cex") * 2.0,
+                            pch = 16,
+                            ...) {
 
-  monitor_esriMap(
+  monitor_staticmap(
     ws_monitor, slice, breaks, colors, width, height,
-    centerLon, centerLat, zoom, maptype, grayscale, mapRaster,
+    centerLon, centerLat, zoom, maptype = "world_topo", grayscale, mapRaster,
     cex, pch, ...
   )
 }
