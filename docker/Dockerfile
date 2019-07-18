@@ -14,5 +14,6 @@ RUN apt-get update \
 # For the latest updates in PWFSLSmoke
 RUN installGithub.r \
     mazamascience/MazamaCoreUtils \
+    milesmcbain/slippymath \
     mazamascience/PWFSLSmoke
 
