@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.100
+
+* Version bump for CRAN release.
+
 # PWFSLSmoke 1.2.11
 
 This patch restores some of the ESRI mapping functionality by providing a 
