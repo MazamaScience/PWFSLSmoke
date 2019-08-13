@@ -99,7 +99,7 @@ monitor_load <- function(startdate = NULL,
 
   # Load latest data -----------------------------------------------------------
 
-  if ( endtime >= now_m1 ) {
+  if ( starttime >= now_m10 || endtime >= now_m1 ) {
 
     latestData <- monitor_loadLatest(parameter,
                                      paste0(baseUrl,'/latest/RData'),

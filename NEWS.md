@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.2.101
+
+* Fix bug in `monitor_load()` which wouldn't load data when the specified 
+time range was in the last 10 days.
+
 # PWFSLSmoke 1.2.100
 
 * Version bump for CRAN release.
