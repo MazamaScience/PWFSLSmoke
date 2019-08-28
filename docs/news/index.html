@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.101</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.102</span>
       </span>
     </div>
 
@@ -131,6 +131,15 @@
       <small>Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="pwfslsmoke-1-2-102" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-2-102" class="anchor"></a>PWFSLSmoke 1.2.102<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code>PWFSLSmoke::parseDatetime()</code> has been internally replaced with <code><a href="https://www.rdocumentation.org/packages/MazamaCoreUtils/topics/parseDatetime">MazamaCoreUtils::parseDatetime()</a></code> with explicit timezone argument</li>
+</ul>
+</div>
     <div id="pwfslsmoke-1-2-101" class="section level1">
 <h1 class="page-header">
 <a href="#pwfslsmoke-1-2-101" class="anchor"></a>PWFSLSmoke 1.2.101<small> Unreleased </small>
@@ -229,9 +238,12 @@
 <li>removed <code><a href="../reference/monitor_map.html">monitor_map()</a></code> examples because ESRI map downloads are disabled</li>
 <li>added <code><a href="../reference/createEmptyMonitor.html">createEmptyMonitor()</a></code>
 </li>
-<li>fixes for <code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>:</li>
+<li>fixes for <code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>:
+<ul>
 <li>properly handling transitions between daylight savings and standard time</li>
 <li>properly handling days with insufficient data to calculate an average</li>
+</ul>
+</li>
 </ul>
 </div>
     <div id="pwfslsmoke-1-2-2" class="section level1">
@@ -259,9 +271,12 @@
 <li>
 <code><a href="../reference/monitor_leaflet.html">monitor_leaflet()</a></code> now <em>visibly</em> returns a <em>leaflet</em> object which can be further customized by the user.</li>
 <li>code refactoring and cleanup unrelated to functionality – <em>.e.g.</em> indentation</li>
-<li>logging changes in data processing functions:</li>
+<li>logging changes in data processing functions:
+<ul>
 <li>internal logging statements use <code>TRACE</code> level (previously, many were <code>DEBUG</code>)</li>
 <li>entering a function will generate a <code>DEBUG</code> level statement with the function name</li>
+</ul>
+</li>
 <li>bug fix for <code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>
 </li>
 </ul>
@@ -274,9 +289,13 @@
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking Changes</h2>
 <ul>
-<li><code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code></li>
+<li>
+<code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>
+<ul>
 <li>Argument <code>EndTime</code> now defaults to the most recent time in the given <code>ws_monitor</code>.</li>
 <li>Ordering of columns in the output table have changed.</li>
+</ul>
+</li>
 </ul>
 </div>
 <div id="internals" class="section level2">
@@ -284,9 +303,12 @@
 <a href="#internals" class="anchor"></a>Internals</h2>
 <ul>
 <li>
-<code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>:</li>
+<code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>:
+<ul>
 <li>Code has been refactored to be more independent of prior steps.</li>
 <li>Logging statements have been added.</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -344,10 +366,18 @@
 <h2 class="hasAnchor">
 <a href="#new-functions" class="anchor"></a>New Functions</h2>
 <ul>
-<li><code><a href="../reference/generic_downloadData.html">generic_downloadData()</a></code></li>
+<li>
+<code><a href="../reference/generic_downloadData.html">generic_downloadData()</a></code>
+<ul>
 <li>Reads data files as a string of data</li>
-<li><code><a href="../reference/generic_parseData.html">generic_parseData()</a></code></li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/generic_parseData.html">generic_parseData()</a></code>
+<ul>
 <li>Parses data based on a customizable configuration list</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -388,8 +418,12 @@
 <h2 class="hasAnchor">
 <a href="#new-functions-1" class="anchor"></a>New Functions</h2>
 <ul>
-<li><code><a href="../reference/monitor_writeCurrentStatusGeoJSON.html">monitor_writeCurrentStatusGeoJSON()</a></code></li>
+<li>
+<code><a href="../reference/monitor_writeCurrentStatusGeoJSON.html">monitor_writeCurrentStatusGeoJSON()</a></code>
+<ul>
 <li>This function is equivalent to <code>monitor_writeCurrentGeoJSON()</code>, but internally uses <code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>
+</li>
+</ul>
 </li>
 </ul>
 </div>
@@ -849,7 +883,7 @@
 <li>fixed chronological ordering bug in <code><a href="../reference/monitor_combine.html">monitor_combine()</a></code>
 </li>
 <li>
-<code><a href="../reference/wrcc_downloadData.html">wrcc_downloadData()</a></code> now uses <code><a href="../reference/parseDatetime.html">parseDatetime()</a></code> like other functions</li>
+<code><a href="../reference/wrcc_downloadData.html">wrcc_downloadData()</a></code> now uses <code>parseDatetime()</code> like other functions</li>
 <li>
 <code>monitorID</code> argument is no longer required in <code><a href="../reference/monitor_join.html">monitor_join()</a></code>. Defaults to joining all shared monitorIDs.</li>
 </ul>
@@ -1262,7 +1296,7 @@
 <li>‘gnats’ style timeseries plots now plotting squares to speed things up</li>
 <li>maps now work when meta$stateCode is missing</li>
 <li>
-<code><a href="../reference/parseDatetime.html">parseDatetime()</a></code> returns POSIXct unmodified</li>
+<code>parseDatetime()</code> returns POSIXct unmodified</li>
 <li>
 <code><a href="../reference/monitor_subsetBy.html">monitor_subsetBy()</a></code> drops monitors when filter evaluates to NA</li>
 <li>all parameters now called <code>longitude</code> and <code>latitude</code> instead of <code>lon</code> and <code>lat</code>
@@ -1454,6 +1488,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#pwfslsmoke-1-2-102">1.2.102</a></li>
         <li><a href="#pwfslsmoke-1-2-101">1.2.101</a></li>
         <li><a href="#pwfslsmoke-1-2-100">1.2.100</a></li>
         <li><a href="#pwfslsmoke-1-2-11">1.2.11</a></li>

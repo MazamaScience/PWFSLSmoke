@@ -74,7 +74,7 @@ Intended for use by the monitor_subset function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.101</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.102</span>
       </span>
     </div>
 
@@ -177,7 +177,7 @@ list of monitorIDs.</p>
     </tr>
     <tr>
       <th>timezone</th>
-      <td><p>Olson timezone passed to <code>link{parseDatetime}</code> when parsing numeric <code>tlim</code></p></td>
+      <td><p>Olson timezone passed to <code><a href='https://www.rdocumentation.org/packages/MazamaCoreUtils/topics/parseDatetime'>parseDatetime</a></code> when parsing numeric <code>tlim</code></p></td>
     </tr>
     </table>
     
@@ -189,8 +189,8 @@ list of monitorIDs.</p>
 
     <p>By default, filtering by tlim or vlim will always return a dataframe with the
 same number of columns as the incoming dataframe. If <code>dropMonitors=TRUE</code>, columns
-will be removed if there are not valid data for a specific monitor after subsetting.</p>    
-<p>Filtering by vlim is open on the left and closed on the right, i.e.</p>    
+will be removed if there are not valid data for a specific monitor after subsetting.</p>
+<p>Filtering by vlim is open on the left and closed on the right, i.e.</p>
 <p><code>x &gt; vlim[1] &amp; x &lt;= vlim[2]</code></p>
     
 
