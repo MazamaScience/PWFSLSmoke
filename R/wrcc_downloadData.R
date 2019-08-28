@@ -37,8 +37,8 @@ wrcc_downloadData <- function(
   }
 
   # Get UTC times
-  starttime <- parseDatetime(startdate)
-  endtime <- parseDatetime(enddate)
+  starttime <- MazamaCoreUtils::parseDatetime(startdate, timezone = "UTC")
+  endtime <- MazamaCoreUtils::parseDatetime(enddate, timezone = "UTC")
 
   # Create CGI parameters
   .params <- list(stn = toupper(unitID),

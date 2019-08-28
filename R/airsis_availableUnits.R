@@ -45,8 +45,8 @@ airsis_availableUnits <- function(
   }
 
   # Get UTC times
-  starttime <- parseDatetime(startdate)
-  endtime <- parseDatetime(enddate)
+  starttime <- MazamaCoreUtils::parseDatetime(startdate, timezone = "UTC")
+  endtime <- MazamaCoreUtils::parseDatetime(enddate, timezone = "UTC")
 
   # Example URL:
   #   http://usfs.airsis.com/vision/common/CSVExport.aspx?utid=38&StartDate=2016-02-03&EndDate=2016-02-03

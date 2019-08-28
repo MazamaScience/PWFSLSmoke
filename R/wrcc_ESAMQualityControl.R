@@ -131,12 +131,12 @@ wrcc_ESAMQualityControl <- function(
   # ----- Time ----------------------------------------------------------------
 
   # Add a POSIXct datetime based on YYMMDDhhmm DateTime
-  tbl$datetime <- parseDatetime(paste0('20',tbl$DateTime))
+  tbl$datetime <- MazamaCoreUtils::parseDatetime(paste0('20',tbl$DateTime), timezone = "UTC")
   if ( flagAndKeep ) {
     # TODO: Unable to get datetime moved from tbl to tblFlagged without timezone and/or display getting messed up.
     # For now just duplicating the calculation, then assigning row values to NA after the fact for rows that were
     # removed from tbl prior to calculating datetime above. Clean up later if possible.
-    tblFlagged$datetime <- parseDatetime(paste0('20',tblFlagged$DateTime))
+    tblFlagged$datetime <- MazamaCoreUtils::parseDatetime(paste0('20',tblFlagged$DateTime), timezone = "UTC")
     tblFlagged$datetime[ which(!(tblFlagged$rowID %in% tbl$rowID)) ] <- NA
   }
 

@@ -122,8 +122,8 @@ monitor_getCurrentStatus <- function(
     endTime <- max(ws_monitor[["data"]][["datetime"]])
   }
 
-  # parseDateTime will fail if it produces NA
-  endTime <- parseDatetime(endTime)
+  # parseDatetime will fail if it produces NA
+  endTime <- MazamaCoreUtils::parseDatetime(endTime, timezone = "UTC")
   endTimeInclusive <- endTime %>%
     lubridate::floor_date(unit = "hour") %>%
     magrittr::subtract(lubridate::dhours(1)) # TODO:  Why is this needed?

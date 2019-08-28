@@ -47,15 +47,15 @@ monitor_load <- function(startdate = NULL,
     stop(paste0("Required parameter 'enddate' is missing"))
   }
 
-  starttime <- parseDatetime(startdate)
-  endtime <- parseDatetime(enddate)
+  tRange <- MazamaCoreUtils::timeRange(
+    starttime = startdate,
+    endtime = enddate,
+    timezone = "UTC"
+  )
 
-  if ( starttime > endtime ) {
-    temptime <- endtime
-    endtime <- starttime
-    starttime <- temptime
-    rm(temptime)
-  }
+  starttime <- tRange[1]
+  endtime <- tRange[2]
+
 
   if ( lubridate::year(starttime) != lubridate::year(endtime) ) {
     stop("Requests covering multiple years are not supported")

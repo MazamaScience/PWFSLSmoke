@@ -128,7 +128,7 @@ airnow_createDataDataframes <- function(
   # NOTE:  in a month, even if that row is filled with NAs.
 
   # Guarantee that all times are present by starting with a dataframe containing only a uniform time axis.
-  starttime <- parseDatetime(startdate)
+  starttime <- MazamaCoreUtils::parseDatetime(startdate, timezone = "UTC")
   timeAxis <- seq(starttime, starttime + lubridate::dhours(hours-1), by = 'hours')
   hourlyDF <- data.frame(datetime=timeAxis)
 

@@ -7,7 +7,7 @@
 #' @param tlim optional vector with start and end times (integer or character representing YYYYMMDD[HH] or \code{POSIXct})
 #' @param stateCodes optional vector of stateCodes
 #' @param monitorIDs optional vector of monitorIDs
-#' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
+#' @param timezone Olson timezone passed to \code{\link[MazamaCoreUtils]{parseDatetime}} when parsing numeric \code{tlim}
 #' @return A list of isolated ws_monitor objects.
 #' @description Filters \code{ws_monitor} according to the parameters
 #' passed in.  If any parameter is not specified, that parameter will not be used in the filtering.

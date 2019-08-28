@@ -58,7 +58,7 @@ airnow_downloadParseData <- function(
   logger.debug(" ----- airnow_downloadParseData() ----- ")
 
   # Format the startdate integer using lubridate
-  starttime <- parseDatetime(startdate)
+  starttime <- MazamaCoreUtils::parseDatetime(startdate, timezone = "UTC")
 
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   tblList <- vector(mode="list", length=hours)
