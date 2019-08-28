@@ -22,7 +22,7 @@ monitor_asDataframe(ws_monitor, monitorID = NULL, extraColumns = NULL,
 A dataframe version of a \emph{ws_monitor} object.
 }
 \description{
-Creates a dataframe with data from a \emph{ws_monitor} object, essentially 
+Creates a dataframe with data from a \emph{ws_monitor} object, essentially
 \emph{flattening} the object. This is especially useful when monitoring data will be shared with
 non-R users working with spreadsheets. The returned dataframe will contain data from the monitor
 specified with \code{monitorID}.

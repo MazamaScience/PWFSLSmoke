@@ -27,7 +27,7 @@ monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 
 \item{dropMonitors}{flag specifying whether to remove monitors with no data}
 
-\item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
+\item{timezone}{Olson timezone passed to \code{\link[MazamaCoreUtils]{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
 A \emph{ws_monitor} object with a subset of \code{ws_monitor}.

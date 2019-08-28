@@ -20,7 +20,7 @@ monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
 
 \item{stateCodes}{optional vector of stateCodes}
 
-\item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
+\item{timezone}{Olson timezone passed to \code{\link[MazamaCoreUtils]{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
 A list of isolated ws_monitor objects.
