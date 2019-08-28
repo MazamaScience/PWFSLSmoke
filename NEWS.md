@@ -1,3 +1,9 @@
+# PWFSLSmoke 1.2.102
+
+* `PWFSLSmoke::parseDatetime()` has been internally replaced with
+  `MazamaCoreUtils::parseDatetime()` with explicit timezone argument
+
+
 # PWFSLSmoke 1.2.101
 
 * Fix bug in `monitor_load()` which wouldn't load data when the specified 
