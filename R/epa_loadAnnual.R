@@ -67,7 +67,7 @@ epa_loadAnnual <- function(year = NULL,
   }
   year <- as.numeric(year)
 
-  lastYear <- lubridate::now() %>% lubridate::year() - 1
+  lastYear <- lubridate::now(tzone = "UTC") %>% lubridate::year() - 1
 
   if ( parameterCode == "88101" ) {
     parameter <- "PM2.5"

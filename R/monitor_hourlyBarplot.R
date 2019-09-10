@@ -115,7 +115,7 @@ monitor_hourlyBarplot <- function(ws_monitor,
   mon <- monitor_subset(ws_monitor, monitorIDs = monitorID, tlim = tlim, timezone = timezone)
 
   # Assign datetime based on timezone (i.e. local vs. UTC)
-  datetime <- lubridate::with_tz(mon$data$datetime, timezone)
+  datetime <- lubridate::with_tz(mon$data$datetime, tzone = timezone)
 
   # Assign lat/lon and localTimeZone for shadedNight
   lon <- mon$meta$longitude
@@ -125,7 +125,7 @@ monitor_hourlyBarplot <- function(ws_monitor,
   if ( localTime ) {
     localDatetime <- datetime
   } else {
-    localDatetime <- lubridate::with_tz(mon$data$datetime, localTimeZone)
+    localDatetime <- lubridate::with_tz(mon$data$datetime, tzone = localTimeZone)
   }
 
   # Pull out monitoring data

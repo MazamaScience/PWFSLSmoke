@@ -21,7 +21,8 @@ epa_createDataDataframe <- function(tbl) {
   logger.debug(" ----- epa_createDataDataframe() ----- ")
 
   # Create a column with the datetime
-  tbl$datetime <- lubridate::ymd_hms(paste0(tbl$`Date GMT`,' ',tbl$`Time GMT`,':00'))
+  timeString <- paste0(tbl$`Date GMT`,' ',tbl$`Time GMT`,':00')
+  tbl$datetime <- lubridate::ymd_hms(timeString, tz = "UTC")
 
   # NOTE:  Add monitorID to match what is done in epa_createMetaDataframes().
 

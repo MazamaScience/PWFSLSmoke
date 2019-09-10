@@ -21,8 +21,8 @@
 #' }
 
 airsis_downloadData <- function(
-  startdate = strftime(lubridate::now(), "%Y0101", tz = "UTC"),
-  enddate = strftime(lubridate::now(), "%Y%m%d", tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"), "%Y0101", tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz = "UTC"),
   provider = 'USFS',
   unitID = NULL,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"

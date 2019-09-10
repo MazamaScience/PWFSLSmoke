@@ -123,7 +123,7 @@ monitor_dailyStatistic <- function(
   dailyMean <- stats::aggregate(data, by=list(day), FUN=get("mean"), na.rm=na.rm)
   # NOTE:  aggregate() resets datetime to the computer timezone which causes
   # NOTE:  trouble later on.
-  dailyMean$datetime <- lubridate::with_tz(dailyMean$datetime, timezone)
+  dailyMean$datetime <- lubridate::with_tz(dailyMean$datetime, tzone = timezone)
   dayStarts <- lubridate::floor_date(dailyMean$datetime, unit="day")
 
   # Sanity check

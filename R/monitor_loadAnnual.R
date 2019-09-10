@@ -84,7 +84,7 @@ monitor_loadAnnual <- function(year = NULL,
   firstWrccYear <- 2010
   firstEpa88101Year <- 2008
   firstEpa88502Year <- 1998
-  lastYear <- lubridate::now() %>% lubridate::year() - 1
+  lastYear <- lubridate::now(tzone = "UTC") %>% lubridate::year() - 1
 
   # Only add to the monitorList if data are available
   monitorList <- list()

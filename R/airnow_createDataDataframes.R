@@ -59,7 +59,7 @@
 
 airnow_createDataDataframes <- function(
   parameters = NULL,
-  startdate = strftime(lubridate::now(), "%Y%m%d00", tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d00", tz = "UTC"),
   hours = 24
 ) {
 

@@ -17,27 +17,31 @@
 #' rawPlot_timeOfDaySpaghetti(df=raw,highlightDates = highlightDates)
 #' }
 
-raw_getHighlightDates <- function(df, dataVar, tzone=NULL,
-                                  highlightRange=c(1e12,Inf)) {
+raw_getHighlightDates <- function(
+  df,
+  dataVar,
+  tzone=NULL,
+  highlightRange=c(1e12,Inf)
+) {
 
   # Sanity check -- 'datetime' must exist
   if ( !'datetime' %in% names(df) ) {
     stop(paste0("Dataframe 'df' has no 'datetime' column."))
   }
-  
+
   # Data Preparation ----------------------------------------------------------
-  
-  df$localTime <- lubridate::with_tz(df$datetime,tzone)
+
+  df$localTime <- lubridate::with_tz(df$datetime, tzone = tzone)
   df$date <- format(df$localTime,"%Y%m%d")
 
   # Create a subset dataframe for local use
   df <- df[,c('localTime',dataVar,'date')]
   names(df) <- c('localTime','data','date')
-  
+
   subDF <- dplyr::filter(df, df$data >= highlightRange[1] & df$data <= highlightRange[2])
-  
+
   highlightDates <- unique(subDF$date)
-  
+
   return(highlightDates)
 }
 

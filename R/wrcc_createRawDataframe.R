@@ -44,8 +44,8 @@
 #' @references \href{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 
 wrcc_createRawDataframe <- function(
-  startdate = strftime(lubridate::now(),"%Y010100",tz = "UTC"),
-  enddate = strftime(lubridate::now(),"%Y%m%d23",tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"),"%Y010100",tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"),"%Y%m%d23",tz = "UTC"),
   unitID = NULL,
   clusterDiameter = 1000,
   baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl",

@@ -21,8 +21,8 @@
 #' }
 
 wrcc_downloadData <- function(
-  startdate = strftime(lubridate::now(),"%Y010101",tz = "UTC"),
-  enddate = strftime(lubridate::now(),"%Y%m%d23",tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"),"%Y010101",tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"),"%Y%m%d23",tz = "UTC"),
   unitID = NULL,
   baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl"
 ) {

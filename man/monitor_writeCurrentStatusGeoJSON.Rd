@@ -5,7 +5,7 @@
 \title{Write current monitor data to geojson file}
 \usage{
 monitor_writeCurrentStatusGeoJSON(ws_monitor, filename,
-  datetime = lubridate::now("UTC"), properties = NULL,
+  datetime = lubridate::now(tzone = "UTC"), properties = NULL,
   propertyNames = NULL, metadataList = list())
 }
 \arguments{

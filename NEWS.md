@@ -1,8 +1,9 @@
 # PWFSLSmoke 1.2.102
 
+* Ran `MazamaCoreUtils::lintFunctionArgs()` with `timezoneLintRules and included
+explicity timezones wherever they are allowed.
 * `PWFSLSmoke::parseDatetime()` has been internally replaced with
   `MazamaCoreUtils::parseDatetime()` with explicit timezone argument
-
 
 # PWFSLSmoke 1.2.101
 

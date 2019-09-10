@@ -43,7 +43,7 @@ monitor_subsetData <- function(data,
     }
 
     # Convert tlim to the data$datetime timezone (typically 'UTC')
-    tlim <- lubridate::with_tz(tlim, lubridate::tz(data$datetime))
+    tlim <- lubridate::with_tz(tlim, tzone = lubridate::tz(data$datetime))
 
     # Filter dataframe
     data <- dplyr::filter(data, data$datetime >= tlim[1], data$datetime <= tlim[2])

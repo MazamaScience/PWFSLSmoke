@@ -61,7 +61,7 @@ monitor_load <- function(startdate = NULL,
     stop("Requests covering multiple years are not supported")
   }
 
-  now <- lubridate::now("UTC")
+  now <- lubridate::now(tzone = "UTC")
   now_m1 <- now - lubridate::ddays(1)
   now_m10 <- now - lubridate::ddays(10)
   now_m45 <- now - lubridate::ddays(45)

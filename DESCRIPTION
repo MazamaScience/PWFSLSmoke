@@ -29,7 +29,7 @@ Depends:
     R (>= 3.3.0),
     dplyr,
     maps,
-    MazamaCoreUtils (>= 0.3.1),
+    MazamaCoreUtils (>= 0.3.5),
     MazamaSpatialUtils (>= 0.6.1)
 Imports:
     curl,

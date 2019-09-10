@@ -27,8 +27,8 @@ createEmptyMonitor <- function() {
 
   meta <- createEmptyMetaDataframe()
   data <-
-    tibble(datetime = lubridate::ymd_h(2019010100)) %>%
-    filter(.data$datetime == lubridate::ymd_h(2018010100))
+    tibble(datetime = MazamaCoreUtils::parseDatetime(2019010100, timezone = "UTC")) %>%
+    filter(.data$datetime == MazamaCoreUtils::parseDatetime(2018010100, timezone = "UTC"))
 
   # Create the 'ws_monitor' object
   ws_monitor <- list(meta = meta, data = data)

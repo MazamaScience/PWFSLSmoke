@@ -42,7 +42,7 @@
 monitor_writeCurrentStatusGeoJSON <- function(
   ws_monitor,
   filename,
-  datetime = lubridate::now("UTC"),
+  datetime = lubridate::now(tzone = "UTC"),
   properties = NULL,
   propertyNames = NULL,
   metadataList = list()

@@ -156,7 +156,7 @@ monitor_getCurrentStatus <- function(
   # Prepare data ---------------------------------------------------------------
   logger.trace("Separating 'meta' and 'data' and calculating nowcast.")
 
-  processingTime <- lubridate::now("UTC")
+  processingTime <- lubridate::now(tzone = "UTC")
 
   ws_data <- ws_monitor %>% monitor_extractData() %>% as_tibble()
   ws_meta <- ws_monitor %>% monitor_extractMeta() %>% as_tibble(rownames = NULL)
@@ -318,7 +318,7 @@ if (FALSE) {
 
   ws_monitor <- monitor_loadLatest() %>%
     monitor_subset(stateCodes = "WA")
-  endTime <-  lubridate::now("UTC")
+  endTime <-  lubridate::now(tzone = "UTC")
   monitorURLBase <- NULL
 
 }
@@ -420,7 +420,7 @@ if (FALSE) {
 #' @noRd
 .yesterday_avg <- function(ws_monitor, endTimeUTC, colTitle) {
 
-  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   logger.trace(
     "Calling .yesterdayAverage(`ws_monitor`, endTimeUTC='%s', colTitle='%s')",
     timeString, colTitle
@@ -430,7 +430,7 @@ if (FALSE) {
 
     # Get previous day in timezone of monitors
     previousDayStart <- endTimeUTC %>%
-      lubridate::with_tz(timezone) %>%              # local clock time
+      lubridate::with_tz(tzone = timezone) %>%      # local clock time
       lubridate::floor_date(unit = "day") %>%       # beginning of endTime day
       magrittr::subtract(lubridate::ddays(1)) %>%   # yesterday
       lubridate::round_date(unit = "day")           # handle LST/DST changes
@@ -585,7 +585,7 @@ if (FALSE) {
 #' @noRd
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
-  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   logger.trace(
     "Calling .isNotReporting(`data`, n=%d, endTimeUTC='%s', colTitle='%s')",
     n, timeString, colTitle
@@ -634,7 +634,7 @@ if (FALSE) {
 #' @noRd
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
 
-  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   logger.trace(
     "Calling .isNewReporting(`data`, n=%d, buffer=%d, endTimeUTC='%s', colTitle='%s')",
     n, buffer, timeString, colTitle

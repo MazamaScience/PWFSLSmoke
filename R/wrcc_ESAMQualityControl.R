@@ -186,7 +186,7 @@ wrcc_ESAMQualityControl <- function(
   goodAT <- !is.na(tbl$AvAirTemp) & tbl$AvAirTemp >= valid_AT[1] & tbl$AvAirTemp <= valid_AT[2]
   goodRHi <- !is.na(tbl$SensorIntRH) & tbl$SensorIntRH >= valid_RHi[1] & tbl$SensorIntRH <= valid_RHi[2]
   goodConcHr <- !is.na(tbl$ConcRT) & tbl$ConcRT >= valid_Conc[1] & tbl$ConcRT <= valid_Conc[2]
-  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now("UTC") # saw a future date once
+  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
 
   logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
   if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$AvAirFlw[!goodFlow]),na.last=TRUE), collapse=", "))
