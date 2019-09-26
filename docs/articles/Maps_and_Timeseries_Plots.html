@@ -13,8 +13,9 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Maps and Timeseries Plots">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -36,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
       </span>
     </div>
 
@@ -44,7 +45,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -79,7 +80,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/MazamaScience/PWFSLSmoke">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -92,6 +93,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -110,7 +112,7 @@
 <p>This vignette demonstrates the mapping and plotting capabilities of the <strong>PWFSLSmoke</strong> package.</p>
 <p>In the summer of 2015 Washington state had several catastrophic wildfires that led to heavy smoke in eastern Washington and northern Idaho for quite a few days. We will show how the mapping and timeseries plotting functions in the <strong>PWFSLSmoke</strong> package can help us visualize the spatial and temporal extent of wildfire smoke during these events.</p>
 <p>To begin, let’s have a broader look at AirNow ambient monitoring data for the Pacific Northwest (Washington, Oregon and Idaho) from June 1 through October 31, 2015. First, we create a 24-hr rolling mean for each monitor:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(PWFSLSmoke))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(PWFSLSmoke))
 
 PacNW &lt;-<span class="st"> </span>Northwest_Megafires
 PacNW_<span class="dv">24</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_rollingMean.html">monitor_rollingMean</a></span>(PacNW, <span class="dt">width=</span><span class="dv">24</span>)</code></pre></div>
@@ -124,7 +126,7 @@ PacNW_<span class="dv">24</span> &lt;-<span class="st"> </span><span class="kw">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Commented out for the vignette</span>
 <span class="co">#monitor_leaflet(PacNW_24, slice=max)</span></code></pre></div>
 <p>The <code><a href="../reference/monitor_map.html">monitor_map()</a></code> and <code><a href="../reference/monitor_leaflet.html">monitor_leaflet()</a></code> plots show us pretty much the same information, except that the leaflet plot allows you to get monitor-specific metadata by clicking on a monitor. In this manner, we can assemble a list of monitorIDs in and around the Nez Perce Reservation in northern Idaho and generate a timeseries plot showing the terrible smoke in late August.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">NezPerceIDs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"160571012_01"</span>,<span class="st">"160690012_01"</span>,<span class="st">"160690013_01"</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">NezPerceIDs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"160571012_01"</span>,<span class="st">"160690012_01"</span>,<span class="st">"160690013_01"</span>,
                  <span class="st">"160690014_01"</span>,<span class="st">"160490003_01"</span>,<span class="st">"160491012_01"</span>)
 NezPerce &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">monitorIDs=</span>NezPerceIDs)
 <span class="kw"><a href="../reference/monitor_timeseriesPlot.html">monitor_timeseriesPlot</a></span>(NezPerce, <span class="dt">style=</span><span class="st">'gnats'</span>)
@@ -132,29 +134,29 @@ NezPerce &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mo
 <span class="kw"><a href="../reference/addAQILegend.html">addAQILegend</a></span>(<span class="dt">cex=</span><span class="fl">0.7</span>)</code></pre></div>
 <p><img src="Maps_and_Timeseries_Plots_files/figure-html/dygraph-1.png" width="672"></p>
 <p>At this point it is clear that August is the month of interest so we’ll subset all of our existing <code>ws_monitor</code> objects to cover the month of August with full days according to West Coast time.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PacNW &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PacNW &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">tlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),
                         <span class="dt">timezone=</span><span class="st">"America/Los_Angeles"</span>)
-PacNW_<span class="dv">24</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW_<span class="dv">24</span>, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),
+PacNW_<span class="dv">24</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW_<span class="dv">24</span>, <span class="dt">tlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),
                            <span class="dt">timezone=</span><span class="st">"America/Los_Angeles"</span>)
-NezPerce &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(NezPerce, <span class="dt">tlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),
+NezPerce &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(NezPerce, <span class="dt">tlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),
                            <span class="dt">timezone=</span><span class="st">"America/Los_Angeles"</span>)</code></pre></div>
 <p>We can use the <code><a href="../reference/monitor_dailyBarplot.html">monitor_dailyBarplot()</a></code> function to look at official, midnight-to-midnight AQI levels for each monitor during the month of August:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/layout">layout</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">6</span>)))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mar=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">6</span>)))
+<span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mar=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))
 <span class="cf">for</span> (monitorID <span class="cf">in</span> NezPerceIDs) {
   siteName &lt;-<span class="st"> </span>NezPerce<span class="op">$</span>meta[monitorID,<span class="st">'siteName'</span>]
   <span class="kw"><a href="../reference/monitor_dailyBarplot.html">monitor_dailyBarplot</a></span>(NezPerce, <span class="dt">monitorID=</span>monitorID, <span class="dt">main=</span>siteName, <span class="dt">axes=</span><span class="ot">FALSE</span>) 
 }</code></pre></div>
 <p><img src="Maps_and_Timeseries_Plots_files/figure-html/dailyBarplot-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mar=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>)<span class="op">+</span>.<span class="dv">1</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/layout">layout</a></span>(<span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mar=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>)<span class="op">+</span>.<span class="dv">1</span>)
+<span class="kw"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span>(<span class="dv">1</span>)</code></pre></div>
 <p>We could also take a more automated approach and directly calculate the location with the worst acute smoke (worst hourly value) during this time period:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span>PacNW<span class="op">$</span>data[,<span class="op">-</span><span class="dv">1</span>] <span class="co"># omit 'datetime' column</span>
-maxPM25 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/apply">apply</a></span>(data, <span class="dv">2</span>, max, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="co"># maximum value at each site</span>
-worstAcute &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sort">sort</a></span>(maxPM25, <span class="dt">decreasing=</span><span class="ot">TRUE</span>))[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>] <span class="co"># monitorIDs for the six worst sites in PacNW</span>
+maxPM25 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(data, <span class="dv">2</span>, max, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="co"># maximum value at each site</span>
+worstAcute &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(maxPM25, <span class="dt">decreasing=</span><span class="ot">TRUE</span>))[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>] <span class="co"># monitorIDs for the six worst sites in PacNW</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/setops.html">intersect</a></span>(worstAcute, NezPerceIDs)</code></pre></div>
 <pre><code>## [1] "160571012_01" "160490003_01" "160491012_01"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PacNW<span class="op">$</span>meta[worstAcute[<span class="dv">1</span>],<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'siteName'</span>,<span class="st">'countyName'</span>,<span class="st">'stateCode'</span>)]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PacNW<span class="op">$</span>meta[worstAcute[<span class="dv">1</span>],<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'siteName'</span>,<span class="st">'countyName'</span>,<span class="st">'stateCode'</span>)]</code></pre></div>
 <pre><code>##                         siteName countyName stateCode
 ## 160571012_01 Juliaetta E-sampler      LATAH        ID</code></pre>
 <p>We see that three of the sites we identified “by hand” also had the worst acute smoke of any sites in the Pacific NW. The site with the highest measured value of PM 2.5 for the month of august was Julietta in Latah county, Idaho.</p>
@@ -163,11 +165,11 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <pre><code>## Warning in monitor_dailyStatistic(PacNW, FUN = mean, minHours = 20): Found
 ## 2 timezones. Only 'America/Los_Angeles' will be used</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span>PacNW_dailyAvg<span class="op">$</span>data[,<span class="op">-</span><span class="dv">1</span>]
-unhealthyDays &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/apply">apply</a></span>(data, <span class="dv">2</span>, <span class="cf">function</span>(x) { <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(x <span class="op">&gt;=</span><span class="st"> </span>AQI<span class="op">$</span>breaks_<span class="dv">24</span>[<span class="dv">4</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) })
-worstChronic &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sort">sort</a></span>(unhealthyDays, <span class="dt">decreasing=</span><span class="ot">TRUE</span>))[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]
+unhealthyDays &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(data, <span class="dv">2</span>, <span class="cf">function</span>(x) { <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(x <span class="op">&gt;=</span><span class="st"> </span>AQI<span class="op">$</span>breaks_<span class="dv">24</span>[<span class="dv">4</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) })
+worstChronic &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(unhealthyDays, <span class="dt">decreasing=</span><span class="ot">TRUE</span>))[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/setops.html">intersect</a></span>(worstChronic, NezPerceIDs)</code></pre></div>
 <pre><code>## [1] "160490003_01" "160571012_01" "160690014_01"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PacNW<span class="op">$</span>meta[worstChronic[<span class="dv">1</span>],<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'siteName'</span>,<span class="st">'countyName'</span>,<span class="st">'stateCode'</span>)]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PacNW<span class="op">$</span>meta[worstChronic[<span class="dv">1</span>],<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'siteName'</span>,<span class="st">'countyName'</span>,<span class="st">'stateCode'</span>)]</code></pre></div>
 <pre><code>##               siteName countyName stateCode
 ## 160490003_01 Kamiah-ID      IDAHO        ID</code></pre>
 <p>The area around the Nez Perce Reservation again had three of the worst sites for chronic smoke with the worst being Kamiah in Idaho county, Idaho.</p>
@@ -182,39 +184,41 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <!--
 A little googling and we can obtain a set of coordinates for these fires to use in a new "ESRI" map of the August daily average maxima with fire icons at fire locations:
 --><!--
-From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of "hazardous"
+From this map we can see that the monitor in the Colville reservation also registered a daily AQI level of "hazardous"
 as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these
 large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho. 
 --><p>=======</p>
 <p>A little googling and we can obtain a set of coordinates for these fires to use in a new “ESRI” map of the August daily average maxima with fire icons at fire locations:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fireLons &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="fl">118.461</span>, <span class="op">-</span><span class="fl">117.679</span>, <span class="op">-</span><span class="fl">120.039</span>, <span class="op">-</span><span class="fl">119.002</span>, <span class="op">-</span><span class="fl">119.662</span>)
-fireLats &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">48.756</span>, <span class="fl">46.11</span>, <span class="fl">47.814</span>, <span class="fl">48.338</span>, <span class="fl">48.519</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fireLons &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">118.461</span>, <span class="op">-</span><span class="fl">117.679</span>, <span class="op">-</span><span class="fl">120.039</span>, <span class="op">-</span><span class="fl">119.002</span>, <span class="op">-</span><span class="fl">119.662</span>)
+fireLats &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">48.756</span>, <span class="fl">46.11</span>, <span class="fl">47.814</span>, <span class="fl">48.338</span>, <span class="fl">48.519</span>)
 <span class="kw"><a href="../reference/monitor_staticmap.html">monitor_staticmap</a></span>(PacNW_dailyAvg, 
                   <span class="dt">centerLon =</span> <span class="op">-</span><span class="dv">118</span>, <span class="dt">centerLat =</span> <span class="dv">47</span>, 
                   <span class="dt">maptype =</span> <span class="st">"terrain"</span>, <span class="dt">zoom =</span> <span class="dv">7</span>, 
                   <span class="dt">slice =</span> max)
 <span class="kw"><a href="../reference/addIcon.html">addIcon</a></span>(<span class="st">'redFlame'</span>, fireLons, fireLats, <span class="dt">expansion =</span> .<span class="dv">002</span>)
 <span class="kw"><a href="../reference/addAQILegend.html">addAQILegend</a></span>(<span class="dt">cex =</span> <span class="fl">0.8</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="st">"August, 2015"</span>, <span class="dt">line =</span> <span class="op">-</span><span class="fl">1.5</span>, <span class="dt">cex.main =</span> <span class="dv">2</span>)</code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/graphics/title.html">title</a></span>(<span class="st">"August, 2015"</span>, <span class="dt">line =</span> <span class="op">-</span><span class="fl">1.5</span>, <span class="dt">cex.main =</span> <span class="dv">2</span>)</code></pre></div>
 <p><img src="Maps_and_Timeseries_Plots_files/figure-html/staticMap-1.png" width="480"></p>
-<p>From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of “hazardous” as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho. &gt;&gt;&gt;&gt;&gt;&gt;&gt; tiled-images</p>
+<p>From this map we can see that the monitor in the Colville reservation also registered a daily AQI level of “hazardous” as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho. &gt;&gt;&gt;&gt;&gt;&gt;&gt; tiled-images</p>
 <p>We will now take a closer look at two tribal monitors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Omak &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">monitorIDs=</span><span class="st">"530470013_01"</span>)
 Kamiah &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(PacNW, <span class="dt">monitorIDs=</span><span class="st">"160490003_01"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/layout">layout</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">2</span>)))
+<span class="kw"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">2</span>)))
 <span class="kw"><a href="../reference/monitor_dailyBarplot.html">monitor_dailyBarplot</a></span>(Omak, <span class="dt">main=</span><span class="st">"August 2015 Daiy AQI -- Omak, WA"</span>,
                          <span class="dt">labels_x_nudge=</span><span class="fl">0.8</span>, <span class="dt">labels_y_nudge=</span><span class="dv">250</span>)
 <span class="kw"><a href="../reference/monitor_dailyBarplot.html">monitor_dailyBarplot</a></span>(Kamiah, <span class="dt">main=</span><span class="st">"August Daily AQI -- Kamiah, ID"</span>,
                          <span class="dt">labels_x_nudge=</span><span class="fl">0.8</span>, <span class="dt">labels_y_nudge=</span><span class="dv">250</span>)</code></pre></div>
 <p><img src="Maps_and_Timeseries_Plots_files/figure-html/tribalMonitors_daily-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/layout">layout</a></span>(<span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span>(<span class="dv">1</span>)</code></pre></div>
 <p>This ends the spatio-temporal exploration of smoke from Pacific NW mega-fire in 2015. We hope this inspires you to harness the mapping plotting functionality available in the <strong>PWFSLSmoke</strong> package.</p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
       </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
@@ -222,12 +226,14 @@ Kamiah &lt;-<span class="st"> </span><span class="kw"><a href="../reference/moni
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

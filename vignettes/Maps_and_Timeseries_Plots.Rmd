@@ -131,7 +131,7 @@ title("August, 2015", line=-1.5, cex.main=2)
 ```
 
 <!--
-From this map we can see that the monitor in the Colleville reservation also registered a daily AQI level of "hazardous"
+From this map we can see that the monitor in the Colville reservation also registered a daily AQI level of "hazardous"
 as it was in-between the two largest fires. The overall spatial pattern, however, shows that the worst impact from these
 large fires resulted from smoke drifting SE with the prevailing winds and bunching up in the valleys and plains just upwind of the Bitterroot mountains of northern Idaho. 
 -->
@@ -161,7 +161,7 @@ title("August, 2015", line = -1.5, cex.main = 2)
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
-From this map we can see that the monitor in the Colleville reservation also 
+From this map we can see that the monitor in the Colville reservation also 
 registered a daily AQI level of "hazardous" as it was in-between the two largest 
 fires. The overall spatial pattern, however, shows that the worst impact from 
 these large fires resulted from smoke drifting SE with the prevailing winds and 

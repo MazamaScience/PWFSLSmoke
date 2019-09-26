@@ -1,7 +1,12 @@
+# PWFSLSmoke 1.2.103
+
+* docker version bump
+* documentation typos
+
 # PWFSLSmoke 1.2.102
 
 * Ran `MazamaCoreUtils::lintFunctionArgs()` with `timezoneLintRules and included
-explicity timezones wherever they are allowed.
+explicitly timezones wherever they are allowed.
 * `PWFSLSmoke::parseDatetime()` has been internally replaced with
   `MazamaCoreUtils::parseDatetime()` with explicit timezone argument
 
@@ -31,7 +36,7 @@ basemaps from the two tiling services currently being supported: ESRI and Stamen
 
 # PWFSLSmoke 1.2.9
 
-* Docker image now includes `optparse` package so that exectuable scripts can
+* Docker image now includes `optparse` package so that executable scripts can
   be run inside the `mazamascience/pwfslsmoke` image.
 * Fixed error-generating bug in `debug.trace(...)` statement while processing
   AirNow data.
@@ -61,7 +66,7 @@ now removed during the early stages of processing.
 # PWFSLSmoke 1.2.4
 
 This patch release deals with the loss of the free basemap generation service
-utilitized by `esriMap_getMap()`. An authentication token is now required and
+utilized by `esriMap_getMap()`. An authentication token is now required and
 this patch provides a workaround by using free tiles provided by
 [Stamen](http://maps.stamen.com) and `ggmap::get_stamenmap()`.
 
@@ -89,7 +94,7 @@ generating static maps and resubmitting the package to CRAN.
 
 # PWFSLSmoke 1.2.1
 
- * addedd an introductory vignette
+ * added an introductory vignette
 
 # PWFSLSmoke 1.2.0
 

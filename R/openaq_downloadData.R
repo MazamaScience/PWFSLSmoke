@@ -49,7 +49,7 @@
 #'   col_types <- 'ccccccdcddc'
 #'
 #'   # Format the startdate integer using lubridate
-#'   startdate <- parseDatetime(startdate)
+#'   startdate <- MazamaCoreUtils::parseDatetime(startdate)
 #'
 #'   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
 #'   dfList <- vector(mode="list", length=days)
