@@ -25,12 +25,12 @@ rawPlot_pollutionRose <- function(df,
                                   localTime=TRUE,
                                   normalize=FALSE,
                                   ...) {
-  
+
   # ----- Data Preparation -----------------
-  
+
   # Identify timezone(s)
   timezone <- unique(df$timezone)
-  
+
   # Force timezone to UTC if >1 timezone in metadata for monitorIDs
   if ( length(timezone)>1 ) { # note that we will only enter this condition if localTime==TRUE
     if ( localTime ) {
@@ -38,15 +38,15 @@ rawPlot_pollutionRose <- function(df,
       timezone <- "UTC"
     }
   }
-  
+
   # Set timezone to UTC if localTime==FALSE
   if ( !localTime ) {
     timezone <- "UTC"
   }
-  
+
   # Set time axis data
   df$datetime <- lubridate::with_tz(df$datetime, tzone=timezone)
-  
+
   # Time limit application
   # TODO: add logic to check for tlim format
   # TODO: warn if tlim is outside range of datetime data
@@ -59,8 +59,8 @@ rawPlot_pollutionRose <- function(df,
     if ( stringr::str_length(tlimStrings)[2] == 8 ) {
       tlim[2] <- paste0(tlim[2],'23')
     }
-    tlim <- PWFSLSmoke::parseDatetime(tlim, timezone=timezone)
-    
+    tlim <- MazamaCoreUtils::parseDatetime(tlim, timezone = timezone)
+
     # Create time mask and subset data
     timeMask <- df$datetime >= tlim[1] & df$datetime <= tlim[2]
     if ( sum(timeMask)==0 ) {
@@ -68,7 +68,7 @@ rawPlot_pollutionRose <- function(df,
     }
     df <- df[timeMask,]
   }
-  
+
   # Populate arguments for openair::windRose
   argsList <- list(...)
   argsList$mydata <- df
@@ -83,12 +83,12 @@ rawPlot_pollutionRose <- function(df,
   if ( !('wd' %in% names(argsList)) ) {
     argsList$wd <- "windDir"
   }
-  
+
   # ----- Plotting -------------------------
-  
+
   # Create Plot
   do.call(openair::pollutionRose,argsList)
-  
+
 }
 
 # NOTE: As an interesting check on the binning by wind direction, run the function above with parameter="windDir". It

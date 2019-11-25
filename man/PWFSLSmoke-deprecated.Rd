@@ -10,6 +10,7 @@
 \alias{monitorMap_performance}
 \alias{monitorGoogleMap}
 \alias{monitorPlot_timeOfDaySpaghetti}
+\alias{monitor_esriMap}
 \alias{monitorPlot_dailyBarplot}
 \alias{monitorPlot_hourlyBarplot}
 \alias{monitorPlot_noData}
@@ -22,6 +23,11 @@ monitorGoogleMap(ws_monitor, slice = get("max"),
   height = 640, centerLon = NULL, centerLat = NULL, zoom = NULL,
   maptype = "roadmap", grayscale = FALSE, map = NULL, ...)
 
+monitorEsriMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
+  colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
+  centerLat = NULL, zoom = NULL, maptype = "roadmap",
+  grayscale = FALSE, map = NULL, ...)
+
 monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL,
   tlim = NULL, ylim = NULL, aqiLines = TRUE, shadedNight = TRUE,
   title = NULL, ...)
@@ -30,7 +36,7 @@ monitorDygraph(ws_monitor, title = "title",
   ylab = "PM2.5 Concentration", tlim = NULL, rollPeriod = 1,
   showLegend = TRUE)
 
-monitorEsriMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
+monitor_esriMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
   colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
   centerLat = NULL, zoom = NULL, maptype = "worldStreetMap",
   grayscale = FALSE, mapRaster = NULL, cex = par("cex") * 2,
@@ -102,7 +108,7 @@ Deprecations fall into the following categories:
 
 \tabular{rl}{
  \code{\link{monitorDygraph}} \tab Use \code{\link{monitor_dygraph}}\cr
- \code{\link{monitorEsriMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+ \code{\link{monitor_esriMap}} \tab Use \code{\link{monitor_staticmap}}\cr
  \code{\link{monitorLeaflet}} \tab Use \code{\link{monitor_leaflet}}\cr
  \code{\link{monitorMap}} \tab Use \code{\link{monitor_map}}\cr
  \code{\link{monitorMap_performance}} \tab Use \code{\link{monitor_performanceMap}}\cr
@@ -118,7 +124,9 @@ Deprecations fall into the following categories:
 
 
 \tabular{rl}{
- \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_esriMap}}\cr
+ \code{\link{monitor_esriMap}} \tab Use \code{\link{monitor_staticmap}}\cr
+ \code{\link{monitorEsriMap}} \tab Use \code{\link{monitor_staticmap}}\cr
+ \code{\link{monitorGoogleMap}} \tab Use \code{\link{monitor_staticmap}}\cr
  \code{\link{monitorPlot_timeOfDaySpaghetti}} \tab No alternative\cr
 }
 }

@@ -244,7 +244,9 @@ generic_parseData <- function(fileString = NULL,
     rename(!!!camelCaseMeta) %>%
     mutate(
       datetime = lubridate::parse_date_time(
-        .data$datetime, parsingInfo[["datetime_format"]], parsingInfo[["tz"]]
+        .data$datetime,
+        parsingInfo[["datetime_format"]],
+        tz = parsingInfo[["tz"]]
     )) %>%
     select(selectedCols)
 

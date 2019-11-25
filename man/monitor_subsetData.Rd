@@ -18,7 +18,7 @@ monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
 
 \item{dropMonitors}{flag specifying whether to remove columns -- defaults to \code{FALSE}}
 
-\item{timezone}{Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}}
+\item{timezone}{Olson timezone passed to \code{\link[MazamaCoreUtils]{parseDatetime}} when parsing numeric \code{tlim}}
 }
 \value{
 A \emph{ws_monitor} object \code{data} dataframe, or \code{NULL} if filtering removes all monitors.
@@ -36,9 +36,9 @@ Intended for use by the monitor_subset function.
 By default, filtering by tlim or vlim will always return a dataframe with the
 same number of columns as the incoming dataframe. If \code{dropMonitors=TRUE}, columns
 will be removed if there are not valid data for a specific monitor after subsetting.
-    
+
 Filtering by vlim is open on the left and closed on the right, i.e.
-    
+
  \code{x > vlim[1] & x <= vlim[2]}
 }
 \keyword{ws_monitor}

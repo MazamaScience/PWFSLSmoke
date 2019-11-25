@@ -5,8 +5,8 @@
 \title{Return reshaped dataframes of AirNow data}
 \usage{
 airnow_createDataDataframes(parameters = NULL,
-  startdate = strftime(lubridate::now(), "\%Y\%m\%d00", tz = "UTC"),
-  hours = 24)
+  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d00", tz =
+  "UTC"), hours = 24)
 }
 \arguments{
 \item{parameters}{Vector of names of desired pollutants or NULL for all

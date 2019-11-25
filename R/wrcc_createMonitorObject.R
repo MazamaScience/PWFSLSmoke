@@ -64,8 +64,8 @@
 #' }
 
 wrcc_createMonitorObject <- function(
-  startdate = strftime(lubridate::now(),"%Y010100",tz = "UTC"),
-  enddate = strftime(lubridate::now(),"%Y%m%d23",tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"),"%Y010100",tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"),"%Y%m%d23",tz = "UTC"),
   unitID = NULL,
   clusterDiameter = 1000,
   zeroMinimum = TRUE,
@@ -84,7 +84,7 @@ wrcc_createMonitorObject <- function(
   if ( FALSE ) {
 
     startdate <- 2019010100
-    enddate <- strftime(lubridate::now(),"%Y%m%d23",tz = "UTC")
+    enddate <- strftime(lubridate::now(tzone = "UTC"),"%Y%m%d23",tz = "UTC")
     unitID <- 's153'
     clusterDiameter <- 1000
     zeroMinimum <- TRUE

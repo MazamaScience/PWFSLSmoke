@@ -10,7 +10,7 @@
 #' @param stateCodes optional vector of state codes used to filter the data
 #' @param countryCodes optional vector of country codes used to filter the data
 #' @param dropMonitors flag specifying whether to remove monitors with no data
-#' @param timezone Olson timezone passed to \code{link{parseDatetime}} when parsing numeric \code{tlim}
+#' @param timezone Olson timezone passed to \code{\link[MazamaCoreUtils]{parseDatetime}} when parsing numeric \code{tlim}
 #' @return A \emph{ws_monitor} object with a subset of \code{ws_monitor}.
 #' @description Creates a subset \emph{ws_monitor} based on one or more optional input parameters.
 #' If any input parameter is not specified, that parameter will not be used to subset \code{ws_monitor}.

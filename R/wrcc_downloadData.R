@@ -21,8 +21,8 @@
 #' }
 
 wrcc_downloadData <- function(
-  startdate = strftime(lubridate::now(),"%Y010101",tz = "UTC"),
-  enddate = strftime(lubridate::now(),"%Y%m%d23",tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"),"%Y010101",tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"),"%Y%m%d23",tz = "UTC"),
   unitID = NULL,
   baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl"
 ) {
@@ -37,8 +37,8 @@ wrcc_downloadData <- function(
   }
 
   # Get UTC times
-  starttime <- parseDatetime(startdate)
-  endtime <- parseDatetime(enddate)
+  starttime <- MazamaCoreUtils::parseDatetime(startdate, timezone = "UTC")
+  endtime <- MazamaCoreUtils::parseDatetime(enddate, timezone = "UTC")
 
   # Create CGI parameters
   .params <- list(stn = toupper(unitID),

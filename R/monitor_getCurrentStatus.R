@@ -48,17 +48,14 @@
 #' information for the data part of the given \emph{ws_monitor} object. The
 #' summaries included are listed below with a description:
 #'
-#' \tabular{ll}{
-#'   yesterday_pm25_24hr   \tab Daily AQI value for the day prior to
-#'                              \code{endTime}\cr
-#'   last_nowcast_1hr      \tab Last valid NowCast measurement\cr
-#'   last_PM2.5_1hr        \tab Last valid raw PM2.5 measurement\cr
-#'   last_PM2.5_3hr        \tab Mean of the last valid raw PM2.5 measurement
-#'                              with the preceding two measurements\cr
-#'   previous_nowcast_1hr  \tab Previous valid NowCast measurement\cr
-#'   previous_PM2.5_1hr    \tab Previous valid raw PM2.5 measurement\cr
-#'   previous_PM2.5_3hr    \tab Mean of the previous valid raw PM2.5 measurement
-#'                              with the preceding two measurements
+#' \describe{
+#'   \item{yesterday_pm25_24hr}{Daily AQI value for the day prior to \code{endTime}}
+#'   \item{last_nowcast_1hr}{Last valid NowCast measurement}
+#'   \item{last_PM2.5_1hr}{Last valid raw PM2.5 measurement}
+#'   \item{last_PM2.5_3hr}{Mean of the last valid raw PM2.5 measurementwith the preceding two measurements}
+#'   \item{previous_nowcast_1hr}{Previous valid NowCast measurement}
+#'   \item{previous_PM2.5_1hr}{Previous valid raw PM2.5 measurement}
+#'   \item{previous_PM2.5_3hr}{Mean of the previous valid raw PM2.5 measurement with the preceding two measurements}
 #' }
 #'
 #' It should be noted that all averages are "right-aligned", meaning that the
@@ -72,19 +69,17 @@
 #' bounds of the specified end time and data in the \emph{ws_monitor} object.
 #' Each flag is listed below with its corresponding meaning:
 #'
-#' \tabular{ll}{
-#'   last_nowcastLevel     \tab NowCast level at the last valid time\cr
-#'   previous_nowcastLevel \tab NowCast level at the previous valid time\cr
-#'
-#'   NR6  \tab Monitor not reporting for more than 6 hours\cr
-#'   NEW6 \tab New monitor reporting in the last 6 hours\cr
-#'   USG6 \tab NowCast level increased to Unhealthy for Sensitive Groups in the
-#'             last 6 hours\cr
-#'   U6   \tab NowCast level increased to Unhealthy in the last 6 hours\cr
-#'   VU6  \tab NowCast level increased to Very Unhealthy in the last 6 hours\cr
-#'   HAZ6 \tab NowCast level increased to Hazardous in the last 6 hours\cr
-#'   MOD6 \tab NowCast level decreased to Moderate or Good in the last 6 hours\cr
-#'   MAL6 \tab Monitor malfunctioning the last 6 hours (not currently implemented)
+#' \describe{
+#'   \item{last_nowcastLevel}{NowCast level at the last valid time}
+#'   \item{previous_nowcastLevel}{NowCast level at the previous valid time}
+#'   \item{NR6}{Monitor not reporting for more than 6 hours}
+#'   \item{NEW6}{New monitor reporting in the last 6 hours}
+#'   \item{USG6}{NowCast level increased to Unhealthy for Sensitive Groups in the last 6 hours}
+#'   \item{U6}{NowCast level increased to Unhealthy in the last 6 hours}
+#'   \item{VU6}{NowCast level increased to Very Unhealthy in the last 6 hours}
+#'   \item{HAZ6}{NowCast level increased to Hazardous in the last 6 hours}
+#'   \item{MOD6}{NowCast level decreased to Moderate or Good in the last 6 hours}
+#'   \item{MAL6}{Monitor malfunctioning the last 6 hours (not currently implemented)}
 #' }
 #'
 #' @importFrom rlang :=
@@ -127,8 +122,8 @@ monitor_getCurrentStatus <- function(
     endTime <- max(ws_monitor[["data"]][["datetime"]])
   }
 
-  # parseDateTime will fail if it produces NA
-  endTime <- parseDatetime(endTime)
+  # parseDatetime will fail if it produces NA
+  endTime <- MazamaCoreUtils::parseDatetime(endTime, timezone = "UTC")
   endTimeInclusive <- endTime %>%
     lubridate::floor_date(unit = "hour") %>%
     magrittr::subtract(lubridate::dhours(1)) # TODO:  Why is this needed?
@@ -161,7 +156,7 @@ monitor_getCurrentStatus <- function(
   # Prepare data ---------------------------------------------------------------
   logger.trace("Separating 'meta' and 'data' and calculating nowcast.")
 
-  processingTime <- lubridate::now("UTC")
+  processingTime <- lubridate::now(tzone = "UTC")
 
   ws_data <- ws_monitor %>% monitor_extractData() %>% as_tibble()
   ws_meta <- ws_monitor %>% monitor_extractMeta() %>% as_tibble(rownames = NULL)
@@ -323,7 +318,7 @@ if (FALSE) {
 
   ws_monitor <- monitor_loadLatest() %>%
     monitor_subset(stateCodes = "WA")
-  endTime <-  lubridate::now("UTC")
+  endTime <-  lubridate::now(tzone = "UTC")
   monitorURLBase <- NULL
 
 }
@@ -425,7 +420,7 @@ if (FALSE) {
 #' @noRd
 .yesterday_avg <- function(ws_monitor, endTimeUTC, colTitle) {
 
-  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   logger.trace(
     "Calling .yesterdayAverage(`ws_monitor`, endTimeUTC='%s', colTitle='%s')",
     timeString, colTitle
@@ -435,7 +430,7 @@ if (FALSE) {
 
     # Get previous day in timezone of monitors
     previousDayStart <- endTimeUTC %>%
-      lubridate::with_tz(timezone) %>%              # local clock time
+      lubridate::with_tz(tzone = timezone) %>%      # local clock time
       lubridate::floor_date(unit = "day") %>%       # beginning of endTime day
       magrittr::subtract(lubridate::ddays(1)) %>%   # yesterday
       lubridate::round_date(unit = "day")           # handle LST/DST changes
@@ -590,7 +585,7 @@ if (FALSE) {
 #' @noRd
 .isNotReporting <- function(data, n, endTimeUTC, colTitle) {
 
-  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   logger.trace(
     "Calling .isNotReporting(`data`, n=%d, endTimeUTC='%s', colTitle='%s')",
     n, timeString, colTitle
@@ -639,7 +634,7 @@ if (FALSE) {
 #' @noRd
 .isNewReporting <- function(data, n, buffer, endTimeUTC, colTitle) {
 
-  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S")
+  timeString <- strftime(endTimeUTC, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   logger.trace(
     "Calling .isNewReporting(`data`, n=%d, buffer=%d, endTimeUTC='%s', colTitle='%s')",
     n, buffer, timeString, colTitle

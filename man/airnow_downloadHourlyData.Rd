@@ -4,8 +4,8 @@
 \alias{airnow_downloadHourlyData}
 \title{Download hourly data from AirNow}
 \usage{
-airnow_downloadHourlyData(datestamp = strftime(lubridate::now(),
-  "\%Y\%m\%d00", tz = "UTC"),
+airnow_downloadHourlyData(datestamp = strftime(lubridate::now(tzone =
+  "UTC"), "\%Y\%m\%d00", tz = "UTC"),
   baseUrl = "https://files.airnowtech.org/airnow")
 }
 \arguments{

@@ -193,7 +193,7 @@ airsis_EBAMQualityControl <- function(
   goodAT <- !is.na(tbl$AT) & tbl$AT >= valid_AT[1] & tbl$AT <= valid_AT[2]
   goodRHi <- !is.na(tbl$RHi) & tbl$RHi >= valid_RHi[1] & tbl$RHi <= valid_RHi[2]
   goodConcHr <- !is.na(tbl$ConcHr) & tbl$ConcHr >= valid_Conc[1] & tbl$ConcHr <= valid_Conc[2]
-  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now("UTC") # saw a future date once
+  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
 
   logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
   if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$Flow[!goodFlow]),na.last=TRUE), collapse=", "))

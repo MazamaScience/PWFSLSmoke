@@ -162,7 +162,7 @@ airsis_BAM1020QualityControl <- function(
   goodAT <- !is.na(tbl$Ambient.Temp..C.) & tbl$Ambient.Temp..C. >= valid_AT[1] & tbl$Ambient.Temp..C. <= valid_AT[2]
   goodRHi <- !is.na(tbl$RH....) & tbl$RH.... >= valid_RHi[1] & tbl$RH.... <= valid_RHi[2]
   goodConcHr <- !is.na(tbl$'Conc..\u00B5g.m3.') & tbl$'Conc..\u00B5g.m3.' >= valid_Conc[1] & tbl$'Conc..\u00B5g.m3.' <= valid_Conc[2]
-  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now("UTC") # saw a future date once
+  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
 
   logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
   if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$Qtot..m3.[!goodFlow]),na.last=TRUE), collapse=", "))

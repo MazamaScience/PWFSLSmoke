@@ -131,12 +131,12 @@ wrcc_ESAMQualityControl <- function(
   # ----- Time ----------------------------------------------------------------
 
   # Add a POSIXct datetime based on YYMMDDhhmm DateTime
-  tbl$datetime <- parseDatetime(paste0('20',tbl$DateTime))
+  tbl$datetime <- MazamaCoreUtils::parseDatetime(paste0('20',tbl$DateTime), timezone = "UTC")
   if ( flagAndKeep ) {
     # TODO: Unable to get datetime moved from tbl to tblFlagged without timezone and/or display getting messed up.
     # For now just duplicating the calculation, then assigning row values to NA after the fact for rows that were
     # removed from tbl prior to calculating datetime above. Clean up later if possible.
-    tblFlagged$datetime <- parseDatetime(paste0('20',tblFlagged$DateTime))
+    tblFlagged$datetime <- MazamaCoreUtils::parseDatetime(paste0('20',tblFlagged$DateTime), timezone = "UTC")
     tblFlagged$datetime[ which(!(tblFlagged$rowID %in% tbl$rowID)) ] <- NA
   }
 
@@ -186,7 +186,7 @@ wrcc_ESAMQualityControl <- function(
   goodAT <- !is.na(tbl$AvAirTemp) & tbl$AvAirTemp >= valid_AT[1] & tbl$AvAirTemp <= valid_AT[2]
   goodRHi <- !is.na(tbl$SensorIntRH) & tbl$SensorIntRH >= valid_RHi[1] & tbl$SensorIntRH <= valid_RHi[2]
   goodConcHr <- !is.na(tbl$ConcRT) & tbl$ConcRT >= valid_Conc[1] & tbl$ConcRT <= valid_Conc[2]
-  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now("UTC") # saw a future date once
+  gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
 
   logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
   if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$AvAirFlw[!goodFlow]),na.last=TRUE), collapse=", "))

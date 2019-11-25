@@ -15,21 +15,25 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,7 +41,9 @@
 
 
 
+
 <meta property="og:title" content="Changelog" />
+
 
 
 
@@ -49,6 +55,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -67,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
       </span>
     </div>
 
@@ -75,7 +82,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,11 +114,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MazamaScience/PWFSLSmoke">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -122,6 +128,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -131,12 +138,65 @@
       <small>Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="pwfslsmoke-1-2-103" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-2-103" class="anchor"></a>PWFSLSmoke 1.2.103<small> Unreleased </small>
+</h1>
+<ul>
+<li>docker version bump</li>
+<li>documentation typos</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-1-2-102" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-2-102" class="anchor"></a>PWFSLSmoke 1.2.102<small> Unreleased </small>
+</h1>
+<ul>
+<li>Ran <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/lintFunctionArgs.html">MazamaCoreUtils::lintFunctionArgs()</a></code> with `timezoneLintRules and included explicitly timezones wherever they are allowed.</li>
+<li>
+<code>PWFSLSmoke::parseDatetime()</code> has been internally replaced with <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/parseDatetime.html">MazamaCoreUtils::parseDatetime()</a></code> with explicit timezone argument</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-1-2-101" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-2-101" class="anchor"></a>PWFSLSmoke 1.2.101<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fix bug in <code><a href="../reference/monitor_load.html">monitor_load()</a></code> which wouldn’t load data when the specified time range was in the last 10 days.</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-1-2-100" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-2-100" class="anchor"></a>PWFSLSmoke 1.2.100<small> 2019-07-18 </small>
+</h1>
+<ul>
+<li>Version bump for CRAN release.</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-1-2-11" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-2-11" class="anchor"></a>PWFSLSmoke 1.2.11<small> Unreleased </small>
+</h1>
+<p>This patch restores some of the ESRI mapping functionality by providing a function to download, stitch and crop images from ESRI tile services. The new <code><a href="../reference/staticmap_getRasterBrick.html">staticmap_getRasterBrick()</a></code> provides a generalized API for generating basemaps from the two tiling services currently being supported: ESRI and Stamen.</p>
+<ul>
+<li>Added <code><a href="../reference/monitor_staticmap.html">monitor_staticmap()</a></code>, <code><a href="../reference/staticmap_getRasterBrick.html">staticmap_getRasterBrick()</a></code> and <code><a href="../reference/staticmap_getEsrimapBrick.html">staticmap_getEsrimapBrick()</a></code>.</li>
+<li>Reordered arguments in <code><a href="../reference/staticmap_getStamenmapBrick.html">staticmap_getStamenmapBrick()</a></code>.</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-1-2-10" class="section level1">
+<h1 class="page-header">
+<a href="#pwfslsmoke-1-2-10" class="anchor"></a>PWFSLSmoke 1.2.10<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fixes for website documentation</li>
+</ul>
+</div>
     <div id="pwfslsmoke-1-2-9" class="section level1">
 <h1 class="page-header">
 <a href="#pwfslsmoke-1-2-9" class="anchor"></a>PWFSLSmoke 1.2.9<small> Unreleased </small>
 </h1>
 <ul>
-<li>Docker image now includes <code>optparse</code> package so that exectuable scripts can be run inside the <code>mazamascience/pwfslsmoke</code> image.</li>
+<li>Docker image now includes <code>optparse</code> package so that executable scripts can be run inside the <code>mazamascience/pwfslsmoke</code> image.</li>
 <li>Fixed error-generating bug in <code>debug.trace(...)</code> statement while processing AirNow data.</li>
 </ul>
 </div>
@@ -176,16 +236,16 @@
 <h1 class="page-header">
 <a href="#pwfslsmoke-1-2-4" class="anchor"></a>PWFSLSmoke 1.2.4<small> 2019-05-01 </small>
 </h1>
-<p>This patch release deals with the loss of the free basemap generation service utilitized by <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code>. An authentication token is now required and this patch provides a workaround by using free tiles provided by <a href="http://maps.stamen.com">Stamen</a> and <code><a href="https://www.rdocumentation.org/packages/ggmap/topics/get_stamenmap">ggmap::get_stamenmap()</a></code>.</p>
+<p>This patch release deals with the loss of the free basemap generation service utilized by <code>esriMap_getMap()</code>. An authentication token is now required and this patch provides a workaround by using free tiles provided by <a href="http://maps.stamen.com">Stamen</a> and <code><a href="https://rdrr.io/pkg/ggmap/man/get_stamenmap.html">ggmap::get_stamenmap()</a></code>.</p>
 <p>The following new functions are provided:</p>
 <ul>
 <li>
-<code><a href="../reference/monitor_stamenmap.html">monitor_stamenmap()</a></code> – replacement for <code><a href="../reference/monitor_esriMap.html">monitor_esriMap()</a></code>
+<code><a href="../reference/monitor_stamenmap.html">monitor_stamenmap()</a></code> – replacement for <code><a href="../reference/PWFSLSmoke-deprecated.html">monitor_esriMap()</a></code>
 </li>
 <li><code><a href="../reference/staticmap_getStamenmapBrick.html">staticmap_getStamenmapBrick()</a></code></li>
 <li><code><a href="../reference/staticmap_plotRasterBrick.html">staticmap_plotRasterBrick()</a></code></li>
 </ul>
-<p>The use of <code><a href="../reference/monitor_esriMap.html">monitor_esriMap()</a></code> has been purged from all examples and vignettes. The goal is to get to the point of having at least minimal capabilities for generating static maps and resubmitting the package to CRAN.</p>
+<p>The use of <code><a href="../reference/PWFSLSmoke-deprecated.html">monitor_esriMap()</a></code> has been purged from all examples and vignettes. The goal is to get to the point of having at least minimal capabilities for generating static maps and resubmitting the package to CRAN.</p>
 </div>
     <div id="pwfslsmoke-1-2-3" class="section level1">
 <h1 class="page-header">
@@ -213,7 +273,7 @@
 <a href="#pwfslsmoke-1-2-1" class="anchor"></a>PWFSLSmoke 1.2.1<small> Unreleased </small>
 </h1>
 <ul>
-<li>addedd an introductory vignette</li>
+<li>added an introductory vignette</li>
 </ul>
 </div>
     <div id="pwfslsmoke-1-2-0" class="section level1">
@@ -330,7 +390,7 @@
 <a href="#pwfslsmoke-1-1-21" class="anchor"></a>PWFSLSmoke 1.1.21<small> Unreleased </small>
 </h1>
 <ul>
-<li>lowered logging level inside <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code> from <code>INFO</code> to <code>TRACE</code>
+<li>lowered logging level inside <code>esriMap_getMap()</code> from <code>INFO</code> to <code>TRACE</code>
 </li>
 <li>eliminated section from “Maps and Timeseries Plots” vignette that used now defunct <code>monitor_currentData()</code>
 </li>
@@ -470,7 +530,7 @@
 </tr>
 <tr class="even">
 <td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitorEsriMap()</a></code></td>
-<td><code><a href="../reference/monitor_esriMap.html">monitor_esriMap()</a></code></td>
+<td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitor_esriMap()</a></code></td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/PWFSLSmoke-deprecated.html">monitorLeaflet()</a></code></td>
@@ -487,7 +547,7 @@
 </tbody>
 </table>
 <p><br></p>
-<p>In addition, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorGoogleMap()</a></code> has been deprecated in favor of <code><a href="../reference/monitor_esriMap.html">monitor_esriMap()</a></code>.</p>
+<p>In addition, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorGoogleMap()</a></code> has been deprecated in favor of <code><a href="../reference/PWFSLSmoke-deprecated.html">monitor_esriMap()</a></code>.</p>
 </div>
     <div id="pwfslsmoke-1-1-11" class="section level1">
 <h1 class="page-header">
@@ -539,7 +599,7 @@
 </h1>
 <ul>
 <li>
-<code>%&gt;%</code> is now exported</li>
+<code><a href="../reference/pipe.html">%&gt;%</a></code> is now exported</li>
 <li>added new <code>monitor_download~()</code> functions to download local copies of PWFSL monitor data files.</li>
 <li>added new <code><a href="../reference/monitor_loadLatest.html">monitor_loadLatest()</a></code>, <code><a href="../reference/monitor_loadDaily.html">monitor_loadDaily()</a></code> and <code><a href="../reference/monitor_loadAnnual.html">monitor_loadAnnual()</a></code> functions</li>
 <li>refactored <code>airnow</code>, <code>airsis</code>, <code>epa</code> and <code>wrcc</code> <code>~_load~()</code> functions to include a <code>dataDir</code> parameter to allow data loading from a local directory rather than always from the internet. the <code>airsis</code> and <code>wrcc</code> functions now support the (unused) <code>parameter</code> argument to match the <code>airnow</code> function signature</li>
@@ -583,7 +643,7 @@
 <li>tweaks for CRAN submission</li>
 <li>cleanup recommended by <em>goodpractice</em> package</li>
 <li>removed non-functioning <code>monitorGooglMap()</code> and updated examples to use <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorEsriMap()</a></code> instead</li>
-<li>additional logging in <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code>
+<li>additional logging in <code>esriMap_getMap()</code>
 </li>
 </ul>
 </div>
@@ -592,7 +652,7 @@
 <a href="#pwfslsmoke-1-1-3" class="anchor"></a>PWFSLSmoke 1.1.3<small> 2018-10-05 </small>
 </h1>
 <ul>
-<li>added logging functionality to <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code>
+<li>added logging functionality to <code>esriMap_getMap()</code>
 </li>
 </ul>
 </div>
@@ -760,7 +820,7 @@
 <a href="#pwfslsmoke-1-0-19" class="anchor"></a>PWFSLSmoke 1.0.19<small> Unreleased </small>
 </h1>
 <ul>
-<li>fixed bug in <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code> when <code>width != height</code>
+<li>fixed bug in <code>esriMap_getMap()</code> when <code>width != height</code>
 </li>
 <li>fixed single-digit month parsing in <code><a href="../reference/airnow_load.html">airnow_load()</a></code>
 </li>
@@ -815,7 +875,7 @@
 <li>fixed chronological ordering bug in <code><a href="../reference/monitor_combine.html">monitor_combine()</a></code>
 </li>
 <li>
-<code><a href="../reference/wrcc_downloadData.html">wrcc_downloadData()</a></code> now uses <code><a href="../reference/parseDatetime.html">parseDatetime()</a></code> like other functions</li>
+<code><a href="../reference/wrcc_downloadData.html">wrcc_downloadData()</a></code> now uses <code>parseDatetime()</code> like other functions</li>
 <li>
 <code>monitorID</code> argument is no longer required in <code><a href="../reference/monitor_join.html">monitor_join()</a></code>. Defaults to joining all shared monitorIDs.</li>
 </ul>
@@ -1050,7 +1110,7 @@
 <a href="#pwfslsmoke-0-99-31" class="anchor"></a>PWFSLSmoke 0.99.31<small> Unreleased </small>
 </h1>
 <ul>
-<li>refactored <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code> to use <code>httr</code> package</li>
+<li>refactored <code>esriMap_getMap()</code> to use <code>httr</code> package</li>
 <li>added NowCast vignette</li>
 </ul>
 </div>
@@ -1061,9 +1121,9 @@
 <ul>
 <li>new <code><a href="../reference/airsis_availableUnits.html">airsis_availableUnits()</a></code> function</li>
 <li>new <code>AIRSIS</code> object with available monitor types</li>
-<li>fix to <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code> to ensure that projected maps are the correct size</li>
+<li>fix to <code>esriMap_getMap()</code> to ensure that projected maps are the correct size</li>
 <li>
-<code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code> arguments changed to: <code>bboxString</code>
+<code>esriMap_getMap()</code> arguments changed to: <code>bboxString</code>
 </li>
 </ul>
 </div>
@@ -1072,7 +1132,7 @@
 <a href="#pwfslsmoke-0-99-29" class="anchor"></a>PWFSLSmoke 0.99.29<small> Unreleased </small>
 </h1>
 <ul>
-<li>functions for ESRI Maps added: <code><a href="../reference/esriMap_getMap.html">esriMap_getMap()</a></code>, <code><a href="../reference/esriMap_plotOnStaticMap.html">esriMap_plotOnStaticMap()</a></code>, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorEsriMap()</a></code>
+<li>functions for ESRI Maps added: <code>esriMap_getMap()</code>, <code>esriMap_plotOnStaticMap()</code>, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorEsriMap()</a></code>
 </li>
 <li>new <code><a href="../reference/addMarker.html">addMarker()</a></code> function to add a marker to a plot</li>
 </ul>
@@ -1228,7 +1288,7 @@
 <li>‘gnats’ style timeseries plots now plotting squares to speed things up</li>
 <li>maps now work when meta$stateCode is missing</li>
 <li>
-<code><a href="../reference/parseDatetime.html">parseDatetime()</a></code> returns POSIXct unmodified</li>
+<code>parseDatetime()</code> returns POSIXct unmodified</li>
 <li>
 <code><a href="../reference/monitor_subsetBy.html">monitor_subsetBy()</a></code> drops monitors when filter evaluates to NA</li>
 <li>all parameters now called <code>longitude</code> and <code>latitude</code> instead of <code>lon</code> and <code>lat</code>
@@ -1420,6 +1480,12 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#pwfslsmoke-1-2-103">1.2.103</a></li>
+        <li><a href="#pwfslsmoke-1-2-102">1.2.102</a></li>
+        <li><a href="#pwfslsmoke-1-2-101">1.2.101</a></li>
+        <li><a href="#pwfslsmoke-1-2-100">1.2.100</a></li>
+        <li><a href="#pwfslsmoke-1-2-11">1.2.11</a></li>
+        <li><a href="#pwfslsmoke-1-2-10">1.2.10</a></li>
         <li><a href="#pwfslsmoke-1-2-9">1.2.9</a></li>
         <li><a href="#pwfslsmoke-1-2-8">1.2.8</a></li>
         <li><a href="#pwfslsmoke-1-2-7">1.2.7</a></li>
@@ -1543,19 +1609,23 @@
 
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Jonathan Callahan, Rohan Aras, Zach Dingels, Jon Hagg, Jimin Kim, Hans Martin, Helen Miller, Spencer Pease, Rex Thompson, Alice Yang.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

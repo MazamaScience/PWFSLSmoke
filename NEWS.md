@@ -1,8 +1,44 @@
+# PWFSLSmoke 1.2.103
+
+* docker version bump
+* documentation typos
+
+# PWFSLSmoke 1.2.102
+
+* Ran `MazamaCoreUtils::lintFunctionArgs()` with `timezoneLintRules and included
+explicitly timezones wherever they are allowed.
+* `PWFSLSmoke::parseDatetime()` has been internally replaced with
+  `MazamaCoreUtils::parseDatetime()` with explicit timezone argument
+
+# PWFSLSmoke 1.2.101
+
+* Fix bug in `monitor_load()` which wouldn't load data when the specified 
+time range was in the last 10 days.
+
+# PWFSLSmoke 1.2.100
+
+* Version bump for CRAN release.
+
+# PWFSLSmoke 1.2.11
+
+This patch restores some of the ESRI mapping functionality by providing a 
+function to download, stitch and crop images from ESRI tile services. The
+new `staticmap_getRasterBrick()` provides a generalized API for generating
+basemaps from the two tiling services currently being supported: ESRI and Stamen.
+
+* Added `monitor_staticmap()`, `staticmap_getRasterBrick()` and 
+`staticmap_getEsrimapBrick()`.
+* Reordered arguments in `staticmap_getStamenmapBrick()`.
+
+# PWFSLSmoke 1.2.10
+
+ * Fixes for website documentation
+
 # PWFSLSmoke 1.2.9
 
-* Docker image now includes `optparse` package so that exectuable scripts can
+* Docker image now includes `optparse` package so that executable scripts can
   be run inside the `mazamascience/pwfslsmoke` image.
-* Fixed error-generating bug in `debug.trace(...)` statement while processing 
+* Fixed error-generating bug in `debug.trace(...)` statement while processing
   AirNow data.
 
 # PWFSLSmoke 1.2.8
@@ -10,7 +46,7 @@
 This patch release deals with the AirNow's recent inclusion in their data feeds
 of US Embassy data. Some Embassy sites are in time zones with fractional offset
 from UTC. The PWFSLSmoke data model requires that all monitoring data align on
-hour boundaries. All non-conforming AirNow monitors (mostly in South Asia) are 
+hour boundaries. All non-conforming AirNow monitors (mostly in South Asia) are
 now removed during the early stages of processing.
 
 # PWFSLSmoke 1.2.7
@@ -30,8 +66,8 @@ now removed during the early stages of processing.
 # PWFSLSmoke 1.2.4
 
 This patch release deals with the loss of the free basemap generation service
-utilitized by `esriMap_getMap()`. An authentication token is now required and
-this patch provides a workaround by using free tiles provided by 
+utilized by `esriMap_getMap()`. An authentication token is now required and
+this patch provides a workaround by using free tiles provided by
 [Stamen](http://maps.stamen.com) and `ggmap::get_stamenmap()`.
 
 The following new functions are provided:
@@ -39,7 +75,7 @@ The following new functions are provided:
 * `monitor_stamenmap()` -- replacement for `monitor_esriMap()`
 * `staticmap_getStamenmapBrick()`
 * `staticmap_plotRasterBrick()`
- 
+
 The use of `monitor_esriMap()` has been purged from all examples and vignettes.
 The goal is to get to the point of having at least minimal capabilities for
 generating static maps and resubmitting the package to CRAN.
@@ -51,27 +87,27 @@ generating static maps and resubmitting the package to CRAN.
  * fixes for `monitor_getCurrentStatus()`:
    - properly handling transitions between daylight savings and standard time
    - properly handling days with insufficient data to calculate an average
- 
+
 # PWFSLSmoke 1.2.2
 
  * CRAN submission fixes
- 
+
 # PWFSLSmoke 1.2.1
 
- * addedd an introductory vignette
- 
+ * added an introductory vignette
+
 # PWFSLSmoke 1.2.0
 
 Version 1.2.x marks the official release for the 2019 fire season.
 
  * `monitor_leaflet()` now *visibly* returns a _leaflet_ object which can be
  further customized by the user.
- * code refactoring and cleanup unrelated to functionality -- 
+ * code refactoring and cleanup unrelated to functionality --
  _.e.g._ indentation
  * logging changes in data processing functions:
-   - internal logging statements use `TRACE` level 
+   - internal logging statements use `TRACE` level
    (previously, many were `DEBUG`)
-   - entering a function will generate a `DEBUG` level statement with the 
+   - entering a function will generate a `DEBUG` level statement with the
    function name
  * bug fix for `monitor_getCurrentStatus()`
 
@@ -105,12 +141,12 @@ Version 1.2.x marks the official release for the 2019 fire season.
 
 # PWFSLSmoke 1.1.26
 
- * Now using the *geosphere* package to greatly improve the speed of distance 
+ * Now using the *geosphere* package to greatly improve the speed of distance
  calculations in `distance()`.
  * Fixed bug when calling `timeInfo(..., timezone = "UTC")`.
  * `monitor_dailyStatistic()` now uses the most common timezone when multiple
  timezones are encountered. (It previously just picked the first one.)
- * `monitor_getDailyMean()` now works with multiple-monitor _ws_monitor_ 
+ * `monitor_getDailyMean()` now works with multiple-monitor _ws_monitor_
  objects and returns a dataframe of daily means
 
 # PWFSLSmoke 1.1.25
@@ -120,11 +156,11 @@ Improved documentation and harmonization of `monitor_writeCSV()` and
 
 # PWFSLSmoke 1.1.24
 
-Minor cleanup in preparation for CRAN submission. 
+Minor cleanup in preparation for CRAN submission.
 
 # PWFSLSmoke 1.1.23
 
-This release adds functions for working with generic data. 
+This release adds functions for working with generic data.
 
 ## New Functions
 
@@ -188,8 +224,8 @@ with no replacement.
 
 # PWFSLSmoke 1.1.17
 
-  * added `tidy_toMonitor()` 
-  
+  * added `tidy_toMonitor()`
+
 Added new function `monitor_getCurrentStatus()`, which returns a data frame
 containing meta information as well as current status information given a
 *ws_monitor_* object.
@@ -206,7 +242,7 @@ containing meta information as well as current status information given a
 
 # PWFSLSmoke 1.1.14
 
-Add convenience functions `monitor_extractData()` and `monitor_extractMeta()`, 
+Add convenience functions `monitor_extractData()` and `monitor_extractMeta()`,
 which return the dataframes inside a `ws_monitor` object.
 
 # PWFSLSmoke 1.1.13
@@ -230,7 +266,7 @@ The affected functions are:
 
 <br/>
 
-In addition, `monitorGoogleMap()` has been deprecated in favor of 
+In addition, `monitorGoogleMap()` has been deprecated in favor of
 `monitor_esriMap()`.
 
 # PWFSLSmoke 1.1.11
@@ -249,13 +285,13 @@ that all functionality in the former is purely **ggplot2** based.
  * added `addPolygon()`, `addWindBarb() and `addWindBarbs()`
  * added `aqiPalette()`
  * added `monitor_getDailyMean()`
-  
+
 
 # PWFSLSmoke 1.1.9
 
- * `airnow_load()` calls `airnow_loadAnnual()` and will is *pre*-deprecated 
- * `airsis_load()` calls `airsis_loadAnnual()` and will is *pre*-deprecated 
- * `wrcc_load()` calls `wrcc_loadAnnual()` and will is *pre*-deprecated 
+ * `airnow_load()` calls `airnow_loadAnnual()` and will is *pre*-deprecated
+ * `airsis_load()` calls `airsis_loadAnnual()` and will is *pre*-deprecated
+ * `wrcc_load()` calls `wrcc_loadAnnual()` and will is *pre*-deprecated
  * renamed `loadData()` to `monitor_load()`
  * new dependency on *MazamaCoreUtils*
  * removed code associated with `DUMP` files
@@ -357,8 +393,8 @@ that all functionality in the former is purely **ggplot2** based.
 # PWFSLSmoke 1.0.25
 
  * added package environment with `googleApiKey`, `esriApiKey` and getter/setter functions for each
- * added `addEsriAddress()` function 
- 
+ * added `addEsriAddress()` function
+
 # PWFSLSmoke 1.0.24
 
  * `airsis_createMonitorObject()` and `wrcc_createMonitorObject()` now both accept arguments `existingMeta` with
@@ -401,47 +437,47 @@ that all functionality in the former is purely **ggplot2** based.
  * added `monitor_isMonitor()` to validate the structure of a *ws_monitor* object
  * updated example code in all functions
  * turning off grid lines with `~Lwd=0` in `monitorPlot_timeseries()` now works on Windows
- * `monitorPlot_dailyBarplot()` accepts `tlim` argument of class `POSIXct` 
+ * `monitorPlot_dailyBarplot()` accepts `tlim` argument of class `POSIXct`
 
 # PWFSLSmoke 1.0.18
 
  * fixed newly introduced bug in `monitor_combine()`
- 
+
 # PWFSLSmoke 1.0.17
 
  * new `loadLatest()` and `loadDaily`() functions
- 
+
 # PWFSLSmoke 1.0.16
 
  * tweaks for CRAN submission
- 
+
 # PWFSLSmoke 1.0.15
 
  * fixed chronological ordering bug in `monitor_combine()`
  * `wrcc_downloadData()` now uses `parseDatetime()` like other functions
  * `monitorID` argument is no longer required in `monitor_join()`. Defaults to joining all shared monitorIDs.
- 
+
 # PWFSLSmoke 1.0.14
 
  * corrected `baseUrl` argument in `wrcc_loadLatest()` and `wrcc_loadDaily()`
- 
+
 # PWFSLSmoke 1.0.13
 
  * fixed bug in `monitor_dailyStatistics()` that ignored the last full day. Thanks to [jmatchett](https://github.com/jmatchett-usgs) for the fix.
- 
+
 # PWFSLSmoke 1.0.12
 
  * changed `daily_avg` to `dailyAvg` in `monitor_dailyStatistics()` argument `extraColumns`
- 
+
 # PWFSLSmoke 1.0.11
 
  * new `monitor_asDataframe()` function
  * fixed bug in `monitor_dailyStatistics()` that appeared when the host computer runs in the UTC timezone
- 
+
 # PWFSLSmoke 1.0.10
 
  * tweaks for CRAN submission
- 
+
 # PWFSLSmoke 1.0.9
 
  * tweaks for CRAN submission
@@ -644,7 +680,7 @@ that all functionality in the former is purely **ggplot2** based.
  * all parameters now called `longitude` and `latitude` instead of `lon` and `lat`
  * new `monitor_scaleData()` function
  * fixed `monitorMap_performance()` issue with legend colors
- 
+
 # PWFSLSmoke 0.99.10
 
  * added docker/ directory showing how to create a docker image
@@ -735,7 +771,7 @@ data from AirNow, AIRSIS and WRCC.
  * Added data model vignette.
  * Documentation improvements.
  * New example in [localExamples](https://github.com/MazamaScience/PWFSLSmoke/tree/master/localExamples) directory.
- 
+
 # PWFSLSmoke 0.7.0
 
  * Initial extraction/refactoring of base code from [wildfireSmoke](https://github.com/MazamaScience/wildfireSmoke) package.

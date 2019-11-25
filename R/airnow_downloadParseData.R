@@ -51,14 +51,14 @@
 
 airnow_downloadParseData <- function(
   parameters = NULL,
-  startdate = strftime(lubridate::now(), "%Y%m%d00", tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d00", tz = "UTC"),
   hours = 24
 ) {
 
   logger.debug(" ----- airnow_downloadParseData() ----- ")
 
   # Format the startdate integer using lubridate
-  starttime <- parseDatetime(startdate)
+  starttime <- MazamaCoreUtils::parseDatetime(startdate, timezone = "UTC")
 
   # Pre-allocate an empty list of the appropriate length (basic R performance idiom)
   tblList <- vector(mode="list", length=hours)

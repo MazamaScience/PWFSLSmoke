@@ -149,11 +149,11 @@ timeInfo <- function(time,
 
   # Calculate the Local Standard Time offset
   Christmas_UTC <- lubridate::ymd_h("2019-12-25 00", tz = "UTC")
-  Christmas_localTime <- lubridate::with_tz(Christmas_UTC, timezone)
-  Christmas_localTime_UTC <- lubridate::force_tz(Christmas_localTime, "UTC")
+  Christmas_localTime <- lubridate::with_tz(Christmas_UTC, tzone = timezone)
+  Christmas_localTime_UTC <- lubridate::force_tz(Christmas_localTime, tzone = "UTC")
   lst_offset <- as.numeric(difftime(Christmas_localTime_UTC, Christmas_UTC, units = "hours"))
 
-  localStandardTime_UTC <- lubridate::with_tz(localTime, "UTC") +
+  localStandardTime_UTC <- lubridate::with_tz(localTime, tzone = "UTC") +
     lst_offset * lubridate::dhours(1)
 
   # Return ---------------------------------------------------------------------

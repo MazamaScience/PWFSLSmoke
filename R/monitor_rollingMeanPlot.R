@@ -144,7 +144,7 @@ monitor_rollingMeanPlot <- function(ws_monitor,
 
   # Assign timeStamp based on localTime setting
   if ( localTime ) {
-    timeStamp <- lubridate::with_tz(data$datetime, meta$timezone)
+    timeStamp <- lubridate::with_tz(data$datetime, tzone = meta$timezone)
     tzLabel <- "(local)"
   } else {
     timeStamp <- data$datetime
@@ -159,8 +159,8 @@ monitor_rollingMeanPlot <- function(ws_monitor,
     # TODO: Warn if no data for any dates within tlim?
     # TODO: add logic to check for tlim format
     timeMask <-
-      timeStamp >= lubridate::ymd(tlim[1]) &
-      timeStamp < lubridate::ymd(tlim[2]) + lubridate::days(1)
+      timeStamp >= lubridate::ymd(tlim[1], tz = "UTC") &
+      timeStamp < lubridate::ymd(tlim[2], tz = "UTC") + lubridate::days(1)
 
     if ( sum(timeMask) == 0 ) {
       monitor_noDataPlot(ws_monitor)

@@ -4,8 +4,8 @@
 \alias{epa_load}
 \title{Load Processed EPA Monitoring Data}
 \usage{
-epa_load(year = strftime(lubridate::now(), "\%Y", tz = "UTC"),
-  parameterCode = "88101",
+epa_load(year = strftime(lubridate::now(tzone = "UTC"), "\%Y", tz =
+  "UTC"), parameterCode = "88101",
   baseUrl = "https://haze.airfire.org/monitoring/EPA/RData/")
 }
 \arguments{

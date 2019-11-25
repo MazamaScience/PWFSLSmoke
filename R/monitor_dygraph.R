@@ -38,7 +38,7 @@ monitor_dygraph <- function(ws_monitor,
 
   # Convert tlim to POSIXct
   if ( !is.null(tlim) ) {
-    dateWindow <- parseDatetime(tlim)
+    dateWindow <- MazamaCoreUtils::parseDatetime(tlim, timezone = "UTC")
   } else {
     dateWindow <- NULL
   }

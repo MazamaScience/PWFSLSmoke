@@ -20,8 +20,8 @@
 #' }
 
 airsis_availableUnits <- function(
-  startdate = strftime(lubridate::now("UTC"), "%Y010100", tz = "UTC"),
-  enddate = strftime(lubridate::now("UTC"), "%Y%m%d23", tz = "UTC"),
+  startdate = strftime(lubridate::now(tzone = "UTC"), "%Y010100", tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d23", tz = "UTC"),
   provider = 'USFS',
   unitTypes = c('BAM1020', 'EBAM', 'ESAM'),
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"
@@ -45,8 +45,8 @@ airsis_availableUnits <- function(
   }
 
   # Get UTC times
-  starttime <- parseDatetime(startdate)
-  endtime <- parseDatetime(enddate)
+  starttime <- MazamaCoreUtils::parseDatetime(startdate, timezone = "UTC")
+  endtime <- MazamaCoreUtils::parseDatetime(enddate, timezone = "UTC")
 
   # Example URL:
   #   http://usfs.airsis.com/vision/common/CSVExport.aspx?utid=38&StartDate=2016-02-03&EndDate=2016-02-03

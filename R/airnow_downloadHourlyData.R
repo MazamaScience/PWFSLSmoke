@@ -30,7 +30,7 @@
 #' }
 
 airnow_downloadHourlyData <- function(
-  datestamp = strftime(lubridate::now(), "%Y%m%d00", tz = "UTC"),
+  datestamp = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d00", tz = "UTC"),
   baseUrl = 'https://files.airnowtech.org/airnow'
 ) {
 
