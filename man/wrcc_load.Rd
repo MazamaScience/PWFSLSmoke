@@ -4,8 +4,10 @@
 \alias{wrcc_load}
 \title{Load Processed WRCC Monitoring Data}
 \usage{
-wrcc_load(year = 2017,
-  baseUrl = "https://haze.airfire.org/monitoring/WRCC/RData/")
+wrcc_load(
+  year = 2017,
+  baseUrl = "https://haze.airfire.org/monitoring/WRCC/RData/"
+)
 }
 \arguments{
 \item{year}{desired year (integer or character representing YYYY)}

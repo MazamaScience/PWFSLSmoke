@@ -4,11 +4,18 @@
 \alias{wrcc_ESAMQualityControl}
 \title{Apply Quality Control to raw WRCC E-Sampler tibble}
 \usage{
-wrcc_ESAMQualityControl(tbl, valid_Longitude = c(-180, 180),
-  valid_Latitude = c(-90, 90), remove_Lon_zero = TRUE,
-  remove_Lat_zero = TRUE, valid_Flow = c(1.999, 2.001),
-  valid_AT = c(-Inf, 150), valid_RHi = c(-Inf, 55),
-  valid_Conc = c(-Inf, 5000), flagAndKeep = FALSE)
+wrcc_ESAMQualityControl(
+  tbl,
+  valid_Longitude = c(-180, 180),
+  valid_Latitude = c(-90, 90),
+  remove_Lon_zero = TRUE,
+  remove_Lat_zero = TRUE,
+  valid_Flow = c(1.999, 2.001),
+  valid_AT = c(-Inf, 150),
+  valid_RHi = c(-Inf, 55),
+  valid_Conc = c(-Inf, 5000),
+  flagAndKeep = FALSE
+)
 }
 \arguments{
 \item{tbl}{single site tibble created by \code{wrcc_parseData()}}

@@ -4,8 +4,13 @@
 \alias{monitor_writeCSV}
 \title{Write monitor data as CSV}
 \usage{
-monitor_writeCSV(ws_monitor, saveFile = NULL, metaOnly = FALSE,
-  dataOnly = FALSE, quietly = TRUE)
+monitor_writeCSV(
+  ws_monitor,
+  saveFile = NULL,
+  metaOnly = FALSE,
+  dataOnly = FALSE,
+  quietly = TRUE
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

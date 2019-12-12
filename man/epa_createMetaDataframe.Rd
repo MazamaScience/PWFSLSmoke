@@ -4,8 +4,12 @@
 \alias{epa_createMetaDataframe}
 \title{Create dataframe of EPA site location metadata}
 \usage{
-epa_createMetaDataframe(tbl, pwfslDataIngestSource = "EPA",
-  existingMeta = NULL, addGoogleMeta = TRUE)
+epa_createMetaDataframe(
+  tbl,
+  pwfslDataIngestSource = "EPA",
+  existingMeta = NULL,
+  addGoogleMeta = TRUE
+)
 }
 \arguments{
 \item{tbl}{an EPA raw tibble after metadata enhancement}

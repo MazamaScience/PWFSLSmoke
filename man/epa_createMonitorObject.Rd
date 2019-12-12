@@ -4,8 +4,11 @@
 \alias{epa_createMonitorObject}
 \title{Download and convert hourly EPA air quality data}
 \usage{
-epa_createMonitorObject(zipFile = NULL, zeroMinimum = TRUE,
-  addGoogleMeta = TRUE)
+epa_createMonitorObject(
+  zipFile = NULL,
+  zeroMinimum = TRUE,
+  addGoogleMeta = TRUE
+)
 }
 \arguments{
 \item{zipFile}{absolute path to monitoring data .zip file}

@@ -4,8 +4,13 @@
 \alias{aqiColors}
 \title{Generate AQI Colors}
 \usage{
-aqiColors(x, palette = AQI$colors, domain = c(0, 1e+06),
-  bins = AQI$breaks_24, na.color = NA)
+aqiColors(
+  x,
+  palette = AQI$colors,
+  domain = c(0, 1e+06),
+  bins = AQI$breaks_24,
+  na.color = NA
+)
 }
 \arguments{
 \item{x}{vector or matrix of PM2.5 values or a \emph{ws_monitor} object}

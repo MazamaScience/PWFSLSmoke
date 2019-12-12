@@ -4,10 +4,18 @@
 \alias{staticmap_getRasterBrick}
 \title{Create a rasterBrick from a tiled image server}
 \usage{
-staticmap_getRasterBrick(centerLon = NULL, centerLat = NULL,
-  maptype = "world_topo", zoom = 12, width = 640, height = 640,
-  bbox = NULL, maxTiles = 40, crs = sp::CRS("+init=epsg:4326"),
-  tileCacheDir = tempdir())
+staticmap_getRasterBrick(
+  centerLon = NULL,
+  centerLat = NULL,
+  maptype = "world_topo",
+  zoom = 12,
+  width = 640,
+  height = 640,
+  bbox = NULL,
+  maxTiles = 40,
+  crs = sp::CRS("+init=epsg:4326"),
+  tileCacheDir = tempdir()
+)
 }
 \arguments{
 \item{centerLon}{Map center longitude.}

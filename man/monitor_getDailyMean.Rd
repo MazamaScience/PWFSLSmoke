@@ -4,8 +4,12 @@
 \alias{monitor_getDailyMean}
 \title{Calculate daily means for a ws_monitor object}
 \usage{
-monitor_getDailyMean(ws_monitor, monitorID = NULL, startdate = NULL,
-  enddate = NULL)
+monitor_getDailyMean(
+  ws_monitor,
+  monitorID = NULL,
+  startdate = NULL,
+  enddate = NULL
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

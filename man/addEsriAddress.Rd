@@ -4,8 +4,12 @@
 \alias{addEsriAddress}
 \title{Add address information to a dataframe}
 \usage{
-addEsriAddress(df, lonVar = "longitude", latVar = "latitude",
-  existingMeta = NULL)
+addEsriAddress(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL
+)
 }
 \arguments{
 \item{df}{dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}

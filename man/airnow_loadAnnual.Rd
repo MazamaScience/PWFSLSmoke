@@ -4,8 +4,12 @@
 \alias{airnow_loadAnnual}
 \title{Load annual AirNow monitoring data}
 \usage{
-airnow_loadAnnual(year = NULL, parameter = "PM2.5",
-  baseUrl = "https://haze.airfire.org/monitoring", dataDir = NULL)
+airnow_loadAnnual(
+  year = NULL,
+  parameter = "PM2.5",
+  baseUrl = "https://haze.airfire.org/monitoring",
+  dataDir = NULL
+)
 }
 \arguments{
 \item{year}{Desired year (integer or character representing YYYY).}

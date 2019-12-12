@@ -4,8 +4,12 @@
 \alias{raw_getHighlightDates}
 \title{Return Day Stamps for Values Above a Threshold}
 \usage{
-raw_getHighlightDates(df, dataVar, tzone = NULL,
-  highlightRange = c(1e+12, Inf))
+raw_getHighlightDates(
+  df,
+  dataVar,
+  tzone = NULL,
+  highlightRange = c(1e+12, Inf)
+)
 }
 \arguments{
 \item{df}{dataframe with \code{datetime} column in UTC}

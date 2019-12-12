@@ -4,8 +4,13 @@
 \alias{skill_confusionMatrix}
 \title{Confusion Matrix Statistics}
 \usage{
-skill_confusionMatrix(predicted, observed, FPCost = 1, FNCost = 1,
-  lightweight = FALSE)
+skill_confusionMatrix(
+  predicted,
+  observed,
+  FPCost = 1,
+  FNCost = 1,
+  lightweight = FALSE
+)
 }
 \arguments{
 \item{predicted}{logical vector of predicted values}

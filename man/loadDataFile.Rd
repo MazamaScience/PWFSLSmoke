@@ -4,9 +4,11 @@
 \alias{loadDataFile}
 \title{Load data from URL or local file}
 \usage{
-loadDataFile(filename = NULL,
+loadDataFile(
+  filename = NULL,
   baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
-  dataDir = NULL)
+  dataDir = NULL
+)
 }
 \arguments{
 \item{filename}{Name of the data file to be loaded.}

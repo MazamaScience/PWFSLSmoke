@@ -4,8 +4,12 @@
 \alias{addUSGSElevation}
 \title{Add Elevation Data to a Dataframe}
 \usage{
-addUSGSElevation(df, lonVar = "longitude", latVar = "latitude",
-  existingMeta = NULL)
+addUSGSElevation(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL
+)
 }
 \arguments{
 \item{df}{dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}

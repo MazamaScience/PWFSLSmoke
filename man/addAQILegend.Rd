@@ -4,9 +4,15 @@
 \alias{addAQILegend}
 \title{Add an AQI Legend to a Map}
 \usage{
-addAQILegend(x = "topright", y = NULL, col = rev(AQI$colors),
-  legend = rev(AQI$names), pch = 16, title = "Air Quality Index",
-  ...)
+addAQILegend(
+  x = "topright",
+  y = NULL,
+  col = rev(AQI$colors),
+  legend = rev(AQI$names),
+  pch = 16,
+  title = "Air Quality Index",
+  ...
+)
 }
 \arguments{
 \item{x}{x coordinate passed on to the \code{legend()} command}

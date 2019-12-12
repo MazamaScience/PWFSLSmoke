@@ -4,9 +4,11 @@
 \alias{airnow_loadLatest}
 \title{Load most recent AirNow monitoring data}
 \usage{
-airnow_loadLatest(parameter = "PM2.5",
+airnow_loadLatest(
+  parameter = "PM2.5",
   baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
-  dataDir = NULL)
+  dataDir = NULL
+)
 }
 \arguments{
 \item{parameter}{Parameter of interest.}

@@ -4,8 +4,14 @@
 \alias{monitor_subsetData}
 \title{Subset ws_monitor Object 'data' Dataframe}
 \usage{
-monitor_subsetData(data, tlim = NULL, vlim = NULL, monitorIDs = NULL,
-  dropMonitors = FALSE, timezone = "UTC")
+monitor_subsetData(
+  data,
+  tlim = NULL,
+  vlim = NULL,
+  monitorIDs = NULL,
+  dropMonitors = FALSE,
+  timezone = "UTC"
+)
 }
 \arguments{
 \item{data}{\emph{ws_monitor} object \code{data} dataframe}

@@ -4,8 +4,12 @@
 \alias{epa_loadAnnual}
 \title{Load annual EPA monitoring data}
 \usage{
-epa_loadAnnual(year = NULL, parameterCode = NULL,
-  baseUrl = "https://haze.airfire.org/monitoring", dataDir = NULL)
+epa_loadAnnual(
+  year = NULL,
+  parameterCode = NULL,
+  baseUrl = "https://haze.airfire.org/monitoring",
+  dataDir = NULL
+)
 }
 \arguments{
 \item{year}{Desired year (integer or character representing YYYY).}
