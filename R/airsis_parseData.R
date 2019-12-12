@@ -59,6 +59,8 @@ airsis_parseData <- function(fileString) {
 
     if ( monitorSubtype == "MULTI" ) {
       logger.trace("Parsing EBAM-Multi data ...")
+    } else if ( monitorSubtype == "MULTI2" ) {
+      logger.trace("Parsing EBAM-Multi2 data ...")
     } else {
       logger.trace("Parsing EBAM data ...")
     }
@@ -122,9 +124,12 @@ airsis_parseData <- function(fileString) {
   tbl$monitorName <- tbl$Alias
   tbl$monitorType <- monitorType
 
+  # Add monitor subtype for EBAM MULTI & MULTI2 seperation QC
+  tbl$monitorSubtype <- monitorSubtype
+
   #     EBAM-Multi fixes     --------------------------------------------------
 
-  if ( monitorType == "EBAM" && monitorSubtype == "MULTI" ) {
+  if ( monitorType == "EBAM" && (monitorSubtype == "MULTI" || monitorSubtype == "MULTI2") ) {
 
     # HACK
     # arb2 UnitID=1044 in August, 2018 does not return a "Date.Time.GMT" column
