@@ -86,7 +86,7 @@ skill_ROC <- function(predicted,
   # Calculate ROC and cost
   roc <- data.frame(threshold = testThresholds, FPR = NA, TPR = NA, cost = NA)
   for ( i in seq_along(testThresholds) ) {
-    cm <- skill_confusionMatrix(predicted >= testThresholds[i], observed >= t2, lightweight = TRUE)
+    cm <- confusionMatrix(predicted >= testThresholds[i], observed >= t2)
     roc$FPR[i] <- cm$FPRate
     roc$TPR[i] <- cm$TPRate
     roc$cost[i] <- cm$cost
@@ -104,6 +104,17 @@ skill_ROC <- function(predicted,
   # Reorder ROC by threshold
   roc <- roc[with(roc, order(threshold)),]
   return(list(roc = roc, auc = auc))
+
+  if ( FALSE ) {
+    ca <- airnow_loadAnnual(2017) %>%
+      monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
+    Vallejo <- predicted <- monitor_subset(ca, monitorIDs = '060950004_01')
+    Napa <- observed <- monitor_subset(ca, monitorIDs = '060550003_01')
+    t2 <- AQI$breaks_24[4] # 'Unhealthy'
+    t1Range <-  c(55.5,55.5)
+    skill_ROC(Vallejo, Napa,t2 = t2)
+    skill_ROCPlot(Vallejo, Napa, t2 = t2)
+  }
 
 }
 
