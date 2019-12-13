@@ -326,6 +326,7 @@ airsis_EBAMQualityControl <- function(
   ) {
     #
     #
+    # REWRITE REQUIRED FOR MULTI2 QC
     #
     #
 
@@ -576,7 +577,7 @@ airsis_EBAMQualityControl <- function(
       valid_Flow = valid_Flow,
       valid_AT = valid_AT,
       valid_RHi = valid_RHi,
-      valid_Conc = valid_Conc ,
+      valid_Conc = valid_Conc,
       flagAndKeep = flagAndKeep
     )
 
