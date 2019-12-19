@@ -508,7 +508,7 @@ airsis_EBAMQualityControl <- function(
     if ( nrow(tbl) < 1 && !flagAndKeep ) {
       err_msg <- paste0("No valid PM2.5 data for ", monitorName)
       logger.warn(err_msg) # This is more of a warning than some error in the data.
-      stop(err_msg, call.=FALSE)
+      stop(err_msg, call. = FALSE)
     }
 
     # --- Duplicate Hours ---
