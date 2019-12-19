@@ -1,61 +1,93 @@
 #' @keywords internal
 #' @export
-#' @import MazamaCoreUtils
+#' @importFrom MazamaCoreUtils logger.isInitialized
 #'
 #' @title Load data from URL or local file
 #'
 #' @param filename Name of the data file to be loaded.
-#' @param baseUrl Base URL for data files.
+#' @param dataUrl Remote URL directory for data files.
 #' @param dataDir Local directory containing data files.
-#' @return A \emph{ws_monitor} object.
-#' @description Loads pre-generated .RData files
+#' @return A data object.
+#'
+#' @description Loads pre-generated .rda files from a URL or a local
+#' directory. This function is intended to be called by other \code{~_load()}
+#' functions and can remove internet latencies when local versions of daata are
+#' available.
+#'
+#' For this reason, specification of \code{dataDir} always takes precedence over
+#' \code{dataUrl}.
 
 loadDataFile <- function(
   filename = NULL,
-  baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
+  dataUrl = 'https://haze.airfire.org/monitoring/latest/RData',
   dataDir = NULL
 ) {
 
-  # Validate parameters
+  # ----- Validate parameters --------------------------------------------------
 
-  if ( is.null(filename) ) {
-    stop("Required parameter 'filename' is missing.")
+  MazamaCoreUtils::stopIfNull(filename)
+
+  if ( is.null(dataUrl) && is.null(dataDir) ) {
+    stop("Either 'dataUrl' or 'dataDir' must be specified.")
   }
 
-  # Load the data
+  # ----- Load the data --------------------------------------------------------
 
-  if ( is.null(dataDir) ) {
+  result <- try({
 
-    # Load from a URL
-    filepath <- paste0(baseUrl, '/', filename)
-    # Define a 'connection' object so we can close it no matter what happens
-    conn <- url(filepath)
-    result <- try({
-      suppressWarnings(ws_monitor <- get(load(conn)))
-    }, silent=TRUE )
-    close(conn)
+    # Always check for dataDir first
+    if (
+      !is.null(dataDir) &&
+      !is.na(dataDir) &&
+      dir.exists(path.expand(dataDir))
+    ) {
 
-  } else {
+      # Load from a file
+      filepath <- file.path(path.expand(dataDir), filename)
 
-    # Load from a file
-    filepath <- file.path(path.expand(dataDir), filename)
-    result <- try({
-      suppressWarnings(ws_monitor <- get(load(filepath)))
-    }, silent = TRUE)
+      result <- try({
+        objectName <- load(filepath)
+      }, silent = TRUE)
 
-  }
+      if ( "try-error" %in% class(result) ) {
+        stop(paste0("Data file could not be loaded from: ", filepath), call.=FALSE)
+      } else {
+        loadedData <- get(objectName)
+      }
 
-  # NOTE:  We used suppressWarnings() above so that we can have a more
-  # NOTE:  uniform error response for the large variety of reasons that
-  # NOTE:  loading might fail.
+    } else {
+
+      # Load from a URL
+      filepath <- paste0(dataUrl, '/', filename)
+
+      # Define a 'connection' object so we can close it no matter what happens
+      conn <- url(filepath)
+      result <- try({
+        objectName <- load(conn)
+      }, silent=TRUE )
+      close(conn)
+
+      if ( "try-error" %in% class(result) ) {
+        stop(paste0("Data file could not be loaded from: ", filepath), call.=FALSE)
+      } else {
+        loadedData <- get(objectName)
+      }
+
+    }
+
+  })
+
+  # ----- Handle errors --------------------------------------------------------
+
+  # NOTE:  Failures should be handled above but just in case.
 
   if ( "try-error" %in% class(result) ) {
-    # TODO:  Restore logging when we stop generating "futile.logger" errors
-    # TODO:  when logging has not been initialized.
-    # # Log the error if logging is enabled. Fail silently otherwise.
-    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
-    stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
+    stop(paste0("Data file could not be loaded from: ", filepath), call.=FALSE)
   }
 
-  return(ws_monitor)
+  # ----- Return ---------------------------------------------------------------
+
+  return(loadedData)
+
 }
+
