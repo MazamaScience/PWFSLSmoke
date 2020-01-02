@@ -43,6 +43,7 @@ airsis_identifyMonitorType <- function(df) {
   #     Different header styles     -------------------------------------------
 
   # ARB2_ebam+multi (Starting Jan 2020) : unitID = '1039', provider = 'arb2'
+  # NOTE: WIP due to incompatible format on sever side.
   ebamMultiPlus_header <- "MasterTable_ID,Alias,Latitude,Longitude,Date/Time/GMT,Start,Date/Time,(GMT),COncRT,ConcHr,Flow,W/S,W/D,AT,RHx,RHi,BV,FT,Alarm,Type,Serial,Number,Version,Sys.,Volts,TimeStamp,PDate"
   ebamMultiPlus_rawNames <- unlist(stringr::str_split(ebamMultiPlus_header, ','))
   ebamMultiPlus_names <- make.names(ebamMultiPlus_rawNames)
