@@ -566,7 +566,8 @@ airsis_EBAMQualityControl <- function(
 
   # ----- Determine EBAM Sub-type and call QC ---------------------------------
 
-  if ( tbl$monitorSubtype[1] == "MULTI" ) {
+  if ( tbl$monitorSubtype[1] == "MULTI" || tbl$monitorSubtype[1] == "" ) {
+    # monitorSubtype == "" when no subtype is defined (standard EBAM)
 
     tbl <- EBAM_QC_Multi(
       tbl,
@@ -578,7 +579,7 @@ airsis_EBAMQualityControl <- function(
       valid_AT = valid_AT,
       valid_RHi = valid_RHi,
       valid_Conc = valid_Conc,
-      flagAndKeep = flagAndKeep
+      flagAndKeep = T#flagAndKeep
     )
 
   } else if ( tbl$monitorSubtype[1] == "MULTI2" ) {
