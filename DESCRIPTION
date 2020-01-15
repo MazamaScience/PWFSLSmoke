@@ -27,7 +27,7 @@ Author: Jonathan Callahan [aut, cre],
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
     R (>= 3.3.0),
-    dplyr,
+    dplyr (>= 0.8.3),
     maps,
     MazamaCoreUtils (>= 0.3.5),
     MazamaSpatialUtils (>= 0.6.1)

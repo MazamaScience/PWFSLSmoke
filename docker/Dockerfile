@@ -5,13 +5,18 @@ FROM mazamascience/spatialutils:0.6.1
 RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
-  && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
-  ## Install R packages from CRAN
-  && install2.r --error -r "https://cran.rstudio.com" \
-    PWFSLSmoke \
-    optparse
+  && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
-# For the latest updates in PWFSLSmoke
+# Update to latest CRAN version of currently installed R packages
+RUN r -e "update.packages(repos = 'https://cran.rstudio.com', \
+                          ask = FALSE)"
+
+# Install extra R packages from CRAN
+RUN install2.r --error -r "https://cran.rstudio.com" \
+    optparse \
+    PWFSLSmoke
+
+# Install latest updates from GitHub
 RUN installGithub.r \
     mazamascience/MazamaCoreUtils \
     milesmcbain/slippymath \
