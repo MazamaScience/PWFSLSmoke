@@ -4,8 +4,13 @@
 \alias{monitor_print}
 \title{Print monitor data as CSV}
 \usage{
-monitor_print(ws_monitor, saveFile = NULL, metaOnly = FALSE,
-  dataOnly = FALSE, quietly = FALSE)
+monitor_print(
+  ws_monitor,
+  saveFile = NULL,
+  metaOnly = FALSE,
+  dataOnly = FALSE,
+  quietly = FALSE
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

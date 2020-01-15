@@ -4,12 +4,16 @@
 \alias{airsis_createRawDataframe}
 \title{Obain AIRSIS data and parse into a raw tibble}
 \usage{
-airsis_createRawDataframe(startdate = strftime(lubridate::now(tzone =
-  "UTC"), "\%Y010100", tz = "UTC"),
-  enddate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d23", tz =
-  "UTC"), provider = NULL, unitID = NULL, clusterDiameter = 1000,
+airsis_createRawDataframe(
+  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y010100", tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d23", tz = "UTC"),
+  provider = NULL,
+  unitID = NULL,
+  clusterDiameter = 1000,
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?",
-  saveFile = NULL, flagAndKeep = FALSE)
+  saveFile = NULL,
+  flagAndKeep = FALSE
+)
 }
 \arguments{
 \item{startdate}{Desired start date (integer or character representing YYYYMMDD[HH]).}

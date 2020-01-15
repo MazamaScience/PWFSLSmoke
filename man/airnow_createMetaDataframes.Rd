@@ -4,8 +4,11 @@
 \alias{airnow_createMetaDataframes}
 \title{Create dataframes of AirNow site location metadata}
 \usage{
-airnow_createMetaDataframes(parameters = NULL,
-  pwfslDataIngestSource = "AIRNOW", addGoogleMeta = TRUE)
+airnow_createMetaDataframes(
+  parameters = NULL,
+  pwfslDataIngestSource = "AIRNOW",
+  addGoogleMeta = TRUE
+)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}

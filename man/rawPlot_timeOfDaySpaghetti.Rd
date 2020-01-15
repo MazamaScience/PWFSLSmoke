@@ -4,9 +4,18 @@
 \alias{rawPlot_timeOfDaySpaghetti}
 \title{Create Time of Day Spaghetti Plot from a Raw Dataframe}
 \usage{
-rawPlot_timeOfDaySpaghetti(df, parameter = "pm25", tlim = NULL,
-  shadedNight = TRUE, meanCol = "black", meanLwd = 4, meanLty = 1,
-  highlightDates = c(), highlightCol = "dodgerblue", ...)
+rawPlot_timeOfDaySpaghetti(
+  df,
+  parameter = "pm25",
+  tlim = NULL,
+  shadedNight = TRUE,
+  meanCol = "black",
+  meanLwd = 4,
+  meanLty = 1,
+  highlightDates = c(),
+  highlightCol = "dodgerblue",
+  ...
+)
 }
 \arguments{
 \item{df}{enhanced, raw dataframe as created by the \code{raw_enhance()} function}

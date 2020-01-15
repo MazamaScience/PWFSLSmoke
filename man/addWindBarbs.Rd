@@ -4,9 +4,18 @@
 \alias{addWindBarbs}
 \title{Add wind barbs to a map}
 \usage{
-addWindBarbs(x, y, speed, dir, circleSize = 1,
-  circleFill = "transparent", lineCol = 1, extraBarbLength = 0,
-  barbSize = 1, ...)
+addWindBarbs(
+  x,
+  y,
+  speed,
+  dir,
+  circleSize = 1,
+  circleFill = "transparent",
+  lineCol = 1,
+  extraBarbLength = 0,
+  barbSize = 1,
+  ...
+)
 }
 \arguments{
 \item{x}{vector of longitudes}

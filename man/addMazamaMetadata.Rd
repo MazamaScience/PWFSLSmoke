@@ -4,8 +4,13 @@
 \alias{addMazamaMetadata}
 \title{Add State, Country and Timezone to a Dataframe}
 \usage{
-addMazamaMetadata(df, lonVar = "longitude", latVar = "latitude",
-  existingMeta = NULL, countryCodes = c("CA", "US", "MX"))
+addMazamaMetadata(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL,
+  countryCodes = c("CA", "US", "MX")
+)
 }
 \arguments{
 \item{df}{dataframe or tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}

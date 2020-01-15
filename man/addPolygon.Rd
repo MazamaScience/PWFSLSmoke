@@ -4,8 +4,16 @@
 \alias{addPolygon}
 \title{Add a Colored Polygon to a Plot}
 \usage{
-addPolygon(x = 0, y = 0, sides = 72, radius = 1, rotation = 0,
-  border = NULL, col = NA, ...)
+addPolygon(
+  x = 0,
+  y = 0,
+  sides = 72,
+  radius = 1,
+  rotation = 0,
+  border = NULL,
+  col = NA,
+  ...
+)
 }
 \arguments{
 \item{x}{x location of center}

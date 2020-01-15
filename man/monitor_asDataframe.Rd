@@ -4,8 +4,13 @@
 \alias{monitor_asDataframe}
 \title{Return Monitor Data in a Single Dataframe}
 \usage{
-monitor_asDataframe(ws_monitor, monitorID = NULL, extraColumns = NULL,
-  metaColumns = NULL, tlim = NULL)
+monitor_asDataframe(
+  ws_monitor,
+  monitorID = NULL,
+  extraColumns = NULL,
+  metaColumns = NULL,
+  tlim = NULL
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

@@ -4,10 +4,13 @@
 \alias{airsis_downloadData}
 \title{Download AIRSIS data}
 \usage{
-airsis_downloadData(startdate = strftime(lubridate::now(tzone = "UTC"),
-  "\%Y0101", tz = "UTC"), enddate = strftime(lubridate::now(tzone =
-  "UTC"), "\%Y\%m\%d", tz = "UTC"), provider = "USFS", unitID = NULL,
-  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+airsis_downloadData(
+  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y0101", tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d", tz = "UTC"),
+  provider = "USFS",
+  unitID = NULL,
+  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"
+)
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

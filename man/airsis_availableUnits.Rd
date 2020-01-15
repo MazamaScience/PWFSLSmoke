@@ -4,11 +4,13 @@
 \alias{airsis_availableUnits}
 \title{Get AIRSIS available unit identifiers}
 \usage{
-airsis_availableUnits(startdate = strftime(lubridate::now(tzone = "UTC"),
-  "\%Y010100", tz = "UTC"), enddate = strftime(lubridate::now(tzone =
-  "UTC"), "\%Y\%m\%d23", tz = "UTC"), provider = "USFS",
+airsis_availableUnits(
+  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y010100", tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d23", tz = "UTC"),
+  provider = "USFS",
   unitTypes = c("BAM1020", "EBAM", "ESAM"),
-  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?")
+  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"
+)
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

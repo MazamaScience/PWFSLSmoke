@@ -4,9 +4,10 @@
 \alias{airnow_downloadHourlyData}
 \title{Download hourly data from AirNow}
 \usage{
-airnow_downloadHourlyData(datestamp = strftime(lubridate::now(tzone =
-  "UTC"), "\%Y\%m\%d00", tz = "UTC"),
-  baseUrl = "https://files.airnowtech.org/airnow")
+airnow_downloadHourlyData(
+  datestamp = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d00", tz = "UTC"),
+  baseUrl = "https://files.airnowtech.org/airnow"
+)
 }
 \arguments{
 \item{datestamp}{Integer or character representing YYYYMMDDHH.}

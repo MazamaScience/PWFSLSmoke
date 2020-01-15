@@ -4,8 +4,12 @@
 \alias{downloadDataFile}
 \title{Download data from URL to local diredctory}
 \usage{
-downloadDataFile(filename = NULL, baseUrl = NULL,
-  dataDir = "~/data/monitoring/RData", ...)
+downloadDataFile(
+  filename = NULL,
+  baseUrl = NULL,
+  dataDir = "~/data/monitoring/RData",
+  ...
+)
 }
 \arguments{
 \item{filename}{Name of the data file to be loaded.}

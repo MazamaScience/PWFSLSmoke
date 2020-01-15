@@ -4,9 +4,12 @@
 \alias{monitor_downloadDaily}
 \title{Download recent PM2.5 monitoring data}
 \usage{
-monitor_downloadDaily(parameter = "PM2.5",
+monitor_downloadDaily(
+  parameter = "PM2.5",
   baseUrl = "https://haze.airfire.org/monitoring/latest/RData/",
-  dataDir = "~/Data/monitoring/RData", ...)
+  dataDir = "~/Data/monitoring/RData",
+  ...
+)
 }
 \arguments{
 \item{parameter}{Parameter of interest.}

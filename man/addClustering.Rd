@@ -4,8 +4,14 @@
 \alias{addClustering}
 \title{Add clustering information to a dataframe}
 \usage{
-addClustering(tbl, clusterDiameter = 1000, lonVar = "longitude",
-  latVar = "latitude", maxClusters = 50, flagAndKeep = FALSE)
+addClustering(
+  tbl,
+  clusterDiameter = 1000,
+  lonVar = "longitude",
+  latVar = "latitude",
+  maxClusters = 50,
+  flagAndKeep = FALSE
+)
 }
 \arguments{
 \item{tbl}{tibble with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}

@@ -4,8 +4,13 @@
 \alias{monitor_subsetByDistance}
 \title{Subset ws_monitor Object by Distance from Target Location}
 \usage{
-monitor_subsetByDistance(ws_monitor, longitude = NULL, latitude = NULL,
-  radius = 50, count = NULL)
+monitor_subsetByDistance(
+  ws_monitor,
+  longitude = NULL,
+  latitude = NULL,
+  radius = 50,
+  count = NULL
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

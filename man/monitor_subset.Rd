@@ -4,9 +4,18 @@
 \alias{monitor_subset}
 \title{Subset ws_monitor Object}
 \usage{
-monitor_subset(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
-  vlim = NULL, monitorIDs = NULL, stateCodes = NULL,
-  countryCodes = NULL, dropMonitors = TRUE, timezone = "UTC")
+monitor_subset(
+  ws_monitor,
+  xlim = NULL,
+  ylim = NULL,
+  tlim = NULL,
+  vlim = NULL,
+  monitorIDs = NULL,
+  stateCodes = NULL,
+  countryCodes = NULL,
+  dropMonitors = TRUE,
+  timezone = "UTC"
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

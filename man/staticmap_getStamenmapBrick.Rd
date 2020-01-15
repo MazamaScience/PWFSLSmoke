@@ -4,10 +4,17 @@
 \alias{staticmap_getStamenmapBrick}
 \title{Create a rasterBrick from stamenmap tiles}
 \usage{
-staticmap_getStamenmapBrick(centerLon = NULL, centerLat = NULL,
-  maptype = "terrain", zoom = 12, width = 640, height = 640,
-  bbox = NULL, crs = sp::CRS("+init=epsg:4326"),
-  tileCacheDir = tempdir())
+staticmap_getStamenmapBrick(
+  centerLon = NULL,
+  centerLat = NULL,
+  maptype = "terrain",
+  zoom = 12,
+  width = 640,
+  height = 640,
+  bbox = NULL,
+  crs = sp::CRS("+init=epsg:4326"),
+  tileCacheDir = tempdir()
+)
 }
 \arguments{
 \item{centerLon}{map center longitude}

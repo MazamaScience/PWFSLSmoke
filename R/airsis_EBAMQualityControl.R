@@ -44,6 +44,23 @@ airsis_EBAMQualityControl <- function(
 
   logger.debug(" ----- airsis_EBAMQualityControl() ----- ")
 
+  # NOTE: EBAM's contain multiple subtypes -- they require multiple QC algorithms.
+
+  # ------ EBAM "MULTI" QC ----------------------------------------------------
+  # NOTE: EBAM "Multi" is the original QC. Date unknown.
+  EBAM_QC_Multi <- function(
+    tbl,
+    valid_Longitude = valid_Longitude,
+    valid_Latitude = valid_Latitude,
+    remove_Lon_zero = remove_Lon_zero,
+    remove_Lat_zero = remove_Lat_zero,
+    valid_Flow = valid_Flow,
+    valid_AT = valid_AT,
+    valid_RHi = valid_RHi,
+    valid_Conc = valid_Conc ,
+    flagAndKeep = flagAndKeep
+  ) {
+
   #   > names(tbl)
   #    [1] "MasterTable_ID" "Alias"          "Latitude"       "Longitude"      "Date.Time.GMT"
   #    [6] "COncRT"         "ConcHr"         "Flow"           "W.S"            "W.D"
@@ -53,11 +70,11 @@ airsis_EBAMQualityControl <- function(
 
   monitorName <- tbl$monitorName[1]
 
-  # ----- Missing Values ------------------------------------------------------
+  # --- Missing Values ---
 
   # Handle various missing value flags
 
-  # ----- Setup for flagAndKeep argument utility ------------------------------
+  # --- Setup for flagAndKeep argument utility ---
 
   if ( flagAndKeep ) {
     # verb for logging messages
@@ -83,7 +100,7 @@ airsis_EBAMQualityControl <- function(
     verb <- "Discarding"
   }
 
-  # ----- Location ------------------------------------------------------------
+  # --- Location ---
 
   # Latitude and longitude must be in range
   if ( remove_Lon_zero ) {
@@ -124,7 +141,7 @@ airsis_EBAMQualityControl <- function(
     stop(err_msg, call.=FALSE)
   }
 
-  # ----- Time ----------------------------------------------------------------
+  # --- Time ---
 
   # Add a POSIXct datetime
   tbl$datetime <- lubridate::floor_date(lubridate::mdy_hms(tbl$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
@@ -146,7 +163,7 @@ airsis_EBAMQualityControl <- function(
   # NOTE: how an average over a year, such as 2016, is referred to as 2016's value, not 2017's, even
   # NOTE: though the average wasn't available until the beginning of 2017).
 
-  # ----- Type ----------------------------------------------------------------
+  # --- Type ---
 
   goodTypeMask <- !is.na(tbl$Type) & (tbl$Type == "PM 2.5")
 
@@ -173,7 +190,7 @@ airsis_EBAMQualityControl <- function(
     stop(err_msg, call.=FALSE)
   }
 
-  # Leland Tarnay QC -----------------------------------------------------------
+  # Leland Tarnay QC ---
 
   # NOTE:  Override ConcHr high value with 5.000 as per conversation with Mike Broughton
 
@@ -238,7 +255,7 @@ airsis_EBAMQualityControl <- function(
     stop(err_msg, call.=FALSE)
   }
 
-  # ----- Duplicate Hours -----------------------------------------------------
+  # --- Duplicate Hours ---
 
   # For hours with multiple records, discard all but the one with the latest processing date/time
   # NOTE: Current setup for this section assumes that the last entry will be the latest one.  May
@@ -270,7 +287,7 @@ airsis_EBAMQualityControl <- function(
     stop(err_msg, call.=FALSE)
   }
 
-  # ----- More QC -------------------------------------------------------------
+  # --- More QC ---
 
   # NOTE:  Additional QC would go here
 
@@ -280,13 +297,306 @@ airsis_EBAMQualityControl <- function(
     logger.trace("Retaining %d rows of validated measurements", nrow(tbl))
   }
 
-  # ----- Final cleanup -------------------------------------------------------
+  # --- Final cleanup ---
 
   if ( flagAndKeep ) {
     tblFlagged$QCFlag_reasonCode <- stringr::str_sub(tblFlagged$QCFlag_reasonCode, 3)
     tblFlagged$QCFlag_reasonCode <- stringr::str_trim(tblFlagged$QCFlag_reasonCode)
     tbl <- tblFlagged
     tbl$rowID <- NULL
+  }
+
+  return(tbl)
+  }
+
+  # ----- EBAM "MULTI2" QC -----------------------------------------------------
+  # NOTE: Added December 2019, to support AIRSIS EBAM format
+
+  EBAM_QC_Multi2 <- function(
+    tbl,
+    valid_Longitude = valid_Longitude,
+    valid_Latitude = valid_Latitude,
+    remove_Lon_zero = remove_Lon_zero,
+    remove_Lat_zero = remove_Lat_zero,
+    valid_Flow = valid_Flow,
+    valid_AT = valid_AT,
+    valid_RHi = valid_RHi,
+    valid_Conc = valid_Conc ,
+    flagAndKeep = flagAndKeep
+  ) {
+    #
+    #
+    # REWRITE REQUIRED FOR MULTI2 QC
+    #
+    #
+
+    # > names(tbl)
+    #  [1] "MasterTable_ID" "Alias"          "Latitude"       "Longitude"      "ConcRT.ug.m3."
+    #  [6] "ConcHR.ug.m3."  "ConcS.ug.m3."   "Flow.lpm."      "WS.m.s."        "WD.Deg."
+    #  [11] "AT.C."          "RH..."          "BP.mmHg."       "FT.C."          "FRH..."
+    #  [16] "Status"         "Voltage"        "TimeStamp"      "PDate"          "monitorName"
+    #  [21] "monitorType"    "monitorSubtype" "Date.Time.GMT"  "Sys..Volts"
+
+    monitorName <- tbl$monitorName[1]
+
+    # --- Missing Values ---
+
+    # Handle various missing value flags
+
+    # --- Setup for flagAndKeep argument utility ---
+
+    if ( flagAndKeep ) {
+      # verb for logging messages
+      verb <- "Flagging"
+
+      tbl$rowID <- as.integer(rownames(tbl))
+
+      # duplicate tbl and add columns for flags
+      tblFlagged <- tbl
+      tblFlagged$QCFlag_anyBad <- FALSE
+      tblFlagged$QCFlag_reasonCode <- NA
+      tblFlagged$QCFlag_badLon <- FALSE
+      tblFlagged$QCFlag_badLat <- FALSE
+      tblFlagged$QCFlag_badType <- FALSE
+      tblFlagged$QCFlag_badFlow <- FALSE
+      tblFlagged$QCFlag_badAT <- FALSE
+      tblFlagged$QCFlag_badRHi <- FALSE
+      tblFlagged$QCFlag_badConcHr <- FALSE
+      tblFlagged$QCFlag_badDateAndTime <- FALSE
+      tblFlagged$QCFlag_duplicateHr <- FALSE
+    } else {
+      # verb for logging messages
+      verb <- "Discarding"
+    }
+    # --- Location ---
+
+    # Latitude and longitude must be in range
+    if ( remove_Lon_zero ) {
+      goodLonMask <- !is.na(tbl$Longitude) & (tbl$Longitude >= valid_Longitude[1]) & (tbl$Longitude <= valid_Longitude[2]) & (tbl$Longitude != 0)
+    } else {
+      goodLonMask <- !is.na(tbl$Longitude) & (tbl$Longitude >= valid_Longitude[1]) & (tbl$Longitude <= valid_Longitude[2])
+    }
+
+    if ( remove_Lat_zero ) {
+      goodLatMask <- !is.na(tbl$Latitude) & (tbl$Latitude >= valid_Latitude[1]) & (tbl$Latitude <= valid_Latitude[2]) & (tbl$Latitude != 0)
+    } else {
+      goodLatMask <- !is.na(tbl$Latitude) & (tbl$Latitude >= valid_Latitude[1]) & (tbl$Latitude <= valid_Latitude[2])
+    }
+
+    badRows <- !(goodLonMask & goodLatMask)
+    badRowCount <- sum(badRows)
+    if ( badRowCount > 0 ) {
+      logger.trace(paste(verb,"%s rows with invalid location information"), badRowCount)
+      badLocations <- paste('(',tbl$Longitude[badRows],',',tbl$Latitude[badRows],')',sep='')
+      logger.trace("Bad locations: %s", paste0(badLocations, collapse=", "))
+      if ( flagAndKeep ) {
+        # apply flags
+        tblFlagged$QCFlag_badLon[tbl$rowID[!goodLonMask]] <- TRUE
+        tblFlagged$QCFlag_badLat[tbl$rowID[!goodLatMask]] <- TRUE
+        tblFlagged$QCFlag_anyBad <- tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_badLon | tblFlagged$QCFlag_badLat
+        # apply reason codes
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLonMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLonMask]],"badLon")
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLatMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodLatMask]],"badLat")
+      }
+    }
+
+    tbl <- tbl[goodLonMask & goodLatMask,]
+
+    # Sanity check -- row count
+    if ( nrow(tbl) < 1 && !flagAndKeep ) {
+      err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+      logger.warn(err_msg) # This is more of a warning than some error in the data.
+      stop(err_msg, call.=FALSE)
+    }
+
+    # --- Time ---
+
+    # Add a POSIXct datetime
+    tbl$datetime <- lubridate::floor_date(lubridate::mdy_hms(tbl$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
+    if ( flagAndKeep ) {
+      # TODO: Unable to get datetime moved from tbl to tblFlagged without timezone and/or display getting messed up.
+      # For now just duplicating the calculation, then assigning row values to NA after the fact for rows that were
+      # removed from tbl prior to calculating datetime above. Clean up later if possible.
+      tblFlagged$datetime <- lubridate::floor_date(lubridate::mdy_hms(tblFlagged$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
+      tblFlagged$datetime[ which(!(tblFlagged$rowID %in% tbl$rowID)) ] <- NA
+    }
+
+    # TODO:  Check that this hour-adjustment still applies to AIRSIS EBAM data across the board
+
+    # NOTE: The time above truncates the timestamp to the top of an hour, and then subtracts one hour,
+    # NOTE: since the measurement that comes in at a few minutes past the hour is actually representative
+    # NOTE: of the data over the previous hour (e.g. reading received at 12:04 is actually the average of
+    # NOTE: the data during Hour 11). This allows for a simpler understanding of the averages, since an
+    # NOTE: hour's average will be representative of the data within that hour (this is similar to
+    # NOTE: how an average over a year, such as 2016, is referred to as 2016's value, not 2017's, even
+    # NOTE: though the average wasn't available until the beginning of 2017).
+
+    # --- Type ---
+#
+#     goodTypeMask <- !is.na(tbl$Type) & (tbl$Type == "PM 2.5")
+#
+#     badRows <- !goodTypeMask
+#     badRowCount <- sum(badRows)
+#     if ( badRowCount > 0 ) {
+#       logger.trace(paste(verb,"%s rows with invalid Type information"), badRowCount)
+#       logger.trace("Bad Types:  %s", paste0(sort(unique(tbl$Type[badRows]),na.last=TRUE), collapse=", "))
+#       if ( flagAndKeep ) {
+#         # apply flags
+#         tblFlagged$QCFlag_badType[tbl$rowID[!goodTypeMask]] <- TRUE
+#         tblFlagged$QCFlag_anyBad <- tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_badType
+#         # apply reason code
+#         tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodTypeMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodTypeMask]],"badType")
+#       }
+#     }
+#
+#     tbl <- tbl[goodTypeMask,]
+
+    # Sanity check -- row count
+    if ( nrow(tbl) < 1 && !flagAndKeep ) {
+      err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+      logger.warn(err_msg) # This is more of a warning than some error in the data.
+      stop(err_msg, call.=FALSE)
+    }
+
+    # Leland Tarnay QC ---
+
+    # NOTE:  Override ConcHr high value with 5.000 as per conversation with Mike Broughton
+
+    goodFlow <- !is.na(tbl$Flow.lpm.) & tbl$Flow.lpm. >= valid_Flow[1] & tbl$Flow.lpm. <= valid_Flow[2]
+    goodAT <- !is.na(tbl$AT.C.) & tbl$AT.C. >= valid_AT[1] & tbl$AT.C. <= valid_AT[2]
+    goodRHi <- !is.na(tbl$RH...) & tbl$RH... >= valid_RHi[1] & tbl$RH... <= valid_RHi[2]
+    goodConcHr <- !is.na(tbl$ConcHR.ug.m3.) & tbl$ConcHR.ug.m3. >= valid_Conc[1] & tbl$ConcHR.ug.m3. <= valid_Conc[2]
+    gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
+
+    logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
+    if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$Flow.lpm.[!goodFlow]),na.last=TRUE), collapse=", "))
+    logger.trace("AT has %s missing or out of range values", sum(!goodAT))
+    if (sum(!goodAT) > 0) logger.trace("Bad AT values:  %s", paste0(sort(unique(tbl$AT.C.[!goodAT]),na.last=TRUE), collapse=", "))
+    logger.trace("RHi has %s missing or out of range values", sum(!goodRHi))
+    if (sum(!goodRHi) > 0) logger.trace("Bad RHi values:  %s", paste0(sort(unique(tbl$RH...[!goodRHi]),na.last=TRUE), collapse=", "))
+    logger.trace("Conc has %s missing or out of range values", sum(!goodConcHr))
+    if (sum(!goodConcHr) > 0) logger.trace("Bad Conc values:  %s", paste0(sort(unique(tbl$ConcHR.ug.m3.[!goodConcHr]),na.last=TRUE), collapse=", "))
+    logger.trace("datetime has %s missing or out of range values", sum(!gooddatetime))
+    if (sum(!gooddatetime) > 0) logger.trace("Bad datetime values:  %s", paste0(sort(unique(tbl$datetime[!gooddatetime]),na.last=TRUE), collapse=", "))
+
+    goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
+    badQCCount <- sum(!goodMask)
+
+    if ( badQCCount > 0 ) {
+      logger.trace(paste(verb,"%s rows because of QC logic"), badQCCount)
+      if ( flagAndKeep ) {
+        # apply flags
+        tblFlagged$QCFlag_badFlow[tbl$rowID[!goodFlow]] <- TRUE
+        tblFlagged$QCFlag_badAT[tbl$rowID[!goodAT]] <- TRUE
+        tblFlagged$QCFlag_badRHi[tbl$rowID[!goodRHi]] <- TRUE
+        tblFlagged$QCFlag_badConcHr[tbl$rowID[!goodConcHr]] <- TRUE
+        tblFlagged$QCFlag_badDateAndTime[tbl$rowID[!gooddatetime]] <- TRUE
+        tblFlagged$QCFlag_anyBad <- (tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_badFlow | tblFlagged$QCFlag_badAT |
+                                       tblFlagged$QCFlag_badRHi | tblFlagged$QCFlag_badConcHr | tblFlagged$QCFlag_badDateAndTime)
+        # apply reason codes
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodFlow]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodFlow]],"badFlow")
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodAT]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodAT]],"badAT")
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodRHi]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodRHi]],"badRHi")
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodConcHr]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!goodConcHr]],"badConcHr")
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[!gooddatetime]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[!gooddatetime]],"badDateAndTime")
+      }
+    }
+
+    tbl <- tbl[goodMask,]
+
+    # Sanity check -- row count
+    if ( nrow(tbl) < 1 && !flagAndKeep ) {
+      err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+      logger.warn(err_msg) # This is more of a warning than some error in the data.
+      stop(err_msg, call. = FALSE)
+    }
+
+    # --- Duplicate Hours ---
+
+    # For hours with multiple records, discard all but the one with the latest processing date/time
+    # NOTE: Current setup for this section assumes that the last entry will be the latest one.  May
+    # NOTE: want to build in functionality to ensure that the latest is picked if more than one exists
+    # NOTE: (for example, if the data is not in order by timestamp for whatever reason)
+
+    dupHrMask <- duplicated(tbl$datetime,fromLast = TRUE)
+    dupHrCount <- sum(dupHrMask)
+    uniqueHrMask <- !dupHrMask
+
+    if ( dupHrCount > 0 ) {
+      logger.trace(paste(verb,"%s duplicate time entries"), dupHrCount)
+      logger.trace("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(tbl$Date.Time.GMT[dupHrMask])), collapse=", "))
+      if ( flagAndKeep ) {
+        # apply flags
+        tblFlagged$QCFlag_duplicateHr[tbl$rowID[dupHrMask]] <- TRUE
+        tblFlagged$QCFlag_anyBad <- tblFlagged$QCFlag_anyBad | tblFlagged$QCFlag_duplicateHr
+        # apply reason code
+        tblFlagged$QCFlag_reasonCode[tbl$rowID[dupHrMask]] <- paste(tblFlagged$QCFlag_reasonCode[tbl$rowID[dupHrMask]],"duplicateHr")
+      }
+    }
+
+    tbl <- tbl[uniqueHrMask,]
+
+    # Sanity check -- row count
+    if ( nrow(tbl) < 1 && !flagAndKeep ) {
+      err_msg <- paste0("No valid PM2.5 data for ", monitorName)
+      logger.warn(err_msg) # This is more of a warning than some error in the data.
+      stop(err_msg, call.=FALSE)
+    }
+
+    # --- More QC ---
+
+    # NOTE:  Additional QC would go here
+
+    if ( flagAndKeep ) {
+      logger.trace("Retaining %d rows of measurements; %d bad rows flagged", nrow(tbl), sum(tblFlagged$QCFlag_anyBad))
+    } else {
+      logger.trace("Retaining %d rows of validated measurements", nrow(tbl))
+    }
+
+    # --- Final cleanup ---
+
+    if ( flagAndKeep ) {
+      tblFlagged$QCFlag_reasonCode <- stringr::str_sub(tblFlagged$QCFlag_reasonCode, 3)
+      tblFlagged$QCFlag_reasonCode <- stringr::str_trim(tblFlagged$QCFlag_reasonCode)
+      tbl <- tblFlagged
+      tbl$rowID <- NULL
+    }
+
+  }
+
+  # ----- Determine EBAM Sub-type and call QC ---------------------------------
+
+  if ( tbl$monitorSubtype[1] == "MULTI" || tbl$monitorSubtype[1] == "" ) {
+    # monitorSubtype == "" when no subtype is defined (standard EBAM)
+
+    tbl <- EBAM_QC_Multi(
+      tbl,
+      valid_Longitude = valid_Longitude,
+      valid_Latitude = valid_Latitude,
+      remove_Lon_zero = remove_Lon_zero,
+      remove_Lat_zero = remove_Lat_zero,
+      valid_Flow = valid_Flow,
+      valid_AT = valid_AT,
+      valid_RHi = valid_RHi,
+      valid_Conc = valid_Conc,
+      flagAndKeep = T#flagAndKeep
+    )
+
+  } else if ( tbl$monitorSubtype[1] == "MULTI2" ) {
+
+    tbl <- EBAM_QC_Multi2(
+      tbl,
+      valid_Longitude = valid_Longitude,
+      valid_Latitude = valid_Latitude,
+      remove_Lon_zero = remove_Lon_zero,
+      remove_Lat_zero = remove_Lat_zero,
+      valid_Flow = valid_Flow,
+      valid_AT = valid_AT,
+      valid_RHi = valid_RHi,
+      valid_Conc = valid_Conc ,
+      flagAndKeep = flagAndKeep
+    )
+
   }
 
   return(tbl)
