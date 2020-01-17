@@ -93,7 +93,7 @@ columns in the returned meta dataframe is:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -179,9 +179,15 @@ columns in the returned <code>meta</code> dataframe is:</p>
 
     </div>
 
-    <pre class="usage"><span class='fu'>airsis_createMetaDataframe</span>(<span class='no'>tbl</span>, <span class='kw'>provider</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
-  <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>pwfslDataIngestSource</span> <span class='kw'>=</span> <span class='st'>"AIRSIS"</span>,
-  <span class='kw'>existingMeta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>addGoogleMeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>addEsriMeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>airsis_createMetaDataframe</span>(
+  <span class='no'>tbl</span>,
+  <span class='kw'>provider</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+  <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+  <span class='kw'>pwfslDataIngestSource</span> <span class='kw'>=</span> <span class='st'>"AIRSIS"</span>,
+  <span class='kw'>existingMeta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>addGoogleMeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>addEsriMeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

@@ -55,23 +55,25 @@
 #'   monitor_map()
 #' }
 
-airnow_loadLatest <- function(parameter = 'PM2.5',
-                              baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
-                              dataDir = NULL) {
+airnow_loadLatest <- function(
+  parameter = 'PM2.5',
+  baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
+  dataDir = NULL
+) {
 
   # Validate parameter
   validParams <- c("PM2.5")
   if ( !parameter %in% validParams ) {
-    paramsString <- paste(validParams, collapse=", ")
+    paramsString <- paste(validParams, collapse = ", ")
     stop(paste0("'", parameter,
                 "' is not a supported parameter. Use 'parameter = ",
-                paramsString, "'"), call.=FALSE)
+                paramsString, "'"), call. = FALSE)
   }
 
   # Create filename according to the PWFSLSmoke naming scheme
   filename <- paste0("airnow_", parameter, "_latest10.RData")
 
-  ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+  ws_monitor <- MazamaCoreUtils::loadDataFile(filename, baseUrl, dataDir)
 
   return(ws_monitor)
 

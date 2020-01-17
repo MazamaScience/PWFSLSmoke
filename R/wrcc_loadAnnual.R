@@ -98,7 +98,7 @@ wrcc_loadAnnual <- function(year = NULL,
   baseUrl <- paste0(baseUrl, '/WRCC/RData/', year)
   filename <- paste0("wrcc_", parameter, "_", year, ".RData")
 
-  ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+  ws_monitor <- MazamaCoreUtils::loadDataFile(filename, baseUrl, dataDir)
 
   # Return ---------------------------------------------------------------------
 

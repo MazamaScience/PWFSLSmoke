@@ -82,7 +82,7 @@ mobile monitors that are deployed to different locations in different years." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -157,8 +157,15 @@ datapoint until its last datapoint.</p>
 mobile monitors that are deployed to different locations in different years.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_isolate</span>(<span class='no'>ws_monitor</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>monitorIDs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stateCodes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_isolate</span>(
+  <span class='no'>ws_monitor</span>,
+  <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>monitorIDs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>stateCodes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

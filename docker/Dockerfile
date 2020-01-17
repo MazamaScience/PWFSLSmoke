@@ -1,4 +1,4 @@
-FROM mazamascience/spatialutils:0.6.1
+FROM mazamascience/spatialutils:0.6.4
 
 #######################################################################
 # For PWFSLSmoke

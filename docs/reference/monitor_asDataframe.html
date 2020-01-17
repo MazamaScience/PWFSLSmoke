@@ -95,7 +95,7 @@ dailyAvg daily average PM2.5 values as calculated with monitor_dailyStatistic()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -183,8 +183,13 @@ to the vector of <code>extraColumns{}</code></p><ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_asDataframe</span>(<span class='no'>ws_monitor</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extraColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>metaColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_asDataframe</span>(
+  <span class='no'>ws_monitor</span>,
+  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extraColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>metaColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

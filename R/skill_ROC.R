@@ -26,11 +26,15 @@
 #' title(paste0('Area Under Curve = ', format(auc,digits = 3)))
 #' }
 
-skill_ROC <- function(predicted,
-                      observed,
-                      t1Range = NULL,
-                      t2 = NULL,
-                      n = 101) {
+skill_ROC <- function(
+  predicted,
+  observed,
+  t1Range = NULL,
+  t2 = NULL,
+  n = 101
+) {
+
+  # ----- Validate parameters --------------------------------------------------
 
   # Extract data from ws_monitor objects
   if ( 'ws_monitor' %in% class(predicted) ) {
@@ -67,6 +71,8 @@ skill_ROC <- function(predicted,
     stop(paste0("observed must be a number vector"))
   }
 
+  # ----- Prepare variables ----------------------------------------------------
+
   # Remove any elements where either predicted or observed has NA
   m <- matrix(c(predicted, observed), ncol = 2)
   badRows <- apply(m, 1, function(x) { any(is.na(x)) })
@@ -86,7 +92,7 @@ skill_ROC <- function(predicted,
   # Calculate ROC and cost
   roc <- data.frame(threshold = testThresholds, FPR = NA, TPR = NA, cost = NA)
   for ( i in seq_along(testThresholds) ) {
-    cm <- confusionMatrix(predicted >= testThresholds[i], observed >= t2)
+    cm <- skill_confusionMatrix(predicted >= testThresholds[i], observed >= t2)
     roc$FPR[i] <- cm$FPRate
     roc$TPR[i] <- cm$TPRate
     roc$cost[i] <- cm$cost

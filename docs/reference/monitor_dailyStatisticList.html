@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -145,8 +145,13 @@
     <p>Calculates daily statistics for each monitor in <code>ws_monitor</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_dailyStatisticList</span>(<span class='no'>ws_monitor</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"mean"</span>),
-  <span class='kw'>dayStart</span> <span class='kw'>=</span> <span class='st'>"midnight"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>minHours</span> <span class='kw'>=</span> <span class='fl'>18</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_dailyStatisticList</span>(
+  <span class='no'>ws_monitor</span>,
+  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"mean"</span>),
+  <span class='kw'>dayStart</span> <span class='kw'>=</span> <span class='st'>"midnight"</span>,
+  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>minHours</span> <span class='kw'>=</span> <span class='fl'>18</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

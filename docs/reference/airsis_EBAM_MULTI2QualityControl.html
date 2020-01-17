@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download generic data — generic_downloadData • PWFSLSmoke</title>
+<title>Apply Quality Control to raw AIRSIS EBAM MULTI2 tibble — airsis_EBAM_MULTI2QualityControl • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,18 @@
 
 
 
-<meta property="og:title" content="Download generic data — generic_downloadData" />
-<meta property="og:description" content="This function takes a location to a delimited file, gets the file, and
-returns a string containing the file data." />
+<meta property="og:title" content="Apply Quality Control to raw AIRSIS EBAM MULTI2 tibble — airsis_EBAM_MULTI2QualityControl" />
+<meta property="og:description" content="Perform various QC measures on AIRSIS EBAM MULT2 data. This data
+format began appearing in December, 2019 and is associated with data
+available at https://arb3.airsis.com.
+The following columns of data are tested against valid ranges:
+Flow
+AT
+RHi
+ConcHr
+
+
+A POSIXct datetime column (UTC) is also added based on Date.Time.GMT." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,51 +146,97 @@ returns a string containing the file data." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download generic data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/generic_downloadData.R'><code>R/generic_downloadData.R</code></a></small>
-    <div class="hidden name"><code>generic_downloadData.Rd</code></div>
+    <h1>Apply Quality Control to raw AIRSIS EBAM MULTI2 tibble</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airsis_EBAM_MULTI2QualityControl.R'><code>R/airsis_EBAM_MULTI2QualityControl.R</code></a></small>
+    <div class="hidden name"><code>airsis_EBAM_MULTI2QualityControl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function takes a location to a delimited file, gets the file, and
-returns a string containing the file data.</p>
+    <p>Perform various QC measures on AIRSIS EBAM MULT2 data. This data
+format began appearing in December, 2019 and is associated with data
+available at https://arb3.airsis.com.</p>
+<p>The following columns of data are tested against valid ranges:</p><ul>
+<li><p><code>Flow</code></p></li>
+<li><p><code>AT</code></p></li>
+<li><p><code>RHi</code></p></li>
+<li><p><code>ConcHr</code></p></li>
+</ul>
+
+<p>A <code>POSIXct datetime</code> column (UTC) is also added based on <code>Date.Time.GMT</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>generic_downloadData</span>(<span class='no'>filePath</span>)</pre>
+    <pre class="usage"><span class='fu'>airsis_EBAM_MULTI2QualityControl</span>(
+  <span class='no'>tbl</span>,
+  <span class='kw'>valid_Longitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>180</span>, <span class='fl'>180</span>),
+  <span class='kw'>valid_Latitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>90</span>, <span class='fl'>90</span>),
+  <span class='kw'>remove_Lon_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_Lat_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>valid_Flow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16.7</span> * <span class='fl'>0.95</span>, <span class='fl'>16.7</span> * <span class='fl'>1.05</span>),
+  <span class='kw'>valid_AT</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>45</span>),
+  <span class='kw'>valid_RHi</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>45</span>),
+  <span class='kw'>valid_Conc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>5</span>),
+  <span class='kw'>flagAndKeep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>filePath</th>
-      <td><p>Either a path to a file, or a connection (<code>http(s)://</code>,
-<code>ftp(s)://</code>).</p></td>
+      <th>tbl</th>
+      <td><p>single site tibble created by <code><a href='airsis_parseData.html'>airsis_parseData()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>valid_Longitude</th>
+      <td><p>range of valid Longitude values</p></td>
+    </tr>
+    <tr>
+      <th>valid_Latitude</th>
+      <td><p>range of valid Latitude values</p></td>
+    </tr>
+    <tr>
+      <th>remove_Lon_zero</th>
+      <td><p>flag to remove rows where Longitude == 0</p></td>
+    </tr>
+    <tr>
+      <th>remove_Lat_zero</th>
+      <td><p>flag to remove rows where Latitude == 0</p></td>
+    </tr>
+    <tr>
+      <th>valid_Flow</th>
+      <td><p>range of valid Flow values</p></td>
+    </tr>
+    <tr>
+      <th>valid_AT</th>
+      <td><p>range of valid AT values</p></td>
+    </tr>
+    <tr>
+      <th>valid_RHi</th>
+      <td><p>range of valid RHi values</p></td>
+    </tr>
+    <tr>
+      <th>valid_Conc</th>
+      <td><p>range of valid ConcHr values</p></td>
+    </tr>
+    <tr>
+      <th>flagAndKeep</th>
+      <td><p>flag, rather than remove, bad data during the QC process</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character vector of length 1, containing data from the file located
-  at <code>filePath</code>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>Cleaned up tibble of AIRSIS monitor data.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>This function is essentailly a wrapper for <code><a href='https://readr.tidyverse.org/reference/read_file.html'>read_file</a></code>.</p>
+    <div class='dont-index'><p><code><a href='airsis_qualityControl.html'>airsis_qualityControl</a></code></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># make current directory PWFSLSmoke package directory</span>
-<span class='no'>filePath</span> <span class='kw'>&lt;-</span> <span class='st'>"./localData/airsis_ebam_example-clean.csv"</span>
-
-<span class='no'>fileString</span> <span class='kw'>&lt;-</span> <span class='fu'>generic_downloadData</span>(<span class='no'>filePath</span>)
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>

@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -145,8 +145,13 @@
     <p>Calculates the number of hours per day each monitor in <code>ws_monitor</code> was at or above a given threshold</p>
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_dailyThreshold</span>(<span class='no'>ws_monitor</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"unhealthy"</span>,
-  <span class='kw'>dayStart</span> <span class='kw'>=</span> <span class='st'>"midnight"</span>, <span class='kw'>minHours</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_dailyThreshold</span>(
+  <span class='no'>ws_monitor</span>,
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='st'>"unhealthy"</span>,
+  <span class='kw'>dayStart</span> <span class='kw'>=</span> <span class='st'>"midnight"</span>,
+  <span class='kw'>minHours</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
