@@ -2,7 +2,7 @@
 #' @export
 #' @import MazamaCoreUtils
 #'
-#' @title Apply Quality Control to raw AIRSIS EBAM tibble
+#' @title Apply Quality Control to raw AIRSIS EBAM MULTI2 tibble
 #'
 #' @param tbl single site tibble created by \code{airsis_parseData()}
 #' @param valid_Longitude range of valid Longitude values
@@ -14,7 +14,9 @@
 #' @param valid_RHi range of valid RHi values
 #' @param valid_Conc range of valid ConcHr values
 #' @param flagAndKeep flag, rather than remove, bad data during the QC process
-#' @description Perform various QC measures on AIRSIS EBAM data.
+#' @description Perform various QC measures on AIRSIS EBAM MULT2 data. This data
+#' format began appearing in December, 2019 and is associated with data
+#' available at https://arb3.airsis.com.
 #'
 #' The following columns of data are tested against valid ranges:
 #' \itemize{
@@ -29,7 +31,7 @@
 #' @return Cleaned up tibble of AIRSIS monitor data.
 #' @seealso \code{\link{airsis_qualityControl}}
 
-airsis_EBAMQualityControl <- function(
+airsis_EBAM_MULTI2QualityControl <- function(
   tbl,
   valid_Longitude = c(-180,180),
   valid_Latitude = c(-90,90),
@@ -42,7 +44,7 @@ airsis_EBAMQualityControl <- function(
   flagAndKeep = FALSE
 ) {
 
-  logger.debug(" ----- airsis_EBAMQualityControl() ----- ")
+  logger.debug(" ----- airsis_EBAM_MULTI2QualityControl() ----- ")
 
   #   > names(tbl)
   #    [1] "MasterTable_ID" "Alias"          "Latitude"       "Longitude"      "Date.Time.GMT"
@@ -103,7 +105,7 @@ airsis_EBAMQualityControl <- function(
   if ( badRowCount > 0 ) {
     logger.trace(paste(verb,"%s rows with invalid location information"), badRowCount)
     badLocations <- paste('(',tbl$Longitude[badRows],',',tbl$Latitude[badRows],')',sep='')
-    logger.trace("Bad locations: %s", paste0(badLocations, collapse=", "))
+    logger.trace("Bad locations: %s", paste0(badLocations, collapse = ", "))
     if ( flagAndKeep ) {
       # apply flags
       tblFlagged$QCFlag_badLon[tbl$rowID[!goodLonMask]] <- TRUE
@@ -121,18 +123,18 @@ airsis_EBAMQualityControl <- function(
   if ( nrow(tbl) < 1 && !flagAndKeep ) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.warn(err_msg) # This is more of a warning than some error in the data.
-    stop(err_msg, call.=FALSE)
+    stop(err_msg, call. = FALSE)
   }
 
   # ----- Time ----------------------------------------------------------------
 
   # Add a POSIXct datetime
-  tbl$datetime <- lubridate::floor_date(lubridate::mdy_hms(tbl$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
+  tbl$datetime <- lubridate::floor_date(lubridate::mdy_hms(tbl$Date.Time.GMT), unit = "hour") - lubridate::dhours(1)
   if ( flagAndKeep ) {
     # TODO: Unable to get datetime moved from tbl to tblFlagged without timezone and/or display getting messed up.
     # For now just duplicating the calculation, then assigning row values to NA after the fact for rows that were
     # removed from tbl prior to calculating datetime above. Clean up later if possible.
-    tblFlagged$datetime <- lubridate::floor_date(lubridate::mdy_hms(tblFlagged$Date.Time.GMT), unit="hour") - lubridate::dhours(1)
+    tblFlagged$datetime <- lubridate::floor_date(lubridate::mdy_hms(tblFlagged$Date.Time.GMT), unit = "hour") - lubridate::dhours(1)
     tblFlagged$datetime[ which(!(tblFlagged$rowID %in% tbl$rowID)) ] <- NA
   }
 
@@ -154,7 +156,7 @@ airsis_EBAMQualityControl <- function(
   badRowCount <- sum(badRows)
   if ( badRowCount > 0 ) {
     logger.trace(paste(verb,"%s rows with invalid Type information"), badRowCount)
-    logger.trace("Bad Types:  %s", paste0(sort(unique(tbl$Type[badRows]),na.last=TRUE), collapse=", "))
+    logger.trace("Bad Types:  %s", paste0(sort(unique(tbl$Type[badRows]),na.last = TRUE), collapse = ", "))
     if ( flagAndKeep ) {
       # apply flags
       tblFlagged$QCFlag_badType[tbl$rowID[!goodTypeMask]] <- TRUE
@@ -170,7 +172,7 @@ airsis_EBAMQualityControl <- function(
   if ( nrow(tbl) < 1 && !flagAndKeep ) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.warn(err_msg) # This is more of a warning than some error in the data.
-    stop(err_msg, call.=FALSE)
+    stop(err_msg, call. = FALSE)
   }
 
   # Leland Tarnay QC -----------------------------------------------------------
@@ -196,15 +198,15 @@ airsis_EBAMQualityControl <- function(
   gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
 
   logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
-  if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$Flow[!goodFlow]),na.last=TRUE), collapse=", "))
+  if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$Flow[!goodFlow]),na.last = TRUE), collapse = ", "))
   logger.trace("AT has %s missing or out of range values", sum(!goodAT))
-  if (sum(!goodAT) > 0) logger.trace("Bad AT values:  %s", paste0(sort(unique(tbl$AT[!goodAT]),na.last=TRUE), collapse=", "))
+  if (sum(!goodAT) > 0) logger.trace("Bad AT values:  %s", paste0(sort(unique(tbl$AT[!goodAT]),na.last = TRUE), collapse = ", "))
   logger.trace("RHi has %s missing or out of range values", sum(!goodRHi))
-  if (sum(!goodRHi) > 0) logger.trace("Bad RHi values:  %s", paste0(sort(unique(tbl$RHi[!goodRHi]),na.last=TRUE), collapse=", "))
+  if (sum(!goodRHi) > 0) logger.trace("Bad RHi values:  %s", paste0(sort(unique(tbl$RHi[!goodRHi]),na.last = TRUE), collapse = ", "))
   logger.trace("Conc has %s missing or out of range values", sum(!goodConcHr))
-  if (sum(!goodConcHr) > 0) logger.trace("Bad Conc values:  %s", paste0(sort(unique(tbl$ConcHr[!goodConcHr]),na.last=TRUE), collapse=", "))
+  if (sum(!goodConcHr) > 0) logger.trace("Bad Conc values:  %s", paste0(sort(unique(tbl$ConcHr[!goodConcHr]),na.last = TRUE), collapse = ", "))
   logger.trace("datetime has %s missing or out of range values", sum(!gooddatetime))
-  if (sum(!gooddatetime) > 0) logger.trace("Bad datetime values:  %s", paste0(sort(unique(tbl$datetime[!gooddatetime]),na.last=TRUE), collapse=", "))
+  if (sum(!gooddatetime) > 0) logger.trace("Bad datetime values:  %s", paste0(sort(unique(tbl$datetime[!gooddatetime]),na.last = TRUE), collapse = ", "))
 
   goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
   badQCCount <- sum(!goodMask)
@@ -235,7 +237,7 @@ airsis_EBAMQualityControl <- function(
   if ( nrow(tbl) < 1 && !flagAndKeep ) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.warn(err_msg) # This is more of a warning than some error in the data.
-    stop(err_msg, call.=FALSE)
+    stop(err_msg, call. = FALSE)
   }
 
   # ----- Duplicate Hours -----------------------------------------------------
@@ -251,7 +253,7 @@ airsis_EBAMQualityControl <- function(
 
   if ( dupHrCount > 0 ) {
     logger.trace(paste(verb,"%s duplicate time entries"), dupHrCount)
-    logger.trace("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(tbl$Date.Time.GMT[dupHrMask])), collapse=", "))
+    logger.trace("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(tbl$Date.Time.GMT[dupHrMask])), collapse = ", "))
     if ( flagAndKeep ) {
       # apply flags
       tblFlagged$QCFlag_duplicateHr[tbl$rowID[dupHrMask]] <- TRUE
@@ -267,7 +269,7 @@ airsis_EBAMQualityControl <- function(
   if ( nrow(tbl) < 1 && !flagAndKeep ) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.warn(err_msg) # This is more of a warning than some error in the data.
-    stop(err_msg, call.=FALSE)
+    stop(err_msg, call. = FALSE)
   }
 
   # ----- More QC -------------------------------------------------------------

@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.2.104
+
+* Added support for parsing AIRSIS "EBAM Multi 2" format.
+* Replaced `PWFSLSmoke::loadDataFile()` with `MazamaCoreUtils::loadDataFile()`.
+
 # PWFSLSmoke 1.2.103
 
 * docker version bump
@@ -5,8 +10,8 @@
 
 # PWFSLSmoke 1.2.102
 
-* Ran `MazamaCoreUtils::lintFunctionArgs()` with `timezoneLintRules and included
-explicitly timezones wherever they are allowed.
+* Ran `MazamaCoreUtils::lintFunctionArgs()` with `timezoneLintRules` and included
+explicit timezones wherever they are allowed.
 * `PWFSLSmoke::parseDatetime()` has been internally replaced with
   `MazamaCoreUtils::parseDatetime()` with explicit timezone argument
 

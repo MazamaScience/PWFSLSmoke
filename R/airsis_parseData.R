@@ -140,9 +140,9 @@ airsis_parseData <- function(fileString) {
       # Remove rows where TimeStamp is NA
       badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
       tbl <- tbl[!badMask,]
-      datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz="UTC")
+      datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz = "UTC")
       assignedHour <- lubridate::floor_date(datetime, unit = "hour")
-      tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz='UTC')
+      tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
     }
 
     # Add "Sys..Volts" column
@@ -150,6 +150,14 @@ airsis_parseData <- function(fileString) {
       tbl$Sys..Volts <- tbl$Oceaneering.Unit.Voltage
     } else {
       tbl$Sys..Volts <- as.numeric(NA)
+    }
+
+    # NOTE:  EBAM MULTI2 provides "ConcHR" (ug/m3) instead of "ConcHr" (mg/m3)
+    # NOTE:
+    # NOTE:  We create another column here with a "standard" name and units
+
+    if ( monitorSubtype == "MULTI2" ) {
+      tbl$ConcHr <- tbl$ConcHR / 1000
     }
 
   }

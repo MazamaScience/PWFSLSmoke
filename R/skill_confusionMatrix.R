@@ -52,9 +52,13 @@
 #' cm <- skill_confusionMatrix(predicted, observed)
 #' print(cm)
 #'
-skill_confusionMatrix <- function(predicted, observed,
-                                  FPCost=1, FNCost=1,
-                                  lightweight=FALSE) {
+skill_confusionMatrix <- function(
+  predicted,
+  observed,
+  FPCost = 1,
+  FNCost = 1,
+  lightweight = FALSE
+) {
 
   # Sanity check
   if ( length(predicted) != length(observed) ) {
@@ -138,7 +142,7 @@ skill_confusionMatrix <- function(predicted, observed,
     # ----- Cohen's Kappa -----
     # from https://en.wikipedia.org/wiki/Cohen%27s_kappa
     expectedAccuracy <- (( sum(predicted) * sum(observed) / total ) +
-      ( sum(!predicted) * sum(!observed) / total )) / total
+                           ( sum(!predicted) * sum(!observed) / total )) / total
     kappa <- (accuracy - expectedAccuracy) / (1 - expectedAccuracy)
 
     # descriptive measures from forecast verification book
@@ -158,21 +162,21 @@ skill_confusionMatrix <- function(predicted, observed,
 
     # Create a list with the named metrics
     returnList <- list(table, TPRate, FPRate, TNRate, FNRate,
-                    PPV, FDR, NPV, FOR,
-                    accuracy, errorRate, sensitivity, recall, specificity,
-                    precision, prevalence, f1_score,
-                    detectionRate, detectionPrevalence, balancedAccuracy,
-                    expectedAccuracy, kappa, cost,
-                    hitRate, falseAlarmRate, falseAlarmRatio, proportionCorrect,
-                    oddsRatioSkill, heidkeSkill, pierceSkill, criticalSuccess, yulesQ)
+                       PPV, FDR, NPV, FOR,
+                       accuracy, errorRate, sensitivity, recall, specificity,
+                       precision, prevalence, f1_score,
+                       detectionRate, detectionPrevalence, balancedAccuracy,
+                       expectedAccuracy, kappa, cost,
+                       hitRate, falseAlarmRate, falseAlarmRatio, proportionCorrect,
+                       oddsRatioSkill, heidkeSkill, pierceSkill, criticalSuccess, yulesQ)
     names(returnList) <- c('table', 'TPRate', 'FPRate', 'TNRate', 'FNRate',
-                        'PPV', 'FDR', 'NPV', 'FOR',
-                        'accuracy', 'errorRate', 'sensitivity', 'recall', 'specificity',
-                        'precision', 'prevalence', 'f1_score',
-                        'detectionRate', 'detectionPrevalence', 'balancedAccuracy',
-                        'expectedAccuracy', 'kappa', 'cost',
-                        'hitRate', 'falseAlarmRate', 'falseAlarmRatio', 'proportionCorrect',
-                        'oddsRatioSkill', 'heidkeSkill', 'pierceSkill', 'criticalSuccess', 'yulesQ')
+                           'PPV', 'FDR', 'NPV', 'FOR',
+                           'accuracy', 'errorRate', 'sensitivity', 'recall', 'specificity',
+                           'precision', 'prevalence', 'f1_score',
+                           'detectionRate', 'detectionPrevalence', 'balancedAccuracy',
+                           'expectedAccuracy', 'kappa', 'cost',
+                           'hitRate', 'falseAlarmRate', 'falseAlarmRatio', 'proportionCorrect',
+                           'oddsRatioSkill', 'heidkeSkill', 'pierceSkill', 'criticalSuccess', 'yulesQ')
 
   }
 

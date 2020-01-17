@@ -160,3 +160,22 @@ airsis_createMonitorObject <- function(
   return(ws_monitor)
 
 }
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+
+  startdate = strftime(lubridate::now(tzone = "UTC"), "%Y010100", tz = "UTC")
+  enddate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d23", tz = "UTC")
+  provider = 'arb3'
+  unitID = 1024 # 1000-1049
+  clusterDiameter = 1000
+  zeroMinimum = TRUE
+  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"
+  saveFile = NULL
+  existingMeta = NULL
+  addGoogleMeta = FALSE
+  addEsriMeta = FALSE
+  ... = list()
+
+}

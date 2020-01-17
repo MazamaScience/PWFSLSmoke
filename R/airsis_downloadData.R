@@ -64,3 +64,18 @@ airsis_downloadData <- function(
   return(fileString)
 
 }
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+
+  startdate = strftime(lubridate::now(tzone = "UTC"), "%Y0101", tz = "UTC")
+  enddate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz = "UTC")
+  provider = 'arb3'
+  unitID = 1024 # 1000-1049
+  baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"
+
+  # Read in AIRSIS .csv data
+  fileString <- airsis_downloadData(startdate, enddate, provider, unitID, baseUrl)
+
+}

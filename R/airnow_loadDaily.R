@@ -71,7 +71,7 @@ airnow_loadDaily <- function(parameter = 'PM2.5',
   # Create filename according to the PWFSLSmoke naming scheme
   filename <- paste0("airnow_", parameter, "_latest45.RData")
 
-  ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+  ws_monitor <- MazamaCoreUtils::loadDataFile(filename, baseUrl, dataDir)
 
   return(ws_monitor)
 

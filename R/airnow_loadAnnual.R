@@ -92,7 +92,7 @@ airnow_loadAnnual <- function(year = NULL,
   baseUrl <- paste0(baseUrl, '/AirNow/RData/', year)
   filename <- paste0("airnow_", parameter, "_", year, ".RData")
 
-  ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+  ws_monitor <- MazamaCoreUtils::loadDataFile(filename, baseUrl, dataDir)
 
   return(ws_monitor)
 

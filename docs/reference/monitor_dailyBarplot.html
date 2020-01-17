@@ -82,7 +82,7 @@ When tlim is used, it is converted to the monitor local timezone." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -157,9 +157,19 @@ that function may be used.</p>
 When <code>tlim</code> is used, it is converted to the monitor local timezone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_dailyBarplot</span>(<span class='no'>ws_monitor</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>minHours</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>gridPos</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>gridCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>gridLwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>gridLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>, <span class='kw'>labels_x_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>labels_y_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_dailyBarplot</span>(
+  <span class='no'>ws_monitor</span>,
+  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>minHours</span> <span class='kw'>=</span> <span class='fl'>18</span>,
+  <span class='kw'>gridPos</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>gridCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>gridLwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>gridLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
+  <span class='kw'>labels_x_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>labels_y_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
