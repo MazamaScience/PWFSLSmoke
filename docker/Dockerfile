@@ -1,4 +1,4 @@
-FROM mazamascience/spatialutils:0.6.4
+FROM mazamascience/spatialutils:0.6.5
 
 #######################################################################
 # For PWFSLSmoke
@@ -19,6 +19,5 @@ RUN install2.r --error -r "https://cran.rstudio.com" \
 # Install latest updates from GitHub
 RUN installGithub.r \
     mazamascience/MazamaCoreUtils \
-    milesmcbain/slippymath \
     mazamascience/PWFSLSmoke
 
