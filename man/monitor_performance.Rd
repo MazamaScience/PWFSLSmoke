@@ -4,8 +4,15 @@
 \alias{monitor_performance}
 \title{Calculate Monitor Prediction Performance}
 \usage{
-monitor_performance(predicted, observed, t1, t2, metric = NULL,
-  FPCost = 1, FNCost = 1)
+monitor_performance(
+  predicted,
+  observed,
+  t1,
+  t2,
+  metric = NULL,
+  FPCost = 1,
+  FNCost = 1
+)
 }
 \arguments{
 \item{predicted}{ws_monitor object with predicted data}

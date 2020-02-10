@@ -13,7 +13,7 @@ You should then be able to see something like the following:
 ```
 $ docker images
 REPOSITORY                          TAG                     IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke            1.2.103                 1824e396e3f3        34 seconds ago      2.61GB
+mazamascience/pwfslsmoke            1.2.104                 1824e396e3f3        34 seconds ago      2.61GB
 mazamascience/pwfslsmoke            latest                  1824e396e3f3        34 seconds ago      2.61GB
 ...
 ```
@@ -55,7 +55,7 @@ TT1010003_01                  Inchelium       <NA>     51.8
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:1.2.103
+docker push mazamascience/pwfslsmoke:1.2.104
 ```
 
 
@@ -64,6 +64,6 @@ docker push mazamascience/pwfslsmoke:1.2.103
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:1.2.103
+docker pull mazamascience/pwfslsmoke:1.2.104
 ```
 

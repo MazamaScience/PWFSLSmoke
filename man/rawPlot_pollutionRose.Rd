@@ -4,8 +4,14 @@
 \alias{rawPlot_pollutionRose}
 \title{Create Pollution Rose Plot from a Raw Dataframe}
 \usage{
-rawPlot_pollutionRose(df, parameter = "pm25", tlim = NULL,
-  localTime = TRUE, normalize = FALSE, ...)
+rawPlot_pollutionRose(
+  df,
+  parameter = "pm25",
+  tlim = NULL,
+  localTime = TRUE,
+  normalize = FALSE,
+  ...
+)
 }
 \arguments{
 \item{df}{enhanced, raw dataframe as created by the \code{raw_enhance()} function}

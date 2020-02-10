@@ -1,6 +1,6 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 1.2.103
+Version: 1.2.104
 Title: Utilities for Working with Air Quality Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -27,10 +27,10 @@ Author: Jonathan Callahan [aut, cre],
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
     R (>= 3.3.0),
-    dplyr,
+    dplyr (>= 0.8.3),
     maps,
-    MazamaCoreUtils (>= 0.3.5),
-    MazamaSpatialUtils (>= 0.6.1)
+    MazamaCoreUtils (>= 0.4.2),
+    MazamaSpatialUtils (>= 0.6.3)
 Imports:
     curl,
     cluster,
@@ -85,4 +85,4 @@ URL: https://github.com/MazamaScience/PWFSLSmoke
 BugReports: https://github.com/MazamaScience/PWFSLSmoke/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

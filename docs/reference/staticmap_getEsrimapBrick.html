@@ -82,7 +82,7 @@ https://leaflet-extras.github.io/leaflet-providers/preview/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -157,10 +157,18 @@ servers which can be previewed at the following URL:</p>
 <p><a href='https://leaflet-extras.github.io/leaflet-providers/preview/'>https://leaflet-extras.github.io/leaflet-providers/preview/</a></p>
     </div>
 
-    <pre class="usage"><span class='fu'>staticmap_getEsrimapBrick</span>(<span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"world_topo"</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>maxTiles</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sp/man/CRS-class.html'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>),
-  <span class='kw'>tileCacheDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>())</pre>
+    <pre class="usage"><span class='fu'>staticmap_getEsrimapBrick</span>(
+  <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"world_topo"</span>,
+  <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>,
+  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
+  <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maxTiles</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw pkg'>sp</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sp/man/CRS-class.html'>CRS</a></span>(<span class='st'>"+init=epsg:4326"</span>),
+  <span class='kw'>tileCacheDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

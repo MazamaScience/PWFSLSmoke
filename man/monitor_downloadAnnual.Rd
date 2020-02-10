@@ -4,9 +4,13 @@
 \alias{monitor_downloadAnnual}
 \title{Download annual PM2.5 monitoring data}
 \usage{
-monitor_downloadAnnual(year = NULL, parameter = "PM2.5",
+monitor_downloadAnnual(
+  year = NULL,
+  parameter = "PM2.5",
   baseUrl = "https://haze.airfire.org/monitoring",
-  dataDir = "~/Data/monitoring/RData", ...)
+  dataDir = "~/Data/monitoring/RData",
+  ...
+)
 }
 \arguments{
 \item{year}{Desired year (integer or character representing YYYY).}

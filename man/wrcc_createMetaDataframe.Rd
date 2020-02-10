@@ -4,9 +4,14 @@
 \alias{wrcc_createMetaDataframe}
 \title{Create WRCC site location metadata dataframe}
 \usage{
-wrcc_createMetaDataframe(tbl, unitID = as.character(NA),
-  pwfslDataIngestSource = "WRCC", existingMeta = NULL,
-  addGoogleMeta = FALSE, addEsriMeta = FALSE)
+wrcc_createMetaDataframe(
+  tbl,
+  unitID = as.character(NA),
+  pwfslDataIngestSource = "WRCC",
+  existingMeta = NULL,
+  addGoogleMeta = FALSE,
+  addEsriMeta = FALSE
+)
 }
 \arguments{
 \item{tbl}{single site WRCC tibble after metadata enhancement}

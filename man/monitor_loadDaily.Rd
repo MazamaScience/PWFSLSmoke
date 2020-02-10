@@ -4,9 +4,11 @@
 \alias{monitor_loadDaily}
 \title{Load recent PM2.5 monitoring data}
 \usage{
-monitor_loadDaily(parameter = "PM2.5",
+monitor_loadDaily(
+  parameter = "PM2.5",
   baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
-  dataDir = NULL)
+  dataDir = NULL
+)
 }
 \arguments{
 \item{parameter}{Parameter of interest.}

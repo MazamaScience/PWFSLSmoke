@@ -4,8 +4,7 @@
 \alias{monitor_rollingMean}
 \title{Calculate Rolling Means}
 \usage{
-monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75,
-  align = "center")
+monitor_rollingMean(ws_monitor, width = 8, data.thresh = 75, align = "center")
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

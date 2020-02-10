@@ -86,7 +86,7 @@ gnats-- semi-transparent dots like a cloud of gnats
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -165,10 +165,23 @@ overridden. Available styles include:</p>
 
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_timeseriesPlot</span>(<span class='no'>ws_monitor</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>localTime</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>gridPos</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>gridCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>gridLwd</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>gridLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
-  <span class='kw'>dayLwd</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>hourLwd</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>hourInterval</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_timeseriesPlot</span>(
+  <span class='no'>ws_monitor</span>,
+  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>localTime</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>style</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>gridPos</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>gridCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>gridLwd</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>gridLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
+  <span class='kw'>dayLwd</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>hourLwd</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>hourInterval</span> <span class='kw'>=</span> <span class='fl'>6</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

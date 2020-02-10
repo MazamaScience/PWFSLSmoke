@@ -59,6 +59,8 @@ airsis_parseData <- function(fileString) {
 
     if ( monitorSubtype == "MULTI" ) {
       logger.trace("Parsing EBAM-Multi data ...")
+    } else if ( monitorSubtype == "MULTI2" ) {
+      logger.trace("Parsing EBAM-Multi2 data ...")
     } else {
       logger.trace("Parsing EBAM data ...")
     }
@@ -122,9 +124,12 @@ airsis_parseData <- function(fileString) {
   tbl$monitorName <- tbl$Alias
   tbl$monitorType <- monitorType
 
+  # Add monitor subtype for EBAM MULTI & MULTI2 seperation QC
+  tbl$monitorSubtype <- monitorSubtype
+
   #     EBAM-Multi fixes     --------------------------------------------------
 
-  if ( monitorType == "EBAM" && monitorSubtype == "MULTI" ) {
+  if ( monitorType == "EBAM" && (monitorSubtype == "MULTI" || monitorSubtype == "MULTI2") ) {
 
     # HACK
     # arb2 UnitID=1044 in August, 2018 does not return a "Date.Time.GMT" column
@@ -135,9 +140,9 @@ airsis_parseData <- function(fileString) {
       # Remove rows where TimeStamp is NA
       badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
       tbl <- tbl[!badMask,]
-      datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz="UTC")
+      datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz = "UTC")
       assignedHour <- lubridate::floor_date(datetime, unit = "hour")
-      tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz='UTC')
+      tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
     }
 
     # Add "Sys..Volts" column
@@ -145,6 +150,14 @@ airsis_parseData <- function(fileString) {
       tbl$Sys..Volts <- tbl$Oceaneering.Unit.Voltage
     } else {
       tbl$Sys..Volts <- as.numeric(NA)
+    }
+
+    # NOTE:  EBAM MULTI2 provides "ConcHR" (ug/m3) instead of "ConcHr" (mg/m3)
+    # NOTE:
+    # NOTE:  We create another column here with a "standard" name and units
+
+    if ( monitorSubtype == "MULTI2" ) {
+      tbl$ConcHr <- tbl$ConcHR / 1000
     }
 
   }

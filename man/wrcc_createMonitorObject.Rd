@@ -4,13 +4,19 @@
 \alias{wrcc_createMonitorObject}
 \title{Obtain WRCC data and create ws_monitor object}
 \usage{
-wrcc_createMonitorObject(startdate = strftime(lubridate::now(tzone =
-  "UTC"), "\%Y010100", tz = "UTC"),
-  enddate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d23", tz =
-  "UTC"), unitID = NULL, clusterDiameter = 1000, zeroMinimum = TRUE,
+wrcc_createMonitorObject(
+  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y010100", tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d23", tz = "UTC"),
+  unitID = NULL,
+  clusterDiameter = 1000,
+  zeroMinimum = TRUE,
   baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl",
-  saveFile = NULL, existingMeta = NULL, addGoogleMeta = FALSE,
-  addEsriMeta = FALSE, ...)
+  saveFile = NULL,
+  existingMeta = NULL,
+  addGoogleMeta = FALSE,
+  addEsriMeta = FALSE,
+  ...
+)
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

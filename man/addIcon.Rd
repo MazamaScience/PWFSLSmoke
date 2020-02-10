@@ -4,8 +4,7 @@
 \alias{addIcon}
 \title{Add Icons to a Map or RgoogleMap Plot}
 \usage{
-addIcon(icon, longitude, latitude, map = NULL, expansion = 0.1,
-  pos = 0)
+addIcon(icon, longitude, latitude, map = NULL, expansion = 0.1, pos = 0)
 }
 \arguments{
 \item{icon}{object to be plotted}

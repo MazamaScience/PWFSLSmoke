@@ -71,7 +71,7 @@ airsis_loadLatest <- function(parameter = 'PM2.5',
   # Create filename according to the PWFSLSmoke naming scheme
   filename <- paste0("airsis_", parameter, "_latest10.RData")
 
-  ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+  ws_monitor <- MazamaCoreUtils::loadDataFile(filename, baseUrl, dataDir)
 
   return(ws_monitor)
 

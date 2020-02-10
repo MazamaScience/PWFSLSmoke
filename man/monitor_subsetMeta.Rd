@@ -4,8 +4,14 @@
 \alias{monitor_subsetMeta}
 \title{Subset ws_monitor Object 'meta' Dataframe}
 \usage{
-monitor_subsetMeta(meta, xlim = NULL, ylim = NULL, stateCodes = NULL,
-  countryCodes = NULL, monitorIDs = NULL)
+monitor_subsetMeta(
+  meta,
+  xlim = NULL,
+  ylim = NULL,
+  stateCodes = NULL,
+  countryCodes = NULL,
+  monitorIDs = NULL
+)
 }
 \arguments{
 \item{meta}{\emph{ws_monitor} object \code{meta} dataframe}

@@ -4,9 +4,15 @@
 \alias{monitor_load}
 \title{Load PM2.5 monitoring data}
 \usage{
-monitor_load(startdate = NULL, enddate = NULL, monitorIDs = NULL,
-  parameter = "PM2.5", baseUrl = "https://haze.airfire.org/monitoring",
-  dataDir = NULL, aqsPreference = "airnow")
+monitor_load(
+  startdate = NULL,
+  enddate = NULL,
+  monitorIDs = NULL,
+  parameter = "PM2.5",
+  baseUrl = "https://haze.airfire.org/monitoring",
+  dataDir = NULL,
+  aqsPreference = "airnow"
+)
 }
 \arguments{
 \item{startdate}{Desired start date (integer or character in ymd[hms] format

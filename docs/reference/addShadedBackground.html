@@ -77,7 +77,7 @@ length as the time axis of the current plot. Line widths corresponds to magnitud
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -147,8 +147,14 @@ length as the time axis of the current plot. Line widths corresponds to magnitud
 length as the time axis of the current plot. Line widths corresponds to magnitude of values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>addShadedBackground</span>(<span class='no'>param</span>, <span class='no'>timeAxis</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span>(<span class='no'>param</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>maxOpacity</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>addShadedBackground</span>(
+  <span class='no'>param</span>,
+  <span class='no'>timeAxis</span>,
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span>(<span class='no'>param</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
+  <span class='kw'>maxOpacity</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
+  <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

@@ -42,6 +42,13 @@ airsis_identifyMonitorType <- function(df) {
 
   #     Different header styles     -------------------------------------------
 
+  # ARB3_ebamMulti2, provider="arb3", unitID=1024 (starting December, 2019)
+  ebamMulti2_header <- "MasterTable_ID,Alias,Latitude,Longitude,ConcRT,ConcHR,ConcS(ug/m3),Flow,W/S,W/D,AT,RHx,BP(mmHg),RHi,Oceaneering Unit Voltage,FT,Status,Type,BV,TimeStamp,PDate"
+  ebamMulti2_rawNames <- unlist(stringr::str_split(ebamMulti2_header, ','))
+  ebamMulti2_names <- make.names(ebamMulti2_rawNames)
+  # "62288132,RX 1024,,,18.2,12.7,11.8,16.67,0.3,178,6.0,88,765.7,53,,14.9,Power Failure,PM 2.5,0,1/3/2020 5:05:13 PM,1/3/2020 5:05:00 PM"
+  ebamMulti2_types <- 'ccddddddddddddddccdcc'
+
   # ARB2_ebamMulti (Starting in August, 2018)
   ebamMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,COncRT,ConcHr,Flow,W/S,W/D,AT,RHx,RHi,BV,FT,Alarm,Oceaneering Unit Voltage,Type,TimeStamp,PDate"
   ebamMulti_rawNames <- unlist(stringr::str_split(ebamMulti_header, ','))
@@ -151,7 +158,6 @@ airsis_identifyMonitorType <- function(df) {
     rawNames <- unitid_bam1020_rawNames
     columnNames <- unitid_bam1020_names
     columnTypes <- unitid_bam1020_types
-
   # NOTE:  Now check for the older, pre-unitid headers in the same order
   } else if ( dplyr::setequal(esam_names, colNames) ) {
     monitorType <- "ESAM"
@@ -164,8 +170,15 @@ airsis_identifyMonitorType <- function(df) {
     rawNames <- ebamMulti_rawNames
     columnNames <- ebamMulti_names
     columnTypes <- ebamMulti_types
+  } else if ( dplyr::setequal(ebamMulti2_names, colNames) ) {
+    monitorType <- "EBAM"
+    monitorSubtype <- "MULTI2"
+    rawNames <- ebamMulti2_rawNames
+    columnNames <- ebamMulti2_names
+    columnTypes <- ebamMulti2_types
   } else if ( dplyr::setequal(ebam_names, colNames) ) {
     monitorType <- "EBAM"
+    monitorSubtype <- "" # List "" -- no subtype for standard EBAM
     rawNames <- ebam_rawNames
     columnNames <- ebam_names
     columnTypes <- ebam_types

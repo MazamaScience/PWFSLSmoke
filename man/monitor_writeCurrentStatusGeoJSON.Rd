@@ -4,9 +4,14 @@
 \alias{monitor_writeCurrentStatusGeoJSON}
 \title{Write current monitor data to geojson file}
 \usage{
-monitor_writeCurrentStatusGeoJSON(ws_monitor, filename,
-  datetime = lubridate::now(tzone = "UTC"), properties = NULL,
-  propertyNames = NULL, metadataList = list())
+monitor_writeCurrentStatusGeoJSON(
+  ws_monitor,
+  filename,
+  datetime = lubridate::now(tzone = "UTC"),
+  properties = NULL,
+  propertyNames = NULL,
+  metadataList = list()
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object.}

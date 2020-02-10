@@ -4,9 +4,11 @@
 \alias{airsis_loadLatest}
 \title{Load most recent AIRSIS monitoring data}
 \usage{
-airsis_loadLatest(parameter = "PM2.5",
+airsis_loadLatest(
+  parameter = "PM2.5",
   baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
-  dataDir = NULL)
+  dataDir = NULL
+)
 }
 \arguments{
 \item{parameter}{Parameter of interest.}

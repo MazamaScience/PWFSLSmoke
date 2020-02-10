@@ -89,7 +89,7 @@ epa_loadAnnual <- function(year = NULL,
   baseUrl <- paste0(baseUrl, '/EPA/RData/', year)
   filename <- paste0("epa_", parameter, "_", parameterCode, '_', year, ".RData")
 
-  ws_monitor <- loadDataFile(filename, baseUrl, dataDir)
+  ws_monitor <- MazamaCoreUtils::loadDataFile(filename, baseUrl, dataDir)
 
   return(ws_monitor)
 

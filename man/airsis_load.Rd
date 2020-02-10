@@ -4,8 +4,10 @@
 \alias{airsis_load}
 \title{Load Processed AIRSIS Monitoring Data}
 \usage{
-airsis_load(year = 2017,
-  baseUrl = "https://haze.airfire.org/monitoring/AIRSIS/RData/")
+airsis_load(
+  year = 2017,
+  baseUrl = "https://haze.airfire.org/monitoring/AIRSIS/RData/"
+)
 }
 \arguments{
 \item{year}{desired year (integer or character representing YYYY)}

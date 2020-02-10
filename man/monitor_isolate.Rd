@@ -4,8 +4,15 @@
 \alias{monitor_isolate}
 \title{Isolate Individual Monitors}
 \usage{
-monitor_isolate(ws_monitor, xlim = NULL, ylim = NULL, tlim = NULL,
-  monitorIDs = NULL, stateCodes = NULL, timezone = "UTC")
+monitor_isolate(
+  ws_monitor,
+  xlim = NULL,
+  ylim = NULL,
+  tlim = NULL,
+  monitorIDs = NULL,
+  stateCodes = NULL,
+  timezone = "UTC"
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

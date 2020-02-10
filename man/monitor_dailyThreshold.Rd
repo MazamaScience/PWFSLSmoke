@@ -4,8 +4,13 @@
 \alias{monitor_dailyThreshold}
 \title{Calculate Daily Counts of Values At or Above a Threshold}
 \usage{
-monitor_dailyThreshold(ws_monitor, threshold = "unhealthy",
-  dayStart = "midnight", minHours = 0, na.rm = TRUE)
+monitor_dailyThreshold(
+  ws_monitor,
+  threshold = "unhealthy",
+  dayStart = "midnight",
+  minHours = 0,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

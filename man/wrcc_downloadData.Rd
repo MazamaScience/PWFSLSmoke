@@ -4,10 +4,12 @@
 \alias{wrcc_downloadData}
 \title{Download WRCC data}
 \usage{
-wrcc_downloadData(startdate = strftime(lubridate::now(tzone = "UTC"),
-  "\%Y010101", tz = "UTC"), enddate = strftime(lubridate::now(tzone =
-  "UTC"), "\%Y\%m\%d23", tz = "UTC"), unitID = NULL,
-  baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl")
+wrcc_downloadData(
+  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y010101", tz = "UTC"),
+  enddate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d23", tz = "UTC"),
+  unitID = NULL,
+  baseUrl = "https://wrcc.dri.edu/cgi-bin/wea_list2.pl"
+)
 }
 \arguments{
 \item{startdate}{desired start date (integer or character representing YYYYMMDD[HH])}

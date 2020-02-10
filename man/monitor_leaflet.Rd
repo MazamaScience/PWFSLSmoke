@@ -4,11 +4,18 @@
 \alias{monitor_leaflet}
 \title{Leaflet interactive map of monitoring stations}
 \usage{
-monitor_leaflet(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, labels = AQI$names,
-  legendTitle = "Max AQI Level", radius = 10, opacity = 0.7,
-  maptype = "terrain", popupInfo = c("siteName", "monitorID",
-  "elevation"))
+monitor_leaflet(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  labels = AQI$names,
+  legendTitle = "Max AQI Level",
+  radius = 10,
+  opacity = 0.7,
+  maptype = "terrain",
+  popupInfo = c("siteName", "monitorID", "elevation")
+)
 }
 \arguments{
 \item{ws_monitor}{ws_monitor object}

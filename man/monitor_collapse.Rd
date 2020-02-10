@@ -5,8 +5,15 @@
 \title{Collapse a ws_monitor Object into a ws_monitor Object with a Single
 Monitor}
 \usage{
-monitor_collapse(ws_monitor, longitude = NULL, latitude = NULL,
-  monitorID = "generated_id", FUN = mean, na.rm = TRUE, ...)
+monitor_collapse(
+  ws_monitor,
+  longitude = NULL,
+  latitude = NULL,
+  monitorID = "generated_id",
+  FUN = mean,
+  na.rm = TRUE,
+  ...
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object.}

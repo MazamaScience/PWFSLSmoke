@@ -4,9 +4,15 @@
 \alias{airsis_createMetaDataframe}
 \title{Create AIRSIS site location metadata dataframe}
 \usage{
-airsis_createMetaDataframe(tbl, provider = as.character(NA),
-  unitID = as.character(NA), pwfslDataIngestSource = "AIRSIS",
-  existingMeta = NULL, addGoogleMeta = FALSE, addEsriMeta = FALSE)
+airsis_createMetaDataframe(
+  tbl,
+  provider = as.character(NA),
+  unitID = as.character(NA),
+  pwfslDataIngestSource = "AIRSIS",
+  existingMeta = NULL,
+  addGoogleMeta = FALSE,
+  addEsriMeta = FALSE
+)
 }
 \arguments{
 \item{tbl}{single site AIRSIS tibble after metadata enhancement}

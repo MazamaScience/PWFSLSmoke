@@ -4,9 +4,14 @@
 \alias{monitor_dygraph}
 \title{Create Interactive Time Series Plot}
 \usage{
-monitor_dygraph(ws_monitor, title = "title",
-  ylab = "PM2.5 Concentration", tlim = NULL, rollPeriod = 1,
-  showLegend = TRUE)
+monitor_dygraph(
+  ws_monitor,
+  title = "title",
+  ylab = "PM2.5 Concentration",
+  tlim = NULL,
+  rollPeriod = 1,
+  showLegend = TRUE
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object}

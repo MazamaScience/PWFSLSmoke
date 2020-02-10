@@ -24,10 +24,12 @@ wrcc_qualityControl <- function(
 
   logger.debug(" ----- wrcc_qualityControl() ----- ")
 
+  # ----- Validate parameters --------------------------------------------------
+
   # Sanity check -- row count
   if ( nrow(tbl) == 0 ) {
-    logger.error("Unable to perform QC: tibble empty")
-    stop(paste0("Unable to perform QC: tibble empty"))
+    logger.warn("No valid PM2.5 data") # This is more of a warning than some error in the data.
+    stop("No valid PM2.5 data")
   }
 
   # Sanity check -- tbl must have a monitorType

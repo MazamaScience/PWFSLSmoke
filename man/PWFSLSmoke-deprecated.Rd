@@ -18,73 +18,197 @@
 \alias{monitorPlot_timeseries}
 \title{Deprecated functions in PWFSLSmoke}
 \usage{
-monitorGoogleMap(ws_monitor, slice = get("max"),
-  breaks = AQI$breaks_24, colors = AQI$colors, width = 640,
-  height = 640, centerLon = NULL, centerLat = NULL, zoom = NULL,
-  maptype = "roadmap", grayscale = FALSE, map = NULL, ...)
+monitorGoogleMap(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  width = 640,
+  height = 640,
+  centerLon = NULL,
+  centerLat = NULL,
+  zoom = NULL,
+  maptype = "roadmap",
+  grayscale = FALSE,
+  map = NULL,
+  ...
+)
 
-monitorEsriMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
-  centerLat = NULL, zoom = NULL, maptype = "roadmap",
-  grayscale = FALSE, map = NULL, ...)
+monitorEsriMap(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  width = 640,
+  height = 640,
+  centerLon = NULL,
+  centerLat = NULL,
+  zoom = NULL,
+  maptype = "roadmap",
+  grayscale = FALSE,
+  map = NULL,
+  ...
+)
 
-monitorPlot_timeOfDaySpaghetti(ws_monitor, monitorID = NULL,
-  tlim = NULL, ylim = NULL, aqiLines = TRUE, shadedNight = TRUE,
-  title = NULL, ...)
+monitorPlot_timeOfDaySpaghetti(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  ylim = NULL,
+  aqiLines = TRUE,
+  shadedNight = TRUE,
+  title = NULL,
+  ...
+)
 
-monitorDygraph(ws_monitor, title = "title",
-  ylab = "PM2.5 Concentration", tlim = NULL, rollPeriod = 1,
-  showLegend = TRUE)
+monitorDygraph(
+  ws_monitor,
+  title = "title",
+  ylab = "PM2.5 Concentration",
+  tlim = NULL,
+  rollPeriod = 1,
+  showLegend = TRUE
+)
 
-monitor_esriMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, width = 640, height = 640, centerLon = NULL,
-  centerLat = NULL, zoom = NULL, maptype = "worldStreetMap",
-  grayscale = FALSE, mapRaster = NULL, cex = par("cex") * 2,
-  pch = 16, ...)
+monitor_esriMap(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  width = 640,
+  height = 640,
+  centerLon = NULL,
+  centerLat = NULL,
+  zoom = NULL,
+  maptype = "worldStreetMap",
+  grayscale = FALSE,
+  mapRaster = NULL,
+  cex = par("cex") * 2,
+  pch = 16,
+  ...
+)
 
-monitorLeaflet(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, labels = AQI$names,
-  legendTitle = "Max AQI Level", radius = 10, opacity = 0.7,
-  maptype = "terrain", popupInfo = c("siteName", "monitorID",
-  "elevation"))
+monitorLeaflet(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  labels = AQI$names,
+  legendTitle = "Max AQI Level",
+  radius = 10,
+  opacity = 0.7,
+  maptype = "terrain",
+  popupInfo = c("siteName", "monitorID", "elevation")
+)
 
-monitorMap(ws_monitor, slice = get("max"), breaks = AQI$breaks_24,
-  colors = AQI$colors, pch = par("pch"), cex = par("cex"),
-  stateCol = "grey60", stateLwd = 2, countyCol = "grey70",
-  countyLwd = 1, add = FALSE, ...)
+monitorMap(
+  ws_monitor,
+  slice = get("max"),
+  breaks = AQI$breaks_24,
+  colors = AQI$colors,
+  pch = par("pch"),
+  cex = par("cex"),
+  stateCol = "grey60",
+  stateLwd = 2,
+  countyCol = "grey70",
+  countyLwd = 1,
+  add = FALSE,
+  ...
+)
 
-monitorMap_performance(predicted, observed, threshold = AQI$breaks_24[3],
-  cex = par("cex"), sizeBy = NULL, colorBy = "heidikeSkill",
+monitorMap_performance(
+  predicted,
+  observed,
+  threshold = AQI$breaks_24[3],
+  cex = par("cex"),
+  sizeBy = NULL,
+  colorBy = "heidikeSkill",
   breaks = c(-Inf, 0.5, 0.6, 0.7, 0.8, Inf),
   paletteFunc = grDevices::colorRampPalette(RColorBrewer::brewer.pal(length(breaks),
-  "Purples")[-1]), showLegend = TRUE, legendPos = "topright",
-  stateCol = "grey60", stateLwd = 2, countyCol = "grey70",
-  countyLwd = 1, add = FALSE, ...)
+    "Purples")[-1]),
+  showLegend = TRUE,
+  legendPos = "topright",
+  stateCol = "grey60",
+  stateLwd = 2,
+  countyCol = "grey70",
+  countyLwd = 1,
+  add = FALSE,
+  ...
+)
 
-monitorPlot_dailyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
-  minHours = 18, gridPos = "", gridCol = "black", gridLwd = 0.5,
-  gridLty = "solid", labels_x_nudge = 0, labels_y_nudge = 0, ...)
+monitorPlot_dailyBarplot(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  minHours = 18,
+  gridPos = "",
+  gridCol = "black",
+  gridLwd = 0.5,
+  gridLty = "solid",
+  labels_x_nudge = 0,
+  labels_y_nudge = 0,
+  ...
+)
 
-monitorPlot_hourlyBarplot(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = "AQI", shadedNight = TRUE,
-  gridPos = "", gridCol = "black", gridLwd = 0.5,
-  gridLty = "solid", labels_x_nudge = 0, labels_y_nudge = 0,
-  dayCol = "black", dayLwd = 2, dayLty = "solid",
-  hourCol = "black", hourLwd = 1, hourLty = "solid",
-  hourInterval = 6, ...)
+monitorPlot_hourlyBarplot(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  localTime = TRUE,
+  style = "AQI",
+  shadedNight = TRUE,
+  gridPos = "",
+  gridCol = "black",
+  gridLwd = 0.5,
+  gridLty = "solid",
+  labels_x_nudge = 0,
+  labels_y_nudge = 0,
+  dayCol = "black",
+  dayLwd = 2,
+  dayLty = "solid",
+  hourCol = "black",
+  hourLwd = 1,
+  hourLty = "solid",
+  hourInterval = 6,
+  ...
+)
 
 monitorPlot_noData(ws_monitor, monitorID = NULL, cex = 2.5)
 
-monitorPlot_rollingMean(ws_monitor, monitorID = NULL, width = 3,
-  align = "center", data.thresh = 75, tlim = NULL, ylim = NULL,
-  localTime = TRUE, shadedNight = FALSE, aqiLines = TRUE,
-  gridHorizontal = FALSE, grid24hr = FALSE, grid3hr = FALSE,
-  showLegend = TRUE)
+monitorPlot_rollingMean(
+  ws_monitor,
+  monitorID = NULL,
+  width = 3,
+  align = "center",
+  data.thresh = 75,
+  tlim = NULL,
+  ylim = NULL,
+  localTime = TRUE,
+  shadedNight = FALSE,
+  aqiLines = TRUE,
+  gridHorizontal = FALSE,
+  grid24hr = FALSE,
+  grid3hr = FALSE,
+  showLegend = TRUE
+)
 
-monitorPlot_timeseries(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = NULL, shadedNight = FALSE, add = FALSE,
-  gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
-  dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
+monitorPlot_timeseries(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  localTime = TRUE,
+  style = NULL,
+  shadedNight = FALSE,
+  add = FALSE,
+  gridPos = "",
+  gridCol = "black",
+  gridLwd = 1,
+  gridLty = "solid",
+  dayLwd = 0,
+  hourLwd = 0,
+  hourInterval = 6,
+  ...
+)
 }
 \description{
 These functions are in the process of being removed from the PWFSLSmoke

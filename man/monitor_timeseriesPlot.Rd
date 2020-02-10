@@ -4,10 +4,23 @@
 \alias{monitor_timeseriesPlot}
 \title{Create Timeseries Plot}
 \usage{
-monitor_timeseriesPlot(ws_monitor, monitorID = NULL, tlim = NULL,
-  localTime = TRUE, style = NULL, shadedNight = FALSE, add = FALSE,
-  gridPos = "", gridCol = "black", gridLwd = 1, gridLty = "solid",
-  dayLwd = 0, hourLwd = 0, hourInterval = 6, ...)
+monitor_timeseriesPlot(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  localTime = TRUE,
+  style = NULL,
+  shadedNight = FALSE,
+  add = FALSE,
+  gridPos = "",
+  gridCol = "black",
+  gridLwd = 1,
+  gridLty = "solid",
+  dayLwd = 0,
+  hourLwd = 0,
+  hourInterval = 6,
+  ...
+)
 }
 \arguments{
 \item{ws_monitor}{\emph{ws_monitor} object.}

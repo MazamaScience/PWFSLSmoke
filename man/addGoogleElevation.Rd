@@ -4,8 +4,12 @@
 \alias{addGoogleElevation}
 \title{Add Elevation Data to a Dataframe}
 \usage{
-addGoogleElevation(df, lonVar = "longitude", latVar = "latitude",
-  existingMeta = NULL)
+addGoogleElevation(
+  df,
+  lonVar = "longitude",
+  latVar = "latitude",
+  existingMeta = NULL
+)
 }
 \arguments{
 \item{df}{dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})}

@@ -83,7 +83,7 @@ count monitors (or grid cells) are found within the specified radius of the targ
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -159,8 +159,13 @@ of monitors (or grid cells) returned may be less than the specified <code>count<
 <code>count</code> monitors (or grid cells) are found within the specified <code>radius</code> of the target location.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_subsetByDistance</span>(<span class='no'>ws_monitor</span>, <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>monitor_subsetByDistance</span>(
+  <span class='no'>ws_monitor</span>,
+  <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>count</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

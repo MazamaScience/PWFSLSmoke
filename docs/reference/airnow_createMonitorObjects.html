@@ -103,7 +103,7 @@ Setting parameters=NULL will generate a separate ws_monitor object for each of t
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -199,9 +199,13 @@ with the PWFSLSmoke package <em>ws_monitor</em> data model.</p>
 <p>Setting <code>parameters=NULL</code> will generate a separate <em>ws_monitor</em> object for each of the above parameters.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>airnow_createMonitorObjects</span>(<span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/strptime.html'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(<span class='kw'>tzone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='st'>"%Y%m%d"</span>, <span class='kw'>tz</span> <span class='kw'>=</span>
-  <span class='st'>"UTC"</span>), <span class='kw'>hours</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>zeroMinimum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>addGoogleMeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>airnow_createMonitorObjects</span>(
+  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/strptime.html'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span>(<span class='kw'>tzone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>), <span class='st'>"%Y%m%d"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>),
+  <span class='kw'>hours</span> <span class='kw'>=</span> <span class='fl'>24</span>,
+  <span class='kw'>zeroMinimum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>addGoogleMeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

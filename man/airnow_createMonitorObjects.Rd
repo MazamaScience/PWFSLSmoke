@@ -4,9 +4,13 @@
 \alias{airnow_createMonitorObjects}
 \title{Obain AirNow data and create ws_monitor objects}
 \usage{
-airnow_createMonitorObjects(parameters = NULL,
-  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d", tz =
-  "UTC"), hours = 24, zeroMinimum = TRUE, addGoogleMeta = TRUE)
+airnow_createMonitorObjects(
+  parameters = NULL,
+  startdate = strftime(lubridate::now(tzone = "UTC"), "\%Y\%m\%d", tz = "UTC"),
+  hours = 24,
+  zeroMinimum = TRUE,
+  addGoogleMeta = TRUE
+)
 }
 \arguments{
 \item{parameters}{vector of names of desired pollutants or NULL for all pollutants}

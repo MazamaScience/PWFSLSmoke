@@ -4,9 +4,11 @@
 \alias{wrcc_loadDaily}
 \title{Load recent WRCC monitoring data}
 \usage{
-wrcc_loadDaily(parameter = "PM2.5",
+wrcc_loadDaily(
+  parameter = "PM2.5",
   baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
-  dataDir = NULL)
+  dataDir = NULL
+)
 }
 \arguments{
 \item{parameter}{Parameter of interest.}

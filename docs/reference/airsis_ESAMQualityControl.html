@@ -84,7 +84,7 @@ A POSIXct datetime column (UTC) is also added based on TimeStamp." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.103</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
       </span>
     </div>
 
@@ -161,11 +161,18 @@ A POSIXct datetime column (UTC) is also added based on TimeStamp." />
 <p>A <code>POSIXct datetime</code> column (UTC) is also added based on <code>TimeStamp</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>airsis_ESAMQualityControl</span>(<span class='no'>tbl</span>, <span class='kw'>valid_Longitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>180</span>, <span class='fl'>180</span>),
-  <span class='kw'>valid_Latitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>90</span>, <span class='fl'>90</span>), <span class='kw'>remove_Lon_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>remove_Lat_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>valid_Flow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1.999</span>, <span class='fl'>2.001</span>),
-  <span class='kw'>valid_AT</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>150</span>), <span class='kw'>valid_RHi</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>55</span>),
-  <span class='kw'>valid_Conc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>5000</span>), <span class='kw'>flagAndKeep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>airsis_ESAMQualityControl</span>(
+  <span class='no'>tbl</span>,
+  <span class='kw'>valid_Longitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>180</span>, <span class='fl'>180</span>),
+  <span class='kw'>valid_Latitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>90</span>, <span class='fl'>90</span>),
+  <span class='kw'>remove_Lon_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_Lat_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>valid_Flow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1.999</span>, <span class='fl'>2.001</span>),
+  <span class='kw'>valid_AT</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>150</span>),
+  <span class='kw'>valid_RHi</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>55</span>),
+  <span class='kw'>valid_Conc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>5000</span>),
+  <span class='kw'>flagAndKeep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
