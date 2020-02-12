@@ -2,9 +2,9 @@
 #' @export
 #' @title Process Raw Monitoring Data to Create raw_enhance Object
 #' @param df raw monitor data, as created by airsis_createRawDataframe or wrcc_createRawDataframe
-#' @description Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
+#' @description Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various
 #' \code{raw~} functions. All original raw data is retained, and the following additional columns are added:
-#' 
+#'
 #' \itemize{
 #' \item{dataSource}
 #' \item{longitude}
@@ -16,14 +16,14 @@
 #' \item{pressure}
 #' \item{pm25}
 #' }
-#' 
+#'
 #' The \code{datetime} column in the incoming dataframe may have missing hours. This time axis is expanded to a
 #' uniform, hourly axes with missing data fields added for data columns.
-#' 
+#'
 #' @return Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 #' @examples
 #' \dontrun{
-#' library(MazamaWebUtils)
+#' library(PWFSLSmoke)
 #' df <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
 #' df <- raw_enhance(df)
 #' rawPlot_timeseries(df, tlim=c(20160908,20160917))
@@ -101,12 +101,12 @@ raw_enhance <- function(df) {
                                                               countryCodes=NULL, useBuffering=TRUE) #modified from addMazamaMetadata.R
     }
   }
-  
+
   # NOTE:  In order to minimize error messages in functions light rawPlot_timeseries() we
-  # NOTE:  add timezones to all rows, even those missing location information. Typically, 
+  # NOTE:  add timezones to all rows, even those missing location information. Typically,
   # NOTE:  monitors will be moved within the same timezone. Adding timezones to rows with
   # NOTE:  no location information is harmless in any case.
-  
+
   # Apply timezone to missing hours based on timezone of prior good hour
 
   df <- df %>%

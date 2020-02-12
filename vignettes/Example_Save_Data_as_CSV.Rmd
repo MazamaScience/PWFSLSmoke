@@ -1,3 +1,34 @@
+---
+title: "Example: Save Data as CSV"
+author: "Jonathan Callahan"
+date: "2020-02-12"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example: Save Data as CSV}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+> How can I save data from temporary monitors to a CSV file?
+
+If you have **PWFSLSmoke** installed, you should be able to copy and paste this
+code into the RStudio console.
+
+The coding style uses the "pipe" operator, `%>%`, which uses the output of the 
+preceding function as the first argument of the next function. Package functions 
+are specifically designed to work well in this manner, encouraging **_readable 
+and understandable code_**.
+
+Think of each chunk as a _recipe_ that begins with what you want to make and
+is followed by the steps needed to make it.
+
+Enjoy!
+
+```{r workedExample, eval = FALSE}
 library(PWFSLSmoke)
 
 # All of AIRSIS for 2019
@@ -19,7 +50,7 @@ airsis_ca %>%
   monitor_extractMeta() %>%
   dplyr::select(siteName)
 
-# Interactive map to picak a monitor
+# Interactive map to pick a monitor
 monitor_leaflet(airsis_ca)
 
 # Select a single monitor by monitorID
@@ -62,7 +93,7 @@ View(Mariposa$data)
 # Trim the all-California dataset to the period that has data
 airsis_ca <- monitor_trim(airsis_ca)
 
-# Dump out separate meta and data CSV files for airsis_ca
+# Dump out airsis_ca metadata to a CSV file
 monitor_writeCSV(
   airsis_ca, 
   saveFile = "airsis_CA_meta.csv",
@@ -71,6 +102,7 @@ monitor_writeCSV(
   quietly = TRUE
 )
 
+# Dump out airsis_ca data to a CSV file
 monitor_writeCSV(
   airsis_ca, 
   saveFile = "airsis_CA_data.csv",
@@ -79,17 +111,29 @@ monitor_writeCSV(
   quietly = TRUE
 )
 
-# Alternatively, View the metadata and data in RStudio:
+# Alternatively, View() the metadata and data in RStudio:
 View(airsis_ca$meta)
 View(airsis_ca$data)
 
 # ==============================================================================
 
-# Everything abvoe also applies to temporary data from the Western Regional
+# Everything above also applies to temporary data from the Western Regional
 # Climate Center. Just start with:
 
 # All of WRCC for 2019
 wrcc <- wrcc_loadAnnual(2019)
+```
 
+Finally, to emphasize what can be done with pipelines, the following calculates
+NowCast timeseries for all of California and displays the `data` dataframe
+in the RStudio viewer:
 
-
+```{r recipe, eval = FALSE}
+airsis_loadAnnual(2019) %>%
+  monitor_subset(stateCodes = c("CA")) %>%
+  monitor_subset(tlim = c(20191001, 20200101)) %>%
+  monitor_trim() %>%
+  monitor_nowcast(includeShortTerm = TRUE) %>% 
+  monitor_extractData() %>%
+  View()
+```

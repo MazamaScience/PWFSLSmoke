@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.105</span>
       </span>
     </div>
 
@@ -73,6 +73,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="articles/Data_Model.html">Data Model</a>
+    </li>
+    <li>
+      <a href="articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
     </li>
     <li>
       <a href="articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
@@ -116,14 +119,14 @@
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
-<p>The USFS Pacific Wildland Fire Sciences Lab <a href="https://www.airfire.org">AirFire</a> team works to model wildland fire emissions and has created the BlueSky Modeling Framework. This system integrates a wide collection of models along a smoke modeling pipeline (fire information, fuel loadings, consumption modeling, emissions modeling, time rate of emissions modeling, plume height estimations, and smoke trajectory and dispersion modeling). The resulting model output has been integrated into many different smoke prediction systems and scientific modeling efforts.</p>
+<p>The USFS Pacific Wildland Fire Sciences Lab <a href="https://www.airfire.org">AirFire</a> team works to model wildland fire emissions and has created the BlueSky Modeling Framework. This system integrates a wide collection of models along a smoke modeling pipeline (fire information &gt; fuel loadings &gt; consumption modeling &gt; emissions modeling &gt; time rate of emissions modeling &gt; plume height estimations &gt; smoke trajectory and dispersion modeling). The resulting model output has been integrated into many different smoke prediction systems and scientific modeling efforts.</p>
 <p>The <strong>PWFSLSmoke</strong> R package is being developed for PWFSL to help modelers and scientists more easily work with PM2.5 data from monitoring locations across North America.</p>
 <p>The package makes it easier to obtain data, perform analyses and generate reports. It includes functionality to:</p>
 <ul>
 <li>download and easily work with regulatory PM2.5 data from the EPA and AirNow</li>
 <li>download and quality control raw monitoring data from AIRSIS and WRCC</li>
 <li>convert between UTC and local timezones</li>
-<li>apply various algorithms to the data (nowcast, rolling means, aggregation, etc.)</li>
+<li>apply various algorithms to the data (nowcast, rolling means, aggregation, <em>etc.</em>)</li>
 <li>provide interactive timeseries and maps through RStudio’s Viewer pane</li>
 <li>create a variety of publication ready maps and timeseries plots</li>
 </ul>
@@ -159,7 +162,7 @@ installSpatialData()</a></code></pre>
 <li>click the “Knit” or “Preview” button in RStudio</li>
 </ul>
 <hr>
-<p>This R package was created by <a href="http://mazamascience.com">Mazama Science</a> and is being funded by the USFS <a href="https://www.fs.fed.us/pnw/pwfsl/">Pacific Wildland Fire Sciences Lab</a>.</p>
+<p>This R package was created by <a href="http://mazamascience.com">Mazama Science</a> and is being funded by the USFS <a href="https://airfire.org">AirFire Research Team</a>.</p>
 </div>
 </div>
 

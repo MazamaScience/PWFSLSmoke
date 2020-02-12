@@ -1,3 +1,10 @@
+# PWFSLSmoke 1.2.105
+
+* Documentation tweaks.
+* Removed `app/` directory with example web service.
+* Updated vignettes.
+* New vignette: "Example: Save Data as CSV"
+
 # PWFSLSmoke 1.2.104
 
 * Added support for parsing AIRSIS "EBAM Multi 2" format.

@@ -1,7 +1,7 @@
 ---
 title: "Data Model"
 author: "Mazama Science"
-date: "4/3/2019"
+date: "2020-02-12"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data Model}
@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ```{r, echo=FALSE}
-knitr::opts_chunk$set(fig.width=7, fig.height=5)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
 This vignette explores the `ws_monitor` data model used throughout the **PWFSLSmoke** package to store
@@ -76,7 +76,7 @@ The `monitorID` is used for column names in the `data` dataframe and for row nam
 So the following will always be true:
 
     rownames(ws_monitor$meta) == ws_monitor$meta$monitorID
-    colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)
+    colnames(ws_monitor$data) == c('datetime', ws_monitor$meta$monitorID)
 
 **Example 1: Exploring `ws_monitor` Objects**
 
@@ -89,9 +89,9 @@ suppressPackageStartupMessages(library(PWFSLSmoke))
 # Get some airnow data for Washington state in the summer of 2015
 # NOTE:  'tlim' is interpreted as UTC unless we specify 'timezone' 
 N_M <- monitor_subset(Northwest_Megafires,
-                      tlim=c(20150801,20150831),
-                      timezone="America/Los_Angeles")
-WA <- monitor_subset(N_M, stateCodes='WA')
+                      tlim = c(20150801, 20150831),
+                      timezone = "America/Los_Angeles")
+WA <- monitor_subset(N_M, stateCodes = 'WA')
 
 # 'ws_monitor' objects can be identified by their class
 class(WA)
@@ -113,7 +113,7 @@ all(rownames(WA$meta) == colnames(WA$data[,-1]))
 
 The **PWFSLSmoke** package has numerous functions that can work with `ws_monitor` objects, 
 all of which begin with `monitor_`. If you need to do something that the package functions do not
-provide you can manipulate `ws_monitor` objects directly as long as you retain the structure
+provide, you can manipulate `ws_monitor` objects directly as long as you retain the structure
 of the data model.
 
 Functions that accept and return `ws_monitor` objects include:
@@ -136,14 +136,15 @@ Functions that accept and return `ws_monitor` objects include:
 These functions can be used with the **magrittr** package `%>%` pipe as in the following example:
 
 ```{r magrittr}
-# Calculate daily means for the Methow from monitors in Twisp and Winthrop
+# Calculate daily means for the Methow Valley from monitors in Twisp and Winthrop
 TwispID <- '530470009_01'
 WinthropID <- '530470010_01'
-Methow_Valley_JulyMeans <- Northwest_Megafires %>%
-  monitor_subset(monitorIDs=c(TwispID,WinthropID)) %>%
-  monitor_collapse(monitorID='MethowValley') %>%
-  monitor_subset(tlim=c(20150701,20150731), timezone='America/Los_Angeles') %>%
-  monitor_dailyStatistic(minHours=18)
+Methow_Valley_JulyMeans <- 
+  Northwest_Megafires %>%
+  monitor_subset(monitorIDs = c(TwispID,WinthropID)) %>%
+  monitor_collapse(monitorID = 'MethowValley') %>%
+  monitor_subset(tlim=c(20150701, 20150731), timezone = 'America/Los_Angeles') %>%
+  monitor_dailyStatistic(minHours = 18)
 # Look at the first week
 Methow_Valley_JulyMeans$data[1:7,]
 ```
@@ -153,10 +154,10 @@ The following code mixes use of package functions with direct manipulation of th
 ```{r}
 # Use special knowledge of AirNow IDs to subset airnow data for Spokane county monitors
 SpokaneCountyIDs <- N_M$meta$monitorID[stringr::str_detect(N_M$meta$monitorID, "^53063")]
-Spokane <- monitor_subset(N_M, monitorIDs=SpokaneCountyIDs)
+Spokane <- monitor_subset(N_M, monitorIDs = SpokaneCountyIDs)
 
 # Apply 3-hr rolling mean
-Spokane_3hr <- monitor_rollingMean(Spokane, 3, align="center")
+Spokane_3hr <- monitor_rollingMean(Spokane, 3, align = "center")
 
 # 1) Replace data columns with their squares (exponentiation is not supplied by the package)
 Spokane_3hr_squared <- Spokane_3hr
@@ -169,7 +170,7 @@ Spokane_daily_3hr <- monitor_dailyStatistic(Spokane_3hr)
 
 # 2) Check out the correlation between monitors (correlation is not supplied by the package)
 data <- Spokane_daily_3hr$data[,-1] # exclude the 'datetime' column
-cor(data, use='complete.obs')
+cor(data, use = 'complete.obs')
 ```
 
 ----

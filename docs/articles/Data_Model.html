@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.105</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Data_Model.html">Data Model</a>
+    </li>
+    <li>
+      <a href="../articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
     </li>
     <li>
       <a href="../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
@@ -100,7 +103,7 @@
       <h1>Data Model</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">4/3/2019</h4>
+            <h4 class="date">2020-02-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/PWFSLSmoke/blob/master/vignettes/Data_Model.Rmd"><code>vignettes/Data_Model.Rmd</code></a></small>
       <div class="hidden name"><code>Data_Model.Rmd</code></div>
@@ -167,7 +170,7 @@
 <p>These additional columns of information are much more variable and, depending on the source of data, may include many missing values.</p>
 <p>It is important to note that the <code>monitorID</code> acts as a unique key that connects data with metadata. The <code>monitorID</code> is used for column names in the <code>data</code> dataframe and for row names in the <code>meta</code> dataframe. So the following will always be true:</p>
 <pre><code>rownames(ws_monitor$meta) == ws_monitor$meta$monitorID
-colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)</code></pre>
+colnames(ws_monitor$data) == c('datetime', ws_monitor$meta$monitorID)</code></pre>
 <p><strong>Example 1: Exploring <code>ws_monitor</code> Objects</strong></p>
 <p>We will use the built-in “Northwest_Megafires” dataset and the <code><a href="../reference/monitor_subset.html">monitor_subset()</a></code> function to subset a <code>ws_monitor</code> object which we can then explore.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(PWFSLSmoke))</a>
@@ -175,9 +178,9 @@ colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)</code></pre
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># Get some airnow data for Washington state in the summer of 2015</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># </span><span class="al">NOTE</span><span class="co">:  'tlim' is interpreted as UTC unless we specify 'timezone' </span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">N_M &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Northwest_Megafires,</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">                      <span class="dt">tlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">                      <span class="dt">timezone=</span><span class="st">"America/Los_Angeles"</span>)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">WA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(N_M, <span class="dt">stateCodes=</span><span class="st">'WA'</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">                      <span class="dt">tlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150801</span>, <span class="dv">20150831</span>),</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">                      <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">WA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(N_M, <span class="dt">stateCodes =</span> <span class="st">'WA'</span>)</a>
 <a class="sourceLine" id="cb2-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co"># 'ws_monitor' objects can be identified by their class</span></a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(WA)</a></code></pre></div>
@@ -186,54 +189,46 @@ colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)</code></pre
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(WA<span class="op">$</span>meta)</a></code></pre></div>
 <pre><code>## [1] 55 19</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(WA<span class="op">$</span>meta)</a></code></pre></div>
-<pre><code>##  [1] "530330017_01" "530330080_01" "530050002_01" "530330024_01"
-##  [5] "530330057_01" "530332004_01" "530530029_01" "530530031_01"
-##  [9] "530610005_01" "530611007_01" "530630047_01" "530670013_01"
-## [13] "530531018_01" "530272002_01" "530310003_01" "530730015_01"
-## [17] "530251002_01" "530650004_01" "530010003_01" "530750006_01"
-## [21] "530750003_01" "530331011_01" "530210002_01" "530330037_01"
-## [25] "530710005_01" "530750005_01" "530150015_01" "530470009_01"
-## [29] "530370002_01" "530090013_01" "530610020_01" "530070010_01"
-## [33] "530770015_01" "530650002_01" "530470010_01" "530770009_01"
-## [37] "530570015_01" "530130002_01" "530030004_01" "530110022_01"
-## [41] "530579999_01" "530639997_01" "530299999_01" "530639996_01"
-## [45] "530410004_01" "530770016_01" "530090015_01" "530450007_01"
-## [49] "530470013_01" "530570011_01" "530350007_01" "530070011_01"
-## [53] "530330030_01" "530110024_01" "530090017_01"</code></pre>
+<pre><code>##  [1] "530330017_01" "530330080_01" "530050002_01" "530330024_01" "530330057_01"
+##  [6] "530332004_01" "530530029_01" "530530031_01" "530610005_01" "530611007_01"
+## [11] "530630047_01" "530670013_01" "530531018_01" "530272002_01" "530310003_01"
+## [16] "530730015_01" "530251002_01" "530650004_01" "530010003_01" "530750006_01"
+## [21] "530750003_01" "530331011_01" "530210002_01" "530330037_01" "530710005_01"
+## [26] "530750005_01" "530150015_01" "530470009_01" "530370002_01" "530090013_01"
+## [31] "530610020_01" "530070010_01" "530770015_01" "530650002_01" "530470010_01"
+## [36] "530770009_01" "530570015_01" "530130002_01" "530030004_01" "530110022_01"
+## [41] "530579999_01" "530639997_01" "530299999_01" "530639996_01" "530410004_01"
+## [46] "530770016_01" "530090015_01" "530450007_01" "530470013_01" "530570011_01"
+## [51] "530350007_01" "530070011_01" "530330030_01" "530110024_01" "530090017_01"</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(WA<span class="op">$</span>meta)</a></code></pre></div>
-<pre><code>##  [1] "monitorID"             "longitude"            
-##  [3] "latitude"              "elevation"            
-##  [5] "timezone"              "countryCode"          
-##  [7] "stateCode"             "siteName"             
-##  [9] "agencyName"            "countyName"           
-## [11] "msaName"               "monitorType"          
-## [13] "siteID"                "instrumentID"         
-## [15] "aqsID"                 "pwfslID"              
-## [17] "pwfslDataIngestSource" "telemetryAggregator"  
+<pre><code>##  [1] "monitorID"             "longitude"             "latitude"             
+##  [4] "elevation"             "timezone"              "countryCode"          
+##  [7] "stateCode"             "siteName"              "agencyName"           
+## [10] "countyName"            "msaName"               "monitorType"          
+## [13] "siteID"                "instrumentID"          "aqsID"                
+## [16] "pwfslID"               "pwfslDataIngestSource" "telemetryAggregator"  
 ## [19] "telemetryUnitID"</code></pre>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Examine the 'data' dataframe</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(WA<span class="op">$</span>data)</a></code></pre></div>
 <pre><code>## [1] 721  56</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(WA<span class="op">$</span>data)</a></code></pre></div>
-<pre><code>##  [1] "datetime"     "530330017_01" "530330080_01" "530050002_01"
-##  [5] "530330024_01" "530330057_01" "530332004_01" "530530029_01"
-##  [9] "530530031_01" "530610005_01" "530611007_01" "530630047_01"
-## [13] "530670013_01" "530531018_01" "530272002_01" "530310003_01"
-## [17] "530730015_01" "530251002_01" "530650004_01" "530010003_01"
-## [21] "530750006_01" "530750003_01" "530331011_01" "530210002_01"
-## [25] "530330037_01" "530710005_01" "530750005_01" "530150015_01"
-## [29] "530470009_01" "530370002_01" "530090013_01" "530610020_01"
-## [33] "530070010_01" "530770015_01" "530650002_01" "530470010_01"
-## [37] "530770009_01" "530570015_01" "530130002_01" "530030004_01"
-## [41] "530110022_01" "530579999_01" "530639997_01" "530299999_01"
-## [45] "530639996_01" "530410004_01" "530770016_01" "530090015_01"
-## [49] "530450007_01" "530470013_01" "530570011_01" "530350007_01"
-## [53] "530070011_01" "530330030_01" "530110024_01" "530090017_01"</code></pre>
+<pre><code>##  [1] "datetime"     "530330017_01" "530330080_01" "530050002_01" "530330024_01"
+##  [6] "530330057_01" "530332004_01" "530530029_01" "530530031_01" "530610005_01"
+## [11] "530611007_01" "530630047_01" "530670013_01" "530531018_01" "530272002_01"
+## [16] "530310003_01" "530730015_01" "530251002_01" "530650004_01" "530010003_01"
+## [21] "530750006_01" "530750003_01" "530331011_01" "530210002_01" "530330037_01"
+## [26] "530710005_01" "530750005_01" "530150015_01" "530470009_01" "530370002_01"
+## [31] "530090013_01" "530610020_01" "530070010_01" "530770015_01" "530650002_01"
+## [36] "530470010_01" "530770009_01" "530570015_01" "530130002_01" "530030004_01"
+## [41] "530110022_01" "530579999_01" "530639997_01" "530299999_01" "530639996_01"
+## [46] "530410004_01" "530770016_01" "530090015_01" "530450007_01" "530470013_01"
+## [51] "530570011_01" "530350007_01" "530070011_01" "530330030_01" "530110024_01"
+## [56] "530090017_01"</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># This should always be true</span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/all.html">all</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(WA<span class="op">$</span>meta) <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(WA<span class="op">$</span>data[,<span class="op">-</span><span class="dv">1</span>]))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p><strong>Example 2: Manipulating <code>ws_monitor</code> Objects</strong></p>
-<p>The <strong>PWFSLSmoke</strong> package has numerous functions that can work with <code>ws_monitor</code> objects, all of which begin with <code>monitor_</code>. If you need to do something that the package functions do not provide you can manipulate <code>ws_monitor</code> objects directly as long as you retain the structure of the data model.</p>
+<p>The <strong>PWFSLSmoke</strong> package has numerous functions that can work with <code>ws_monitor</code> objects, all of which begin with <code>monitor_</code>. If you need to do something that the package functions do not provide, you can manipulate <code>ws_monitor</code> objects directly as long as you retain the structure of the data model.</p>
 <p>Functions that accept and return <code>ws_monitor</code> objects include:</p>
 <ul>
 <li><code><a href="../reference/monitor_aqi.html">monitor_aqi()</a></code></li>
@@ -252,16 +247,17 @@ colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)</code></pre
 <li><code><a href="../reference/monitor_trim.html">monitor_trim()</a></code></li>
 </ul>
 <p>These functions can be used with the <strong>magrittr</strong> package <code><a href="../reference/pipe.html">%&gt;%</a></code> pipe as in the following example:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Calculate daily means for the Methow from monitors in Twisp and Winthrop</span></a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Calculate daily means for the Methow Valley from monitors in Twisp and Winthrop</span></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">TwispID &lt;-<span class="st"> '530470009_01'</span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3">WinthropID &lt;-<span class="st"> '530470010_01'</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">Methow_Valley_JulyMeans &lt;-<span class="st"> </span>Northwest_Megafires <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(<span class="dt">monitorIDs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(TwispID,WinthropID)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/monitor_collapse.html">monitor_collapse</a></span>(<span class="dt">monitorID=</span><span class="st">'MethowValley'</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(<span class="dt">tlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150701</span>,<span class="dv">20150731</span>), <span class="dt">timezone=</span><span class="st">'America/Los_Angeles'</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/monitor_dailyStatistic.html">monitor_dailyStatistic</a></span>(<span class="dt">minHours=</span><span class="dv">18</span>)</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co"># Look at the first week</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">Methow_Valley_JulyMeans<span class="op">$</span>data[<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>,]</a></code></pre></div>
+<a class="sourceLine" id="cb16-4" data-line-number="4">Methow_Valley_JulyMeans &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span>Northwest_Megafires <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(<span class="dt">monitorIDs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(TwispID,WinthropID)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/monitor_collapse.html">monitor_collapse</a></span>(<span class="dt">monitorID =</span> <span class="st">'MethowValley'</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(<span class="dt">tlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150701</span>, <span class="dv">20150731</span>), <span class="dt">timezone =</span> <span class="st">'America/Los_Angeles'</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="../reference/monitor_dailyStatistic.html">monitor_dailyStatistic</a></span>(<span class="dt">minHours =</span> <span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co"># Look at the first week</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">Methow_Valley_JulyMeans<span class="op">$</span>data[<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>,]</a></code></pre></div>
 <pre><code>##     datetime MethowValley
 ## 1 2015-07-01      5.06875
 ## 2 2015-07-02      5.45625
@@ -273,10 +269,10 @@ colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)</code></pre
 <p>The following code mixes use of package functions with direct manipulation of the <code>ws_monitor</code> object.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Use special knowledge of AirNow IDs to subset airnow data for Spokane county monitors</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">SpokaneCountyIDs &lt;-<span class="st"> </span>N_M<span class="op">$</span>meta<span class="op">$</span>monitorID[stringr<span class="op">::</span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span>(N_M<span class="op">$</span>meta<span class="op">$</span>monitorID, <span class="st">"^53063"</span>)]</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">Spokane &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(N_M, <span class="dt">monitorIDs=</span>SpokaneCountyIDs)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">Spokane &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(N_M, <span class="dt">monitorIDs =</span> SpokaneCountyIDs)</a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co"># Apply 3-hr rolling mean</span></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6">Spokane_3hr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_rollingMean.html">monitor_rollingMean</a></span>(Spokane, <span class="dv">3</span>, <span class="dt">align=</span><span class="st">"center"</span>)</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">Spokane_3hr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_rollingMean.html">monitor_rollingMean</a></span>(Spokane, <span class="dv">3</span>, <span class="dt">align =</span> <span class="st">"center"</span>)</a>
 <a class="sourceLine" id="cb18-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co"># 1) Replace data columns with their squares (exponentiation is not supplied by the package)</span></a>
 <a class="sourceLine" id="cb18-9" data-line-number="9">Spokane_3hr_squared &lt;-<span class="st"> </span>Spokane_3hr</a>
@@ -289,7 +285,7 @@ colnames(ws_monitor$data) == c('datetime',ws_monitor$meta$monitorID)</code></pre
 <a class="sourceLine" id="cb18-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb18-17" data-line-number="17"><span class="co"># 2) Check out the correlation between monitors (correlation is not supplied by the package)</span></a>
 <a class="sourceLine" id="cb18-18" data-line-number="18">data &lt;-<span class="st"> </span>Spokane_daily_3hr<span class="op">$</span>data[,<span class="op">-</span><span class="dv">1</span>] <span class="co"># exclude the 'datetime' column</span></a>
-<a class="sourceLine" id="cb18-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span>(data, <span class="dt">use=</span><span class="st">'complete.obs'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb18-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span>(data, <span class="dt">use =</span> <span class="st">'complete.obs'</span>)</a></code></pre></div>
 <pre><code>##              530630047_01 530639997_01 530639996_01
 ## 530630047_01    1.0000000    0.9148673    0.9159997
 ## 530639997_01    0.9148673    1.0000000    0.9284175

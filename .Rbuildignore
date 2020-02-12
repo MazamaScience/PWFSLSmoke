@@ -13,3 +13,5 @@
 ^\.lintr$
 ^\.travis\.yml$
 ^pkgdown/
+^doc$
+^Meta$

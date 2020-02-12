@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.105</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Data_Model.html">Data Model</a>
+    </li>
+    <li>
+      <a href="../articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
     </li>
     <li>
       <a href="../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
@@ -100,7 +103,7 @@
       <h1>NowCast</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">4/3/2019</h4>
+            <h4 class="date">2020-02-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/PWFSLSmoke/blob/master/vignettes/NowCast.Rmd"><code>vignettes/NowCast.Rmd</code></a></small>
       <div class="hidden name"><code>NowCast.Rmd</code></div>
@@ -325,7 +328,7 @@ NowCast = \frac
 <div id="setup" class="section level3">
 <h3 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h3>
-<p>For the following examples we will use the Northwest Megafires data from the PWFSLSmoke package. In particular, we will look at PM2.5 data from Omak, WA, which was heavily impacted by smoke from wildfires during the second half of August, 2015:</p>
+<p>For the following examples we will use the Northwest Megafires data from the <strong>PWFSLSmoke</strong> package. In particular, we will look at PM2.5 data from Omak, WA, which was heavily impacted by smoke from wildfires during the second half of August, 2015:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(PWFSLSmoke))</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">N_M &lt;-<span class="st"> </span><span class="kw"><a href="../reference/monitor_subset.html">monitor_subset</a></span>(Northwest_Megafires, <span class="dt">tlim=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">20150801</span>,<span class="dv">20150831</span>),</a>
@@ -409,7 +412,7 @@ w^0 + w^1 + w^2 + w^3 + w^4 + w^5 + w^6 + w^7 + w^8 + w^9 + w^{10} + w^{11}
 10 2015-08-24 21:00:00        589.8
 11 2015-08-24 22:00:00        504.6
 12 2015-08-24 23:00:00        478.5</code></pre>
-<p>Here we see that the monitor data is missing for Hour 18. We want to verify that this hour is properly excluded from the NowCast calculation for subsequent hours. We also want to ensure that NowCast returns valid values for all hours in the vicinity, since all hours meet the minimum data availability requirements (i.e. two of three most recent hours valid).</p>
+<p>Here we see that the monitor data is missing for Hour 18. We want to verify that this hour is properly excluded from the NowCast calculation for subsequent hours. We also want to ensure that NowCast returns valid values for all hours in the vicinity, since all hours meet the minimum data availability requirements (i.e. two of three most recent hours valid).</p>
 <div id="formula-verification" class="section level4">
 <h4 class="hasAnchor">
 <a href="#formula-verification" class="anchor"></a>Formula Verification</h4>

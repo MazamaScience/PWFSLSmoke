@@ -89,7 +89,7 @@ GPS timestamp rows are removed'
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.105</span>
       </span>
     </div>
 
@@ -116,6 +116,9 @@ GPS timestamp rows are removed'
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Data_Model.html">Data Model</a>
+    </li>
+    <li>
+      <a href="../articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
     </li>
     <li>
       <a href="../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
@@ -191,9 +194,10 @@ propagated backwords using a first-observation-carry-backward algorithm'</p></li
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>MazamaWebUtils</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
 <span class='no'>fileString</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='airsis_downloadData.html'>airsis_downloadData</a></span>(<span class='fl'>20150701</span>, <span class='fl'>20151231</span>, <span class='kw'>provider</span><span class='kw'>=</span><span class='st'>'USFS'</span>, <span class='kw'>unitID</span><span class='kw'>=</span><span class='st'>'1026'</span>)
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>airsis_parseData</span>(<span class='no'>fileString</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>tbl</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
