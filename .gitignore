@@ -50,3 +50,5 @@ localNotebooks/*.pdf
 # OS X stuff
 .DS_Store
 
+doc
+Meta

@@ -13,7 +13,7 @@ raw_enhance(df)
 Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 }
 \description{
-Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
+Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various
 \code{raw~} functions. All original raw data is retained, and the following additional columns are added:
 
 \itemize{
@@ -33,7 +33,7 @@ uniform, hourly axes with missing data fields added for data columns.
 }
 \examples{
 \dontrun{
-library(MazamaWebUtils)
+library(PWFSLSmoke)
 df <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
 df <- raw_enhance(df)
 rawPlot_timeseries(df, tlim=c(20160908,20160917))

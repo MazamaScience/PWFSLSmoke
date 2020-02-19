@@ -18,9 +18,9 @@ Utilities for Working with PM2.5 Air Quality Monitoring Data
 The USFS Pacific Wildland Fire Sciences Lab [AirFire](https://www.airfire.org) 
 team works to model wildland fire emissions and has created the BlueSky Modeling 
 Framework. This system  integrates a wide collection of models along a smoke 
-modeling pipeline (fire  information, fuel loadings, consumption modeling, 
-emissions modeling, time rate of  emissions modeling, plume height estimations, 
-and smoke trajectory and dispersion  modeling). The resulting model output has 
+modeling pipeline (fire  information > fuel loadings > consumption modeling > 
+emissions modeling > time rate of emissions modeling > plume height estimations > 
+smoke trajectory and dispersion  modeling). The resulting model output has 
 been integrated into many different smoke  prediction systems and scientific 
 modeling efforts.
 
@@ -34,7 +34,7 @@ reports. It includes functionality to:
  * download and easily work with regulatory PM2.5 data from the EPA and AirNow
  * download and quality control raw monitoring data from AIRSIS and WRCC
  * convert between UTC and local timezones
- * apply various algorithms to the data (nowcast, rolling means, aggregation, etc.)
+ * apply various algorithms to the data (nowcast, rolling means, aggregation, _etc._)
  * provide interactive timeseries and maps through RStudio’s Viewer pane
  * create a variety of publication ready maps and timeseries plots
 
@@ -88,7 +88,6 @@ To run them you should:
 ----
 
 This R package was created by [Mazama Science](http://mazamascience.com) and is 
-being  funded by the USFS 
-[Pacific Wildland Fire Sciences Lab](https://www.fs.fed.us/pnw/pwfsl/).
+being funded by the USFS [AirFire Research Team](https://airfire.org).
 
 

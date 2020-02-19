@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Process Raw Monitoring Data to Create raw_enhance Object — raw_enhance" />
-<meta property="og:description" content="Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
+<meta property="og:description" content="Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various
 raw~ functions. All original raw data is retained, and the following additional columns are added:
 
 dataSource
@@ -91,7 +91,7 @@ uniform, hourly axes with missing data fields added for data columns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.104</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.105</span>
       </span>
     </div>
 
@@ -118,6 +118,9 @@ uniform, hourly axes with missing data fields added for data columns." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Data_Model.html">Data Model</a>
+    </li>
+    <li>
+      <a href="../articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
     </li>
     <li>
       <a href="../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
@@ -157,7 +160,7 @@ uniform, hourly axes with missing data fields added for data columns." />
     </div>
 
     <div class="ref-description">
-    <p>Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various 
+    <p>Processes raw monitor data to add a uniform time axis and consistent data columns that can be handled by various
 <code>raw~</code> functions. All original raw data is retained, and the following additional columns are added:</p>
 <ul>
 <li><p>dataSource</p></li>
@@ -192,7 +195,7 @@ uniform, hourly axes with missing data fields added for data columns.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>MazamaWebUtils</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='airsis_createRawDataframe.html'>airsis_createRawDataframe</a></span>(<span class='kw'>startdate</span><span class='kw'>=</span><span class='fl'>20160901</span>, <span class='kw'>enddate</span><span class='kw'>=</span><span class='fl'>20161015</span>, <span class='kw'>provider</span><span class='kw'>=</span><span class='st'>'USFS'</span>, <span class='kw'>unitID</span><span class='kw'>=</span><span class='fl'>1012</span>)
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>raw_enhance</span>(<span class='no'>df</span>)
 <span class='fu'><a href='rawPlot_timeseries.html'>rawPlot_timeseries</a></span>(<span class='no'>df</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20160908</span>,<span class='fl'>20160917</span>))
