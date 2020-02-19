@@ -153,12 +153,9 @@ airsis_parseData <- function(fileString) {
       tbl$Sys..Volts <- as.numeric(NA)
     }
 
-    # NOTE:  EBAM MULTI2 provides "ConcHR" (ug/m3) instead of "ConcHr" (mg/m3)
-    # NOTE:
-    # NOTE:  We create another column here with a "standard" name and units
-
+    # NOTE:  EBAM MIULTI2 provides "ConcHR" instead of "ConcHr"
     if ( monitorSubtype == "MULTI2" ) {
-      tbl$ConcHr <- tbl$ConcHR / 1000
+      tbl$ConcHr <- tbl$ConcHR
     }
 
   }

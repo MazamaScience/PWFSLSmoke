@@ -43,7 +43,7 @@ airsis_identifyMonitorType <- function(df) {
   #     Different header styles     -------------------------------------------
 
   # ARB3_ebamMulti2, provider="arb3", unitID=1024 (starting December, 2019)
-  ebamMulti2_header <- "MasterTable_ID,Alias,Latitude,Longitude,ConcRT,ConcHR,ConcS(ug/m3),Flow,W/S,W/D,AT,RHx,BP(mmHg),RHi,Oceaneering Unit Voltage,FT,Status,Type,BV,TimeStamp,PDate"
+  ebamMulti2_header <- "MasterTable_ID,Alias,Latitude,Longitude,ConcRT,ConcHR,ConcS(mg/m3),Flow,W/S,W/D,AT,RHx,BP(mmHg),RHi,Oceaneering Unit Voltage,FT,Status,Type,BV,TimeStamp,PDate"
   ebamMulti2_rawNames <- unlist(stringr::str_split(ebamMulti2_header, ','))
   ebamMulti2_names <- make.names(ebamMulti2_rawNames)
   # "62288132,RX 1024,,,18.2,12.7,11.8,16.67,0.3,178,6.0,88,765.7,53,,14.9,Power Failure,PM 2.5,0,1/3/2020 5:05:13 PM,1/3/2020 5:05:00 PM"
