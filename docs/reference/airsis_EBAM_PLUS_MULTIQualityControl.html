@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create AIRSIS data dataframe — airsis_createDataDataframe • PWFSLSmoke</title>
+<title>Apply Quality Control to raw AIRSIS EBAM PLUS_MULTI tibble — airsis_EBAM_PLUS_MULTIQualityControl • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,13 +42,18 @@
 
 
 
-<meta property="og:title" content="Create AIRSIS data dataframe — airsis_createDataDataframe" />
-<meta property="og:description" content="After quality control has been applied to an AIRSIS tibble,
-we can extract the PM2.5 values and store them in a data dataframe
-organized as time-by-deployment (aka time-by-site).
-The first column of the returned dataframe is named 'datetime' and
-contains a POSIXct time in UTC. Additional columns contain data
-for each separate deployment of a monitor." />
+<meta property="og:title" content="Apply Quality Control to raw AIRSIS EBAM PLUS_MULTI tibble — airsis_EBAM_PLUS_MULTIQualityControl" />
+<meta property="og:description" content="Perform various QC measures on AIRSIS EBAM PLUS_MULTI data. This
+data format began appearing in December, 2019 and is associated with data
+available at https://apcd.airsis.com.
+The following columns of data are tested against valid ranges:
+Flow
+AT
+RHi
+ConcHr
+
+
+A POSIXct datetime column (UTC) is also added based on Date.Time.GMT." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -144,38 +149,89 @@ for each separate deployment of a monitor." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create AIRSIS data dataframe</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airsis_createDataDataframe.R'><code>R/airsis_createDataDataframe.R</code></a></small>
-    <div class="hidden name"><code>airsis_createDataDataframe.Rd</code></div>
+    <h1>Apply Quality Control to raw AIRSIS EBAM PLUS_MULTI tibble</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airsis_EBAM_PLUS_MULTIQualityControl.R'><code>R/airsis_EBAM_PLUS_MULTIQualityControl.R</code></a></small>
+    <div class="hidden name"><code>airsis_EBAM_PLUS_MULTIQualityControl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>After quality control has been applied to an AIRSIS tibble,
-we can extract the PM2.5 values and store them in a <code>data</code> dataframe
-organized as time-by-deployment (aka time-by-site).</p>
-<p>The first column of the returned dataframe is named <code>'datetime'</code> and
-contains a <code>POSIXct</code> time in UTC. Additional columns contain data
-for each separate deployment of a monitor.</p>
+    <p>Perform various QC measures on AIRSIS EBAM PLUS_MULTI data. This
+data format began appearing in December, 2019 and is associated with data
+available at https://apcd.airsis.com.</p>
+<p>The following columns of data are tested against valid ranges:</p><ul>
+<li><p><code>Flow</code></p></li>
+<li><p><code>AT</code></p></li>
+<li><p><code>RHi</code></p></li>
+<li><p><code>ConcHr</code></p></li>
+</ul>
+
+<p>A <code>POSIXct datetime</code> column (UTC) is also added based on <code>Date.Time.GMT</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>airsis_createDataDataframe</span>(<span class='no'>tbl</span>, <span class='no'>meta</span>)</pre>
+    <pre class="usage"><span class='fu'>airsis_EBAM_PLUS_MULTIQualityControl</span>(
+  <span class='no'>tbl</span>,
+  <span class='kw'>valid_Longitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>180</span>, <span class='fl'>180</span>),
+  <span class='kw'>valid_Latitude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>90</span>, <span class='fl'>90</span>),
+  <span class='kw'>remove_Lon_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_Lat_zero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>valid_Flow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16.7</span> * <span class='fl'>0.95</span>, <span class='fl'>16.7</span> * <span class='fl'>1.05</span>),
+  <span class='kw'>valid_AT</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>45</span>),
+  <span class='kw'>valid_RHi</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>45</span>),
+  <span class='kw'>valid_Conc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>5</span>),
+  <span class='kw'>flagAndKeep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tbl</th>
-      <td><p>single site AIRSIS tibble created by <code>airsis_clustering()</code></p></td>
+      <td><p>single site tibble created by <code><a href='airsis_parseData.html'>airsis_parseData()</a></code></p></td>
     </tr>
     <tr>
-      <th>meta</th>
-      <td><p>AIRSIS meta dataframe created by <code><a href='airsis_createMetaDataframe.html'>airsis_createMetaDataframe()</a></code></p></td>
+      <th>valid_Longitude</th>
+      <td><p>range of valid Longitude values</p></td>
+    </tr>
+    <tr>
+      <th>valid_Latitude</th>
+      <td><p>range of valid Latitude values</p></td>
+    </tr>
+    <tr>
+      <th>remove_Lon_zero</th>
+      <td><p>flag to remove rows where Longitude == 0</p></td>
+    </tr>
+    <tr>
+      <th>remove_Lat_zero</th>
+      <td><p>flag to remove rows where Latitude == 0</p></td>
+    </tr>
+    <tr>
+      <th>valid_Flow</th>
+      <td><p>range of valid Flow values</p></td>
+    </tr>
+    <tr>
+      <th>valid_AT</th>
+      <td><p>range of valid AT values</p></td>
+    </tr>
+    <tr>
+      <th>valid_RHi</th>
+      <td><p>range of valid RHi values</p></td>
+    </tr>
+    <tr>
+      <th>valid_Conc</th>
+      <td><p>range of valid ConcHr values</p></td>
+    </tr>
+    <tr>
+      <th>flagAndKeep</th>
+      <td><p>flag, rather than remove, bad data during the QC process</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>data</code> dataframe for use in a <em>ws_monitor</em> object.</p>
+    <p>Cleaned up tibble of AIRSIS monitor data.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='airsis_qualityControl.html'>airsis_qualityControl</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -183,6 +239,7 @@ for each separate deployment of a monitor.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>

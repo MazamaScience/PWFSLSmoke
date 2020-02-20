@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.106
+
+* Added support for parsing AIRSIS "EBAM Plus Multi" format.
+
 # PWFSLSmoke 1.2.105
 
 * Documentation tweaks.

@@ -62,6 +62,8 @@ airsis_parseData <- function(fileString) {
       logger.trace("Parsing EBAM-Multi data ...")
     } else if ( monitorSubtype == "MULTI2" ) {
       logger.trace("Parsing EBAM-Multi2 data ...")
+    } else if ( monitorSubtype == "PLUS_MULTI" ) {
+      logger.trace("Parsing EBAM-Plus-Multi data ...")
     } else {
       logger.trace("Parsing EBAM data ...")
     }
@@ -128,34 +130,67 @@ airsis_parseData <- function(fileString) {
   # Add monitor subtype for EBAM MULTI & MULTI2 seperation QC
   tbl$monitorSubtype <- monitorSubtype
 
-  #     EBAM-Multi fixes     --------------------------------------------------
+  #     EBAM-Multi fixes     ---------------------------------------------------
 
-  if ( monitorType == "EBAM" && (monitorSubtype == "MULTI" || monitorSubtype == "MULTI2") ) {
+  if ( monitorType == "EBAM" ) {
 
-    # HACK
-    # arb2 UnitID=1044 in August, 2018 does not return a "Date.Time.GMT" column
-    # We add one here by flooring the "TimeStamp" colum.
+    if ( monitorSubtype == "MULTI" || monitorSubtype == "MULTI2") {
 
-    logger.trace("Adding Date.Time.GMT column to EBAM-Multi data.")
-    if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
-      # Remove rows where TimeStamp is NA
-      badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
-      tbl <- tbl[!badMask,]
-      datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz = "UTC")
-      assignedHour <- lubridate::floor_date(datetime, unit = "hour")
-      tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
-    }
+      # HACK
+      # arb2 UnitID=1044 in August, 2018 does not return a "Date.Time.GMT" column
+      # We add one here by flooring the "TimeStamp" colum.
 
-    # Add "Sys..Volts" column
-    if ( !"Sys..Volts" %in% names(tbl) && "Oceaneering.Unit.Voltage" %in% names(tbl) ) {
-      tbl$Sys..Volts <- tbl$Oceaneering.Unit.Voltage
-    } else {
-      tbl$Sys..Volts <- as.numeric(NA)
-    }
+      logger.trace("Adding Date.Time.GMT column to EBAM-Multi data.")
+      if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
+        # Remove rows where TimeStamp is NA
+        badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
+        tbl <- tbl[!badMask,]
+        datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz = "UTC")
+        assignedHour <- lubridate::floor_date(datetime, unit = "hour")
+        tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
+      }
 
-    # NOTE:  EBAM MIULTI2 provides "ConcHR" instead of "ConcHr"
-    if ( monitorSubtype == "MULTI2" ) {
-      tbl$ConcHr <- tbl$ConcHR
+      # Add "Sys..Volts" column
+      if ( !"Sys..Volts" %in% names(tbl) && "Oceaneering.Unit.Voltage" %in% names(tbl) ) {
+        tbl$Sys..Volts <- tbl$Oceaneering.Unit.Voltage
+      } else {
+        tbl$Sys..Volts <- as.numeric(NA)
+      }
+
+      # NOTE:  EBAM MULTI2 provides "ConcHR" instead of "ConcHr"
+      if ( monitorSubtype == "MULTI2" ) {
+        tbl$ConcHr <- tbl$ConcHR
+      }
+
+    } else if ( monitorSubtype == "PLUS_MULTI" ) {
+
+      logger.trace("Adding Date.Time.GMT column to EBAM-Plus-Multi data.")
+      if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
+        # Remove rows where TimeStamp is NA
+        badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
+        tbl <- tbl[!badMask,]
+        datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz = "UTC")
+        assignedHour <- lubridate::floor_date(datetime, unit = "hour")
+        tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
+      }
+
+      # Add "Sys..Volts" column
+      if ( !"Sys..Volts" %in% names(tbl) && "BV.V." %in% names(tbl) ) {
+        tbl$Sys..Volts <- tbl$BV.V.
+      } else {
+        tbl$Sys..Volts <- as.numeric(NA)
+      }
+
+      # NOTE:  EBAM PLUS_MULTI provides "ConcHR" (ug/m3) instead of "ConcHr" (mg/m3)
+      tbl$ConcHr <- tbl$'ConcHR.\u00b5g.m3.'/ 1000
+
+      # Unifying other column names
+      tbl$Flow <- tbl$Flow.lpm.
+
+      tbl$AT <- tbl$FT.C. # TODO: Check that this shouldn't be "AT(C)
+
+      tbl$RHi <- tbl$FRH... # TODO:  Check that this shouldn't be "RH(%)"
+
     }
 
   }

@@ -42,6 +42,14 @@ airsis_identifyMonitorType <- function(df) {
 
   #     Different header styles     -------------------------------------------
 
+  # ARB3_ebamPlusMulti, provider="arb3", unitID=1039 (starting December, 2019)
+  ebamPlusMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,ConcRT(\u00b5g/m3),ConcHR(\u00b5g/m3),Flow(lpm),WS(m/s),WD(Deg),AT(C),RH(%),BP(mmHg),FT(C),FRH(%),BV(V),PM,Status,TimeStamp,PDate"
+  ebamPlusMulti_rawNames <- unlist(stringr::str_split(ebamPlusMulti_header, ','))
+  ebamPlusMulti_names <- make.names(ebamPlusMulti_rawNames)
+  # "62195397,NPT1002,46.39985,-116.8035,,,,,,,,,,,,,,12/25/2019 11:55:38 PM,12/25/2019 11:56:00 PM"
+  # "62195464,NPT1002,,,000001,000003,16.7,00.0,000,003.6,066,743,014.6,023,12.3,0,00000,12/26/2019 12:05:29 AM,12/26/2019 12:05:00 AM"
+  ebamPlusMulti_types <- 'ccdddddddddddddcccc'
+
   # ARB3_ebamMulti2, provider="arb3", unitID=1024 (starting December, 2019)
   ebamMulti2_header <- "MasterTable_ID,Alias,Latitude,Longitude,ConcRT,ConcHR,ConcS(mg/m3),Flow,W/S,W/D,AT,RHx,BP(mmHg),RHi,Oceaneering Unit Voltage,FT,Status,Type,BV,TimeStamp,PDate"
   ebamMulti2_rawNames <- unlist(stringr::str_split(ebamMulti2_header, ','))
@@ -68,7 +76,7 @@ airsis_identifyMonitorType <- function(df) {
   ebam_types <- 'ccddccddddddddddicccdcc'
 
   # provider=USFS, unitID=49, year=2010
-  bam1020_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc (\u00B5g/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),TimeStamp,PDate"
+  bam1020_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc (\u00b5g/m3),Qtot (m3),WS (KTS),Ozone (ppb),RTM09 (mg3),RH (%),Ambient Temp (C),TimeStamp,PDate"
   bam1020_rawNames <- unlist(stringr::str_split(bam1020_header, ','))
   bam1020_names <- make.names(bam1020_rawNames)
   bam1020_types <- 'ccdddddddddcc'
@@ -164,18 +172,24 @@ airsis_identifyMonitorType <- function(df) {
     rawNames <- esam_rawNames
     columnNames <- esam_names
     columnTypes <- esam_types
-  } else if ( dplyr::setequal(ebamMulti_names, colNames) ) {
+  } else if ( dplyr::setequal(ebamPlusMulti_names, colNames) ) {
     monitorType <- "EBAM"
-    monitorSubtype <- "MULTI"
-    rawNames <- ebamMulti_rawNames
-    columnNames <- ebamMulti_names
-    columnTypes <- ebamMulti_types
+    monitorSubtype <- "PLUS_MULTI"
+    rawNames <- ebamPlusMulti_rawNames
+    columnNames <- ebamPlusMulti_names
+    columnTypes <- ebamPlusMulti_types
   } else if ( dplyr::setequal(ebamMulti2_names, colNames) ) {
     monitorType <- "EBAM"
     monitorSubtype <- "MULTI2"
     rawNames <- ebamMulti2_rawNames
     columnNames <- ebamMulti2_names
     columnTypes <- ebamMulti2_types
+  } else if ( dplyr::setequal(ebamMulti_names, colNames) ) {
+    monitorType <- "EBAM"
+    monitorSubtype <- "MULTI"
+    rawNames <- ebamMulti_rawNames
+    columnNames <- ebamMulti_names
+    columnTypes <- ebamMulti_types
   } else if ( dplyr::setequal(ebam_names, colNames) ) {
     monitorType <- "EBAM"
     monitorSubtype <- "" # List "" -- no subtype for standard EBAM
