@@ -4,7 +4,9 @@
 \name{US_52}
 \alias{US_52}
 \title{US State Codes}
-\format{A vector with 52 elements}
+\format{
+A vector with 52 elements
+}
 \usage{
 US_52
 }

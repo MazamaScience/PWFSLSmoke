@@ -4,7 +4,9 @@
 \name{Carmel_Valley}
 \alias{Carmel_Valley}
 \title{Carmel Valley Example Dataset}
-\format{A list with two elements}
+\format{
+A list with two elements
+}
 \description{
 In August of 2016, the Soberanes fire in California burned along the Big Sur
 coast. It was at the time the most expensive wildifre in US history. This dataset contains

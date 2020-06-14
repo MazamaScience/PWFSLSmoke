@@ -4,7 +4,9 @@
 \name{Northwest_Megafires}
 \alias{Northwest_Megafires}
 \title{Northwest Megafires Example Dataset}
-\format{A list with two elements}
+\format{
+A list with two elements
+}
 \description{
 In the summer of 2015 Washington state had several catastrophic wildfires that led
 to many days of heavy smoke in eastern Washington, Oregon and northern Idaho.

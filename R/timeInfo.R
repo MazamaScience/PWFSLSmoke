@@ -49,10 +49,12 @@
 #' carmel <- monitor_subset(Carmel_Valley, tlim = c(20160801,20160810))
 #'
 #' # Create timeInfo object for this monitor
-#' ti <- timeInfo(carmel$data$datetime,
-#'                carmel$meta$longitude,
-#'                carmel$meta$latitude,
-#'                carmel$meta$timezone)
+#' ti <- timeInfo(
+#'   carmel$data$datetime,
+#'   carmel$meta$longitude,
+#'   carmel$meta$latitude,
+#'   carmel$meta$timezone
+#' )
 #'
 #' # Subset the data based on day/night masks
 #' data_day <- carmel$data[ti$day,]
@@ -66,27 +68,14 @@
 #' monitor_timeseriesPlot(carmel_day, shadedNight = TRUE, pch = 8, col = 'goldenrod')
 #' monitor_timeseriesPlot(carmel_night, pch = 16, col = 'darkblue', add = TRUE)
 
-timeInfo <- function(time,
-                     longitude = NULL,
-                     latitude = NULL,
-                     timezone = NULL) {
+timeInfo <- function(
+  time = NULL,
+  longitude = NULL,
+  latitude = NULL,
+  timezone = NULL
+) {
 
-  # Debugging ------------------------------------------------------------------
-
-  if ( FALSE ) {
-
-    Thompson_Falls <- monitor_load(2018110307, 2018110607,
-                                   monitorIDs = "300890007_01")
-    time <- Thompson_Falls$data$datetime
-    timezone <- Thompson_Falls$meta$timezone
-    longitude <- Thompson_Falls$meta$longitude
-    latitude <- Thompson_Falls$meta$latitude
-    timeInfo <- timeInfo(time, longitude, latitude, timezone)
-    t(timeInfo[24:27,])
-
-  }
-
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(time) ) {
     stop(paste0("Required parameter 'time' is missing"))
@@ -118,7 +107,7 @@ timeInfo <- function(time,
     ))
   }
 
-  # Solar times ----------------------------------------------------------------
+  # ----- Solar times ----------------------------------------------------------
 
   # convert to local time
   localTime <- lubridate::with_tz(time, tzone = timezone)
@@ -139,7 +128,7 @@ timeInfo <- function(time,
   morningMask <- (localTime > sunrise) & (localTime <= solarnoon)
   afternoonMask <- (localTime > solarnoon) & (localTime <= sunset)
 
-  # localStandardTime_UTC ------------------------------------------------------
+  # ----- localStandardTime_UTC ------------------------------------------------
 
   # NOTE:  The EPA defines regulatory daily averages as midnight-to-midnight
   # NOTE:  in local-standard-time-all-year. We add a column of data that
@@ -156,7 +145,7 @@ timeInfo <- function(time,
   localStandardTime_UTC <- lubridate::with_tz(localTime, tzone = "UTC") +
     lst_offset * lubridate::dhours(1)
 
-  # Return ---------------------------------------------------------------------
+  # ----- Return ---------------------------------------------------------------
 
   # Assemble dataframe
   timeInfo <- data.frame(
@@ -173,6 +162,21 @@ timeInfo <- function(time,
   )
 
   return(timeInfo)
+
+}
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+
+  Thompson_Falls <- monitor_load(2018110307, 2018110607,
+                                 monitorIDs = "300890007_01")
+  time <- Thompson_Falls$data$datetime
+  timezone <- Thompson_Falls$meta$timezone
+  longitude <- Thompson_Falls$meta$longitude
+  latitude <- Thompson_Falls$meta$latitude
+  timeInfo <- timeInfo(time, longitude, latitude, timezone)
+  t(timeInfo[24:27,])
 
 }
 

@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.107
+
+* Updated `test-timeinfo.R` to avoid CRAN Check errors.
+
 # PWFSLSmoke 1.2.106
 
 * Added support for parsing AIRSIS "EBAM Plus Multi" format.
