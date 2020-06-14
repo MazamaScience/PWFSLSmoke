@@ -4,7 +4,9 @@
 \name{WRCC}
 \alias{WRCC}
 \title{WRCC Monitor Names and Unit IDs}
-\format{A list of lists}
+\format{
+A list of lists
+}
 \description{
 The WRCC \url{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitor Archive}
 provides access to a variety of monitors that can be accessed with the \link{wrcc_createMonitorObject}

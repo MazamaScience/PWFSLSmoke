@@ -4,7 +4,9 @@
 \name{googleApiKey}
 \alias{googleApiKey}
 \title{API Key used for Google Geocoding Requests}
-\format{Character string.}
+\format{
+Character string.
+}
 \description{
 All package functions that interact with Google location services will
 use API key whenever a request is made.

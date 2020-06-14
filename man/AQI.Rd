@@ -4,7 +4,9 @@
 \name{AQI}
 \alias{AQI}
 \title{Official Air Quality Index Levels, Names and Colors}
-\format{A list with named elements}
+\format{
+A list with named elements
+}
 \usage{
 AQI
 }

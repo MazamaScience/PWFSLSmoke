@@ -4,7 +4,9 @@
 \name{esriToken}
 \alias{esriToken}
 \title{Token used for ESRI Geocoding Requests}
-\format{Character string.}
+\format{
+Character string.
+}
 \description{
 All package functions that interact with ESRI location services will
 use the token whenever a request is made.

@@ -4,7 +4,7 @@
 \alias{timeInfo}
 \title{Get time related information}
 \usage{
-timeInfo(time, longitude = NULL, latitude = NULL, timezone = NULL)
+timeInfo(time = NULL, longitude = NULL, latitude = NULL, timezone = NULL)
 }
 \arguments{
 \item{time}{POSIXct vector with specified timezone,}
@@ -56,10 +56,12 @@ and LST axis labeling.
 carmel <- monitor_subset(Carmel_Valley, tlim = c(20160801,20160810))
 
 # Create timeInfo object for this monitor
-ti <- timeInfo(carmel$data$datetime,
-               carmel$meta$longitude,
-               carmel$meta$latitude,
-               carmel$meta$timezone)
+ti <- timeInfo(
+  carmel$data$datetime,
+  carmel$meta$longitude,
+  carmel$meta$latitude,
+  carmel$meta$timezone
+)
 
 # Subset the data based on day/night masks
 data_day <- carmel$data[ti$day,]

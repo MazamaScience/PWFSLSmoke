@@ -4,7 +4,9 @@
 \name{AIRSIS}
 \alias{AIRSIS}
 \title{AIRSIS Unit Types}
-\format{A list of lists}
+\format{
+A list of lists
+}
 \usage{
 AIRSIS
 }
