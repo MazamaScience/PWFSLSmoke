@@ -32,7 +32,7 @@
 #' The \code{maptype} argument is mapped onto leaflet "ProviderTile" names.
 #' Current mappings include: \enumerate{ \item{"roadmap"}{ -- "OpenStreetMap"}
 #' \item{"satellite"}{ -- "Esri.WorldImagery"} \item{"terrain"}{ --
-#' ""Esri.WorldTopoMap"} \item{"toner"}{ -- "Stamen.Toner"} }
+#' "Esri.WorldTopoMap"} \item{"toner"}{ -- "Stamen.Toner"} }
 #'
 #' If a character string not listed above is provided, it will be used as the
 #' underlying map tile if available. See
