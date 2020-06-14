@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.106</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.107</span>
       </span>
     </div>
 
@@ -189,49 +189,41 @@ colnames(ws_monitor$data) == c('datetime', ws_monitor$meta$monitorID)</code></pr
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(WA<span class="op">$</span>meta)</a></code></pre></div>
 <pre><code>## [1] 55 19</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(WA<span class="op">$</span>meta)</a></code></pre></div>
-<pre><code>##  [1] "530330017_01" "530330080_01" "530050002_01" "530330024_01"
-##  [5] "530330057_01" "530332004_01" "530530029_01" "530530031_01"
-##  [9] "530610005_01" "530611007_01" "530630047_01" "530670013_01"
-## [13] "530531018_01" "530272002_01" "530310003_01" "530730015_01"
-## [17] "530251002_01" "530650004_01" "530010003_01" "530750006_01"
-## [21] "530750003_01" "530331011_01" "530210002_01" "530330037_01"
-## [25] "530710005_01" "530750005_01" "530150015_01" "530470009_01"
-## [29] "530370002_01" "530090013_01" "530610020_01" "530070010_01"
-## [33] "530770015_01" "530650002_01" "530470010_01" "530770009_01"
-## [37] "530570015_01" "530130002_01" "530030004_01" "530110022_01"
-## [41] "530579999_01" "530639997_01" "530299999_01" "530639996_01"
-## [45] "530410004_01" "530770016_01" "530090015_01" "530450007_01"
-## [49] "530470013_01" "530570011_01" "530350007_01" "530070011_01"
-## [53] "530330030_01" "530110024_01" "530090017_01"</code></pre>
+<pre><code>##  [1] "530330017_01" "530330080_01" "530050002_01" "530330024_01" "530330057_01"
+##  [6] "530332004_01" "530530029_01" "530530031_01" "530610005_01" "530611007_01"
+## [11] "530630047_01" "530670013_01" "530531018_01" "530272002_01" "530310003_01"
+## [16] "530730015_01" "530251002_01" "530650004_01" "530010003_01" "530750006_01"
+## [21] "530750003_01" "530331011_01" "530210002_01" "530330037_01" "530710005_01"
+## [26] "530750005_01" "530150015_01" "530470009_01" "530370002_01" "530090013_01"
+## [31] "530610020_01" "530070010_01" "530770015_01" "530650002_01" "530470010_01"
+## [36] "530770009_01" "530570015_01" "530130002_01" "530030004_01" "530110022_01"
+## [41] "530579999_01" "530639997_01" "530299999_01" "530639996_01" "530410004_01"
+## [46] "530770016_01" "530090015_01" "530450007_01" "530470013_01" "530570011_01"
+## [51] "530350007_01" "530070011_01" "530330030_01" "530110024_01" "530090017_01"</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(WA<span class="op">$</span>meta)</a></code></pre></div>
-<pre><code>##  [1] "monitorID"             "longitude"            
-##  [3] "latitude"              "elevation"            
-##  [5] "timezone"              "countryCode"          
-##  [7] "stateCode"             "siteName"             
-##  [9] "agencyName"            "countyName"           
-## [11] "msaName"               "monitorType"          
-## [13] "siteID"                "instrumentID"         
-## [15] "aqsID"                 "pwfslID"              
-## [17] "pwfslDataIngestSource" "telemetryAggregator"  
+<pre><code>##  [1] "monitorID"             "longitude"             "latitude"             
+##  [4] "elevation"             "timezone"              "countryCode"          
+##  [7] "stateCode"             "siteName"              "agencyName"           
+## [10] "countyName"            "msaName"               "monitorType"          
+## [13] "siteID"                "instrumentID"          "aqsID"                
+## [16] "pwfslID"               "pwfslDataIngestSource" "telemetryAggregator"  
 ## [19] "telemetryUnitID"</code></pre>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Examine the 'data' dataframe</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(WA<span class="op">$</span>data)</a></code></pre></div>
 <pre><code>## [1] 721  56</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(WA<span class="op">$</span>data)</a></code></pre></div>
-<pre><code>##  [1] "datetime"     "530330017_01" "530330080_01" "530050002_01"
-##  [5] "530330024_01" "530330057_01" "530332004_01" "530530029_01"
-##  [9] "530530031_01" "530610005_01" "530611007_01" "530630047_01"
-## [13] "530670013_01" "530531018_01" "530272002_01" "530310003_01"
-## [17] "530730015_01" "530251002_01" "530650004_01" "530010003_01"
-## [21] "530750006_01" "530750003_01" "530331011_01" "530210002_01"
-## [25] "530330037_01" "530710005_01" "530750005_01" "530150015_01"
-## [29] "530470009_01" "530370002_01" "530090013_01" "530610020_01"
-## [33] "530070010_01" "530770015_01" "530650002_01" "530470010_01"
-## [37] "530770009_01" "530570015_01" "530130002_01" "530030004_01"
-## [41] "530110022_01" "530579999_01" "530639997_01" "530299999_01"
-## [45] "530639996_01" "530410004_01" "530770016_01" "530090015_01"
-## [49] "530450007_01" "530470013_01" "530570011_01" "530350007_01"
-## [53] "530070011_01" "530330030_01" "530110024_01" "530090017_01"</code></pre>
+<pre><code>##  [1] "datetime"     "530330017_01" "530330080_01" "530050002_01" "530330024_01"
+##  [6] "530330057_01" "530332004_01" "530530029_01" "530530031_01" "530610005_01"
+## [11] "530611007_01" "530630047_01" "530670013_01" "530531018_01" "530272002_01"
+## [16] "530310003_01" "530730015_01" "530251002_01" "530650004_01" "530010003_01"
+## [21] "530750006_01" "530750003_01" "530331011_01" "530210002_01" "530330037_01"
+## [26] "530710005_01" "530750005_01" "530150015_01" "530470009_01" "530370002_01"
+## [31] "530090013_01" "530610020_01" "530070010_01" "530770015_01" "530650002_01"
+## [36] "530470010_01" "530770009_01" "530570015_01" "530130002_01" "530030004_01"
+## [41] "530110022_01" "530579999_01" "530639997_01" "530299999_01" "530639996_01"
+## [46] "530410004_01" "530770016_01" "530090015_01" "530450007_01" "530470013_01"
+## [51] "530570011_01" "530350007_01" "530070011_01" "530330030_01" "530110024_01"
+## [56] "530090017_01"</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># This should always be true</span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/all.html">all</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(WA<span class="op">$</span>meta) <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(WA<span class="op">$</span>data[,<span class="op">-</span><span class="dv">1</span>]))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
