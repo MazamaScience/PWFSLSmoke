@@ -8,7 +8,6 @@
 #' @param includeShortTerm calcluate preliminary values starting with the 2nd hour
 #' @description Nowcast and AQI algorithms are applied to the data in the ws_monitor object.
 #' @references \url{https://docs.airnowapi.org/aq101}
-#' @references \url{https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g}
 #' @examples
 #' \dontrun{
 #' ws_monitor <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))

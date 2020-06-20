@@ -15,11 +15,6 @@ test_that("arguments are validated", {
   expect_error( timeInfo(datetime, longitude) )
   expect_error( timeInfo(datetime, longitude, "dummy") )
 
-  skip_on_cran()
-  skip_on_travis()
-
-  # Should determine timezone from datetime if no timezone is provided
-  expect_silent( {timeInfo <- timeInfo(datetime, longitude, latitude)} )
 })
 
 test_that("daylight savings is treated properly", {

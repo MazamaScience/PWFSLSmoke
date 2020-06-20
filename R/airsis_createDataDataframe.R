@@ -24,45 +24,60 @@ airsis_createDataDataframe <- function(
 
   logger.debug(" ----- airsis_createDataDataframe() ----- ")
 
+  # ----- Validate Parameters --------------------------------------------------
+
   # Sanity check -- tbl must have deploymentID
   if ( !'deploymentID' %in% names(tbl) ) {
-    logger.error("No 'deploymentID' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse=", "))
+    logger.error("No 'deploymentID' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse = ", "))
     stop(paste0("No 'deploymentID' column found in 'tbl' tibble.  Have you run addClustering()?"))
   }
 
   # Sanity check -- tbl must have datetime
   if ( !'datetime' %in% names(tbl) ) {
-    logger.error("No 'datetime' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse=", "))
+    logger.error("No 'datetime' column found in 'tbl' tibble with columns: %s", paste0(names(tbl), collapse = ", "))
     stop(paste0("No 'datetime' column found in 'tbl' tibble."))
   }
 
   # Sanity check -- meta must have a monitorType
   if ( !'monitorType' %in% names(meta) ) {
-    logger.error("No 'monitorType' column found in 'meta' dataframe with columns: %s", paste0(names(meta), collapse=", "))
+    logger.error("No 'monitorType' column found in 'meta' dataframe with columns: %s", paste0(names(meta), collapse = ", "))
     stop(paste0("No 'monitorType' column found in 'meta' dataframe."))
   }
 
   monitorType <- unique(meta$monitorType)
+  monitorSubtype <- unique(tbl$monitorSubtype)
 
   # Sanity check -- only a single monitorType is allowed
   if ( length(monitorType) > 1 ) {
-    logger.error("Multiple monitor types found in 'meta' dataframe: %s", paste0(monitorType, collapse=", "))
+    logger.error("Multiple monitor types found in 'meta' dataframe: %s", paste0(monitorType, collapse = ", "))
     stop(paste0("Multiple monitor types found in 'meta' dataframe."))
   }
+
+  # Sanity check -- only a single monitorSubtype is allowed
+  if ( length(monitorSubtype) > 1 ) {
+    logger.error("Multiple monitor subtypes found in 'tbl' dataframe: %s", paste0(monitorSubtype, collapse = ", "))
+    stop(paste0("Multiple monitor subtypes found in 'tbl' dataframe."))
+  }
+
+  # ----- Create 'data' dataframe ----------------------------------------------
 
   # Create monitorID the same way we did in airsis_createMetaDataframe()
   # Should only have a single instrumentID
   instrumentIDs <- sort(unique(meta$instrumentID))
   if ( length(instrumentIDs) > 1 ) {
-    logger.warn('Multiple instrumentIDs encountered: %s', paste0(instrumentIDs,collapse=", "))
+    logger.warn('Multiple instrumentIDs encountered: %s', paste0(instrumentIDs, collapse = ", "))
   }
   instrumentID <- instrumentIDs[1]
-  tbl$monitorID <- paste(as.character(tbl$deploymentID), instrumentID, sep='_')
+  tbl$monitorID <- paste(as.character(tbl$deploymentID), instrumentID, sep = '_')
 
   if ( monitorType == 'EBAM' ) {
     pm25Var <- 'ConcHr'
   } else if ( monitorType == 'ESAM' ) {
-    pm25Var <- 'Conc.mg.m3.'
+    if ( monitorSubtype == 'MULTI' ) {
+      pm25Var <- 'Conc.ug.m3.'
+    } else {
+      pm25Var <- 'Conc.mg.m3.'
+    }
   } else if ( monitorType == 'BAM1020' ) {
     pm25Var <- 'Conc..\u00B5g.m3.'
   } else {
@@ -71,12 +86,22 @@ airsis_createDataDataframe <- function(
   }
 
   # Create minimal subset with the the variables we need for rows, columns and data
-  subTbl <- tbl[,c('datetime','monitorID',pm25Var)]
-  melted <- reshape2::melt(subTbl, id.vars=c('datetime','monitorID'), measure.vars=pm25Var)
+  subTbl <- tbl[,c('datetime', 'monitorID', pm25Var)]
+  melted <- reshape2::melt(subTbl, id.vars = c('datetime','monitorID'), measure.vars = pm25Var)
 
   # Unit conversion as needed (mg/m3 ==> ug/m3)
-  if ( monitorType == 'EBAM' ) melted$value <- melted$value * 1000
-  if ( monitorType == 'ESAM' ) melted$value <- melted$value * 1000
+
+  if ( monitorType == 'EBAM' ) {
+    melted$value <- melted$value * 1000
+  }
+
+  if ( monitorType == 'ESAM' ) {
+    if ( monitorSubtype == 'MULTI') {
+      melted$value <- melted$value * 1
+    } else {
+      melted$value <- melted$value * 1000
+    }
+  }
 
   # Use median if multiple values are found
 
@@ -91,12 +116,12 @@ airsis_createDataDataframe <- function(
   pm25DF <- pm25DF[,c('datetime',meta$monitorID)]
 
   # Create an empty hourlyDF dataframe with a full time axis (no missing hours)
-  datetime <- seq(min(tbl$datetime), max(tbl$datetime), by="hours")
-  hourlyDF <- data.frame(datetime=datetime)
+  datetime <- seq(min(tbl$datetime), max(tbl$datetime), by = "hours")
+  hourlyDF <- data.frame(datetime = datetime)
 
   # Merge pm25DF into the houlyDF dataframe, inserting NA's where necessary
   # NOTE:  dplyr returns objects of class "tbl_df" which can be confusing. We undo that.
-  data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by='datetime'), stringsAsFactors=FALSE )
+  data <- as.data.frame( dplyr::left_join(hourlyDF, pm25DF, by = 'datetime'), stringsAsFactors = FALSE )
 
   logger.trace("Created 'data' dataframe with %d rows and %d columns", nrow(data), ncol(data))
 

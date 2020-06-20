@@ -40,7 +40,14 @@ airsis_identifyMonitorType <- function(df) {
 
   logger.debug(" ----- airsis_identifyMonitorType() ----- ")
 
-  #     Different header styles     -------------------------------------------
+  # ----- Different header styles ----------------------------------------------
+
+  # USFS_esamMulti, provider = "usfs", unitID=1072-5 (starting in June, 2020)
+  esamMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc(ug/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Oceaneering Unit Voltage,TimeStamp,PDate"
+  esamMulti_rawNames <- unlist(stringr::str_split(esamMulti_header, ','))
+  esamMulti_names <- make.names(esamMulti_rawNames)
+  # "64424513,USFS 1072,,,2,2.0,33.3,86107,1,13,2.6,175,14,,,6/14/2020 12:05:13 AM,6/14/2020 12:05:00 AM"
+  esamMulti_types <- 'ccdddddddddddidcc'
 
   # ARB3_ebamPlusMulti, provider="arb3", unitID=1039 (starting December, 2019)
   ebamPlusMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,ConcRT(\u00b5g/m3),ConcHR(\u00b5g/m3),Flow(lpm),WS(m/s),WD(Deg),AT(C),RH(%),BP(mmHg),FT(C),FRH(%),BV(V),PM,Status,TimeStamp,PDate"
@@ -167,6 +174,12 @@ airsis_identifyMonitorType <- function(df) {
     columnNames <- unitid_bam1020_names
     columnTypes <- unitid_bam1020_types
   # NOTE:  Now check for the older, pre-unitid headers in the same order
+  } else if ( dplyr::setequal(esamMulti_names, colNames) ) {
+    monitorType <- "ESAM"
+    monitorSubtype <- "MULTI"
+    rawNames <- esamMulti_rawNames
+    columnNames <- esamMulti_names
+    columnTypes <- esamMulti_types
   } else if ( dplyr::setequal(esam_names, colNames) ) {
     monitorType <- "ESAM"
     rawNames <- esam_rawNames

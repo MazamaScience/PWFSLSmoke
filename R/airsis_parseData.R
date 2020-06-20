@@ -35,6 +35,8 @@ airsis_parseData <- function(fileString) {
 
   logger.debug(" ----- airsis_parseData() ----- ")
 
+  # ----- Identify the file type -----------------------------------------------
+
   # Identify monitor type
   monitorTypeList <- airsis_identifyMonitorType(fileString)
 
@@ -51,6 +53,8 @@ airsis_parseData <- function(fileString) {
     logger.warn("No valid PM2.5 data")
     stop(paste0("No valid PM2.5 data"))
   }
+
+  # ----- Remove extraneous lines ----------------------------------------------
 
   if ( monitorType == "BAM1020" ) {
 
@@ -83,35 +87,49 @@ airsis_parseData <- function(fileString) {
       lines <- lines[!internalHeaderMask]
     }
 
+    if ( monitorSubtype == "MULTI" ) {
+
+      # NOTE:  Saw this in usfs.1072:
+      # NOTE:  64484011,USFS 1072,,,rd (Function Key s): a Log ReportTime: 12:05 X5035: ERROR function not supportedInvalid Tim,,,,,,,,,,,6/19/2020 6:05:13 PM,6/19/2020 6:05:00 PM
+
+      errorMask <- stringr::str_detect(lines,'ERROR')
+      if ( sum(errorMask) > 0 ) {
+        logger.trace("Removing %d 'internal ERROR' records from raw data", sum(errorMask))
+        lines <- lines[!errorMask]
+      }
+
+    }
+
   } else if ( monitorType == "OTHER_1" ) {
 
     logger.error("Older EBAM 1 file parsing is not supported")
-    logger.error("Header line:\n\t%s", paste0(rawNames,collapse=','))
-    stop(paste0("Older EBAM 1 file parsing is not supported", call.=FALSE))
+    logger.error("Header line:\n\t%s", paste0(rawNames,collapse = ','))
+    stop(paste0("Older EBAM 1 file parsing is not supported", call. = FALSE))
 
   } else if ( monitorType == "OTHER_2" ) {
 
     logger.error("Older EBAM 2 file parsing is not supported")
-    logger.error("Header line:\n\t%s", paste0(rawNames,collapse=','))
-    stop(paste0("Older EBAM 2 file parsing is not supported", call.=FALSE))
+    logger.error("Header line:\n\t%s", paste0(rawNames,collapse = ','))
+    stop(paste0("Older EBAM 2 file parsing is not supported", call. = FALSE))
 
   } else {
 
     logger.error("Unknown file parsing is not supported")
-    logger.error("Header line:\n\t%s", paste0(rawNames,collapse=','))
-    stop(paste0("Unknown file parsing is not supported", call.=FALSE))
+    logger.error("Header line:\n\t%s", paste0(rawNames,collapse = ','))
+    stop(paste0("Unknown file parsing is not supported", call. = FALSE))
 
   }
 
-
-  #     Parse the file     ----------------------------------------------------
+  # ----- Parse the file -------------------------------------------------------
 
   # Remove header line, leaving only data
   # NOTE:  We need to guarantee that fakeFile always has a newline so that read_lines will interpret
   # NOTE:  a single data record as literal data and now a path.
-  fakeFile <- paste0(paste0(lines[-1], collapse='\n'),'\n')
+  fakeFile <- paste0(paste0(lines[-1], collapse = '\n'),'\n')
 
-  tbl <- suppressWarnings( readr::read_csv(fakeFile, col_names=columnNames, col_types=columnTypes) )
+  tbl <- suppressWarnings({
+    readr::read_csv(fakeFile, col_names = columnNames, col_types = columnTypes)
+  })
 
   # Print out any problems encountered by readr::read_csv
   problemsDF <- readr::problems(tbl)
@@ -130,7 +148,7 @@ airsis_parseData <- function(fileString) {
   # Add monitor subtype for EBAM MULTI & MULTI2 seperation QC
   tbl$monitorSubtype <- monitorSubtype
 
-  #     EBAM-Multi fixes     ---------------------------------------------------
+  # ----- EBAM-Multi fixes -----------------------------------------------------
 
   if ( monitorType == "EBAM" ) {
 
@@ -140,7 +158,7 @@ airsis_parseData <- function(fileString) {
       # arb2 UnitID=1044 in August, 2018 does not return a "Date.Time.GMT" column
       # We add one here by flooring the "TimeStamp" colum.
 
-      logger.trace("Adding Date.Time.GMT column to EBAM-Multi data.")
+      logger.trace("Adding Date.Time.GMT column to EBAM_MULTI data.")
       if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
         # Remove rows where TimeStamp is NA
         badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
@@ -164,7 +182,7 @@ airsis_parseData <- function(fileString) {
 
     } else if ( monitorSubtype == "PLUS_MULTI" ) {
 
-      logger.trace("Adding Date.Time.GMT column to EBAM-Plus-Multi data.")
+      logger.trace("Adding Date.Time.GMT column to EBAM_PLUS_MULTI data.")
       if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
         # Remove rows where TimeStamp is NA
         badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
@@ -182,7 +200,7 @@ airsis_parseData <- function(fileString) {
       }
 
       # NOTE:  EBAM PLUS_MULTI provides "ConcHR" (ug/m3) instead of "ConcHr" (mg/m3)
-      tbl$ConcHr <- tbl$'ConcHR.\u00b5g.m3.'/ 1000
+      tbl$ConcHr <- tbl$'ConcHR.\u00b5g.m3.' / 1000
 
       # Unifying other column names
       tbl$Flow <- tbl$Flow.lpm.
@@ -196,22 +214,43 @@ airsis_parseData <- function(fileString) {
   }
 
 
-  #     E-Sampler fixes     ---------------------------------------------------
+  # ----- E-Sampler fixes ------------------------------------------------------
 
   if ( monitorType == "ESAM" ) {
 
-    # UnitID=1050 in July, 2016 has extra rows with some sort of metadata in columns Serial.Number and Data.1
-    # We remove those here.
+    if ( monitorSubtype == "MULTI" ) {
 
-    serialNumberMask <- (tbl$Serial.Number != "") & !is.na(tbl$Serial.Number)
-    if ( sum(serialNumberMask) > 0 ) {
-      logger.trace("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
-      tbl <- tbl[!serialNumberMask,]
+      # HACK
+      # usfs.1072-5 in June, 2020 does not return a "Date.Time.GMT" column
+      # We add one here by flooring the "TimeStamp" colum.
+
+      logger.trace("Adding Date.Time.GMT column to ESAM_MULTI data.")
+      if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
+        # Remove rows where TimeStamp is NA
+        badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
+        tbl <- tbl[!badMask,]
+        datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz = "UTC")
+        assignedHour <- lubridate::floor_date(datetime, unit = "hour")
+        tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
+      }
+
+
+    } else {
+
+      # UnitID=1050 in July, 2016 has extra rows with some sort of metadata in columns Serial.Number and Data.1
+      # We remove those here.
+
+      serialNumberMask <- (tbl$Serial.Number != "") & !is.na(tbl$Serial.Number)
+      if ( sum(serialNumberMask) > 0 ) {
+        logger.trace("Removing %d 'Serial Number' records from raw data", sum(serialNumberMask))
+        tbl <- tbl[!serialNumberMask,]
+      }
+
     }
 
   }
 
-  #     EBAM1020 fixes     ---------------------------------------------------
+  # ----- EBAM1020 fixes -------------------------------------------------------
 
   if ( monitorType == "BAM1020" ) {
 
@@ -220,12 +259,12 @@ airsis_parseData <- function(fileString) {
 
   }
 
-  #     Various fixes     -----------------------------------------------------
+  # ----- Various fixes --------------------------------------------------------
 
   # Check to see if any records remain
   if ( nrow(tbl) == 0 ) {
     logger.error("No data remaining after parsing cleanup")
-    stop("No data remaining after parsing cleanup", call.=FALSE)
+    stop("No data remaining after parsing cleanup", call. = FALSE)
   }
 
   # NOTE:  Latitude, Longitude and Sys..Volts are measured at 6am and 6pm
@@ -237,7 +276,11 @@ airsis_parseData <- function(fileString) {
   if (monitorType == "EBAM") {
     voltLabel <- "Sys..Volts"
   } else if (monitorType == "ESAM") {
-    voltLabel <- "System.Volts"
+    if ( monitorSubtype == "MULTI" ) {
+      voltLabel <- "Oceaneering.Unit.Voltage"
+    } else {
+      voltLabel <- "System.Volts"
+    }
   } else {
     # NOTE: BAM1020s don't have voltage data
     voltLabel <- NULL
@@ -254,6 +297,7 @@ airsis_parseData <- function(fileString) {
   logger.trace("Removing %d 'GPS' records from raw data", sum(gpsMask))
   tbl <- tbl[!gpsMask,]
 
+  # ----- Return ---------------------------------------------------------------
 
   logger.trace('Retaining %d rows of raw %s measurements', nrow(tbl), monitorType)
 

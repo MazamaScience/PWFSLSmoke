@@ -97,7 +97,11 @@ airsis_qualityControl <- function(
 
   } else if ( monitorType == 'ESAM' ) {
 
-    tbl <- airsis_ESAMQualityControl(tbl, ...)
+    if ( monitorSubtype == "MULTI" ) {
+      tbl <- airsis_ESAM_MULTIQualityControl(tbl, ...)
+    } else {
+      tbl <- airsis_ESAMQualityControl(tbl, ...)
+    }
 
   } else {
 
