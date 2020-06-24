@@ -5,7 +5,6 @@
 #'
 #' @param spatialDataDir directory where spatial datasets are created
 #' @param stateCodeDataset MazamaSpatialUtils dataset returning ISO 3166-2 alpha-2 stateCodes
-#' @param logLevel directory where spatial datasets are created
 #' @description Convenience function that wraps:
 #'
 #' \preformatted{
@@ -21,12 +20,9 @@
 
 initializeMazamaSpatialUtils <- function(
   spatialDataDir = '~/Data/Spatial',
-  stateCodeDataset = 'NaturalEarthAdm1',
-  logLevel = WARN
+  stateCodeDataset = 'NaturalEarthAdm1'
 ) {
 
-  logger.setup()
-  logger.setLevel(logLevel)
   setSpatialDataDir(spatialDataDir)
   loadSpatialData(stateCodeDataset)
 

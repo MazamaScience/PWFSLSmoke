@@ -1,27 +1,27 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 1.2.108
+Version: 1.2.109
 Title: Utilities for Working with Air Quality Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
+    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut")),
+    person("Spencer", "Pease", email="spencerpease618@gmail.com", role=c("aut")),
+    person("Helen", "Miller", email="helen@ohana.org", role=c("aut")),
     person("Rohan", "Aras", email="rohana@uw.edu", role=c("aut")),
     person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("aut")),
     person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("aut")),
     person("Jimin", "Kim", email="jk55@uw.edu", role=c("aut")),
-    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut")),
-    person("Helen", "Miller", email="helen@ohana.org", role=c("aut")),
-    person("Spencer", "Pease", email="spencerpease618@gmail.com", role=c("aut")),
     person("Rex", "Thompson", email="rexs.thompson@gmail.com", role=c("aut")),
     person("Alice", "Yang", email="wenhuy@uw.edu", role=c("aut"))
     )
 Author: Jonathan Callahan [aut, cre],
     Rohan Aras [aut],
+    Hans Martin [aut],
+    Spencer Pease [aut],
+    Helen Miller [aut],
     Zach Dingels [aut],
     Jon Hagg [aut],
     Jimin Kim [aut],
-    Hans Martin [aut],
-    Helen Miller [aut],
-    Spencer Pease [aut],
     Rex Thompson [aut],
     Alice Yang [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>

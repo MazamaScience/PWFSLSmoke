@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.109
+
+* Removed logging setup from `initializeMazamaSpatialutils()`.
+
 # PWFSLSmoke 1.2.108
 
 * Added support for parsing AIRSIS "ESAM Multi" format.
