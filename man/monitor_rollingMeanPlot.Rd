@@ -86,6 +86,8 @@ a specific monitor.
 This function attempts to provide a 'publication ready' rolling mean plot.
 }
 \examples{
+library(PWFSLSmoke)
+
 N_M <- Northwest_Megafires
 Roseburg <- monitor_subset(N_M, tlim = c(20150821, 20150831),
                            monitorIDs = c("410190002_01"))

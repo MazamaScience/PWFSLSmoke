@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -194,17 +194,26 @@ representing YYYYMMDD[HH])</p></td>
     <p>Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
 <span class='co'># Napa Fires -- October, 2017</span>
 <span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='airnow_load.html'>airnow_load</a></span>(<span class='fl'>2017</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20171001</span>,<span class='fl'>20171101</span>), <span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'CA'</span>)
+
 <span class='no'>Vallejo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>ca</span>, <span class='kw'>monitorIDs</span><span class='kw'>=</span><span class='st'>'060950004_01'</span>)
-<span class='no'>Napa_Fires</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subsetByDistance.html'>monitor_subsetByDistance</a></span>(<span class='no'>ca</span>,
-                                       <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='no'>Vallejo</span>$<span class='no'>meta</span>$<span class='no'>longitude</span>,
-                                       <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='no'>Vallejo</span>$<span class='no'>meta</span>$<span class='no'>latitude</span>,
-                                       <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>50</span>)
-<span class='fu'>monitor_dygraph</span>(<span class='no'>Napa_Fires</span>, <span class='kw'>title</span><span class='kw'>=</span><span class='st'>'Napa Fires in California, Oct. 2017'</span>)
-}</div></pre>
+
+<span class='no'>Napa_Fires</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subsetByDistance.html'>monitor_subsetByDistance</a></span>(
+  <span class='no'>ca</span>,
+  <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='no'>Vallejo</span>$<span class='no'>meta</span>$<span class='no'>longitude</span>,
+  <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='no'>Vallejo</span>$<span class='no'>meta</span>$<span class='no'>latitude</span>,
+  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>50</span>
+)
+
+<span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
+  <span class='fu'>monitor_dygraph</span>(<span class='no'>Napa_Fires</span>, <span class='kw'>title</span><span class='kw'>=</span><span class='st'>'Napa Fires in California, Oct. 2017'</span>)
+}
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

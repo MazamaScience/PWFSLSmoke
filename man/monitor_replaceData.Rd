@@ -26,7 +26,9 @@ in \code{ws_monitor$data} that should be replaced.  Typical usage would include
 Expressions should use \code{data} for the left hand side of the comparison.
 }
 \examples{
-wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
+library(PWFSLSmoke)
+
+wa <- monitor_subset(Northwest_Megafires, stateCodes = 'WA')
 wa_zero <- monitor_replaceData(wa, data < 0, 0)
 }
 \keyword{ws_monitor}

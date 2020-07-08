@@ -44,7 +44,9 @@ Calculated Nowcast values are truncated to the nearest .1 ug/m3 for 'pm' and nea
 .001 ppm for 'ozone' regardless of the precision of the data in the incoming \emph{ws_monitor} object.
 }
 \examples{
-\dontrun{
+\donttest{
+library(PWFSLSmoke)
+
 N_M <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 Omak <- monitor_subset(N_M, monitorIDs='530470013_01')
 Omak_nowcast <- monitor_nowcast(Omak, includeShortTerm=TRUE)

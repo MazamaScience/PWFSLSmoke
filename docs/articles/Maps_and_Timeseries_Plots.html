@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -145,18 +145,19 @@
 <a class="sourceLine" id="cb5-6" data-line-number="6">                           <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)</a></code></pre></div>
 <p>We can use the <code><a href="../reference/monitor_dailyBarplot.html">monitor_dailyBarplot()</a></code> function to look at official, midnight-to-midnight AQI levels for each monitor during the month of August:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">6</span>)))</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mar =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="cf">for</span> (monitorID <span class="cf">in</span> NezPerceIDs) {</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">  siteName &lt;-<span class="st"> </span>NezPerce<span class="op">$</span>meta[monitorID, <span class="st">'siteName'</span>]</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="kw"><a href="../reference/monitor_dailyBarplot.html">monitor_dailyBarplot</a></span>(</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">    NezPerce, </a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">    <span class="dt">monitorID =</span> monitorID, </a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">    <span class="dt">main =</span> siteName, </a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">    <span class="dt">axes =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">  ) </a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">}</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2">opar &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mar =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/on.exit.html">on.exit</a></span>(<span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(opar))</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="cf">for</span> (monitorID <span class="cf">in</span> NezPerceIDs) {</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  siteName &lt;-<span class="st"> </span>NezPerce<span class="op">$</span>meta[monitorID, <span class="st">'siteName'</span>]</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  <span class="kw"><a href="../reference/monitor_dailyBarplot.html">monitor_dailyBarplot</a></span>(</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">    NezPerce, </a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    <span class="dt">monitorID =</span> monitorID, </a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">    <span class="dt">main =</span> siteName, </a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">    <span class="dt">axes =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">  ) </a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">}</a></code></pre></div>
 <p><img src="Maps_and_Timeseries_Plots_files/figure-html/dailyBarplot-1.png" width="672"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mar =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="fl">.1</span>)</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(opar)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span>(<span class="dv">1</span>)</a></code></pre></div>
 <p>We could also take a more automated approach and directly calculate the location with the worst acute smoke (worst hourly value) during this time period:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">data &lt;-<span class="st"> </span>PacNW<span class="op">$</span>data[,<span class="op">-</span><span class="dv">1</span>] <span class="co"># omit 'datetime' column</span></a>

@@ -86,7 +86,7 @@ specified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -210,8 +210,12 @@ of the CSV</p></td>
 defaults to <code>quietly = TRUE</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"Carmel_Valley"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"Carmel_Valley"</span>)
+
 <span class='no'>Carmel_Valley</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20160802</span>,<span class='fl'>20160803</span>))
+
 <span class='fu'>monitor_print</span>(<span class='no'>Carmel_Valley</span>)</div><div class='output co'>#&gt; ##### Site metadata begins below here,,
 #&gt; parameter,blank,060530002_01
 #&gt; monitorID,,060530002_01

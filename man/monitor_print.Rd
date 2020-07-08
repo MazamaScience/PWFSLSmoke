@@ -46,8 +46,12 @@ The \link{monitor_writeCSV} function is an alias for this function but
 defaults to \code{quietly = TRUE}.
 }
 \examples{
+library(PWFSLSmoke)
+
 data("Carmel_Valley")
+
 Carmel_Valley <- monitor_subset(Carmel_Valley, tlim = c(20160802,20160803))
+
 monitor_print(Carmel_Valley)
 monitor_print(Carmel_Valley, metaOnly = TRUE)
 monitor_print(Carmel_Valley, dataOnly = TRUE)

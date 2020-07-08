@@ -18,6 +18,8 @@ Changes write-optomized `ws_monitor` formatted data into a read-optomized
 already in a tidy format, it is returned as is.
 }
 \examples{
+library(PWFSLSmoke)
+
 ws_monitor <- monitor_subset(
   Northwest_Megafires,
   monitorIDs = c('530470009_01', '530470010_01')

@@ -18,6 +18,8 @@ A \emph{ws_monitor} object with scaled data.
 Scale the data in a \emph{ws_monitor} object by mutiplying it with \code{factor}.
 }
 \examples{
+library(PWFSLSmoke)
+
 wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
 wa_zero <- monitor_scaleData(wa, 3.4)
 }

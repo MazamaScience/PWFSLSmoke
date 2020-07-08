@@ -42,30 +42,36 @@
 #' @export
 #'
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' C_V <- monitor_subset(Carmel_Valley, tlim = c(2016080800,2016081023),
 #'                       timezone = "America/Los_Angeles")
+#'
 #' monitor_hourlyBarplot(C_V, main = "1-Hourly Average PM2.5",
 #'                       labels_x_nudge = 1, labels_y_nudge = 0)
-monitor_hourlyBarplot <- function(ws_monitor,
-                                  monitorID = NULL,
-                                  tlim = NULL,
-                                  localTime = TRUE,
-                                  style = "AQI",
-                                  shadedNight = TRUE,
-                                  gridPos = "",
-                                  gridCol = "black",
-                                  gridLwd = 0.5,
-                                  gridLty = "solid",
-                                  labels_x_nudge = 0,
-                                  labels_y_nudge = 0,
-                                  dayCol = "black",
-                                  dayLwd = 2,
-                                  dayLty = "solid",
-                                  hourCol = "black",
-                                  hourLwd = 1,
-                                  hourLty = "solid",
-                                  hourInterval = 6,
-                                  ...) {
+
+monitor_hourlyBarplot <- function(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  localTime = TRUE,
+  style = "AQI",
+  shadedNight = TRUE,
+  gridPos = "",
+  gridCol = "black",
+  gridLwd = 0.5,
+  gridLty = "solid",
+  labels_x_nudge = 0,
+  labels_y_nudge = 0,
+  dayCol = "black",
+  dayLwd = 2,
+  dayLty = "solid",
+  hourCol = "black",
+  hourLwd = 1,
+  hourLty = "solid",
+  hourInterval = 6,
+  ...
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {

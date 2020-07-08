@@ -46,10 +46,12 @@ Avaialble RData files can be seen at:
 \href{https://haze.airfire.org/monitoring/latest/RData/}{https://haze.airfire.org/monitoring/latest/RData/}
 }
 \examples{
-\dontrun{
-monitor_loadLatest() \%>\%
-  monitor_subset(stateCodes=CONUS) \%>\%
-  monitor_map()
+\donttest{
+library(PWFSLSmoke)
+
+monitor_loadAnnual(2018) \%>\%
+  monitor_subset(stateCodes = "WA", tlim = c(20180701, 20181001)) \%>\%
+  monitor_timeseriesPlot(style = 'gnats')
 }
 }
 \seealso{

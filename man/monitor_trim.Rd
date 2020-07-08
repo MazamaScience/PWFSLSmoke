@@ -18,7 +18,10 @@ after the last valid datapoint for any monitor.
 }
 \examples{
 \dontrun{
-sm13 <- wrcc_createMonitorObject(20150101, 20151231, unitID='sm13')
+library(PWFSLSmoke)
+library(MazamaSpatialUtils)
+
+sm13 <- wrcc_createMonitorObject(20150101, 20151231, unitID = 'sm13')
 sm13$meta[,c('stateCode','countyName','siteName','monitorID')]
 Deschutes <- monitor_subset(sm13, monitorIDs='lon_.121.453_lat_43.878_wrcc.sm13')
 Deschutes <- monitor_trim(Deschutes)

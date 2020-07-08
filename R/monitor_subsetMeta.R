@@ -9,19 +9,21 @@
 #' @param monitorIDs optional vector of monitorIDs
 #' @return A \emph{ws_monitor} object \code{meta} dataframe, or \code{NULL} if filtering removes all monitors.
 #' @description Subsets the \code{ws_monitor$data} dataframe by removing any monitors that
-#' lie outisde the geographical ranges specified (i.e. outside of the given longitudes and 
+#' lie outisde the geographical ranges specified (i.e. outside of the given longitudes and
 #' latitudes and/or states) and that are not mentioned in the list of monitorIDs.
 #' @description If any parameter is not specified, that parameter will not be used in the subsetting.
 #' @description Intended for use by the monitor_subset function.
 #' @details Longitudes must be specified in the domain [-180,180].
 
-monitor_subsetMeta <- function(meta,
-                               xlim=NULL,
-                               ylim=NULL,
-                               stateCodes=NULL,
-                               countryCodes=NULL,
-                               monitorIDs=NULL) {
-  
+monitor_subsetMeta <- function(
+  meta,
+  xlim = NULL,
+  ylim = NULL,
+  stateCodes = NULL,
+  countryCodes = NULL,
+  monitorIDs = NULL
+) {
+
   if ( !is.null(xlim) ) {
     # Sanity check -- longitude domain
     for (i in seq(2)) {
@@ -36,7 +38,7 @@ monitor_subsetMeta <- function(meta,
     xlim <- sort(xlim)
     meta <- dplyr::filter(meta, meta$longitude >= xlim[1] & meta$longitude <= xlim[2])
   }
-  
+
   if ( !is.null(ylim) ) {
     # Sanity check -- latitude domain
     if (min(ylim) < -90 || max(ylim) > 90) {
@@ -45,7 +47,7 @@ monitor_subsetMeta <- function(meta,
     ylim <- sort(ylim)
     meta <- dplyr::filter(meta, meta$latitude >= ylim[1] & meta$latitude <= ylim[2])
   }
-  
+
   if ( !is.null(countryCodes) ) {
     # Guarantee upper case countrycodes
     countryCodes <- stringr::str_to_upper(countryCodes)
@@ -55,7 +57,7 @@ monitor_subsetMeta <- function(meta,
       warning("No 'countryCode' column found in monitor metadata.")
     }
   }
-  
+
   if ( !is.null(stateCodes) ) {
     # Guarantee upper case statecodes
     stateCodes <- stringr::str_to_upper(stateCodes)
@@ -65,18 +67,18 @@ monitor_subsetMeta <- function(meta,
       warning("No 'stateCode' column found in monitor metadata.")
     }
   }
-  
+
   if ( !is.null(monitorIDs) ) {
     monitorIDs <- as.character(monitorIDs) # allow incoming monitorIDs to be numeric
     meta <- dplyr::filter(meta, meta$monitorID %in% monitorIDs)
   }
-  
+
   if ( nrow(meta) == 0 ) {
-    
+
     warning("No matching monitors found.")
-    
+
   } else {
-    
+
     # Restore rownames that dplyr::filter discards
     rownames(meta) <- meta$monitorID
     # Guarantee that monitors are returned in the order requested
@@ -84,9 +86,9 @@ monitor_subsetMeta <- function(meta,
       foundMonitorIDs <- intersect(monitorIDs, rownames(meta)) # perhaps not all monitorIDs were found
       meta <- meta[foundMonitorIDs,]
     }
-    
+
   }
-  
+
   return(meta)
 }
 

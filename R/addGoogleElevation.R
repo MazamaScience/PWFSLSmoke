@@ -1,7 +1,7 @@
 #' @keywords internal
 #' @export
 #' @import MazamaCoreUtils
-#' @importFrom utils installed.packages
+#'
 #' @title Add Elevation Data to a Dataframe
 #' @param df dataframe with geolocation information (\emph{e.g.} those created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
@@ -69,7 +69,7 @@ addGoogleElevation <- function(
     dfList <- list()
     for (i in 1:loopCount) {
 
-      startIndex <- (i-1) * 300 + 1
+      startIndex <- (i - 1) * 300 + 1
       if (i != loopCount) {
         endIndex <- i * 300
       } else {

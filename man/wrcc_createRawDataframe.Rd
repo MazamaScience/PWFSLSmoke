@@ -54,7 +54,10 @@ Monitor unitIDs can be found at https://wrcc.dri.edu/cgi-bin/smoke.pl.
 }
 \examples{
 \dontrun{
+library(PWFSLSmoke)
+
 tbl <- wrcc_createRawDataframe(20150701, 20150930, unitID = 'SM16')
+dplyr::glimpse(tbl)
 }
 
 }

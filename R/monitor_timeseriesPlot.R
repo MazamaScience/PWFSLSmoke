@@ -44,6 +44,8 @@
 #' @keywords ws_monitor
 #'
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' N_M <- Northwest_Megafires
 #' # monitor_leaflet(N_M) # to identify Spokane monitorIDs
 #' Spokane <- monitor_subsetBy(
@@ -70,21 +72,24 @@
 #' abline(h = AQI$breaks_24, col = AQI$colors, lwd = 2)
 #' addAQILegend()
 #' title("Spokane PM2.5 values, August 2015")
-monitor_timeseriesPlot <- function(ws_monitor,
-                                   monitorID = NULL,
-                                   tlim = NULL,
-                                   localTime = TRUE,
-                                   style = NULL,
-                                   shadedNight = FALSE,
-                                   add = FALSE,
-                                   gridPos = "",
-                                   gridCol = "black",
-                                   gridLwd = 1,
-                                   gridLty = "solid",
-                                   dayLwd = 0,
-                                   hourLwd = 0,
-                                   hourInterval = 6,
-                                   ...) {
+
+monitor_timeseriesPlot <- function(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  localTime = TRUE,
+  style = NULL,
+  shadedNight = FALSE,
+  add = FALSE,
+  gridPos = "",
+  gridCol = "black",
+  gridLwd = 1,
+  gridLty = "solid",
+  dayLwd = 0,
+  hourLwd = 0,
+  hourInterval = 6,
+  ...
+) {
 
   # For testing
   if ( FALSE ) {

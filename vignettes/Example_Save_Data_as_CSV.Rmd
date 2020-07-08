@@ -80,7 +80,7 @@ title("Mariposa 2019")
 # Dump out a meta/data combined CSV file for Mariposa
 monitor_writeCSV(
   Mariposa, 
-  saveFile = "Mariposa.csv",
+  saveFile = file.path(tempdir(), "Mariposa.csv"),
   metaOnly = FALSE,
   dataOnly = FALSE,
   quietly = TRUE
@@ -96,7 +96,7 @@ airsis_ca <- monitor_trim(airsis_ca)
 # Dump out airsis_ca metadata to a CSV file
 monitor_writeCSV(
   airsis_ca, 
-  saveFile = "airsis_CA_meta.csv",
+  saveFile = file.path(tempdir(), "airsis_CA_meta.csv"),
   metaOnly = TRUE,
   dataOnly = FALSE,
   quietly = TRUE
@@ -105,7 +105,7 @@ monitor_writeCSV(
 # Dump out airsis_ca data to a CSV file
 monitor_writeCSV(
   airsis_ca, 
-  saveFile = "airsis_CA_data.csv",
+  saveFile = file.path(tempdir(), "airsis_CA_data.csv"),
   metaOnly = FALSE,
   dataOnly = TRUE,
   quietly = TRUE

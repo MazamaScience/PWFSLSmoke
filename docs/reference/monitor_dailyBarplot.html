@@ -82,7 +82,7 @@ When tlim is used, it is converted to the monitor local timezone." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -233,13 +233,12 @@ lines)</p></td>
 date labeling. Units used are the same as those in the plot.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
 <span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Northwest_Megafires</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20150715</span>, <span class='fl'>20150930</span>))
 <span class='no'>main</span> <span class='kw'>&lt;-</span> <span class='st'>"Daily Average PM2.5 for Omak, WA"</span>
 <span class='fu'>monitor_dailyBarplot</span>(<span class='no'>N_M</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='st'>"530470013_01"</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='no'>main</span>,
-                         <span class='kw'>labels_x_nudge</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='fu'><a href='addAQILegend.html'>addAQILegend</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='no'>AQI</span>$<span class='no'>colors</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-}</div></pre>
+                         <span class='kw'>labels_x_nudge</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='input'><span class='fu'><a href='addAQILegend.html'>addAQILegend</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='no'>AQI</span>$<span class='no'>colors</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='img'><img src='monitor_dailyBarplot-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

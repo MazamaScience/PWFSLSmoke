@@ -39,6 +39,8 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(PWFSLSmoke)
+#'
 #' raw <- airsis_createRawDataframe(startdate = 20160901,
 #'                                  provider = 'USFS',
 #'                                  unitID = '1033')

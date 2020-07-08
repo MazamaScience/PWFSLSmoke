@@ -11,14 +11,20 @@
 #' objects. This can be used to 'grow' a \emph{ws_monitor} object by appending subsequent months
 #' or years. (Note, however, that this can be CPU intensive process.)
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(PWFSLSmoke)
+#' initializeMazamaSpatialUtils()
+#'
 #' monitorList <- list()
 #' monitorList[[1]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1031')
 #' monitorList[[2]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1032')
 #' monitorList[[3]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1033')
 #' monitorList[[4]] <- airsis_createMonitorObject(20160701, 20161231, 'USFS', '1034')
 #' ws_monitor <- monitor_combine(monitorList)
-#' monitor_leaflet(ws_monitor)
+#'
+#' if ( interactive() ) {
+#'   monitor_leaflet(ws_monitor)
+#' }
 #' }
 
 monitor_combine <- function(monitorList) {

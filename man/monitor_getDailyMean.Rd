@@ -31,6 +31,8 @@ Calculates and returns daily means for a monitor. If either
 returned for that date.
 }
 \examples{
+library(PWFSLSmoke)
+
 monitor_getDailyMean(PWFSLSmoke::Carmel_Valley,
                      startdate = "2016-08-01",
                      enddate = "2016-08-08")

@@ -95,7 +95,7 @@ dailyAvg daily average PM2.5 values as calculated with monitor_dailyStatistic()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -232,13 +232,27 @@ to the vector of <code>extraColumns{}</code></p><ul>
 <p><code><a href='monitor_dailyStatistic.html'>monitor_dailyStatistic</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
 <span class='no'>wa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Northwest_Megafires</span>, <span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'WA'</span>)
+
 <span class='no'>Omak_df</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_asDataframe</span>(<span class='no'>wa</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='st'>'530470013_01'</span>,
                                <span class='kw'>extraColumns</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'nowcast'</span>,<span class='st'>'dailyAvg'</span>),
                                <span class='kw'>metaColumns</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'aqsID'</span>,<span class='st'>'siteName'</span>,<span class='st'>'timezone'</span>),
                                <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20150801</span>,<span class='fl'>20150901</span>))
-}</div></pre>
+
+<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>glimpse</a></span>(<span class='no'>Omak_df</span>)</div><div class='output co'>#&gt; Observations: 745
+#&gt; Variables: 8
+#&gt; $ utcTime   <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "2015-08-01 07:00:00 +0000", "2015-08-01 08:00:00 +0000", "…
+#&gt; $ localTime </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "2015-08-01 00:00:00 -0700", "2015-08-01 01:00:00 -0700", "…
+#&gt; $ pm25      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 16.9, 12.7, 11.8, 9.9, 9.3, 9.9, 11.2, 10.3, 11.1, 6.4, 5.1…
+#&gt; $ nowcast   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 19.3, 16.0, 13.9, 11.9, 10.6, 10.2, 10.7, 10.5, 10.8, 8.6, …
+#&gt; $ dailyAvg  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 23.4, 23.4, 23.4, 23.4, 23.4, 23.4, 23.4, 23.4, 23.4, 23.4,…
+#&gt; $ aqsID     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "530470013", "530470013", "530470013", "530470013", "530470…
+#&gt; $ siteName  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "Omak-Colville Tribe", "Omak-Colville Tribe", "Omak-Colvill…
+#&gt; $ timezone  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "America/Los_Angeles", "America/Los_Angeles", "America/Los_…</div><div class='input'># }
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

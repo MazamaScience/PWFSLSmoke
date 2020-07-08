@@ -56,12 +56,17 @@ to the vector of \code{extraColumns{}}
 The \code{tlim} argument is interpreted as localtime, not UTC.
 }
 \examples{
-\dontrun{
+\donttest{
+library(PWFSLSmoke)
+
 wa <- monitor_subset(Northwest_Megafires, stateCodes='WA')
+
 Omak_df <- monitor_asDataframe(wa, monitorID='530470013_01',
                                extraColumns=c('nowcast','dailyAvg'),
                                metaColumns=c('aqsID','siteName','timezone'),
                                tlim=c(20150801,20150901))
+
+dplyr::glimpse(Omak_df)
 }
 }
 \seealso{

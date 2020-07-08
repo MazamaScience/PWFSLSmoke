@@ -57,8 +57,10 @@
 #' @seealso \code{\link{wrcc_createDataDataframe}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(PWFSLSmoke)
 #' initializeMazamaSpatialUtils()
+#'
 #' sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID = 'sm13')
 #' monitor_leaflet(sm13)
 #' }

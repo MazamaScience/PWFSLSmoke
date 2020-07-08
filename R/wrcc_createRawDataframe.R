@@ -30,7 +30,10 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(PWFSLSmoke)
+#'
 #' tbl <- wrcc_createRawDataframe(20150701, 20150930, unitID = 'SM16')
+#' dplyr::glimpse(tbl)
 #' }
 #'
 #' @note The downloaded CSV may be saved to a local file by providing an argument to the \code{saveFile} parameter.

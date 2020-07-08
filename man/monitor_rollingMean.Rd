@@ -35,10 +35,13 @@ Calculates rolling means for each monitor in \code{ws_monitor} using the
 }
 }
 \examples{
+library(PWFSLSmoke)
+
 N_M <- Northwest_Megafires
 wa_smoky <- monitor_subset(N_M, stateCodes='WA', tlim=c(20150801, 20150808), vlim=c(100,Inf))
 wa_smoky_3hr <- monitor_rollingMean(wa_smoky, width=3, align="center")
 wa_smoky_24hr <- monitor_rollingMean(wa_smoky, width=24, align="right")
+
 monitor_timeseriesPlot(wa_smoky, type='l', shadedNight=TRUE)
 monitor_timeseriesPlot(wa_smoky_3hr, type='l', col='red', add=TRUE)
 monitor_timeseriesPlot(wa_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)

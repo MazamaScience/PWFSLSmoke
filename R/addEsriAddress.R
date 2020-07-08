@@ -1,7 +1,6 @@
 #' @keywords internal
 #' @export
 #' @import MazamaCoreUtils
-#' @importFrom utils installed.packages
 #'
 #' @title Add address information to a dataframe
 #'

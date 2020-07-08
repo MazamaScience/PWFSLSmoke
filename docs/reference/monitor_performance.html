@@ -81,7 +81,7 @@ all available metrics are returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -210,23 +210,30 @@ all available metrics are returned.</p>
 <p><a href='skill_confusionMatrix.html'>skill_confusionMatrix</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
 <span class='co'># If daily avg data were the prediciton and Spokane were</span>
 <span class='co'># the observed, which WA State monitors had skill?</span>
+
 <span class='no'>wa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='airnow_loadAnnual.html'>airnow_loadAnnual</a></span>(<span class='fl'>2017</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'WA'</span>)
 <span class='no'>wa_dailyAvg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_dailyStatistic.html'>monitor_dailyStatistic</a></span>(<span class='no'>wa</span>, <span class='no'>mean</span>)
 <span class='no'>Spokane_dailyAvg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>wa_dailyAvg</span>, <span class='kw'>monitorIDs</span><span class='kw'>=</span><span class='st'>'530630021_01'</span>)
+
 <span class='no'>threshold</span> <span class='kw'>&lt;-</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>[<span class='fl'>4</span>] <span class='co'># Unhealthy</span>
 <span class='no'>performanceMetrics</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_performance</span>(<span class='no'>wa_dailyAvg</span>,
                                           <span class='no'>Spokane_dailyAvg</span>,
                                           <span class='no'>threshold</span>, <span class='no'>threshold</span>)
+
 <span class='no'>monitorIDs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>performanceMetrics</span>)
 <span class='no'>mask</span> <span class='kw'>&lt;-</span> <span class='no'>performanceMetrics</span>$<span class='no'>heidkeSkill</span> <span class='kw'>&amp;</span>
         !<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>performanceMetrics</span>$<span class='no'>heidkeSkill</span>)
+
 <span class='no'>skillfulIDs</span> <span class='kw'>&lt;-</span> <span class='no'>monitorIDs</span>[<span class='no'>mask</span>]
 <span class='no'>skillful</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>wa_dailyAvg</span>, <span class='kw'>monitorIDs</span><span class='kw'>=</span><span class='no'>skillfulIDs</span>)
+
 <span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>skillful</span>)
-}</div></pre>
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

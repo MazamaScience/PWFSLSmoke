@@ -19,22 +19,26 @@
 #' @return A dataframe from the given \emph{ws_monitor} object
 #'
 #' @examples
-#' \dontrun{
+#' library(PWFSLSmoke)
+#'
 #' ws_monitor <- Northwest_Megafires
 #'
-#' NMData <- ws_monitor %>%
+#' data <- ws_monitor %>%
 #'   monitor_subset(
 #'     stateCodes = "WA",
 #'     tlim = c(20150801, 20150831)
 #'   ) %>%
-#'   extract_data()
+#'   monitor_extractData()
 #'
-#' monitor_subset(
+#' meta <- ws_monitor %>%
+#'   monitor_subset(
 #'     stateCodes = "WA",
 #'     tlim = c(20150801, 20150831)
 #'   ) %>%
-#'   extract_meta()
-#' }
+#'   monitor_extractMeta()
+#'
+#' dplyr::glimpse(meta)
+#' dplyr::glimpse(data)
 #'
 #' @name monitor_extractDataFrame
 #' @aliases monitor_extractData monitor_extractMeta

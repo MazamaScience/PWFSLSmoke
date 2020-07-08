@@ -87,7 +87,9 @@
 #' @import MazamaCoreUtils
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(PWFSLSmoke)
+#'
 #' ws_monitor <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
 #' statusTbl <- monitor_getCurrentStatus(ws_monitor)
 #' }

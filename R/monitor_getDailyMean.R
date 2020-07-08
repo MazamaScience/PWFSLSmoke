@@ -17,6 +17,8 @@
 #' @export
 #'
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' monitor_getDailyMean(PWFSLSmoke::Carmel_Valley,
 #'                      startdate = "2016-08-01",
 #'                      enddate = "2016-08-08")

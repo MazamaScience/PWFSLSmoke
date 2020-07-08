@@ -35,11 +35,15 @@
 #' @export
 #'
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' N_M <- Northwest_Megafires
 #' # monitor_leaflet(N_M) # to identify Spokane monitorIDs
+#'
 #' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 #' Spokane_min <- monitor_collapse(Spokane, monitorID='Spokane_min', FUN=min)
 #' Spokane_max <- monitor_collapse(Spokane, monitorID='Spokane_max', FUN=max)
+#'
 #' monitor_timeseriesPlot(Spokane, tlim=c(20150619,20150626),
 #'                        style='gnats', shadedNight=TRUE)
 #' monitor_timeseriesPlot(Spokane_max, col='red', type='s', add=TRUE)

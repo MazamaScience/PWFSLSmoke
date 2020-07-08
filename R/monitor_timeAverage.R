@@ -8,33 +8,34 @@
 #' and renames the \code{'datetime'} column so that it can be processed by the \pkg{openair} package's
 #' \code{timeAverage()} function. (See that function for details.)
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' C_V <- monitor_subset(Carmel_Valley, tlim=c(2016080800,2016081023),
 #'                       timezone='America/Los_Angeles')
 #' C_V_3hourly <- monitor_timeAverage(C_V, avg.time="3 hour")
 #' head(C_V$data, n=15)
 #' head(C_V_3hourly$data, n=5)
 
-
 monitor_timeAverage <- function(ws_monitor, ...) {
-  
+
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
-  
+
   # Extract and prepare data
   meta <- ws_monitor$meta
   data <- ws_monitor$data
   names(data)[1] <- 'date'
-  
+
   # Apply openair::timeAverage()
   argsList <- list(...)
   argsList$mydata <- data
   averagedData <- as.data.frame( do.call(openair::timeAverage, argsList) )
-  
+
   # Rebuild ws_monitor object
   names(averagedData)[1] <- 'datetime'
   ws_monitor <- list(meta=meta, data=averagedData)
-  
+
   return( structure(ws_monitor, class = c("ws_monitor", "list")) )
-  
+
 }
 

@@ -26,6 +26,8 @@ Nowcast and AQI algorithms are applied to the data in the ws_monitor object.
 }
 \examples{
 \dontrun{
+library(PWFSLSmoke)
+
 ws_monitor <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 aqi <- monitor_aqi(ws_monitor)
 monitor_timeseriesPlot(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")

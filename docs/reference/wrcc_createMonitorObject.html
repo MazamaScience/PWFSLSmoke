@@ -102,7 +102,7 @@ Note that appropriate values for QC thresholds will depend on the type of monito
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -279,11 +279,16 @@ valid data ranges as taken from <code><a href='wrcc_EBAMQualityControl.html'>wrc
 <p><code><a href='wrcc_createDataDataframe.html'>wrcc_createDataDataframe</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
-<span class='no'>sm13</span> <span class='kw'>&lt;-</span> <span class='fu'>wrcc_createMonitorObject</span>(<span class='fl'>20150301</span>, <span class='fl'>20150831</span>, <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='st'>'sm13'</span>)
-<span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>sm13</span>)
-}</div></pre>
+
+<span class='no'>sm13</span> <span class='kw'>&lt;-</span> <span class='fu'>wrcc_createMonitorObject</span>(<span class='fl'>20150301</span>, <span class='fl'>20150831</span>, <span class='kw'>unitID</span> <span class='kw'>=</span> <span class='st'>'sm13'</span>)</div><div class='output co'>#&gt; WARN [2020-07-08 11:44:37] More than one monitor type detected: 9, 0
+#&gt; WARN [2020-07-08 11:44:37] More than one monitor type detected: 9, 0
+#&gt; WARN [2020-07-08 11:44:37] More than one monitor type detected: 9, 0
+#&gt; WARN [2020-07-08 11:44:37] More than one monitor type detected: 9, 0
+#&gt; WARN [2020-07-08 11:44:37] More than one monitor type detected: 9, 0</div><div class='input'><span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>sm13</span>)
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -11,7 +11,12 @@
 #' @import graphics
 #' @export
 #' @keywords internal
-monitor_noDataPlot <- function(ws_monitor, monitorID = NULL, cex = 2.5) {
+
+monitor_noDataPlot <- function(
+  ws_monitor,
+  monitorID = NULL,
+  cex = 2.5
+) {
 
   # Allow single monitor objects to be used without specifying monitorID
   if (is.null(monitorID) && nrow(ws_monitor$meta) == 1) {
@@ -19,7 +24,8 @@ monitor_noDataPlot <- function(ws_monitor, monitorID = NULL, cex = 2.5) {
   }
 
   # Change margins
-  par(mar = c(1, 1, 1, 1))
+  opar <- par(mar = c(1, 1, 1, 1))
+  on.exit(par(opar))
 
   # Blank plot
   plot(
@@ -36,8 +42,5 @@ monitor_noDataPlot <- function(ws_monitor, monitorID = NULL, cex = 2.5) {
 
   #NOTE: Might want to set up separate cex argument for this
   text(0.5, 0.4, monitorID, cex = 0.8 * cex)
-
-  # reset default margins
-  par(mar = c(5, 4, 4, 2) + .1)
 
 }

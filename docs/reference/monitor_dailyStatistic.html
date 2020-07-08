@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -202,7 +202,7 @@ object.</p>
 <code>datetime</code> is set to the beginning of each day, 00:00:00, local time.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Northwest_Megafires</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20150801</span>,<span class='fl'>20150831</span>))
 <span class='no'>WinthropID</span> <span class='kw'>&lt;-</span> <span class='st'>'530470010_01'</span>
 <span class='no'>TwispID</span> <span class='kw'>&lt;-</span> <span class='st'>'530470009_01'</span>
@@ -213,19 +213,12 @@ object.</p>
                                                  <span class='kw'>FUN</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>'mean'</span>),
                                                  <span class='kw'>dayStart</span><span class='kw'>=</span><span class='st'>'midnight'</span>)
 <span class='co'># Get the full Y scale</span>
-<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley</span>, <span class='kw'>style</span><span class='kw'>=</span><span class='st'>'gnats'</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'transparent'</span>)
-<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>TwispID</span>,
-                       <span class='kw'>style</span><span class='kw'>=</span><span class='st'>'gnats'</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'forestgreen'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>WinthropID</span>,
-                       <span class='kw'>style</span><span class='kw'>=</span><span class='st'>'gnats'</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'purple'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley_dailyMean</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>TwispID</span>,
-                       <span class='kw'>type</span><span class='kw'>=</span><span class='st'>'s'</span>, <span class='kw'>lwd</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'forestgreen'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley_dailyMean</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>WinthropID</span>,
-                       <span class='kw'>type</span><span class='kw'>=</span><span class='st'>'s'</span>, <span class='kw'>lwd</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'purple'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='addAQILines.html'>addAQILines</a></span>()
-<span class='fu'><a href='addAQILegend.html'>addAQILegend</a></span>(<span class='st'>"topleft"</span>, <span class='kw'>lwd</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='kw'>NULL</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span>(<span class='st'>"Winthrop &amp; Twisp, Washington Daily Mean PM2.5, 2015"</span>)
-}</div></pre>
+<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley</span>, <span class='kw'>style</span><span class='kw'>=</span><span class='st'>'gnats'</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'transparent'</span>)</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>TwispID</span>,
+                       <span class='kw'>style</span><span class='kw'>=</span><span class='st'>'gnats'</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'forestgreen'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>WinthropID</span>,
+                       <span class='kw'>style</span><span class='kw'>=</span><span class='st'>'gnats'</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'purple'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley_dailyMean</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>TwispID</span>,
+                       <span class='kw'>type</span><span class='kw'>=</span><span class='st'>'s'</span>, <span class='kw'>lwd</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'forestgreen'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>MethowValley_dailyMean</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='no'>WinthropID</span>,
+                       <span class='kw'>type</span><span class='kw'>=</span><span class='st'>'s'</span>, <span class='kw'>lwd</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'purple'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='addAQILines.html'>addAQILines</a></span>()</div><div class='input'><span class='fu'><a href='addAQILegend.html'>addAQILegend</a></span>(<span class='st'>"topleft"</span>, <span class='kw'>lwd</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='kw'>NULL</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span>(<span class='st'>"Winthrop &amp; Twisp, Washington Daily Mean PM2.5, 2015"</span>)</div><div class='img'><img src='monitor_dailyStatistic-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

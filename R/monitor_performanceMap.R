@@ -42,6 +42,8 @@
 #' @seealso \link{monitor_performance}
 #' @examples
 #' \dontrun{
+#' library(PWFSLSmoke)
+#'
 #' # Napa Fires -- October, 2017
 #' ca <- airnow_load(2017) %>%
 #'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
@@ -50,7 +52,7 @@
 #'                                        longitude = Vallejo$meta$longitude,
 #'                                        latitude = Vallejo$meta$latitude,
 #'                                        radius = 50)
-#' monitor_performanceMap(ca, Vallejo, cex=2)
+#' monitor_performanceMap(ca, Vallejo, cex = 2)
 #' title('Heidke Skill of monitors predicting another monitor.')
 #' }
 

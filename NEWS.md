@@ -1,3 +1,19 @@
+# PWFSLSmoke 1.2.111
+
+CRAN manual review suggestions:
+
+* Use `find.package()` instead of the much slower `installed.packages()` to
+determine if a package is installed.
+* When using `par()` to set graphical parameters, always use save the previously
+set parameters and then `on.exit(par(opar))` as the very next line.
+* Ensure that `tempdir()` or `tempfile()` are used in all examples, tests and
+vignettes so that no files are written to user directories.
+* Changed many examples from `\dontrun{}` to `\donttest{}`.
+
+# PWFSLSmoke 1.2.110
+
+* Tweaks for CRAN submission.
+
 # PWFSLSmoke 1.2.109
 
 * Removed logging setup from `initializeMazamaSpatialutils()`.

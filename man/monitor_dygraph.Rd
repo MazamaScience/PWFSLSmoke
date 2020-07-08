@@ -35,16 +35,25 @@ This function creates interactive graphs that will be displayed
   in RStudio's 'Viewer' tab.
 }
 \examples{
-\dontrun{
+\donttest{
+library(PWFSLSmoke)
+
 # Napa Fires -- October, 2017
 ca <- airnow_load(2017) \%>\%
   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
+
 Vallejo <- monitor_subset(ca, monitorIDs='060950004_01')
-Napa_Fires <- monitor_subsetByDistance(ca,
-                                       longitude = Vallejo$meta$longitude,
-                                       latitude = Vallejo$meta$latitude,
-                                       radius = 50)
-monitor_dygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
+
+Napa_Fires <- monitor_subsetByDistance(
+  ca,
+  longitude = Vallejo$meta$longitude,
+  latitude = Vallejo$meta$latitude,
+  radius = 50
+)
+
+if ( interactive() ) {
+  monitor_dygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
+}
 }
 }
 \keyword{ws_monitor}

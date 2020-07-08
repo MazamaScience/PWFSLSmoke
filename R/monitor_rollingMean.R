@@ -19,10 +19,13 @@
 #' \code{width}/2 hours after (e.g. 4-hr center-aligned roll for Hr 5 will consist of average of Hrs 4, 5, 6 and 7)}
 #' }
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' N_M <- Northwest_Megafires
 #' wa_smoky <- monitor_subset(N_M, stateCodes='WA', tlim=c(20150801, 20150808), vlim=c(100,Inf))
 #' wa_smoky_3hr <- monitor_rollingMean(wa_smoky, width=3, align="center")
 #' wa_smoky_24hr <- monitor_rollingMean(wa_smoky, width=24, align="right")
+#'
 #' monitor_timeseriesPlot(wa_smoky, type='l', shadedNight=TRUE)
 #' monitor_timeseriesPlot(wa_smoky_3hr, type='l', col='red', add=TRUE)
 #' monitor_timeseriesPlot(wa_smoky_24hr, type='l', col='blue', lwd=2, add=TRUE)

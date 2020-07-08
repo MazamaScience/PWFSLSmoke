@@ -49,7 +49,9 @@
 #' \href{https://haze.airfire.org/monitoring/latest/RData/}{https://haze.airfire.org/monitoring/latest/RData/}
 #' @seealso \code{\link{monitor_loadDaily}}
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(PWFSLSmoke)
+#'
 #' monitor_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
 #'   monitor_map()

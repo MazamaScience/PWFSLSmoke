@@ -10,6 +10,8 @@
 #' @references \url{https://docs.airnowapi.org/aq101}
 #' @examples
 #' \dontrun{
+#' library(PWFSLSmoke)
+#'
 #' ws_monitor <- monitor_subset(Northwest_Megafires, tlim=c(20150815,20150831))
 #' aqi <- monitor_aqi(ws_monitor)
 #' monitor_timeseriesPlot(aqi, monitorID=aqi$meta$monitorID[1], ylab="PM25 AQI")
@@ -17,10 +19,12 @@
 
 # NOTE: set up with argument to handle pm25 only; but write code to handle other pollutants if we ever get there
 
-monitor_aqi <- function(ws_monitor,
-                        aqiParameter='pm25',
-                        nowcastVersion='pm',
-                        includeShortTerm=FALSE) {
+monitor_aqi <- function(
+  ws_monitor,
+  aqiParameter = 'pm25',
+  nowcastVersion = 'pm',
+  includeShortTerm = FALSE
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
@@ -40,7 +44,7 @@ monitor_aqi <- function(ws_monitor,
   data[data<0] <- 0
 
   # TODO: include/expand checks to ensure values are appropriately truncated
-  if ( aqiParameter=="pm25" || nowcastVersion=="pm" ) {
+  if ( aqiParameter == "pm25" || nowcastVersion == "pm" ) {
     digits <- 1
   } else {
     digits <- 0
@@ -80,10 +84,12 @@ monitor_aqi <- function(ws_monitor,
 
   if ( parameter == "pm25") {
     # From Table 2 at https://www.ecfr.gov/cgi-bin/retrieveECFR?n=40y6.0.1.1.6#ap40.6.58_161.g
-    breakpointsTable <- data.frame(rangeLow=c(0.0, 12.1, 35.5, 55.5, 150.5, 250.5, 350.5),
-                                   rangeHigh=c(12.0, 35.4, 55.4, 150.4, 250.4, 350.4, 500.4),
-                                   aqiLow=c(0, 51, 101, 151, 201, 301, 401),
-                                   aqiHigh=c(50, 100, 150, 200, 300, 400, 500))
+    breakpointsTable <- data.frame(
+      rangeLow = c(0.0, 12.1, 35.5, 55.5, 150.5, 250.5, 350.5),
+      rangeHigh = c(12.0, 35.4, 55.4, 150.4, 250.4, 350.4, 500.4),
+      aqiLow = c(0, 51, 101, 151, 201, 301, 401),
+      aqiHigh = c(50, 100, 150, 200, 300, 400, 500)
+    )
   } else {
     stop("only pm25 currently supported")
   }

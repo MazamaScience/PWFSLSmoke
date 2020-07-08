@@ -78,7 +78,7 @@ timeAverage() function. (See that function for details.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -172,7 +172,9 @@ and renames the <code>'datetime'</code> column so that it can be processed by th
     <p>A <em>ws_monitor</em> object with data that have been proccessed by <code><a href='https://rdrr.io/pkg/openair/man/timeAverage.html'>openair::timeAverage()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>C_V</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2016080800</span>,<span class='fl'>2016081023</span>),
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
+<span class='no'>C_V</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Carmel_Valley</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2016080800</span>,<span class='fl'>2016081023</span>),
                       <span class='kw'>timezone</span><span class='kw'>=</span><span class='st'>'America/Los_Angeles'</span>)
 <span class='no'>C_V_3hourly</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_timeAverage</span>(<span class='no'>C_V</span>, <span class='kw'>avg.time</span><span class='kw'>=</span><span class='st'>"3 hour"</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>C_V</span>$<span class='no'>data</span>, <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>15</span>)</div><div class='output co'>#&gt;               datetime 060530002_01

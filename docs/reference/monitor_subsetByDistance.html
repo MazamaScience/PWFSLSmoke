@@ -83,7 +83,7 @@ count monitors (or grid cells) are found within the specified radius of the targ
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -203,7 +203,9 @@ of monitors (or grid cells) returned may be less than the specified <code>count<
     <div class='dont-index'><p>monitorDistance</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
 <span class='co'># Napa Fires -- October, 2017</span>
 <span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='airnow_loadAnnual.html'>airnow_loadAnnual</a></span>(<span class='fl'>2017</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20171001</span>,<span class='fl'>20171101</span>), <span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'CA'</span>)
@@ -212,8 +214,11 @@ of monitors (or grid cells) returned may be less than the specified <code>count<
                                        <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='no'>Vallejo</span>$<span class='no'>meta</span>$<span class='no'>longitude</span>,
                                        <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='no'>Vallejo</span>$<span class='no'>meta</span>$<span class='no'>latitude</span>,
                                        <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>50</span>)
-<span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>Napa_Fires</span>)
-}</div></pre>
+
+<span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
+  <span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span>(<span class='no'>Napa_Fires</span>)
+}
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

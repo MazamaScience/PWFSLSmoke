@@ -90,7 +90,7 @@ https://haze.airfire.org/monitoring/latest/RData/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -209,11 +209,13 @@ the package without access to the internet. Once data are downloaded to
     <div class='dont-index'><p><code><a href='monitor_loadDaily.html'>monitor_loadDaily</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
 <span class='fu'><a href='monitor_loadLatest.html'>monitor_loadLatest</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='kw'>stateCodes</span><span class='kw'>=</span><span class='no'>CONUS</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='monitor_map.html'>monitor_map</a></span>()
-}</div></pre>
+  <span class='fu'><a href='monitor_map.html'>monitor_map</a></span>()</div><div class='img'><img src='monitor_downloadDaily-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

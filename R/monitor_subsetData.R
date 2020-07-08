@@ -23,12 +23,14 @@
 #'
 #'  \code{x > vlim[1] & x <= vlim[2]}
 
-monitor_subsetData <- function(data,
-                               tlim=NULL,
-                               vlim=NULL,
-                               monitorIDs=NULL,
-                               dropMonitors=FALSE,
-                               timezone="UTC") {
+monitor_subsetData <- function(
+  data,
+  tlim = NULL,
+  vlim = NULL,
+  monitorIDs = NULL,
+  dropMonitors = FALSE,
+  timezone = "UTC"
+) {
 
   if ( !is.null(tlim) ) {
 

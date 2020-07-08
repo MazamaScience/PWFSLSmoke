@@ -19,6 +19,8 @@ The incoming ws_monitor object is filtered according to \code{filter}.
 Either meta data or actual data can be filtered.
 }
 \examples{
+library(PWFSLSmoke)
+
 N_M <- Northwest_Megafires
 boise_tz <- monitor_subsetBy(N_M, timezone == 'America/Boise')
 boise_tz_very_unhealthy <- monitor_subsetBy(boise_tz, data > AQI$breaks_24[5])

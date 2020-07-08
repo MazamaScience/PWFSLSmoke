@@ -85,9 +85,10 @@ NezPerce <- monitor_subset(NezPerce, tlim = c(20150801, 20150831),
 We can use the `monitor_dailyBarplot()` function to look at official, 
 midnight-to-midnight AQI levels for each monitor during the month of August:
 
-```{r dailyBarplot}
+```{r dailyBarplot, fig.height = 10}
 layout(matrix(seq(6)))
-par(mar = c(1,1,1,1))
+opar <- par(mar = c(1,1,1,1))
+on.exit(par(opar))
 for (monitorID in NezPerceIDs) {
   siteName <- NezPerce$meta[monitorID, 'siteName']
   monitor_dailyBarplot(
@@ -97,7 +98,7 @@ for (monitorID in NezPerceIDs) {
     axes = FALSE
   ) 
 }
-par(mar = c(5,4,4,2) + .1)
+par(opar)
 layout(1)
 ```
 

@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -170,7 +170,7 @@
 <a class="sourceLine" id="cb1-49" data-line-number="49"><span class="co"># Dump out a meta/data combined CSV file for Mariposa</span></a>
 <a class="sourceLine" id="cb1-50" data-line-number="50"><span class="kw"><a href="../reference/monitor_writeCSV.html">monitor_writeCSV</a></span>(</a>
 <a class="sourceLine" id="cb1-51" data-line-number="51">  Mariposa, </a>
-<a class="sourceLine" id="cb1-52" data-line-number="52">  <span class="dt">saveFile =</span> <span class="st">"Mariposa.csv"</span>,</a>
+<a class="sourceLine" id="cb1-52" data-line-number="52">  <span class="dt">saveFile =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"Mariposa.csv"</span>),</a>
 <a class="sourceLine" id="cb1-53" data-line-number="53">  <span class="dt">metaOnly =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb1-54" data-line-number="54">  <span class="dt">dataOnly =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb1-55" data-line-number="55">  <span class="dt">quietly =</span> <span class="ot">TRUE</span></a>
@@ -186,7 +186,7 @@
 <a class="sourceLine" id="cb1-65" data-line-number="65"><span class="co"># Dump out airsis_ca metadata to a CSV file</span></a>
 <a class="sourceLine" id="cb1-66" data-line-number="66"><span class="kw"><a href="../reference/monitor_writeCSV.html">monitor_writeCSV</a></span>(</a>
 <a class="sourceLine" id="cb1-67" data-line-number="67">  airsis_ca, </a>
-<a class="sourceLine" id="cb1-68" data-line-number="68">  <span class="dt">saveFile =</span> <span class="st">"airsis_CA_meta.csv"</span>,</a>
+<a class="sourceLine" id="cb1-68" data-line-number="68">  <span class="dt">saveFile =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"airsis_CA_meta.csv"</span>),</a>
 <a class="sourceLine" id="cb1-69" data-line-number="69">  <span class="dt">metaOnly =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb1-70" data-line-number="70">  <span class="dt">dataOnly =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb1-71" data-line-number="71">  <span class="dt">quietly =</span> <span class="ot">TRUE</span></a>
@@ -195,7 +195,7 @@
 <a class="sourceLine" id="cb1-74" data-line-number="74"><span class="co"># Dump out airsis_ca data to a CSV file</span></a>
 <a class="sourceLine" id="cb1-75" data-line-number="75"><span class="kw"><a href="../reference/monitor_writeCSV.html">monitor_writeCSV</a></span>(</a>
 <a class="sourceLine" id="cb1-76" data-line-number="76">  airsis_ca, </a>
-<a class="sourceLine" id="cb1-77" data-line-number="77">  <span class="dt">saveFile =</span> <span class="st">"airsis_CA_data.csv"</span>,</a>
+<a class="sourceLine" id="cb1-77" data-line-number="77">  <span class="dt">saveFile =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"airsis_CA_data.csv"</span>),</a>
 <a class="sourceLine" id="cb1-78" data-line-number="78">  <span class="dt">metaOnly =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb1-79" data-line-number="79">  <span class="dt">dataOnly =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb1-80" data-line-number="80">  <span class="dt">quietly =</span> <span class="ot">TRUE</span></a>

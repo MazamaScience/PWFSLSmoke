@@ -1,7 +1,6 @@
 #' @keywords internal
 #' @export
 #' @import MazamaCoreUtils
-#' @importFrom utils installed.packages
 #'
 #' @title Add address information to a dataframe
 #'
@@ -53,7 +52,7 @@ addGoogleAddress <- function(
 
   # Use ggmap::revgeocode to return a dataframe with (address, street number, route, locality , ...)
   # (2500 queries allowed per day in August, 2015)
-  if ('ggmap' %in% installed.packages()[,1]) {
+  if ( length(find.package("ggmap", quiet = TRUE)) > 0 ) {
 
     for ( i in seq_len(nrow(df)) ) {
 

@@ -37,13 +37,14 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' library(PWFSLSmoke)
+#'
 #' N_M <- monitor_subset(Northwest_Megafires, tlim = c(20150715, 20150930))
 #' main <- "Daily Average PM2.5 for Omak, WA"
 #' monitor_dailyBarplot(N_M, monitorID = "530470013_01", main = main,
 #'                          labels_x_nudge = 1)
 #' addAQILegend(fill = rev(AQI$colors), pch = NULL)
-#' }
+
 monitor_dailyBarplot <- function(ws_monitor,
                                  monitorID = NULL,
                                  tlim = NULL,

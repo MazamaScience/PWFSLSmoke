@@ -22,6 +22,8 @@ sites and a location of interest. These distances can be used to create a
 mask identifying monitors within a certain radius of the location of interest.
 }
 \examples{
+library(PWFSLSmoke)
+
 N_M <- Northwest_Megafires
 # Walla Walla
 WW_lon <- -118.330278

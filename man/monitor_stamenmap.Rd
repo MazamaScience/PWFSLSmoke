@@ -78,7 +78,9 @@ appropriate values will be calcualted using data from the
 \code{ws_monitor$meta} dataframe.
 }
 \examples{
-\dontrun{
+\donttest{
+library(PWFSLSmoke)
+
 N_M <- Northwest_Megafires
 # monitor_leaflet(N_M) # to identify Spokane monitorIDs
 Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))

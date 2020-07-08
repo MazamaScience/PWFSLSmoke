@@ -43,7 +43,9 @@ Avaialble RData files can be seen at:
 \href{https://haze.airfire.org/monitoring/latest/RData/}{https://haze.airfire.org/monitoring/latest/RData/}
 }
 \examples{
-\dontrun{
+\donttest{
+library(PWFSLSmoke)
+
 monitor_loadLatest() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
   monitor_map()

@@ -45,6 +45,8 @@ The \code{localStdTime_UTC} is primarily for use internally and provides
 an important tool for creating LST daily averages and LST axis labeling.
 }
 \examples{
+library(PWFSLSmoke)
+
 carmel <- monitor_subset(Carmel_Valley, tlim = c(20160801,20160810))
 
 # Create timeInfo object for this monitor

@@ -77,6 +77,8 @@ multiple monitors. To plot a time series of an individual monitor's data,
 specify a single \code{monitorID}.
 }
 \examples{
+library(PWFSLSmoke)
+
 N_M <- Northwest_Megafires
 # monitor_leaflet(N_M) # to identify Spokane monitorIDs
 Spokane <- monitor_subsetBy(

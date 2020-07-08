@@ -83,7 +83,7 @@ Expressions should use data for the left hand side of the comparison." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -183,7 +183,9 @@ in <code>ws_monitor$data</code> that should be replaced.  Typical usage would in
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>wa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Northwest_Megafires</span>, <span class='kw'>stateCodes</span><span class='kw'>=</span><span class='st'>'WA'</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
+<span class='no'>wa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>Northwest_Megafires</span>, <span class='kw'>stateCodes</span> <span class='kw'>=</span> <span class='st'>'WA'</span>)
 <span class='no'>wa_zero</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_replaceData</span>(<span class='no'>wa</span>, <span class='no'>data</span> <span class='kw'>&lt;</span> <span class='fl'>0</span>, <span class='fl'>0</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

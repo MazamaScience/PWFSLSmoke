@@ -37,6 +37,8 @@
 #' @export
 #'
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' carmel <- monitor_subset(Carmel_Valley, tlim = c(20160801,20160810))
 #'
 #' # Create timeInfo object for this monitor
@@ -54,10 +56,12 @@
 #' monitor_timeseriesPlot(carmel_day, shadedNight = TRUE, pch = 8, col = 'goldenrod')
 #' monitor_timeseriesPlot(carmel_night, pch = 16, col = 'darkblue', add = TRUE)
 
-monitor_timeInfo <- function(ws_monitor = NULL,
-                             monitorID = NULL) {
+monitor_timeInfo <- function(
+  ws_monitor = NULL,
+  monitorID = NULL
+) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   # ws_monitor
   if ( !monitor_isMonitor(ws_monitor) ) {
@@ -77,12 +81,14 @@ monitor_timeInfo <- function(ws_monitor = NULL,
     ws_monitor <- monitor_subset(ws_monitor, monitorIDs = monitorID)
   }
 
-  # Return ---------------------------------------------------------------------
+  # ----- Return ---------------------------------------------------------------
 
-  timeInfo <- timeInfo(ws_monitor$data$datetime,
-                       ws_monitor$meta$longitude,
-                       ws_monitor$meta$latitude,
-                       ws_monitor$meta$timezone)
+  timeInfo <- timeInfo(
+    ws_monitor$data$datetime,
+    ws_monitor$meta$longitude,
+    ws_monitor$meta$latitude,
+    ws_monitor$meta$timezone
+  )
 
   return(timeInfo)
 

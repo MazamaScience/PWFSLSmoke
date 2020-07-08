@@ -10,6 +10,8 @@
 #' @return Vector of of distances (km).
 #' @seealso \code{\link{distance}}
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' N_M <- Northwest_Megafires
 #' # Walla Walla
 #' WW_lon <- -118.330278

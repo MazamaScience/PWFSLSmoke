@@ -20,12 +20,17 @@
 #'
 #' @references \link{monitor_dailyStatistic}
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(PWFSLSmoke)
+#'
 #' airnow <- airnow_loadLatest()
 #' nw <- monitor_subset(airnow, stateCodes = c('WA','OR','ID','MT'))
 #' dailyList <- monitor_dailyStatisticList(nw)
+#'
 #' monitor_leaflet(dailyList[["America/Los_Angeles"]])
+#'
 #' monitor_leaflet(dailyList[["America/Boise"]])
+#'
 #' monitor_leaflet(dailyList[["America/Denver"]])
 #' }
 

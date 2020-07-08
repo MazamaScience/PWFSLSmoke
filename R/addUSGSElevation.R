@@ -2,8 +2,6 @@
 #' @export
 #' @import MazamaCoreUtils
 #'
-#' @importFrom utils installed.packages
-#'
 #' @title Add Elevation Data to a Dataframe
 #' @param df dataframe with geolocation information (\emph{e.g.} created by \code{wrcc_qualityControl()} or \code{airsis_qualityControl})
 #' @param lonVar name of longitude variable in the incoming dataframe
@@ -24,7 +22,7 @@ addUSGSElevation <- function(
   logger.debug(" ----- addUSGSElevation() ----- ")
 
   # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-  df <- as.data.frame(df, stringsAsFactors=FALSE)
+  df <- as.data.frame(df, stringsAsFactors = FALSE)
 
   # Sanity check -- names
   if ( !lonVar %in% names(df) || !latVar %in% names(df) ) {
@@ -46,7 +44,7 @@ addUSGSElevation <- function(
     # NOTE:  If existingMeta is passed in, assume we are in an operational environment where we want to minimize web service calls.
 
     # Sanity check -- make sure df does not have class "tbl_df" or "tibble"
-    df <- as.data.frame(df, stringsAsFactors=FALSE)
+    df <- as.data.frame(df, stringsAsFactors = FALSE)
 
     for ( i in seq_len(nrow(df)) ) {
       monitorID <- df[i,'monitorID']
@@ -73,10 +71,10 @@ addUSGSElevation <- function(
       lon <- lons[i]
       lat <- lats[i]
 
-      url$query <- list(x=lon,
-                        y=lat,
-                        units='Meters',
-                        output='json')
+      url$query <- list(x = lon,
+                        y = lat,
+                        units = 'Meters',
+                        output = 'json')
 
       # Get and parse the return
       r <- httr::GET(httr::build_url(url))

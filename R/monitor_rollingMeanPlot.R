@@ -55,10 +55,13 @@
 #' @keywords ws_monitor
 #'
 #' @examples
+#' library(PWFSLSmoke)
+#'
 #' N_M <- Northwest_Megafires
 #' Roseburg <- monitor_subset(N_M, tlim = c(20150821, 20150831),
 #'                            monitorIDs = c("410190002_01"))
 #' monitor_rollingMeanPlot(Roseburg, shadedNight = TRUE)
+
 monitor_rollingMeanPlot <- function(ws_monitor,
                                     monitorID = NULL,
                                     width = 3,

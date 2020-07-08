@@ -14,9 +14,11 @@
 #' @description This function is a convenience function that merely wraps the
 #' \link{monitor_subset} function which reorders as well as subsets.
 
-monitor_reorder <- function(ws_monitor,
-                            monitorIDs = NULL,
-                            dropMonitors = FALSE) {
+monitor_reorder <- function(
+  ws_monitor,
+  monitorIDs = NULL,
+  dropMonitors = FALSE
+) {
 
   return( monitor_subset(ws_monitor,
                          monitorIDs = monitorIDs,

@@ -77,7 +77,7 @@ a specific monitor." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.109</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
       </span>
     </div>
 
@@ -259,7 +259,9 @@ UTC.</p></td>
     <p>This function attempts to provide a 'publication ready' rolling mean plot.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='no'>Northwest_Megafires</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+
+<span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='no'>Northwest_Megafires</span>
 <span class='no'>Roseburg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span>(<span class='no'>N_M</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20150821</span>, <span class='fl'>20150831</span>),
                            <span class='kw'>monitorIDs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"410190002_01"</span>))
 <span class='fu'>monitor_rollingMeanPlot</span>(<span class='no'>Roseburg</span>, <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='monitor_rollingMeanPlot-1.png' alt='' width='700' height='433' /></div></pre>

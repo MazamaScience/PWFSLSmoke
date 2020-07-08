@@ -17,7 +17,9 @@
 #' \code{count} monitors (or grid cells) are found within the specified \code{radius} of the target location.
 #' @seealso monitorDistance
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(PWFSLSmoke)
+#'
 #' # Napa Fires -- October, 2017
 #' ca <- airnow_loadAnnual(2017) %>%
 #'   monitor_subset(tlim=c(20171001,20171101), stateCodes='CA')
@@ -26,14 +28,19 @@
 #'                                        longitude = Vallejo$meta$longitude,
 #'                                        latitude = Vallejo$meta$latitude,
 #'                                        radius = 50)
-#' monitor_leaflet(Napa_Fires)
+#'
+#' if ( interactive() ) {
+#'   monitor_leaflet(Napa_Fires)
+#' }
 #' }
 
-monitor_subsetByDistance <- function(ws_monitor,
-                                     longitude=NULL,
-                                     latitude=NULL,
-                                     radius=50,
-                                     count=NULL) {
+monitor_subsetByDistance <- function(
+  ws_monitor,
+  longitude=NULL,
+  latitude=NULL,
+  radius=50,
+  count=NULL
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")
