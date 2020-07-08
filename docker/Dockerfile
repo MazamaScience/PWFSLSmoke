@@ -18,6 +18,5 @@ RUN install2.r --error -r "https://cran.rstudio.com" \
 
 # Install latest updates from GitHub
 RUN installGithub.r \
-    mazamascience/MazamaCoreUtils \
     mazamascience/PWFSLSmoke
 

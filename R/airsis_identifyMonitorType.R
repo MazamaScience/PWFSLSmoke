@@ -42,9 +42,8 @@ airsis_identifyMonitorType <- function(df) {
 
   # ----- Different header styles ----------------------------------------------
 
-  # USFS_esamMulti, provider = "usfs", unitID=1072-5 (starting in June, 2020)
-                   ###"MasterTable_ID,Alias,Latitude,Longitude,Conc(mg/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Oceaneering Unit Voltage,TimeStamp,PDate"
-  esamMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc(ug/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Oceaneering Unit Voltage,TimeStamp,PDate"
+  # USFS_esamMulti, provider = "usfs", unitID=1072-5 (starting in July 08, 2020; was mistakenly in units of ug/m3 before that)
+  esamMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc(mg/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Oceaneering Unit Voltage,TimeStamp,PDate"
   esamMulti_rawNames <- unlist(stringr::str_split(esamMulti_header, ','))
   esamMulti_names <- make.names(esamMulti_rawNames)
   # "64424513,USFS 1072,,,2,2.0,33.3,86107,1,13,2.6,175,14,,,6/14/2020 12:05:13 AM,6/14/2020 12:05:00 AM"

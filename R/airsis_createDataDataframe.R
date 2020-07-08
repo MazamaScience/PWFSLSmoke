@@ -73,11 +73,7 @@ airsis_createDataDataframe <- function(
   if ( monitorType == 'EBAM' ) {
     pm25Var <- 'ConcHr'
   } else if ( monitorType == 'ESAM' ) {
-    if ( monitorSubtype == 'MULTI' ) {
-      pm25Var <- 'Conc.ug.m3.'
-    } else {
-      pm25Var <- 'Conc.mg.m3.'
-    }
+    pm25Var <- 'Conc.mg.m3.'
   } else if ( monitorType == 'BAM1020' ) {
     pm25Var <- 'Conc..\u00B5g.m3.'
   } else {
@@ -96,11 +92,7 @@ airsis_createDataDataframe <- function(
   }
 
   if ( monitorType == 'ESAM' ) {
-    if ( monitorSubtype == 'MULTI') {
-      melted$value <- melted$value * 1
-    } else {
-      melted$value <- melted$value * 1000
-    }
+    melted$value <- melted$value * 1000
   }
 
   # Use median if multiple values are found

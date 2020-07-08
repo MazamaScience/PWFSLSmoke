@@ -188,8 +188,8 @@ if ( FALSE ) {
 
   # 2020 "ESAM Multi" format -- usfs.2072-5
 
-  startdate = MazamaCoreUtils::parseDatetime("2020-06-14", timezone = "UTC")
-  enddate = MazamaCoreUtils::parseDatetime("2020-06-20", timezone = "UTC")
+  startdate = MazamaCoreUtils::parseDatetime("2020-07-01", timezone = "UTC")
+  enddate = MazamaCoreUtils::parseDatetime("2020-07-07", timezone = "UTC")
   provider = "usfs"
   unitID = 1072
   clusterDiameter = 1000

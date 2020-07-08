@@ -13,7 +13,7 @@ airsis_ESAM_MULTIQualityControl(
   valid_Flow = c(1.999, 2.001),
   valid_AT = c(-Inf, 150),
   valid_RHi = c(-Inf, 55),
-  valid_Conc = c(-Inf, 5000),
+  valid_Conc = c(-Inf, 5),
   flagAndKeep = FALSE
 )
 }

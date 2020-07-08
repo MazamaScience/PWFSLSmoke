@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.112
+
+* Updated support for parsing AIRSIS "ESAM Multi" format.
+
 # PWFSLSmoke 1.2.111
 
 CRAN manual review suggestions:

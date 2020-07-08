@@ -38,7 +38,7 @@ airsis_ESAM_MULTIQualityControl <- function(
   valid_Flow = c(1.999, 2.001),     # anything other than 2 is bad
   valid_AT = c(-Inf, 150),
   valid_RHi = c(-Inf, 55),
-  valid_Conc = c(-Inf, 5000),
+  valid_Conc = c(-Inf, 5),
   flagAndKeep = FALSE
 ) {
 
@@ -48,7 +48,7 @@ airsis_ESAM_MULTIQualityControl <- function(
 
   # > names(tbl)
   # [1] "MasterTable_ID"          "Alias"                 "Latitude"                 "Longitude"
-  # [5] "Conc.ug.m3."             "Flow.l.m."             "AT.C."                    "BP.PA."
+  # [5] "Conc.mg.m3."             "Flow.l.m."             "AT.C."                    "BP.PA."
   # [9] "RHx..."                  "RHi..."                "WS.M.S."                  "WD.Deg."
   # [13] "BV.V."                  "Alarm"                 "Oceaneering.Unit.Voltage" "TimeStamp"
   # [17] "PDate"                  "monitorName"           "monitorType"              "monitorSubtype"
@@ -182,7 +182,7 @@ airsis_ESAM_MULTIQualityControl <- function(
   goodFlow <- !is.na(tbl$Flow.l.m.) & tbl$Flow.l.m. >= valid_Flow[1] & tbl$Flow.l.m. <= valid_Flow[2]
   goodAT <- !is.na(tbl$AT.C.) & tbl$AT.C. >= valid_AT[1] & tbl$AT.C. <= valid_AT[2]
   goodRHi <- !is.na(tbl$RHi...) & tbl$RHi... >= valid_RHi[1] & tbl$RHi... <= valid_RHi[2]
-  goodConcHr <- !is.na(tbl$Conc.ug.m3.) & tbl$Conc.ug.m3. >= valid_Conc[1] & tbl$Conc.ug.m3. <= valid_Conc[2]
+  goodConcHr <- !is.na(tbl$Conc.mg.m3.) & tbl$Conc.mg.m3. >= valid_Conc[1] & tbl$Conc.mg.m3. <= valid_Conc[2]
   gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
 
   logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
@@ -296,7 +296,7 @@ if ( FALSE ) {
   valid_Flow = c(1.999, 2.001)     # anything other than 2 is bad
   valid_AT = c(-Inf, 150)
   valid_RHi = c(-Inf, 55)
-  valid_Conc = c(-Inf, 5000)
+  valid_Conc = c(-Inf, 5)
   flagAndKeep = FALSE
 
 }
