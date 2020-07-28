@@ -13,7 +13,7 @@ You should then be able to see something like the following:
 ```
 $ docker images
 REPOSITORY                          TAG                     IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke            1.2.112                 1824e396e3f3        34 seconds ago      2.61GB
+mazamascience/pwfslsmoke            1.2.113                 1824e396e3f3        34 seconds ago      2.61GB
 mazamascience/pwfslsmoke            latest                  1824e396e3f3        34 seconds ago      2.61GB
 ...
 ```
@@ -31,7 +31,7 @@ obtained on July 08, 2020 -- Fourth of July Fireworks!!!:
 
 
 ```
-docker run -ti mazamascience/pwfslsmoke R --vanilla
+docker run -ti --rm mazamascience/pwfslsmoke R --vanilla
 ...
 library(PWFSLSmoke)
 wa <- airnow_loadLatest() %>%
@@ -62,6 +62,6 @@ make production_publish
 This image can also be pulled from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:1.2.112
+docker pull mazamascience/pwfslsmoke:1.2.113
 ```
 
