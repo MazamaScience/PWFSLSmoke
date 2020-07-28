@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.113
+
+* Updated `docker/` files to use R 3.6.3.
+
 # PWFSLSmoke 1.2.112
 
 * Updated support for parsing AIRSIS "ESAM Multi" format.
