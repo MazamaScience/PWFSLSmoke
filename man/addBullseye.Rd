@@ -18,7 +18,7 @@ addBullseye(longitude, latitude, map = NULL, cex = 2, lwd = 2)
 \item{lwd}{line width of individual circles}
 }
 \description{
-Draws a bullseye with concentric circles of black and white.
+Draws a bullseye with concentric circles of black and white at the specified location.
 }
 \examples{
 wa <- monitor_subset(Northwest_Megafires, stateCodes='WA', tlim=c(20150821,20150828))

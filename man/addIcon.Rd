@@ -20,7 +20,7 @@ addIcon(icon, longitude, latitude, map = NULL, expansion = 0.1, pos = 0)
 \item{pos}{position of icon relative to location (0=center, 1=bottom, 2=left, 3=top,4=right)}
 }
 \description{
-Adds an icon to \code{map} -- an RgoogleMaps map object.
+Adds an icon to \code{map} -- an RgoogleMaps map object. The function monitor_esriMap() in the example below is deprecated.
 The following icons are available:
 
 \itemize{

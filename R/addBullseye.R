@@ -6,7 +6,7 @@
 #' @param map optional RgoogleMaps map object
 #' @param cex character expansion
 #' @param lwd line width of individual circles
-#' @description Draws a bullseye with concentric circles of black and white.
+#' @description Draws a bullseye with concentric circles of black and white at the specified location.
 #' @examples
 #' wa <- monitor_subset(Northwest_Megafires, stateCodes='WA', tlim=c(20150821,20150828))
 #' monitor_map(wa, cex=4)
