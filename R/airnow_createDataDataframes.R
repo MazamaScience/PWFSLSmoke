@@ -16,7 +16,7 @@
 #' @description This function uses the \link{airnow_downloadParseData} function
 #' to download monthly dataframes of AirNow data and restructures that data into
 #' a format that is compatible with the PWFSLSmoke package \emph{ws_monitor}
-#' data model.
+#' data model. The output is meant to be used as \emph{df} argument in other PWFSLSmoke functions (e.g. \link{airnow_qualityControl}).
 #'
 #' AirNow data parameters include at least the following list:
 #' \enumerate{

@@ -9,7 +9,7 @@ airnow_qualityControl(df, limits = c(-Inf, Inf))
 \arguments{
 \item{df}{multi-site restructured dataframe created within \code{airnow_createDataDataframe()}}
 
-\item{limits}{lo and hi range of valid values}
+\item{limits}{low and high range of valid values}
 }
 \value{
 Cleaned up dataframe of AIRSIS monitor data.
