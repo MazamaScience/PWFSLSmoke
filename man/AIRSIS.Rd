@@ -14,7 +14,7 @@ AIRSIS
 AIRSIS provides access to data by unit type at URLs like:
   http://usfs.airsis.com/vision/common/CSVExport.aspx?utid=38&StartDate=2017-11-06&EndDate=2017-11-07
 
-The \code{AIRSIS} objectis a list of lists. The element named \code{unitTypes} is itself
+The \code{AIRSIS} object is a list of lists. The element named \code{unitTypes} is itself
 a list of named unit types:
 
 Unit types include:
