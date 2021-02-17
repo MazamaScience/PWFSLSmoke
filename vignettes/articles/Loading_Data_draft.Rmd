@@ -1,0 +1,27 @@
+---
+title: "Loading Data"
+author: "Mazama Science"
+date: "2021-02-17"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+## Welcome to the data archive
+* temporary monitors ([AIRSIS](https://app.airsis.com/USFS) and [WRCC](http://www.wrcc.dri.edu)) vs. permanent monitors ([AirNow](https://www.airnow.gov)), which are sites archiving PM2.5 data, the primary pollutant caused by wilfire smoke.
+* three types of archive files — hourly, daily, monthly
+* structure of the archive
+## loading files directly from the archive with get(load(url(…)))
+* loading functions
+* ~loadLatest, ~loadDaily, ~loadAnnual
+* monitor_load() — the preferred function for general data loading
+* note — no ability to cross year boundaries (OK because there are few wildfires on New Year’s Eve)
+## examples
+* most current example -- load and create plot the using Latest data for Washington
+* archival example — load and create plot using data from OR-ID-WA during 2015 (this is the package dataset Northwest Megafires but obtain the data from the archive)
