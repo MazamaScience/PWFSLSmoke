@@ -1,0 +1,40 @@
+---
+title: "Loading Data"
+author: "Mazama Science"
+date: "2021-02-17"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+This vignette explores the `ws_monitor` data model used throughout the **PWFSLSmoke** package to store
+and work with monitoring data.
+
+The **PWFSLSmoke** package is designed to provide a compact, full-featured suite of utilities for
+working with PM 2.5 data used to monitor wildfire smoke. A uniform data model
+provides consistent data access across monitoring data available from different agencies.
+The core data model in this package is defined by the `ws_monitor` object used to store data associated
+with groups of individual monitors.
+
+To work efficiently with the package it is important to understand the structure of this
+data object and which functions operate on it. Package functions that begin with `monitor_`, 
+expect objects of class `ws_monitor` as their first argument. (*'ws_' stands for 'wildfire smoke'*)
+
+## Monitoring Data
+
+Monitoring data will typically be obtained from an agency charged with archiving data
+acquired at monitoring sites. For wildfire smoke, the primary pollutant is PM 2.5 and the
+sites archiving this data include [EPA](https://www.epa.gov/outdoor-air-quality-data),
+[AirNow](https://www.airnow.gov), [AIRSIS](https://app.airsis.com/USFS) and [WRCC](http://www.wrcc.dri.edu).
+
+The data model for monitoring data consists of an **R** `list` with two dataframes: `data` and `meta`.
+
+The `data` dataframe contains all hourly measurements organized with rows (the 'unlimited' dimension) as unique timesteps and
+columns as unique monitor deployments. The very first column is always named `datetime` and contains the `POSIXct` datetime
+in Coordinated Universal Time (UTC).
