@@ -3,8 +3,8 @@ Overall outline might look like this:
 * temporary monitors (WRCC, AIRSIS) vs. permanent monitors (AirNow)
 * three types of archive files — hourly, daily, monthly
 * structure of the archive
-## loading files directly from the archive with get(load(url(…)))
-* loading functions
+* loading files directly from the archive with get(load(url(…)))
+## loading functions
 * ~loadLatest, ~loadDaily, ~loadAnnual
 * monitor_load() — the preferred function for general data loading
 * note — no ability to cross year boundaries (OK because there are few wildfires on New Year’s Eve)
