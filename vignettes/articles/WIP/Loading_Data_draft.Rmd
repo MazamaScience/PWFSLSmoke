@@ -24,7 +24,7 @@ The [data archive](https://haze.airfire.org/monitoring/) hosts PM2.5 data genera
 Each agency provides hourly, daily, and annual data. Additionally, Airnow provides montly data. Following, an explanation of the methods used to update the different files:
 * the hourly files are updated multiple times an hour (every two minutes) and contain data for the previous 10 days. 
 * the daily files are updated once a day, shortly after midnight and contain data for the previous 45 days.
-* the monthly files are updated on the 15'th of the following month. For instance, July is updated on the 15th of August. **Jon, do I remeber right?**
+* the monthly files are updated within a few days after the 10'th of the following month. For instance, July is updated on August. 
 * the annual files are updated on the 15'th of each month and cover the period from the beginning of the year to the end of the last month. 
 Latest data from all agencies are available in [latest/RData](https://haze.airfire.org/monitoring/latest/RData/) subdirectory. 
 
@@ -37,6 +37,7 @@ The data archive si structured as follow:
 
 
 ## loading files directly from the archive with get(load(url(…)))
+It is possible to load the data archive and save it as an object in the R environment by using the following code: `get(load(url(…)))`. For instance, if I want to load the hourly data from AirNow I'll wirte `AirNow_h = mon <- get(load(url("https://haze.airfire.org/monitoring/latest/RData/airnow_PM2.5_latest10.RData")))`
 * TO DO: loading functions. left here 
 * TO DO: ~loadLatest, ~loadDaily, ~loadAnnual
 * TO DO: monitor_load() — the preferred function for general data loading
