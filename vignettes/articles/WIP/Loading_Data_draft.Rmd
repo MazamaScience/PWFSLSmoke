@@ -37,7 +37,7 @@ The data archive si structured as follow:
 
 
 ## loading files directly from the archive with get(load(url(…)))
-* TO DO: loading functions
+* TO DO: loading functions. left here 
 * TO DO: ~loadLatest, ~loadDaily, ~loadAnnual
 * TO DO: monitor_load() — the preferred function for general data loading
 * TO DO: note — no ability to cross year boundaries (OK because there are few wildfires on New Year’s Eve)
