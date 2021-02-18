@@ -38,7 +38,8 @@ The data archive is structured as follow:
 
 
 ## loading files directly from the archive with get(load(url(…)))
-It is possible to load the data archive and save it as an object in the R environment by using the following code: `get(load(url(…)))`. For instance, if I want to load the hourly data from AirNow I'll wirte `AirNow_h = mon <- get(load(url("https://haze.airfire.org/monitoring/latest/RData/airnow_PM2.5_latest10.RData")))`
+It is possible to load the data archive and save it as an object in the R environment by using the following code: `get(load(url(…)))`. For instance, if I want to load the hourly data from AirNow, I'll wirte `AirNow_h = get(load(url("https://haze.airfire.org/monitoring/latest/RData/airnow_PM2.5_latest10.RData")))`
+
 * TO DO: loading functions. left here 
 * TO DO: ~loadLatest, ~loadDaily, ~loadAnnual
 * TO DO: monitor_load() — the preferred function for general data loading
