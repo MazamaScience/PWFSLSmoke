@@ -11,10 +11,12 @@ vignette: >
 
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+knitr::opts_chunk$set(error = TRUE)
 ```
-```{r libraries, echo = FALSE, eval=FALSE, warning=FALSE}
+```{r libraries, echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE}
 library(dplyr)
 library(PWFSLSmoke)
+library(magrittr)
 ```
 
 ## Welcome to the data archive
@@ -101,7 +103,7 @@ monitor_load(
 
 ## examples
 * TO DO: most current example -- load and create plot the using Latest data for Washington
-```{r, loadLatest WA, eval=TRUE, echo=FALSE}
+```{r, loadLatest WA, echo=FALSE}
 airnow_loadLatest() %>%
   monitor_subset(stateCodes= 'WA') %>%
   monitor_dailyStatistic() %>%
