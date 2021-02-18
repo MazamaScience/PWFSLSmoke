@@ -115,4 +115,4 @@ airnow_loadLatest() %>%
 
 
 
-* TO DO: archival example — load and create plot using data from OR-ID-WA during 2015 (this is the package dataset Northwest Megafires but obtain the data from the archive)
+* TO DO: archival example — load and create plot using data from OR-ID-WA during 2015 (this is the package dataset Northwest Megafires but obtain the data from the archive). left here
