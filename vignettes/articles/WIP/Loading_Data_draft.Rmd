@@ -12,6 +12,10 @@ vignette: >
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
+```{r libraries, echo = FALSE, eval=FALSE, warning=FALSE}
+library(dplyr)
+library(PWFSLSmoke)
+```
 
 ## Welcome to the data archive
 
@@ -78,7 +82,7 @@ dataDir = NULL)
 Unless the argument `dataDir` is specified, data will be loaded from the [archive](https://haze.airfire.org/monitoring), which is maintained by [PWFSL](https://www.fs.usda.gov/pnw/research-labs/pacific-wildland-fire-sciences-laboratory-seattle) (Pacific Wildland Fire Sciences Lab). 
 
 
-The preferred function for general data loading is [monitor_load()](http://mazamascience.github.io/PWFSLSmoke/reference/monitor_load.html), which loads monitoring data for a given time range. Data from AirNow, AIRSIS and WRCC are combined into a single *ws_monitor* object.
+The preferred function for general data loading is [monitor_load()](http://mazamascience.github.io/PWFSLSmoke/reference/monitor_load.html), which loads monitoring data for a given time range. Data from AirNow, AIRSIS and WRCC are combined into a single *ws_monitor* object. Archival datasets are joined with 'daily' and 'latest' datasets as needed to satisfy the requested date range.
 ```{r, monitor_load(), eval=FALSE}
 monitor_load(
   startdate = NULL,
@@ -97,4 +101,16 @@ monitor_load(
 
 ## examples
 * TO DO: most current example -- load and create plot the using Latest data for Washington
+```{r, loadLatest WA, eval=TRUE, echo=FALSE}
+airnow_loadLatest() %>%
+  monitor_subset(stateCodes= 'WA') %>%
+  monitor_dailyStatistic() %>%
+  monitor_timeseriesPlot(style = 'gnats', ylim=c(0,50), xpd=NA)
+  addAQIStackedBar()
+  addAQILines()
+  title("Washington State 2021 -- AirNow Latast Average PM2.5")
+```
+
+
+
 * TO DO: archival example — load and create plot using data from OR-ID-WA during 2015 (this is the package dataset Northwest Megafires but obtain the data from the archive)
