@@ -26,11 +26,12 @@ Each agency provides hourly, daily, and annual data. Additionally, Airnow provid
 * the daily files are updated once a day, shortly after midnight and contain data for the previous 45 days.
 * the monthly files are updated within a few days after the 10'th of the following month. For instance, July is updated on August. 
 * the annual files are updated on the 15'th of each month and cover the period from the beginning of the year to the end of the last month. 
-Latest data from all agencies are available in [latest/RData](https://haze.airfire.org/monitoring/latest/RData/) subdirectory. 
+ 
+*NOTE*: the date and time of annual and monthly data are subject to change. The exact date and time is availabe next to file of interest, under the column `Last modified`. For instance, [here](https://haze.airfire.org/monitoring/WRCC/RData/2017/) you can see that the file `wrcc_PM2.5_2021.RData` was generated on February 14, 2021 at 01:24 am. 
 
 * WIP: structure of the archive
-The data archive si structured as follow:
-* at the first level, each agency has its own folder (i.e [AIRSIS](https://haze.airfire.org/monitoring/AIRSIS/), [AirNow](https://haze.airfire.org/monitoring/AirNow/), [WRCC](https://haze.airfire.org/monitoring/WRCC/)).
+The data archive is structured as follow:
+* at the first level, each agency has its own folder (i.e [AIRSIS](https://haze.airfire.org/monitoring/AIRSIS/), [AirNow](https://haze.airfire.org/monitoring/AirNow/), [WRCC](https://haze.airfire.org/monitoring/WRCC/)). Additionally, at this level, latest data (hourly and daily) from all agencies is grouped together and can be quicly accessed  from the [latest/RData](https://haze.airfire.org/monitoring/latest/RData/) subdirectory.
 * at the second level, each agency has the `RData/` folder.
 * at the third level, each agency has yearly folders (e.g. `2010/`) and the `latest/` folder. The latter contains hourly (e.g. `agencyName_PM2.5_latest10.RData`) and daily (e.g. `agencyName_PM2.5_latest45.RData`) data. 
 * at the fourth level, each agency has annual data (e.g. `agencyName_PM2.5_2019.RData`). Additionally, AirNow has monthly folders (e.g. `01/`), and therefore a fith level containing monthly data (e.g. AirNow_PM2.5_2018_06.RData).
