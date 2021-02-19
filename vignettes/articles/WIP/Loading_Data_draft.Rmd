@@ -69,7 +69,7 @@ can be quickly accessed from the [latest/RData](https://haze.airfire.org/monitor
 * at the third level, each agency has annual folders (e.g. AirNow/RData/2021/) 
 and the `latest/` folder (e.g. AirNow/RData/latest/). The latter contains hourly
 (e.g. airnow_PM2.5_latest10.RData) and daily (e.g. airnow_PM2.5_latest45.RData) 
-data. 
+updates. 
 
 * at the fourth level, each agency has annual datasets 
 (e.g. airnow_PM2.5_2021.RData). Additionally, AirNow has monthly folders (e.g. AirNow/RData/2021/01/), and 
@@ -94,7 +94,7 @@ AirNow_h = get(load(url("https://haze.airfire.org/monitoring/latest/RData/airnow
 For each agency (AirNow, AIRSIS, WRCC), the [PWFSLSmoke package](http://mazamascience.github.io/PWFSLSmoke/reference/index.html) offers 
 three loading functions: 
 
-* `~loadLatest` - for hourly data 
+* `~loadLatest` - for hourly updates covering the most recent 10 days
 ```{r, example loadLatest , eval=FALSE}
 airnow_loadLatest(
 parameter = 'PM2.5',
