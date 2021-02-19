@@ -11,7 +11,8 @@
 #'
 #' @description The \url{https://airnowtech.org} site provides both air
 #' pollution monitoring data as well as monitoring site location metadata. This
-#' function retrieves a single, hourly data file and returns it as a dataframe which includes monitor's site name and parameters monitored.
+#' function retrieves a single, hourly data file and returns it as a dataframe
+#' which includes a monitor's site name and parameters monitored.
 #'
 #' @note As of 2016-12-27, it appears that hourly data are available only for
 #' 2016 and not for earlier years.

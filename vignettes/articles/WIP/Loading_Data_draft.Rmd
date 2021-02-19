@@ -113,7 +113,7 @@ monitor_load(
 ```{r, loadLatest WA, echo=FALSE}
 airnow_loadLatest() %>%
   monitor_subset(stateCodes= 'WA') %>%
-  monitor_dailyStatistic() %>%
+  ###monitor_dailyStatistic() %>%
   monitor_timeseriesPlot(style = 'gnats', ylim=c(0,50), xpd=NA)
   addAQIStackedBar()
   addAQILines()
