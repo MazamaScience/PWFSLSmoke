@@ -31,7 +31,8 @@ AirNow](https://www.airnow.gov) - permanet monitors.
 
 ### Four types of archive files — hourly, daily, monthly, and annual 
 
-The data archive is maintained by [PWFSL](https://www.fs.usda.gov/pnw/research-labs/pacific-wildland-fire-sciences-laboratory-seattle) (Pacific Wildland Fire Sciences Lab) and, for each agency, the 
+The data archive is maintained by [PWFSL](https://www.fs.usda.gov/pnw/research-labs/pacific-wildland-fire-sciences-laboratory-seattle) 
+(Pacific Wildland Fire Sciences Lab) and, for each agency, the 
 archive offers datasets updated hourly, daily, and annually. Additionally, 
 Airnow includes datasets updated monthly. Following, an explanation of the 
 methods used to update the different files: 
@@ -57,7 +58,9 @@ the file `wrcc_PM2.5_2021.RData` was generated on February 14, 2021 at 01:24 am.
 
 The data archive is structured as follow:
 
-* at the first level, there is a dedicated frolder for each agency (i.e [AIRSIS](https://haze.airfire.org/monitoring/AIRSIS/), [AirNow](https://haze.airfire.org/monitoring/AirNow/), [WRCC](https://haze.airfire.org/monitoring/WRCC/)). Additionally, at this level,
+* at the first level, there is a dedicated frolder for each agency (i.e [AIRSIS](https://haze.airfire.org/monitoring/AIRSIS/), 
+[AirNow](https://haze.airfire.org/monitoring/AirNow/),
+[WRCC](https://haze.airfire.org/monitoring/WRCC/)). Additionally, at this level,
 latest data (hourly and daily updates) for all agencies is grouped together and 
 can be quicly accessed  from the [latest/RData](https://haze.airfire.org/monitoring/latest/RData/) subdirectory.
 
