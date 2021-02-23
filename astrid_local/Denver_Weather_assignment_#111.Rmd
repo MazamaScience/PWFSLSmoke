@@ -1,5 +1,5 @@
 ---
-title: "Denver AQI (February 16, 2021)"
+title: "Poor Air Quality Levels In Denver On February 16, 2021"
 author: "Mazama Science"
 date: "2021-02-22"
 output: rmarkdown::html_vignette
@@ -19,21 +19,21 @@ library(PWFSLSmoke)
 library(magrittr)
 ```
 On Tuesday morning (February 16, 2021), Meteorologist Ashton Altieri 
-[predicted](https://denver.cbslocal.com/2021/02/16/denver-weather-air-quality-quickly-worsen-tuesday-more-snow-possible/) concearning air quality levels in the Denver 
-metro area and 
-along the entire Front Range through the afternoon. 
-The Colorado Department of Public Health and Environment expanded an Air Quality
-Alert to cover the area, and encouraged to limit driving non-EV vehicles in 
-Denver, Boulder and Fort Collins to avoid worsening the air pollution levels.
-Poor air quality levels during winter are due to *temperature inversions* - 
+[predicted](https://denver.cbslocal.com/2021/02/16/denver-weather-air-quality-quickly-worsen-tuesday-more-snow-possible/) 
+worrying air quality levels in the Denver metro area and along the entire Front Range through the afternoon. 
+The Colorado Department of Public Health and Environment encouraged to limit 
+driving non-EV vehicles in Denver, Boulder and Fort Collins to avoid worsening 
+the air pollution levels.
+
+In Colorado, poor air quality levels during winter are due to *temperature inversions* - 
 "weather events in which cold, polluted air near the ground is unable to 
 escape into the atmosphere and disperse because of a layer of hotter air above, 
 which creates a trapping effect. In the winter, weakened sunlight and a frozen 
 ground combine to create temperature inversions, sometimes lasting days at a 
 time" ([Air quality in Denver](https://www.iqair.com/us/usa/colorado/denver)). 
 
-Let's have a look at the PM2.5 levels around Tuesday, Feb 16, by starting from 
-a map of the area of interest.
+Let's have a look at the PM2.5 levels around Tuesday by starting from 
+a map of the affected area.
 
 ```{r, monitor IDs, echo=FALSE, include=FALSE}
 monitorIDs = c("080310002_01", "080131001_01", "080130003_01", "081230006_01", 
@@ -51,7 +51,11 @@ monitor_leaflet(CO, legendTitle = "Denver Metro Area",
 ```
 
 <br><br>
-We can then explore further the AQI levels using **different types of plots**:
+
+Indeed, the map shows that the main cities along the Front Range experienced 
+poor air quality indexes (AQI) with PM2.5 reaching USG (unhealthy for sensitive group) and unhealthy levels.
+
+We can also explore further the AQI levels using different types of plots:
 
 ### Dynamic Graph
 ```{r, monitor_dygraph, echo=FALSE}
@@ -62,7 +66,7 @@ monitor_dygraph(CO, title = "Front Range AQIs - Feb 15 - 18, 2021",
 
 <br>
 
-### Timeseries Plot avaraging the AQI levels of more monitors 
+### Timeseries Plot avaraging the AQI levels of more cities 
 ```{r, monitor_timeseriesPlot, echo=FALSE}
 monitor_timeseriesPlot(CO, style = "gnats")
 addAQIStackedBar()
@@ -72,7 +76,7 @@ title("Front Range AQIs - Feb 15 - 18, 2021")
 
 <br>
 
-### Timeseries Plot showing the AQI levels of each monitor individually
+### Timeseries Plot showing the AQI levels of each city individually
 ```{r, Denver - CAMP - 2105 Broadway. Monitor ID: 080310002_01, echo=FALSE}
 monitorID_D = "080310002_01"
 Denver = airnow_loadLatest(parameter = "PM2.5") %>%
@@ -113,7 +117,7 @@ Denver = airnow_loadLatest(parameter = "PM2.5") %>%
 monitor_timeseriesPlot(Denver, style = "gnats")
 addAQIStackedBar()
 addAQILines()
-title("Greeley Hospital AQI - Feb 15 - 18, 2021")
+title("Greeley AQI - Feb 15 - 18, 2021")
 ```
 
 <br>
@@ -128,7 +132,10 @@ title("Ft. Collins AQI - Feb 15 - 18, 2021")
 ```
 
 <br>
-The monitor IDs were selected based on their geographic location using 
+As shown in the plots, Greeley experienced the highest PM2.5 levels (~70 µg/m3) 
+while Boulder was the least affected (~40 µg/m3).
+
+The air quality monitors used for this analysis were selected based on their geographic location by using 
 the 
 [AirFire Monitoring PM2.5 tool](https://tools.airfire.org/monitoring/v4/#!/?category=PM2.5_nowcast&centerlat=42&centerlon=-95&zoom=4). 
 
