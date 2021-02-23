@@ -1,7 +1,7 @@
 ---
 title: "Poor Air Quality Levels In Denver On February 16, 2021"
 author: "Mazama Science"
-date: "2021-02-22"
+date: "2021-02-23"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data Model}
