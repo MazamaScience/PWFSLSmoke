@@ -1,13 +1,14 @@
 ###################################################################
 # Author: Astrid Sanna
 # Date: 2/23/2021
+# Last update: 2/25/2021
 # Object: Creating a Data Archive (#260)
 ###################################################################
 devtools::install_github("MazamaScience/AirSensor")
 library(MazamaCoreUtils)
 library(AirSensor)
 library(dplyr)
-
+rm(list = ls())
 pas_ex <- AirSensor::example_pas
 id <- pas_getDeviceDeploymentIDs(pas_ex, "^Seattle$")
 
@@ -27,16 +28,16 @@ pas_t = pas_load() %>%
 
 
 # to save objects as files - save(pas, file = "FILE_PATH")
-save(mvcaa, file = "C:/Users/astri/Mirror/Mazamascience/Data/AirSensor/pas_MVCAA.rda")
+save(mvcaa, file = paste0(my_archive_dir, "/pas/2021/pas_20210225.rda"))
 
 # ----- STEP 2: use setArchiveBaseDir()
 setArchiveBaseDir("C:/Users/astri/Mirror/Mazamascience/Data/AirSensor/my_archive/")
 getArchiveBaseDir() #OK
 
 # ----- STEP 3: get list of deviceDeploymentIDs for MVCAA sensors
-pas = get(load("C:/Users/astri/Mirror/Mazamascience/Data/AirSensor/pas_MVCAA.rda"))
+pas = get(load(paste0(my_archive_dir, "/pas/2021/pas_20210225.rda")))
 ID =  pas_getDeviceDeploymentIDs(pas = pas)
-id <- pas_getDeviceDeploymentIDs(pas, "^Seattle$")
+# id <- pas_getDeviceDeploymentIDs(pas, "^Seattle$")
 # output:
 # [1] "ab5dca99422f2c0d_13669" "f6c44edd41c941c7_10182" "49215ad49d1a87e3_10188"
 # [4] "f736fd3fb21fc4da_13667" "db5d6b3b79f5830e_39237" "4f19d256e1787973_10166"
@@ -60,13 +61,21 @@ for (id in ID_test){
   save(pat, file = filename)
 }
 
-# ----- STEP 5: create my_archive and save pat files there
+# ----- STEP 5: create my_archive in "well-known" structure for Fall (Sep-Nov)
+# and save pat files there
 my_archive_dir = "C:/Users/astri/Mirror/Mazamascience/Data/AirSensor/my_archive"
 pat = "pat/2020/09"
+pat_10 = "pat/2020/10"
+pat_11 = "pat/2020/11"
 dir.create(file.path(my_archive_dir, pat), recursive = TRUE)
+dir.create(file.path(my_archive_dir, pat_10), recursive = TRUE)
+dir.create(file.path(my_archive_dir, pat_11), recursive = TRUE)
+dir.create(file.path(my_archive_dir, "/pas/2021"), recursive = TRUE)
 
 # save the new directory as an object
 pat_202009 = paste0(my_archive_dir,"/", pat)
+pat_202010 = paste0(my_archive_dir,"/", pat_10)
+pat_202011 = paste0(my_archive_dir,"/", pat_11)
 
 # try a test of 2 IDs saved in my_archive
 setArchiveBaseDir(NULL)
@@ -79,21 +88,72 @@ for (id in ID_test){
   save(pat, file = filename)
 }
 
+# delete files in my_archive/pat/2020/09 and repeat loop for all sensors
+
+# september
+ID =  pas_getDeviceDeploymentIDs(pas = mvcaa)
+for (id in ID){
+  filename = paste0(pat_202009, "/", "pat_", id, "_202009", ".rda")
+  pat = pat_createNew(id = id,
+                      pas = mvcaa,
+                      startdate = 20200901,
+                      enddate = 20200930)
+  save(pat, file = filename)
+}
+# the pat for "b56c0ef677852913_81495" was not created because
+# "No data available for the time period you asked for"
+# Error in pat_filterDatetime(., startdate = dateRange[1], enddate = dateRange[2],  :
+# Parameter 'pat' has no data.
+
+pat_81495 = pat_createNew(id = "b56c0ef677852913_81495",
+                          pas = mvcaa,
+                          startdate = 20200901,
+                          enddate = 20200930)
+# Error in pat_filterDatetime(., startdate = dateRange[1], enddate = dateRange[2],  :
+# Parameter 'pat' has no data.
+# ADD TO ISSUE 261 https://github.com/MazamaScience/AirSensor/issues/261.
+
+# october
+ID =  pas_getDeviceDeploymentIDs(pas = mvcaa)
+for (id in ID){
+  filename = paste0(pat_202010, "/", "pat_", id, "_202010", ".rda")
+  pat = pat_createNew(id = id,
+                      pas = mvcaa,
+                      startdate = 20201001,
+                      enddate = 20201031)
+  save(pat, file = filename)
+}
+# november
+for (id in ID){
+  filename = paste0(pat_202011, "/", "pat_", id, "_202011", ".rda")
+  pat = pat_createNew(id = id,
+                      pas = mvcaa,
+                      startdate = 20201101,
+                      enddate = 20201130)
+  save(pat, file = filename)
+}
+
 
 # ----- STEP 6: load data (trying different approaches)
 setArchiveBaseDir(my_archive_dir)
 getArchiveBaseDir()
-pat_load(id = "ab5dca99422f2c0d_13669")
-# C:/Users/astri/Mirror/Mazamascience/Data/AirSensor/my_archive
+pas <- pas_load(20210225)
+pat <- pat_load(id = "ab5dca99422f2c0d_13669",
+         pas = pas,
+         startdate = 20201101,
+         enddate = 20201130,
+         timezone = "America/Los_Angeles")
+pat_multiplot(pat)
 
-setArchiveBaseDir(pat_202009)
-getArchiveBaseDir()
-pat_load(id = "ab5dca99422f2c0d_13669")
+pat_test <- pat_load(id = "ab5dca99422f2c0d_13669",
+                pas = pas) #errors. it needs a date!!!
 
-setArchiveBaseDir("C:/my_archive/")
-getArchiveBaseDir()
-pat_load(id = "ab5dca99422f2c0d_13669")
+pat_test2 <- pat_load(id = "ab5dca99422f2c0d_13669",
+                startdate = 20200901,
+                enddate = 20200930,
+                timezone = "America/Los_Angeles")
+pat_multiplot(pat)
 
-list.files("C:/my_archive", full.names = TRUE, all.files = TRUE,
-           recursive = TRUE)
-?list.files
+
+
+

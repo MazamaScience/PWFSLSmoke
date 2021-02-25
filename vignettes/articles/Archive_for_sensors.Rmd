@@ -37,7 +37,7 @@ head(mvcaa)
 pas_leaflet(mvcaa)
 ```
 
-If you are not intrested in the metadata and you only want to obtain the unique time series identifiers, follow the example below.
+If you are not intrested in the metadata and you only want to obtain the unique time series identifiers, follow the example below. ***
 
 ```{r, unique time series identifiers}
 mvcaa_id = pas_load() %>%
