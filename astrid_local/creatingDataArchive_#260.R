@@ -18,8 +18,13 @@ mvcaa =
   pas_load() %>% # Load the most recent archived 'pas'(PurpleAir Synoptic)
   pas_filter(stringr::str_detect(label, "MV Clean Air Ambassador"))
 head(mvcaa)
-
+?str_detect
 pas_leaflet(mvcaa)
+
+#test --- can we use this as shortcut if we are not intrested in the metadata?
+pas_t = pas_load() %>%
+  pas_getDeviceDeploymentIDs("MV Clean Air Ambassador")
+
 
 # to save objects as files - save(pas, file = "FILE_PATH")
 save(mvcaa, file = "C:/Users/astri/Mirror/Mazamascience/Data/AirSensor/pas_MVCAA.rda")
@@ -31,6 +36,7 @@ getArchiveBaseDir() #OK
 # ----- STEP 3: get list of deviceDeploymentIDs for MVCAA sensors
 pas = get(load("C:/Users/astri/Mirror/Mazamascience/Data/AirSensor/pas_MVCAA.rda"))
 ID =  pas_getDeviceDeploymentIDs(pas = pas)
+id <- pas_getDeviceDeploymentIDs(pas, "^Seattle$")
 # output:
 # [1] "ab5dca99422f2c0d_13669" "f6c44edd41c941c7_10182" "49215ad49d1a87e3_10188"
 # [4] "f736fd3fb21fc4da_13667" "db5d6b3b79f5830e_39237" "4f19d256e1787973_10166"
@@ -87,3 +93,7 @@ pat_load(id = "ab5dca99422f2c0d_13669")
 setArchiveBaseDir("C:/my_archive/")
 getArchiveBaseDir()
 pat_load(id = "ab5dca99422f2c0d_13669")
+
+list.files("C:/my_archive", full.names = TRUE, all.files = TRUE,
+           recursive = TRUE)
+?list.files
