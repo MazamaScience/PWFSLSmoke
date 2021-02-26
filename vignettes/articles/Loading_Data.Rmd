@@ -1,7 +1,7 @@
 ---
-title: "Loading Data"
+title: "Loading Monitoring Data"
 author: "Mazama Science"
-date: "2021-02-17"
+date: "2021-02-19"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data Model}
@@ -11,6 +11,271 @@ vignette: >
 
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+knitr::opts_chunk$set(error = TRUE)
+```
+```{r libraries, echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(PWFSLSmoke)
+library(magrittr)
+```
+
+This article describes pre-generated `ws_monitor` objects available from a 
+USFS maintained archive and how to load them with various `monitor_load~()`
+functions.
+
+## Pre-Generated Data Files
+
+The USFS Pacific Wildland Fire Sciences Lab [AirFire](https://www.airfire.org) 
+team works to model wildland fire emissions and maintains an up-to-date database
+of data from monitors using data from regulatory-type monitors
+([FRM or FEM](https://www.epa.gov/amtic/air-monitoring-methods-criteria-pollutants)).
+
+Instruments include _permanent_ monitors that form part of the 
+[AirNow](https://www.airnow.gov) network as well as _temporary_ monitors that
+are deployed during wildfire events. Quality controlled data from permanent 
+monitors comes directly from AirNow. Data from temporary monitors is provided in
+raw form from either [AIRSIS](https://app.airsis.com/USFS) or the Western 
+Regional Climate Center [WRCC](http://www.wrcc.dri.edu) and is aggregated and
+quality controlled by AirFire in real-time.
+
+As of February, 2021, pre-generated `ws_monitor` objects containing this data
+are publicly available at https://haze.airfire.org/monitoring/.
+
+## Four types of archive files — hourly, daily, monthly, and annual 
+
+The data archive is maintained by AirFire and, for each data provider, the 
+archive offers datasets that are updated in real-time and on hourly-, daily-, 
+and monthly schedules The following types of files are available: 
+
+**Hourly files** -- These "real-time" files are updated multiple times an hour 
+(~ every two minutes) and contain data for the previous 10 days. They are used
+to generate graphics for the [Monitoring v4 site](https://tools.airfire.org/monitoring/v4).
+
+**Daily files** -- Daily files are updated once a day, shortly after midnight and
+contain data for the previous 45 days. The time span is long enough to contain 
+data for a previous month until 10-days into the next month at which point
+AirNow stops _backfilling_ data that straggles in due to power outages, _etc._
+
+**Monthly files** -- Monthly files are updated within a few days after the 10'th 
+of the following month after data updates have ceased. For instance, a July file
+will be updated in mid-August. 
+
+**Annual files** -- Annual files are updated mid-month, after the monthly file
+update, by appending the just-updated monthly file (covering the previous month)
+to the growing annual file. Thus, an annual will will always cover the period 
+from the beginning of the year to the end of the last month. 
+ 
+*NOTE*: The date and time of annual and monthly updates are subject to change. 
+Exploring the [data archive](https://haze.airfire.org/monitoring/) with a web 
+browser, the exact date and time is seen next to file of interest, under the column 
+`Last modified`. For instance, in the 
+[WRCC 2017 archive](https://haze.airfire.org/monitoring/WRCC/RData/2017/) you can 
+see that the file `wrcc_PM2.5_2021.RData` was generated on February 14, 2021 at 
+01:24 am. 
+
+## Archive Structure
+
+The AirFire maintained data archive uses a consistent and predictable structure:
+
+```
+├── AIRSIS
+│   └── RData
+│       ├── 2004
+│       ├── ...
+│       └── 2021
+├── AirNow
+│   └── RData
+│       ├── 2016
+│       ├── ...
+│       ├── 2020
+│       │   ├── 01
+│       │   ├── ...
+│       │   └── 12
+│       └── 2021
+│           ├── 01
+│           └── 02
+├── EPA
+│   └── RData
+│       ├── 1998
+│       ├── ...
+│       └── 2017
+├── WRCC
+│   └── RData
+│       ├── 2010
+│       ├── ...
+│       └── 2021
+└── latest
+    └── RData
+```
+
+**Top level** -- Tere is a dedicated folder for each agency 
+(i.e [AIRSIS/](https://haze.airfire.org/monitoring/AIRSIS/), 
+[AirNow/](https://haze.airfire.org/monitoring/AirNow/),
+[WRCC/](https://haze.airfire.org/monitoring/WRCC/)). Additionally, at this level,
+latest data (hourly and daily updates) for all agencies is grouped together and 
+can be quickly accessed from the 
+[latest/RData/](https://haze.airfire.org/monitoring/latest/RData/) subdirectory.
+
+**Second level** -- Each agency has the `RData/` folder (_e.g._ A`irNow/RData/`)
+where all R binary files are stored. Other data types like `csv/` and `geojson/` 
+may also exist.
+
+**Third level** -- Each data provider has annual folders (_e.g._ `AirNow/RData/2021/`) 
+and a `latest/` folder (_e.g._ `AirNow/RData/latest/`). The latter contains hourly
+(e.g. airnow_PM2.5_latest10.RData) and daily (e.g. `airnow_PM2.5_latest45.RData`) 
+updates. (This a just copy of the same data found in `latest/RData/`.)
+
+**Fourth level** -- Each data provider has annual datasets 
+(_e.g._ `airnow_PM2.5_2021.RData`). Additionally, because of the size of the files,
+AirNow has monthly folders (_e.g._ `AirNow/RData/2021/01/`), and 
+therefore a **fifth level** containing monthly datasets 
+(_e.g._ `airNow_PM2.5_2021_01.RData`). 
+
+*NOTE*: No annual data files exist for AirNow prior to 2016.
+
+## Direcly loading datasets
+
+With knowledge of the structure of the data archives, it is possible to load 
+datasets directly from the data archive with base R functions by using 
+`get(load(url(…)))`. For instance, if you want to load the latest data 
+(hourly updates) from AirNow, you can just:
+
+```{r, example for loading data, eval=FALSE}
+AirNow_hourly <- get(load(url("https://haze.airfire.org/monitoring/latest/RData/airnow_PM2.5_latest10.RData")))
 ```
 
 
+## Loading functions
+
+For each agency (AirNow, AIRSIS, WRCC), the 
+[PWFSLSmoke package](http://mazamascience.github.io/PWFSLSmoke/reference/index.html) 
+offers three loading functions: 
+
+`~_loadLatest()` - for hourly updates covering the most recent 10 days
+
+```{r, example loadLatest , eval=FALSE}
+airnow_loadLatest(
+parameter = 'PM2.5',
+baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
+dataDir = NULL) 
+```
+
+~__loadDaily()` - for daily updates covering the most recent 45 days
+
+```{r, example loadDaily, eval=FALSE}
+airnow_loadDaily(
+parameter = 'PM2.5',
+baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
+dataDir = NULL) 
+```
+
+`~_loadAnnual()` - for data extended more than 45 days into the past 
+
+```{r, example loadAnnual, eval=FALSE}
+airnow_loadAnnual(
+year = NULL,
+parameter = 'PM2.5',
+baseUrl = "https://haze.airfire.org/monitoring",
+dataDir = NULL) 
+```
+
+These functions are typically used with default settings for `parameter`,
+`baseUrl` and `dataDir`:
+
+```
+airnow_latest <- airnow_loadLatest()
+wrcc_daily <- wrcc_lodDaily)
+```
+
+_ NOTE:_ If `dataDir` is specified, data will be preferentially loaded from a 
+local directory rather than from `baseUrl`. 
+
+## `epa_load()`
+
+The `epa_loadd()` and `epa_loadAnnual()` functions have an additional
+`parameterCode` value which must be specified. EPA parameter codes incluce:
+
+* `88101` – PM2.5 FRM/FEM Mass (begins in 2008)
+* `88502` – PM2.5 non FRM/FEM Mass (begins in 1998)
+
+## `monitor_load()`
+
+```{r, example load , eval=FALSE}
+monitor_load(
+  startdate = NULL,
+  enddate = NULL,
+  monitorIDs = NULL,
+  parameter = "PM2.5",
+  baseUrl = "https://haze.airfire.org/monitoring",
+  dataDir = NULL,
+  aqsPreference = "airnow"
+)
+```
+
+The preferred function for general data loading is 
+[monitor_load()](http://mazamascience.github.io/PWFSLSmoke/reference/monitor_load.html), 
+which loads all available monitoring data for a given time range. Data from 
+AirNow, AIRSIS and WRCC are combined into a single *ws_monitor* object. 
+Archival datasets are joined with 'daily' and 'latest' datasets as needed to 
+satisfy the requested date range.
+
+*NOTE*: Because `monitor_load()` performs a lot of validation tasks as it joins
+annual, monthly and recent data, it is recommended that you load no more than ~3 months 
+of consecutive data using this funciton. Longer timeseries can be obtained using
+the `_loadAnnual()` functions.
+
+*NOTE*: the **PWFSLSmoke** package does not _yet_ create time series cross year boundaries 
+because “joining” timeseries together can take a long time. This capability will
+be enabled at some point in the future.
+
+## Examples using PWFSLSmoke loading functions
+
+### Timeseries plot using the latest data for Washington State 
+
+```{r, loadLatest WA, warning=FALSE}
+# Recipe to get latest AirNow data for WA
+airnow_wa <-
+  airnow_loadLatest() %>%
+  monitor_subset(stateCodes= 'WA')
+
+# Timeseries plot
+monitor_timeseriesPlot(airnow_wa, style = 'gnats')
+addAQIStackedBar()
+addAQILines()
+title("Washington State Latest AirNow Data")
+```
+
+### Timeseries plot using 2015 annual data for the Pacific Northwest. 
+
+```{r, OR_ID_WA airsis_loadAnnual(2015), warning = FALSE}
+# EPA FRM/FEM data
+epa <-
+  epa_loadAnnual(2015, parameterCode = "88101") %>%
+  monitor_subset(
+    stateCodes = c("OR", "ID", "WA"),
+    tlim = c(20150701, 20151001)
+  )
+
+# AIRSIS temporary monitors
+airsis <-
+  airsis_loadAnnual(2015) %>%
+  monitor_subset(
+    stateCodes = c("OR", "ID", "WA"),
+    tlim = c(20150701, 20151001)
+  )
+
+# Combine EPA and AIRSIS data into a single ws_monitor object
+pnw <-
+  monitor_combine(list(epa, airsis)) %>%
+  monitor_nowcast()
+
+# Timeseries plot using NowCast smoothing
+monitor_timeseriesPlot(pnw, style = 'gnats')
+addAQIStackedBar()
+addAQILines()
+title("Pacific Northwest 2015 Megafires -- NowCast Smoothed")
+```
+
+----
+
+_Best of luck gathering data for your research!_
