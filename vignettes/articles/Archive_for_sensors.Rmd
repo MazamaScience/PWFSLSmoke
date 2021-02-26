@@ -1,5 +1,5 @@
 ---
-title: "How To Create A Local Archive For Sensors"
+title: "Tutorial: Creating A Local Archive For PurpleAir Sensors"
 author: "Mazama Science"
 date: "2021-02-25"
 output: rmarkdown::html_vignette
@@ -13,34 +13,133 @@ vignette: >
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
-This article illustrates how to create a local archive for PurpleAir sensors, using the [AirSensors](https://mazamascience.github.io/AirSensor/index.html) package. For the purpuse of the following examples we are going to create a new archive for the Methow Valley.
+This article illustrates how to create a local archive of pre-generated data 
+files for PurpleAir sensors, using the [AirSensors](https://mazamascience.github.io/AirSensor/index.html) package. 
+For the purpuse of this tutorial, we are going to create a local archive
+for the Methow Valley's sensors by loading pre-generated 
+PurpleAir synoptic and time searies files from an [internal archive base url](http://data.mazamascience.com/PurpleAir/v1/) mantained by the AirSensor 
+package. This is the fastest way for obtaning sensors data but, alternatively, 
+you could download the data directly from the PurpleAir website. 
+More info on this alternative method is available in the [PurpleAir Synoptic Data](https://mazamascience.github.io/AirSensor/articles/articles/pas_introduction.html) and 
+[PurpleAir Time Series Data](https://mazamascience.github.io/AirSensor/articles/articles/pat_introduction.html) articles. 
 
-Steps:
+In this tuotrial, each step is fisrt described in the "Instructions" section 
+and then exemplified in the "Code" section. 
 
-1. set the archive base directory to NULL. This step is necessary only if you previously set a local base directory, since it would take precedence over the base url we are going to set next.
+## Section 1: 
+### Instructions for loading pre-generated files and create a *flat* archive 
 
-2. set the archive base url to http://data.mazamascience.com/PurpleAir/v1/. This is the internal archive base url maintained by the AirSensor package. Alternatively, if an archive of pre-generated data files is availalbe locally, users can set the location of this directory with setArchiveBaseDir() ([Base URL for pre-generated data](https://mazamascience.github.io/AirSensor/reference/ArchiveBaseUrl.html)). 
+1. Load the `AirSensor` and `dplyr` libraries. You may need to install the 
+necessary packages first (see [AirSensor R Packeage](https://mazamascience.github.io/AirSensor/index.html) for more details). 
 
-3. create a `pas` (PurpleAir Synoptic) object and filter the Methow Valley'sensors. The `pas` object can then be mapped since it contains latitude 
-and longitude for each sensor beside other useful metadata. 
-```{r, most recent archived pas, eval=FALSE}
+2. Set the archive base directory to NULL. This step is necessary only if you previously set a base directory, since it would take precedence over the base 
+url we are going to set next.
+
+3. Set the archive base url to http://data.mazamascience.com/PurpleAir/v1/. 
+
+4. Create a `pas` (PurpleAir Synoptic) object and filter the Methow
+Valley'sensors. The `pas` object contains all the sensor's data and metadata, 
+including latitude and longitude which allow us to easily visualize the 
+sensor on a map. You can then click the sensors represented by colored dots 
+on the map to quickly see the most important metadata and data.
+
+5. Create a list of unique time series identifiers or `DeviceDeploymentIDs`.
+
+<br>
+Now that we have our list of unique time series identifiers we can load the PurpuleAir time series data (heareafter `pat`) to build our local archive. 
+Here we have two options: 1) build a *flat* archive 
+where we simply store files; 2) build an archive using the *well-known* structure
+(aka internal archive base url structure), which will allow us to use other
+AirSensors functions for further off-line analysis, including:
+
+* `pas_load()`
+
+* `pat_load()`
+
+* `pat_loadLatest()`
+
+* `pat_loadMonth()`
+
+* `sensor_load()`
+
+* `sensor_loadLatest()`
+
+* `sensor_loadMonth()`
+
+If you choose option 1), got to Step 6; if you choose option 2) jump to the next section.
+
+6. Load and save `pas` and `pat` files in a *flat* archive. 
+
+
+Step 1
+```{r, libraries, warning = FALSE, message=FALSE}
 library(AirSensor)
 library(dplyr)
+```
 
+Step 2
+```{r, setArchiveBaseDir, warning = FALSE, message=FALSE}
 setArchiveBaseDir(NULL)
+```
+
+Step 3
+```{r, setArchiveBaseUrl, warning = FALSE, message=FALSE}
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1/")
-mvcaa =
+```
+
+Step 4
+```{r, pas object and map, warning = FALSE, message=FALSE, results='hide'}
+mvcaa <-
   pas_load() %>% # Load the most recent archived 'pas'(PurpleAir Synoptic)
   pas_filter(stringr::str_detect(label, "MV Clean Air Ambassador"))
 head(mvcaa)
-
-pas_leaflet(mvcaa)
+```
+```{r, dynamic map}
+pas_leaflet(mvcaa) # Creates a dynamic map of the sensors.
 ```
 
-If you are not intrested in the metadata and you only want to obtain the unique time series identifiers, follow the example below. ***
+Step 5 
+```{r}
+ID =  pas_getDeviceDeploymentIDs(pas = mvcaa)
+```
+
+
+If you only want to obtain a list of unique time series identifiers, skip Step 4 
+and follow the example below.
 
 ```{r, unique time series identifiers}
-mvcaa_id = pas_load() %>%
+ID <- pas_load() %>%
   pas_getDeviceDeploymentIDs("MV Clean Air Ambassador")
 ```
 
+Step 6
+```{r, load data, eval=FALSE}
+
+my_archive <- "type/here/your/directory"
+
+# Load and save time series files for September 2020
+
+for (id in ID){
+  filename = paste0(my_archive, "/", id, ".rda")
+  pat = pat_createNew(id = id,
+                      pas = mvcaa,
+                      startdate = 20200901, 
+                      enddate = 20200930)
+  save(pat, file = filename)
+} 
+
+# save the pas object previously created 
+save(mvcaa, file = paste0(my_archive, "/mvcaa.rda"))
+
+# load files from local flat archive (example) 
+mvcaa <- get(load(paste0(my_archive,"/mvcaa.rda")))
+
+```
+
+
+
+## Section 2: loading pre-generated files and save them in the a *well-known* archive structure. 
+
+### Instructions  
+
+### Code 
