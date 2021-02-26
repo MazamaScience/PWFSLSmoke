@@ -1,10 +1,10 @@
 ---
 title: "Loading Monitoring Data"
 author: "Mazama Science"
-date: "2021-02-19"
+date: "2021-02-26"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Model}
+  %\VignetteIndexEntry{Loading Monitoring Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -108,7 +108,7 @@ The AirFire maintained data archive uses a consistent and predictable structure:
     └── RData
 ```
 
-**Top level** -- Tere is a dedicated folder for each agency 
+**Top level** -- There is a dedicated folder for each agency 
 (i.e [AIRSIS/](https://haze.airfire.org/monitoring/AIRSIS/), 
 [AirNow/](https://haze.airfire.org/monitoring/AirNow/),
 [WRCC/](https://haze.airfire.org/monitoring/WRCC/)). Additionally, at this level,
@@ -193,7 +193,7 @@ local directory rather than from `baseUrl`.
 ## `epa_load()`
 
 The `epa_loadd()` and `epa_loadAnnual()` functions have an additional
-`parameterCode` value which must be specified. EPA parameter codes incluce:
+`parameterCode` value which must be specified. EPA parameter codes include:
 
 * `88101` – PM2.5 FRM/FEM Mass (begins in 2008)
 * `88502` – PM2.5 non FRM/FEM Mass (begins in 1998)
@@ -221,7 +221,7 @@ satisfy the requested date range.
 
 *NOTE*: Because `monitor_load()` performs a lot of validation tasks as it joins
 annual, monthly and recent data, it is recommended that you load no more than ~3 months 
-of consecutive data using this funciton. Longer timeseries can be obtained using
+of consecutive data using this function. Longer timeseries can be obtained using
 the `_loadAnnual()` functions.
 
 *NOTE*: the **PWFSLSmoke** package does not _yet_ create time series cross year boundaries 
