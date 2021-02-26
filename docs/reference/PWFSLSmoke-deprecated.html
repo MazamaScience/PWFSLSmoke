@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@
 <meta property="og:description" content="These functions are in the process of being removed from the PWFSLSmoke
 package, and may not appear in future versions. When available, alternative
 functions will be listed." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +67,7 @@ functions will be listed." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -78,7 +81,7 @@ functions will be listed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.113</span>
       </span>
     </div>
 
@@ -115,6 +118,9 @@ functions will be listed." />
     <li>
       <a href="../articles/NowCast.html">NowCast</a>
     </li>
+    <li>
+      <a href="../articles/articles/Loading_Monitoring_Data.html">Loading Monitoring Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -123,7 +129,7 @@ functions will be listed." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/MazamaScience/PWFSLSmoke">
+  <a href="https://github.com/MazamaScience/PWFSLSmoke/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -152,197 +158,197 @@ package, and may not appear in future versions. When available, alternative
 functions will be listed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>monitorGoogleMap</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"max"</span>),
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"roadmap"</span>,
-  <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+    <pre class="usage"><span class='fu'>monitorGoogleMap</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  slice <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span><span class='op'>(</span><span class='st'>"max"</span><span class='op'>)</span>,
+  breaks <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>breaks_24</span>,
+  colors <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>colors</span>,
+  width <span class='op'>=</span> <span class='fl'>640</span>,
+  height <span class='op'>=</span> <span class='fl'>640</span>,
+  centerLon <span class='op'>=</span> <span class='cn'>NULL</span>,
+  centerLat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zoom <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maptype <span class='op'>=</span> <span class='st'>"roadmap"</span>,
+  grayscale <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorEsriMap</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"max"</span>),
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"roadmap"</span>,
-  <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>monitorEsriMap</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  slice <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span><span class='op'>(</span><span class='st'>"max"</span><span class='op'>)</span>,
+  breaks <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>breaks_24</span>,
+  colors <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>colors</span>,
+  width <span class='op'>=</span> <span class='fl'>640</span>,
+  height <span class='op'>=</span> <span class='fl'>640</span>,
+  centerLon <span class='op'>=</span> <span class='cn'>NULL</span>,
+  centerLat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zoom <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maptype <span class='op'>=</span> <span class='st'>"roadmap"</span>,
+  grayscale <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorPlot_timeOfDaySpaghetti</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>aqiLines</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>monitorPlot_timeOfDaySpaghetti</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  monitorID <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tlim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ylim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  aqiLines <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  shadedNight <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorDygraph</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"title"</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"PM2.5 Concentration"</span>,
-  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>showLegend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>monitorDygraph</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  title <span class='op'>=</span> <span class='st'>"title"</span>,
+  ylab <span class='op'>=</span> <span class='st'>"PM2.5 Concentration"</span>,
+  tlim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rollPeriod <span class='op'>=</span> <span class='fl'>1</span>,
+  showLegend <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitor_esriMap</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"max"</span>),
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>640</span>,
-  <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"worldStreetMap"</span>,
-  <span class='kw'>grayscale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>mapRaster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"cex"</span>) * <span class='fl'>2</span>,
-  <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>monitor_esriMap</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  slice <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span><span class='op'>(</span><span class='st'>"max"</span><span class='op'>)</span>,
+  breaks <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>breaks_24</span>,
+  colors <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>colors</span>,
+  width <span class='op'>=</span> <span class='fl'>640</span>,
+  height <span class='op'>=</span> <span class='fl'>640</span>,
+  centerLon <span class='op'>=</span> <span class='cn'>NULL</span>,
+  centerLat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zoom <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maptype <span class='op'>=</span> <span class='st'>"worldStreetMap"</span>,
+  grayscale <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  mapRaster <span class='op'>=</span> <span class='cn'>NULL</span>,
+  cex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='st'>"cex"</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>2</span>,
+  pch <span class='op'>=</span> <span class='fl'>16</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorLeaflet</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"max"</span>),
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>names</span>,
-  <span class='kw'>legendTitle</span> <span class='kw'>=</span> <span class='st'>"Max AQI Level"</span>,
-  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>opacity</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>,
-  <span class='kw'>popupInfo</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"siteName"</span>, <span class='st'>"monitorID"</span>, <span class='st'>"elevation"</span>)
-)
+<span class='fu'>monitorLeaflet</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  slice <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span><span class='op'>(</span><span class='st'>"max"</span><span class='op'>)</span>,
+  breaks <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>breaks_24</span>,
+  colors <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>colors</span>,
+  labels <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>names</span>,
+  legendTitle <span class='op'>=</span> <span class='st'>"Max AQI Level"</span>,
+  radius <span class='op'>=</span> <span class='fl'>10</span>,
+  opacity <span class='op'>=</span> <span class='fl'>0.7</span>,
+  maptype <span class='op'>=</span> <span class='st'>"terrain"</span>,
+  popupInfo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"siteName"</span>, <span class='st'>"monitorID"</span>, <span class='st'>"elevation"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorMap</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>slice</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"max"</span>),
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>colors</span>,
-  <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"pch"</span>),
-  <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"cex"</span>),
-  <span class='kw'>stateCol</span> <span class='kw'>=</span> <span class='st'>"grey60"</span>,
-  <span class='kw'>stateLwd</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>countyCol</span> <span class='kw'>=</span> <span class='st'>"grey70"</span>,
-  <span class='kw'>countyLwd</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>monitorMap</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  slice <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span><span class='op'>(</span><span class='st'>"max"</span><span class='op'>)</span>,
+  breaks <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>breaks_24</span>,
+  colors <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>colors</span>,
+  pch <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='st'>"pch"</span><span class='op'>)</span>,
+  cex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='st'>"cex"</span><span class='op'>)</span>,
+  stateCol <span class='op'>=</span> <span class='st'>"grey60"</span>,
+  stateLwd <span class='op'>=</span> <span class='fl'>2</span>,
+  countyCol <span class='op'>=</span> <span class='st'>"grey70"</span>,
+  countyLwd <span class='op'>=</span> <span class='fl'>1</span>,
+  add <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorMap_performance</span>(
-  <span class='no'>predicted</span>,
-  <span class='no'>observed</span>,
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='no'>AQI</span>$<span class='no'>breaks_24</span>[<span class='fl'>3</span>],
-  <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"cex"</span>),
-  <span class='kw'>sizeBy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>colorBy</span> <span class='kw'>=</span> <span class='st'>"heidikeSkill"</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, <span class='fl'>0.5</span>, <span class='fl'>0.6</span>, <span class='fl'>0.7</span>, <span class='fl'>0.8</span>, <span class='fl'>Inf</span>),
-  <span class='kw'>paletteFunc</span> <span class='kw'>=</span> <span class='kw pkg'>grDevices</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></span>(<span class='kw pkg'>RColorBrewer</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html'>brewer.pal</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>breaks</span>),
-    <span class='st'>"Purples"</span>)[-<span class='fl'>1</span>]),
-  <span class='kw'>showLegend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>legendPos</span> <span class='kw'>=</span> <span class='st'>"topright"</span>,
-  <span class='kw'>stateCol</span> <span class='kw'>=</span> <span class='st'>"grey60"</span>,
-  <span class='kw'>stateLwd</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>countyCol</span> <span class='kw'>=</span> <span class='st'>"grey70"</span>,
-  <span class='kw'>countyLwd</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>monitorMap_performance</span><span class='op'>(</span>
+  <span class='va'>predicted</span>,
+  <span class='va'>observed</span>,
+  threshold <span class='op'>=</span> <span class='va'>AQI</span><span class='op'>$</span><span class='va'>breaks_24</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>,
+  cex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='st'>"cex"</span><span class='op'>)</span>,
+  sizeBy <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colorBy <span class='op'>=</span> <span class='st'>"heidikeSkill"</span>,
+  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span>, <span class='fl'>0.5</span>, <span class='fl'>0.6</span>, <span class='fl'>0.7</span>, <span class='fl'>0.8</span>, <span class='cn'>Inf</span><span class='op'>)</span>,
+  paletteFunc <span class='op'>=</span> <span class='fu'>grDevices</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></span><span class='op'>(</span><span class='fu'>RColorBrewer</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html'>brewer.pal</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>breaks</span><span class='op'>)</span>,
+    <span class='st'>"Purples"</span><span class='op'>)</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+  showLegend <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  legendPos <span class='op'>=</span> <span class='st'>"topright"</span>,
+  stateCol <span class='op'>=</span> <span class='st'>"grey60"</span>,
+  stateLwd <span class='op'>=</span> <span class='fl'>2</span>,
+  countyCol <span class='op'>=</span> <span class='st'>"grey70"</span>,
+  countyLwd <span class='op'>=</span> <span class='fl'>1</span>,
+  add <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorPlot_dailyBarplot</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>minHours</span> <span class='kw'>=</span> <span class='fl'>18</span>,
-  <span class='kw'>gridPos</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>gridCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>gridLwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>gridLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
-  <span class='kw'>labels_x_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>labels_y_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>monitorPlot_dailyBarplot</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  monitorID <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tlim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  minHours <span class='op'>=</span> <span class='fl'>18</span>,
+  gridPos <span class='op'>=</span> <span class='st'>""</span>,
+  gridCol <span class='op'>=</span> <span class='st'>"black"</span>,
+  gridLwd <span class='op'>=</span> <span class='fl'>0.5</span>,
+  gridLty <span class='op'>=</span> <span class='st'>"solid"</span>,
+  labels_x_nudge <span class='op'>=</span> <span class='fl'>0</span>,
+  labels_y_nudge <span class='op'>=</span> <span class='fl'>0</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorPlot_hourlyBarplot</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>localTime</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>,
-  <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>gridPos</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>gridCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>gridLwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>gridLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
-  <span class='kw'>labels_x_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>labels_y_nudge</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>dayCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>dayLwd</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>dayLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
-  <span class='kw'>hourCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>hourLwd</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>hourLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
-  <span class='kw'>hourInterval</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>monitorPlot_hourlyBarplot</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  monitorID <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tlim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  localTime <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  style <span class='op'>=</span> <span class='st'>"AQI"</span>,
+  shadedNight <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  gridPos <span class='op'>=</span> <span class='st'>""</span>,
+  gridCol <span class='op'>=</span> <span class='st'>"black"</span>,
+  gridLwd <span class='op'>=</span> <span class='fl'>0.5</span>,
+  gridLty <span class='op'>=</span> <span class='st'>"solid"</span>,
+  labels_x_nudge <span class='op'>=</span> <span class='fl'>0</span>,
+  labels_y_nudge <span class='op'>=</span> <span class='fl'>0</span>,
+  dayCol <span class='op'>=</span> <span class='st'>"black"</span>,
+  dayLwd <span class='op'>=</span> <span class='fl'>2</span>,
+  dayLty <span class='op'>=</span> <span class='st'>"solid"</span>,
+  hourCol <span class='op'>=</span> <span class='st'>"black"</span>,
+  hourLwd <span class='op'>=</span> <span class='fl'>1</span>,
+  hourLty <span class='op'>=</span> <span class='st'>"solid"</span>,
+  hourInterval <span class='op'>=</span> <span class='fl'>6</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorPlot_noData</span>(<span class='no'>ws_monitor</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>2.5</span>)
+<span class='fu'>monitorPlot_noData</span><span class='op'>(</span><span class='va'>ws_monitor</span>, monitorID <span class='op'>=</span> <span class='cn'>NULL</span>, cex <span class='op'>=</span> <span class='fl'>2.5</span><span class='op'>)</span>
 
-<span class='fu'>monitorPlot_rollingMean</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"center"</span>,
-  <span class='kw'>data.thresh</span> <span class='kw'>=</span> <span class='fl'>75</span>,
-  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>localTime</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>aqiLines</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>gridHorizontal</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>grid24hr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>grid3hr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>showLegend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>monitorPlot_rollingMean</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  monitorID <span class='op'>=</span> <span class='cn'>NULL</span>,
+  width <span class='op'>=</span> <span class='fl'>3</span>,
+  align <span class='op'>=</span> <span class='st'>"center"</span>,
+  data.thresh <span class='op'>=</span> <span class='fl'>75</span>,
+  tlim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ylim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  localTime <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  shadedNight <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  aqiLines <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  gridHorizontal <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  grid24hr <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  grid3hr <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  showLegend <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>monitorPlot_timeseries</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>localTime</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>style</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>gridPos</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>gridCol</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>gridLwd</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>gridLty</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
-  <span class='kw'>dayLwd</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>hourLwd</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>hourInterval</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='fu'>monitorPlot_timeseries</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  monitorID <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tlim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  localTime <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  style <span class='op'>=</span> <span class='cn'>NULL</span>,
+  shadedNight <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  add <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  gridPos <span class='op'>=</span> <span class='st'>""</span>,
+  gridCol <span class='op'>=</span> <span class='st'>"black"</span>,
+  gridLwd <span class='op'>=</span> <span class='fl'>1</span>,
+  gridLty <span class='op'>=</span> <span class='st'>"solid"</span>,
+  dayLwd <span class='op'>=</span> <span class='fl'>0</span>,
+  hourLwd <span class='op'>=</span> <span class='fl'>0</span>,
+  hourInterval <span class='op'>=</span> <span class='fl'>6</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -391,14 +397,10 @@ functions will be listed.</p>
 
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#details">Details</a></li>
-      <li><a href="#silent-deprecations">Silent Deprecations</a></li>
-      <li><a href="#hard-deprecations">Hard Deprecations</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -409,7 +411,7 @@ functions will be listed.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -18,23 +18,27 @@ Monitor — monitor_collapse • PWFSLSmoke</title>
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -52,7 +56,6 @@ longitude and latitude unless longitude and latitude
 parameters are specified.
 Any columns of meta that are common to all monitors will be retained in
 the returned ws_monitor meta." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -70,7 +73,7 @@ the returned ws_monitor meta." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -84,7 +87,7 @@ the returned ws_monitor meta." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.113</span>
       </span>
     </div>
 
@@ -121,6 +124,9 @@ the returned ws_monitor meta." />
     <li>
       <a href="../articles/NowCast.html">NowCast</a>
     </li>
+    <li>
+      <a href="../articles/articles/Loading_Monitoring_Data.html">Loading Monitoring Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -129,7 +135,7 @@ the returned ws_monitor meta." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/MazamaScience/PWFSLSmoke">
+  <a href="https://github.com/MazamaScience/PWFSLSmoke/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -163,15 +169,15 @@ parameters are specified.</p>
 the returned <em>ws_monitor</em> meta.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>monitor_collapse</span>(
-  <span class='no'>ws_monitor</span>,
-  <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='st'>"generated_id"</span>,
-  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>mean</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>monitor_collapse</span><span class='op'>(</span>
+  <span class='va'>ws_monitor</span>,
+  longitude <span class='op'>=</span> <span class='cn'>NULL</span>,
+  latitude <span class='op'>=</span> <span class='cn'>NULL</span>,
+  monitorID <span class='op'>=</span> <span class='st'>"generated_id"</span>,
+  FUN <span class='op'>=</span> <span class='va'>mean</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,27 +225,26 @@ converted to <code>NA</code>. This is a convenience for the common case where
 values. See the R documentation for <code>min</code> for an explanation.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>PWFSLSmoke</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/PWFSLSmoke'>PWFSLSmoke</a></span><span class='op'>)</span>
 
-<span class='no'>N_M</span> <span class='kw'>&lt;-</span> <span class='no'>Northwest_Megafires</span>
+<span class='va'>N_M</span> <span class='op'>&lt;-</span> <span class='va'>Northwest_Megafires</span>
 <span class='co'># monitor_leaflet(N_M) # to identify Spokane monitorIDs</span>
 
-<span class='no'>Spokane</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='monitor_subsetBy.html'>monitor_subsetBy</a></span>(<span class='no'>N_M</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>N_M</span>$<span class='no'>meta</span>$<span class='no'>monitorID</span>,<span class='st'>'^53063'</span>))
-<span class='no'>Spokane_min</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_collapse</span>(<span class='no'>Spokane</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='st'>'Spokane_min'</span>, <span class='kw'>FUN</span><span class='kw'>=</span><span class='no'>min</span>)
-<span class='no'>Spokane_max</span> <span class='kw'>&lt;-</span> <span class='fu'>monitor_collapse</span>(<span class='no'>Spokane</span>, <span class='kw'>monitorID</span><span class='kw'>=</span><span class='st'>'Spokane_max'</span>, <span class='kw'>FUN</span><span class='kw'>=</span><span class='no'>max</span>)
+<span class='va'>Spokane</span> <span class='op'>&lt;-</span> <span class='fu'><a href='monitor_subsetBy.html'>monitor_subsetBy</a></span><span class='op'>(</span><span class='va'>N_M</span>, <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span><span class='op'>(</span><span class='va'>N_M</span><span class='op'>$</span><span class='va'>meta</span><span class='op'>$</span><span class='va'>monitorID</span>,<span class='st'>'^53063'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>Spokane_min</span> <span class='op'>&lt;-</span> <span class='fu'>monitor_collapse</span><span class='op'>(</span><span class='va'>Spokane</span>, monitorID<span class='op'>=</span><span class='st'>'Spokane_min'</span>, FUN<span class='op'>=</span><span class='va'>min</span><span class='op'>)</span>
+<span class='va'>Spokane_max</span> <span class='op'>&lt;-</span> <span class='fu'>monitor_collapse</span><span class='op'>(</span><span class='va'>Spokane</span>, monitorID<span class='op'>=</span><span class='st'>'Spokane_max'</span>, FUN<span class='op'>=</span><span class='va'>max</span><span class='op'>)</span>
 
-<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>Spokane</span>, <span class='kw'>tlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20150619</span>,<span class='fl'>20150626</span>),
-                       <span class='kw'>style</span><span class='kw'>=</span><span class='st'>'gnats'</span>, <span class='kw'>shadedNight</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>Spokane_max</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'red'</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>'s'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>Spokane_min</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>'blue'</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>'s'</span>, <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span>(<span class='st'>'Spokane Range of PM2.5 Values, June 2015'</span>)</div><div class='img'><img src='monitor_collapse-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span><span class='op'>(</span><span class='va'>Spokane</span>, tlim<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>20150619</span>,<span class='fl'>20150626</span><span class='op'>)</span>,
+                       style<span class='op'>=</span><span class='st'>'gnats'</span>, shadedNight<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span><span class='op'>(</span><span class='va'>Spokane_max</span>, col<span class='op'>=</span><span class='st'>'red'</span>, type<span class='op'>=</span><span class='st'>'s'</span>, add<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span><span class='op'>(</span><span class='va'>Spokane_min</span>, col<span class='op'>=</span><span class='st'>'blue'</span>, type<span class='op'>=</span><span class='st'>'s'</span>, add<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span><span class='op'>(</span><span class='st'>'Spokane Range of PM2.5 Values, June 2015'</span><span class='op'>)</span>
+</div><div class='img'><img src='monitor_collapse-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#note">Note</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -250,7 +255,7 @@ values. See the R documentation for <code>min</code> for an explanation.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -60,7 +64,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.111</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.113</span>
       </span>
     </div>
 
@@ -111,6 +115,9 @@
     <li>
       <a href="../articles/NowCast.html">NowCast</a>
     </li>
+    <li>
+      <a href="../articles/articles/Loading_Monitoring_Data.html">Loading Monitoring Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -119,7 +126,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/MazamaScience/PWFSLSmoke">
+  <a href="https://github.com/MazamaScience/PWFSLSmoke/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -137,13 +144,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="pwfslsmoke-1-2-111" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-111" class="anchor"></a>PWFSLSmoke 1.2.111<small> 2020-07-02 </small>
+    <div id="pwfslsmoke-12113" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.113">
+<a href="#pwfslsmoke-12113" class="anchor"></a>PWFSLSmoke 1.2.113<small> Unreleased </small>
+</h1>
+<ul>
+<li>Updated <code>docker/</code> files to use R 3.6.3.</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-12112" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.112">
+<a href="#pwfslsmoke-12112" class="anchor"></a>PWFSLSmoke 1.2.112<small> Unreleased </small>
+</h1>
+<ul>
+<li>Updated support for parsing AIRSIS “ESAM Multi” format.</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-12111" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.111">
+<a href="#pwfslsmoke-12111" class="anchor"></a>PWFSLSmoke 1.2.111<small> 2020-07-02 </small>
 </h1>
 <p>CRAN manual review suggestions:</p>
 <ul>
@@ -153,49 +176,49 @@
 <li>Changed many examples from <code>\dontrun{}</code> to <code>\donttest{}</code>.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-110" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-110" class="anchor"></a>PWFSLSmoke 1.2.110<small> Unreleased </small>
+    <div id="pwfslsmoke-12110" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.110">
+<a href="#pwfslsmoke-12110" class="anchor"></a>PWFSLSmoke 1.2.110<small> Unreleased </small>
 </h1>
 <ul>
 <li>Tweaks for CRAN submission.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-109" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-109" class="anchor"></a>PWFSLSmoke 1.2.109<small> Unreleased </small>
+    <div id="pwfslsmoke-12109" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.109">
+<a href="#pwfslsmoke-12109" class="anchor"></a>PWFSLSmoke 1.2.109<small> Unreleased </small>
 </h1>
 <ul>
 <li>Removed logging setup from <code>initializeMazamaSpatialutils()</code>.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-108" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-108" class="anchor"></a>PWFSLSmoke 1.2.108<small> Unreleased </small>
+    <div id="pwfslsmoke-12108" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.108">
+<a href="#pwfslsmoke-12108" class="anchor"></a>PWFSLSmoke 1.2.108<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added support for parsing AIRSIS “ESAM Multi” format.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-107" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-107" class="anchor"></a>PWFSLSmoke 1.2.107<small> Unreleased </small>
+    <div id="pwfslsmoke-12107" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.107">
+<a href="#pwfslsmoke-12107" class="anchor"></a>PWFSLSmoke 1.2.107<small> Unreleased </small>
 </h1>
 <ul>
 <li>Updated <code>test-timeinfo.R</code> to avoid CRAN Check errors.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-106" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-106" class="anchor"></a>PWFSLSmoke 1.2.106<small> Unreleased </small>
+    <div id="pwfslsmoke-12106" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.106">
+<a href="#pwfslsmoke-12106" class="anchor"></a>PWFSLSmoke 1.2.106<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added support for parsing AIRSIS “EBAM Plus Multi” format.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-105" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-105" class="anchor"></a>PWFSLSmoke 1.2.105<small> Unreleased </small>
+    <div id="pwfslsmoke-12105" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.105">
+<a href="#pwfslsmoke-12105" class="anchor"></a>PWFSLSmoke 1.2.105<small> Unreleased </small>
 </h1>
 <ul>
 <li>Documentation tweaks.</li>
@@ -204,27 +227,27 @@
 <li>New vignette: “Example: Save Data as CSV”</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-104" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-104" class="anchor"></a>PWFSLSmoke 1.2.104<small> Unreleased </small>
+    <div id="pwfslsmoke-12104" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.104">
+<a href="#pwfslsmoke-12104" class="anchor"></a>PWFSLSmoke 1.2.104<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added support for parsing AIRSIS “EBAM Multi 2” format.</li>
 <li>Replaced <code>PWFSLSmoke::loadDataFile()</code> with <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/loadDataFile.html">MazamaCoreUtils::loadDataFile()</a></code>.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-103" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-103" class="anchor"></a>PWFSLSmoke 1.2.103<small> Unreleased </small>
+    <div id="pwfslsmoke-12103" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.103">
+<a href="#pwfslsmoke-12103" class="anchor"></a>PWFSLSmoke 1.2.103<small> Unreleased </small>
 </h1>
 <ul>
 <li>docker version bump</li>
 <li>documentation typos</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-102" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-102" class="anchor"></a>PWFSLSmoke 1.2.102<small> Unreleased </small>
+    <div id="pwfslsmoke-12102" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.102">
+<a href="#pwfslsmoke-12102" class="anchor"></a>PWFSLSmoke 1.2.102<small> Unreleased </small>
 </h1>
 <ul>
 <li>Ran <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/lintFunctionArgs.html">MazamaCoreUtils::lintFunctionArgs()</a></code> with <code>timezoneLintRules</code> and included explicit timezones wherever they are allowed.</li>
@@ -232,25 +255,25 @@
 <code>PWFSLSmoke::parseDatetime()</code> has been internally replaced with <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/parseDatetime.html">MazamaCoreUtils::parseDatetime()</a></code> with explicit timezone argument</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-101" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-101" class="anchor"></a>PWFSLSmoke 1.2.101<small> Unreleased </small>
+    <div id="pwfslsmoke-12101" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.101">
+<a href="#pwfslsmoke-12101" class="anchor"></a>PWFSLSmoke 1.2.101<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fix bug in <code><a href="../reference/monitor_load.html">monitor_load()</a></code> which wouldn’t load data when the specified time range was in the last 10 days.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-100" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-100" class="anchor"></a>PWFSLSmoke 1.2.100<small> 2019-07-18 </small>
+    <div id="pwfslsmoke-12100" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.100">
+<a href="#pwfslsmoke-12100" class="anchor"></a>PWFSLSmoke 1.2.100<small> 2019-07-18 </small>
 </h1>
 <ul>
 <li>Version bump for CRAN release.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-11" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-11" class="anchor"></a>PWFSLSmoke 1.2.11<small> Unreleased </small>
+    <div id="pwfslsmoke-1211" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.11">
+<a href="#pwfslsmoke-1211" class="anchor"></a>PWFSLSmoke 1.2.11<small> Unreleased </small>
 </h1>
 <p>This patch restores some of the ESRI mapping functionality by providing a function to download, stitch and crop images from ESRI tile services. The new <code><a href="../reference/staticmap_getRasterBrick.html">staticmap_getRasterBrick()</a></code> provides a generalized API for generating basemaps from the two tiling services currently being supported: ESRI and Stamen.</p>
 <ul>
@@ -258,58 +281,58 @@
 <li>Reordered arguments in <code><a href="../reference/staticmap_getStamenmapBrick.html">staticmap_getStamenmapBrick()</a></code>.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-10" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-10" class="anchor"></a>PWFSLSmoke 1.2.10<small> Unreleased </small>
+    <div id="pwfslsmoke-1210" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.10">
+<a href="#pwfslsmoke-1210" class="anchor"></a>PWFSLSmoke 1.2.10<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fixes for website documentation</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-9" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-9" class="anchor"></a>PWFSLSmoke 1.2.9<small> Unreleased </small>
+    <div id="pwfslsmoke-129" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.9">
+<a href="#pwfslsmoke-129" class="anchor"></a>PWFSLSmoke 1.2.9<small> Unreleased </small>
 </h1>
 <ul>
 <li>Docker image now includes <code>optparse</code> package so that executable scripts can be run inside the <code>mazamascience/pwfslsmoke</code> image.</li>
 <li>Fixed error-generating bug in <code>debug.trace(...)</code> statement while processing AirNow data.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-8" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-8" class="anchor"></a>PWFSLSmoke 1.2.8<small> Unreleased </small>
+    <div id="pwfslsmoke-128" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.8">
+<a href="#pwfslsmoke-128" class="anchor"></a>PWFSLSmoke 1.2.8<small> Unreleased </small>
 </h1>
 <p>This patch release deals with the AirNow’s recent inclusion in their data feeds of US Embassy data. Some Embassy sites are in time zones with fractional offset from UTC. The PWFSLSmoke data model requires that all monitoring data align on hour boundaries. All non-conforming AirNow monitors (mostly in South Asia) are now removed during the early stages of processing.</p>
 </div>
-    <div id="pwfslsmoke-1-2-7" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-7" class="anchor"></a>PWFSLSmoke 1.2.7<small> Unreleased </small>
+    <div id="pwfslsmoke-127" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.7">
+<a href="#pwfslsmoke-127" class="anchor"></a>PWFSLSmoke 1.2.7<small> Unreleased </small>
 </h1>
 <ul>
 <li>Improved support for non-Olson timezones in <code><a href="../reference/timeInfo.html">timeInfo()</a></code>.</li>
 <li>Corrected <code><a href="../reference/timeInfo.html">timeInfo()</a></code> creation of <code>localSstandardTime_UTC</code>.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-6" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-6" class="anchor"></a>PWFSLSmoke 1.2.6<small> Unreleased </small>
+    <div id="pwfslsmoke-126" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.6">
+<a href="#pwfslsmoke-126" class="anchor"></a>PWFSLSmoke 1.2.6<small> Unreleased </small>
 </h1>
 <ul>
 <li>Updated <code><a href="../reference/wrcc_createRawDataframe.html">wrcc_createRawDataframe()</a></code> to use the proper WRCC url.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-5" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-5" class="anchor"></a>PWFSLSmoke 1.2.5<small> Unreleased </small>
+    <div id="pwfslsmoke-125" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.5">
+<a href="#pwfslsmoke-125" class="anchor"></a>PWFSLSmoke 1.2.5<small> Unreleased </small>
 </h1>
 <ul>
 <li>Updated the <code>WRCC</code> dataset with unitIDs added to the <code>cache</code> in 2018 and 2019.</li>
 <li>Updated WRCC processing functions to handle a slightly modified header format.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-4" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-4" class="anchor"></a>PWFSLSmoke 1.2.4<small> 2019-05-01 </small>
+    <div id="pwfslsmoke-124" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.4">
+<a href="#pwfslsmoke-124" class="anchor"></a>PWFSLSmoke 1.2.4<small> 2019-05-01 </small>
 </h1>
 <p>This patch release deals with the loss of the free basemap generation service utilized by <code>esriMap_getMap()</code>. An authentication token is now required and this patch provides a workaround by using free tiles provided by <a href="http://maps.stamen.com">Stamen</a> and <code><a href="https://rdrr.io/pkg/ggmap/man/get_stamenmap.html">ggmap::get_stamenmap()</a></code>.</p>
 <p>The following new functions are provided:</p>
@@ -322,9 +345,9 @@
 </ul>
 <p>The use of <code><a href="../reference/PWFSLSmoke-deprecated.html">monitor_esriMap()</a></code> has been purged from all examples and vignettes. The goal is to get to the point of having at least minimal capabilities for generating static maps and resubmitting the package to CRAN.</p>
 </div>
-    <div id="pwfslsmoke-1-2-3" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-3" class="anchor"></a>PWFSLSmoke 1.2.3<small> Unreleased </small>
+    <div id="pwfslsmoke-123" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.3">
+<a href="#pwfslsmoke-123" class="anchor"></a>PWFSLSmoke 1.2.3<small> Unreleased </small>
 </h1>
 <ul>
 <li>removed <code><a href="../reference/monitor_map.html">monitor_map()</a></code> examples because ESRI map downloads are disabled</li>
@@ -338,25 +361,25 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-2" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-2" class="anchor"></a>PWFSLSmoke 1.2.2<small> 2019-04-04 </small>
+    <div id="pwfslsmoke-122" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.2">
+<a href="#pwfslsmoke-122" class="anchor"></a>PWFSLSmoke 1.2.2<small> 2019-04-04 </small>
 </h1>
 <ul>
 <li>CRAN submission fixes</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-1" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-1" class="anchor"></a>PWFSLSmoke 1.2.1<small> Unreleased </small>
+    <div id="pwfslsmoke-121" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.1">
+<a href="#pwfslsmoke-121" class="anchor"></a>PWFSLSmoke 1.2.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>added an introductory vignette</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-2-0" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-2-0" class="anchor"></a>PWFSLSmoke 1.2.0<small> Unreleased </small>
+    <div id="pwfslsmoke-120" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.0">
+<a href="#pwfslsmoke-120" class="anchor"></a>PWFSLSmoke 1.2.0<small> Unreleased </small>
 </h1>
 <p>Version 1.2.x marks the official release for the 2019 fire season.</p>
 <ul>
@@ -373,9 +396,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-29" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-29" class="anchor"></a>PWFSLSmoke 1.1.29<small> Unreleased </small>
+    <div id="pwfslsmoke-1129" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.29">
+<a href="#pwfslsmoke-1129" class="anchor"></a>PWFSLSmoke 1.1.29<small> Unreleased </small>
 </h1>
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
@@ -404,17 +427,17 @@
 </ul>
 </div>
 </div>
-    <div id="pwfslsmoke-1-1-28" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-28" class="anchor"></a>PWFSLSmoke 1.1.28<small> Unreleased </small>
+    <div id="pwfslsmoke-1128" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.28">
+<a href="#pwfslsmoke-1128" class="anchor"></a>PWFSLSmoke 1.1.28<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fixed bug in parsing of arb2 monitors in “ebamMulti” format. (unitID 1048)</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-27" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-27" class="anchor"></a>PWFSLSmoke 1.1.27<small> Unreleased </small>
+    <div id="pwfslsmoke-1127" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.27">
+<a href="#pwfslsmoke-1127" class="anchor"></a>PWFSLSmoke 1.1.27<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fixed bug in <code><a href="../reference/monitor_leaflet.html">monitor_leaflet()</a></code> which didn’t properly assign colors when some monitors had all missing data.</li>
@@ -424,9 +447,9 @@
 <code><a href="../reference/monitor_leaflet.html">monitor_leaflet()</a></code> now invisibly returns a <em>leaflet</em> object which can be further customized by the user.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-26" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-26" class="anchor"></a>PWFSLSmoke 1.1.26<small> Unreleased </small>
+    <div id="pwfslsmoke-1126" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.26">
+<a href="#pwfslsmoke-1126" class="anchor"></a>PWFSLSmoke 1.1.26<small> Unreleased </small>
 </h1>
 <ul>
 <li>Now using the <em>geosphere</em> package to greatly improve the speed of distance calculations in <code><a href="../reference/distance.html">distance()</a></code>.</li>
@@ -437,21 +460,21 @@
 <code><a href="../reference/monitor_getDailyMean.html">monitor_getDailyMean()</a></code> now works with multiple-monitor <em>ws_monitor</em> objects and returns a dataframe of daily means</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-25" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-25" class="anchor"></a>PWFSLSmoke 1.1.25<small> Unreleased </small>
+    <div id="pwfslsmoke-1125" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.25">
+<a href="#pwfslsmoke-1125" class="anchor"></a>PWFSLSmoke 1.1.25<small> Unreleased </small>
 </h1>
 <p>Improved documentation and harmonization of <code><a href="../reference/monitor_writeCSV.html">monitor_writeCSV()</a></code> and <code><a href="../reference/monitor_print.html">monitor_print()</a></code>.</p>
 </div>
-    <div id="pwfslsmoke-1-1-24" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-24" class="anchor"></a>PWFSLSmoke 1.1.24<small> Unreleased </small>
+    <div id="pwfslsmoke-1124" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.24">
+<a href="#pwfslsmoke-1124" class="anchor"></a>PWFSLSmoke 1.1.24<small> Unreleased </small>
 </h1>
 <p>Minor cleanup in preparation for CRAN submission.</p>
 </div>
-    <div id="pwfslsmoke-1-1-23" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-23" class="anchor"></a>PWFSLSmoke 1.1.23<small> Unreleased </small>
+    <div id="pwfslsmoke-1123" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.23">
+<a href="#pwfslsmoke-1123" class="anchor"></a>PWFSLSmoke 1.1.23<small> Unreleased </small>
 </h1>
 <p>This release adds functions for working with generic data.</p>
 <div id="new-functions" class="section level2">
@@ -473,17 +496,17 @@
 </ul>
 </div>
 </div>
-    <div id="pwfslsmoke-1-1-22" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-22" class="anchor"></a>PWFSLSmoke 1.1.22<small> Unreleased </small>
+    <div id="pwfslsmoke-1122" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.22">
+<a href="#pwfslsmoke-1122" class="anchor"></a>PWFSLSmoke 1.1.22<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed bug in <code><a href="../reference/monitor_load.html">monitor_load()</a></code> where the incorrect year was used in requests for archival data</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-21" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-21" class="anchor"></a>PWFSLSmoke 1.1.21<small> Unreleased </small>
+    <div id="pwfslsmoke-1121" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.21">
+<a href="#pwfslsmoke-1121" class="anchor"></a>PWFSLSmoke 1.1.21<small> Unreleased </small>
 </h1>
 <ul>
 <li>lowered logging level inside <code>esriMap_getMap()</code> from <code>INFO</code> to <code>TRACE</code>
@@ -492,9 +515,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-20" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-20" class="anchor"></a>PWFSLSmoke 1.1.20<small> Unreleased </small>
+    <div id="pwfslsmoke-1120" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.20">
+<a href="#pwfslsmoke-1120" class="anchor"></a>PWFSLSmoke 1.1.20<small> Unreleased </small>
 </h1>
 <div id="breaking-change" class="section level2">
 <h2 class="hasAnchor">
@@ -520,9 +543,9 @@
 </ul>
 </div>
 </div>
-    <div id="pwfslsmoke-1-1-19" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-19" class="anchor"></a>PWFSLSmoke 1.1.19<small> Unreleased </small>
+    <div id="pwfslsmoke-1119" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.19">
+<a href="#pwfslsmoke-1119" class="anchor"></a>PWFSLSmoke 1.1.19<small> Unreleased </small>
 </h1>
 <p>This release enhances <code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>.</p>
 <ul>
@@ -531,9 +554,9 @@
 <li>Added <code>last_validLocalTimestamp</code> and <code>previous_validLocalTimestamp</code> columns, which are strings showing the local time at a monitor</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-18" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-18" class="anchor"></a>PWFSLSmoke 1.1.18<small> Unreleased </small>
+    <div id="pwfslsmoke-1118" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.18">
+<a href="#pwfslsmoke-1118" class="anchor"></a>PWFSLSmoke 1.1.18<small> Unreleased </small>
 </h1>
 <p>This release refactors functions prefixed with <code>monitorPlot_*</code> to instead start with <code>monitor_*</code>, keeping in line with other functions accepting a <em>ws_monitor</em> object as their first argument.</p>
 <p>The affected functions are:</p>
@@ -567,9 +590,9 @@
 </table>
 <p>In addition, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorPlot_timeOfDaySpaghetti()</a></code> has been marked as defunct, with no replacement.</p>
 </div>
-    <div id="pwfslsmoke-1-1-17" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-17" class="anchor"></a>PWFSLSmoke 1.1.17<small> Unreleased </small>
+    <div id="pwfslsmoke-1117" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.17">
+<a href="#pwfslsmoke-1117" class="anchor"></a>PWFSLSmoke 1.1.17<small> Unreleased </small>
 </h1>
 <ul>
 <li>added <code><a href="../reference/tidy_toMonitor.html">tidy_toMonitor()</a></code>
@@ -577,9 +600,9 @@
 </ul>
 <p>Added new function <code><a href="../reference/monitor_getCurrentStatus.html">monitor_getCurrentStatus()</a></code>, which returns a data frame containing meta information as well as current status information given a <em>ws_monitor_</em> object.</p>
 </div>
-    <div id="pwfslsmoke-1-1-16" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-16" class="anchor"></a>PWFSLSmoke 1.1.16<small> Unreleased </small>
+    <div id="pwfslsmoke-1116" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.16">
+<a href="#pwfslsmoke-1116" class="anchor"></a>PWFSLSmoke 1.1.16<small> Unreleased </small>
 </h1>
 <ul>
 <li>added additional logging to <code>EsriMap_getMap()</code>
@@ -589,32 +612,32 @@
 <code>monitor_currentData()</code> bug fix</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-15" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-15" class="anchor"></a>PWFSLSmoke 1.1.15<small> Unreleased </small>
+    <div id="pwfslsmoke-1115" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.15">
+<a href="#pwfslsmoke-1115" class="anchor"></a>PWFSLSmoke 1.1.15<small> Unreleased </small>
 </h1>
 <ul>
 <li>spell check</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-14" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-14" class="anchor"></a>PWFSLSmoke 1.1.14<small> Unreleased </small>
+    <div id="pwfslsmoke-1114" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.14">
+<a href="#pwfslsmoke-1114" class="anchor"></a>PWFSLSmoke 1.1.14<small> Unreleased </small>
 </h1>
 <p>Add convenience functions <code><a href="../reference/monitor_extractDataFrame.html">monitor_extractData()</a></code> and <code><a href="../reference/monitor_extractDataFrame.html">monitor_extractMeta()</a></code>, which return the dataframes inside a <code>ws_monitor</code> object.</p>
 </div>
-    <div id="pwfslsmoke-1-1-13" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-13" class="anchor"></a>PWFSLSmoke 1.1.13<small> Unreleased </small>
+    <div id="pwfslsmoke-1113" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.13">
+<a href="#pwfslsmoke-1113" class="anchor"></a>PWFSLSmoke 1.1.13<small> Unreleased </small>
 </h1>
 <ul>
 <li>added for <code>pch</code> argument to <code><a href="../reference/monitor_map.html">monitor_map()</a></code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-12" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-12" class="anchor"></a>PWFSLSmoke 1.1.12<small> Unreleased </small>
+    <div id="pwfslsmoke-1112" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.12">
+<a href="#pwfslsmoke-1112" class="anchor"></a>PWFSLSmoke 1.1.12<small> Unreleased </small>
 </h1>
 <p>This release refactors functions so that all functions accepting a <code>ws_monitor</code> object as their first parameter include the <code>monitor_</code> prefix in their name.</p>
 <p>The affected functions are:</p>
@@ -649,9 +672,9 @@
 <p><br></p>
 <p>In addition, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorGoogleMap()</a></code> has been deprecated in favor of <code><a href="../reference/PWFSLSmoke-deprecated.html">monitor_esriMap()</a></code>.</p>
 </div>
-    <div id="pwfslsmoke-1-1-11" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-11" class="anchor"></a>PWFSLSmoke 1.1.11<small> Unreleased </small>
+    <div id="pwfslsmoke-1111" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.11">
+<a href="#pwfslsmoke-1111" class="anchor"></a>PWFSLSmoke 1.1.11<small> Unreleased </small>
 </h1>
 <ul>
 <li>
@@ -661,9 +684,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-10" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-10" class="anchor"></a>PWFSLSmoke 1.1.10<small> Unreleased </small>
+    <div id="pwfslsmoke-1110" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.10">
+<a href="#pwfslsmoke-1110" class="anchor"></a>PWFSLSmoke 1.1.10<small> Unreleased </small>
 </h1>
 <p>Moving all base plot related code from <strong>PWFSLSmokePlot</strong> to <strong>PWFSLSmoke</strong> so that all functionality in the former is purely <strong>ggplot2</strong> based.</p>
 <ul>
@@ -674,9 +697,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-9" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-9" class="anchor"></a>PWFSLSmoke 1.1.9<small> Unreleased </small>
+    <div id="pwfslsmoke-119" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.9">
+<a href="#pwfslsmoke-119" class="anchor"></a>PWFSLSmoke 1.1.9<small> Unreleased </small>
 </h1>
 <ul>
 <li>
@@ -693,30 +716,30 @@
 <li>corrected spelling from <code>heidike</code> to <code>heidke</code> in all <code>skill</code> related functions</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-8" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-8" class="anchor"></a>PWFSLSmoke 1.1.8<small> Unreleased </small>
+    <div id="pwfslsmoke-118" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.8">
+<a href="#pwfslsmoke-118" class="anchor"></a>PWFSLSmoke 1.1.8<small> Unreleased </small>
 </h1>
 <ul>
 <li>
-<code><a href="../reference/pipe.html">%&gt;%</a></code> is now exported</li>
+<code><a href="../reference/%&gt;%.html">%&gt;%</a></code> is now exported</li>
 <li>added new <code>monitor_download~()</code> functions to download local copies of PWFSL monitor data files.</li>
 <li>added new <code><a href="../reference/monitor_loadLatest.html">monitor_loadLatest()</a></code>, <code><a href="../reference/monitor_loadDaily.html">monitor_loadDaily()</a></code> and <code><a href="../reference/monitor_loadAnnual.html">monitor_loadAnnual()</a></code> functions</li>
 <li>refactored <code>airnow</code>, <code>airsis</code>, <code>epa</code> and <code>wrcc</code> <code>~_load~()</code> functions to include a <code>dataDir</code> parameter to allow data loading from a local directory rather than always from the internet. the <code>airsis</code> and <code>wrcc</code> functions now support the (unused) <code>parameter</code> argument to match the <code>airnow</code> function signature</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-7" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-7" class="anchor"></a>PWFSLSmoke 1.1.7<small> Unreleased </small>
+    <div id="pwfslsmoke-117" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.7">
+<a href="#pwfslsmoke-117" class="anchor"></a>PWFSLSmoke 1.1.7<small> Unreleased </small>
 </h1>
 <ul>
 <li>added <code>loadData()</code> to load monitoring data covering any time period within a single year</li>
 <li>fixed <code><a href="../reference/monitor_join.html">monitor_join()</a></code> to skip over monitorIDs that are not found in either of the monitor objects being joined together</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-6" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-6" class="anchor"></a>PWFSLSmoke 1.1.6<small> Unreleased </small>
+    <div id="pwfslsmoke-116" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.6">
+<a href="#pwfslsmoke-116" class="anchor"></a>PWFSLSmoke 1.1.6<small> Unreleased </small>
 </h1>
 <ul>
 <li>actual parsing done by <code><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">lubridate::parse_date_time</a></code>
@@ -727,17 +750,17 @@
 <li>added unit tests</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-5" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-5" class="anchor"></a>PWFSLSmoke 1.1.5<small> Unreleased </small>
+    <div id="pwfslsmoke-115" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.5">
+<a href="#pwfslsmoke-115" class="anchor"></a>PWFSLSmoke 1.1.5<small> Unreleased </small>
 </h1>
 <ul>
 <li>add <code>testthat</code> framework to package</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-4" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-4" class="anchor"></a>PWFSLSmoke 1.1.4<small> Unreleased </small>
+    <div id="pwfslsmoke-114" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.4">
+<a href="#pwfslsmoke-114" class="anchor"></a>PWFSLSmoke 1.1.4<small> Unreleased </small>
 </h1>
 <ul>
 <li>tweaks for CRAN submission</li>
@@ -747,26 +770,26 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-3" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-3" class="anchor"></a>PWFSLSmoke 1.1.3<small> 2018-10-05 </small>
+    <div id="pwfslsmoke-113" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.3">
+<a href="#pwfslsmoke-113" class="anchor"></a>PWFSLSmoke 1.1.3<small> 2018-10-05 </small>
 </h1>
 <ul>
 <li>added logging functionality to <code>esriMap_getMap()</code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-2" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-2" class="anchor"></a>PWFSLSmoke 1.1.2<small> Unreleased </small>
+    <div id="pwfslsmoke-112" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.2">
+<a href="#pwfslsmoke-112" class="anchor"></a>PWFSLSmoke 1.1.2<small> Unreleased </small>
 </h1>
 <ul>
 <li>removed dependence on <code>zoo</code> package in favor of <code>tidyr</code> for filling data</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-1" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-1" class="anchor"></a>PWFSLSmoke 1.1.1<small> Unreleased </small>
+    <div id="pwfslsmoke-111" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.1">
+<a href="#pwfslsmoke-111" class="anchor"></a>PWFSLSmoke 1.1.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>added linting configuration and suggest <code>lintr</code> package</li>
@@ -774,69 +797,69 @@
 <li>added Travis-CI configuration</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-1-0" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-1-0" class="anchor"></a>PWFSLSmoke 1.1.0<small> Unreleased </small>
+    <div id="pwfslsmoke-110" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.0">
+<a href="#pwfslsmoke-110" class="anchor"></a>PWFSLSmoke 1.1.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>version bump</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-33" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-33" class="anchor"></a>PWFSLSmoke 1.0.33<small> 2018-09-24 </small>
+    <div id="pwfslsmoke-1033" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.33">
+<a href="#pwfslsmoke-1033" class="anchor"></a>PWFSLSmoke 1.0.33<small> 2018-09-24 </small>
 </h1>
 <ul>
 <li>updated docker/ to use mazamascience/spatialutils:0.5.4 which is based off of rocker/tidyverse:3.5.1</li>
 <li>tweaks for CRAN submission</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-32" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-32" class="anchor"></a>PWFSLSmoke 1.0.32<small> Unreleased </small>
+    <div id="pwfslsmoke-1032" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.32">
+<a href="#pwfslsmoke-1032" class="anchor"></a>PWFSLSmoke 1.0.32<small> Unreleased </small>
 </h1>
 <ul>
 <li>new <code><a href="../reference/monitor_toTidy.html">monitor_toTidy()</a></code> function to convert <code>ws_monitor</code> objects into tidyverse ‘tidy-formatted’ data (see more <a href="http://vita.had.co.nz/papers/tidy-data.html">here</a>)</li>
 <li>new <code><a href="../reference/monitor_isTidy.html">monitor_isTidy()</a></code> function to check if given data is in a ‘tidy’ format</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-31" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-31" class="anchor"></a>PWFSLSmoke 1.0.31<small> Unreleased </small>
+    <div id="pwfslsmoke-1031" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.31">
+<a href="#pwfslsmoke-1031" class="anchor"></a>PWFSLSmoke 1.0.31<small> Unreleased </small>
 </h1>
 <ul>
 <li>bug fix for “negative subscripts” error from <code>monitor_writeCurrentGeoJSON()</code>*</li>
 <li>modified <code>Maps_and_Timeseries_Plots</code> vignette to use ESRI maps instead of Google maps.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-30" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-30" class="anchor"></a>PWFSLSmoke 1.0.30<small> Unreleased </small>
+    <div id="pwfslsmoke-1030" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.30">
+<a href="#pwfslsmoke-1030" class="anchor"></a>PWFSLSmoke 1.0.30<small> Unreleased </small>
 </h1>
 <ul>
 <li>added support for parsing for AIRSIS ARB2 EBAM-Multi file format (ARB2 unitIDs 1044-1049)</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-29" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-29" class="anchor"></a>PWFSLSmoke 1.0.29<small> Unreleased </small>
+    <div id="pwfslsmoke-1029" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.29">
+<a href="#pwfslsmoke-1029" class="anchor"></a>PWFSLSmoke 1.0.29<small> Unreleased </small>
 </h1>
 <ul>
 <li>updated <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> algorithm to return <code>NA</code> when monitor data re missing. (See the NowCast vignette.)</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-28" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-28" class="anchor"></a>PWFSLSmoke 1.0.28<small> Unreleased </small>
+    <div id="pwfslsmoke-1028" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.28">
+<a href="#pwfslsmoke-1028" class="anchor"></a>PWFSLSmoke 1.0.28<small> Unreleased </small>
 </h1>
 <ul>
 <li>support for <code>datetime</code> parameter in <code>monitor_writeCurrentGeoJSON()</code> and <code>monitor_currentData()</code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-27" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-27" class="anchor"></a>PWFSLSmoke 1.0.27<small> Unreleased </small>
+    <div id="pwfslsmoke-1027" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.27">
+<a href="#pwfslsmoke-1027" class="anchor"></a>PWFSLSmoke 1.0.27<small> Unreleased </small>
 </h1>
 <ul>
 <li>added <code>monitor_writeCurrentGeoJSON()</code> function</li>
@@ -847,26 +870,26 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-26" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-26" class="anchor"></a>PWFSLSmoke 1.0.26<small> Unreleased </small>
+    <div id="pwfslsmoke-1026" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.26">
+<a href="#pwfslsmoke-1026" class="anchor"></a>PWFSLSmoke 1.0.26<small> Unreleased </small>
 </h1>
 <ul>
 <li>added <code>monitor_currentData()</code> function</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-25" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-25" class="anchor"></a>PWFSLSmoke 1.0.25<small> Unreleased </small>
+    <div id="pwfslsmoke-1025" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.25">
+<a href="#pwfslsmoke-1025" class="anchor"></a>PWFSLSmoke 1.0.25<small> Unreleased </small>
 </h1>
 <ul>
 <li>added package environment with <code>googleApiKey</code>, <code>esriApiKey</code> and getter/setter functions for each</li>
 <li>added <code><a href="../reference/addEsriAddress.html">addEsriAddress()</a></code> function</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-24" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-24" class="anchor"></a>PWFSLSmoke 1.0.24<small> Unreleased </small>
+    <div id="pwfslsmoke-1024" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.24">
+<a href="#pwfslsmoke-1024" class="anchor"></a>PWFSLSmoke 1.0.24<small> Unreleased </small>
 </h1>
 <ul>
 <li>
@@ -879,9 +902,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-23" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-23" class="anchor"></a>PWFSLSmoke 1.0.23<small> Unreleased </small>
+    <div id="pwfslsmoke-1023" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.23">
+<a href="#pwfslsmoke-1023" class="anchor"></a>PWFSLSmoke 1.0.23<small> Unreleased </small>
 </h1>
 <ul>
 <li>new <code><a href="../reference/aqiColors.html">aqiColors()</a></code> function to simplify creation of color vectors for use in maps and plots</li>
@@ -891,33 +914,33 @@
 <li>fixed bug in <code><a href="../reference/monitor_subsetBy.html">monitor_subsetBy()</a></code> which failed when a filter used variables defined within a calling function</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-22" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-22" class="anchor"></a>PWFSLSmoke 1.0.22<small> Unreleased </small>
+    <div id="pwfslsmoke-1022" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.22">
+<a href="#pwfslsmoke-1022" class="anchor"></a>PWFSLSmoke 1.0.22<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed bug in <code><a href="../reference/monitor_join.html">monitor_join()</a></code> which failed when a monitorID was missing from one of the <em>ws_monitor</em> objects being joined</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-21" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-21" class="anchor"></a>PWFSLSmoke 1.0.21<small> Unreleased </small>
+    <div id="pwfslsmoke-1021" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.21">
+<a href="#pwfslsmoke-1021" class="anchor"></a>PWFSLSmoke 1.0.21<small> Unreleased </small>
 </h1>
 <ul>
 <li>removed errant TAB character from AQI_es$names</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-20" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-20" class="anchor"></a>PWFSLSmoke 1.0.20<small> 2018-05-08 </small>
+    <div id="pwfslsmoke-1020" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.20">
+<a href="#pwfslsmoke-1020" class="anchor"></a>PWFSLSmoke 1.0.20<small> 2018-05-08 </small>
 </h1>
 <ul>
 <li>tweaks for CRAN submission</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-19" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-19" class="anchor"></a>PWFSLSmoke 1.0.19<small> Unreleased </small>
+    <div id="pwfslsmoke-1019" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.19">
+<a href="#pwfslsmoke-1019" class="anchor"></a>PWFSLSmoke 1.0.19<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed bug in <code>esriMap_getMap()</code> when <code>width != height</code>
@@ -942,34 +965,34 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-18" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-18" class="anchor"></a>PWFSLSmoke 1.0.18<small> Unreleased </small>
+    <div id="pwfslsmoke-1018" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.18">
+<a href="#pwfslsmoke-1018" class="anchor"></a>PWFSLSmoke 1.0.18<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed newly introduced bug in <code><a href="../reference/monitor_combine.html">monitor_combine()</a></code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-17" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-17" class="anchor"></a>PWFSLSmoke 1.0.17<small> Unreleased </small>
+    <div id="pwfslsmoke-1017" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.17">
+<a href="#pwfslsmoke-1017" class="anchor"></a>PWFSLSmoke 1.0.17<small> Unreleased </small>
 </h1>
 <ul>
 <li>new <code><a href="../reference/loadLatest.html">loadLatest()</a></code> and <code>loadDaily</code>() functions</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-16" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-16" class="anchor"></a>PWFSLSmoke 1.0.16<small> 2018-03-06 </small>
+    <div id="pwfslsmoke-1016" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.16">
+<a href="#pwfslsmoke-1016" class="anchor"></a>PWFSLSmoke 1.0.16<small> 2018-03-06 </small>
 </h1>
 <ul>
 <li>tweaks for CRAN submission</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-15" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-15" class="anchor"></a>PWFSLSmoke 1.0.15<small> Unreleased </small>
+    <div id="pwfslsmoke-1015" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.15">
+<a href="#pwfslsmoke-1015" class="anchor"></a>PWFSLSmoke 1.0.15<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed chronological ordering bug in <code><a href="../reference/monitor_combine.html">monitor_combine()</a></code>
@@ -980,61 +1003,61 @@
 <code>monitorID</code> argument is no longer required in <code><a href="../reference/monitor_join.html">monitor_join()</a></code>. Defaults to joining all shared monitorIDs.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-14" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-14" class="anchor"></a>PWFSLSmoke 1.0.14<small> Unreleased </small>
+    <div id="pwfslsmoke-1014" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.14">
+<a href="#pwfslsmoke-1014" class="anchor"></a>PWFSLSmoke 1.0.14<small> Unreleased </small>
 </h1>
 <ul>
 <li>corrected <code>baseUrl</code> argument in <code><a href="../reference/wrcc_loadLatest.html">wrcc_loadLatest()</a></code> and <code><a href="../reference/wrcc_loadDaily.html">wrcc_loadDaily()</a></code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-13" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-13" class="anchor"></a>PWFSLSmoke 1.0.13<small> Unreleased </small>
+    <div id="pwfslsmoke-1013" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.13">
+<a href="#pwfslsmoke-1013" class="anchor"></a>PWFSLSmoke 1.0.13<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed bug in <code>monitor_dailyStatistics()</code> that ignored the last full day. Thanks to <a href="https://github.com/jmatchett-usgs">jmatchett</a> for the fix.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-12" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-12" class="anchor"></a>PWFSLSmoke 1.0.12<small> Unreleased </small>
+    <div id="pwfslsmoke-1012" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.12">
+<a href="#pwfslsmoke-1012" class="anchor"></a>PWFSLSmoke 1.0.12<small> Unreleased </small>
 </h1>
 <ul>
 <li>changed <code>daily_avg</code> to <code>dailyAvg</code> in <code>monitor_dailyStatistics()</code> argument <code>extraColumns</code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-11" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-11" class="anchor"></a>PWFSLSmoke 1.0.11<small> Unreleased </small>
+    <div id="pwfslsmoke-1011" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.11">
+<a href="#pwfslsmoke-1011" class="anchor"></a>PWFSLSmoke 1.0.11<small> Unreleased </small>
 </h1>
 <ul>
 <li>new <code><a href="../reference/monitor_asDataframe.html">monitor_asDataframe()</a></code> function</li>
 <li>fixed bug in <code>monitor_dailyStatistics()</code> that appeared when the host computer runs in the UTC timezone</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-10" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-10" class="anchor"></a>PWFSLSmoke 1.0.10<small> 2018-01-17 </small>
+    <div id="pwfslsmoke-1010" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.10">
+<a href="#pwfslsmoke-1010" class="anchor"></a>PWFSLSmoke 1.0.10<small> 2018-01-17 </small>
 </h1>
 <ul>
 <li>tweaks for CRAN submission</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-9" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-9" class="anchor"></a>PWFSLSmoke 1.0.9<small> Unreleased </small>
+    <div id="pwfslsmoke-109" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.9">
+<a href="#pwfslsmoke-109" class="anchor"></a>PWFSLSmoke 1.0.9<small> Unreleased </small>
 </h1>
 <ul>
 <li>tweaks for CRAN submission</li>
 <li>removed dependency on <strong>xml2</strong> and <strong>rvest</strong> packages</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-8" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-8" class="anchor"></a>PWFSLSmoke 1.0.8<small> Unreleased </small>
+    <div id="pwfslsmoke-108" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.8">
+<a href="#pwfslsmoke-108" class="anchor"></a>PWFSLSmoke 1.0.8<small> Unreleased </small>
 </h1>
 <ul>
 <li>removed dependency on <strong>RCurl</strong> package</li>
@@ -1047,18 +1070,18 @@
 <li>new <code><a href="../reference/wrcc_loadDaily.html">wrcc_loadDaily()</a></code> function to access daily-updated, last 45 day files</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-7" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-7" class="anchor"></a>PWFSLSmoke 1.0.7<small> 2018-01-12 </small>
+    <div id="pwfslsmoke-107" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.7">
+<a href="#pwfslsmoke-107" class="anchor"></a>PWFSLSmoke 1.0.7<small> 2018-01-12 </small>
 </h1>
 <ul>
 <li>more consistent error handling and logging during AIRSIS data processing</li>
 <li>new <code><a href="../reference/airsis_load.html">airsis_load()</a></code> function to access pre-generated annual .RData files</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-6" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-6" class="anchor"></a>PWFSLSmoke 1.0.6<small> Unreleased </small>
+    <div id="pwfslsmoke-106" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.6">
+<a href="#pwfslsmoke-106" class="anchor"></a>PWFSLSmoke 1.0.6<small> Unreleased </small>
 </h1>
 <ul>
 <li>consistent use of log levels during AirNow data processing</li>
@@ -1067,9 +1090,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-5" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-5" class="anchor"></a>PWFSLSmoke 1.0.5<small> Unreleased </small>
+    <div id="pwfslsmoke-105" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.5">
+<a href="#pwfslsmoke-105" class="anchor"></a>PWFSLSmoke 1.0.5<small> Unreleased </small>
 </h1>
 <ul>
 <li>tweak to <code>localExecutables/epa_createAnnualDataframes_exec.R</code>
@@ -1079,9 +1102,9 @@
 <li>fixed bug in <code><a href="../reference/monitor_join.html">monitor_join()</a></code> when averaging overlapping measurements</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-4" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-4" class="anchor"></a>PWFSLSmoke 1.0.4<small> Unreleased </small>
+    <div id="pwfslsmoke-104" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.4">
+<a href="#pwfslsmoke-104" class="anchor"></a>PWFSLSmoke 1.0.4<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed vignette typos</li>
@@ -1090,18 +1113,18 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-3" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-3" class="anchor"></a>PWFSLSmoke 1.0.3<small> 2018-01-05 </small>
+    <div id="pwfslsmoke-103" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.3">
+<a href="#pwfslsmoke-103" class="anchor"></a>PWFSLSmoke 1.0.3<small> 2018-01-05 </small>
 </h1>
 <ul>
 <li>tweaks for CRAN submission</li>
 <li>fixed bug in <code><a href="../reference/monitor_subsetBy.html">monitor_subsetBy()</a></code> when filtering on metadata columns with <code>NAs</code> present</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-2" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-2" class="anchor"></a>PWFSLSmoke 1.0.2<small> Unreleased </small>
+    <div id="pwfslsmoke-102" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.2">
+<a href="#pwfslsmoke-102" class="anchor"></a>PWFSLSmoke 1.0.2<small> Unreleased </small>
 </h1>
 <ul>
 <li>
@@ -1109,17 +1132,17 @@
 <li>new Github <code>localNotebooks/</code> directory contains detailed examples</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-1" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-1" class="anchor"></a>PWFSLSmoke 1.0.1<small> Unreleased </small>
+    <div id="pwfslsmoke-101" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.1">
+<a href="#pwfslsmoke-101" class="anchor"></a>PWFSLSmoke 1.0.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed bug in <code><a href="../reference/monitor_dailyStatistic.html">monitor_dailyStatistic()</a></code> that didn’t test for <code>minHours</code> properly</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-1-0-0" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-1-0-0" class="anchor"></a>PWFSLSmoke 1.0.0<small> Unreleased </small>
+    <div id="pwfslsmoke-100" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0">
+<a href="#pwfslsmoke-100" class="anchor"></a>PWFSLSmoke 1.0.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>changed the non-guaranteed columns in <code>ws_monitor$meta</code>
@@ -1154,9 +1177,9 @@
 <code>monitor_subset~()</code> functions now return ‘meta’ dataframes with zero rows and ‘data’ dataframes with a single <code>datetime</code> column rather than <code>NULL</code> when no monitors exist in the subset.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-37" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-37" class="anchor"></a>PWFSLSmoke 0.99.37<small> Unreleased </small>
+    <div id="pwfslsmoke-09937" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.37">
+<a href="#pwfslsmoke-09937" class="anchor"></a>PWFSLSmoke 0.99.37<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed bugs in <code><a href="../reference/airsis_availableUnits.html">airsis_availableUnits()</a></code>
@@ -1165,58 +1188,58 @@
 <li>new <code>examples/airsis_2017.R</code> demonstrating creation of an AIRSIS monitoring dataset for 2017.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-36" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-36" class="anchor"></a>PWFSLSmoke 0.99.36<small> Unreleased </small>
+    <div id="pwfslsmoke-09936" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.36">
+<a href="#pwfslsmoke-09936" class="anchor"></a>PWFSLSmoke 0.99.36<small> Unreleased </small>
 </h1>
 <ul>
 <li>removed auto-execution of examples in <code><a href="../reference/monitor_dailyStatistic.html">monitor_dailyStatistic()</a></code> and <code><a href="../reference/monitor_dailyThreshold.html">monitor_dailyThreshold()</a></code> to avoid CRAN test timeouts</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-35" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-35" class="anchor"></a>PWFSLSmoke 0.99.35<small> Unreleased </small>
+    <div id="pwfslsmoke-09935" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.35">
+<a href="#pwfslsmoke-09935" class="anchor"></a>PWFSLSmoke 0.99.35<small> Unreleased </small>
 </h1>
 <ul>
 <li>removed extraneous file for CRAN upload</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-34" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-34" class="anchor"></a>PWFSLSmoke 0.99.34<small> Unreleased </small>
+    <div id="pwfslsmoke-09934" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.34">
+<a href="#pwfslsmoke-09934" class="anchor"></a>PWFSLSmoke 0.99.34<small> Unreleased </small>
 </h1>
 <ul>
 <li>handling for additional ‘UnitID’ column in AIRSIS output</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-33" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-33" class="anchor"></a>PWFSLSmoke 0.99.33<small> 2017-12-12 </small>
+    <div id="pwfslsmoke-09933" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.33">
+<a href="#pwfslsmoke-09933" class="anchor"></a>PWFSLSmoke 0.99.33<small> 2017-12-12 </small>
 </h1>
 <ul>
 <li>tweaked esriMap_~ examples for CRAN upload</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-32" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-32" class="anchor"></a>PWFSLSmoke 0.99.32<small> Unreleased </small>
+    <div id="pwfslsmoke-09932" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.32">
+<a href="#pwfslsmoke-09932" class="anchor"></a>PWFSLSmoke 0.99.32<small> Unreleased </small>
 </h1>
 <ul>
 <li>tweaked NowCast vignette for CRAN upload</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-31" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-31" class="anchor"></a>PWFSLSmoke 0.99.31<small> Unreleased </small>
+    <div id="pwfslsmoke-09931" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.31">
+<a href="#pwfslsmoke-09931" class="anchor"></a>PWFSLSmoke 0.99.31<small> Unreleased </small>
 </h1>
 <ul>
 <li>refactored <code>esriMap_getMap()</code> to use <code>httr</code> package</li>
 <li>added NowCast vignette</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-30" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-30" class="anchor"></a>PWFSLSmoke 0.99.30<small> Unreleased </small>
+    <div id="pwfslsmoke-09930" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.30">
+<a href="#pwfslsmoke-09930" class="anchor"></a>PWFSLSmoke 0.99.30<small> Unreleased </small>
 </h1>
 <ul>
 <li>new <code><a href="../reference/airsis_availableUnits.html">airsis_availableUnits()</a></code> function</li>
@@ -1227,9 +1250,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-29" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-29" class="anchor"></a>PWFSLSmoke 0.99.29<small> Unreleased </small>
+    <div id="pwfslsmoke-09929" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.29">
+<a href="#pwfslsmoke-09929" class="anchor"></a>PWFSLSmoke 0.99.29<small> Unreleased </small>
 </h1>
 <ul>
 <li>functions for ESRI Maps added: <code>esriMap_getMap()</code>, <code>esriMap_plotOnStaticMap()</code>, <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorEsriMap()</a></code>
@@ -1237,18 +1260,18 @@
 <li>new <code><a href="../reference/addMarker.html">addMarker()</a></code> function to add a marker to a plot</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-28" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-28" class="anchor"></a>PWFSLSmoke 0.99.28<small> Unreleased </small>
+    <div id="pwfslsmoke-09928" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.28">
+<a href="#pwfslsmoke-09928" class="anchor"></a>PWFSLSmoke 0.99.28<small> Unreleased </small>
 </h1>
 <ul>
 <li>
 <code><a href="../reference/monitor_reorder.html">monitor_reorder()</a></code> now includes <code>dropMonitors=FALSE</code> default</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-27" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-27" class="anchor"></a>PWFSLSmoke 0.99.27<small> Unreleased </small>
+    <div id="pwfslsmoke-09927" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.27">
+<a href="#pwfslsmoke-09927" class="anchor"></a>PWFSLSmoke 0.99.27<small> Unreleased </small>
 </h1>
 <ul>
 <li>corrected <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> now calculates values after the first 2 valid measurements</li>
@@ -1256,99 +1279,99 @@
 <li>changed EBAM and E-Sampler QC pm25 threshold to accept as valid any pm25 value up to 5000 ug/m3</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-26" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-26" class="anchor"></a>PWFSLSmoke 0.99.26<small> Unreleased </small>
+    <div id="pwfslsmoke-09926" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.26">
+<a href="#pwfslsmoke-09926" class="anchor"></a>PWFSLSmoke 0.99.26<small> Unreleased </small>
 </h1>
 <ul>
 <li>avoid using Google elevation service whenever monitor metadata is already present</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-25" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-25" class="anchor"></a>PWFSLSmoke 0.99.25<small> Unreleased </small>
+    <div id="pwfslsmoke-09925" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.25">
+<a href="#pwfslsmoke-09925" class="anchor"></a>PWFSLSmoke 0.99.25<small> Unreleased </small>
 </h1>
 <ul>
 <li>more detailed logging output</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-24" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-24" class="anchor"></a>PWFSLSmoke 0.99.24<small> Unreleased </small>
+    <div id="pwfslsmoke-09924" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.24">
+<a href="#pwfslsmoke-09924" class="anchor"></a>PWFSLSmoke 0.99.24<small> Unreleased </small>
 </h1>
 <ul>
 <li>avoid using Google address service whenever monitor metadata is already present</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-23" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-23" class="anchor"></a>PWFSLSmoke 0.99.23<small> Unreleased </small>
+    <div id="pwfslsmoke-09923" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.23">
+<a href="#pwfslsmoke-09923" class="anchor"></a>PWFSLSmoke 0.99.23<small> Unreleased </small>
 </h1>
 <ul>
 <li>bug fix for monitor assignment issues in WRCC and AIRSIS monitors that move</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-22" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-22" class="anchor"></a>PWFSLSmoke 0.99.22<small> Unreleased </small>
+    <div id="pwfslsmoke-09922" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.22">
+<a href="#pwfslsmoke-09922" class="anchor"></a>PWFSLSmoke 0.99.22<small> Unreleased </small>
 </h1>
 <ul>
 <li>correction to <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> algorithm</li>
 <li>updated vignettes to use package datasets</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-20" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-20" class="anchor"></a>PWFSLSmoke 0.99.20<small> Unreleased </small>
+    <div id="pwfslsmoke-09920" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.20">
+<a href="#pwfslsmoke-09920" class="anchor"></a>PWFSLSmoke 0.99.20<small> Unreleased </small>
 </h1>
 <ul>
 <li>added support for parsing of BAM1020 data from AIRSIS</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-19" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-19" class="anchor"></a>PWFSLSmoke 0.99.19<small> Unreleased </small>
+    <div id="pwfslsmoke-09919" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.19">
+<a href="#pwfslsmoke-09919" class="anchor"></a>PWFSLSmoke 0.99.19<small> Unreleased </small>
 </h1>
 <ul>
 <li>bug fix in quality control processing to handle monitors with no PM2.5 measurements</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-18" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-18" class="anchor"></a>PWFSLSmoke 0.99.18<small> Unreleased </small>
+    <div id="pwfslsmoke-09918" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.18">
+<a href="#pwfslsmoke-09918" class="anchor"></a>PWFSLSmoke 0.99.18<small> Unreleased </small>
 </h1>
 <ul>
 <li>bug fix in parsing of E-Sampler data from AIRSIS</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-17" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-17" class="anchor"></a>PWFSLSmoke 0.99.17<small> Unreleased </small>
+    <div id="pwfslsmoke-09917" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.17">
+<a href="#pwfslsmoke-09917" class="anchor"></a>PWFSLSmoke 0.99.17<small> Unreleased </small>
 </h1>
 <ul>
 <li>bug fix in <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorPlot_dailyBarplot()</a></code> time axis</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-16" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-16" class="anchor"></a>PWFSLSmoke 0.99.16<small> Unreleased </small>
+    <div id="pwfslsmoke-09916" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.16">
+<a href="#pwfslsmoke-09916" class="anchor"></a>PWFSLSmoke 0.99.16<small> Unreleased </small>
 </h1>
 <ul>
 <li>bug fix in creation of temporary monitors</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-15" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-15" class="anchor"></a>PWFSLSmoke 0.99.15<small> Unreleased </small>
+    <div id="pwfslsmoke-09915" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.15">
+<a href="#pwfslsmoke-09915" class="anchor"></a>PWFSLSmoke 0.99.15<small> Unreleased </small>
 </h1>
 <ul>
 <li>monitorID now uses <code>monitorName</code> and <code>deploymentID</code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-14" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-14" class="anchor"></a>PWFSLSmoke 0.99.14<small> Unreleased </small>
+    <div id="pwfslsmoke-09914" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.14">
+<a href="#pwfslsmoke-09914" class="anchor"></a>PWFSLSmoke 0.99.14<small> Unreleased </small>
 </h1>
 <ul>
 <li>improved use of <code>DEBUG</code> and <code>INFO</code> logging statements during AIRSIS and WRCC data processing</li>
@@ -1361,9 +1384,9 @@
 <code><a href="../reference/raw_enhance.html">raw_enhance()</a></code> now handles AIRSIS EBAM files</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-13" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-13" class="anchor"></a>PWFSLSmoke 0.99.13<small> Unreleased </small>
+    <div id="pwfslsmoke-09913" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.13">
+<a href="#pwfslsmoke-09913" class="anchor"></a>PWFSLSmoke 0.99.13<small> Unreleased </small>
 </h1>
 <ul>
 <li>refactored <code>airsisDump_createMonitorObject()</code> which was previously applying QC before splitting by monitorID</li>
@@ -1371,18 +1394,18 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-12" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-12" class="anchor"></a>PWFSLSmoke 0.99.12<small> Unreleased </small>
+    <div id="pwfslsmoke-09912" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.12">
+<a href="#pwfslsmoke-09912" class="anchor"></a>PWFSLSmoke 0.99.12<small> Unreleased </small>
 </h1>
 <ul>
 <li>fixed bug in <code><a href="../reference/monitor_combine.html">monitor_combine()</a></code> so that it now works when <code>monitorList</code> contains a single <em>ws_monitor</em> object</li>
 <li>fixed bugs in <code>wrccDump_parseData()</code> and <code>airsisDump_parseData()</code> which failed when a monitor had a single record of data</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-11" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-11" class="anchor"></a>PWFSLSmoke 0.99.11<small> Unreleased </small>
+    <div id="pwfslsmoke-09911" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.11">
+<a href="#pwfslsmoke-09911" class="anchor"></a>PWFSLSmoke 0.99.11<small> Unreleased </small>
 </h1>
 <ul>
 <li>‘gnats’ style timeseries plots now plotting squares to speed things up</li>
@@ -1397,18 +1420,18 @@
 <li>fixed <code><a href="../reference/PWFSLSmoke-deprecated.html">monitorMap_performance()</a></code> issue with legend colors</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-10" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-10" class="anchor"></a>PWFSLSmoke 0.99.10<small> Unreleased </small>
+    <div id="pwfslsmoke-09910" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.10">
+<a href="#pwfslsmoke-09910" class="anchor"></a>PWFSLSmoke 0.99.10<small> Unreleased </small>
 </h1>
 <ul>
 <li>added docker/ directory showing how to create a docker image</li>
 <li>added app/ directory showing how to create a <strong>jug</strong> based web service</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-9" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-9" class="anchor"></a>PWFSLSmoke 0.99.9<small> 2017-03-11 </small>
+    <div id="pwfslsmoke-0999" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.9">
+<a href="#pwfslsmoke-0999" class="anchor"></a>PWFSLSmoke 0.99.9<small> 2017-03-11 </small>
 </h1>
 <ul>
 <li>added <code>epa_~()</code> data processing functions</li>
@@ -1422,9 +1445,9 @@
 <li>lots of documentation fixes</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-99-0" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-99-0" class="anchor"></a>PWFSLSmoke 0.99.0<small> Unreleased </small>
+    <div id="pwfslsmoke-0990" class="section level1">
+<h1 class="page-header" data-toc-text="0.99.0">
+<a href="#pwfslsmoke-0990" class="anchor"></a>PWFSLSmoke 0.99.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>
@@ -1442,9 +1465,9 @@
 <li>new Mapping vignette</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-9-7" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-9-7" class="anchor"></a>PWFSLSmoke 0.9.7<small> Unreleased </small>
+    <div id="pwfslsmoke-097" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.7">
+<a href="#pwfslsmoke-097" class="anchor"></a>PWFSLSmoke 0.9.7<small> Unreleased </small>
 </h1>
 <ul>
 <li>new AIRSIS_Raw_Data vignette</li>
@@ -1453,9 +1476,9 @@
 <code><a href="../reference/monitor_collapse.html">monitor_collapse()</a></code> now has <code>na.rm=TRUE</code> argument</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-9-6" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-9-6" class="anchor"></a>PWFSLSmoke 0.9.6<small> Unreleased </small>
+    <div id="pwfslsmoke-096" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.6">
+<a href="#pwfslsmoke-096" class="anchor"></a>PWFSLSmoke 0.9.6<small> Unreleased </small>
 </h1>
 <ul>
 <li>renamed vignette to AIRSIS_Data_Handling and updated content</li>
@@ -1465,9 +1488,9 @@
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-9-5" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-9-5" class="anchor"></a>PWFSLSmoke 0.9.5<small> Unreleased </small>
+    <div id="pwfslsmoke-095" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.5">
+<a href="#pwfslsmoke-095" class="anchor"></a>PWFSLSmoke 0.9.5<small> Unreleased </small>
 </h1>
 <ul>
 <li>renamed <code>addShadedNights()</code> to addShadedNight()`</li>
@@ -1481,39 +1504,39 @@
 <li>removed unused test code from localExamples/</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-9-4" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-9-4" class="anchor"></a>PWFSLSmoke 0.9.4<small> Unreleased </small>
+    <div id="pwfslsmoke-094" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.4">
+<a href="#pwfslsmoke-094" class="anchor"></a>PWFSLSmoke 0.9.4<small> Unreleased </small>
 </h1>
 <ul>
 <li>new <code><a href="../reference/addIcon.html">addIcon()</a></code> function adds icons to maps and RgoogleMaps map objects</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-9-3" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-9-3" class="anchor"></a>PWFSLSmoke 0.9.3<small> Unreleased </small>
+    <div id="pwfslsmoke-093" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.3">
+<a href="#pwfslsmoke-093" class="anchor"></a>PWFSLSmoke 0.9.3<small> Unreleased </small>
 </h1>
 <ul>
 <li>First alpha release with functionality for downloading and processing PM2.5 monitoring data from AirNow, AIRSIS and WRCC.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-8-6" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-8-6" class="anchor"></a>PWFSLSmoke 0.8.6<small> Unreleased </small>
+    <div id="pwfslsmoke-086" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.6">
+<a href="#pwfslsmoke-086" class="anchor"></a>PWFSLSmoke 0.8.6<small> Unreleased </small>
 </h1>
 <ul>
 <li>improved <code>airsis_downloadHourlyData()</code> now uses <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_delim()</a></code>
 </li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-8-5" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-8-5" class="anchor"></a>PWFSLSmoke 0.8.5<small> Unreleased </small>
+    <div id="pwfslsmoke-085" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.5">
+<a href="#pwfslsmoke-085" class="anchor"></a>PWFSLSmoke 0.8.5<small> Unreleased </small>
 </h1>
 </div>
-    <div id="pwfslsmoke-0-8-4" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-8-4" class="anchor"></a>PWFSLSmoke 0.8.4<small> Unreleased </small>
+    <div id="pwfslsmoke-084" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.4">
+<a href="#pwfslsmoke-084" class="anchor"></a>PWFSLSmoke 0.8.4<small> Unreleased </small>
 </h1>
 <ul>
 <li>
@@ -1522,33 +1545,33 @@
 <li>New <code>df_getHighlightDates()</code> function to find dates with unusual values in the “engineering” data.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-8-3" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-8-3" class="anchor"></a>PWFSLSmoke 0.8.3<small> Unreleased </small>
+    <div id="pwfslsmoke-083" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.3">
+<a href="#pwfslsmoke-083" class="anchor"></a>PWFSLSmoke 0.8.3<small> Unreleased </small>
 </h1>
 <ul>
 <li>All new AIRSIS data processing</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-8-1" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-8-1" class="anchor"></a>PWFSLSmoke 0.8.1<small> Unreleased </small>
+    <div id="pwfslsmoke-081" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.1">
+<a href="#pwfslsmoke-081" class="anchor"></a>PWFSLSmoke 0.8.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Cleanup and regularization of plotting functions.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-8-0" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-8-0" class="anchor"></a>PWFSLSmoke 0.8.0<small> Unreleased </small>
+    <div id="pwfslsmoke-080" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.0">
+<a href="#pwfslsmoke-080" class="anchor"></a>PWFSLSmoke 0.8.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>Plotting functions added.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-7-2" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-7-2" class="anchor"></a>PWFSLSmoke 0.7.2<small> Unreleased </small>
+    <div id="pwfslsmoke-072" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.2">
+<a href="#pwfslsmoke-072" class="anchor"></a>PWFSLSmoke 0.7.2<small> Unreleased </small>
 </h1>
 <ul>
 <li>Removed AQI breaks for 1-3 hr and 8hr. Now only using 24-hr, daily avg. breaks. The package now only supports 24-hour AQI breaks.</li>
@@ -1556,9 +1579,9 @@
 <li>Updated localExamples/Washington_August_2015.R</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-7-1" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-7-1" class="anchor"></a>PWFSLSmoke 0.7.1<small> Unreleased </small>
+    <div id="pwfslsmoke-071" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.1">
+<a href="#pwfslsmoke-071" class="anchor"></a>PWFSLSmoke 0.7.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added data model vignette.</li>
@@ -1566,9 +1589,9 @@
 <li>New example in <a href="https://github.com/MazamaScience/PWFSLSmoke/tree/master/localExamples">localExamples</a> directory.</li>
 </ul>
 </div>
-    <div id="pwfslsmoke-0-7-0" class="section level1">
-<h1 class="page-header">
-<a href="#pwfslsmoke-0-7-0" class="anchor"></a>PWFSLSmoke 0.7.0<small> Unreleased </small>
+    <div id="pwfslsmoke-070" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.0">
+<a href="#pwfslsmoke-070" class="anchor"></a>PWFSLSmoke 0.7.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>Initial extraction/refactoring of base code from <a href="https://github.com/MazamaScience/wildfireSmoke">wildfireSmoke</a> package.</li>
@@ -1576,143 +1599,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#pwfslsmoke-1-2-111">1.2.111</a></li>
-        <li><a href="#pwfslsmoke-1-2-110">1.2.110</a></li>
-        <li><a href="#pwfslsmoke-1-2-109">1.2.109</a></li>
-        <li><a href="#pwfslsmoke-1-2-108">1.2.108</a></li>
-        <li><a href="#pwfslsmoke-1-2-107">1.2.107</a></li>
-        <li><a href="#pwfslsmoke-1-2-106">1.2.106</a></li>
-        <li><a href="#pwfslsmoke-1-2-105">1.2.105</a></li>
-        <li><a href="#pwfslsmoke-1-2-104">1.2.104</a></li>
-        <li><a href="#pwfslsmoke-1-2-103">1.2.103</a></li>
-        <li><a href="#pwfslsmoke-1-2-102">1.2.102</a></li>
-        <li><a href="#pwfslsmoke-1-2-101">1.2.101</a></li>
-        <li><a href="#pwfslsmoke-1-2-100">1.2.100</a></li>
-        <li><a href="#pwfslsmoke-1-2-11">1.2.11</a></li>
-        <li><a href="#pwfslsmoke-1-2-10">1.2.10</a></li>
-        <li><a href="#pwfslsmoke-1-2-9">1.2.9</a></li>
-        <li><a href="#pwfslsmoke-1-2-8">1.2.8</a></li>
-        <li><a href="#pwfslsmoke-1-2-7">1.2.7</a></li>
-        <li><a href="#pwfslsmoke-1-2-6">1.2.6</a></li>
-        <li><a href="#pwfslsmoke-1-2-5">1.2.5</a></li>
-        <li><a href="#pwfslsmoke-1-2-4">1.2.4</a></li>
-        <li><a href="#pwfslsmoke-1-2-3">1.2.3</a></li>
-        <li><a href="#pwfslsmoke-1-2-2">1.2.2</a></li>
-        <li><a href="#pwfslsmoke-1-2-1">1.2.1</a></li>
-        <li><a href="#pwfslsmoke-1-2-0">1.2.0</a></li>
-        <li><a href="#pwfslsmoke-1-1-29">1.1.29</a></li>
-        <li><a href="#pwfslsmoke-1-1-28">1.1.28</a></li>
-        <li><a href="#pwfslsmoke-1-1-27">1.1.27</a></li>
-        <li><a href="#pwfslsmoke-1-1-26">1.1.26</a></li>
-        <li><a href="#pwfslsmoke-1-1-25">1.1.25</a></li>
-        <li><a href="#pwfslsmoke-1-1-24">1.1.24</a></li>
-        <li><a href="#pwfslsmoke-1-1-23">1.1.23</a></li>
-        <li><a href="#pwfslsmoke-1-1-22">1.1.22</a></li>
-        <li><a href="#pwfslsmoke-1-1-21">1.1.21</a></li>
-        <li><a href="#pwfslsmoke-1-1-20">1.1.20</a></li>
-        <li><a href="#pwfslsmoke-1-1-19">1.1.19</a></li>
-        <li><a href="#pwfslsmoke-1-1-18">1.1.18</a></li>
-        <li><a href="#pwfslsmoke-1-1-17">1.1.17</a></li>
-        <li><a href="#pwfslsmoke-1-1-16">1.1.16</a></li>
-        <li><a href="#pwfslsmoke-1-1-15">1.1.15</a></li>
-        <li><a href="#pwfslsmoke-1-1-14">1.1.14</a></li>
-        <li><a href="#pwfslsmoke-1-1-13">1.1.13</a></li>
-        <li><a href="#pwfslsmoke-1-1-12">1.1.12</a></li>
-        <li><a href="#pwfslsmoke-1-1-11">1.1.11</a></li>
-        <li><a href="#pwfslsmoke-1-1-10">1.1.10</a></li>
-        <li><a href="#pwfslsmoke-1-1-9">1.1.9</a></li>
-        <li><a href="#pwfslsmoke-1-1-8">1.1.8</a></li>
-        <li><a href="#pwfslsmoke-1-1-7">1.1.7</a></li>
-        <li><a href="#pwfslsmoke-1-1-6">1.1.6</a></li>
-        <li><a href="#pwfslsmoke-1-1-5">1.1.5</a></li>
-        <li><a href="#pwfslsmoke-1-1-4">1.1.4</a></li>
-        <li><a href="#pwfslsmoke-1-1-3">1.1.3</a></li>
-        <li><a href="#pwfslsmoke-1-1-2">1.1.2</a></li>
-        <li><a href="#pwfslsmoke-1-1-1">1.1.1</a></li>
-        <li><a href="#pwfslsmoke-1-1-0">1.1.0</a></li>
-        <li><a href="#pwfslsmoke-1-0-33">1.0.33</a></li>
-        <li><a href="#pwfslsmoke-1-0-32">1.0.32</a></li>
-        <li><a href="#pwfslsmoke-1-0-31">1.0.31</a></li>
-        <li><a href="#pwfslsmoke-1-0-30">1.0.30</a></li>
-        <li><a href="#pwfslsmoke-1-0-29">1.0.29</a></li>
-        <li><a href="#pwfslsmoke-1-0-28">1.0.28</a></li>
-        <li><a href="#pwfslsmoke-1-0-27">1.0.27</a></li>
-        <li><a href="#pwfslsmoke-1-0-26">1.0.26</a></li>
-        <li><a href="#pwfslsmoke-1-0-25">1.0.25</a></li>
-        <li><a href="#pwfslsmoke-1-0-24">1.0.24</a></li>
-        <li><a href="#pwfslsmoke-1-0-23">1.0.23</a></li>
-        <li><a href="#pwfslsmoke-1-0-22">1.0.22</a></li>
-        <li><a href="#pwfslsmoke-1-0-21">1.0.21</a></li>
-        <li><a href="#pwfslsmoke-1-0-20">1.0.20</a></li>
-        <li><a href="#pwfslsmoke-1-0-19">1.0.19</a></li>
-        <li><a href="#pwfslsmoke-1-0-18">1.0.18</a></li>
-        <li><a href="#pwfslsmoke-1-0-17">1.0.17</a></li>
-        <li><a href="#pwfslsmoke-1-0-16">1.0.16</a></li>
-        <li><a href="#pwfslsmoke-1-0-15">1.0.15</a></li>
-        <li><a href="#pwfslsmoke-1-0-14">1.0.14</a></li>
-        <li><a href="#pwfslsmoke-1-0-13">1.0.13</a></li>
-        <li><a href="#pwfslsmoke-1-0-12">1.0.12</a></li>
-        <li><a href="#pwfslsmoke-1-0-11">1.0.11</a></li>
-        <li><a href="#pwfslsmoke-1-0-10">1.0.10</a></li>
-        <li><a href="#pwfslsmoke-1-0-9">1.0.9</a></li>
-        <li><a href="#pwfslsmoke-1-0-8">1.0.8</a></li>
-        <li><a href="#pwfslsmoke-1-0-7">1.0.7</a></li>
-        <li><a href="#pwfslsmoke-1-0-6">1.0.6</a></li>
-        <li><a href="#pwfslsmoke-1-0-5">1.0.5</a></li>
-        <li><a href="#pwfslsmoke-1-0-4">1.0.4</a></li>
-        <li><a href="#pwfslsmoke-1-0-3">1.0.3</a></li>
-        <li><a href="#pwfslsmoke-1-0-2">1.0.2</a></li>
-        <li><a href="#pwfslsmoke-1-0-1">1.0.1</a></li>
-        <li><a href="#pwfslsmoke-1-0-0">1.0.0</a></li>
-        <li><a href="#pwfslsmoke-0-99-37">0.99.37</a></li>
-        <li><a href="#pwfslsmoke-0-99-36">0.99.36</a></li>
-        <li><a href="#pwfslsmoke-0-99-35">0.99.35</a></li>
-        <li><a href="#pwfslsmoke-0-99-34">0.99.34</a></li>
-        <li><a href="#pwfslsmoke-0-99-33">0.99.33</a></li>
-        <li><a href="#pwfslsmoke-0-99-32">0.99.32</a></li>
-        <li><a href="#pwfslsmoke-0-99-31">0.99.31</a></li>
-        <li><a href="#pwfslsmoke-0-99-30">0.99.30</a></li>
-        <li><a href="#pwfslsmoke-0-99-29">0.99.29</a></li>
-        <li><a href="#pwfslsmoke-0-99-28">0.99.28</a></li>
-        <li><a href="#pwfslsmoke-0-99-27">0.99.27</a></li>
-        <li><a href="#pwfslsmoke-0-99-26">0.99.26</a></li>
-        <li><a href="#pwfslsmoke-0-99-25">0.99.25</a></li>
-        <li><a href="#pwfslsmoke-0-99-24">0.99.24</a></li>
-        <li><a href="#pwfslsmoke-0-99-23">0.99.23</a></li>
-        <li><a href="#pwfslsmoke-0-99-22">0.99.22</a></li>
-        <li><a href="#pwfslsmoke-0-99-20">0.99.20</a></li>
-        <li><a href="#pwfslsmoke-0-99-19">0.99.19</a></li>
-        <li><a href="#pwfslsmoke-0-99-18">0.99.18</a></li>
-        <li><a href="#pwfslsmoke-0-99-17">0.99.17</a></li>
-        <li><a href="#pwfslsmoke-0-99-16">0.99.16</a></li>
-        <li><a href="#pwfslsmoke-0-99-15">0.99.15</a></li>
-        <li><a href="#pwfslsmoke-0-99-14">0.99.14</a></li>
-        <li><a href="#pwfslsmoke-0-99-13">0.99.13</a></li>
-        <li><a href="#pwfslsmoke-0-99-12">0.99.12</a></li>
-        <li><a href="#pwfslsmoke-0-99-11">0.99.11</a></li>
-        <li><a href="#pwfslsmoke-0-99-10">0.99.10</a></li>
-        <li><a href="#pwfslsmoke-0-99-9">0.99.9</a></li>
-        <li><a href="#pwfslsmoke-0-99-0">0.99.0</a></li>
-        <li><a href="#pwfslsmoke-0-9-7">0.9.7</a></li>
-        <li><a href="#pwfslsmoke-0-9-6">0.9.6</a></li>
-        <li><a href="#pwfslsmoke-0-9-5">0.9.5</a></li>
-        <li><a href="#pwfslsmoke-0-9-4">0.9.4</a></li>
-        <li><a href="#pwfslsmoke-0-9-3">0.9.3</a></li>
-        <li><a href="#pwfslsmoke-0-8-6">0.8.6</a></li>
-        <li><a href="#pwfslsmoke-0-8-5">0.8.5</a></li>
-        <li><a href="#pwfslsmoke-0-8-4">0.8.4</a></li>
-        <li><a href="#pwfslsmoke-0-8-3">0.8.3</a></li>
-        <li><a href="#pwfslsmoke-0-8-1">0.8.1</a></li>
-        <li><a href="#pwfslsmoke-0-8-0">0.8.0</a></li>
-        <li><a href="#pwfslsmoke-0-7-2">0.7.2</a></li>
-        <li><a href="#pwfslsmoke-0-7-1">0.7.1</a></li>
-        <li><a href="#pwfslsmoke-0-7-0">0.7.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -1724,7 +1614,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
