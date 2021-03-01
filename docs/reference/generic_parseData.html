@@ -110,13 +110,16 @@ by a given configuration list." />
       <a href="../articles/Data_Model.html">Data Model</a>
     </li>
     <li>
-      <a href="../articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
-    </li>
-    <li>
       <a href="../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
     </li>
     <li>
       <a href="../articles/NowCast.html">NowCast</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Example_Denver_Air_Quality_Forecast.html">Example: Denver Air Quality Forecast</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
     </li>
     <li>
       <a href="../articles/articles/Loading_Monitoring_Data.html">Loading Monitoring Data</a>
@@ -211,14 +214,14 @@ document "Working with Generic Data" in the <code>localNotebooks</code> director
 
 <span class='va'>configList</span> <span class='op'>&lt;-</span> <span class='fu'>jsonlite</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>fromJSON</a></span><span class='op'>(</span><span class='va'>configPath</span><span class='op'>)</span>
 <span class='va'>fileString</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generic_downloadData.html'>generic_downloadData</a></span><span class='op'>(</span><span class='va'>filePath</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2021-02-26 13:06:18] Reading file from location:
-#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmphE3VB1/temp_libpath13ca053bbc2b2/PWFSLSmoke/extdata/generic_data_example.csv
-#&gt; INFO [2021-02-26 13:06:18] Reading file from location:
-#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmphE3VB1/temp_libpath13ca053bbc2b2/PWFSLSmoke/extdata/generic_data_example.csv
-#&gt; INFO [2021-02-26 13:06:18] Reading file from location:
-#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmphE3VB1/temp_libpath13ca053bbc2b2/PWFSLSmoke/extdata/generic_data_example.csv
-#&gt; INFO [2021-02-26 13:06:18] Reading file from location:
-#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmphE3VB1/temp_libpath13ca053bbc2b2/PWFSLSmoke/extdata/generic_data_example.csv</div><div class='input'><span class='va'>parsedData</span> <span class='op'>&lt;-</span> <span class='fu'>generic_parseData</span><span class='op'>(</span><span class='va'>fileString</span>, <span class='va'>configList</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; INFO [2021-03-01 15:50:32] Reading file from location:
+#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmpdwJNBL/temp_libpath27fd49985f4f/PWFSLSmoke/extdata/generic_data_example.csv
+#&gt; INFO [2021-03-01 15:50:32] Reading file from location:
+#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmpdwJNBL/temp_libpath27fd49985f4f/PWFSLSmoke/extdata/generic_data_example.csv
+#&gt; INFO [2021-03-01 15:50:32] Reading file from location:
+#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmpdwJNBL/temp_libpath27fd49985f4f/PWFSLSmoke/extdata/generic_data_example.csv
+#&gt; INFO [2021-03-01 15:50:32] Reading file from location:
+#&gt; /private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmpdwJNBL/temp_libpath27fd49985f4f/PWFSLSmoke/extdata/generic_data_example.csv</div><div class='input'><span class='va'>parsedData</span> <span class='op'>&lt;-</span> <span class='fu'>generic_parseData</span><span class='op'>(</span><span class='va'>fileString</span>, <span class='va'>configList</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

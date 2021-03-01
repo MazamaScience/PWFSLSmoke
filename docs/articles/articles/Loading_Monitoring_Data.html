@@ -66,13 +66,16 @@
       <a href="../../articles/Data_Model.html">Data Model</a>
     </li>
     <li>
-      <a href="../../articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
-    </li>
-    <li>
       <a href="../../articles/Maps_and_Timeseries_Plots.html">Maps and Timeseries Plots</a>
     </li>
     <li>
       <a href="../../articles/NowCast.html">NowCast</a>
+    </li>
+    <li>
+      <a href="../../articles/articles/Example_Denver_Air_Quality_Forecast.html">Example: Denver Air Quality Forecast</a>
+    </li>
+    <li>
+      <a href="../../articles/articles/Example_Save_Data_as_CSV.html">Example: Save Data as CSV</a>
     </li>
     <li>
       <a href="../../articles/articles/Loading_Monitoring_Data.html">Loading Monitoring Data</a>
@@ -127,11 +130,11 @@
 <div id="four-types-of-archive-files-hourly-daily-monthly-and-annual" class="section level2">
 <h2 class="hasAnchor">
 <a href="#four-types-of-archive-files-hourly-daily-monthly-and-annual" class="anchor"></a>Four types of archive files — hourly, daily, monthly, and annual</h2>
-<p>The data archive is maintained by AirFire and, for each data provider, the archive offers datasets that are updated in real-time and on hourly-, daily-, and monthly schedules The following types of files are available:</p>
+<p>The data archive is maintained by AirFire and, for each data provider, the archive offers datasets that are updated in real-time and on hourly-, daily-, and monthly schedules. The following types of files are available:</p>
 <p><strong>Hourly files</strong> – These “real-time” files are updated multiple times an hour (~ every two minutes) and contain data for the previous 10 days. They are used to generate graphics for the <a href="https://tools.airfire.org/monitoring/v4">Monitoring v4 site</a>.</p>
 <p><strong>Daily files</strong> – Daily files are updated once a day, shortly after midnight and contain data for the previous 45 days. The time span is long enough to contain data for a previous month until 10-days into the next month at which point AirNow stops <em>backfilling</em> data that straggles in due to power outages, <em>etc.</em></p>
 <p><strong>Monthly files</strong> – Monthly files are updated within a few days after the 10’th of the following month after data updates have ceased. For instance, a July file will be updated in mid-August.</p>
-<p><strong>Annual files</strong> – Annual files are updated mid-month, after the monthly file update, by appending the just-updated monthly file (covering the previous month) to the growing annual file. Thus, an annual will will always cover the period from the beginning of the year to the end of the last month.</p>
+<p><strong>Annual files</strong> – Annual files are updated mid-month, after the monthly file update, by appending the just-updated monthly file (covering the previous month) to the growing annual file. Thus, an annual will always cover the period from the beginning of the year to the end of the last month.</p>
 <p><em>NOTE</em>: The date and time of annual and monthly updates are subject to change. Exploring the <a href="https://haze.airfire.org/monitoring/">data archive</a> with a web browser, the exact date and time is seen next to file of interest, under the column <code>Last modified</code>. For instance, in the <a href="https://haze.airfire.org/monitoring/WRCC/RData/2017/">WRCC 2017 archive</a> you can see that the file <code>wrcc_PM2.5_2021.RData</code> was generated on February 14, 2021 at 01:24 am.</p>
 </div>
 <div id="archive-structure" class="section level2">
@@ -168,14 +171,14 @@
     └── RData</code></pre>
 <p><strong>Top level</strong> – There is a dedicated folder for each agency (i.e <a href="https://haze.airfire.org/monitoring/AIRSIS/">AIRSIS/</a>, <a href="https://haze.airfire.org/monitoring/AirNow/">AirNow/</a>, <a href="https://haze.airfire.org/monitoring/WRCC/">WRCC/</a>). Additionally, at this level, latest data (hourly and daily updates) for all agencies is grouped together and can be quickly accessed from the <a href="https://haze.airfire.org/monitoring/latest/RData/">latest/RData/</a> subdirectory.</p>
 <p><strong>Second level</strong> – Each agency has the <code>RData/</code> folder (<em>e.g.</em> A<code>irNow/RData/</code>) where all R binary files are stored. Other data types like <code>csv/</code> and <code>geojson/</code> may also exist.</p>
-<p><strong>Third level</strong> – Each data provider has annual folders (<em>e.g.</em> <code>AirNow/RData/2021/</code>) and a <code>latest/</code> folder (<em>e.g.</em> <code>AirNow/RData/latest/</code>). The latter contains hourly (e.g. airnow_PM2.5_latest10.RData) and daily (e.g. <code>airnow_PM2.5_latest45.RData</code>) updates. (This a just copy of the same data found in <code>latest/RData/</code>.)</p>
+<p><strong>Third level</strong> – Each data provider has annual folders (<em>e.g.</em> <code>AirNow/RData/2021/</code>) and a <code>latest/</code> folder (<em>e.g.</em> <code>AirNow/RData/latest/</code>). The latter contains hourly (e.g. <code>airnow_PM2.5_latest10.RData</code>) and daily (e.g. <code>airnow_PM2.5_latest45.RData</code>) updates (this a just copy of the same data found in <code>latest/RData/</code>).</p>
 <p><strong>Fourth level</strong> – Each data provider has annual datasets (<em>e.g.</em> <code>airnow_PM2.5_2021.RData</code>). Additionally, because of the size of the files, AirNow has monthly folders (<em>e.g.</em> <code>AirNow/RData/2021/01/</code>), and therefore a <strong>fifth level</strong> containing monthly datasets (<em>e.g.</em> <code>airNow_PM2.5_2021_01.RData</code>).</p>
 <p><em>NOTE</em>: No annual data files exist for AirNow prior to 2016.</p>
 </div>
 <div id="direcly-loading-datasets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#direcly-loading-datasets" class="anchor"></a>Direcly loading datasets</h2>
-<p>With knowledge of the structure of the data archives, it is possible to load datasets directly from the data archive with base R functions by using <code>get(load(url(…)))</code>. For instance, if you want to load the latest data (hourly updates) from AirNow, you can just:</p>
+<p>With knowledge of the structure of the data archives, it is possible to load datasets directly from the data archive with <code>base</code> R functions by using <code>get(load(url(…)))</code>. For instance, if you want to load the latest data (hourly updates) from AirNow, you can just type:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">AirNow_hourly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://haze.airfire.org/monitoring/latest/RData/airnow_PM2.5_latest10.RData"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
@@ -204,14 +207,14 @@ baseUrl <span class="op">=</span> <span class="st">"https://haze.airfire.org/mon
 dataDir <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> </code></pre></div>
 <p>These functions are typically used with default settings for <code>parameter</code>, <code>baseUrl</code> and <code>dataDir</code>:</p>
 <pre><code>airnow_latest &lt;- airnow_loadLatest()
-wrcc_daily &lt;- wrcc_lodDaily)</code></pre>
+wrcc_daily &lt;- wrcc_lodDaily()</code></pre>
 <p>_ NOTE:_ If <code>dataDir</code> is specified, data will be preferentially loaded from a local directory rather than from <code>baseUrl</code>.</p>
 </div>
 <div id="epa_load" class="section level2">
 <h2 class="hasAnchor">
 <a href="#epa_load" class="anchor"></a><code>epa_load()</code>
 </h2>
-<p>The <code>epa_loadd()</code> and <code><a href="../../reference/epa_loadAnnual.html">epa_loadAnnual()</a></code> functions have an additional <code>parameterCode</code> value which must be specified. EPA parameter codes include:</p>
+<p>The <code><a href="../../reference/epa_load.html">epa_load()</a></code> and <code><a href="../../reference/epa_loadAnnual.html">epa_loadAnnual()</a></code> functions have an additional <code>parameterCode</code> value which must be specified. EPA parameter codes include:</p>
 <ul>
 <li>
 <code>88101</code> – PM2.5 FRM/FEM Mass (begins in 2008)</li>
@@ -235,7 +238,7 @@ wrcc_daily &lt;- wrcc_lodDaily)</code></pre>
 <span class="op">)</span></code></pre></div>
 <p>The preferred function for general data loading is <a href="http://mazamascience.github.io/PWFSLSmoke/reference/monitor_load.html">monitor_load()</a>, which loads all available monitoring data for a given time range. Data from AirNow, AIRSIS and WRCC are combined into a single <em>ws_monitor</em> object. Archival datasets are joined with ‘daily’ and ‘latest’ datasets as needed to satisfy the requested date range.</p>
 <p><em>NOTE</em>: Because <code><a href="../../reference/monitor_load.html">monitor_load()</a></code> performs a lot of validation tasks as it joins annual, monthly and recent data, it is recommended that you load no more than ~3 months of consecutive data using this function. Longer timeseries can be obtained using the <code>_loadAnnual()</code> functions.</p>
-<p><em>NOTE</em>: the <strong>PWFSLSmoke</strong> package does not <em>yet</em> create time series cross year boundaries because “joining” timeseries together can take a long time. This capability will be enabled at some point in the future.</p>
+<p><em>NOTE</em>: the <strong>PWFSLSmoke</strong> package does not <em>yet</em> create time series crossing year boundaries because “joining” timeseries together can take a long time. This capability will be enabled at some point in the future.</p>
 </div>
 <div id="examples-using-pwfslsmoke-loading-functions" class="section level2">
 <h2 class="hasAnchor">

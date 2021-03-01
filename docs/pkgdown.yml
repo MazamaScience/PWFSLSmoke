@@ -3,10 +3,11 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   Data_Model: Data_Model.html
-  Example_Save_Data_as_CSV: Example_Save_Data_as_CSV.html
   Maps_and_Timeseries_Plots: Maps_and_Timeseries_Plots.html
   NowCast: NowCast.html
   PWFSLSmoke: PWFSLSmoke.html
+  articles/Example_Denver_Air_Quality_Forecast: Example_Denver_Air_Quality_Forecast.html
+  articles/Example_Save_Data_as_CSV: Example_Save_Data_as_CSV.html
   articles/Loading_Monitoring_Data: Loading_Monitoring_Data.html
-last_built: 2021-02-26T21:06Z
+last_built: 2021-03-01T23:50Z
 

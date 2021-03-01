@@ -160,7 +160,7 @@ baseUrl = "https://haze.airfire.org/monitoring/latest/RData",
 dataDir = NULL) 
 ```
 
-~__loadDaily()` - for daily updates covering the most recent 45 days
+~_loadDaily()` - for daily updates covering the most recent 45 days
 
 ```{r, example loadDaily, eval=FALSE}
 airnow_loadDaily(
@@ -187,7 +187,7 @@ airnow_latest <- airnow_loadLatest()
 wrcc_daily <- wrcc_lodDaily()
 ```
 
-_ NOTE:_ If `dataDir` is specified, data will be preferentially loaded from a 
+_NOTE:_ If `dataDir` is specified, data will be preferentially loaded from a 
 local directory rather than from `baseUrl`. 
 
 ## `epa_load()`
@@ -219,12 +219,12 @@ AirNow, AIRSIS and WRCC are combined into a single *ws_monitor* object.
 Archival datasets are joined with 'daily' and 'latest' datasets as needed to 
 satisfy the requested date range.
 
-*NOTE*: Because `monitor_load()` performs a lot of validation tasks as it joins
+_NOTE_: Because `monitor_load()` performs a lot of validation tasks as it joins
 annual, monthly and recent data, it is recommended that you load no more than ~3 months 
 of consecutive data using this function. Longer timeseries can be obtained using
 the `_loadAnnual()` functions.
 
-*NOTE*: the **PWFSLSmoke** package does not _yet_ create time series crossing year boundaries 
+_NOTE_: the **PWFSLSmoke** package does not _yet_ create time series crossing year boundaries 
 because “joining” timeseries together can take a long time. This capability will
 be enabled at some point in the future.
 
