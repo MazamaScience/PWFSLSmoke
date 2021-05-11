@@ -29,6 +29,10 @@ aqiLevels$missing <-
   summary$last_nowcast_1hr[is.na(summary$last_nowcast_1hr)] %>%
   length()
 
+# timeseries
+# look at monitors over time
+# states that are reporting over time
+
 # ------ EXAMPLE PLOTS ------
 
 library(ggplot2)

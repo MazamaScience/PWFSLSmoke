@@ -43,7 +43,7 @@ monitor_generateSummary <- function(
   # siteID, pwfslID, instrumentID : that metadata is combined and stored in monitorID
   # telemetryAggregator : will be cut into 'agency'
   # monitorUrl : I don't think this is necessary
-  # processingTime, endTime, last_validTime, last_latency, previous_validTime,
+  # processingTime, endTime, last_validTime, previous_validTime,
   # previous_latency, lats_validLocalTimestamp, previous_validLocalTimestamp : I don't think these are necessary
   #
   statusTbl <- statusTbl %>%
