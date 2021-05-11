@@ -91,7 +91,9 @@ for(i in seq(1,6,1)) {
 }
 aqi_data[7, ] <- c("Missing", aqi_latest[is.na(aqi_latest)] %>% length())
 
-ggplot(data = aqi_data, mapping = aes(x = names, y = freq, fill = freq)) +
+# use the factor(names, ...) to re-force the order of the bars
+
+ggplot(data = aqi_data, mapping = aes(x = factor(names, c(AQI$names, "Missing")), y = freq, fill = freq)) +
   geom_bar(stat = "identity") +
   ylab("Amount reporting") +
   xlab("AQI Level") +
