@@ -2,7 +2,7 @@
 
 summary <- monitor_generateSummary(
   agency = "airsis",
-  filePath = "~/test_monitor_generateSummary.csv"
+  filePath = "./local_eli/test_monitor_generateSummary.csv"
 )
 
 # ------ SAMPLE STATISTICS ------
@@ -28,10 +28,6 @@ aqiLevels <-
 aqiLevels$missing <-
   summary$last_nowcast_1hr[is.na(summary$last_nowcast_1hr)] %>%
   length()
-
-# timeseries
-# look at monitors over time
-# states that are reporting over time
 
 # ------ EXAMPLE PLOTS ------
 
@@ -102,4 +98,49 @@ ggplot(data = aqi_data, mapping = aes(x = factor(names, c(AQI$names, "Missing"))
   ylab("Amount reporting") +
   xlab("AQI Level") +
   theme(legend.position = "none")
+
+
+# timeseries plots
+
+summary <- readr::read_csv("./local_eli/test_monitor_generateSummary.csv", col_types = readr::cols())
+
+# Number of states reporting. Time series
+statesReporting_ts <- summary %>%
+  group_by(stateCode, preparedAt) %>%
+  summarize(n = n()) %>%
+  # round time to nearest hour
+  mutate(preparedAt = format(round(preparedAt, units = "hours"), format = "%m-%d %H"))
+
+# NOTE: after 5/16 I started getting data from airsis and WRCC
+library(ggplot2)
+ggplot(data = statesReporting_ts, aes(x = preparedAt, y = n, fill = stateCode)) +
+  geom_bar(stat = "identity", position = "stack") +
+  xlab("Time prepared (month-day hour UTC)") +
+  ylab("Number of stations reporting")
+
+# Stations in each latency group. Time series
+latency_ts <- summary %>%
+  mutate(latencyBin = cut(last_latency, breaks = c(0,1,3,6,12,Inf), right = FALSE)) %>%
+  group_by(latencyBin, preparedAt) %>%
+  summarize(n = n()) %>%
+  mutate(preparedAt = format(round(preparedAt, units = "hours"), format = "%m-%d %H"))
+
+ggplot(data = latency_ts, aes(x = preparedAt, y = n, fill = latencyBin)) +
+  geom_bar(stat = "identity", position = "stack") +
+  xlab("Time prepared (month-day hour UTC)") +
+  ylab("Number of stations reporting")
+
+
+# Agencies. Time series
+# This is a better way to plot it. But with so few data points, the bars are really thin
+agency_ts <- summary %>%
+  group_by(agency, preparedAt) %>%
+  summarize(n = n()) %>%
+  mutate(preparedAt = lubridate::floor_date(preparedAt, unit = "hours"))
+
+ggplot(data = agency_ts, aes(x = preparedAt, y = n, fill = agency)) +
+  geom_col() + # geom_bar(stat = "identity", position = "stack") also works. I just tried something different
+  xlab("Time prepared (UTC)") +
+  ylab("Number of agencies reporting")
+
 
