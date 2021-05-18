@@ -143,4 +143,13 @@ ggplot(data = agency_ts, aes(x = preparedAt, y = n, fill = agency)) +
   xlab("Time prepared (UTC)") +
   ylab("Number of agencies reporting")
 
+# average latency by state
+state_avg_latency <- summary %>%
+  group_by(stateCode, preparedAt) %>%
+  summarize(avg_latency = mean(last_latency, na.rm = TRUE)) %>%
+  mutate(preparedAt = lubridate::floor_date(preparedAt, unit = "hours"))
 
+ggplot(data = state_avg_latency, aes(x = preparedAt, y = avg_latency, color = stateCode)) +
+  geom_line() +
+  xlab("Time prepared (UTC)") +
+  ylab("Average latency by state")
