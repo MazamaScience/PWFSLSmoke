@@ -69,7 +69,7 @@ remove_Lon_zero = TRUE
 remove_Lat_zero = TRUE
 valid_Flow = c(16.7*0.95,16.7*1.05)
 valid_AT = c(-Inf,45)
-valid_RHi = c(-Inf,45)
+valid_RHi = c(-Inf,50)
 valid_Conc = c(-Inf,5000)
 
 
@@ -105,7 +105,7 @@ Note that appropriate values for QC thresholds will depend on the type of monito
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.113</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.114</span>
       </span>
     </div>
 
@@ -202,7 +202,7 @@ valid data ranges as taken from <code><a href='wrcc_EBAMQualityControl.html'>wrc
 <li><p><code>remove_Lat_zero = TRUE</code></p></li>
 <li><p><code>valid_Flow = c(16.7*0.95,16.7*1.05)</code></p></li>
 <li><p><code>valid_AT = c(-Inf,45)</code></p></li>
-<li><p><code>valid_RHi = c(-Inf,45)</code></p></li>
+<li><p><code>valid_RHi = c(-Inf,50)</code></p></li>
 <li><p><code>valid_Conc = c(-Inf,5000)</code></p></li>
 </ul>
 
@@ -293,11 +293,11 @@ valid data ranges as taken from <code><a href='wrcc_EBAMQualityControl.html'>wrc
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>sm13</span> <span class='op'>&lt;-</span> <span class='fu'>wrcc_createMonitorObject</span><span class='op'>(</span><span class='fl'>20150301</span>, <span class='fl'>20150831</span>, unitID <span class='op'>=</span> <span class='st'>'sm13'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; WARN [2021-03-01 15:52:21] More than one monitor type detected: 9, 0
-#&gt; WARN [2021-03-01 15:52:21] More than one monitor type detected: 9, 0
-#&gt; WARN [2021-03-01 15:52:21] More than one monitor type detected: 9, 0
-#&gt; WARN [2021-03-01 15:52:21] More than one monitor type detected: 9, 0
-#&gt; WARN [2021-03-01 15:52:21] More than one monitor type detected: 9, 0</div><div class='input'><span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span><span class='op'>(</span><span class='va'>sm13</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; WARN [2021-07-07 11:03:02] More than one monitor type detected: 9, 0
+#&gt; WARN [2021-07-07 11:03:02] More than one monitor type detected: 9, 0
+#&gt; WARN [2021-07-07 11:03:02] More than one monitor type detected: 9, 0
+#&gt; WARN [2021-07-07 11:03:02] More than one monitor type detected: 9, 0
+#&gt; WARN [2021-07-07 11:03:02] More than one monitor type detected: 9, 0</div><div class='input'><span class='fu'><a href='monitor_leaflet.html'>monitor_leaflet</a></span><span class='op'>(</span><span class='va'>sm13</span><span class='op'>)</span>
 <span class='co'># }</span>
 </div></pre>
   </div>

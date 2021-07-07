@@ -12,7 +12,7 @@ airsis_EBAM_PLUS_MULTIQualityControl(
   remove_Lat_zero = TRUE,
   valid_Flow = c(16.7 * 0.95, 16.7 * 1.05),
   valid_AT = c(-Inf, 45),
-  valid_RHi = c(-Inf, 45),
+  valid_RHi = c(-Inf, 50),
   valid_Conc = c(-Inf, 5),
   flagAndKeep = FALSE
 )

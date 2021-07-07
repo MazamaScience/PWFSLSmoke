@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.113</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.114</span>
       </span>
     </div>
 
@@ -192,7 +192,7 @@
 parameter <span class="op">=</span> <span class="st">'PM2.5'</span>,
 baseUrl <span class="op">=</span> <span class="st">"https://haze.airfire.org/monitoring/latest/RData"</span>,
 dataDir <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> </code></pre></div>
-<p>~__loadDaily()` - for daily updates covering the most recent 45 days</p>
+<p>~_loadDaily()` - for daily updates covering the most recent 45 days</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/airnow_loadDaily.html">airnow_loadDaily</a></span><span class="op">(</span>
 parameter <span class="op">=</span> <span class="st">'PM2.5'</span>,
@@ -208,7 +208,7 @@ dataDir <span class="op">=</span> <span class="cn">NULL</span><span class="op">)
 <p>These functions are typically used with default settings for <code>parameter</code>, <code>baseUrl</code> and <code>dataDir</code>:</p>
 <pre><code>airnow_latest &lt;- airnow_loadLatest()
 wrcc_daily &lt;- wrcc_lodDaily()</code></pre>
-<p>_ NOTE:_ If <code>dataDir</code> is specified, data will be preferentially loaded from a local directory rather than from <code>baseUrl</code>.</p>
+<p><em>NOTE:</em> If <code>dataDir</code> is specified, data will be preferentially loaded from a local directory rather than from <code>baseUrl</code>.</p>
 </div>
 <div id="epa_load" class="section level2">
 <h2 class="hasAnchor">

@@ -39,7 +39,7 @@ airsis_EBAM_MULTI2QualityControl <- function(
   remove_Lat_zero = TRUE,
   valid_Flow = c(16.7*0.95,16.7*1.05),
   valid_AT = c(-Inf,45),
-  valid_RHi = c(-Inf,45),
+  valid_RHi = c(-Inf,50),
   valid_Conc = c(-Inf,5.000),
   flagAndKeep = FALSE
 ) {
@@ -178,6 +178,7 @@ airsis_EBAM_MULTI2QualityControl <- function(
   # Leland Tarnay QC -----------------------------------------------------------
 
   # NOTE:  Override ConcHr high value with 5.000 as per conversation with Mike Broughton
+  # NOTE:  2021-07-07 Update RHi from 45 -> 50 as per conversation with Pete Lahm
 
   ###tmp.2014_YOSE_ebam1_ftp$concQA <- with(tmp.2014_YOSE_ebam1_ftp,
   ###                              ifelse(Flow < 16.7 * .95, "FlowLow",

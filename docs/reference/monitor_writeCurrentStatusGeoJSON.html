@@ -80,7 +80,7 @@ included, see monitor_getCurrentStatus." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.113</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.114</span>
       </span>
     </div>
 
@@ -225,8 +225,8 @@ nested lists as long as they can be converted into JSON using
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Discarded datum Unknown based on WGS84 ellipsoid in CRS definition</span></div><div class='input'><span class='va'>wa_current_list</span> <span class='op'>&lt;-</span> <span class='fu'>jsonlite</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>fromJSON</a></span><span class='op'>(</span><span class='va'>wa_current_geojson</span><span class='op'>)</span>
 <span class='va'>wa_spdf</span> <span class='op'>&lt;-</span> <span class='fu'>rgdal</span><span class='fu'>::</span><span class='fu'><a href='http://rgdal.r-forge.r-project.org/reference/readOGR.html'>readOGR</a></span><span class='op'>(</span>dsn <span class='op'>=</span> <span class='va'>geojson_file</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; OGR data source with driver: GeoJSON 
-#&gt; Source: "/private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/Rtmp2oyOCR/file283d23135f83.geojson", layer: "currentTbl"
-#&gt; with 67 features
+#&gt; Source: "/private/var/folders/84/y311lppx4519st7n8_gfkd1w0000gn/T/RtmpqRp1ja/file968d6fcfb394.geojson", layer: "currentTbl"
+#&gt; with 69 features
 #&gt; It has 45 fields</div><div class='input'><span class='fu'>map</span><span class='op'>(</span><span class='st'>"state"</span>, <span class='st'>"washington"</span><span class='op'>)</span>
 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>wa_spdf</span><span class='op'>)</span>
 </div><div class='img'><img src='monitor_writeCurrentStatusGeoJSON-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>

@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.114
+
+* Updated AIRSIS EBAM QC RHi threshold from 45% to 50%.
+
 # PWFSLSmoke 1.2.113
 
 * Updated `docker/` files to use R 3.6.3.

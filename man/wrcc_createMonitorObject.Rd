@@ -70,7 +70,7 @@ valid data ranges as taken from \code{wrcc_EBAMQualityControl()}:
 \item{\code{remove_Lat_zero = TRUE}}
 \item{\code{valid_Flow = c(16.7*0.95,16.7*1.05)}}
 \item{\code{valid_AT = c(-Inf,45)}}
-\item{\code{valid_RHi = c(-Inf,45)}}
+\item{\code{valid_RHi = c(-Inf,50)}}
 \item{\code{valid_Conc = c(-Inf,5000)}}
 }
 

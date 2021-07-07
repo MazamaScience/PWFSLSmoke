@@ -93,7 +93,7 @@ airsis_BAM1020QualityControl <- function(
   badRowCount <- sum(badRows)
   if ( badRowCount > 0 ) {
     logger.trace(paste(verb,"%s rows with invalid location information"), badRowCount)
-    badLocations <- paste('(',tbl$Longitude[badRows],',',tbl$Latitude[badRows],')',sep='')
+    badLocations <- paste('(',tbl$Longitude[badRows],',',tbl$Latitude[badRows],')',sep = '')
     logger.trace("Bad locations: %s", unique(badLocations))
     if ( flagAndKeep ) {
       # apply flags
@@ -112,18 +112,18 @@ airsis_BAM1020QualityControl <- function(
   if (nrow(tbl) < 1 && !flagAndKeep) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.warn(err_msg) # This is more of a warning than some error in the data.
-    stop(err_msg, call.=FALSE)
+    stop(err_msg, call. = FALSE)
   }
 
   # ----- Time ----------------------------------------------------------------
 
   # Add a POSIXct datetime
-  tbl$datetime <- lubridate::floor_date(lubridate::mdy_hms(tbl$TimeStamp), unit="hour") - lubridate::dhours(1)
+  tbl$datetime <- lubridate::floor_date(lubridate::mdy_hms(tbl$TimeStamp), unit = "hour") - lubridate::dhours(1)
   if ( flagAndKeep ) {
     # TODO: Unable to get datetime moved from tbl to tblFlagged without timezone and/or display getting messed up.
     # For now just duplicating the calculation, then assigning row values to NA after the fact for rows that were
     # removed from tbl prior to calculating datetime above. Clean up later if possible.
-    tblFlagged$datetime <- lubridate::floor_date(lubridate::mdy_hms(tblFlagged$TimeStamp), unit="hour") - lubridate::dhours(1)
+    tblFlagged$datetime <- lubridate::floor_date(lubridate::mdy_hms(tblFlagged$TimeStamp), unit = "hour") - lubridate::dhours(1)
     tblFlagged$datetime[ which(!(tblFlagged$rowID %in% tbl$rowID)) ] <- NA
   }
 
@@ -165,15 +165,15 @@ airsis_BAM1020QualityControl <- function(
   gooddatetime <- !is.na(tbl$datetime) & tbl$datetime < lubridate::now(tzone = "UTC") # saw a future date once
 
   logger.trace("Flow has %s missing or out of range values", sum(!goodFlow))
-  if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$Qtot..m3.[!goodFlow]),na.last=TRUE), collapse=", "))
+  if (sum(!goodFlow) > 0) logger.trace("Bad Flow values:  %s", paste0(sort(unique(tbl$Qtot..m3.[!goodFlow]),na.last = TRUE), collapse = ", "))
   logger.trace("AT has %s missing or out of range values", sum(!goodAT))
-  if (sum(!goodAT) > 0) logger.trace("Bad AT values:  %s", paste0(sort(unique(tbl$Ambient.Temp..C.[!goodAT]),na.last=TRUE), collapse=", "))
+  if (sum(!goodAT) > 0) logger.trace("Bad AT values:  %s", paste0(sort(unique(tbl$Ambient.Temp..C.[!goodAT]),na.last = TRUE), collapse = ", "))
   logger.trace("RHi has %s missing or out of range values", sum(!goodRHi))
-  if (sum(!goodRHi) > 0) logger.trace("Bad RHi values:  %s", paste0(sort(unique(tbl$RH....[!goodRHi]),na.last=TRUE), collapse=", "))
+  if (sum(!goodRHi) > 0) logger.trace("Bad RHi values:  %s", paste0(sort(unique(tbl$RH....[!goodRHi]),na.last = TRUE), collapse = ", "))
   logger.trace("Conc has %s missing or out of range values", sum(!goodConcHr))
-  if (sum(!goodConcHr) > 0) logger.trace("Bad Conc values:  %s", paste0(sort(unique(tbl$'Conc..\u00B5g.m3.'[!goodConcHr]),na.last=TRUE), collapse=", "))
+  if (sum(!goodConcHr) > 0) logger.trace("Bad Conc values:  %s", paste0(sort(unique(tbl$'Conc..\u00B5g.m3.'[!goodConcHr]),na.last = TRUE), collapse = ", "))
   logger.trace("datetime has %s missing or out of range values", sum(!gooddatetime))
-  if (sum(!gooddatetime) > 0) logger.trace("Bad datetime values:  %s", paste0(sort(unique(tbl$datetime[!gooddatetime]),na.last=TRUE), collapse=", "))
+  if (sum(!gooddatetime) > 0) logger.trace("Bad datetime values:  %s", paste0(sort(unique(tbl$datetime[!gooddatetime]),na.last = TRUE), collapse = ", "))
 
   goodMask <- goodFlow & goodAT & goodRHi & goodConcHr & gooddatetime
   badQCCount <- sum(!goodMask)
@@ -204,7 +204,7 @@ airsis_BAM1020QualityControl <- function(
   if (nrow(tbl) < 1 && !flagAndKeep) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.warn(err_msg) # This is more of a warning than some error in the data.
-    stop(err_msg, call.=FALSE)
+    stop(err_msg, call. = FALSE)
   }
 
   # ----- Duplicate Hours -----------------------------------------------------
@@ -220,7 +220,7 @@ airsis_BAM1020QualityControl <- function(
 
   if ( dupHrCount > 0 ) {
     logger.trace(paste(verb,"%s duplicate time entries"), dupHrCount)
-    logger.trace("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(tbl$TimeStamp[dupHrMask])), collapse=", "))
+    logger.trace("Duplicate Hours (may be >1 per timestamp):  %s", paste0(sort(unique(tbl$TimeStamp[dupHrMask])), collapse = ", "))
     if ( flagAndKeep ) {
       # apply flags
       tblFlagged$QCFlag_duplicateHr[tbl$rowID[dupHrMask]] <- TRUE
@@ -236,7 +236,7 @@ airsis_BAM1020QualityControl <- function(
   if (nrow(tbl) < 1 && !flagAndKeep) {
     err_msg <- paste0("No valid PM2.5 data for ", monitorName)
     logger.warn(err_msg) # This is more of a warning than some error in the data.
-    stop(err_msg, call.=FALSE)
+    stop(err_msg, call. = FALSE)
   }
 
   # ----- More QC -------------------------------------------------------------
