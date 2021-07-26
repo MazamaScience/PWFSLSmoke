@@ -139,6 +139,10 @@ staticmap_getEsrimapBrick <- function(
                     ymax = ymax),
                   crs = crs)
   } else if ( !is.null(bbox) ) {
+    xmin <- bbox[1]
+    xmax <- bbox[3]
+    ymin <- bbox[2]
+    ymax <- bbox[4]
     bbox <-
       sf::st_bbox(c(xmin = bbox[1],
                     xmax = bbox[3],
@@ -209,22 +213,10 @@ staticmap_getEsrimapBrick <- function(
 
   # ----- Crop image -----------------------------------------------------------
 
-  # NOTE:  Rows are latitude and columns are longitude
-  x_count <- nrow(rasterBrick)
-  if ( x_count > height ) {
-    x_mid <- floor(x_count/2)
-    x_lo <- x_mid - floor(height/2)
-    x_hi <- x_mid + floor(height/2)
-  }
-  y_count <- ncol(rasterBrick)
-  if ( y_count > width ) {
-    y_mid <- floor(y_count/2)
-    y_lo <- y_mid - floor(width/2)
-    y_hi <- y_mid + floor(width/2)
-  }
-
-  extent <- raster::extent(rasterBrick, x_lo, x_hi, y_lo, y_hi)
+  extent <- raster::extent(xmin, xmax, ymin, ymax)
   rasterBrick <- raster::crop(rasterBrick, extent)
+
+  raster::crs(rasterBrick) <- sp::CRS("+init=epsg:4326")
 
   # ----- Return ---------------------------------------------------------------
 

@@ -1,6 +1,7 @@
-# PWFSLSmoke 1.2.114
+# PWFSLSmoke 1.2.115
 
-* Updated AIRSIS EBAM QC RHi threshold from 45% to 50%.
+* Fixed a cropping issue in `staticmap_getEsrimapBrick()` which resulted in
+image boundaries that didn't exactly match the requested boundaries.
 
 # PWFSLSmoke 1.2.113
 
