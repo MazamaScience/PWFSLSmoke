@@ -3,6 +3,10 @@
 * Fixed a cropping issue in `staticmap_getEsrimapBrick()` which resulted in
 image boundaries that didn't exactly match the requested boundaries.
 
+# PWFSLSmoke 1.2.114
+
+* Uupdated all EBAM QC `valid_RHi` thresholds from 45 -> 50.
+
 # PWFSLSmoke 1.2.113
 
 * Updated `docker/` files to use R 3.6.3.
