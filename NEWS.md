@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.116
+
+* Support for parsing AIRSIS "EBAM MULTI2_B" format.
+
 # PWFSLSmoke 1.2.115
 
 * Fixed a cropping issue in `staticmap_getEsrimapBrick()` which resulted in

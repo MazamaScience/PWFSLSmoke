@@ -81,7 +81,7 @@ Monitor unitIDs can be found at https://wrcc.dri.edu/cgi-bin/smoke.pl." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.115</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.116</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ Monitor unitIDs can be found at https://wrcc.dri.edu/cgi-bin/smoke.pl." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -133,7 +133,7 @@ Monitor unitIDs can be found at https://wrcc.dri.edu/cgi-bin/smoke.pl." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MazamaScience/PWFSLSmoke/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -162,8 +162,8 @@ Data are returned as a single character string containing the WRCC output.</p>
     </div>
 
     <pre class="usage"><span class='fu'>wrcc_downloadData</span><span class='op'>(</span>
-  startdate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/strptime.html'>strftime</a></span><span class='op'>(</span><span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span><span class='op'>(</span>tzone <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>, <span class='st'>"%Y010101"</span>, tz <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>,
-  enddate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/strptime.html'>strftime</a></span><span class='op'>(</span><span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/now.html'>now</a></span><span class='op'>(</span>tzone <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>, <span class='st'>"%Y%m%d23"</span>, tz <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>,
+  startdate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/strptime.html'>strftime</a></span><span class='op'>(</span><span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/now.html'>now</a></span><span class='op'>(</span>tzone <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>, <span class='st'>"%Y010101"</span>, tz <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>,
+  enddate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/strptime.html'>strftime</a></span><span class='op'>(</span><span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/now.html'>now</a></span><span class='op'>(</span>tzone <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>, <span class='st'>"%Y%m%d23"</span>, tz <span class='op'>=</span> <span class='st'>"UTC"</span><span class='op'>)</span>,
   unitID <span class='op'>=</span> <span class='cn'>NULL</span>,
   baseUrl <span class='op'>=</span> <span class='st'>"https://wrcc.dri.edu/cgi-bin/wea_list2.pl"</span>
 <span class='op'>)</span></pre>

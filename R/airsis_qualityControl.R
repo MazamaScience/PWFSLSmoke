@@ -89,6 +89,8 @@ airsis_qualityControl <- function(
 
     if ( monitorSubtype == "MULTI2" ) {
       tbl <- airsis_EBAM_MULTI2QualityControl(tbl, ...)
+    } else if ( monitorSubtype == "MULTI2_B" ) {
+      tbl <- airsis_EBAM_MULTI2_BQualityControl(tbl, ...)
     } else if ( monitorSubtype == "PLUS_MULTI" ) {
       tbl <- airsis_EBAM_PLUS_MULTIQualityControl(tbl, ...)
     } else {

@@ -42,6 +42,14 @@ airsis_identifyMonitorType <- function(df) {
 
   # ----- Different header styles ----------------------------------------------
 
+  # ebamMulti2_B, provider = "usfs", unitID = 1085 (starting in October, 2021)
+  ebamMulti2_B_header <- "MasterTable_ID,Alias,Latitude,Longitude,Date/Time/GMT,ConcRT,ConcHR,ConcS(mg/m3),Flow,W/S,W/D,AT,RHx,BP(mmHg),RHi,Oceaneering Unit Voltage,FT,Status,Type,BV,TimeStamp,PDate"
+  ebamMulti2_B_rawNames <- unlist(stringr::str_split(ebamMulti2_B_header, ','))
+  ebamMulti2_B_names <- make.names(ebamMulti2_B_rawNames)
+  # "74011903,1085 Three Rivers,,,9/29/2021 3:00:00 PM,0.002,0.0041,0.0041,16.67,0.0,0,22.2,50,749.9,29,,26.3,Normal,PM 2.5,0,9/29/2021 3:05:14 PM,9/29/2021 3:06:00 PM"
+  ebamMulti2_B_types <- 'ccddcddddddddddddccdc'
+
+
   # USFS_esamMulti, provider = "usfs", unitID=1072-5 (starting in July 08, 2020; was mistakenly in units of ug/m3 before that)
   esamMulti_header <- "MasterTable_ID,Alias,Latitude,Longitude,Conc(mg/m3),Flow(l/m),AT(C),BP(PA),RHx(%),RHi(%),WS(M/S),WD(Deg),BV(V),Alarm,Oceaneering Unit Voltage,TimeStamp,PDate"
   esamMulti_rawNames <- unlist(stringr::str_split(esamMulti_header, ','))
@@ -173,7 +181,15 @@ airsis_identifyMonitorType <- function(df) {
     rawNames <- unitid_bam1020_rawNames
     columnNames <- unitid_bam1020_names
     columnTypes <- unitid_bam1020_types
+
   # NOTE:  Now check for the older, pre-unitid headers in the same order
+
+  } else if ( dplyr::setequal(ebamMulti2_B_names, colNames) ) {
+    monitorType <- "EBAM"
+    monitorSubtype <- "MULTI2_B"
+    rawNames <- ebamMulti2_B_rawNames
+    columnNames <- ebamMulti2_B_names
+    columnTypes <- ebamMulti2_B_types
   } else if ( dplyr::setequal(esamMulti_names, colNames) ) {
     monitorType <- "ESAM"
     monitorSubtype <- "MULTI"

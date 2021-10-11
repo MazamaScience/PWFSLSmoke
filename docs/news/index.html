@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.115</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.116</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -130,7 +130,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MazamaScience/PWFSLSmoke/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,12 +151,28 @@
       <small>Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="pwfslsmoke-12116" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.116">
+<a href="#pwfslsmoke-12116" class="anchor"></a>PWFSLSmoke 1.2.116<small> Unreleased </small>
+</h1>
+<ul>
+<li>Support for parsing AIRSIS “EBAM MULTI2_B” format.</li>
+</ul>
+</div>
     <div id="pwfslsmoke-12115" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.115">
 <a href="#pwfslsmoke-12115" class="anchor"></a>PWFSLSmoke 1.2.115<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fixed a cropping issue in <code><a href="../reference/staticmap_getEsrimapBrick.html">staticmap_getEsrimapBrick()</a></code> which resulted in image boundaries that didn’t exactly match the requested boundaries.</li>
+</ul>
+</div>
+    <div id="pwfslsmoke-12114" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.114">
+<a href="#pwfslsmoke-12114" class="anchor"></a>PWFSLSmoke 1.2.114<small> Unreleased </small>
+</h1>
+<ul>
+<li>Uupdated all EBAM QC <code>valid_RHi</code> thresholds from 45 -&gt; 50.</li>
 </ul>
 </div>
     <div id="pwfslsmoke-12113" class="section level1">
@@ -753,7 +769,7 @@
 <a href="#pwfslsmoke-116" class="anchor"></a>PWFSLSmoke 1.1.6<small> Unreleased </small>
 </h1>
 <ul>
-<li>actual parsing done by <code><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">lubridate::parse_date_time</a></code>
+<li>actual parsing done by <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">lubridate::parse_date_time</a></code>
 </li>
 <li>vectorized for inputs</li>
 <li>handle any format of <strong>Ymd[<em>HMS</em>]</strong> (including multiple formats within same input)</li>

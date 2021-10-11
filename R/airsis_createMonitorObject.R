@@ -186,12 +186,12 @@ if ( FALSE ) {
 
   logger.setLevel(TRACE)
 
-  # 2020 "ESAM Multi" format -- usfs.2072-5
+  # 2021 "EBAM MULTI2_B" format -- usfs.1085
 
-  startdate = MazamaCoreUtils::parseDatetime("2020-07-01", timezone = "UTC")
-  enddate = MazamaCoreUtils::parseDatetime("2020-07-07", timezone = "UTC")
-  provider = "usfs"
-  unitID = 1072
+  startdate = strftime(lubridate::now(tzone = "UTC"), "%Y0101", tz = "UTC")
+  enddate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz = "UTC")
+  provider = 'USFS'
+  unitID = 1085
   clusterDiameter = 1000
   zeroMinimum = TRUE
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"
@@ -199,6 +199,7 @@ if ( FALSE ) {
   existingMeta = NULL
   addGoogleMeta = FALSE
   addEsriMeta = FALSE
+  ... = NULL
 
   rm(ws_monitor)
 
