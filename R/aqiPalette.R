@@ -15,13 +15,9 @@
 #' @export
 #'
 #' @examples
-# layuout(matrix(seq(2)))
 #' pm25 <- PWFSLSmoke::Carmel_Valley$data[,2]
 #' binned_colors <- aqiPalette("aqi")(pm25)
-# continuous_colors <- aqiPalette("aqi_numeric")(pm25)
 #' plot(pm25, col=binned_colors, pch=15, main='Binned Colors')
-# plot(pm25, col=continuous_colors, pch=15, main='Continuous Colors')
-# layout(1)
 
 aqiPalette <- function(style = "aqi",
                        reverse = FALSE) {

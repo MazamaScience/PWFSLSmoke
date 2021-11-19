@@ -27,7 +27,12 @@
 #'
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' df <- airnow_downloadHourlyData(2018070112)
+#'
+#' }, silent = FALSE)
 #' }
 
 airnow_downloadHourlyData <- function(

@@ -50,9 +50,14 @@
 #' @seealso \code{\link{airsis_loadLatest}}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' airsis_loadDaily() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
 #'   monitor_map()
+#'
+#' }, silent = FALSE)
 #' }
 
 airsis_loadDaily <- function(parameter = 'PM2.5',

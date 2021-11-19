@@ -31,9 +31,14 @@ Returns a list of unitIDs with data during a particular time period.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 unitIDs <- airsis_availableUnits(20150701, 20151231,
                                  provider = 'USFS',
                                  unitTypes = c('EBAM','ESAM'))
+
+}, silent = FALSE)
 }
 }
 \references{

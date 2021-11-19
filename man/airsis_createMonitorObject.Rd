@@ -84,11 +84,16 @@ The downloaded CSV may be saved to a local file by providing an argument to the 
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 initializeMazamaSpatialUtils()
 
 usfs_1072 <- airsis_createMonitorObject(20200601, 20200620, 'USFS', unitID='1072')
 monitor_timeseriesPlot(usfs_1072)
+
+}, silent = FALSE)
 }
 }
 \seealso{

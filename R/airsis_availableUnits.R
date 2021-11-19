@@ -14,9 +14,14 @@
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' unitIDs <- airsis_availableUnits(20150701, 20151231,
 #'                                  provider = 'USFS',
 #'                                  unitTypes = c('EBAM','ESAM'))
+#'
+#' }, silent = FALSE)
 #' }
 
 airsis_availableUnits <- function(

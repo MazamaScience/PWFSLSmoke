@@ -13,11 +13,6 @@
 #' \code{longitude} and \code{latitude} columns of the incoming dataframe.
 #' @return Input dataframe with additional columns: \code{siteName, countyName}.
 #' @references \url{https://developers.arcgis.com/rest/geocode/api-reference/geocoding-reverse-geocode.htm}
-#' @examples
-#' \dontrun{
-#' df <- data.frame(longitude=c(-121,-122,-123),latitude=c(42,43,44))
-#' addEsriAddress(df)
-#' }
 
 addEsriAddress <- function(
   df,

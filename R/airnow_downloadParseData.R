@@ -46,7 +46,12 @@
 #' @seealso \link{airnow_downloadHourlyData}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' tbl <- airnow_downloadParseData("PM2.5", 2016070112, hours = 24)
+#'
+#' }, silent = FALSE)
 #' }
 
 airnow_downloadParseData <- function(

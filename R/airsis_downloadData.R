@@ -16,8 +16,13 @@
 #' @references \href{http://usfs.airsis.com}{Interagency Real Time Smoke Monitoring}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' fileString <- airsis_downloadData( 20150701, 20151231, provider='USFS', unitID='1026')
 #' df <- airsis_parseData(fileString)
+#'
+#' }, silent = FALSE)
 #' }
 
 airsis_downloadData <- function(

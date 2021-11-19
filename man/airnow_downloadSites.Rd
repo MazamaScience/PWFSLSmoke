@@ -19,20 +19,25 @@ Tibble of site location metadata.
 }
 \description{
 The \url{https://airnowtech.org} site provides both air pollution
-monitoring data as well as monitoring site location metadata. This 
+monitoring data as well as monitoring site location metadata. This
 function retrieves the most recent version of the site location metadata file and returns it as a dataframe.
 
 A description of the data format is publicly available at the
 \href{https://www.airnowapi.org/docs/MonitoringSiteFactSheet.pdf}{Monitoring Site Fact Sheet}.
 }
 \note{
-As of December, 2016, the \code{monitoring_site_locations.dat} file has an encoding of 
+As of December, 2016, the \code{monitoring_site_locations.dat} file has an encoding of
 "CP437" (aka "Non-ISO extended-ASCII" or "IBMPC 437") and will be converted to "UTF-8"
 so that French and Spanish language place names are properly encoded in the returned dataframe.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 sites <- airnow_downloadSites()
+
+}, silent = FALSE)
 }
 }
 \seealso{

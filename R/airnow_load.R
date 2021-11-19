@@ -10,10 +10,12 @@
 #' function. It will soon be deprecated.
 
 
-airnow_load <- function(year=2017,
-                        month=NULL,
-                        parameter='PM2.5',
-                        baseUrl='https://haze.airfire.org/monitoring/AirNow/RData/') {
+airnow_load <- function(
+  year = 2017,
+  month = NULL,
+  parameter = 'PM2.5',
+  baseUrl = 'https://haze.airfire.org/monitoring/AirNow/RData/'
+) {
 
   # TODO:  .Deprecate() this function at some point
 

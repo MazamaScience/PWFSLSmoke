@@ -7,7 +7,7 @@
 #' @param map optional RgoogleMaps map object
 #' @param expansion icon expansion factor
 #' @param pos position of icon relative to location (0=center, 1=bottom, 2=left, 3=top,4=right)
-#' @description Adds an icon to \code{map} -- an RgoogleMaps map object. The function monitor_esriMap() in the example below is deprecated.
+#' @description Adds an icon to \code{map} -- an RgoogleMaps map object.
 #' The following icons are available:
 #'
 #' \itemize{
@@ -21,17 +21,27 @@
 #' to be much smaller, perhaps ~ 0.001.
 #' @examples
 #' \dontrun{
-#' ca <- loadLatest() %>% monitor_subset(stateCodes='CA')
-#' # Google map
-#' map <- monitor_esriMap(ca)
-#' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, map=map, expansion=0.1)
-#' # line map
-#' monitor_map(ca)
-#' addIcon("orangeFlame", ca$meta$longitude, ca$meta$latitude, expansion=0.002)
+#' library(PWFSLSmoke)
+#'
+#' monitor_map(Camp_Fire)
+#'
+#' addIcon(
+#'   "orangeFlame",
+#'   longitude = -121.437222,
+#'   latitude = 39.810278,
+#'   expansion = 0.003
+#' )
 #' }
 
 
-addIcon <- function(icon, longitude, latitude, map=NULL, expansion=0.1, pos=0) {
+addIcon <- function(
+  icon,
+  longitude,
+  latitude,
+  map = NULL,
+  expansion = 0.1,
+  pos = 0
+) {
 
   # Test for absolute path
   if ( dirname(icon) == "." ) {

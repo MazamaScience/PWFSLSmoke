@@ -16,7 +16,7 @@
 #' to determine the number of clusters.
 #'
 #' @return Input tibble with additional columns: \code{deploymentID, medoidLon, mediodLat}.
-#' @references \href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
+#' @references \href{https://working-with-data.mazamascience.com/2021/07/15/when-k-means-clustering-fails/}{When k-means clustering fails}
 
 addClustering <- function(
   tbl,

@@ -11,13 +11,15 @@
 #' @description This function is a convenience wrapper around \code{graphics::legend()}. It will show the AQI colors and
 #' names by default if \code{col} and \code{legend} are not specified.
 
-addAQILegend <- function(x = "topright",
-                         y = NULL,
-                         col = rev(AQI$colors),
-                         legend = rev(AQI$names),
-                         pch = 16,
-                         title = "Air Quality Index",
-                         ...) {
+addAQILegend <- function(
+  x = "topright",
+  y = NULL,
+  col = rev(AQI$colors),
+  legend = rev(AQI$names),
+  pch = 16,
+  title = "Air Quality Index",
+  ...
+) {
 
   legend(x = x, y = y, col = col, legend = legend, pch = pch, title = title, ...)
 

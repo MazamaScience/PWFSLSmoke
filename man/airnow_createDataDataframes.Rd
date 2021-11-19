@@ -64,7 +64,12 @@ As of 2016-12-27, it appears that hourly data are available only for
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 airnowList <- airnow_createDataDataframes("PM2.5", 2019062500)
+
+}, silent = FALSE)
 }
 }
 \seealso{

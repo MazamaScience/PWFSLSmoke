@@ -28,12 +28,6 @@ ESRI APIs are used to determine
 address information associated with the locations specified by the
 \code{longitude} and \code{latitude} columns of the incoming dataframe.
 }
-\examples{
-\dontrun{
-df <- data.frame(longitude=c(-121,-122,-123),latitude=c(42,43,44))
-addEsriAddress(df)
-}
-}
 \references{
 \url{https://developers.arcgis.com/rest/geocode/api-reference/geocoding-reverse-geocode.htm}
 }

@@ -32,8 +32,13 @@ Data are returned as a single character string containing the AIRIS output.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 fileString <- airsis_downloadData( 20150701, 20151231, provider='USFS', unitID='1026')
 df <- airsis_parseData(fileString)
+
+}, silent = FALSE)
 }
 }
 \references{

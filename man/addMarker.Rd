@@ -25,13 +25,16 @@ Adds a marker to a plot or \code{map} -- an RgoogleMaps map object or Raster* ob
 }
 \examples{
 \dontrun{
-ca <- loadLatest() \%>\% monitor_subset(stateCodes='CA')
-# Google map
-map <- monitor_esriMap(ca)
-addMarker(ca$meta$longitude, ca$meta$latitude, map=map)
-# line map
-monitor_map(ca)
-addMarker(ca$meta$longitude, ca$meta$latitude, color = "blue", expansion = 1)
+library(PWFSLSmoke)
+
+monitor_map(Camp_Fire)
+
+addMarker(
+  longitude = -121.437222,
+  latitude = 39.810278,
+  color = "red",
+  expansion = 1
+)
 }
 }
 \keyword{plotting}

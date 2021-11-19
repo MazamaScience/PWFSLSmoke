@@ -52,6 +52,9 @@
 #' @seealso \code{\link{airnow_loadLatest}}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' airnow_loadAnnual(2017) %>%
 #'   monitor_subset(stateCodes='MT', tlim=c(20170701,20170930)) %>%
 #'   monitor_dailyStatistic() %>%
@@ -59,6 +62,8 @@
 #'   addAQIStackedBar()
 #'   addAQILines()
 #'   title("Montana 2017 -- AirNow Daily Average PM2.5")
+#'
+#' }, silent = FALSE)
 #' }
 
 airnow_loadAnnual <- function(year = NULL,

@@ -36,6 +36,6 @@ The value of \code{clusterRadius} is compared with the output of \code{cluster::
 to determine the number of clusters.
 }
 \references{
-\href{http://mazamascience.com/WorkingWithData/?p=1694}{When k-means Clustering Fails}
+\href{https://working-with-data.mazamascience.com/2021/07/15/when-k-means-clustering-fails/}{When k-means clustering fails}
 }
 \keyword{internal}

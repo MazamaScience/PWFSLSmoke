@@ -2,6 +2,9 @@
 
 Documentation and other fixes to deal with CRAN check issues.
 
+* Put all internet connected examples inside a `try({ ... })` block to fail
+gracefully when resources are not available.
+* Updated many examples to use the `Camp_Fire` dataset.
 * Updated the "Introduction to PWFSLSmoke" vignette to use package data rather
 than downloading data from the internet.
 * Added `Camp_Fire` dataset.

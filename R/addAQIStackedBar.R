@@ -7,11 +7,11 @@
 #' @description Draws a stacked bar indicating AQI levels on one side of a plot
 #' @return Stacked AQI Bar
 
-addAQIStackedBar <- function(width = .01,
-                             height = 1,
-                             pos = "left") {
-
-  # TODO:  remove 'labels' and 'title' arguments?
+addAQIStackedBar <- function(
+  width = .01,
+  height = 1,
+  pos = "left"
+) {
 
   usr <- par("usr")
 

@@ -34,7 +34,12 @@ monitors in Myanmar, Sri Lanka, India and Nepal.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 df <- airnow_downloadHourlyData(2018070112)
+
+}, silent = FALSE)
 }
 }
 \seealso{

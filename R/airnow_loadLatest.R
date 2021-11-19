@@ -50,9 +50,14 @@
 #' @seealso \code{\link{airnow_loadDaily}}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' airnow_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
 #'   monitor_map()
+#'
+#' }, silent = FALSE)
 #' }
 
 airnow_loadLatest <- function(

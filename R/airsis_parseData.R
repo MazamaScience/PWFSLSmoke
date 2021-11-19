@@ -25,10 +25,15 @@
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #' fileString <- airsis_downloadData(20150701, 20151231, provider='USFS', unitID='1026')
 #' tbl <- airsis_parseData(fileString)
 #' summary(tbl)
+#'
+#' }, silent = FALSE)
 #' }
 
 airsis_parseData <- function(fileString) {

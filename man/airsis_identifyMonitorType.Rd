@@ -36,8 +36,13 @@ The \code{monitorType} will be one of:
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 fileString <- airsis_downloadData( 20150701, 20151231, provider='USFS', unitID='1026')
 monitorTypeList <- airsis_identifyMonitorType(fileString)
+
+}, silent = FALSE)
 }
 }
 \references{

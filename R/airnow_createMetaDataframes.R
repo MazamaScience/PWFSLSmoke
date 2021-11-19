@@ -65,7 +65,12 @@
 #' @seealso \link{airnow_downloadSites}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' metaList <- airnow_createMetaDataframes(parameters = "PM2.5")
+#'
+#' }, silent = FALSE)
 #' }
 
 airnow_createMetaDataframes <- function(

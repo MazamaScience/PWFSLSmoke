@@ -55,7 +55,12 @@
 #'
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' airnowList <- airnow_createDataDataframes("PM2.5", 2019062500)
+#'
+#' }, silent = FALSE)
 #' }
 
 airnow_createDataDataframes <- function(

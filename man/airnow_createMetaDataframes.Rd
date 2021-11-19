@@ -76,7 +76,12 @@ Setting \code{parameters=NULL} will generate a separate dataframe for each of th
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 metaList <- airnow_createMetaDataframes(parameters = "PM2.5")
+
+}, silent = FALSE)
 }
 }
 \seealso{

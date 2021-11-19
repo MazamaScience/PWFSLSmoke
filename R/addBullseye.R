@@ -12,7 +12,13 @@
 #' monitor_map(wa, cex=4)
 #' addBullseye(wa$meta$longitude, wa$meta$latitude)
 
-addBullseye <- function(longitude, latitude, map=NULL, cex=2.0, lwd=2) {
+addBullseye <- function(
+  longitude,
+  latitude,
+  map = NULL,
+  cex = 2.0,
+  lwd = 2
+) {
 
   if ( !is.null(map) ) {
     # RgoogleMap
