@@ -31,6 +31,6 @@ address information associated with the locations specified by the
 Address information is obtained by using the \pkg{ggmap} package.
 }
 \references{
-\url{https://developers.google.com/maps/documentation/geocoding/intro}
+\url{https://developers.google.com/maps/documentation/geocoding/overview}
 }
 \keyword{internal}

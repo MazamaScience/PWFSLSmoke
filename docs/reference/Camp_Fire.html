@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply Quality Control to raw AIRSIS dataframe — airsis_qualityControl • PWFSLSmoke</title>
+<title>Camp Fire example dataset — Camp_Fire • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,29 +46,21 @@
 
 
 
-<meta property="og:title" content="Apply Quality Control to raw AIRSIS dataframe — airsis_qualityControl" />
-<meta property="og:description" content="Various QC steps are taken to clean up the incoming raw tibble including:
+<meta property="og:title" content="Camp Fire example dataset — Camp_Fire" />
+<meta property="og:description" content="The Camp_Fire dataset provides a quickly loadable
+version of a ws_monitor object for practicing and code examples.
+This dataset was was generated on 2021-11-18 by running:
 
-Ensure GPS location data are included in each measurement record.
-Remove GPS location records.
-Remove measurement records with values outside of valid ranges.
+library(PWFSLSmoke)
 
+Camp_Fire &amp;lt;-
+  monitor_loadAnnual(2018) &amp;lt;!-- %&amp;gt;% --&amp;gt;
+  monitor_subset(stateCodes = 'CA') &amp;lt;!-- %&amp;gt;% --&amp;gt;
+  monitor_subset(tlim = c(20181108, 20181123))
 
-See the individual airsis_~QualityControl() functions for details.
-QC parameters that can be passed in the ... include the following
-valid data ranges as taken from airsis_EBAMQualityControl():
+save(Camp_Fire, file = &quot;data/Camp_Fire.RData&quot;)
 
-valid_Longitude=c(-180,180)
-valid_Latitude=c(-90,90)
-remove_Lon_zero = TRUE
-remove_Lat_zero = TRUE
-valid_Flow = c(16.7*0.95,16.7*1.05)
-valid_AT = c(-Inf,45)
-valid_RHi = c(-Inf,50)
-valid_Conc = c(-Inf,5.000)
-
-
-Note that appropriate values for QC thresholds will depend on the type of monitor." />
+" />
 
 
 
@@ -169,58 +161,34 @@ Note that appropriate values for QC thresholds will depend on the type of monito
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply Quality Control to raw AIRSIS dataframe</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airsis_qualityControl.R'><code>R/airsis_qualityControl.R</code></a></small>
-    <div class="hidden name"><code>airsis_qualityControl.Rd</code></div>
+    <h1>Camp Fire example dataset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>Camp_Fire.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Various QC steps are taken to clean up the incoming raw tibble including:</p>
-<ol>
-<li><p>Ensure GPS location data are included in each measurement record.</p></li>
-<li><p>Remove GPS location records.</p></li>
-<li><p>Remove measurement records with values outside of valid ranges.</p></li>
-</ol>
+    <p>The <code>Camp_Fire</code> dataset provides a quickly loadable
+version of a <em>ws_monitor</em> object for practicing and code examples.</p>
+<p>This dataset was was generated on 2021-11-18 by running:</p>
+<pre>
+library(PWFSLSmoke)
 
-<p>See the individual <code>airsis_~QualityControl()</code> functions for details.</p>
-<p>QC parameters that can be passed in the <code>...</code> include the following
-valid data ranges as taken from <code><a href='airsis_EBAMQualityControl.html'>airsis_EBAMQualityControl()</a></code>:</p>
-<ul>
-<li><p><code>valid_Longitude=c(-180,180)</code></p></li>
-<li><p><code>valid_Latitude=c(-90,90)</code></p></li>
-<li><p><code>remove_Lon_zero = TRUE</code></p></li>
-<li><p><code>remove_Lat_zero = TRUE</code></p></li>
-<li><p><code>valid_Flow = c(16.7*0.95,16.7*1.05)</code></p></li>
-<li><p><code>valid_AT = c(-Inf,45)</code></p></li>
-<li><p><code>valid_RHi = c(-Inf,50)</code></p></li>
-<li><p><code>valid_Conc = c(-Inf,5.000)</code></p></li>
-</ul>
+Camp_Fire &lt;-
+  monitor_loadAnnual(2018) &lt;!-- %&gt;% --&gt;
+  monitor_subset(stateCodes = 'CA') &lt;!-- %&gt;% --&gt;
+  monitor_subset(tlim = c(20181108, 20181123))
 
-<p>Note that appropriate values for QC thresholds will depend on the type of monitor.</p>
+save(Camp_Fire, file = "data/Camp_Fire.RData")
+</pre>
+
     </div>
 
-    <pre class="usage"><span class='fu'>airsis_qualityControl</span><span class='op'>(</span><span class='va'>tbl</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>Camp_Fire</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>tbl</th>
-      <td><p>single site tibble created by airsis_downloadData()</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional parameters are passed to type-specific QC functions</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>Cleaned up tibble of AIRSIS monitor data.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='airsis_EBAMQualityControl.html'>airsis_EBAMQualityControl</a></code></p>
-<p><code><a href='airsis_ESAMQualityControl.html'>airsis_ESAMQualityControl</a></code></p></div>
+    <p>A <em>ws_monitor</em> object with "meta" and "data" dataframes.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

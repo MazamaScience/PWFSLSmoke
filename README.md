@@ -1,8 +1,3 @@
----
-title: "PWFSLSmoke"
-pagetitle: PWFSLSmoke"
----
-
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
 [![Downloads](http://cranlogs.r-pkg.org/badges/PWFSLSmoke)](https://cran.r-project.org/package=PWFSLSmoke)
 [![Build Status](https://travis-ci.org/MazamaScience/PWFSLSmoke.svg?branch=master)](https://travis-ci.org/MazamaScience/PWFSLSmoke)
@@ -88,6 +83,6 @@ To run them you should:
 ----
 
 This R package was created by [Mazama Science](http://mazamascience.com) and is 
-being funded by the USFS [AirFire Research Team](https://airfire.org).
+being funded by the USFS [AirFire Research Team](https://www.airfire.org).
 
 

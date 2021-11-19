@@ -66,11 +66,7 @@ title("Missing values")
 \references{
 \url{https://en.wikipedia.org/wiki/Nowcast_(Air_Quality_Index)}
 
-\url{https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf}
-
 \url{https://aqicn.org/faq/2015-03-15/air-quality-nowcast-a-beginners-guide/}
-
-\url{https://airnow.zendesk.com/hc/en-us/articles/211625598-How-does-AirNow-make-the-Current-PM-Air-Quality-Index-AQI-maps-}
 
 https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172
 

@@ -47,7 +47,7 @@
 #' }
 #'
 #' Available AirNow RData and associated log files can be seen at:
-#' \href{https://haze.airfire.org/monitoring/AirNow/RData}{https://haze.airfire.org/monitoring/AirNow/RData}
+#' \href{https://haze.airfire.org/monitoring/AirNow/RData/}{https://haze.airfire.org/monitoring/AirNow/RData/}
 #' @seealso \code{\link{airnow_loadDaily}}
 #' @seealso \code{\link{airnow_loadLatest}}
 #' @examples

@@ -85,7 +85,7 @@ https://leaflet-extras.github.io/leaflet-providers/preview/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.116</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.117</span>
       </span>
     </div>
 
@@ -262,8 +262,13 @@ takes precedence. To get a specified zoom level, set <code>maxTiles = NULL</code
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># Fail gracefully if any resources are not available</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='op'>{</span>
+
 <span class='va'>rasterBrick</span> <span class='op'>&lt;-</span> <span class='fu'>staticmap_getEsrimapBrick</span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.3318</span>, <span class='fl'>47.668</span><span class='op'>)</span>
 <span class='fu'><a href='staticmap_plotRasterBrick.html'>staticmap_plotRasterBrick</a></span><span class='op'>(</span><span class='va'>rasterBrick</span><span class='op'>)</span>
+
+<span class='op'>}</span>, silent <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
@@ -277,7 +282,7 @@ takes precedence. To get a specified zoom level, set <code>maxTiles = NULL</code
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Spencer Pease, Helen Miller, Zach Dingels, Rohan Aras, Jon Hagg, Jimin Kim, Rex Thompson, Alice Yang.</p>
+  <p>Developed by Jonathan Callahan.</p>
 </div>
 
 <div class="pkgdown">

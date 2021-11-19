@@ -45,7 +45,7 @@
 #' }
 #'
 #' Avaialble WRCC RData and associated log files can be seen at:
-#' \href{https://haze.airfire.org/monitoring/WRCC/RData/latest}{https://haze.airfire.org/monitoring/WRCC/RData/latest}
+#' \href{https://haze.airfire.org/monitoring/WRCC/RData/latest/}{https://haze.airfire.org/monitoring/WRCC/RData/latest/}
 #' @seealso \code{\link{wrcc_loadAnnual}}
 #' @seealso \code{\link{wrcc_loadLatest}}
 #' @examples

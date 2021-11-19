@@ -2,6 +2,7 @@
 
 Documentation and other fixes to deal with CRAN check issues.
 
+* Updated various URLs in function documentation.
 * Put all internet connected examples inside a `try({ ... })` block to fail
 gracefully when resources are not available.
 * Updated many examples to use the `Camp_Fire` dataset.

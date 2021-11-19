@@ -14,7 +14,7 @@
 #'
 #' Address information is obtained by using the \pkg{ggmap} package.
 #' @return Input dataframe with additional columns: \code{siteName, countyName}.
-#' @references \url{https://developers.google.com/maps/documentation/geocoding/intro}
+#' @references \url{https://developers.google.com/maps/documentation/geocoding/overview}
 
 addGoogleAddress <- function(
   df,

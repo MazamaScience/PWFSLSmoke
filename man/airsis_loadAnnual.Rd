@@ -45,7 +45,7 @@ AIRSIS parameters include the following:
 }
 
 Available AIRSIS RData and associated log files can be seen at:
-\href{https://haze.airfire.org/monitoring/AIRSIS/RData}{https://haze.airfire.org/monitoring/AIRSIS/RData}
+\href{https://haze.airfire.org/monitoring/AIRSIS/RData/}{https://haze.airfire.org/monitoring/AIRSIS/RData/}
 }
 \examples{
 \dontrun{

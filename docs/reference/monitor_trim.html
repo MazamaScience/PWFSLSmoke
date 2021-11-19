@@ -80,7 +80,7 @@ after the last valid datapoint for any monitor." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.116</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.117</span>
       </span>
     </div>
 
@@ -176,6 +176,9 @@ after the last valid datapoint for any monitor.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># Fail gracefully if any resources are not available</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='op'>{</span>
+
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/PWFSLSmoke'>PWFSLSmoke</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaSpatialUtils'>MazamaSpatialUtils</a></span><span class='op'>)</span>
 
@@ -184,6 +187,8 @@ after the last valid datapoint for any monitor.</p>
 <span class='va'>Deschutes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='monitor_subset.html'>monitor_subset</a></span><span class='op'>(</span><span class='va'>sm13</span>, monitorIDs<span class='op'>=</span><span class='st'>'lon_.121.453_lat_43.878_wrcc.sm13'</span><span class='op'>)</span>
 <span class='va'>Deschutes</span> <span class='op'>&lt;-</span> <span class='fu'>monitor_trim</span><span class='op'>(</span><span class='va'>Deschutes</span><span class='op'>)</span>
 <span class='fu'><a href='monitor_dailyBarplot.html'>monitor_dailyBarplot</a></span><span class='op'>(</span><span class='va'>Deschutes</span><span class='op'>)</span>
+
+<span class='op'>}</span>, silent <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
@@ -197,7 +202,7 @@ after the last valid datapoint for any monitor.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Spencer Pease, Helen Miller, Zach Dingels, Rohan Aras, Jon Hagg, Jimin Kim, Rex Thompson, Alice Yang.</p>
+  <p>Developed by Jonathan Callahan.</p>
 </div>
 
 <div class="pkgdown">

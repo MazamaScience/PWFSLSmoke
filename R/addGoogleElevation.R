@@ -12,7 +12,7 @@
 #'
 #' Address information is obtained by using the \pkg{ggmap} package.
 #' @return Input dataframe with (possibly) additional column: \code{elevation}.
-#' @references \url{https://developers.google.com/maps/documentation/elevation/intro}
+#' @references \url{https://developers.google.com/maps/documentation/elevation/overview}
 
 addGoogleElevation <- function(
   df,

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply Quality Control to raw AIRSIS dataframe — airsis_qualityControl • PWFSLSmoke</title>
+<title>Apply Quality Control to raw AIRSIS EBAM MULTI2_B tibble — airsis_EBAM_MULTI2_BQualityControl • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,29 +46,18 @@
 
 
 
-<meta property="og:title" content="Apply Quality Control to raw AIRSIS dataframe — airsis_qualityControl" />
-<meta property="og:description" content="Various QC steps are taken to clean up the incoming raw tibble including:
-
-Ensure GPS location data are included in each measurement record.
-Remove GPS location records.
-Remove measurement records with values outside of valid ranges.
-
-
-See the individual airsis_~QualityControl() functions for details.
-QC parameters that can be passed in the ... include the following
-valid data ranges as taken from airsis_EBAMQualityControl():
-
-valid_Longitude=c(-180,180)
-valid_Latitude=c(-90,90)
-remove_Lon_zero = TRUE
-remove_Lat_zero = TRUE
-valid_Flow = c(16.7*0.95,16.7*1.05)
-valid_AT = c(-Inf,45)
-valid_RHi = c(-Inf,50)
-valid_Conc = c(-Inf,5.000)
+<meta property="og:title" content="Apply Quality Control to raw AIRSIS EBAM MULTI2_B tibble — airsis_EBAM_MULTI2_BQualityControl" />
+<meta property="og:description" content="Perform various QC measures on AIRSIS EBAM MULT2 data. This data
+format began appearing in December, 2019 and is associated with data
+available at https://arb3.airsis.com.
+The following columns of data are tested against valid ranges:
+Flow
+AT
+RHi
+ConcHr
 
 
-Note that appropriate values for QC thresholds will depend on the type of monitor." />
+A POSIXct datetime column (UTC) is also added based on Date.Time.GMT." />
 
 
 
@@ -169,48 +158,80 @@ Note that appropriate values for QC thresholds will depend on the type of monito
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply Quality Control to raw AIRSIS dataframe</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airsis_qualityControl.R'><code>R/airsis_qualityControl.R</code></a></small>
-    <div class="hidden name"><code>airsis_qualityControl.Rd</code></div>
+    <h1>Apply Quality Control to raw AIRSIS EBAM MULTI2_B tibble</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/airsis_EBAM_MULTI2_BQualityControl.R'><code>R/airsis_EBAM_MULTI2_BQualityControl.R</code></a></small>
+    <div class="hidden name"><code>airsis_EBAM_MULTI2_BQualityControl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Various QC steps are taken to clean up the incoming raw tibble including:</p>
-<ol>
-<li><p>Ensure GPS location data are included in each measurement record.</p></li>
-<li><p>Remove GPS location records.</p></li>
-<li><p>Remove measurement records with values outside of valid ranges.</p></li>
-</ol>
-
-<p>See the individual <code>airsis_~QualityControl()</code> functions for details.</p>
-<p>QC parameters that can be passed in the <code>...</code> include the following
-valid data ranges as taken from <code><a href='airsis_EBAMQualityControl.html'>airsis_EBAMQualityControl()</a></code>:</p>
-<ul>
-<li><p><code>valid_Longitude=c(-180,180)</code></p></li>
-<li><p><code>valid_Latitude=c(-90,90)</code></p></li>
-<li><p><code>remove_Lon_zero = TRUE</code></p></li>
-<li><p><code>remove_Lat_zero = TRUE</code></p></li>
-<li><p><code>valid_Flow = c(16.7*0.95,16.7*1.05)</code></p></li>
-<li><p><code>valid_AT = c(-Inf,45)</code></p></li>
-<li><p><code>valid_RHi = c(-Inf,50)</code></p></li>
-<li><p><code>valid_Conc = c(-Inf,5.000)</code></p></li>
+    <p>Perform various QC measures on AIRSIS EBAM MULT2 data. This data
+format began appearing in December, 2019 and is associated with data
+available at https://arb3.airsis.com.</p>
+<p>The following columns of data are tested against valid ranges:</p><ul>
+<li><p><code>Flow</code></p></li>
+<li><p><code>AT</code></p></li>
+<li><p><code>RHi</code></p></li>
+<li><p><code>ConcHr</code></p></li>
 </ul>
 
-<p>Note that appropriate values for QC thresholds will depend on the type of monitor.</p>
+<p>A <code>POSIXct datetime</code> column (UTC) is also added based on <code>Date.Time.GMT</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>airsis_qualityControl</span><span class='op'>(</span><span class='va'>tbl</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>airsis_EBAM_MULTI2_BQualityControl</span><span class='op'>(</span>
+  <span class='va'>tbl</span>,
+  valid_Longitude <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>180</span>, <span class='fl'>180</span><span class='op'>)</span>,
+  valid_Latitude <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>90</span>, <span class='fl'>90</span><span class='op'>)</span>,
+  remove_Lon_zero <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  remove_Lat_zero <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  valid_Flow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>16.7</span> <span class='op'>*</span> <span class='fl'>0.95</span>, <span class='fl'>16.7</span> <span class='op'>*</span> <span class='fl'>1.05</span><span class='op'>)</span>,
+  valid_AT <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span>, <span class='fl'>45</span><span class='op'>)</span>,
+  valid_RHi <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span>, <span class='fl'>50</span><span class='op'>)</span>,
+  valid_Conc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span>, <span class='fl'>5</span><span class='op'>)</span>,
+  flagAndKeep <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tbl</th>
-      <td><p>single site tibble created by airsis_downloadData()</p></td>
+      <td><p>single site tibble created by <code><a href='airsis_parseData.html'>airsis_parseData()</a></code></p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>additional parameters are passed to type-specific QC functions</p></td>
+      <th>valid_Longitude</th>
+      <td><p>range of valid Longitude values</p></td>
+    </tr>
+    <tr>
+      <th>valid_Latitude</th>
+      <td><p>range of valid Latitude values</p></td>
+    </tr>
+    <tr>
+      <th>remove_Lon_zero</th>
+      <td><p>flag to remove rows where Longitude == 0</p></td>
+    </tr>
+    <tr>
+      <th>remove_Lat_zero</th>
+      <td><p>flag to remove rows where Latitude == 0</p></td>
+    </tr>
+    <tr>
+      <th>valid_Flow</th>
+      <td><p>range of valid Flow values</p></td>
+    </tr>
+    <tr>
+      <th>valid_AT</th>
+      <td><p>range of valid AT values</p></td>
+    </tr>
+    <tr>
+      <th>valid_RHi</th>
+      <td><p>range of valid RHi values</p></td>
+    </tr>
+    <tr>
+      <th>valid_Conc</th>
+      <td><p>range of valid ConcHr values</p></td>
+    </tr>
+    <tr>
+      <th>flagAndKeep</th>
+      <td><p>flag, rather than remove, bad data during the QC process</p></td>
     </tr>
     </table>
 
@@ -219,8 +240,7 @@ valid data ranges as taken from <code><a href='airsis_EBAMQualityControl.html'>a
     <p>Cleaned up tibble of AIRSIS monitor data.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='airsis_EBAMQualityControl.html'>airsis_EBAMQualityControl</a></code></p>
-<p><code><a href='airsis_ESAMQualityControl.html'>airsis_ESAMQualityControl</a></code></p></div>
+    <div class='dont-index'><p><code><a href='airsis_qualityControl.html'>airsis_qualityControl</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

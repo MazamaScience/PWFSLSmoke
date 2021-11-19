@@ -45,7 +45,7 @@
 #' }
 #'
 #' Avaialble RData and associated log files can be seen at:
-#' \href{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}{https://haze.airfire.org/monitoring/AIRSIS/RData/latest}
+#' \href{https://haze.airfire.org/monitoring/AIRSIS/RData/latest/}{https://haze.airfire.org/monitoring/AIRSIS/RData/latest/}
 #' @seealso \code{\link{airsis_loadAnnual}}
 #' @seealso \code{\link{airsis_loadDaily}}
 #' @examples

@@ -30,6 +30,6 @@ Google APIs are used to determine elevation associated with the locations specif
 Address information is obtained by using the \pkg{ggmap} package.
 }
 \references{
-\url{https://developers.google.com/maps/documentation/elevation/intro}
+\url{https://developers.google.com/maps/documentation/elevation/overview}
 }
 \keyword{internal}

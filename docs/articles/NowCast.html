@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.116</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.117</span>
       </span>
     </div>
 
@@ -127,7 +127,8 @@
 <p>The original algorithm, known as the Conroy method, was developed in 2003 to make real-time air quality measurements roughly comparable to established regulatory air quality health thresholds (<em>e.g.</em> 24‐hour PM2.5 standards). However, that method was shown to be slow to respond to rapidly changing air quality conditions, which, at best, reduced public confidence in disseminated AQI values, and at worst, had the potential to adversely affect the health of those in high impact areas (<em>e.g.</em> near wildfires).</p>
 <p>In response, EPA developed a new method – the Reff method – in 2013 to be more responsive to rapidly changing air quality conditions. We provide technical support for applying the new NowCast algorithm to hourly PM2.5, PM10, and O3 data, though theoretically it could be applied to regular-interval time series data of any type, including other criteria pollutants.</p>
 <p>We provide algorithm specifics for PM2.5, PM10, and O3 below.</p>
-Sources:<br><a href="https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf" class="uri">https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf</a><br><pre>https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172</pre>
+Sources:<br><a href="https://en.wikipedia.org/wiki/NowCast_(air_quality_index)" class="uri">https://en.wikipedia.org/wiki/NowCast_(air_quality_index)</a>
+<pre>https://forum.airnowtech.org/t/the-nowcast-for-ozone-and-pm/172</pre>
 </div>
 <div id="the-nowcast-algorithm-reff-method" class="section level2">
 <h2 class="hasAnchor">
@@ -140,7 +141,7 @@ Sources:<br><a href="https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_
 NowCast = \frac{\sum_{i=1}^{N}{w^{i-1}c_i}}{\sum_{i=1}^{N}w^{i-1}}
 \]</span></p>
 <p>where <span class="math inline">\(i\)</span>, <span class="math inline">\(N\)</span>, <span class="math inline">\(w\)</span> and <span class="math inline">\(c\)</span> are as defined in the sections below.</p>
-<p>Sources:<br><a href="https://en.wikipedia.org/wiki/NowCast_(air_quality_index)" class="uri">https://en.wikipedia.org/wiki/NowCast_(air_quality_index)</a><br><a href="https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf" class="uri">https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf</a></p>
+<p>Sources:<br><a href="https://en.wikipedia.org/wiki/NowCast_(air_quality_index)" class="uri">https://en.wikipedia.org/wiki/NowCast_(air_quality_index)</a></p>
 </div>
 <div id="data-selection" class="section level3">
 <h3 class="hasAnchor">
@@ -246,13 +247,11 @@ NowCast = \frac
 {w^0 + w^1 + w^2 + \color{gray}{\text{[note: middle values ignored]}} + w^9 + w^{10} + w^{11}}
 \]</span></p>
 <p>Minimum data availability requirements do apply, however. See the following section for details.</p>
-<p>Source:<br><a href="https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf" class="uri">https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf</a></p>
 </div>
 <div id="data-availability-requirements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-availability-requirements" class="anchor"></a>Data Availability Requirements</h3>
 <p>To get a valid NowCast value, the NowCast algorithm simply requires valid data for at least two of the three most recent clock hours. This means that a valid NowCast value can be calculated from as little as two valid hours, even if 12 hours are typically used in the calculation.</p>
-<p>Source:<br><a href="https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf" class="uri">https://www3.epa.gov/airnow/ani/pm25_aqi_reporting_nowcast_overview.pdf</a></p>
 <p>However, note that <a href="https://en.wikipedia.org/wiki/NowCast_(air_quality_index)" class="uri">https://en.wikipedia.org/wiki/NowCast_(air_quality_index)</a> says:</p>
 <blockquote>
 <p>Because the most recent hours of data are weighted so heavily in the NowCast when PM levels are changing, EPA does not report the NowCast when data is missing for c<sub>1</sub> or c<sub>2</sub>.</p>
@@ -272,7 +271,7 @@ NowCast = \frac
 <div id="negative-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#negative-values" class="anchor"></a>Negative Values</h3>
-<p>In the NowCast literature we find no mention of negative values, which, while aphysical, are common in air quality monitoring data (see <a href="https://www3.epa.gov/ttn/amtic/files/2014conference/monpmpart3.pdf" class="uri">https://www3.epa.gov/ttn/amtic/files/2014conference/monpmpart3.pdf</a>). Thus, we do not adjust negative values up to zero in the <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> function itself. However, note that this may be done when creating a <code>ws_monitor</code> object in the first place.</p>
+<p>In the NowCast literature we find no mention of negative values, which, while aphysical, are common in air quality monitoring data. Thus, we do not adjust negative values up to zero in the <code><a href="../reference/monitor_nowcast.html">monitor_nowcast()</a></code> function itself. However, note that this may be done when creating a <code>ws_monitor</code> object in the first place.</p>
 <p>Negative values are handled prior to converting NowCast or other values to AQI.</p>
 </div>
 <div id="negative-weight-factors" class="section level3">
@@ -707,7 +706,7 @@ Status: <span style="color:limegreen">GOOD</span></p>
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Spencer Pease, Helen Miller, Zach Dingels, Rohan Aras, Jon Hagg, Jimin Kim, Rex Thompson, Alice Yang.</p>
+  <p>Developed by Jonathan Callahan.</p>
 </div>
 
 <div class="pkgdown">

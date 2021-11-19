@@ -41,7 +41,7 @@ WRCC parameters include the following:
 }
 
 Avaialble WRCC RData and associated log files can be seen at:
-\href{https://haze.airfire.org/monitoring/WRCC/RData/latest}{https://haze.airfire.org/monitoring/WRCC/RData/latest}
+\href{https://haze.airfire.org/monitoring/WRCC/RData/latest/}{https://haze.airfire.org/monitoring/WRCC/RData/latest/}
 }
 \examples{
 \dontrun{

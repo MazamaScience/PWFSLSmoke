@@ -110,7 +110,7 @@ with data from many monitors at once.
 ## Available data
 
 The USFS AirFire group regularly processes monitoring data in support of their
-[Monitoring Website](https://tools.airfire.org/monitoring/v4#!/?category=PM2.5_nowcast&centerlat=42&centerlon=-95&zoom=4https://tools.airfire.org/monitoring/v4). 
+Monitoring Website at `tools.airfire.org/monitoring/v4`. 
 Pre-processed data files can be loaded from their servers by the following functions:
 
 * `~_load()` -- load data based on a start- and end-time

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Carmel Valley Example Dataset — Carmel_Valley • PWFSLSmoke</title>
+<title>Carmel Valley example dataset — Carmel_Valley • PWFSLSmoke</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,13 @@
 
 
 
-<meta property="og:title" content="Carmel Valley Example Dataset — Carmel_Valley" />
+<meta property="og:title" content="Carmel Valley example dataset — Carmel_Valley" />
 <meta property="og:description" content="In August of 2016, the Soberanes fire in California burned along the Big Sur
-coast. It was at the time the most expensive wildifre in US history. This dataset contains
+coast. It was at the time the most expensive wildfire in US history. This dataset contains
 PM2.5 monitoring data for the monitor in Carmel Valley which shows heavy smoke
-as well as strong diurnal cycles associated with sea breezes. Data are stored
-as a ws_monitor object and are used in some examples in the package
+as well as strong diurnal cycles associated with sea breezes.
+The Camp_Fire dataset provides a quickly loadable
+version of a ws_monitor object for practicing and code examples.
 documentation." />
 
 
@@ -84,7 +85,7 @@ documentation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PWFSLSmoke</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.116</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.117</span>
       </span>
     </div>
 
@@ -153,28 +154,27 @@ documentation." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Carmel Valley Example Dataset</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/PWFSLSmoke.R'><code>R/PWFSLSmoke.R</code></a></small>
+    <h1>Carmel Valley example dataset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/PWFSLSmoke/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>Carmel_Valley.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>In August of 2016, the Soberanes fire in California burned along the Big Sur
-coast. It was at the time the most expensive wildifre in US history. This dataset contains
+coast. It was at the time the most expensive wildfire in US history. This dataset contains
 PM2.5 monitoring data for the monitor in Carmel Valley which shows heavy smoke
-as well as strong diurnal cycles associated with sea breezes. Data are stored
-as a <em>ws_monitor</em> object and are used in some examples in the package
-documentation.</p>
+as well as strong diurnal cycles associated with sea breezes.</p>
+<p>The <code>Camp_Fire</code> dataset provides a quickly loadable
+version of a <em>ws_monitor</em> object for practicing and code examples.</p>
+<p>documentation.</p>
     </div>
 
+    <pre class="usage"><span class='va'>Carmel_Valley</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A list with two elements</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Carmel Valley example dataset</p>
+    <p>A <em>ws_monitor</em> object with "meta" and "data" dataframes.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -187,7 +187,7 @@ documentation.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Spencer Pease, Helen Miller, Zach Dingels, Rohan Aras, Jon Hagg, Jimin Kim, Rex Thompson, Alice Yang.</p>
+  <p>Developed by Jonathan Callahan.</p>
 </div>
 
 <div class="pkgdown">

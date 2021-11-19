@@ -45,7 +45,7 @@ AirNow parameters include the following:
 }
 
 Available AirNow RData and associated log files can be seen at:
-\href{https://haze.airfire.org/monitoring/AirNow/RData}{https://haze.airfire.org/monitoring/AirNow/RData}
+\href{https://haze.airfire.org/monitoring/AirNow/RData/}{https://haze.airfire.org/monitoring/AirNow/RData/}
 }
 \examples{
 \dontrun{
