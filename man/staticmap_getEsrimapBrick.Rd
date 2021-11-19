@@ -82,8 +82,13 @@ takes precedence. To get a specified zoom level, set \code{maxTiles = NULL}.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 rasterBrick <- staticmap_getEsrimapBrick(-122.3318, 47.668)
 staticmap_plotRasterBrick(rasterBrick)
+
+}, silent = FALSE)
 }
 }
 \seealso{

@@ -51,17 +51,14 @@
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' zipFile <- epa_downloadData(2016, "88101", '~/Data/EPA')
 #' tbl <- epa_parseData(zipFile, "PM2.5")
+#'
+#' }, silent = FALSE)
 #' }
-
-
-# if (false){
-#   parameterName="PM2.5"
-#   parameterCode=88101
-#   year=2016
-#   baseUrl='http://aqs.epa.gov/aqsweb/airdata/'
-# }
 
 epa_parseData <- function(zipFile = NULL) {
 

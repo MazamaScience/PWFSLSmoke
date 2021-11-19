@@ -45,10 +45,14 @@
 #' configList <- jsonlite::fromJSON(configPath)
 #' fileString <- generic_downloadData(filePath)
 #' parsedData <- generic_parseData(fileString, configList)
-generic_parseData <- function(fileString = NULL,
-                              configList = NULL) {
+#'
 
-# Validate input ----------------------------------------------------------
+generic_parseData <- function(
+  fileString = NULL,
+  configList = NULL
+) {
+
+  # Validate input ----------------------------------------------------------
 
   # Make sure fileString is a string (one element character vector)
   if (

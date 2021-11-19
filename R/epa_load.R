@@ -8,9 +8,11 @@
 #' @description Please use \code{\link{airsis_loadAnnual}} instead of this
 #' function. It will soon be deprecated.
 
-epa_load <- function(year=strftime(lubridate::now(tzone = "UTC"), "%Y", tz = "UTC"),
-                     parameterCode='88101',
-                     baseUrl='https://haze.airfire.org/monitoring/EPA/RData/') {
+epa_load <- function(
+  year=strftime(lubridate::now(tzone = "UTC"), "%Y", tz = "UTC"),
+  parameterCode='88101',
+  baseUrl='https://haze.airfire.org/monitoring/EPA/RData/'
+) {
 
   # TODO:  .Deprecate() this function at some point
 

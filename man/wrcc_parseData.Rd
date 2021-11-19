@@ -28,8 +28,13 @@ The character data are then processed, read into a tibble and augmented in the f
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 fileString <- wrcc_downloadData(20150701, 20150930, unitID = 'SM16')
 tbl <- wrcc_parseData(fileString)
+
+}, silent = FALSE)
 }
 }
 \references{

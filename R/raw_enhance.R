@@ -23,10 +23,15 @@
 #' @return Dataframe with original raw data, plus new columns with raw naming scheme for downstream use.
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #' df <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
 #' df <- raw_enhance(df)
 #' rawPlot_timeseries(df, tlim=c(20160908,20160917))
+#'
+#' }, silent = FALSE)
 #' }
 
 # TODO: Add check to ensure that column names match expected for the type passed in (e.g. EBAM_AIRSIS).

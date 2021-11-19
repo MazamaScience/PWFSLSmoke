@@ -23,9 +23,14 @@ If more than one timezone is found, \code{localTime} is ignored and UTC is used.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 raw <- airsis_createRawDataframe(20160901, 20161015, provider='USFS', unitID=1012)
 raw <- raw_enhance(raw)
 rawPlot_windRose(raw)
+
+}, silent = FALSE)
 }
 }
 \keyword{raw}

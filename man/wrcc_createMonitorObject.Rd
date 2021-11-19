@@ -81,11 +81,16 @@ The downloaded CSV may be saved to a local file by providing an argument to the 
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 initializeMazamaSpatialUtils()
 
 sm13 <- wrcc_createMonitorObject(20150301, 20150831, unitID = 'sm13')
 monitor_leaflet(sm13)
+
+}, silent = FALSE)
 }
 }
 \seealso{

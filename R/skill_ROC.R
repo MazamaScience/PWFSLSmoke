@@ -13,6 +13,9 @@
 #' @seealso \link{skill_ROCPlot}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' # Napa Fires -- October, 2017
 #' ca <- airnow_loadAnnual(2017) %>%
 #'   monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
@@ -24,6 +27,8 @@
 #' auc <- rocList$auc
 #' plot(roc$TPR ~ roc$FPR, type = 'S')
 #' title(paste0('Area Under Curve = ', format(auc,digits = 3)))
+#'
+#' }, silent = FALSE)
 #' }
 
 skill_ROC <- function(

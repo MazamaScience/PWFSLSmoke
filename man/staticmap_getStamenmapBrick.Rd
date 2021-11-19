@@ -72,8 +72,13 @@ exactly.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 rasterBrick <- staticmap_getStamenmapBrick(-122.3318, 47.668)
 staticmap_plotRasterBrick(rasterBrick)
+
+}, silent = FALSE)
 }
 }
 \seealso{

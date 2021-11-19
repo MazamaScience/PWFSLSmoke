@@ -14,9 +14,14 @@
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/FileFormats.html#_format_3}{file format description}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' initializeMazamaSpatialUtils()
 #' zipFile <- epa_downloadData(2016, "88101", downloadDir = '~/Data/EPA')
 #' mon <- epa_createMonitorObject(zipFile, addGoogleMeta = FALSE)
+#'
+#' }, silent = FALSE)
 #' }
 
 epa_createMonitorObject <- function(

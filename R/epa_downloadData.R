@@ -35,8 +35,13 @@
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' zipFile <- epa_downloadData(2016, "88101", '~/Data/EPA')
 #' tbl <- epa_parseData(zipFile, "PM2.5")
+#'
+#' }, silent = FALSE)
 #' }
 
 epa_downloadData <- function(

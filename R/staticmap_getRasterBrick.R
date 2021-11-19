@@ -71,16 +71,21 @@
 #'
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' rasterBrick <- staticmap_getRasterBrick(-122.3318, 47.668)
 #' staticmap_plotRasterBrick(rasterBrick)
-#' }
-#' \dontrun{
+#'
+#'
 #' rasterBrick <- staticmap_getRasterBrick(-122.3318, 47.668, "world_streets", 12)
 #' staticmap_plotRasterBrick(rasterBrick)
-#' }
-#' \dontrun{
+#'
+#'
 #' rasterBrick <- staticmap_getRasterBrick(-122.3318, 47.668, "watercolor", 12)
 #' staticmap_plotRasterBrick(rasterBrick)
+#'
+#' }, silent = FALSE)
 #' }
 #' @seealso \code{\link{staticmap_getStamenmapBrick}}
 #' @seealso \code{\link{staticmap_getEsrimapBrick}}

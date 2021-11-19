@@ -35,8 +35,13 @@ The \code{monitorType} will be one of:
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 fileString <- wrcc_downloadData(20160701, 20160930, unitID='1307')
 monitorTypeList <- wrcc_identifyMonitorType(fileString)
+
+}, silent = FALSE)
 }
 }
 \references{

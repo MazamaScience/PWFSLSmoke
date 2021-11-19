@@ -50,13 +50,15 @@
 #' monitor_timeseriesPlot(Spokane_min, col='blue', type='s', add=TRUE)
 #' title('Spokane Range of PM2.5 Values, June 2015')
 
-monitor_collapse <- function(ws_monitor,
-                             longitude = NULL,
-                             latitude = NULL,
-                             monitorID = "generated_id",
-                             FUN = mean,
-                             na.rm = TRUE,
-                             ...) {
+monitor_collapse <- function(
+  ws_monitor,
+  longitude = NULL,
+  latitude = NULL,
+  monitorID = "generated_id",
+  FUN = mean,
+  na.rm = TRUE,
+  ...
+) {
 
   # Debugging ------------------------------------------------------------------
 

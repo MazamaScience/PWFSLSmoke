@@ -25,7 +25,12 @@ Avaialble RData and associated log files can be seen at:
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 ca <- loadLatest() \%>\% monitor_subset(stateCodes='CA')
+
+}, silent = FALSE)
 }
 }
 \seealso{

@@ -21,8 +21,13 @@
 #' @references \href{https://wrcc.dri.edu/cgi-bin/smoke.pl}{Fire Cache Smoke Monitoring Archive}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' fileString <- wrcc_downloadData(20150701, 20150930, unitID = 'SM16')
 #' tbl <- wrcc_parseData(fileString)
+#'
+#' }, silent = FALSE)
 #' }
 
 wrcc_parseData <- function(fileString) {

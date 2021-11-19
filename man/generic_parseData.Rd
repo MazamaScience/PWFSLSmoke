@@ -54,4 +54,5 @@ configPath <- system.file(
 configList <- jsonlite::fromJSON(configPath)
 fileString <- generic_downloadData(filePath)
 parsedData <- generic_parseData(fileString, configList)
+
 }

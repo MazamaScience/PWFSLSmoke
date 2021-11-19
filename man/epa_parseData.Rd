@@ -58,8 +58,13 @@ CSV files are removed after data are read into a dataframe.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 zipFile <- epa_downloadData(2016, "88101", '~/Data/EPA')
 tbl <- epa_parseData(zipFile, "PM2.5")
+
+}, silent = FALSE)
 }
 }
 \references{

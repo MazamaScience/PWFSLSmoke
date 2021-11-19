@@ -23,9 +23,14 @@ This function is essentailly a wrapper for \code{\link[readr]{read_file}}.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 # make current directory PWFSLSmoke package directory
 filePath <- "./localData/airsis_ebam_example-clean.csv"
 
 fileString <- generic_downloadData(filePath)
+
+}, silent = FALSE)
 }
 }

@@ -24,7 +24,12 @@
 #' @return A \emph{ws_monitor} object with PM2.5 monitoring data.
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' ca <- loadDaily() %>% monitor_subset(stateCodes='CA')
+#'
+#' }, silent = FALSE)
 #' }
 
 loadDaily <- function() {

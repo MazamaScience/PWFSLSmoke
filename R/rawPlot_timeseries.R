@@ -36,22 +36,24 @@
 #
 ###############################################################################
 
-rawPlot_timeseries <- function(df,
-                               parameter="pm25",
-                               tlim=NULL,
-                               localTime=TRUE,
-                               shadedNight=TRUE,
-                               shadedBackground=NULL, #specify parameter to shade, e.g. 'windSpeed'
-                               sbLwd=1,
-                               add=FALSE,
-                               gridPos='',
-                               gridCol='black',
-                               gridLwd=1,
-                               gridLty='solid',
-                               dayLwd=0,
-                               hourLwd=0,
-                               hourInterval=6,
-                               ...) {
+rawPlot_timeseries <- function(
+  df,
+  parameter = "pm25",
+  tlim = NULL,
+  localTime = TRUE,
+  shadedNight = TRUE,
+  shadedBackground = NULL, #specify parameter to shade, e.g. 'windSpeed'
+  sbLwd = 1,
+  add = FALSE,
+  gridPos = '',
+  gridCol = 'black',
+  gridLwd = 1,
+  gridLty = 'solid',
+  dayLwd = 0,
+  hourLwd = 0,
+  hourInterval = 6,
+  ...
+) {
 
   # ----- Initial coherency checks -------------
 

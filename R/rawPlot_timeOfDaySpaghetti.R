@@ -15,21 +15,26 @@
 #' @description Spaghetti Plot that shows data by hour-of-day.
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' raw <- airsis_createRawDataframe(20160901, 20161015, 'USFS', 1012)
 #' raw <- raw_enhance(raw)
 #' rawPlot_timeOfDaySpaghetti(raw,parameter="temperature")
+#'
+#' }, silent = FALSE)
 #' }
 
 rawPlot_timeOfDaySpaghetti <- function(
   df,
-  parameter='pm25',
-  tlim=NULL,
-  shadedNight=TRUE,
-  meanCol='black',
-  meanLwd=4,
-  meanLty=1,
-  highlightDates=c(),
-  highlightCol='dodgerblue',
+  parameter = 'pm25',
+  tlim = NULL,
+  shadedNight = TRUE,
+  meanCol = 'black',
+  meanLwd = 4,
+  meanLty = 1,
+  highlightDates = c(),
+  highlightCol = 'dodgerblue',
   ...
 ) {
 

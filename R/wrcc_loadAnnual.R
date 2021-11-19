@@ -58,6 +58,9 @@
 #'
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' wrcc_loadAnnual(2017) %>%
 #'   monitor_subset(stateCodes='MT', tlim=c(20170701,20170930)) %>%
 #'   monitor_dailyStatistic() %>%
@@ -65,12 +68,16 @@
 #'   addAQIStackedBar()
 #'   addAQILines()
 #'   title("Montana 2017 -- WRCC Daily Average PM2.5")
+#'
+#' }, silent = FALSE)
 #' }
 
-wrcc_loadAnnual <- function(year = NULL,
-                            parameter = 'PM2.5',
-                            baseUrl = 'https://haze.airfire.org/monitoring',
-                            dataDir = NULL) {
+wrcc_loadAnnual <- function(
+  year = NULL,
+  parameter = 'PM2.5',
+  baseUrl = 'https://haze.airfire.org/monitoring',
+  dataDir = NULL
+) {
 
   # Validate parameters --------------------------------------------------------
 

@@ -31,12 +31,17 @@ This function plots ROC curves for a variety of \code{observed} classification t
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 # Napa Fires -- October, 2017
 ca <- airnow_loadAnnual(2017) \%>\%
   monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
 Vallejo <- monitor_subset(ca, monitorIDs = '060950004_01')
 Napa <- monitor_subset(ca, monitorIDs = '060550003_01')
 skill_ROCPlot(Vallejo, Napa)
+
+}, silent = FALSE)
 }
 }
 \references{

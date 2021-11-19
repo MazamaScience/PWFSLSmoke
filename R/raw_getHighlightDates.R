@@ -8,6 +8,9 @@
 #' the dataVar is within \code{highlightRange}.
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' raw <- airsis_createRawDataframe(startdate = 20160901, provider = 'USFS',unitID = '1033')
 #' raw <- raw_enhance(raw)
 #' highlightRange <- c(50,Inf)
@@ -15,13 +18,15 @@
 #' tzone <- "America/Los_Angeles"
 #' highlightDates <- raw_getHighlightDates(raw,dataVar,tzone,highlightRange)
 #' rawPlot_timeOfDaySpaghetti(df=raw,highlightDates = highlightDates)
+#'
+#' }, silent = FALSE)
 #' }
 
 raw_getHighlightDates <- function(
   df,
   dataVar,
-  tzone=NULL,
-  highlightRange=c(1e12,Inf)
+  tzone = NULL,
+  highlightRange = c(1e12, Inf)
 ) {
 
   # Sanity check -- 'datetime' must exist

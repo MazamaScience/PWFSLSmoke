@@ -33,15 +33,22 @@
 #' @references \href{https://aqs.epa.gov/aqsweb/airdata/download_files.html#Raw}{EPA AirData Pre-Generated Data Files}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' epa_loadAnnual(2000, "88502") %>%
 #'   monitor_subset(stateCodes = 'WA', tlim=c(20000701,20000801)) %>%
 #'   monitor_map()
+#'
+#' }, silent = FALSE)
 #' }
 
-epa_loadAnnual <- function(year = NULL,
-                           parameterCode = NULL,
-                           baseUrl = 'https://haze.airfire.org/monitoring',
-                           dataDir = NULL) {
+epa_loadAnnual <- function(
+  year = NULL,
+  parameterCode = NULL,
+  baseUrl = 'https://haze.airfire.org/monitoring',
+  dataDir = NULL
+) {
 
   # Validate parameters --------------------------------------------------------
 

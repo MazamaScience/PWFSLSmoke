@@ -22,11 +22,13 @@
 #'   points(time, pm25[,i], col=colorMatrix[,i], pch=16)
 #' }
 
-aqiColors <- function(x,
-                      palette = AQI$colors,
-                      domain = c(0,1e6),
-                      bins = AQI$breaks_24,
-                      na.color = NA) {
+aqiColors <- function(
+  x,
+  palette = AQI$colors,
+  domain = c(0,1e6),
+  bins = AQI$breaks_24,
+  na.color = NA
+) {
 
   # Pull data out of ws_monitor object if necessary
   if ( monitor_isMonitor(x) ) {
@@ -34,14 +36,14 @@ aqiColors <- function(x,
   } else {
     pm25 <- x
   }
-  
+
   # Convert to matrix if necessary
   ncol <- 1
   if ( !is.null(ncol(pm25)) ) {
     ncol <- ncol(pm25)
     pm25 <- as.matrix(pm25)
   }
-  
+
   # Force conversion to a numeric vector
   vals <- as.numeric(pm25)
 
@@ -50,15 +52,15 @@ aqiColors <- function(x,
                                  domain = domain,
                                  bins = bins,
                                  na.color = na.color)
-  
+
   # Assign colors
   cols <- colorFunc(vals)
-  
+
   # Restore shape and return
   if ( ncol > 1 ) {
     cols <- matrix(cols, ncol = ncol, byrow = FALSE)
   }
-  
+
   return(cols)
 
 }

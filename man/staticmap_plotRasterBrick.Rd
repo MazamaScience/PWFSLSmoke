@@ -21,9 +21,14 @@ Plots the incoming \code{rasterBrick}.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 rasterBrick <- staticmap_getStamenmapBrick(-122.3318, 47.668)
 staticmap_plotRasterBrick(rasterBrick)
 staticmap_plotRasterBrick(rasterBrick, grayscale = TRUE)
+
+}, silent = FALSE)
 }
 
 }

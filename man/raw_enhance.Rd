@@ -33,10 +33,15 @@ uniform, hourly axes with missing data fields added for data columns.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 df <- airsis_createRawDataframe(startdate=20160901, enddate=20161015, provider='USFS', unitID=1012)
 df <- raw_enhance(df)
 rawPlot_timeseries(df, tlim=c(20160908,20160917))
+
+}, silent = FALSE)
 }
 }
 \keyword{raw}

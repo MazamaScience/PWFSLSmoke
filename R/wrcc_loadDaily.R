@@ -50,14 +50,21 @@
 #' @seealso \code{\link{wrcc_loadLatest}}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' wrcc_loadDaily() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
 #'   monitor_map()
+#'
+#' }, silent = FALSE)
 #' }
 
-wrcc_loadDaily <- function(parameter = 'PM2.5',
-                           baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
-                           dataDir = NULL) {
+wrcc_loadDaily <- function(
+  parameter = 'PM2.5',
+  baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
+  dataDir = NULL
+) {
 
   # Validate parameter
   validParams <- c("PM2.5")
