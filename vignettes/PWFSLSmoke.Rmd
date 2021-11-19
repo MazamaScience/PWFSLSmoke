@@ -136,6 +136,8 @@ they can be chained together.
 ```{r library, echo = FALSE}
 suppressPackageStartupMessages({
   library(PWFSLSmoke)
+  
+  camp_fire <- Camp_Fire
 })
 ```
 
@@ -146,7 +148,7 @@ area.
 We would begin by creating a `camp_fire` *ws_monitor* object that has all the
 monitors in California for the period of interest:
 
-```{r Sacramento_1}
+```
 camp_fire <-
   monitor_loadAnnual(2018) %>%
   monitor_subset(stateCodes = 'CA') %>%
@@ -222,6 +224,8 @@ Sacramento_area %>%
   monitor_dailyBarplot(labels_x_nudge = 0.5,
                        labels_y_nudge = 15)
 ```
+
+----
 
 Hopefully, this short introduction will encourage you to start using this 
 package for your own analyses.

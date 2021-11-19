@@ -1,3 +1,12 @@
+# PWFSLSmoke 1.2.117
+
+Documentation and other fixes to deal with CRAN check issues.
+
+* Updated the "Introduction to PWFSLSmoke" vignette to use package data rather
+than downloading data from the internet.
+* Added `Camp_Fire` dataset.
+* Moved dataset documentation to separate `data.R` file.
+
 # PWFSLSmoke 1.2.116
 
 * Support for parsing AIRSIS "EBAM MULTI2_B" format.

@@ -1,32 +1,22 @@
 Type: Package
 Package: PWFSLSmoke
-Version: 1.2.116
+Version: 1.2.117
 Title: Utilities for Working with Air Quality Monitoring Data
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
-    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut")),
-    person("Spencer", "Pease", email="spencerpease618@gmail.com", role=c("aut")),
-    person("Helen", "Miller", email="helen@ohana.org", role=c("aut")),
-    person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("aut")),
-    person("Rohan", "Aras", email="rohana@uw.edu", role=c("aut")),
-    person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("aut")),
-    person("Jimin", "Kim", email="jk55@uw.edu", role=c("aut")),
-    person("Rex", "Thompson", email="rexs.thompson@gmail.com", role=c("aut")),
-    person("Alice", "Yang", email="wenhuy@uw.edu", role=c("aut"))
+    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("ctb")),
+    person("Spencer", "Pease", email="spencerpease618@gmail.com", role=c("ctb")),
+    person("Helen", "Miller", email="helen@ohana.org", role=c("ctb")),
+    person("Zach", "Dingels", email="dingelsz@uw.edu", role=c("ctb")),
+    person("Rohan", "Aras", email="rohana@uw.edu", role=c("ctb")),
+    person("Jon", "Hagg", email="jhagg314@gmail.com", role=c("ctb")),
+    person("Jimin", "Kim", email="jk55@uw.edu", role=c("ctb")),
+    person("Rex", "Thompson", email="rexs.thompson@gmail.com", role=c("ctb")),
+    person("Alice", "Yang", email="wenhuy@uw.edu", role=c("ctb"))
     )
-Author: Jonathan Callahan [aut, cre],
-    Hans Martin [aut],
-    Spencer Pease [aut],
-    Helen Miller [aut],
-    Zach Dingels [aut],
-    Rohan Aras [aut],
-    Jon Hagg [aut],
-    Jimin Kim [aut],
-    Rex Thompson [aut],
-    Alice Yang [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
-    R (>= 3.3.0),
+    R (>= 3.5.0),
     dplyr (>= 0.8.3),
     maps,
     MazamaCoreUtils (>= 0.4.3),
@@ -85,4 +75,4 @@ URL: https://github.com/MazamaScience/PWFSLSmoke
 BugReports: https://github.com/MazamaScience/PWFSLSmoke/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
