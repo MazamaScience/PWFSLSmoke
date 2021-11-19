@@ -45,17 +45,19 @@
 #'                          labels_x_nudge = 1)
 #' addAQILegend(fill = rev(AQI$colors), pch = NULL)
 
-monitor_dailyBarplot <- function(ws_monitor,
-                                 monitorID = NULL,
-                                 tlim = NULL,
-                                 minHours = 18,
-                                 gridPos = "",
-                                 gridCol = "black",
-                                 gridLwd = 0.5,
-                                 gridLty = "solid",
-                                 labels_x_nudge = 0,
-                                 labels_y_nudge = 0,
-                                 ...) {
+monitor_dailyBarplot <- function(
+  ws_monitor,
+  monitorID = NULL,
+  tlim = NULL,
+  minHours = 18,
+  gridPos = "",
+  gridCol = "black",
+  gridLwd = 0.5,
+  gridLty = "solid",
+  labels_x_nudge = 0,
+  labels_y_nudge = 0,
+  ...
+) {
 
   # Sanity check
   if (monitor_isEmpty(ws_monitor)) {

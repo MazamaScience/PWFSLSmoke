@@ -47,11 +47,16 @@ Avaialble RData files can be seen at:
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 monitor_loadAnnual(2018) \%>\%
   monitor_subset(stateCodes = "WA", tlim = c(20180701, 20181001)) \%>\%
   monitor_timeseriesPlot(style = 'gnats')
+
+}, silent = FALSE)
 }
 }
 \seealso{

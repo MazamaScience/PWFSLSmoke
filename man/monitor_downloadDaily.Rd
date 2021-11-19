@@ -44,11 +44,16 @@ Avaialble RData files can be seen at:
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 monitor_loadLatest() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
   monitor_map()
+
+}, silent = FALSE)
 }
 }
 \seealso{

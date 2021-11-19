@@ -88,10 +88,15 @@
 #'
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' ws_monitor <- monitor_loadLatest() %>% monitor_subset(stateCodes = "WA")
 #' statusTbl <- monitor_getCurrentStatus(ws_monitor)
+#'
+#' }, silent = FALSE)
 #' }
 
 monitor_getCurrentStatus <- function(

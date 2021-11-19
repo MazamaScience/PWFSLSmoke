@@ -13,6 +13,9 @@
 #' @return Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' # Napa Fires -- October, 2017
@@ -31,14 +34,18 @@
 #' if ( interactive() ) {
 #'   monitor_dygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
 #' }
+#'
+#' }, silent = FALSE)
 #' }
 
-monitor_dygraph <- function(ws_monitor,
-                            title = "title",
-                            ylab = "PM2.5 Concentration",
-                            tlim = NULL,
-                            rollPeriod = 1,
-                            showLegend = TRUE) {
+monitor_dygraph <- function(
+  ws_monitor,
+  title = "title",
+  ylab = "PM2.5 Concentration",
+  tlim = NULL,
+  rollPeriod = 1,
+  showLegend = TRUE
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {

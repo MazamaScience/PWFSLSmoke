@@ -42,6 +42,9 @@ You should not attempt to reassemble a single \emph{ws_monitor} object from the 
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 airnow <- airnow_loadLatest()
@@ -53,6 +56,8 @@ monitor_leaflet(dailyList[["America/Los_Angeles"]])
 monitor_leaflet(dailyList[["America/Boise"]])
 
 monitor_leaflet(dailyList[["America/Denver"]])
+
+}, silent = FALSE)
 }
 }
 \references{

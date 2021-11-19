@@ -19,14 +19,18 @@
 #' @examples
 #' library(PWFSLSmoke)
 #'
-#' monitor_getDailyMean(PWFSLSmoke::Carmel_Valley,
-#'                      startdate = "2016-08-01",
-#'                      enddate = "2016-08-08")
+#' monitor_getDailyMean(
+#'   PWFSLSmoke::Carmel_Valley,
+#'   startdate = "2016-08-01",
+#'   enddate = "2016-08-08"
+#' )
 
-monitor_getDailyMean <- function(ws_monitor,
-                                 monitorID = NULL,
-                                 startdate = NULL,
-                                 enddate = NULL) {
+monitor_getDailyMean <- function(
+  ws_monitor,
+  monitorID = NULL,
+  startdate = NULL,
+  enddate = NULL
+) {
 
   # Validate arguments ---------------------------------------------------------
 

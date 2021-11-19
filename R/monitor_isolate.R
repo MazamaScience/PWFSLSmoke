@@ -27,13 +27,15 @@
 #' monitorList <- monitor_isolate(Spokane)
 #' names(monitorList)
 
-monitor_isolate <- function(ws_monitor,
-                            xlim=NULL,
-                            ylim=NULL,
-                            tlim=NULL,
-                            monitorIDs=NULL,
-                            stateCodes=NULL,
-                            timezone="UTC") {
+monitor_isolate <- function(
+  ws_monitor,
+  xlim = NULL,
+  ylim = NULL,
+  tlim = NULL,
+  monitorIDs = NULL,
+  stateCodes = NULL,
+  timezone = "UTC"
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")

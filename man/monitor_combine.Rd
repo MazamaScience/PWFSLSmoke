@@ -23,6 +23,9 @@ or years. (Note, however, that this can be CPU intensive process.)
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 initializeMazamaSpatialUtils()
 
@@ -36,6 +39,8 @@ ws_monitor <- monitor_combine(monitorList)
 if ( interactive() ) {
   monitor_leaflet(ws_monitor)
 }
+
+}, silent = FALSE)
 }
 }
 \keyword{ws_monitor}

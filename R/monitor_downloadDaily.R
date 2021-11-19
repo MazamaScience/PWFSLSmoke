@@ -50,17 +50,24 @@
 #' @seealso \code{\link{monitor_loadDaily}}
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' monitor_loadLatest() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
 #'   monitor_map()
+#'
+#' }, silent = FALSE)
 #' }
 
-monitor_downloadDaily <- function(parameter='PM2.5',
-                                  baseUrl='https://haze.airfire.org/monitoring/latest/RData/',
-                                  dataDir = "~/Data/monitoring/RData",
-                                  ...) {
+monitor_downloadDaily <- function(
+  parameter='PM2.5',
+  baseUrl='https://haze.airfire.org/monitoring/latest/RData/',
+  dataDir = "~/Data/monitoring/RData",
+  ...
+) {
 
   # AirNow
   filename <- paste0("airnow_", parameter, "_latest45.RData")

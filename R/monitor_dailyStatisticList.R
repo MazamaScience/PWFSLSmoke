@@ -21,6 +21,9 @@
 #' @references \link{monitor_dailyStatistic}
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' airnow <- airnow_loadLatest()
@@ -32,13 +35,17 @@
 #' monitor_leaflet(dailyList[["America/Boise"]])
 #'
 #' monitor_leaflet(dailyList[["America/Denver"]])
+#'
+#' }, silent = FALSE)
 #' }
 
-monitor_dailyStatisticList <- function(ws_monitor,
-                                       FUN=get("mean"),
-                                       dayStart="midnight",
-                                       na.rm=TRUE,
-                                       minHours=18) {
+monitor_dailyStatisticList <- function(
+  ws_monitor,
+  FUN = get("mean"),
+  dayStart = "midnight",
+  na.rm = TRUE,
+  minHours = 18
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) {

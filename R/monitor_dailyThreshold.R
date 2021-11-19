@@ -26,11 +26,13 @@
 #' monitor_timeseriesPlot(Twisp_daily, type='h', lwd=6, ylab="Hours")
 #' title("Twisp, Washington Hours per day Above 'Unhealthy', 2015")
 
-monitor_dailyThreshold <- function(ws_monitor,
-                                   threshold="unhealthy",
-                                   dayStart="midnight",
-                                   minHours=0,
-                                   na.rm=TRUE) {
+monitor_dailyThreshold <- function(
+  ws_monitor,
+  threshold = "unhealthy",
+  dayStart = "midnight",
+  minHours = 0,
+  na.rm = TRUE
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")

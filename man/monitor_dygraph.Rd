@@ -36,6 +36,9 @@ This function creates interactive graphs that will be displayed
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 # Napa Fires -- October, 2017
@@ -54,6 +57,8 @@ Napa_Fires <- monitor_subsetByDistance(
 if ( interactive() ) {
   monitor_dygraph(Napa_Fires, title='Napa Fires in California, Oct. 2017')
 }
+
+}, silent = FALSE)
 }
 }
 \keyword{ws_monitor}
