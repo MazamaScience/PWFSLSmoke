@@ -32,7 +32,7 @@ monitor_getDailyMean <- function(
   enddate = NULL
 ) {
 
-  # Validate arguments ---------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( !monitor_isMonitor(ws_monitor) )
     stop("Required parameter 'ws_monitor' is not a valid ws_monitor object.")

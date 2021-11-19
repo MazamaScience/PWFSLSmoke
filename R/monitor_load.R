@@ -26,18 +26,25 @@
 #' @return A \emph{ws_monitor} object with PM2.5 monitoring data.
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' ca <- monitor_load(20170601,20171001) %>% monitor_subset(stateCodes='CA')
+#'
+#' }, silent = FALSE)
 #' }
 
-monitor_load <- function(startdate = NULL,
-                         enddate = NULL,
-                         monitorIDs = NULL,
-                         parameter="PM2.5",
-                         baseUrl="https://haze.airfire.org/monitoring",
-                         dataDir = NULL,
-                         aqsPreference = "airnow") {
+monitor_load <- function(
+  startdate = NULL,
+  enddate = NULL,
+  monitorIDs = NULL,
+  parameter = "PM2.5",
+  baseUrl = "https://haze.airfire.org/monitoring",
+  dataDir = NULL,
+  aqsPreference = "airnow"
+) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(startdate) ) {
     stop(paste0("Required parameter 'startdate' is missing"))

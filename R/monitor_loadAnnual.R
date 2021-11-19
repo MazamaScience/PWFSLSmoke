@@ -56,18 +56,25 @@
 #' @seealso \code{\link{monitor_loadLatest}}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' monitor_loadAnnual(2014) %>%
 #'   monitor_subset(stateCodes='MT', tlim=c(20140801,20140901)) %>%
 #'   monitor_map()
+#'
+#' }, silent = FALSE)
 #' }
 
-monitor_loadAnnual <- function(year = NULL,
-                               parameter='PM2.5',
-                               baseUrl='https://haze.airfire.org/monitoring',
-                               dataDir = NULL,
-                               aqsPreference = "airnow") {
+monitor_loadAnnual <- function(
+  year = NULL,
+  parameter = 'PM2.5',
+  baseUrl = 'https://haze.airfire.org/monitoring',
+  dataDir = NULL,
+  aqsPreference = "airnow"
+) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(year) ) {
     stop("Required parameter 'year' is missing.")

@@ -49,7 +49,12 @@ loading recent data with this function.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 ca <- monitor_load(20170601,20171001) \%>\% monitor_subset(stateCodes='CA')
+
+}, silent = FALSE)
 }
 }
 \seealso{

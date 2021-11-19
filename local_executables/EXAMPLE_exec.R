@@ -189,7 +189,7 @@ if (opt$version) {
   quit()
 }
 
-# ----- Validate parameters ----------------------------------------------------
+# ----- Validate parameters ---------------------------------------------------
 
 MazamaCoreUtils::stopIfNull(opt$satID)
 

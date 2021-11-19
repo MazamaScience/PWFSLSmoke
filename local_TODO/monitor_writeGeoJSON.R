@@ -51,7 +51,7 @@ monitor_writeGeoJSON <- function(
 
   logger.debug(" ----- monitor_writeGeoJSON() ----- ")
 
-  # Sanity checks --------------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if (monitor_isEmpty(ws_monitor))
     stop("ws_monitor object contains zero monitors.")

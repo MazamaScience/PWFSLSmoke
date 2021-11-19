@@ -46,6 +46,9 @@ included, see \code{\link{monitor_getCurrentStatus}}.
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 wa <-
@@ -58,6 +61,9 @@ wa_current_list <- jsonlite::fromJSON(wa_current_geojson)
 wa_spdf <- rgdal::readOGR(dsn = geojson_file)
 map("state", "washington")
 points(wa_spdf)
+
+}, silent = FALSE)
 }
+
 }
 \keyword{ws_monitor}

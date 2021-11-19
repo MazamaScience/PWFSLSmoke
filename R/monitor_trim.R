@@ -7,6 +7,9 @@
 #' after the last valid datapoint for any monitor.
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #' library(MazamaSpatialUtils)
 #'
@@ -15,6 +18,8 @@
 #' Deschutes <- monitor_subset(sm13, monitorIDs='lon_.121.453_lat_43.878_wrcc.sm13')
 #' Deschutes <- monitor_trim(Deschutes)
 #' monitor_dailyBarplot(Deschutes)
+#'
+#' }, silent = FALSE)
 #' }
 monitor_trim <- function(ws_monitor) {
 

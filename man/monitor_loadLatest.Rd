@@ -52,9 +52,14 @@ Avaialble RData files can be seen at:
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 monitor_loadLatest() \%>\%
   monitor_subset(stateCodes=CONUS) \%>\%
   monitor_map()
+
+}, silent = FALSE)
 }
 }
 \seealso{

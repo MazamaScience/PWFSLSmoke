@@ -1,7 +1,7 @@
 generic_parseData <- function(fileString = NULL,
                               configList = NULL) {
 
-# Validate input ----------------------------------------------------------
+# ----- Validate parameters --------------------------------------------------
 
   # Make sure fileString is a string (one element character vector)
   if (

@@ -63,7 +63,7 @@ wrcc_createRawDataframe <- function(
 
   logger.debug(" ----- wrcc_createRawDatafram() ----- ")
 
-  # ----- Validate parameters ---------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")

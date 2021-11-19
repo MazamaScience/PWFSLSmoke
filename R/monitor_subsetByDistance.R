@@ -18,6 +18,9 @@
 #' @seealso monitorDistance
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' # Napa Fires -- October, 2017
@@ -32,14 +35,16 @@
 #' if ( interactive() ) {
 #'   monitor_leaflet(Napa_Fires)
 #' }
+#'
+#' }, silent = FALSE)
 #' }
 
 monitor_subsetByDistance <- function(
   ws_monitor,
-  longitude=NULL,
-  latitude=NULL,
-  radius=50,
-  count=NULL
+  longitude = NULL,
+  latitude = NULL,
+  radius = 50,
+  count = NULL
 ) {
 
   # Sanity check

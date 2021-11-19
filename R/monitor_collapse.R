@@ -83,7 +83,7 @@ monitor_collapse <- function(
 
   }
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( monitor_isEmpty(ws_monitor) ) {
     stop("ws_monitor object contains zero monitors")

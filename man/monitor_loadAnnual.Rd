@@ -53,9 +53,14 @@ Avaialble RData files can be seen at:
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 monitor_loadAnnual(2014) \%>\%
   monitor_subset(stateCodes='MT', tlim=c(20140801,20140901)) \%>\%
   monitor_map()
+
+}, silent = FALSE)
 }
 }
 \seealso{

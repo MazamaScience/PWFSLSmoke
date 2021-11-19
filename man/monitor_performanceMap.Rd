@@ -77,6 +77,9 @@ size/colors to remain constant.
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 # Napa Fires -- October, 2017
@@ -89,6 +92,8 @@ Napa_Fires <- monitor_subsetByDistance(ca,
                                        radius = 50)
 monitor_performanceMap(ca, Vallejo, cex = 2)
 title('Heidke Skill of monitors predicting another monitor.')
+
+}, silent = FALSE)
 }
 }
 \seealso{

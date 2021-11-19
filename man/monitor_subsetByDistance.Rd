@@ -39,6 +39,9 @@ of monitors (or grid cells) returned may be less than the specified \code{count}
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 # Napa Fires -- October, 2017
@@ -53,6 +56,8 @@ Napa_Fires <- monitor_subsetByDistance(ca,
 if ( interactive() ) {
   monitor_leaflet(Napa_Fires)
 }
+
+}, silent = FALSE)
 }
 }
 \seealso{

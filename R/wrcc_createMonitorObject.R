@@ -103,7 +103,7 @@ wrcc_createMonitorObject <- function(
 
   }
 
-  # ----- Validate Parameters --------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(unitID) ) {
     logger.error("Required parameter 'unitID' is missing")

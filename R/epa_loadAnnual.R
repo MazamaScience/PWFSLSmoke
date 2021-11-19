@@ -50,7 +50,7 @@ epa_loadAnnual <- function(
   dataDir = NULL
 ) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   # Sanity Check -- validate parameter code
   # validParameterCodes <- c("44201", "42401", "42101", "42602", "88101", "88502",

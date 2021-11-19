@@ -60,14 +60,21 @@
 #' @seealso \code{\link{monitor_loadAnnual}}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' monitor_loadDaily() %>%
 #'   monitor_subset(stateCodes=CONUS) %>%
 #'   monitor_map()
+#'
+#' }, silent = FALSE)
 #' }
 
-monitor_loadDaily <- function(parameter='PM2.5',
-                              baseUrl='https://haze.airfire.org/monitoring/latest/RData',
-                              dataDir = NULL) {
+monitor_loadDaily <- function(
+  parameter = 'PM2.5',
+  baseUrl = 'https://haze.airfire.org/monitoring/latest/RData',
+  dataDir = NULL
+) {
 
   airnow <- airnow_loadDaily(parameter, baseUrl, dataDir)
   airsis <- airsis_loadDaily(parameter, baseUrl, dataDir)

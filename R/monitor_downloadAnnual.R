@@ -71,7 +71,7 @@ monitor_downloadAnnual <- function(
   ...
 ) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(year) ) {
     stop("Required parameter 'year' is missing.")

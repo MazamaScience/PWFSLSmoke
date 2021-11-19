@@ -37,6 +37,9 @@
 #'
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' N_M <- Northwest_Megafires
@@ -44,6 +47,8 @@
 #' Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 #' Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
 #' monitor_staticmap(Spokane)
+#'
+#' }, silent = FALSE)
 #' }
 #'
 #' @seealso \code{\link{staticmap_getStamenmapBrick}}
@@ -109,7 +114,7 @@ monitor_staticmap <- function(
 
   }
 
-  # ----- Validate Parameters --------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( monitor_isEmpty(ws_monitor) )
     stop("ws_monitor object contains zero monitors")

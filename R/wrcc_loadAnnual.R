@@ -79,7 +79,7 @@ wrcc_loadAnnual <- function(
   dataDir = NULL
 ) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(year) ) {
     stop("Required parameter 'year' is missing.")

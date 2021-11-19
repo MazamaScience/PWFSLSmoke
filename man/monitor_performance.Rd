@@ -43,6 +43,9 @@ all available metrics are returned.
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 # If daily avg data were the prediciton and Spokane were
@@ -65,6 +68,8 @@ skillfulIDs <- monitorIDs[mask]
 skillful <- monitor_subset(wa_dailyAvg, monitorIDs=skillfulIDs)
 
 monitor_leaflet(skillful)
+
+}, silent = FALSE)
 }
 }
 \seealso{

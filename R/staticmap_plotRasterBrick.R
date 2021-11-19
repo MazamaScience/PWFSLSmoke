@@ -32,7 +32,7 @@ staticmap_plotRasterBrick <- function(
   ...
 ) {
 
-  # ----- Validate Parameters --------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(rasterBrick) )
     stop("Required parameter 'rasterBrick' is missing")

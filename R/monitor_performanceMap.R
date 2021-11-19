@@ -42,6 +42,9 @@
 #' @seealso \link{monitor_performance}
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' # Napa Fires -- October, 2017
@@ -54,6 +57,8 @@
 #'                                        radius = 50)
 #' monitor_performanceMap(ca, Vallejo, cex = 2)
 #' title('Heidke Skill of monitors predicting another monitor.')
+#'
+#' }, silent = FALSE)
 #' }
 
 monitor_performanceMap <- function(

@@ -21,6 +21,9 @@
 #' @seealso \link{skill_confusionMatrix}
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' # If daily avg data were the prediciton and Spokane were
@@ -43,9 +46,19 @@
 #' skillful <- monitor_subset(wa_dailyAvg, monitorIDs=skillfulIDs)
 #'
 #' monitor_leaflet(skillful)
+#'
+#' }, silent = FALSE)
 #' }
 
-monitor_performance <- function(predicted, observed, t1, t2, metric=NULL, FPCost=1, FNCost=1) {
+monitor_performance <- function(
+  predicted,
+  observed,
+  t1,
+  t2,
+  metric=NULL,
+  FPCost = 1,
+  FNCost = 1
+) {
 
   # Run skill_confusionMatrix on fake data to get a list of all metrics
   metricNames <- names(skill_confusionMatrix(sample(c(TRUE,FALSE),10,replace=TRUE), sample(c(TRUE,FALSE),10,replace=TRUE)))

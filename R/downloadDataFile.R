@@ -23,7 +23,7 @@ downloadDataFile <- function(
   ...
 ) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(filename) ) {
     stop("Required parameter 'filename' is missing.")

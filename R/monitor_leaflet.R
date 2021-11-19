@@ -43,6 +43,9 @@
 #'
 #' @examples
 #' \dontrun{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' # Napa Fires -- October, 2017
 #' ca <- airnow_load(2017) %>%
 #'   monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
@@ -51,6 +54,8 @@
 #' monitor_leaflet(CA_very_unhealthy_monitors,
 #'                legendTitle = "October, 2017",
 #'                maptype = "toner")
+#'
+#' }, silent = FALSE)
 #' }
 
 monitor_leaflet <- function(

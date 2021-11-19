@@ -70,6 +70,9 @@ underlying map tile if available. See
 }
 \examples{
 \dontrun{
+# Fail gracefully if any resources are not available
+try({
+
 # Napa Fires -- October, 2017
 ca <- airnow_load(2017) \%>\%
   monitor_subset(tlim = c(20171001,20171101), stateCodes = 'CA')
@@ -78,6 +81,8 @@ CA_very_unhealthy_monitors <- monitor_subset(ca, vlim = c(v_low, Inf))
 monitor_leaflet(CA_very_unhealthy_monitors,
                legendTitle = "October, 2017",
                maptype = "toner")
+
+}, silent = FALSE)
 }
 }
 \keyword{ws_monitor}

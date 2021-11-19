@@ -107,7 +107,8 @@ monitor_getCurrentStatus <- function(
 
   logger.debug("----- monitor_getCurrentStatus() -----")
 
-  # Sanity checks --------------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
+  
   logger.trace("Performing sanity checks on `ws_monitor` parameter.")
 
   if ( !monitor_isMonitor(ws_monitor) ) {

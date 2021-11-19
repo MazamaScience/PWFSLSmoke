@@ -79,6 +79,9 @@ appropriate values will be calcualted using data from the
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(PWFSLSmoke)
 
 N_M <- Northwest_Megafires
@@ -86,6 +89,8 @@ N_M <- Northwest_Megafires
 Spokane <- monitor_subsetBy(N_M, stringr::str_detect(N_M$meta$monitorID,'^53063'))
 Spokane <- monitor_subset(Spokane, tlim=c(20150815, 20150831))
 monitor_stamenmap(Spokane)
+
+}, silent = FALSE)
 }
 
 }

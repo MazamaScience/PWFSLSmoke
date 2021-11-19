@@ -24,7 +24,7 @@ airsis_createDataDataframe <- function(
 
   logger.debug(" ----- airsis_createDataDataframe() ----- ")
 
-  # ----- Validate Parameters --------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   # Sanity check -- tbl must have deploymentID
   if ( !'deploymentID' %in% names(tbl) ) {

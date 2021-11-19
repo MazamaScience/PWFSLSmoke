@@ -30,6 +30,9 @@
 #'
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(PWFSLSmoke)
 #'
 #' wa <-
@@ -42,7 +45,11 @@
 #' wa_spdf <- rgdal::readOGR(dsn = geojson_file)
 #' map("state", "washington")
 #' points(wa_spdf)
+#'
+#' }, silent = FALSE)
 #' }
+#'
+
 monitor_writeCurrentStatusGeoJSON <- function(
   ws_monitor,
   filename,
@@ -54,7 +61,7 @@ monitor_writeCurrentStatusGeoJSON <- function(
 
   logger.debug(" ----- monitor_writeCurrentStatusGeoJSON() ----- ")
 
-  # Sanity checks --------------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if (monitor_isEmpty(ws_monitor))
     stop("ws_monitor object contains zero monitors.")

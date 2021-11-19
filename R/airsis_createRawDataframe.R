@@ -67,7 +67,7 @@ airsis_createRawDataframe <- function(
 
   logger.debug(" ----- airsis_createRawDataframe() ----- ")
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(provider) ) {
     logger.error("Required parameter 'provider' is missing")

@@ -32,16 +32,18 @@
 
 # TODO: In the "details" section above, might want to mention whether the 'meta' data is retained for monitors w/o valid data after subsetting
 
-monitor_subset <- function(ws_monitor,
-                           xlim=NULL,
-                           ylim=NULL,
-                           tlim=NULL,
-                           vlim=NULL,
-                           monitorIDs=NULL,
-                           stateCodes=NULL,
-                           countryCodes=NULL,
-                           dropMonitors=TRUE,
-                           timezone="UTC") {
+monitor_subset <- function(
+  ws_monitor,
+  xlim = NULL,
+  ylim = NULL,
+  tlim = NULL,
+  vlim = NULL,
+  monitorIDs = NULL,
+  stateCodes = NULL,
+  countryCodes = NULL,
+  dropMonitors = TRUE,
+  timezone = "UTC"
+) {
 
   # Sanity check
   if ( monitor_isEmpty(ws_monitor) ) stop("ws_monitor object contains zero monitors")

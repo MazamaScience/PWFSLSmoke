@@ -33,7 +33,12 @@
 #'        col=c('black','red','blue'), lwd=c(1,1,2))
 #' title('Smoky Monitors in Washington -- August, 2015')
 
-monitor_rollingMean <- function(ws_monitor, width=8, data.thresh=75, align="center") {
+monitor_rollingMean <- function(
+  ws_monitor,
+  width = 8,
+  data.thresh = 75,
+  align = "center"
+) {
 
   data <- ws_monitor$data
   meta <- ws_monitor$meta

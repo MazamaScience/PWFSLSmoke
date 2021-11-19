@@ -71,7 +71,7 @@ airnow_loadAnnual <- function(year = NULL,
                               baseUrl = 'https://haze.airfire.org/monitoring',
                               dataDir = NULL) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( is.null(year) ) {
     stop("Required parameter 'year' is missing.")

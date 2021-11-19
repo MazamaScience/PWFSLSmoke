@@ -55,7 +55,7 @@ monitor_dailyStatistic <- function(
   minHours = 18
 ) {
 
-  # Validate arguments ---------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   if ( monitor_isEmpty(ws_monitor) )
     stop("ws_monitor object contains zero monitors")
