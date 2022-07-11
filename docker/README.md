@@ -13,7 +13,7 @@ You should then be able to see something like the following:
 ```
 $ docker images
 REPOSITORY                          TAG                     IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke            1.2.116                 1824e396e3f3        34 seconds ago      2.61GB
+mazamascience/pwfslsmoke            1.2.117                 1824e396e3f3        34 seconds ago      2.61GB
 mazamascience/pwfslsmoke            latest                  1824e396e3f3        34 seconds ago      2.61GB
 ...
 ```
@@ -62,6 +62,6 @@ make production_publish
 This image can also be pulled from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:1.2.116
+docker pull mazamascience/pwfslsmoke:1.2.117
 ```
 
