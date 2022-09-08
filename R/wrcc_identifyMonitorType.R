@@ -102,6 +102,19 @@ wrcc_identifyMonitorType <- function(fileString) {
   type5_names <- type5_rawNames
   type5_types <- 'cdddcdddddddddddd'
 
+  # unitID=e493, year=2022
+  type6_header <- vector('character', 3)
+  type6_header[1] <- ":       GMT\t Deg \t Deg \t     \tser #\tug/m3\t Unk \t l/m \tDeg C\t  %  \t Unk \tdeg C\t  %  \t m/s \t Deg \tvolts\t     \t ppm"
+  type6_header[2] <- ": Date/Time\t  GPS  \t  GPS  \tType   \tSerial \tConc   \t Misc  \t Ave.  \t Av Air\t  Rel  \t Misc  \tSensor \tSensor \t  Wind \t Wind  \tBattery\tAlarm  \t   CO"
+  type6_header[3] <- ":YYMMDDhhmm\t  Lat. \t  Lon. \t       \tNumber \tHly Av \t  #1   \tAir Flw\t  Temp \tHumidty\t  #2   \tInt AT \tInt RH \t  Speed\t Direc \tVoltage\t       \t"
+  type6_rawNames <- c(
+    'DateTime', 'GPSLat', 'GPSLon', 'Type', 'SerialNumber', 'ConcRT', 'Misc1',
+    'AvAirFlw', 'AvAirTemp', 'RelHumidity', 'Misc2', 'SensorIntAT', 'SensorIntRH',
+    'WindSpeed', 'WindDir', 'BatteryVoltage', 'Alarm', 'CO'
+  )
+  type6_names <- type6_rawNames
+  type6_types <- 'cdddcddddddddddddd'
+
   #      Extract  header lines from the incoming fileString     ---------------
 
   # NOTE:  Here are some example headers from WRCC ASCII output:
@@ -161,6 +174,11 @@ wrcc_identifyMonitorType <- function(fileString) {
     rawNames <- type5_rawNames
     columnNames <- type5_names
     columnTypes <- type5_types
+  } else if ( all(header == type6_header) ) {
+    monitorType <- "WRCC_TYPE6"
+    rawNames <- type6_rawNames
+    columnNames <- type6_names
+    columnTypes <- type6_types
   }
 
   monitorTypeList <- list(monitorType=monitorType,

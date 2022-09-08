@@ -18,33 +18,34 @@ wrcc_EBAMQualityControl(
 )
 }
 \arguments{
-\item{tbl}{single site titbble created by \code{wrcc_parseData()}}
+\item{tbl}{Single site titbble created by \code{wrcc_parseData()}.}
 
-\item{valid_Longitude}{range of valid Longitude values}
+\item{valid_Longitude}{Range of valid Longitude values.}
 
-\item{valid_Latitude}{range of valid Latitude values}
+\item{valid_Latitude}{Range of valid Latitude values.}
 
-\item{remove_Lon_zero}{flag to remove rows where Longitude == 0}
+\item{remove_Lon_zero}{Logical specifying removal of rows where Longitude == 0.}
 
-\item{remove_Lat_zero}{flag to remove rows where Latitude == 0}
+\item{remove_Lat_zero}{Logical specifying removal of rows where Latitude == 0.}
 
-\item{valid_Flow}{range of valid Flow values}
+\item{valid_Flow}{Range of valid Flow values.}
 
-\item{valid_AT}{range of valid AT values}
+\item{valid_AT}{Range of valid AT values.}
 
-\item{valid_RHi}{range of valid RHi values}
+\item{valid_RHi}{Range of valid RHi values.}
 
-\item{valid_Conc}{range of valid ConcHr values}
+\item{valid_Conc}{Range of valid ConcHr values.}
 
-\item{flagAndKeep}{flag, rather than remove, bad data during the QC process}
+\item{flagAndKeep}{Logical specifying flagging, rather than removal, of bad
+data during the QC process.}
 }
 \value{
-Cleaned up titbble of WRCC monitor data.
+Cleaned up tibble of WRCC monitor data.
 }
 \description{
 Perform various QC measures on WRCC EBAM data.
 
-The any numeric values matching the following are converted to \code{NA}
+Any numeric values matching the following are converted to \code{NA}
 \itemize{
 \item{\code{x < -900}}
 \item{\code{x == -9.9899}}
@@ -64,4 +65,3 @@ A \code{POSIXct datetime} column (UTC) is also added based on \code{DateTime}.
 \seealso{
 \code{\link{wrcc_qualityControl}}
 }
-\keyword{WRCC}

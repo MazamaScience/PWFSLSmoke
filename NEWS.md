@@ -1,3 +1,8 @@
+# PWFSLSmoke 1.2.118
+
+* Updated `wrcc_identifyMonitorType()` to handle a new data format.
+* Updated `wrcc_EBAMQualityControl()` to support two different flow rates.
+
 # PWFSLSmoke 1.2.117
 
 Documentation and other fixes to deal with CRAN check issues.
