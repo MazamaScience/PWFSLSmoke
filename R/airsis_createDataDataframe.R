@@ -73,7 +73,11 @@ airsis_createDataDataframe <- function(
   if ( monitorType == 'EBAM' ) {
     pm25Var <- 'ConcHr'
   } else if ( monitorType == 'ESAM' ) {
-    pm25Var <- 'Conc.mg.m3.'
+    if ( monitorSubtype == 'MULTI2022' ) {
+      pm25Var <- 'ConcHr'
+    } else {
+      pm25Var <- 'Conc.mg.m3.'
+    }
   } else if ( monitorType == 'BAM1020' ) {
     pm25Var <- 'Conc..\u00B5g.m3.'
   } else {

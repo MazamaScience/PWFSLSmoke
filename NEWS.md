@@ -1,3 +1,7 @@
+# PWFSLSmoke 1.2.119
+
+* Updated `airsis_identifyMonitorType()` to handle a new data format.
+
 # PWFSLSmoke 1.2.118
 
 * Updated `wrcc_identifyMonitorType()` to handle a new data format.

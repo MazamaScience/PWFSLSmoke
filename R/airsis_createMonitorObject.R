@@ -191,12 +191,12 @@ if ( FALSE ) {
 
   logger.setLevel(TRACE)
 
-  # 2021 "EBAM MULTI2_B" format -- usfs.1085
+  # 2021 "EBAM MULTI2022" format -- usfs.1072
 
   startdate = strftime(lubridate::now(tzone = "UTC"), "%Y0101", tz = "UTC")
   enddate = strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz = "UTC")
   provider = 'USFS'
-  unitID = 1085
+  unitID = 1072
   clusterDiameter = 1000
   zeroMinimum = TRUE
   baseUrl = "http://xxxx.airsis.com/vision/common/CSVExport.aspx?"

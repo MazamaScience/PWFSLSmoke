@@ -113,6 +113,12 @@ airsis_identifyMonitorType <- function(df) {
   olderEbam_2_names <- make.names(olderEbam_2_rawNames)
   olderEbam_2_types <- 'ccddcc'
 
+  # provider = "USFS"; unitID = "1072"; year = 2022
+  esamMulti2022_header <- "MasterTable_ID,Alias,Latitude,Longitude,ConcRT,ConcHR,Flow,AT,BP(PA),RHx,RHi,W/S,W/D,BV,Alarm,Oceaneering Unit Voltage,FT,TimeStamp,PDate"
+  esamMulti2022_rawNames <- unlist(stringr::str_split(esamMulti2022_header, ','))
+  esamMulti2022_names <- make.names(esamMulti2022_rawNames)
+  esamMulti2022_types <- 'ccddddddddddddcddcc'
+
   # Need to duplicate these to handle the addition of the 'UnitID' column before 'Alias'
 
   # ARB2_ebamMulti (Starting in August, 2018)
@@ -235,6 +241,12 @@ airsis_identifyMonitorType <- function(df) {
     rawNames <- bam1020_rawNames
     columnNames <- bam1020_names
     columnTypes <- bam1020_types
+  } else if ( dplyr::setequal(esamMulti2022_names, colNames) ) {
+    monitorType <- "ESAM"
+    monitorSubtype <- "MULTI2022"
+    rawNames <- esamMulti2022_rawNames
+    columnNames <- esamMulti2022_names
+    columnTypes <- esamMulti2022_types
   }
 
   monitorTypeList <- list(monitorType = monitorType,

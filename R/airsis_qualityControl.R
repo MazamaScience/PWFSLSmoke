@@ -101,6 +101,8 @@ airsis_qualityControl <- function(
 
     if ( monitorSubtype == "MULTI" ) {
       tbl <- airsis_ESAM_MULTIQualityControl(tbl, ...)
+    } else if ( monitorSubtype == "MULTI2022" ) {
+      tbl <- airsis_ESAM_MULTI2022QualityControl(tbl, ...)
     } else {
       tbl <- airsis_ESAMQualityControl(tbl, ...)
     }

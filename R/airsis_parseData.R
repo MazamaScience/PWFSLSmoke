@@ -107,6 +107,12 @@ airsis_parseData <- function(fileString) {
 
     }
 
+    if ( monitorSubtype == "MULTI2022" ) {
+
+      # TODO:  Handle any errors
+
+    }
+
   } else if ( monitorType == "OTHER_1" ) {
 
     logger.error("Older EBAM 1 file parsing is not supported")
@@ -241,6 +247,48 @@ airsis_parseData <- function(fileString) {
         tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
       }
 
+    } else if ( monitorSubtype == "MULTI2022" ) {
+
+      # HACK
+      # usfs.1072 in June, 2023 does not return a "Date.Time.GMT" column
+      # We add one here by flooring the "TimeStamp" colum.
+
+      logger.trace("Adding Date.Time.GMT column to ESAM_MULTI2022 data.")
+      if ( !"Date.Time.GMT" %in% names(tbl) && "TimeStamp" %in% names(tbl) ) {
+        # Remove rows where TimeStamp is NA
+        badMask <- is.na(tbl$TimeStamp) | tbl$TimeStamp == "NA"
+        tbl <- tbl[!badMask,]
+        datetime <- lubridate::mdy_hms(tbl$TimeStamp, tz = "UTC")
+        assignedHour <- lubridate::floor_date(datetime, unit = "hour")
+        tbl$Date.Time.GMT <- strftime(assignedHour, "%m/%d/%Y %H:%M:%S", tz = 'UTC')
+      }
+
+      # > names(tbl) %>% print(width = 90)
+      # [1] "MasterTable_ID"           "Alias"                    "Latitude"
+      # [4] "Longitude"                "ConcRT"                   "ConcHR"
+      # [7] "Flow"                     "AT"                       "BP.PA."
+      # [10] "RHx"                      "RHi"                      "W.S"
+      # [13] "W.D"                      "BV"                       "Alarm"
+      # [16] "Oceaneering.Unit.Voltage" "FT"                       "TimeStamp"
+      # [19] "PDate"                    "monitorName"              "monitorType"
+      # [22] "monitorSubtype"           "Date.Time.GMT"
+
+      # Need to rename some columns to those expected by airsis_createDataDataframe()
+      #
+      #  [1] "MasterTable_ID"        "UnitID"                "Alias"                 "Latitude"
+      #  [5] "Longitude"             "Date.Time.GMT"         "Start.Date.Time..GMT." "COncRT"
+      #  [9] "ConcHr"                "Flow"                  "W.S"                   "W.D"
+      # [13] "AT"                    "RHx"                   "RHi"                   "BV"
+      # [17] "FT"                    "Alarm"                 "Type"                  "Serial.Number"
+      # [21] "Version"               "Sys..Volts"            "TimeStamp"             "PDate"
+      # [25] "monitorName"           "monitorType"           "datetime"              "medoidLon"
+      # [29] "medoidLat"             "deploymentID"
+
+      tbl <- tbl %>%
+        dplyr::rename(
+          COncRT = ConcRT,
+          ConcHr = ConcHR
+        )
 
     } else {
 
@@ -288,6 +336,8 @@ airsis_parseData <- function(fileString) {
     }
   } else if (monitorType == "ESAM") {
     if ( monitorSubtype == "MULTI" ) {
+      voltLabel <- "Oceaneering.Unit.Voltage"
+    } else if ( monitorSubtype == "MULTI2022" ) {
       voltLabel <- "Oceaneering.Unit.Voltage"
     } else {
       voltLabel <- "System.Volts"
